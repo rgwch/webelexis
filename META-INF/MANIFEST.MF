@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Decorated Consultation
-Bundle-SymbolicName: ch.rgw.cons.decorated
-Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: rgw.ch
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
