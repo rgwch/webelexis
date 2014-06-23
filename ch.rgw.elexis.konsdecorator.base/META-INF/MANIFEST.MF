@@ -4,3 +4,4 @@ Bundle-Name: Base
 Bundle-SymbolicName: ch.rgw.elexis.konsdecorator.base
 Bundle-Version: 0.0.1
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.scala-lang.scala-library
