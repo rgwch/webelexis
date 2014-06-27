@@ -1,5 +1,5 @@
 package ch.rgw.elexis.konsdecorator.base
 
-class Segment extends Decoration{
+class Segment(name:String, label:String) extends Decoration(name, label){
 
 }
