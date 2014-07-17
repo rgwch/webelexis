@@ -11,7 +11,7 @@ public class TestKonsdecorator {
 	public void test() {
 		List<Decoration> decorations=new ArrayList<Decoration>();
 		DecoratedKons k=new DecoratedKons((scala.collection.immutable.List<Decoration>) decorations);
-		decorations.add(new Segment());
+		decorations.add(new Segment("Rather complicated name", "shorter Label"));
 	}
 
 }
