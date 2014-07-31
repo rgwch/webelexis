@@ -1,11 +1,11 @@
 package ch.rgw.elexis.konsdecorator.base
 
+import scala.util.matching.Regex
+
 // name,label,width,height
 class Decoration(name: String, label: String) {
-
-  def getOffset = 0
-  def getLength = 0
-  def getName = name
-  def getLabel = label
-
+  var offset = 0
+  var length = 0
+  def getLabel=label
+  def getName=name
 }
