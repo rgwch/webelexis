@@ -1,4 +1,4 @@
-package com.mycompany.myproject.test.unit;
+package ch.webelexis.agenda.test.unit;
 
 import ch.webelexis.agenda.PingVerticle;
 

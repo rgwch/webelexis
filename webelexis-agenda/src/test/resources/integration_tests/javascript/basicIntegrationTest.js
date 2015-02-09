@@ -35,7 +35,7 @@ function testHTTP() {
  This test deploys some arbitrary verticle - note that the call to testComplete() is inside the Verticle `SomeVerticle`
  */
 function testDeployArbitraryVerticle() {
-  container.deployVerticle("com.mycompany.myproject.test.integration.java.SomeVerticle");
+  container.deployVerticle("ch.webelexis.agenda.test.integration.java.SomeVerticle");
 }
 
 function testCompleteOnTimer() {
