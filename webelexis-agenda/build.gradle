@@ -76,13 +76,13 @@ def configurePom(def pom) {
     inceptionYear '2013'
     packaging 'jar'
 
-    url 'Your project url'
+    url 'http://www.elexis.ch'
 
     developers {
       developer {
-        id 'developer id (e.g. github username)'
-        name 'developer name'
-        email 'developer email'
+        id 'rgwch'
+        name 'gweirich'
+        email 'weirich@elexis.ch'
       }
     }
 
@@ -92,9 +92,8 @@ def configurePom(def pom) {
 
     licenses {
       license {
-        name 'The name of the license used, e.g.: The Apache Software License, Version 2.0'
-        url 'URl to the license, e.g.: http://www.apache.org/licenses/LICENSE-2.0.txt'
-        distribution 'repo'
+        name 'The Apache Software License, Version 2.0'
+        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
       }
     }
 
