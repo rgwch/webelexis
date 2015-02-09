@@ -10,17 +10,11 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 public class JdbcLink {
 	Connection j;
-	private static JdbcLink theInstance;
-	
-	public static JdbcLink getInstance(){
-		return theInstance;	
-	}
-	
-	
 	JdbcLink(JsonObject config) throws Exception{
 		String drivername=config.getString("dbDriver", "com.mysql.jdbc.Driver");
 		String connectstring=config.getString("dbConnect", "jdbc:mysql://localhost:3306/elexis");
@@ -28,7 +22,6 @@ public class JdbcLink {
 		String dbPwd=config.getString("dbPwd","elexis");
 		/* Driver driver= */ Class.forName(drivername).newInstance();
 		j= DriverManager.getConnection(connectstring, dbUser, dbPwd);
-		theInstance=this;
 	}
 	
 	PreparedStatement prepareStatement(String sql){
@@ -42,7 +35,7 @@ public class JdbcLink {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	boolean query(PreparedStatement stm, List ret){
+	boolean query(PreparedStatement stm, JsonArray ret){
 		ResultSet rs=null;
 		try {
 			rs=stm.executeQuery();
