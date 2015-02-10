@@ -1,5 +1,7 @@
 package ch.webelexis.agenda;
 
+import java.io.File;
+
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
@@ -29,7 +31,9 @@ public class Server extends Verticle {
 		      } else if (!req.path().contains("..")) {
 		        file = req.path();
 		      }
-		      req.response().sendFile("web/" + file);
+		      File fn = new File("web",file);
+		      System.out.println(fn.getAbsolutePath());
+		      req.response().sendFile("../web/" + file);
 		    }
 		});
 
