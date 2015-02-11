@@ -1,0 +1,47 @@
+// Example JSON config file
+
+{
+  "mongo" : {
+  	"address" : "ch.webelexis.nosql" // do not change this
+    "host": <host>,
+    "port": <port>,
+    "username": <username>,
+    "password": <password>,
+    "db_name": <db_name>,
+    "pool_size": <pool_size>,
+    "use_ssl": <bool>,
+    "read_preference": <e.g. "nearest" or "primary" etecetera>,
+    "use_mongo_types": <bool>,
+    "socket_timeout": <default 60000>,
+    "auto_connect_retry": <default true>
+  }
+  
+  "sql" : {
+  
+  	"address" : "ch.webelexis.sql",  // do not change this
+  	"connection" : <MySQL|PostgreSQL>,
+  	"host" : <your-host>,
+  	"port" : <your-port>,
+  	"maxPoolSize" : <maximum-number-of-open-connections>,
+  	"username" : <your-username>,
+  	"password" : <your-password>,
+  	"database" : <name-of-your-database>
+	} 
+	
+	"auth" : {
+	"address": "ch.webelexis.auth",				// do not change this
+    "user_collection": "ch.webelexis.users",	// do not change this
+    "persistor_address": "ch.webelexis.nosql",  // do not change this
+    "session_timeout": 30000
+	}
+	
+	"bridge" :{
+		"inOK" : [
+		{"address": "ch.webelexis.auth.login"}.
+		{"address": "ch.webelexis.autho.logout"}
+		],
+		"outOK" : [
+		]
+	}
+	
+}

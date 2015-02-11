@@ -3,6 +3,7 @@ package ch.webelexis.agenda;
 import java.io.File;
 
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonArray;
@@ -13,15 +14,16 @@ public class Server extends Verticle {
 
 	@Override
 	public void start(){
-		container.deployVerticle("ch.webelexis.agenda.DBAccess");
+		JsonObject cfg=container.config();
+		container.deployModule("io.vertx~mod-mongo-persistor~2.1.0", cfg.getObject("mongo"));
+		container.deployModule("io.vertx~mod-auth-mgr~2.0.0-final", cfg.getObject("auth"));
+		container.deployModule("io.vertx~mod-mysql-postgresql_2.11~0.3.1", cfg.getObject("sql"));
 		
+		EventBus eb=vertx.eventBus();
+		eb.registerHandler("ch.webelexis.agenda.appointments", new AgendaHandler(eb));
 		HttpServer httpServer = vertx.createHttpServer();
 		JsonObject config = new JsonObject().putString("prefix", "/eventbus");
-		JsonArray noPermitted = new JsonArray();
-		JsonArray inOK=new JsonArray();
-		inOK.add(new JsonObject().putString("address", "ch.webelexis.agenda.appointments"));
-		noPermitted.add(new JsonObject());
-
+	
 
 		httpServer.requestHandler(new Handler<HttpServerRequest>() {
 		    public void handle(HttpServerRequest req) {
@@ -37,7 +39,9 @@ public class Server extends Verticle {
 		    }
 		});
 
-		vertx.createSockJSServer(httpServer).bridge(config, inOK, noPermitted);
+		JsonArray inOK=cfg.getObject("bridge").getArray("inOK");
+		JsonArray outOK=cfg.getObject("bridge").getArray("outOK");
+		vertx.createSockJSServer(httpServer).bridge(config, inOK, outOK);
 
 		httpServer.listen(8080);
 	}

@@ -1,9 +1,0 @@
-// Example JSON config file
-
-{
-  "foo": "bar"
-  "dbConnect": "jdbc:mysql://192.168.0.1:3306/elexis"
-  "dbDriver": "com.mysql.jdbc.Driver"
-  "dbUser" : "someUser"
-  "dbPwd" : "simePwd"
-}
