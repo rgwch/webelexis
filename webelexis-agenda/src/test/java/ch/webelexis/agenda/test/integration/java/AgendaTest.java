@@ -11,6 +11,8 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.testtools.TestVerticle;
+import static org.vertx.testtools.VertxAssert.*;
+
 
 public class AgendaTest extends TestVerticle {
 
@@ -20,6 +22,7 @@ public class AgendaTest extends TestVerticle {
 		FileInputStream fis=new FileInputStream("conf.json");
 		byte[] buffer=new byte[5000];
 		int len=fis.read(buffer);
+		fis.close();
 		String s=new String(buffer,0,len,"utf-8");
 		JsonObject cfg=new JsonObject(s);
 		container.deployVerticle("ch.webelexis.agenda.Server",cfg,
@@ -35,12 +38,14 @@ public class AgendaTest extends TestVerticle {
 						msg.putString("end", "20150110");
 						msg.putString("resource", "gerry");
 						eb.send("ch.webelexis.agenda.appointments", msg,
-								new Handler<Message<JsonArray>>() {
+								new Handler<Message<JsonObject>>() {
 
 									@Override
-									public void handle(Message<JsonArray> event) {
-										org.vertx.testtools.VertxAssert.assertTrue(event.body().size()>0);
-										org.vertx.testtools.VertxAssert.testComplete();
+									public void handle(Message<JsonObject> event) {
+										assertEquals("ok",event.body().getString("status"));
+										JsonArray results=event.body().getArray("results");
+										assertTrue(results.size()>0);
+										testComplete();
 									}
 								});
 					}

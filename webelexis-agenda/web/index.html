@@ -1,8 +1,9 @@
 <html>
 <head>
-<script src="http://cdn.sockjs.org/sockjs-0.3.4.min.js" />
-<script src="../lib/vertxbus.js" />
-
+    <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+    <script src="lib/vertxbus-2.1.js" ></script>
+    <script src="lib/knockout-3.2.0.js" ></script>
+    <title>Webelexis-Agenda</title>
 </head>
 <body>
 	<h1>Webelexis-Agenda</h1>
@@ -11,6 +12,24 @@
 			name="pwd" />
 			<button name="Login">Login</button></span>
 	</div>
-	<div id="terminliste"></div>
+	<div id="terminliste">
+    <table>
+        <thead>
+            <tr>
+            <th>von</th><th>bis</th><th>grund</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: appointments">
+            <tr>
+                <td data-bind="text: from"></td>
+                <td data-bind="text: until"></td>
+                <td data-bind="text: reason"></td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <button data-bind="click: load">TEst</button>
+       <script src="view-model.js"></script>
+    
 </body>
 </html>

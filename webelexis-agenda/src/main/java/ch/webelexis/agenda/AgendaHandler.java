@@ -31,11 +31,12 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	public void handle(final Message<JsonObject> event) {
 		JsonObject request = event.body();
 		// TODO authorize
+		Server.log.info("received request");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT Tag,PatID,Beginn,Dauer,Grund,TerminTyp,TerminStatus from agntermine where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+						"SELECT ID,Tag,PatID,Beginn,Dauer,Grund,TerminTyp,TerminStatus from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] {
@@ -47,6 +48,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 					@Override
 					public void handle(Message<JsonObject> returnvalue) {
 						JsonObject res=returnvalue.body();
+						// TODO remove unneeded fields
 						event.reply(res);
 					}
 				});
