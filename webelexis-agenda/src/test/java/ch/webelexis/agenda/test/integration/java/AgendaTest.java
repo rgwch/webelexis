@@ -19,7 +19,7 @@ public class AgendaTest extends TestVerticle {
 		config.putString("dbConnect", "jdbc:mysql://192.168.0.1:3306/elexis");
 		config.putString("dbDriver", "com.mysql.jdbc.Driver");
 
-		container.deployVerticle("ch.webelexis.agenda.DBAccess",
+		container.deployVerticle("ch.webelexis.agenda.Server",
 				new AsyncResultHandler<String>() {
 
 					@Override

@@ -30,7 +30,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	@Override
 	public void handle(final Message<JsonObject> event) {
 		JsonObject request = event.body();
-			
+		// TODO authorize
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
