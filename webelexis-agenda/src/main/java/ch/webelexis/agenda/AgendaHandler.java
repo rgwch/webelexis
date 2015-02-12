@@ -1,3 +1,6 @@
+/**
+ * (c) 2015 by G. Weirich
+ */
 package ch.webelexis.agenda;
 
 import org.vertx.java.core.Handler;
@@ -7,7 +10,7 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 /**
- * A handler vor requests to the agenda. Since we won't allow random access to
+ * A handler for requests to the agenda. Since we won't allow random access to
  * the database, we translate external requests to internal messages here.
  * 
  * @author gerry

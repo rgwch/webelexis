@@ -1,3 +1,6 @@
+/**
+ * (c) 2015 by G. Weirich
+ */
 package ch.webelexis.agenda.test.integration.java;
 
 import java.io.FileInputStream;
@@ -13,7 +16,11 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.testtools.TestVerticle;
 import static org.vertx.testtools.VertxAssert.*;
 
-
+/**
+ * Send a request via eventbus (ch.webelexis.agenda.appointments) and receive appointments
+ * @author gerry
+ *
+ */
 public class AgendaTest extends TestVerticle {
 
 	@Test
