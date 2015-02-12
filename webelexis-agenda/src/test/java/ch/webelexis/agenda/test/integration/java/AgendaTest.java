@@ -1,5 +1,7 @@
 package ch.webelexis.agenda.test.integration.java;
 
+import java.io.FileInputStream;
+
 import org.junit.Test;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.AsyncResultHandler;
@@ -13,13 +15,14 @@ import org.vertx.testtools.TestVerticle;
 public class AgendaTest extends TestVerticle {
 
 	@Test
-	public void TestGetAppointments() {
+	public void TestGetAppointments() throws Exception{
 
-		JsonObject config = new JsonObject();
-		config.putString("dbConnect", "jdbc:mysql://192.168.0.1:3306/elexis");
-		config.putString("dbDriver", "com.mysql.jdbc.Driver");
-
-		container.deployVerticle("ch.webelexis.agenda.Server",
+		FileInputStream fis=new FileInputStream("conf.json");
+		byte[] buffer=new byte[5000];
+		int len=fis.read(buffer);
+		String s=new String(buffer,0,len,"utf-8");
+		JsonObject cfg=new JsonObject(s);
+		container.deployVerticle("ch.webelexis.agenda.Server",cfg,
 				new AsyncResultHandler<String>() {
 
 					@Override

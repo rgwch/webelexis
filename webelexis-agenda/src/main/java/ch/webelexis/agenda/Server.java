@@ -17,7 +17,7 @@ public class Server extends Verticle {
 		JsonObject cfg=container.config();
 		container.deployModule("io.vertx~mod-mongo-persistor~2.1.0", cfg.getObject("mongo"));
 		container.deployModule("io.vertx~mod-auth-mgr~2.0.0-final", cfg.getObject("auth"));
-		container.deployModule("io.vertx~mod-mysql-postgresql_2.11~0.3.1", cfg.getObject("sql"));
+		container.deployModule("io.vertx~mod-mysql-postgresql_2.10~0.3.1", cfg.getObject("sql"));
 		
 		EventBus eb=vertx.eventBus();
 		eb.registerHandler("ch.webelexis.agenda.appointments", new AgendaHandler(eb));
