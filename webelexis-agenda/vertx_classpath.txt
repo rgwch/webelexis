@@ -1,0 +1,5 @@
+src/main/resources
+bin
+out/production/webelexis-agenda
+out/test/webelexis-agenda
+build/deps
