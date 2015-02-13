@@ -1,8 +1,8 @@
-// Example JSON config file
+// Example JSON config file for webelexis 
 
 {
   "mongo" : {
-  	"address" : "ch.webelexis.nosql" // do not change this
+  	"address" : "ch.webelexis.nosql", // do not change this
     "host": <host>,
     "port": <port>,
     "username": <username>,
@@ -36,6 +36,7 @@
 	}
 	
 	"bridge" :{
+		"webroot": "web",
 		"inOK" : [
 		{"address": "ch.webelexis.auth.login"}.
 		{"address": "ch.webelexis.autho.logout"}

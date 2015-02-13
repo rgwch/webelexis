@@ -44,9 +44,9 @@ public class AgendaTest extends TestVerticle {
 						org.vertx.testtools.VertxAssert.assertTrue(event
 								.succeeded());
 						EventBus eb = vertx.eventBus();
-						JsonObject user=new JsonObject(insert_user.replaceAll("\'", "\""));
-						eb.send("ch.webelexis.nosql", user);
-						doLogin("false", "password");
+						// JsonObject user=new JsonObject(insert_user.replaceAll("\'", "\""));
+						//eb.send("ch.webelexis.nosql", user);
+						// doLogin("false", "password");
 						JsonObject msg = new JsonObject();
 						msg.putString("begin", "20150101");
 						msg.putString("end", "20150110");

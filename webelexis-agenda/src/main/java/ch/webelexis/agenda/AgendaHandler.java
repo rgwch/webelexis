@@ -85,7 +85,6 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 			@Override
 			public void handle(Message<JsonObject> returnvalue) {
 				JsonObject res = returnvalue.body();
-				// TODO remove unneeded fields
 				event.reply(res);
 			}
 		});
@@ -100,25 +99,25 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	private void handleAuthorized(final Message<JsonObject> event,
 			JsonObject request) {
 		JsonObject bridge = new JsonObject()
-				.putString("action", "prepared")
-				.putString(
-						"statement",
-						"SELECT ID,Tag,PatID,Beginn,Dauer,Grund,TerminTyp,TerminStatus from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
-				.putArray(
-						"values",
-						new JsonArray(new String[] {
-								getCleaned(request, "begin", ELEXISDATE),
-								getCleaned(request, "end", ELEXISDATE),
-								getCleaned(request, "resource", NAME) }));
-		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
+		.putString("action", "prepared")
+		.putString(
+				"statement",
+				"SELECT A.Tag,A.Beginn,A.Dauer, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminTyp,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
+		.putArray(
+				"values",
+				new JsonArray(new String[] {
+						getCleaned(request, "begin", ELEXISDATE),
+						getCleaned(request, "end", ELEXISDATE),
+						getCleaned(request, "resource", NAME) }));
+eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
-			@Override
-			public void handle(Message<JsonObject> returnvalue) {
-				JsonObject res = returnvalue.body();
-				// TODO remove unneeded fields
-				event.reply(res);
-			}
-		});
+	@Override
+	public void handle(Message<JsonObject> returnvalue) {
+		JsonObject res = returnvalue.body();
+		event.reply(res);
+	}
+});
+
 	}
 
 	private String getCleaned(JsonObject jo, String field, String pattern) {

@@ -1,17 +1,22 @@
 
 <html>
 <head>
-<script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+<script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="lib/vertxbus-2.1.js"></script>
 <script src="lib/knockout-3.2.0.js"></script>
 <title>Webelexis-Agenda</title>
 </head>
 <body>
 	<h1>Webelexis-Agenda</h1>
-	<div id="user">
-		<span>Name: <input name="username" />Passwort:<input
-			name="pwd" />
-			<button name="Login">Login</button></span>
+	<div id="userLogin">
+		<span>Name: <input name="username" id="username" />Passwort:<input
+			name="pwd" id="pwd" />
+			<button name="Login"
+				onClick="dologin($('#username').val(),$('#pwd').val())">Login</button></span>
+	</div>
+	<div id="userLogout">
+		<span id="loggedInUser"></span><span><button onClick="dologout()" name="logout">Log out</button></span>
 	</div>
 	<div id="terminliste">
 		<table>
