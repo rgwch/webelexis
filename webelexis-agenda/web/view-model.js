@@ -18,7 +18,7 @@ function AgendaViewModel() {
     self.load = function(){
       eb.send('ch.webelexis.agenda.appointments',{begin: "1", end: "2", resource: "3"}, function(jsonResult){
         //self.appointments.clear
-          var result=JSON.parse(jsonResult)
+          var result=/* JSON.parse */(jsonResult)
           console.log("result: "+JSON.stringify(result));
         if(result.status != "ok"){
             self.appointments.push(new appointment("---",result.status,"error"));
