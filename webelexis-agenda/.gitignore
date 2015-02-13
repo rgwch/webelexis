@@ -21,3 +21,4 @@ test-tmp
 *.class
 /conf.json
 /gw.json
+/vertx_classpath.txt
