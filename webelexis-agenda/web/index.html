@@ -1,44 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="de">
 
-<html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-<script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="lib/vertxbus-2.1.js"></script>
-<script src="lib/knockout-3.2.0.js"></script>
-<title>Webelexis-Agenda</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!-- meta name="viewport" content="width=device-width, initial-scale=1" -->
+
+    <title>Webelexis-Agenda</title>
 </head>
+
 <body>
-	<h1>Webelexis-Agenda</h1>
-	<div id="userLogin">
-		<span><input name="username" id="username" placeholder="Benutzername"/><input
-			name="pwd" id="pwd" type="password" placeholder="Passwort"/>
-			<button name="Login"
-				onClick="dologin($('#username').val(),$('#pwd').val())">Login</button></span>
-	</div>
-	<div id="userLogout">
-		<span id="loggedInUser"></span><span><button onClick="dologout()" name="logout">Log out</button></span>
-	</div>
-	<div id="terminliste">
-		<table>
-			<thead>
-				<tr>
-					<th>von</th>
-					<th>bis</th>
-					<th>grund</th>
-				</tr>
-			</thead>
-			<tbody data-bind="foreach: appointments">
-				<tr>
-					<td data-bind="text: from"></td>
-					<td data-bind="text: until"></td>
-					<td data-bind="text: reason"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<button data-bind="click: load">TEst</button>
-	<script src="view-model.js"></script>
+    <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="lib/vertxbus-2.1.js"></script>
+    <script src="lib/knockout-3.2.0.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/bootstrap-datepicker.js"></script>
+    <script src="lib/bootstrap-datepicker.de.js"></script>
+
+    <div id="container">
+        <div class="col-xs-6 col-md-9 h2">Webelexis-Agenda</div>
+        <div class="col-xs-6 col-md-3">
+            <div>
+                <!--class="well well-sm" -->
+                <form class="form-inline" id="userlogin">
+                    <div class="form-group">
+                        <label class="sr-only" for="username">Anwendername</label>
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+                            <input type="text" name="username" id="username" placeholder="Benutzername" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="pwd">Passwort</label>
+                        <div class="col-xs-4 col-sm-3 col-md-2">
+
+                            <input name="pwd" id="pwd" type="password" placeholder="Passwort" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <a class="btn btn-primary btn-xs" href="#" role="button" onClick="dologin($('#username').val(), $('#pwd').val())">Login</a>
+                </form>
+                <span id="badlogin" style="color: red">Username oder Passwort falsch</span>
+                <div id="userLogout">
+                    <span id="loggedInUser"></span><span><button onClick="dologout()" name="logout">Log out</button></span>
+                </div>
+
+            </div>
+        </div>
+        <div id="terminliste">
+            <div class="row">
+                <div class="col-xs-12">
+                    Datum:
+                    <input class="datepicker" data-provide="datepicker" id="datumfeld" data-bind="event: {changeDate: load}">
+                </div>
+            </div>
+            <div>
+                <div class="row" data-bind="foreach: appointments">
+                    <div class="col-xs-3 col-sm-4" data-bind="text: time"></div>
+                    <div class="col-xs-9 col-sm-4" data-bind="text: patient"></div>
+                    <div class="col-xs-12 col-sm-4" data-bind="text: reason"></div>
+                </div>
+            </div>
+        </div>
+        <button data-bind="click: load">Neu laden</button>
+    </div>
+    <script src="view-model.js"></script>
 
 </body>
+
 </html>

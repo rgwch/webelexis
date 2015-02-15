@@ -1,0 +1,11 @@
+.rowc :nth-child(odd){
+    background-color: #eee;
+}
+
+.rowc :nth-child(even){
+    background-color: #fff;
+}
+
+.greyed{
+    background-color: #eee;
+}
