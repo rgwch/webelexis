@@ -23,7 +23,7 @@ function AgendaViewModel() {
 			resource : "gerry",
 			token: sessionid
 		}, function(jsonResult) {
-			// self.appointments.clear
+			// self.appointments.removeAll
 			var result = /* JSON.parse */(jsonResult)
 			console.log("result: " + JSON.stringify(result));
 			if (result.status != "ok") {
@@ -106,6 +106,6 @@ function initialize() {
 }
 
 
-$("#userlogout").hide()
+$("#userLogout").hide()
 initialize();
 ko.applyBindings(new AgendaViewModel());

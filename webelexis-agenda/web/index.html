@@ -1,6 +1,7 @@
 
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="lib/vertxbus-2.1.js"></script>
@@ -10,8 +11,8 @@
 <body>
 	<h1>Webelexis-Agenda</h1>
 	<div id="userLogin">
-		<span>Name: <input name="username" id="username" />Passwort:<input
-			name="pwd" id="pwd" />
+		<span><input name="username" id="username" placeholder="Benutzername"/><input
+			name="pwd" id="pwd" type="password" placeholder="Passwort"/>
 			<button name="Login"
 				onClick="dologin($('#username').val(),$('#pwd').val())">Login</button></span>
 	</div>
