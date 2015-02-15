@@ -29,8 +29,8 @@ function AgendaViewModel() {
         var selected = $("#datumfeld").val();
         console.log(selected)
         eb.send('ch.webelexis.agenda.appointments', {
-            begin: $("#datumfeld").val(),
-            end: $("datumfeld").val(),
+            begin: selected,
+            end: selected,
             resource: "gerry",
             token: sessionid
         }, function (jsonResult) {
@@ -51,10 +51,6 @@ function AgendaViewModel() {
 
     }
 
-    self.isEven = function(n) {
-        return isNumber(n) && (n % 2 == 0);
-    }
-    
     self.clear = function () {
         self.appointments.removeAll()
     }
@@ -96,6 +92,15 @@ function ElexisTime() {
 
         return hours + ":" + mins
     }
+}
+
+function isEven(n) {
+    if (n == 0) {
+        return true;
+    } else {
+        return (n % 2 == 0);
+    }
+
 }
 
 function dologin(name, pwd) {
