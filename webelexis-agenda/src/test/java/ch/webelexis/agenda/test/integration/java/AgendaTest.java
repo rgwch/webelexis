@@ -48,8 +48,8 @@ public class AgendaTest extends TestVerticle {
 						//eb.send("ch.webelexis.nosql", user);
 						// doLogin("false", "password");
 						JsonObject msg = new JsonObject();
-						msg.putString("begin", "20150101");
-						msg.putString("end", "20150110");
+						msg.putString("begin", "20150112");
+						msg.putString("end", "20150112");
 						msg.putString("resource", "gerry");
 						msg.putString("token", "blubb");
 						eb.send("ch.webelexis.agenda.appointments", msg,
@@ -60,7 +60,7 @@ public class AgendaTest extends TestVerticle {
 										assertEquals("ok", event.body()
 												.getString("status"));
 										JsonArray results = event.body()
-												.getArray("results");
+												.getArray("appointments");
 										assertTrue(results.size() > 0);
 									}
 								});

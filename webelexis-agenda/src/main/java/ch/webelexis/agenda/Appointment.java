@@ -29,14 +29,14 @@ public class Appointment extends JsonObject implements Comparable<Appointment>{
 
 	@Override
 	public int compareTo(Appointment o) {
-		int myday=Integer.parseInt(getString("Tag"));
-		int oday=Integer.parseInt(o.getString("Tag"));
-		if(myday==oday){
-			int mymin=Integer.parseInt(getString("von"));
-			int omin=Integer.parseInt(getString("von"));
+		String myday=getString("day");
+		String oday=o.getString("day");
+		if(myday.equals(oday)){
+			int mymin=getInteger("begin");
+			int omin=o.getInteger("begin");
 			return mymin-omin;
 		}else{
-			return myday-oday;
+			return myday.compareTo(oday);
 		}
 	}
 

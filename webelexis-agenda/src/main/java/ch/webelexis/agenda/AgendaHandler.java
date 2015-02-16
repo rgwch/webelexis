@@ -3,11 +3,17 @@
  */
 package ch.webelexis.agenda;
 
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.json.impl.Json;
 
 /**
  * A handler for requests to the agenda. Since we won't allow random access to
@@ -20,6 +26,10 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	EventBus eb;
 	static final String ELEXISDATE = "20[0-9]{6,6}";
 	static final String NAME = "[0-9a-zA-Z ]+";
+	static final int FLD_DAY=0;
+	static final int FLD_BEGIN=1;
+	static final int FLD_DURATION=2;
+	static final int FLD_RESOURCE=3;
 
 	AgendaHandler(EventBus eb) {
 		this.eb = eb;
@@ -62,7 +72,9 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	}
 
 	/**
-	 * This is what a unauthorized client gets
+	 * This is what an unauthorized client gets: A simplified appointment list
+	 * with only times and free/occupied information No Patient information is
+	 * transmitted
 	 * 
 	 * @param event
 	 * @param request
@@ -85,33 +97,91 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 			public void handle(Message<JsonObject> returnvalue) {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
-					JsonArray results = res.getArray("results");
-					JsonObject appnt = new JsonObject()
-							.putString("type", "basic")
-							.putString("name", "")
-							.putString("day", cleanedDate)
-							.putNumber("begin",
-									Integer.parseInt((String) results.get(0)))
-							.putNumber("duration",
-									Integer.parseInt((String) results.get(1)))
-							.putString("resource", (String) results.get(2));
-					event.reply(appnt);
 
-				}else{
-					event.reply(new JsonObject().putString("type", "failure"));
+					event.reply(fillBlanks(res.getArray("results")));
+
+				} else {
+					event.reply(new JsonObject().putString("status", "failure"));
 				}
 			}
 		});
 	}
 
 	/**
-	 * This is, what an authorized user gets
+	 * fill empty periods of time with "free" appointments
+	 * 
+	 * @param set
+	 */
+	private JsonObject fillBlanks(JsonArray appointments) {
+		TreeSet<JsonArray> orderedList = new TreeSet<JsonArray>(
+				new Comparator<JsonArray>() {
+					@Override
+					public int compare(JsonArray o1, JsonArray o2) {
+						String day1 = o1.get(FLD_DAY);
+						String day2 = o2.get(FLD_DAY);
+						if (day1.equals(day2)) {
+							int start1 = Integer.parseInt((String) o1.get(FLD_BEGIN));
+							int start2 = Integer.parseInt((String) o2.get(FLD_BEGIN));
+							return start1 - start2;
+						}
+						return day1.compareTo(day2);
+					}
+				});
+
+		Iterator<Object> it = appointments.iterator();
+		while (it.hasNext()) {
+			JsonArray line = (JsonArray) it.next();
+			orderedList.add(line);
+		}
+
+		int endTime = 0;
+		Iterator<JsonArray> lines = orderedList.iterator();
+		while (lines.hasNext()) {
+			JsonArray aNext = (JsonArray) lines.next();
+			int startTime = Integer.parseInt((String) aNext.get(FLD_BEGIN));
+			if (startTime - endTime > 15) {
+				String[] free = new String[aNext.size()];
+				free[FLD_DAY]=aNext.get(FLD_DAY);
+				free[FLD_BEGIN] = Integer.toString(endTime);
+				free[FLD_DURATION] = Integer.toString(startTime - endTime);
+				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
+				orderedList.add(new JsonArray(free));
+			}
+			endTime = startTime + Integer.parseInt((String) aNext.get(FLD_DURATION));
+		}
+		
+		JsonArray arr = new JsonArray();
+		for(JsonArray ja:orderedList){
+			arr.addArray(ja);
+		}
+
+		JsonObject ores = new JsonObject().putString("status", "ok")
+				.putString("type", "basic").putArray("appointments", arr);
+		return ores;
+
+	}
+
+	/**
+	 * This is, what an authorized user gets. Due to an ill-designed database
+	 * layout, a single join does not return all appointments, since the "PatID"
+	 * field is dual use: either it's a patient id (which would be covered by
+	 * the join in the first place) or it is just a manually entered description
+	 * or a name for the appointment (and such appointments are lost with the
+	 * join) Therefore we must make 2 database calls. One for the joint and one
+	 * for all appointments of the given date. (Oh, there would be an SQL join
+	 * to cover that case with a single call indeed, but -the heck- this does
+	 * not work with the mysql-jdbc-driver.)
+	 * 
+	 * The original implementation of elexis does this even worse: It makes a
+	 * separate database call for every single entry. This would be very
+	 * inefficient over slow internet connections.
 	 * 
 	 * @param event
 	 * @param request
 	 */
 	private void handleAuthorized(final Message<JsonObject> event,
 			JsonObject request) {
+		// first call: get all Appointments with valid PatientID
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
@@ -128,7 +198,11 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 			@Override
 			public void handle(Message<JsonObject> returnvalue) {
 				JsonObject res = returnvalue.body();
-				event.reply(res);
+				if (res.getString("status").equals("ok")) {
+
+				} else {
+					event.reply(res);
+				}
 			}
 		});
 
