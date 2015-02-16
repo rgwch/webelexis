@@ -20,10 +20,16 @@ public class SqlMock implements Handler<Message<JsonObject>> {
 				"20150213","660","45","12ff56afefdhaadc","Meier","Anna","Normal","geplant","Schnupfen"
 				
 		});
+		JsonArray jd=new JsonArray(new String[]{
+			"20150213","760","15","12ff523fefdhaadc","Huber","Kunigunde","Extra","geplant","Husten"
+			
+		});
+		
 		
 
 		ja.add(jb);
 		ja.add(jc);
+		ja.add(jd);
 		retval.putArray("results", ja);
 		
 		event.reply(retval);

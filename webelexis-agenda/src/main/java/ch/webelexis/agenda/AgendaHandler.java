@@ -69,11 +69,54 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	 */
 	private void handlePublic(final Message<JsonObject> event,
 			JsonObject request) {
+		final String cleanedDate = getCleaned(request, "begin", ELEXISDATE);
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
 						"statement",
 						"SELECT Tag,Beginn,Dauer from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+				.putArray(
+						"values",
+						new JsonArray(new String[] { cleanedDate, cleanedDate,
+								getCleaned(request, "resource", NAME) }));
+		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
+
+			@Override
+			public void handle(Message<JsonObject> returnvalue) {
+				JsonObject res = returnvalue.body();
+				if (res.getString("status").equals("ok")) {
+					JsonArray results = res.getArray("results");
+					JsonObject appnt = new JsonObject()
+							.putString("type", "basic")
+							.putString("name", "")
+							.putString("day", cleanedDate)
+							.putNumber("begin",
+									Integer.parseInt((String) results.get(0)))
+							.putNumber("duration",
+									Integer.parseInt((String) results.get(1)))
+							.putString("resource", (String) results.get(2));
+					event.reply(appnt);
+
+				}else{
+					event.reply(new JsonObject().putString("type", "failure"));
+				}
+			}
+		});
+	}
+
+	/**
+	 * This is, what an authorized user gets
+	 * 
+	 * @param event
+	 * @param request
+	 */
+	private void handleAuthorized(final Message<JsonObject> event,
+			JsonObject request) {
+		JsonObject bridge = new JsonObject()
+				.putString("action", "prepared")
+				.putString(
+						"statement",
+						"SELECT A.Tag,A.Beginn,A.Dauer, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminTyp,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] {
@@ -88,35 +131,6 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				event.reply(res);
 			}
 		});
-	}
-
-	/**
-	 * This is, what an authorized user gets
-	 * 
-	 * @param event
-	 * @param request
-	 */
-	private void handleAuthorized(final Message<JsonObject> event,
-			JsonObject request) {
-		JsonObject bridge = new JsonObject()
-		.putString("action", "prepared")
-		.putString(
-				"statement",
-				"SELECT A.Tag,A.Beginn,A.Dauer, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminTyp,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
-		.putArray(
-				"values",
-				new JsonArray(new String[] {
-						getCleaned(request, "begin", ELEXISDATE),
-						getCleaned(request, "end", ELEXISDATE),
-						getCleaned(request, "resource", NAME) }));
-eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
-
-	@Override
-	public void handle(Message<JsonObject> returnvalue) {
-		JsonObject res = returnvalue.body();
-		event.reply(res);
-	}
-});
 
 	}
 
