@@ -26,7 +26,8 @@ function AgendaViewModel() {
     self.appointments = ko.observableArray([]);
 
     self.load = function () {
-        var selected = $("#datumfeld").val();
+        //var selected = $("#datumfeld").val();
+    	var selected=convert.makeString($('.datepicker').datepicker('getDate'))
         console.log(selected)
         eb.send('ch.webelexis.agenda.appointments', {
             begin: selected,
@@ -41,7 +42,7 @@ function AgendaViewModel() {
                 self.appointments.push(new appointment("---", result.status,
                     "error"));
             } else {
-                var appnts = result.results;
+                var appnts = result.appointments;
                 appnts.forEach(function (value) {
                     self.appointments.push(new appointment(value))
                 });
@@ -68,7 +69,7 @@ function ElexisTime() {
 
     self.makeString = function (date) {
         var year = date.getFullYear()
-        var month = date.getMonth().toString();
+        var month = (date.getMonth()+1).toString();
         if (month.length < 2) {
             month = '0' + month
         }

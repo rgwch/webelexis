@@ -14,6 +14,7 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.json.impl.Json;
+import org.vertx.java.core.logging.Logger;
 
 /**
  * A handler for requests to the agenda. Since we won't allow random access to
@@ -30,6 +31,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	static final int FLD_BEGIN=1;
 	static final int FLD_DURATION=2;
 	static final int FLD_RESOURCE=3;
+	Logger log=Server.log;
 
 	AgendaHandler(EventBus eb) {
 		this.eb = eb;
@@ -82,11 +84,12 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	private void handlePublic(final Message<JsonObject> event,
 			JsonObject request) {
 		final String cleanedDate = getCleaned(request, "begin", ELEXISDATE);
+		log.info("public agenda handler");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT Tag,Beginn,Dauer from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+						"SELECT Tag,Beginn,Dauer,Bereich from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] { cleanedDate, cleanedDate,
@@ -136,6 +139,8 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 
 		int endTime = 0;
 		Iterator<JsonArray> lines = orderedList.iterator();
+		JsonArray arr = new JsonArray();
+		
 		while (lines.hasNext()) {
 			JsonArray aNext = (JsonArray) lines.next();
 			int startTime = Integer.parseInt((String) aNext.get(FLD_BEGIN));
@@ -145,16 +150,12 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				free[FLD_BEGIN] = Integer.toString(endTime);
 				free[FLD_DURATION] = Integer.toString(startTime - endTime);
 				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
-				orderedList.add(new JsonArray(free));
+				arr.addArray(new JsonArray(free));
 			}
 			endTime = startTime + Integer.parseInt((String) aNext.get(FLD_DURATION));
+			arr.addArray(aNext);
 		}
 		
-		JsonArray arr = new JsonArray();
-		for(JsonArray ja:orderedList){
-			arr.addArray(ja);
-		}
-
 		JsonObject ores = new JsonObject().putString("status", "ok")
 				.putString("type", "basic").putArray("appointments", arr);
 		return ores;
@@ -182,6 +183,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	private void handleAuthorized(final Message<JsonObject> event,
 			JsonObject request) {
 		// first call: get all Appointments with valid PatientID
+		log.info("authorized agenda handler");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
@@ -199,7 +201,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 			public void handle(Message<JsonObject> returnvalue) {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
-
+					event.reply(res);
 				} else {
 					event.reply(res);
 				}
