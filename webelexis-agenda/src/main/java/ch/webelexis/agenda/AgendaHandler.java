@@ -89,7 +89,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT Tag,Beginn,Dauer,Bereich from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+						"SELECT Tag,Beginn,Dauer,Bereich, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] { cleanedDate, cleanedDate,
@@ -101,7 +101,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
 
-					event.reply(fillBlanks(res.getArray("results")));
+					event.reply(fillBlanks(res.getArray("results"),null));
 
 				} else {
 					event.reply(new JsonObject().putString("status", "failure"));
@@ -115,7 +115,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	 * 
 	 * @param set
 	 */
-	private JsonObject fillBlanks(JsonArray appointments) {
+	private JsonObject fillBlanks(JsonArray appointments, JsonArray mixin) {
 		TreeSet<JsonArray> orderedList = new TreeSet<JsonArray>(
 				new Comparator<JsonArray>() {
 					@Override
@@ -135,6 +135,12 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 		while (it.hasNext()) {
 			JsonArray line = (JsonArray) it.next();
 			orderedList.add(line);
+		}
+		if(mixin!=null){
+			it=mixin.iterator();
+			while(it.hasNext()){
+				orderedList.add((JsonArray)it.next());
+			}
 		}
 
 		int endTime = 0;
@@ -181,14 +187,14 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	 * @param request
 	 */
 	private void handleAuthorized(final Message<JsonObject> event,
-			JsonObject request) {
+			final JsonObject request) {
 		// first call: get all Appointments with valid PatientID
 		log.info("authorized agenda handler");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT A.Tag,A.Beginn,A.Dauer, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminTyp,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
+						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.ID, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminTyp,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] {
@@ -201,6 +207,27 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 			public void handle(Message<JsonObject> returnvalue) {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
+					final JsonArray appts=res.getArray("results");
+					JsonObject bridge=new JsonObject()
+					.putString("action", "prepared")
+					.putString("statement","SELECT ID from AGNTERMINE where Tag>=? And Tag <=? and Bereich=? and deleted='0'")
+					.putArray(
+						"values",
+						new JsonArray(new String[] {
+								getCleaned(request, "begin", ELEXISDATE),
+								getCleaned(request, "end", ELEXISDATE),
+								getCleaned(request, "resource", NAME) }));
+					eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
+
+						@Override
+						public void handle(Message<JsonObject> second) {
+							if(second.body().getString("status").equals("ok")){
+								fillBlanks(appts, second.body().getArray("results"));
+							}else{
+								
+							}
+						}
+					});
 					event.reply(res);
 				} else {
 					event.reply(res);
