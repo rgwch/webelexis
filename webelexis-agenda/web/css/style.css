@@ -11,3 +11,11 @@
     border-bottom: 1px solid blue;
     border-top: 1px solid blue;
 }
+
+.available{
+    background-color: #aaffaa;
+}
+
+.occupied{
+    background-color: #bb4444;
+}

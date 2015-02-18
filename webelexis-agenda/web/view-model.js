@@ -16,9 +16,10 @@ function appointment(row) {
     self.patName = row[6] ? row[6] : "unbekannt";
     self.firstName = row[7] ? row[7] : "unbekannt";
     self.patient = self.patName + " " + self.firstName;
-    self.type = row[8];
-    self.state = row[9];
-    self.reason = row[10];
+    self.state = row[8];
+    self.reason = row[9];
+    self.displayClass=ko.pureComputed(function(){return self.type=='available' ? "available" : "occupied"})
+    self.displayText=ko.pureComputed(function(){return self.type=='available' ? "frei" : "belegt"})
 }
 
 function AgendaViewModel() {
@@ -28,7 +29,7 @@ function AgendaViewModel() {
 
     self.load = function () {
         //var selected = $("#datumfeld").val();
-    	var selected=convert.makeString($('.datepicker').datepicker('getDate'))
+    	var selected=convert.makeString($('#datumfeld .input-group.date').datepicker('getDate'))
         console.log(selected)
         eb.send('ch.webelexis.agenda.appointments', {
             begin: selected,
@@ -147,12 +148,11 @@ function initialize() {
 $("#userLogout").hide();
 $("#badlogin").hide();
 initialize();
-$('.datepicker').datepicker({
-    'format': "dd.mm.yyyy",
-    'autoclose': true,
-    'language': "de",
+$('#datumfeld .input-group.date').datepicker({
     todayBtn: "linked",
+    language: "de",
+    autoclose: true,
     todayHighlight: true
-})
-$('.datepicker').datepicker('setDate', new Date())
+}); 
+
 ko.applyBindings(new AgendaViewModel());

@@ -23,8 +23,15 @@
 
     <div id="container">
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 h2">Webelexis-Agenda</div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-4 col-md-4 well well-sm">Webelexis-Agenda</div>
+            <div class="col-xs-12 col-sm-4 col-md-4 well well-sm">
+                <div class="form-group" id="datumfeld">
+                    <div class="input-group date">
+                        <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="well well-sm">
                     <div id="userLogin">
                         <form class="form-inline">
@@ -50,21 +57,15 @@
             </div>
         </div>
         <div id="terminliste">
-            <div class="row">
-                <div class="col-xs-12">
-                    Datum:
-                    <input class="datepicker" data-provide="datepicker" id="datumfeld" data-bind="event: {changeDate: load}">
-                </div>
-            </div>
-
-            <table class="table table-striped table-hover">
+            <table class="table table-striped">
                 <thead>
                     <thead>
                         <tbody data-bind="foreach: appointments">
                             <tr>
-                                <td data-bind="text: time"></td>
-                                <td data-bind="text: patient"></td>
-                                <td data-bind="text: reason"></td>
+                                <td><span data-bind="text: time"></span><span class="badge" data-bind="text:displayText, css: displayClass"></span>
+                                </td>
+                                <td data-bind="text: patient, css: displayClass"></td>
+                                <td data-bind="text: reason, css: displayClass"></td>
                             </tr>
 
                         </tbody>
@@ -73,7 +74,9 @@
         <button data-bind="click: load">Neu laden</button>
     </div>
     <script src="view-model.js"></script>
-
+    <script>
+        $("#datepicker").datepicker("setDate", new Date())
+    </script>
 </body>
 
 </html>
