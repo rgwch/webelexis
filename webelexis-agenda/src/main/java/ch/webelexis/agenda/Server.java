@@ -32,7 +32,7 @@ public class Server extends Verticle {
 		JsonObject cfg = container.config();
 		log = container.logger();
 		String cfgId=cfg.getString("id");
-		log.info(cfgId==null ? "No 'id' String  found in configuration" : "id of this configuration is: "+cfgId);
+		System.out.println(cfgId==null ? "No 'id' String  found in configuration" : "id of this configuration is: "+cfgId);
 		
 		EventBus eb = vertx.eventBus();
 		eb.registerHandler("ch.webelexis.agenda.appointments",

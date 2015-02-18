@@ -1,5 +1,6 @@
-//var vertx = require('vertx');
-//var console= require ('vertx/console');
+/**********
+ * (c) 2015 by G. Weirich
+ */
 var eb;
 var sessionid = ""
 var convert = new ElexisTime()
@@ -7,17 +8,17 @@ var convert = new ElexisTime()
 function appointment(row) {
     var self = this;
     self.date = convert.makeDate(row[0])
-    var test = parseInt(row[1]);
     self.begin = convert.makeTime(parseInt(row[1]));
     self.end = convert.makeTime(parseInt(row[1]) + parseInt(row[2]));
     self.time = self.begin + "-" + self.end
-    self.patid = row[3];
-    self.patName = row[4];
-    self.firstName = row[5];
+    self.type= row[4]
+    self.patid = row[5] ? row[5] : "no name";
+    self.patName = row[6] ? row[6] : "unbekannt";
+    self.firstName = row[7] ? row[7] : "unbekannt";
     self.patient = self.patName + " " + self.firstName;
-    self.type = row[6];
-    self.state = row[7];
-    self.reason = row[8];
+    self.type = row[8];
+    self.state = row[9];
+    self.reason = row[10];
 }
 
 function AgendaViewModel() {
@@ -34,14 +35,13 @@ function AgendaViewModel() {
             end: selected,
             resource: "gerry",
             token: sessionid
-        }, function (jsonResult) {
-            self.appointments.removeAll()
-            var result = /* JSON.parse */ (jsonResult)
+        }, function (result) {
             console.log("result: " + JSON.stringify(result));
             if (result.status != "ok") {
                 self.appointments.push(new appointment("---", result.status,
                     "error"));
             } else {
+            	self.appointments.removeAll()
                 var appnts = result.appointments;
                 appnts.forEach(function (value) {
                     self.appointments.push(new appointment(value))

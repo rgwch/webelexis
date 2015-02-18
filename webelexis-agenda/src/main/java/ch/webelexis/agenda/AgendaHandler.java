@@ -3,9 +3,9 @@
  */
 package ch.webelexis.agenda;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.vertx.java.core.Handler;
@@ -13,7 +13,6 @@ import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
 
 /**
@@ -31,6 +30,8 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	static final int FLD_BEGIN=1;
 	static final int FLD_DURATION=2;
 	static final int FLD_RESOURCE=3;
+	static final int FLD_TYPE=4;
+	static final int FLD_TERMIN_ID=5;
 	Logger log=Server.log;
 
 	AgendaHandler(EventBus eb) {
@@ -89,7 +90,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT Tag,Beginn,Dauer,Bereich, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+						"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] { cleanedDate, cleanedDate,
@@ -101,7 +102,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
 
-					event.reply(fillBlanks(res.getArray("results"),null));
+					event.reply(fillBlanks(res.getArray("results").toArray(),null));
 
 				} else {
 					event.reply(new JsonObject().putString("status", "failure"));
@@ -115,7 +116,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	 * 
 	 * @param set
 	 */
-	private JsonObject fillBlanks(JsonArray appointments, JsonArray mixin) {
+	private JsonObject fillBlanks(Object[] appointments, JsonArray mixin) {
 		TreeSet<JsonArray> orderedList = new TreeSet<JsonArray>(
 				new Comparator<JsonArray>() {
 					@Override
@@ -131,13 +132,13 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 					}
 				});
 
-		Iterator<Object> it = appointments.iterator();
-		while (it.hasNext()) {
-			JsonArray line = (JsonArray) it.next();
-			orderedList.add(line);
+		for(Object li:appointments) {
+			ArrayList<String> line=(ArrayList<String>)li;
+			line.set(FLD_TYPE, "occupied");
+			orderedList.add(new JsonArray(line));
 		}
 		if(mixin!=null){
-			it=mixin.iterator();
+			Iterator it=mixin.iterator();
 			while(it.hasNext()){
 				orderedList.add((JsonArray)it.next());
 			}
@@ -156,6 +157,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				free[FLD_BEGIN] = Integer.toString(endTime);
 				free[FLD_DURATION] = Integer.toString(startTime - endTime);
 				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
+				free[FLD_TYPE]="available";
 				arr.addArray(new JsonArray(free));
 			}
 			endTime = startTime + Integer.parseInt((String) aNext.get(FLD_DURATION));
@@ -194,7 +196,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.ID, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminTyp,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
+						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] {
@@ -222,7 +224,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 						@Override
 						public void handle(Message<JsonObject> second) {
 							if(second.body().getString("status").equals("ok")){
-								fillBlanks(appts, second.body().getArray("results"));
+								fillBlanks(appts.toArray(), second.body().getArray("results"));
 							}else{
 								
 							}
