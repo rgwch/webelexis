@@ -4,6 +4,7 @@
 var eb;
 var sessionid = ""
 var convert = new ElexisTime()
+var avm=new AgendaViewModel()
 
 function appointment(row) {
     var self = this;
@@ -155,4 +156,5 @@ $('#datumfeld .input-group.date').datepicker({
     todayHighlight: true
 }); 
 
-ko.applyBindings(new AgendaViewModel());
+ko.applyBindings(avm);
+avm.load()
