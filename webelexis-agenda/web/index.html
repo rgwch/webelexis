@@ -67,9 +67,33 @@
 						</div>
 					</div>
 				</div>
-				<div class="row" data-bind="foreach: appointments">
-					<div class="col-xs-12 col-md-6 well well-sm text-center"
-						data-bind="text:displayText, css: displayClass"></div>
+				<div id="appntlist" class="row" data-bind="foreach: appointments">
+					<div class="col-xs-12 col-md-6">
+						<div
+							data-bind="text:displayText, css: displayClass, click: $parent.expand">
+						</div>
+						<div data-bind="if: expanded">
+							<form>
+								<div class="form-group">
+									<label for="patname" class="sr-only">Ihr Name und Vorname</label> <input
+										type="text" class="form-control" id="patname"
+										placeholder="Name, Vorname" />
+								</div>
+								<div class="form-group">
+									<label for="patgebdat" class="sr-only">Ihr Geburtsdatum</label> <input
+										id="patgebdat" class="form-control date" type="date"
+										placeholder="Geburtsdatum (dd.mm.jjjj)" />
+								</div>
+								<div class="form-group">
+									<label for="patmail" class="sr-only">Ihre E-Mail-Adresse</label> <input
+										id="patmail" type="email" class="form-control"
+										placeholder="E-Mail-Adresse" />
+								</div>
+								<button type="submit" class="btn btn-primary">Termin
+									vereinbaren</button><button class="btn btn-default" data-bind="click: $parent.collapse">Abbrechen</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="panel panel-info col-sm-6">

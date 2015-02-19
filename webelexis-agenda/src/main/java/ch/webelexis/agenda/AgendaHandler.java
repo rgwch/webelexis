@@ -33,9 +33,11 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	static final int FLD_TYPE=4;
 	static final int FLD_TERMIN_ID=5;
 	Logger log=Server.log;
+	JsonObject cfg;
 
-	AgendaHandler(EventBus eb) {
+	AgendaHandler(EventBus eb, JsonObject cfg) {
 		this.eb = eb;
+		this.cfg=cfg;
 	}
 
 	/*
@@ -147,11 +149,12 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 		int endTime = 0;
 		Iterator<JsonArray> lines = orderedList.iterator();
 		JsonArray arr = new JsonArray();
+		int slot=cfg.getInteger("timeSlot") == null ? 30 : cfg.getInteger("timeSlot");
 		
 		while (lines.hasNext()) {
 			JsonArray aNext = (JsonArray) lines.next();
 			int startTime = Integer.parseInt((String) aNext.get(FLD_BEGIN));
-			if (startTime - endTime > 15) {
+			if (startTime - endTime > slot) {
 				String[] free = new String[aNext.size()];
 				free[FLD_DAY]=aNext.get(FLD_DAY);
 				free[FLD_BEGIN] = Integer.toString(endTime);

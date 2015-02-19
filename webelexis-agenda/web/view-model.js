@@ -5,10 +5,11 @@ var eb;
 var sessionid = ""
 var convert = new ElexisTime()
 var avm = new AgendaViewModel()
-var url="http://localhost:8080/eventbus"
+var url = "http://localhost:8080/eventbus"
 
 function appointment(row) {
 	var self = this;
+	self.expanded = ko.observable(false)
 	self.date = convert.makeDate(row[0])
 	self.begin = convert.makeTime(parseInt(row[1]));
 	self.end = convert.makeTime(parseInt(row[1]) + parseInt(row[2]));
@@ -23,25 +24,25 @@ function appointment(row) {
 	self.displayClass = ko.pureComputed(function() {
 		return self.type == 'available' ? "available" : "occupied"
 	})
-	self.displayText = ko
-			.pureComputed(function() {
-				return self.begin + "-" + self.end + " " + (self.type == 'available' ? "frei"
-						: "belegt")
-			})
+	self.displayText = ko.pureComputed(function() {
+		return self.begin + "-" + self.end + " "
+				+ (self.type == 'available' ? "frei" : "belegt")
+	})
+
 }
 
 function AgendaViewModel() {
 	var self = this;
 
 	self.appointments = ko.observableArray([]);
-	
-	self.title="Webelexis-Agenda"
-		
+	self.title = "Webelexis-Agenda"
+	self.lastExpanded = null
+
 	self.load = function() {
 		// var selected = $("#datumfeld").val();
 		var selected = convert.makeString($('#datumfeld .input-group.date')
 				.datepicker('getDate'))
-		//console.log(selected)
+		// console.log(selected)
 		eb.send('ch.webelexis.agenda.appointments', {
 			begin : selected,
 			end : selected,
@@ -50,22 +51,21 @@ function AgendaViewModel() {
 		}, function(result) {
 			console.log("result: " + JSON.stringify(result));
 			if (result.status != "ok") {
-				self.appointments.push(new appointment("---", result.status,
-						"error"));
+				alert("Verbindungsfehler: " + result.status);
 			} else {
 				self.appointments.removeAll()
 				var appnts = result.appointments;
-				var prev=null;
+				var prev = null;
 				appnts.forEach(function(value) {
-					var act=new appointment(value)
-					if(prev==null){
-						prev=act
+					var act = new appointment(value)
+					if (prev == null) {
+						prev = act
 					}
-					if(act.type==prev.type){
-						prev.end=act.end
-					}else{
+					if (act.type == prev.type) {
+						prev.end = act.end
+					} else {
 						self.appointments.push(prev)
-						prev=act;
+						prev = act;
 					}
 				});
 				self.appointments.push(prev)
@@ -74,9 +74,26 @@ function AgendaViewModel() {
 
 	}
 
+	self.expand = function(idx) {
+		if (idx.type == 'available') {
+			if (self.lastExpanded != null) {
+				self.lastExpanded.expanded(false)
+			}
+			idx.expanded(true);
+			self.lastExpanded = idx;
+			console.log("opened: " + idx.begin)
+		}
+	}
+	
+	self.collapse= function(idx){
+		idx.expanded(false)
+		self.lastExpanded=null;
+	}
+
 	self.clear = function() {
 		self.appointments.removeAll()
 	}
+
 }
 
 function ElexisTime() {

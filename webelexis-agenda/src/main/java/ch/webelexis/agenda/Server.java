@@ -36,7 +36,7 @@ public class Server extends Verticle {
 		
 		EventBus eb = vertx.eventBus();
 		eb.registerHandler("ch.webelexis.agenda.appointments",
-				new AgendaHandler(eb));
+				new AgendaHandler(eb, cfg.getObject("agenda")));
 
 		container.deployModule("io.vertx~mod-mongo-persistor~2.1.0",
 				cfg.getObject("mongo"),new Handler<AsyncResult<String>>() {
