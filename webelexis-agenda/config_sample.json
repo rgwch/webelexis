@@ -37,12 +37,13 @@
 	
 	"bridge" :{
 		"webroot": "web",
+		"port": 8080,
 		"inOK" : [
 		{"address": "ch.webelexis.auth.login"}.
 		{"address": "ch.webelexis.autho.logout"}
 		],
 		"outOK" : [
 		]
-	}
-	
+	},
+	"id": "this is an identification for this config"
 }

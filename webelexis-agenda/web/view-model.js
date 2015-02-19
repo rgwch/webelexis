@@ -5,6 +5,7 @@ var eb;
 var sessionid = ""
 var convert = new ElexisTime()
 var avm = new AgendaViewModel()
+var url="http://localhost:8080/eventbus"
 
 function appointment(row) {
 	var self = this;
@@ -33,12 +34,14 @@ function AgendaViewModel() {
 	var self = this;
 
 	self.appointments = ko.observableArray([]);
-
+	
+	self.title="Webelexis-Agenda"
+		
 	self.load = function() {
 		// var selected = $("#datumfeld").val();
 		var selected = convert.makeString($('#datumfeld .input-group.date')
 				.datepicker('getDate'))
-		console.log(selected)
+		//console.log(selected)
 		eb.send('ch.webelexis.agenda.appointments', {
 			begin : selected,
 			end : selected,
@@ -52,9 +55,20 @@ function AgendaViewModel() {
 			} else {
 				self.appointments.removeAll()
 				var appnts = result.appointments;
+				var prev=null;
 				appnts.forEach(function(value) {
-					self.appointments.push(new appointment(value))
+					var act=new appointment(value)
+					if(prev==null){
+						prev=act
+					}
+					if(act.type==prev.type){
+						prev.end=act.end
+					}else{
+						self.appointments.push(prev)
+						prev=act;
+					}
 				});
+				self.appointments.push(prev)
 			}
 		});
 
@@ -142,14 +156,16 @@ function dologout() {
 }
 
 function initialize() {
-	eb = new vertx.EventBus('http://localhost:8080/eventbus');
+	eb = new vertx.EventBus(url);
 	eb.onopen = function() {
 		console.log("eventbus ok");
 		$("#datum").datepicker("setDate", new Date())
+		$(".h1").html(avm.title)
 		avm.load()
 	}
 	eb.onclose = function() {
 		console.log("eventbus closed")
+		alert("Die Verbindung zum Server ist abgebrochen")
 	}
 }
 

@@ -26,7 +26,7 @@
 
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6">
-				<p class="text-center h2">Webelexis-Agenda</p>
+				<p class="text-center h1">Agenda</p>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div id="userLogin">
@@ -106,37 +106,16 @@
 					</table>
 				</div>
 				<div class="panel-footer">
-					<p class="small">Bitte beachten Sie, dass wir bei einer Terminvereinbarung
-						über diese Website Ihre IP-Adresse und weitere Angaben speichern.
-						Sämtliche Daten werden nach dem vereinbarten Termin wieder
-						gelöscht.</p>
+					<p class="small">Bitte beachten Sie, dass wir bei einer
+						Terminvereinbarung über diese Website Ihre IP-Adresse und weitere
+						Angaben speichern. Sämtliche Daten werden nach dem vereinbarten
+						Termin wieder gelöscht.</p>
 				</div>
 			</div>
 		</div>
-		<!--  
-		<div id="terminliste">
-			<table class="table table-striped">
-				<thead>
-				<thead>
-				<tbody data-bind="foreach: appointments">
-					<tr>
-						<td><span data-bind="text: time"></span><span class="badge"
-							data-bind="text:displayText, css: displayClass"></span></td>
-						<td data-bind="text: patient"></td>
-						<td data-bind="text: reason"></td>
-					</tr>
-
-				</tbody>
-			</table>
-		</div>
-		-->
 		<button class="clearfix" data-bind="click: load">Neu laden</button>
 	</div>
-
 	<script src="view-model.js"></script>
-	<!--   script>
-        $("#datum").datepicker("setDate", new Date())
-    </script -->
 </body>
 
 </html>

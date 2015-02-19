@@ -98,6 +98,6 @@ public class Server extends Verticle {
 		});
 		vertx.createSockJSServer(httpServer).bridge(config, inOK, outOK);
 
-		httpServer.listen(8080);
+		httpServer.listen(bridgeCfg.getInteger("port")==null ? 8080 : bridgeCfg.getInteger("port"));
 	}
 }
