@@ -2,82 +2,141 @@
 <html lang="de">
 
 <head>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-    <!--  link rel="stylesheet" type="text/css"
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<!--  link rel="stylesheet" type="text/css"
 	href="css/bootstrap-theme.min.css" / -->
-    <link rel="stylesheet" type="text/css" href="css/datepicker3.css" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- meta name="viewport" content="width=device-width, initial-scale=1" -->
+<link rel="stylesheet" type="text/css" href="css/datepicker3.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<!-- meta name="viewport" content="width=device-width, initial-scale=1" -->
 
-    <title>Webelexis-Agenda</title>
+<title>Webelexis-Agenda</title>
 </head>
 
 <body>
-    <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="lib/vertxbus-2.1.js"></script>
-    <script src="lib/knockout-3.2.0.js"></script>
-    <script src="lib/bootstrap.min.js"></script>
-    <script src="lib/bootstrap-datepicker.js"></script>
-    <script src="lib/bootstrap-datepicker.de.js"></script>
+	<script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="lib/vertxbus-2.1.js"></script>
+	<script src="lib/knockout-3.2.0.js"></script>
+	<script src="lib/bootstrap.min.js"></script>
+	<script src="lib/bootstrap-datepicker.js"></script>
+	<script src="lib/bootstrap-datepicker.de.js"></script>
 
-    <div id="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4 well well-sm">Webelexis-Agenda</div>
-            <div class="col-xs-12 col-sm-4 col-md-4 well well-sm">
-                <div class="form-group" id="datumfeld">
-                    <div class="input-group date">
-                        <input type="text" class="form-control">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-4">
-                <div class="well well-sm">
-                    <div id="userLogin">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label class="sr-only" for="username">Anwendername</label>
-                                <input type="text" name="username" id="username" placeholder="Benutzername" class="form-control input-sm" />
-                            </div>
-                            <div class="form-group">
-                                <label class="sr-only" for="pwd">Passwort</label>
-                                <input name="pwd" id="pwd" type="password" placeholder="Passwort" class="form-control input-sm" />
-                            </div>
-                            <a class="btn btn-primary btn-xs" href="#" role="button" onClick="dologin($('#username').val(), $('#pwd').val())">Login</a>
-                            <span id="badlogin" style="color: red">Username oder
-								Passwort falsch</span>
-                        </form>
-                    </div>
-                    <div id="userLogout">
-                        <span id="loggedInUser"></span><span><button
-								onClick="dologout()" name="logout">Log out</button></span>
-                    </div>
+	<div id="container">
 
-                </div>
-            </div>
-        </div>
-        <div id="terminliste">
-            <table class="table table-striped">
-                <thead>
-                    <thead>
-                        <tbody data-bind="foreach: appointments">
-                            <tr>
-                                <td><span data-bind="text: time"></span><span class="badge" data-bind="text:displayText, css: displayClass"></span>
-                                </td>
-                                <td data-bind="text: patient, css: displayClass"></td>
-                                <td data-bind="text: reason, css: displayClass"></td>
-                            </tr>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-6">
+				<p class="text-center h2">Webelexis-Agenda</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6">
+				<div id="userLogin">
+					<form class="form-inline">
+						<div class="form-group">
+							<label class="sr-only" for="username">Anwendername</label> <input
+								type="text" name="username" id="username"
+								placeholder="Benutzername" class="form-control input-sm" />
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="pwd">Passwort</label> <input
+								name="pwd" id="pwd" type="password" placeholder="Passwort"
+								class="form-control input-sm" />
+						</div>
+						<a class="btn btn-primary btn-xs" href="#" role="button"
+							onClick="dologin($('#username').val(), $('#pwd').val())">Login</a>
+						<span id="badlogin" style="color: red">Username oder
+							Passwort falsch</span>
+					</form>
+				</div>
+				<div id="userLogout">
+					<span id="loggedInUser"></span><span><button
+							onClick="dologout()" name="logout">Log out</button></span>
+				</div>
 
-                        </tbody>
-            </table>
-        </div>
-        <button data-bind="click: load">Neu laden</button>
-    </div>
-    <script src="view-model.js"></script>
-    <script>
-        $("#datepicker").datepicker("setDate", new Date())
-    </script>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-primary col-sm-6">
+				<div class="panel-heading">
+					Datum:
+					<div class="form-group" id="datumfeld">
+						<div class="input-group date" id="datum"
+							data-bind="event: {changeDate: load}">
+							<input type="text" class="form-control input-sm"> <span
+								class="input-group-addon"><i
+								class="glyphicon glyphicon-th"></i></span>
+						</div>
+					</div>
+				</div>
+				<div class="row" data-bind="foreach: appointments">
+					<div class="col-xs-12 col-md-6 well well-sm text-center"
+						data-bind="text:displayText, css: displayClass"></div>
+				</div>
+			</div>
+			<div class="panel panel-info col-sm-6">
+				<div class="panel-heading">
+					<h3 class="panel-title">Selbst Termine vereinbaren</h3>
+				</div>
+				<div class="panel-body">
+					<p>Wählen Sie bitte zunächst im Feld links oben das gewünschte
+						Datum aus. Klicken Sie dann auf einen grünen Bereich, um einen
+						Termin zu vereinbaren. Wenn kein grüner Bereich vorhanden ist,
+						sind an diesem Tag keine Termine frei.</p>
+					<p>In dringenden Fällen, oder falls etwas nicht klappt, können
+						Sie selbstverständlich weiterhin auch telefonisch Termine
+						vereinbaren.</p>
+					<p>Unser Telefon 052 624 40 77 wird zu folgenden Zeiten
+						bedient:</p>
+					<table class="table table-bordered">
+						<tr>
+							<td style="padding-right: 5px">Montag, Dienstag und Freitag</td>
+							<td>08:00 bis 12:00 und 13:00 bis 17:00 Uhr</td>
+						</tr>
+						<tr>
+							<td>Mittwoch</td>
+							<td>09:00 bis 13:00 und 14:00 bis 18:00 Uhr</td>
+						</tr>
+						<tr>
+							<td>Donnerstag</td>
+							<td>08:00 bis 13:00 Uhr</td>
+						</tr>
+						<tr>
+							<td>Samstag</td>
+							<td>09:00 bis 12:00 Uhr</td>
+						</tr>
+					</table>
+				</div>
+				<div class="panel-footer">
+					<p class="small">Bitte beachten Sie, dass wir bei einer Terminvereinbarung
+						über diese Website Ihre IP-Adresse und weitere Angaben speichern.
+						Sämtliche Daten werden nach dem vereinbarten Termin wieder
+						gelöscht.</p>
+				</div>
+			</div>
+		</div>
+		<!--  
+		<div id="terminliste">
+			<table class="table table-striped">
+				<thead>
+				<thead>
+				<tbody data-bind="foreach: appointments">
+					<tr>
+						<td><span data-bind="text: time"></span><span class="badge"
+							data-bind="text:displayText, css: displayClass"></span></td>
+						<td data-bind="text: patient"></td>
+						<td data-bind="text: reason"></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+		-->
+		<button class="clearfix" data-bind="click: load">Neu laden</button>
+	</div>
+
+	<script src="view-model.js"></script>
+	<!--   script>
+        $("#datum").datepicker("setDate", new Date())
+    </script -->
 </body>
 
 </html>
