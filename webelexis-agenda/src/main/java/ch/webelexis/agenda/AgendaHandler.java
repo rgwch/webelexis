@@ -26,18 +26,18 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	EventBus eb;
 	static final String ELEXISDATE = "20[0-9]{6,6}";
 	static final String NAME = "[0-9a-zA-Z ]+";
-	static final int FLD_DAY=0;
-	static final int FLD_BEGIN=1;
-	static final int FLD_DURATION=2;
-	static final int FLD_RESOURCE=3;
-	static final int FLD_TYPE=4;
-	static final int FLD_TERMIN_ID=5;
-	Logger log=Server.log;
+	static final int FLD_DAY = 0;
+	static final int FLD_BEGIN = 1;
+	static final int FLD_DURATION = 2;
+	static final int FLD_RESOURCE = 3;
+	static final int FLD_TYPE = 4;
+	static final int FLD_TERMIN_ID = 5;
+	Logger log = Server.log;
 	JsonObject cfg;
 
 	AgendaHandler(EventBus eb, JsonObject cfg) {
 		this.eb = eb;
-		this.cfg=cfg;
+		this.cfg = cfg;
 	}
 
 	/*
@@ -104,7 +104,8 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
 
-					event.reply(fillBlanks(res.getArray("results").toArray(),null));
+					event.reply(fillBlanks(res.getArray("results").toArray(),
+							null));
 
 				} else {
 					event.reply(new JsonObject().putString("status", "failure"));
@@ -126,47 +127,68 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 						String day1 = o1.get(FLD_DAY);
 						String day2 = o2.get(FLD_DAY);
 						if (day1.equals(day2)) {
-							int start1 = Integer.parseInt((String) o1.get(FLD_BEGIN));
-							int start2 = Integer.parseInt((String) o2.get(FLD_BEGIN));
+							int start1 = Integer.parseInt((String) o1
+									.get(FLD_BEGIN));
+							int start2 = Integer.parseInt((String) o2
+									.get(FLD_BEGIN));
 							return start1 - start2;
 						}
 						return day1.compareTo(day2);
 					}
 				});
 
-		for(Object li:appointments) {
-			ArrayList<String> line=(ArrayList<String>)li;
+		for (Object li : appointments) {
+			ArrayList<String> line = (ArrayList<String>) li;
 			line.set(FLD_TYPE, "occupied");
 			orderedList.add(new JsonArray(line));
 		}
-		if(mixin!=null){
-			Iterator it=mixin.iterator();
-			while(it.hasNext()){
-				orderedList.add((JsonArray)it.next());
+		if (mixin != null) {
+			Iterator it = mixin.iterator();
+			while (it.hasNext()) {
+				orderedList.add((JsonArray) it.next());
 			}
 		}
 
 		int endTime = 0;
 		Iterator<JsonArray> lines = orderedList.iterator();
 		JsonArray arr = new JsonArray();
-		int slot=cfg.getInteger("timeSlot") == null ? 30 : cfg.getInteger("timeSlot");
-		
+		int slot=30;
+		if(cfg!=null){
+			slot = cfg.getInteger("timeSlot") == null ? 30 : cfg
+					.getInteger("timeSlot");
+			
+		}
+
+		// Fill in "available" spaces between appointments. Avalailables have
+		// the length "slot" as defined in the config
 		while (lines.hasNext()) {
 			JsonArray aNext = (JsonArray) lines.next();
 			int startTime = Integer.parseInt((String) aNext.get(FLD_BEGIN));
-			if (startTime - endTime > slot) {
+			while ((startTime - endTime) > slot) {
 				String[] free = new String[aNext.size()];
-				free[FLD_DAY]=aNext.get(FLD_DAY);
+				free[FLD_DAY] = aNext.get(FLD_DAY);
+				free[FLD_BEGIN] = Integer.toString(endTime);
+				free[FLD_DURATION] = Integer.toString(slot); // slotInteger.toString(startTime
+																// - endTime);
+				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
+				free[FLD_TYPE] = "available";
+				arr.addArray(new JsonArray(free));
+				endTime += slot;
+			}
+			if ((startTime - endTime) > 0) {
+				String[] free = new String[aNext.size()];
+				free[FLD_DAY] = aNext.get(FLD_DAY);
 				free[FLD_BEGIN] = Integer.toString(endTime);
 				free[FLD_DURATION] = Integer.toString(startTime - endTime);
 				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
-				free[FLD_TYPE]="available";
+				free[FLD_TYPE] = "occupied";
 				arr.addArray(new JsonArray(free));
 			}
-			endTime = startTime + Integer.parseInt((String) aNext.get(FLD_DURATION));
+			endTime = startTime
+					+ Integer.parseInt((String) aNext.get(FLD_DURATION));
 			arr.addArray(aNext);
 		}
-		
+
 		JsonObject ores = new JsonObject().putString("status", "ok")
 				.putString("type", "basic").putArray("appointments", arr);
 		return ores;
@@ -212,27 +234,35 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 			public void handle(Message<JsonObject> returnvalue) {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
-					final JsonArray appts=res.getArray("results");
-					JsonObject bridge=new JsonObject()
-					.putString("action", "prepared")
-					.putString("statement","SELECT ID from AGNTERMINE where Tag>=? And Tag <=? and Bereich=? and deleted='0'")
-					.putArray(
-						"values",
-						new JsonArray(new String[] {
-								getCleaned(request, "begin", ELEXISDATE),
-								getCleaned(request, "end", ELEXISDATE),
-								getCleaned(request, "resource", NAME) }));
-					eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
+					final JsonArray appts = res.getArray("results");
+					JsonObject bridge = new JsonObject()
+							.putString("action", "prepared")
+							.putString(
+									"statement",
+									"SELECT ID from AGNTERMINE where Tag>=? And Tag <=? and Bereich=? and deleted='0'")
+							.putArray(
+									"values",
+									new JsonArray(new String[] {
+											getCleaned(request, "begin",
+													ELEXISDATE),
+											getCleaned(request, "end",
+													ELEXISDATE),
+											getCleaned(request, "resource",
+													NAME) }));
+					eb.send("ch.webelexis.sql", bridge,
+							new Handler<Message<JsonObject>>() {
 
-						@Override
-						public void handle(Message<JsonObject> second) {
-							if(second.body().getString("status").equals("ok")){
-								fillBlanks(appts.toArray(), second.body().getArray("results"));
-							}else{
-								
-							}
-						}
-					});
+								@Override
+								public void handle(Message<JsonObject> second) {
+									if (second.body().getString("status")
+											.equals("ok")) {
+										fillBlanks(appts.toArray(), second
+												.body().getArray("results"));
+									} else {
+
+									}
+								}
+							});
 					event.reply(res);
 				} else {
 					event.reply(res);

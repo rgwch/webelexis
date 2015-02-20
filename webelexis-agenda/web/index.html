@@ -69,7 +69,7 @@
 				</div>
 				<div id="appntlist" class="row" data-bind="foreach: appointments">
 					<div class="col-xs-12 col-md-6">
-						<div
+						<div class="well well-sm" 
 							data-bind="text:displayText, css: displayClass, click: $parent.expand">
 						</div>
 						<div data-bind="if: expanded">
@@ -82,7 +82,7 @@
 								<div class="form-group">
 									<label for="patgebdat" class="sr-only">Ihr Geburtsdatum</label> <input
 										id="patgebdat" class="form-control date" type="date"
-										placeholder="Geburtsdatum (dd.mm.jjjj)" />
+										placeholder="Geburtsdatum" />
 								</div>
 								<div class="form-group">
 									<label for="patmail" class="sr-only">Ihre E-Mail-Adresse</label> <input
@@ -98,7 +98,7 @@
 			</div>
 			<div class="panel panel-info col-sm-6">
 				<div class="panel-heading">
-					<h3 class="panel-title">Selbst Termine vereinbaren</h3>
+					<h3 class="panel-title">Termin direkt online eintragen</h3>
 				</div>
 				<div class="panel-body">
 					<p>Wählen Sie bitte zunächst im Feld links oben das gewünschte
