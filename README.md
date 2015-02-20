@@ -1,4 +1,6 @@
-elexis-2-util
+Webelexis
 =============
 
-Utilities for elexis-2, pre-release
+Taking Elexis to the web
+
+See wiki for more inormations
