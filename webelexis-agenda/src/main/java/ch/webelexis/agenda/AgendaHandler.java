@@ -1,4 +1,5 @@
 /**
+ * This file is part of Webelexis
  * (c) 2015 by G. Weirich
  */
 package ch.webelexis.agenda;
@@ -164,7 +165,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 		while (lines.hasNext()) {
 			JsonArray aNext = (JsonArray) lines.next();
 			int startTime = Integer.parseInt((String) aNext.get(FLD_BEGIN));
-			while ((startTime - endTime) > slot) {
+			while ((startTime - endTime) >= slot) {
 				String[] free = new String[aNext.size()];
 				free[FLD_DAY] = aNext.get(FLD_DAY);
 				free[FLD_BEGIN] = Integer.toString(endTime);
@@ -174,6 +175,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				free[FLD_TYPE] = "available";
 				arr.addArray(new JsonArray(free));
 				endTime += slot;
+				// System.out.println("created "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
 			}
 			if ((startTime - endTime) > 0) {
 				String[] free = new String[aNext.size()];
@@ -182,6 +184,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				free[FLD_DURATION] = Integer.toString(startTime - endTime);
 				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
 				free[FLD_TYPE] = "occupied";
+				// System.out.println("rest "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
 				arr.addArray(new JsonArray(free));
 			}
 			endTime = startTime

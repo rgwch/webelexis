@@ -1,12 +1,20 @@
-/*******************************************************************************
- * (c) 2015 by G. Weirich
- */
+/************************************
+ ** This file is part of Webelexis **
+ ** (c) 2015 by G. Weirich         **
+ ************************************/
+
+// change the url to match your setup
+var url = "http://localhost:8080/eventbus"
+
+
 var eb;
 var sessionid = ""
 var convert = new ElexisTime()
 var avm = new AgendaViewModel()
-var url = "http://localhost:8080/eventbus"
 
+/**
+ * client side representation of an Elexis-appointment
+ */
 function appointment(row) {
     var self = this;
     self.expanded = ko.observable(false)

@@ -40,7 +40,8 @@
 		"maxPerDay": 4
 	},
 	"bridge" :{
-		"webroot": "web",
+		"webroot": "web",	// Use this for the deployed module	(or just leave this entry away)
+		// "webroot": "src/main/resources/web",  // use this for "gradle runMod" within the build environment
 		"port": 8080,
 		"inOK" : [
 		{"address": "ch.webelexis.auth.login"},
