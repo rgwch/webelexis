@@ -4,7 +4,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 .classpath
@@ -14,4 +13,3 @@
 hs_err_pid*
 /bin
 
-ch.rgw.elexis.konsdecorator.base/.classpath
