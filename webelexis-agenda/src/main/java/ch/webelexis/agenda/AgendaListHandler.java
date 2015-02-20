@@ -23,7 +23,7 @@ import org.vertx.java.core.logging.Logger;
  * @author gerry
  * 
  */
-public class AgendaHandler implements Handler<Message<JsonObject>> {
+public class AgendaListHandler implements Handler<Message<JsonObject>> {
 	EventBus eb;
 	static final String ELEXISDATE = "20[0-9]{6,6}";
 	static final String NAME = "[0-9a-zA-Z ]+";
@@ -36,7 +36,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	Logger log = Server.log;
 	JsonObject cfg;
 
-	AgendaHandler(EventBus eb, JsonObject cfg) {
+	AgendaListHandler(EventBus eb, JsonObject cfg) {
 		this.eb = eb;
 		this.cfg = cfg;
 	}
@@ -87,7 +87,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 	 */
 	private void handlePublic(final Message<JsonObject> event,
 			JsonObject request) {
-		final String cleanedDate = getCleaned(request, "begin", ELEXISDATE);
+		Cleaner cl = new Cleaner(request);
 		log.info("public agenda handler");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
@@ -96,8 +96,10 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 						"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 				.putArray(
 						"values",
-						new JsonArray(new String[] { cleanedDate, cleanedDate,
-								getCleaned(request, "resource", NAME) }));
+						new JsonArray(new String[] {
+								cl.get("begin", ELEXISDATE),
+								cl.get("begin", ELEXISDATE),
+								cl.get("resource", NAME) }));
 		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
 			@Override
@@ -153,11 +155,11 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 		int endTime = 0;
 		Iterator<JsonArray> lines = orderedList.iterator();
 		JsonArray arr = new JsonArray();
-		int slot=30;
-		if(cfg!=null){
+		int slot = 30;
+		if (cfg != null) {
 			slot = cfg.getInteger("timeSlot") == null ? 30 : cfg
 					.getInteger("timeSlot");
-			
+
 		}
 
 		// Fill in "available" spaces between appointments. Avalailables have
@@ -220,6 +222,7 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 			final JsonObject request) {
 		// first call: get all Appointments with valid PatientID
 		log.info("authorized agenda handler");
+		final Cleaner cl = new Cleaner(request);
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
@@ -228,9 +231,9 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 				.putArray(
 						"values",
 						new JsonArray(new String[] {
-								getCleaned(request, "begin", ELEXISDATE),
-								getCleaned(request, "end", ELEXISDATE),
-								getCleaned(request, "resource", NAME) }));
+								cl.get("begin", ELEXISDATE),
+								cl.get("end", ELEXISDATE),
+								cl.get("resource", NAME) }));
 		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
 			@Override
@@ -246,12 +249,9 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 							.putArray(
 									"values",
 									new JsonArray(new String[] {
-											getCleaned(request, "begin",
-													ELEXISDATE),
-											getCleaned(request, "end",
-													ELEXISDATE),
-											getCleaned(request, "resource",
-													NAME) }));
+											cl.get("begin", ELEXISDATE),
+											cl.get("end", ELEXISDATE),
+											cl.get("resource", NAME) }));
 					eb.send("ch.webelexis.sql", bridge,
 							new Handler<Message<JsonObject>>() {
 
@@ -275,12 +275,4 @@ public class AgendaHandler implements Handler<Message<JsonObject>> {
 
 	}
 
-	private String getCleaned(JsonObject jo, String field, String pattern) {
-		String raw = jo.getString(field);
-		if ((raw != null) && raw.matches(pattern)) {
-			return raw;
-		} else {
-			return "";
-		}
-	}
 }

@@ -36,8 +36,9 @@ public class Server extends Verticle {
 		
 		EventBus eb = vertx.eventBus();
 		eb.registerHandler("ch.webelexis.agenda.appointments",
-				new AgendaHandler(eb, cfg.getObject("agenda")));
+				new AgendaListHandler(eb, cfg.getObject("agenda")));
 
+		
 		container.deployModule("io.vertx~mod-mongo-persistor~2.1.0",
 				cfg.getObject("mongo"),new Handler<AsyncResult<String>>() {
 
@@ -69,7 +70,7 @@ public class Server extends Verticle {
 			eb.registerHandler("ch.webelexis.sql", new SqlMock());
 			System.out.println("Mock Handler installed");
 		}
-
+		 
 		HttpServer httpServer = vertx.createHttpServer();
 		JsonObject config = new JsonObject().putString("prefix", "/eventbus");
 

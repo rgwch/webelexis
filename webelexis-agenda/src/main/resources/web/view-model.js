@@ -38,6 +38,11 @@ function appointment(row) {
 
 }
 
+function addAppointment(formElement){
+	console.log("addApp"+$("input#patname").val())
+	console.log(this.begin)
+}
+
 function AgendaViewModel() {
     var self = this;
 
