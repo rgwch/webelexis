@@ -31,28 +31,33 @@ public class Server extends Verticle {
 	public void start() {
 		JsonObject cfg = container.config();
 		log = container.logger();
-		String cfgId=cfg.getString("id");
-		System.out.println(cfgId==null ? "No 'id' String  found in configuration" : "id of this configuration is: "+cfgId);
-		
+		String cfgId = cfg.getString("id");
+		System.out
+				.println(cfgId == null ? "No 'id' String  found in configuration"
+						: "id of this configuration is: " + cfgId);
+
 		EventBus eb = vertx.eventBus();
 		eb.registerHandler("ch.webelexis.agenda.appointments",
 				new AgendaListHandler(eb, cfg.getObject("agenda")));
+		eb.registerHandler("ch.webelexis.agenda.insert",
+				new AgendaInsertHandler(eb, cfg.getObject("agenda")));
 
-		
 		container.deployModule("io.vertx~mod-mongo-persistor~2.1.0",
-				cfg.getObject("mongo"),new Handler<AsyncResult<String>>() {
+				cfg.getObject("mongo"), new Handler<AsyncResult<String>>() {
 
 					@Override
 					public void handle(AsyncResult<String> event) {
-						System.out.println(event.succeeded() ? "Mongo ok" : "Mongo failed");
+						System.out.println(event.succeeded() ? "Mongo ok"
+								: "Mongo failed");
 					}
 				});
 		container.deployModule("io.vertx~mod-auth-mgr~2.0.0-final",
-				cfg.getObject("auth"),new Handler<AsyncResult<String>>() {
+				cfg.getObject("auth"), new Handler<AsyncResult<String>>() {
 
 					@Override
 					public void handle(AsyncResult<String> event) {
-						System.out.println(event.succeeded() ? "AuthMgr ok" : "AuthMgr failed");
+						System.out.println(event.succeeded() ? "AuthMgr ok"
+								: "AuthMgr failed");
 					}
 				});
 		if ((cfg.getObject("sql") != null)
@@ -63,14 +68,15 @@ public class Server extends Verticle {
 
 						@Override
 						public void handle(AsyncResult<String> event) {
-							System.out.println(event.succeeded() ? "SQL ok" : "SQL failed");
+							System.out.println(event.succeeded() ? "SQL ok"
+									: "SQL failed");
 						}
 					});
 		} else {
 			eb.registerHandler("ch.webelexis.sql", new SqlMock());
 			System.out.println("Mock Handler installed");
 		}
-		 
+
 		HttpServer httpServer = vertx.createHttpServer();
 		JsonObject config = new JsonObject().putString("prefix", "/eventbus");
 
@@ -92,13 +98,14 @@ public class Server extends Verticle {
 				} else if (!req.path().contains("..")) {
 					file = req.path();
 				}
-				File ans=new File(rootdir,file);
-				//System.out.println(ans.getAbsolutePath());
+				File ans = new File(rootdir, file);
+				// System.out.println(ans.getAbsolutePath());
 				req.response().sendFile(ans.getAbsolutePath());
 			}
 		});
 		vertx.createSockJSServer(httpServer).bridge(config, inOK, outOK);
 
-		httpServer.listen(bridgeCfg.getInteger("port")==null ? 8080 : bridgeCfg.getInteger("port"));
+		httpServer.listen(bridgeCfg.getInteger("port") == null ? 2015
+				: bridgeCfg.getInteger("port"));
 	}
 }

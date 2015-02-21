@@ -4,13 +4,14 @@
  ************************************/
 
 // change the url to match your setup
-var url = "http://localhost:8080/eventbus"
+var url = "http://localhost:2015/eventbus"
 
 
 var eb;
 var sessionid = ""
 var convert = new ElexisTime()
 var avm = new AgendaViewModel()
+var loc={}
 
 /**
  * client side representation of an Elexis-appointment
@@ -41,6 +42,19 @@ function appointment(row) {
 function addAppointment(formElement){
 	console.log("addApp"+$("input#patname").val())
 	console.log(this.begin)
+	eb.send('ch.webelexis.agenda.insert',{
+		day: convert.makeString(this.date),
+		time: this.begin,
+		ip: loc.ip,
+		name: $("input#patname").val()+","+$("input#patphone").val()+","+$("input#patmail").val()
+	}, function (result) {
+		console.log("insert: "+JSON.stringify(result))
+		if(result.status != "ok"){
+			alert("Fehler beim Eintragen: "+result.message)
+		}else{
+			avm.load();
+		}
+	});
 }
 
 function AgendaViewModel() {
@@ -55,10 +69,13 @@ function AgendaViewModel() {
         var selected = convert.makeString($('#datumfeld .input-group.date')
                 .datepicker('getDate'))
             // console.log(selected)
+        if(self.lastExpanded!=null){
+        	self.lastExpanded.expanded(false);
+        	self.lastExpanded=null;
+        }
         eb.send('ch.webelexis.agenda.appointments', {
             begin: selected,
             end: selected,
-            resource: "gerry",
             token: sessionid
         }, function (result) {
             console.log("result: " + JSON.stringify(result));
@@ -117,14 +134,14 @@ function ElexisTime() {
 
     self.makeDate = function (datestring) {
         var year = datestring.substring(0, 4)
-        var month = datestring.substring(4, 6)
+        var month = datestring.substring(4, 6)-1
         var day = datestring.substring(6, 8)
         return new Date(year, month, day)
     }
 
     self.makeString = function (date) {
         var year = date.getFullYear()
-        var month = (date.getMonth() + 1).toString();
+        var month = (date.getMonth()+1).toString();
         if (month.length < 2) {
             month = '0' + month
         }
@@ -148,7 +165,8 @@ function ElexisTime() {
 
         return hours + ":" + mins
     }
-}
+    
+ }
 
 function isEven(n) {
     if (n == 0) {
@@ -189,6 +207,9 @@ function dologout() {
 }
 
 function initialize() {
+	$.get("http://ipinfo.io", function(response) {
+	    loc=response;
+	}, "jsonp");
     eb = new vertx.EventBus(url);
     eb.onopen = function () {
         console.log("eventbus ok");

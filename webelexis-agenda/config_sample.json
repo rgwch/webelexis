@@ -36,8 +36,11 @@
 	},
 	
 	"agenda":{
-		"timeSlot": 30,
-		"maxPerDay": 4
+		"resource":"gerry",
+		"timeSlot": 30,				// how long should an appointment be
+		"maxPerDay": 4,				// maximum Number of appnts. per day via this app
+		"apptType" : "Normal",		// "TerminTyp" for our appointments
+		"apptState": "Via Internet"  // "TerminStatus" for our appointments
 	},
 	"bridge" :{
 		"webroot": "web",	// Use this for the deployed module	(or just leave this entry away)

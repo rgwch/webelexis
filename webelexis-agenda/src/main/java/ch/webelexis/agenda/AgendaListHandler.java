@@ -89,6 +89,8 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 			JsonObject request) {
 		Cleaner cl = new Cleaner(request);
 		log.info("public agenda handler");
+		final String resource = cfg.getString("resource") == null ? "" : cfg
+				.getString("resource");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
@@ -98,8 +100,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 						"values",
 						new JsonArray(new String[] {
 								cl.get("begin", ELEXISDATE),
-								cl.get("begin", ELEXISDATE),
-								cl.get("resource", NAME) }));
+								cl.get("begin", ELEXISDATE), resource }));
 		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
 			@Override
