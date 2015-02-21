@@ -51,8 +51,8 @@ public class AgendaInsertHandler implements Handler<Message<JsonObject>> {
 							"values",
 							new JsonArray(
 									new String[] {
+											StringTool.unique(day),
 											Long.toString(new Date().getTime()),
-											StringTool.unique("webelexis"),
 											day, resource,
 											Integer.toString(time), "30",
 											apptType, apptState,
