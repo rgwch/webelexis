@@ -17,7 +17,7 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 
 /**
- * A handler for requests to the agenda. Since we won't allow random access to
+ * A handler for list requests to the agenda. Since we won't allow random access to
  * the database, we translate external requests to internal messages here.
  * 
  * @author gerry
@@ -47,7 +47,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 	 * ["Mr. Test", 15] }
 	 * 
 	 * and this is, what we expect from the client: { "begin": "yyyymmdd",
-	 * "end": "yyyymmdd", "resource": resource, "token": auth-token }
+	 * "end": "yyyymmdd", "token": auth-token }
 	 */
 	@Override
 	public void handle(final Message<JsonObject> externalRequest) {

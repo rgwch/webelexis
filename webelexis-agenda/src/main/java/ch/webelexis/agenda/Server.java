@@ -27,8 +27,13 @@ public class Server extends Verticle {
 	static Logger log;
 	String rootdir = "web";
 
+	/**
+	 * This method is always the entry point of a Vert.x verticle. The "container" object exists
+	 * here (not yet in the constructor!)
+	 */
 	@Override
 	public void start() {
+		// load the configuration as given to 'vertx -conf <config-file>'
 		JsonObject cfg = container.config();
 		log = container.logger();
 		String cfgId = cfg.getString("id");
@@ -37,11 +42,15 @@ public class Server extends Verticle {
 						: "id of this configuration is: " + cfgId);
 
 		EventBus eb = vertx.eventBus();
+
+		// Register handlers with the eventBus
 		eb.registerHandler("ch.webelexis.agenda.appointments",
 				new AgendaListHandler(eb, cfg.getObject("agenda")));
+		
 		eb.registerHandler("ch.webelexis.agenda.insert",
 				new AgendaInsertHandler(eb, cfg.getObject("agenda")));
 
+		// find, download and launch the helper modules we need.
 		container.deployModule("io.vertx~mod-mongo-persistor~2.1.0",
 				cfg.getObject("mongo"), new Handler<AsyncResult<String>>() {
 
@@ -77,9 +86,11 @@ public class Server extends Verticle {
 			System.out.println("Mock Handler installed");
 		}
 
+		// Create a web server
 		HttpServer httpServer = vertx.createHttpServer();
 		JsonObject config = new JsonObject().putString("prefix", "/eventbus");
 
+		// configure the "firewall":define, which messages are allowed to pass
 		JsonObject bridgeCfg = cfg.getObject("bridge");
 		JsonArray inOK = bridgeCfg == null ? new JsonArray() : bridgeCfg
 				.getArray("inOK");
@@ -90,6 +101,8 @@ public class Server extends Verticle {
 			rootdir = bridgeCfg.getString("webroot");
 		}
 
+		// Handler for all http requests: make sure files are delivered relative to the
+		// webroot directory (and discard requests containing any "..")
 		httpServer.requestHandler(new Handler<HttpServerRequest>() {
 			public void handle(HttpServerRequest req) {
 				String file = "";
@@ -103,6 +116,7 @@ public class Server extends Verticle {
 				req.response().sendFile(ans.getAbsolutePath());
 			}
 		});
+		// create the websocket
 		vertx.createSockJSServer(httpServer).bridge(config, inOK, outOK);
 
 		httpServer.listen(bridgeCfg.getInteger("port") == null ? 2015

@@ -1,3 +1,7 @@
+/**
+ * This file is part of webelexis
+ * (c) 2015 by G. Weirich
+ */
 package ch.webelexis.agenda;
 
 import java.util.Date;
@@ -8,6 +12,10 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
+/**
+ * Handler for insert operations in the agenda. Listens to messages to "ch.webelexis.agenda.insert"
+ * @author gerry
+ */
 public class AgendaInsertHandler implements Handler<Message<JsonObject>> {
 	static final String DATE = "20[0-9]{6,6}";
 	static final String TIME = "[0-2][0-9]:[0-5][0-9]";
@@ -21,6 +29,10 @@ public class AgendaInsertHandler implements Handler<Message<JsonObject>> {
 		this.cfg = cfg;
 	}
 
+	/**
+	 * expected parameter is a Json Object:
+	 * { day: 'yyyymmdd', time: 'hh:mm', name: 'name, firstname, DOB', ip: 'ip-address'}
+	 */
 	@Override
 	public void handle(final Message<JsonObject> externalEvent) {
 		Cleaner cl = new Cleaner(externalEvent.body());
