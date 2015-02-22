@@ -6,23 +6,97 @@ require.config({
     baseUrl: 'lib',
 
     paths: {
-        app: 'app'
+        app: '../app'
     }
 });
 
-require(['jquery', 'knockout', 'bootstrap', 'vertxbus', 'datepicker.de', 'datepicker', 'sockjs'], function ($, ko) {
+define(['jquery', 'knockout', 'vertxbus', 'bootstrap', 'datepicker.de',
+  'datepicker', 'sockjs'], function ($, ko, eb) {
     // change the url to match your setup
     var url = "http://localhost:2015/eventbus"
 
-    var eb;
+    //var eb;
     var sessionid = ""
     var convert = new ElexisTime()
     var avm = new AgendaViewModel()
     var loc = {}
 
-    /**
-     * client side representation of an Elexis-appointment
-     */
+    function AgendaViewModel() {
+            var self = this;
+
+            self.appointments = ko.observableArray([]);
+            self.title = "Webelexis-Agenda"
+            self.lastExpanded = null
+
+            self.load = function () {
+                // var selected = $("#datumfeld").val();
+                var selected = convert.makeString($('#datumfeld .input-group.date')
+                        .datepicker('getDate'))
+                    // console.log(selected)
+                if (self.lastExpanded != null) {
+                    self.lastExpanded.expanded(false);
+                    self.lastExpanded = null;
+                }
+                eb.send('ch.webelexis.agenda.appointments', {
+                    begin: selected,
+                    end: selected,
+                    token: sessionid
+                }, function (result) {
+                    console.log("result: " + JSON.stringify(result));
+                    if (result.status != "ok") {
+                        alert("Verbindungsfehler: " + result.status);
+                    } else {
+                        self.appointments.removeAll()
+                        var appnts = result.appointments;
+                        var prev = null;
+                        // combine occupied time slots
+                        appnts.forEach(function (value) {
+                            var act = new appointment(value)
+                            if (act.type == 'occupied') {
+                                if (prev == null) {
+                                    prev = act
+                                }
+                                prev.end = act.end
+                            } else {
+                                if (prev != null) {
+                                    self.appointments.push(prev)
+                                    prev = null
+                                }
+                                self.appointments.push(act);
+                            }
+                        });
+                        if (prev != null) {
+                            self.appointments.push(prev)
+                        }
+                    }
+                });
+
+            }
+
+            self.expand = function (idx) {
+                if (idx.type == 'available') {
+                    if (self.lastExpanded != null) {
+                        self.lastExpanded.expanded(false)
+                    }
+                    idx.expanded(true);
+                    self.lastExpanded = idx;
+                    console.log("opened: " + idx.begin)
+                }
+            }
+
+            self.collapse = function (idx) {
+                idx.expanded(false)
+                self.lastExpanded = null;
+            }
+
+            self.clear = function () {
+                self.appointments.removeAll()
+            }
+
+        }
+        /**
+         * client side representation of an Elexis-appointment
+         */
     function appointment(row) {
         var self = this;
         self.expanded = ko.observable(false)
@@ -62,80 +136,6 @@ require(['jquery', 'knockout', 'bootstrap', 'vertxbus', 'datepicker.de', 'datepi
                 avm.load();
             }
         });
-    }
-
-    function AgendaViewModel() {
-        var self = this;
-
-        self.appointments = ko.observableArray([]);
-        self.title = "Webelexis-Agenda"
-        self.lastExpanded = null
-
-        self.load = function () {
-            // var selected = $("#datumfeld").val();
-            var selected = convert.makeString($('#datumfeld .input-group.date')
-                    .datepicker('getDate'))
-                // console.log(selected)
-            if (self.lastExpanded != null) {
-                self.lastExpanded.expanded(false);
-                self.lastExpanded = null;
-            }
-            eb.send('ch.webelexis.agenda.appointments', {
-                begin: selected,
-                end: selected,
-                token: sessionid
-            }, function (result) {
-                console.log("result: " + JSON.stringify(result));
-                if (result.status != "ok") {
-                    alert("Verbindungsfehler: " + result.status);
-                } else {
-                    self.appointments.removeAll()
-                    var appnts = result.appointments;
-                    var prev = null;
-                    // combine occupied time slots
-                    appnts.forEach(function (value) {
-                        var act = new appointment(value)
-                        if (act.type == 'occupied') {
-                            if (prev == null) {
-                                prev = act
-                            }
-                            prev.end = act.end
-                        } else {
-                            if (prev != null) {
-                                self.appointments.push(prev)
-                                prev = null
-                            }
-                            self.appointments.push(act);
-                        }
-                    });
-                    if (prev != null) {
-                        self.appointments.push(prev)
-                    }
-                }
-            });
-
-        }
-
-        self.expand = function (idx) {
-            if (idx.type == 'available') {
-                if (self.lastExpanded != null) {
-                    self.lastExpanded.expanded(false)
-                }
-                idx.expanded(true);
-                self.lastExpanded = idx;
-                console.log("opened: " + idx.begin)
-            }
-        }
-
-        self.collapse = function (idx) {
-            idx.expanded(false)
-            self.lastExpanded = null;
-        }
-
-        self.clear = function () {
-            self.appointments.removeAll()
-        }
-
     }
 
     function ElexisTime() {
