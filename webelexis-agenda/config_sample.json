@@ -1,6 +1,9 @@
 // Example JSON config file for webelexis 
-
+// Note: comments are not part of the JSON spec. Some parsers will reject files with comments,
+// so it is recommended to remove these comments in your active conf.json.
+// Check the correctness of your config with http://jsonlint.com
 {
+    // config for the mod-mongo-persistor (https://github.com/vert-x/mod-mongo-persistor)
   "mongo" : {
   	"address" : "ch.webelexis.nosql", // do not change this
     "host": "localhost",			  // address of your mongo server. defaults to 'localhost'					
@@ -16,6 +19,7 @@
     "auto_connect_retry": <default true>
   },
   
+    // config for mod-mysql-postgresql (https://github.com/vert-x/mod-mysql-postgresql)
   "sql" : {
   
   	"address" : "ch.webelexis.sql",  // do not change this
@@ -28,6 +32,7 @@
   	"database" : <name-of-your-database>
 	}, 
 	
+    // config for mod-auth-mgr (https://github.com/vert-x/mod-auth-mgr)
 	"auth" : {
 	"address": "ch.webelexis.auth",				// do not change this
     "user_collection": "users",	// do not change this
@@ -35,6 +40,7 @@
     "session_timeout": 30000
 	},
 	
+    // config for webelexis-Agenda
 	"agenda":{
 		"resource":"gerry",
 		"timeSlot": 30,				// how long should an appointment be
@@ -42,17 +48,20 @@
 		"apptType" : "Normal",		// "TerminTyp" for our appointments
 		"apptState": "Via Internet"  // "TerminStatus" for our appointments
 	},
+    
+    // config for the EventBus-Websocket bridge and the html server
 	"bridge" :{
 		"webroot": "web",	// Use this for the deployed module	(or just leave this entry away)
 		// "webroot": "src/main/resources/web",  // use this for "gradle runMod" within the build environment
-		"port": 8080,
-		"inOK" : [
+		"port": 2015,     // default port for webelexis
+		"inOK" : [        // allowed inbound messages (all other will be blocked)
 		{"address": "ch.webelexis.auth.login"},
 		{"address": "ch.webelexis.auth.logout"},
 		{"address": "ch.webelexis.agenda.appointments"}
-		],
+		],                // allowed outbound messages
 		"outOK" : [
 		]
 	},
+    // Global identification primarly for debugging purposes to see, which config is active.
 	"id": "this is an identification for this config"
 }
