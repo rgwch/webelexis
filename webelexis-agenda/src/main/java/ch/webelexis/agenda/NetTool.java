@@ -59,7 +59,10 @@ public class NetTool {
 	public static String getMacAddress() throws IOException {
 		Process proc = Runtime.getRuntime().exec("cmd /c ipconfig /all");
 		Scanner s = new Scanner(proc.getInputStream());
-		return s.findInLine("\\p{XDigit}\\p{XDigit}(-\\p{XDigit}\\p{XDigit}){5}");
+		String ret = s
+				.findInLine("\\p{XDigit}\\p{XDigit}(-\\p{XDigit}\\p{XDigit}){5}");
+		s.close();
+		return ret;
 	}
 
 	public static void main(String[] args) throws IOException {

@@ -142,11 +142,13 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 				});
 
 		for (Object li : appointments) {
+			@SuppressWarnings("unchecked")
 			ArrayList<String> line = (ArrayList<String>) li;
 			line.set(FLD_TYPE, "occupied");
 			orderedList.add(new JsonArray(line));
 		}
 		if (mixin != null) {
+			@SuppressWarnings("rawtypes")
 			Iterator it = mixin.iterator();
 			while (it.hasNext()) {
 				orderedList.add((JsonArray) it.next());

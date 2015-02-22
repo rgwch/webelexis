@@ -460,9 +460,8 @@ public class StringTool {
 		}
 
 		/** Splittet den String auf und liefert die tokens als List */
-		@SuppressWarnings("unchecked")
 		public List<String> tokenize() throws IOException {
-			ArrayList ret = new ArrayList();
+			ArrayList<String> ret = new ArrayList<String>();
 			StringBuffer token = new StringBuffer();
 			while (pos < mine.length()) {
 				char c = mine.charAt(pos++);
@@ -658,7 +657,8 @@ public class StringTool {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void dumpHashtable(final Logger log, final Hashtable table) {
+	public static void dumpHashtable(final Logger log,
+			@SuppressWarnings("rawtypes") final Hashtable table) {
 		Set<String> keys = table.keySet();
 		log.info("Dump Hashtable\n");
 		for (String key : keys) {
