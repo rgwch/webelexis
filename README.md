@@ -3,4 +3,4 @@ Webelexis
 
 Taking Elexis to the web
 
-See [[wiki|wiki]] for more informations
+See [wiki](http://github.com/rgwch/webelexis/wiki) for more informations
