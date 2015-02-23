@@ -3,4 +3,4 @@ Webelexis
 
 Taking Elexis to the web
 
-See wiki for more inormations
+See [[wiki|wiki]] for more informations
