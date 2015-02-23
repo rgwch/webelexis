@@ -14,7 +14,8 @@
     <meta name="author" content="weirich@elexis.ch" />
 
     <title>Webelexis-Agenda</title>
-    <script data-main="main.js" src="lib/require.js"></script>
+    <script  src="app/require.config.js"></script>
+    <script data-main="app/main.js" src="lib/require.js"></script>
 </head>
 
 <body>
@@ -63,7 +64,7 @@
                         <div class="well well-sm" data-bind="text:displayText, css: displayClass, click: $parent.expand">
                         </div>
                         <div data-bind="if: expanded">
-                            <form class="form" data-bind="submit: addAppointment">
+                            <form class="form" data-bind="submit: $parent.addAppointment">
                                 <div class="form-group">
                                     <label for="patname" class="sr-only">Ihr Name und Vorname </label>
                                     <input type="text" class="form-control" id="patname" placeholder="Name, Vorname, Geburtsdatum" required />

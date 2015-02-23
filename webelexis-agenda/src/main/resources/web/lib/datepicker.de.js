@@ -3,7 +3,7 @@
  * Sam Zurcher <sam@orelias.ch>
  *small changes for use with require.js by G. Weirich
  */
-define(['jquery', 'datepicker'],
+define(['jquery','datepicker'],
     function ($) {
         $.fn.datepicker.dates['de'] = {
             days: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"],
