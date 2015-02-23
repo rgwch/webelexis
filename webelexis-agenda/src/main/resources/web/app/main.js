@@ -20,6 +20,18 @@ define([ 'jquery', 'knockout', 'vertxbus', 'datepicker', 'datepicker.de' ],
 				self.title = "Webelexis-Agenda"
 				self.lastExpanded = null
 
+				self.yesterday = function() {
+					var today = $('#datumfeld .input-group.date').datepicker(
+							'getDate')
+					today.setTime(today.getTime()-(24*60*60000))
+					$("#datum").datepicker("setDate", today)
+				}
+				self.tomorrow = function() {
+					var today = $('#datumfeld .input-group.date').datepicker(
+							'getDate')
+					today.setTime(today.getTime()+(24*60*60000))
+					$("#datum").datepicker("setDate", today)
+				}
 				self.load = function() {
 					// var selected = $("#datumfeld").val();
 					var selected = convert.makeString($(
