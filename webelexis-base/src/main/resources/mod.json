@@ -1,0 +1,16 @@
+{
+
+  "main":"webelexis-core.js",
+
+  "description":"Core verticles for the Webelexis system",
+  "licenses": ["The Apache Software License Version 2.0"],
+  "author": "Gerry Weirich",
+
+  // Optional fields
+  "developers": ["weirich@elexis.ch"],
+  "keywords": ["arzt", "praxis", "elexis", "swiss", "schweiz", "medelexis"],
+  "homepage": "http://www.webelexis.ch",
+
+  "auto-redeploy": true
+
+}
