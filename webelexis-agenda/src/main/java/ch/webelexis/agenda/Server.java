@@ -28,8 +28,8 @@ public class Server extends Verticle {
 	String rootdir = "web";
 
 	/**
-	 * This method is always the entry point of a Vert.x verticle. The "container" object exists
-	 * here (not yet in the constructor!)
+	 * This method is always the entry point of a Vert.x verticle. The
+	 * "container" object exists here (not yet in the constructor!)
 	 */
 	@Override
 	public void start() {
@@ -46,7 +46,7 @@ public class Server extends Verticle {
 		// Register handlers with the eventBus
 		eb.registerHandler("ch.webelexis.agenda.appointments",
 				new AgendaListHandler(eb, cfg.getObject("agenda")));
-		
+
 		eb.registerHandler("ch.webelexis.agenda.insert",
 				new AgendaInsertHandler(eb, cfg.getObject("agenda")));
 
@@ -92,16 +92,20 @@ public class Server extends Verticle {
 
 		// configure the "firewall":define, which messages are allowed to pass
 		JsonObject bridgeCfg = cfg.getObject("bridge");
-		JsonArray inOK = bridgeCfg == null ? new JsonArray() : bridgeCfg
-				.getArray("inOK");
-		JsonArray outOK = bridgeCfg == null ? new JsonArray() : bridgeCfg
-				.getArray("outOK");
+		if (bridgeCfg == null) {
+			bridgeCfg = new JsonObject();
+		}
+		JsonArray inOK = bridgeCfg.containsField("inOK") ? bridgeCfg
+				.getArray("inOK") : new JsonArray();
+		JsonArray outOK = bridgeCfg.containsField("outOK") ? bridgeCfg
+				.getArray("outOK") : new JsonArray();
 
 		if (bridgeCfg != null && bridgeCfg.getString("webroot") != null) {
 			rootdir = bridgeCfg.getString("webroot");
 		}
 
-		// Handler for all http requests: make sure files are delivered relative to the
+		// Handler for all http requests: make sure files are delivered relative
+		// to the
 		// webroot directory (and discard requests containing any "..")
 		httpServer.requestHandler(new Handler<HttpServerRequest>() {
 			public void handle(HttpServerRequest req) {
