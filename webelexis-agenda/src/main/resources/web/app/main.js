@@ -111,7 +111,7 @@ define([ 'jquery', 'knockout', 'vertxbus', 'datepicker', 'datepicker.de' ],
 					}, function(result) {
 						// console.log("insert: " + JSON.stringify(result))
 						if (result.status != "ok") {
-							alert("Fehler beim Eintragen: " + result.message)
+							alert("Fehler beim Eintragen: " + result.status)
 						} else {
 							avm.load();
 						}
