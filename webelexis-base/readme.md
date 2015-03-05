@@ -11,8 +11,8 @@ I like to have as much control over the build process as possible. I could use s
 
 - [vertx](http://www.vertx.io)
 - [npm](https://www.npmjs.com) while being primarly a package manager for node.js, it is useful for many tasks, especially finding and installing javascript utilities. 
-- [jade](http://jade-lang.com) A HTML preprocessor. Simplifies the task of writing HTML files.
-- [uglify](https://github.com/mishoo/UglifyJS) A JavaScript compressor and more.
+- [jade](http://jade-lang.com) A HTML preprocessor. Simplifies the task of writing HTML files. (npm install -g jade)
+- [yuicompresser](https://github.com/yui/yuicompressor) A JavaScript/CSS compressor and more. (npm install -g yuicompressor)
 
 ### Folder layout
 
@@ -22,3 +22,10 @@ I like to have as much control over the build process as possible. I could use s
     
 - dist/**
     * dist/web - The contents of the resulting website
+    
+### Build tasks
+
+* npm run  - overview over defined tasks
+* npm env  - overview over the build environment
+* npm run clean - remove the "dist" folder and all subdirs
+* npm run build:client - create the clients side of the webelexis project and copy all to the "dist/web" folder
