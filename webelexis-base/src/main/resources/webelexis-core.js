@@ -3,6 +3,14 @@
  ** (c) 2015 by G. Weirich           **
  **************************************/
 
+/*
+This is the core module for webelexis. It creates a HTTP Server and a Sockjs-Server as primary entry points for
+all subprojects.
+To connect, a subproject must simply define an address on the EventBus and listen to that address. If access from outside is required, that address must be registered in the config file (section bridge/inOK)
+
+Launch webelexis with 'vertx run webelexis-core.js -config <yourconfig.json>
+*/
+
 var vertx = require('vertx')
 var console = require('vertx/console')
 var container = require('vertx/container')
