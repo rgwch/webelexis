@@ -1,10 +1,15 @@
+/*!
+* This file is part of Webelexis
+* (c) 2015 by G. Weirich
+*/
 var require={
-    baseUrl: "web",
+    baseUrl: ".",
     paths: {
-        "bootstrap":    "lib/bobootstrap.min.js",
-        "jquery":       "lib/jquery.js",
-        "knockout":     "lib/knockout.js",
-        "sockjs":       "lib/sockjs.js",
+        "bootstrap":    "lib/bootstrap.min",
+        "jquery":       "lib/jquery.min",
+        "knockout":     "lib/knockout",
+        "sockjs":       "lib/sockjs.min",
+        "text":         "lib/text",
         "vertxbus":     "lib/vertxbus"
     },
     shim:{

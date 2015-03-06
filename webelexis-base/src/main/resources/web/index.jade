@@ -2,16 +2,11 @@ doctype html
 html(lang="de")
     head
         meta(charset="utf-8")
-        link(rel="stylesheet" href="css/bootstrap-min.css")
-        title(data-bind="text: router.currrentPage().title") Webelexis
+        link(rel="stylesheet" href="css/bootstrap.min.css")
+        title(data-bind="text: router.currentPage().title") Webelexis
+        script(src="app/requirejs.config-min.js")
+        script(data-main="app/main-min.js" src="lib/require.js")
     body
-        #header
-            h1 Webelexis
-            nav(role="navigation")
-                a(href="#") Agenda
-                a(href="#Pat") Patienten
-                a(href="#patid") Patient Detail
-                a(href="kons") Konsultation
-        script(src="app/requirejs.config.js")
-        script(data-main="app/main.js" src="lib/require.js")
+        include ../includes/navbar.jade
+              
     

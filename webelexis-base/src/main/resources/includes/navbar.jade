@@ -1,0 +1,30 @@
+nav.navbar.navbar.default
+    .container-fluid
+        .navbar-header
+            button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#webelexis-main-collapsed")
+                span.sr-only Menü erweitern
+                span.glyphicon.glyphicon-menu-hamburger
+            a.navbar-brand(href="#") Webelexis
+        .collapse.navbar-collapse#webelexis-main-collapsed
+            ul.nav.navbar-nav
+                li.active
+                    a(href="#") Agenda
+                        span.sr-only (current)
+                li
+                    a(href="#Pat") Patienten
+                li
+                    a(href="#patid") Patient Detail
+                li
+                    a(href="#kons") Konsultation
+            form.navbar-form.navbar-left(role="login")
+                .form-group
+                    input#username.form-control(placeholder="Username" type="text")
+                .form-group
+                    input#pwd.form-control(placeholder="Passwort" type="password")
+                button.btn.btn-default(type="submit") Login
+                    
+                
+     
+                        
+                        
+       
