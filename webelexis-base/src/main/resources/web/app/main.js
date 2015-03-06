@@ -1,5 +1,5 @@
 /*!
- ** This file is part of webelexis.
+ ** This file is part of Webelexis.
  ** (c) 2015 by G. Weirich
  **/
 
@@ -7,7 +7,7 @@
  * Main view switcher. Heavily inspired from https://github.com/lshift/knockout-routing
  */
 
-define(['knockout', 'app/router-min', 'bootstrap'], function (ko, Router) {
+define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
     var urlMapping = {
         agenda: {
             match: /^$/,
@@ -27,8 +27,18 @@ define(['knockout', 'app/router-min', 'bootstrap'], function (ko, Router) {
         }
     }
 
+    ko.components.register('ch-webelexis-agenda', {
+        viewModel: {
+            require: 'component-agenda'
+        },
+        template: {
+            require: 'text!component-agenda.html'
+        }
+
+    });
+
     function agendaPage() {
-        return new Router.Page('Agenda', 'agenda-template', {});
+       
     }
 
     function patList() {

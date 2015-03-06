@@ -7,17 +7,17 @@
     "license": "EPLv2",
     "scripts": {
         "clean": "rm -r dist",
-        "build:client": "npm run prepare && npm run compile:jade && npm run compress:js", 
+        "build:client": "r.js -o build-debug.js && npm run compile:jade", 
         "create:dirs": "mkdir -p dist/web",
         "copy:css": "cp -R src/main/resources/web/css dist/web",
         "copy:fonts": "cp -R src/main/resources/web/fonts dist/web",
         "copy:lib": "cp -R src/main/resources/web/lib dist/web",
-        "prepare" : "npm run create:dirs && npm run copy:css && npm run copy:fonts && npm run copy:lib",
+        "copy:img": "cp -R src/main/resources/web/img dist/web",
+        "prepare" : "npm run create:dirs && npm run copy:css && npm run copy:fonts && npm run copy:lib && npm run copy:img",
         
         "compile:jade": "jade src/main/resources/web -o dist/web",
         "precompress:js": "mkdir -p dist/web/app",
         "postcompress:js": "mv src/main/resources/web/app/*-min.js dist/web/app",
-        "compress:js": "yuicompressor -o '.js$:-min.js' src/main/resources/web/app/*.js",
         "verticle": "vertx run webelexis-core.js",
         "run": "jade && js && verticle",
         "env": "env"

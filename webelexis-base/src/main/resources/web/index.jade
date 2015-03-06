@@ -1,12 +1,13 @@
+// This file is part of Webelexis, copyright (c) 2015 by G. Weirich
 doctype html
 html(lang="de")
     head
         meta(charset="utf-8")
         link(rel="stylesheet" href="css/bootstrap.min.css")
         title(data-bind="text: router.currentPage().title") Webelexis
-        script(src="app/requirejs.config-min.js")
-        script(data-main="app/main-min.js" src="lib/require.js")
+        script(src="app/requirejs.config.js")
+        script(data-main="app/main.js" src="lib/require.js")
     body
         include ../includes/navbar.jade
-              
+        #content(data-bind="template: {name: router.currentPage().view, data: router.currentPage().model}")          
     
