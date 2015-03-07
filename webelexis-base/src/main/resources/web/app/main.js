@@ -9,17 +9,28 @@
 
 define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
 
-    ko.components.register('ch-webelexis-agenda', { require: 'components/agenda/ch-webelexis-agenda'});
-    ko.components.register('ch-webelexis-patlist', { require: 'components/patlist/ch-webelexis-patlist'});
-    ko.components.register('ch-webelexis-patdetail', { require: 'components/patdetail/ch-webelexis-patdetail'});
-    ko.components.register('ch-webelexis-consdetail', { require: 'components/consultation/ch-webelexis-consdetail'});
-    
-    
-    
+    ko.components.register('ch-webelexis-agenda', {
+        require: 'components/agenda/ch-webelexis-agenda'
+    });
+    ko.components.register('ch-webelexis-patlist', {
+        require: 'components/patlist/ch-webelexis-patlist'
+    });
+    ko.components.register('ch-webelexis-patdetail', {
+        require: 'components/patdetail/ch-webelexis-patdetail'
+    });
+    ko.components.register('ch-webelexis-consdetail', {
+        require: 'components/consultation/ch-webelexis-consdetail'
+    });
+    ko.components.register('ch-webelexis-login', {
+        require: 'components/login/ch-webelexis-login'
+    });
+
+
+
 
     var urlMapping = {
         agenda: {
-            match: /^$/,
+            match: /^agenda$/,
             title: 'Agenda',
             component: 'ch-webelexis-agenda'
         },
@@ -37,6 +48,11 @@ define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
             match: /^kons$/,
             title: "Konsultation",
             component: 'ch-webelexis-consdetail'
+        },
+        login: {
+            match: /^login$/,
+            title: "Webelexis-Anmeldung",
+            component: 'ch-webelexis-login'
         }
     }
 

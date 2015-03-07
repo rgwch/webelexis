@@ -1,0 +1,11 @@
+h2 Anmelden
+Sie müssen sich zuerst im System anmelden, bevor Sie diese Funktionen aufrufen können.
+form.col-sm-4(data-bind="submit: dologin")
+    .form-group
+        label(for="username") Benutzername
+        input.form-control#username(type="text" data-bind="value: uname")
+    .form-group
+        label(for="password") Passwort
+        input.form-control#password(type="password" data-bine="value: pwd")
+    button.btn.btn-default(type="submit") Anmelden
+    
