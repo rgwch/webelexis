@@ -9,5 +9,5 @@ html(lang="de")
         script(data-main="app/main.js" src="lib/require.js")
     body
         include ../includes/navbar.jade
-        #content(data-bind="template: {name: router.currentPage().view, data: router.currentPage().model}")          
+        #content(data-bind='component: router.currentPage().componentName')          
     

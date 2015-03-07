@@ -5,12 +5,16 @@
     fileExclusionRegExp: /\.jade/,
     appDir: "src/main/resources/web",
     dir: "dist/web",
+    keepBuildDir: true,
     modules: [
         {
             name: "app/main"
         },
         {
-            name: "components/agenda/component-agenda"
+            name: "components/agenda/ch-webelexis-agenda"
+        },
+        {
+            name: "components/consultation/ch-webelexis-consdetail"
         }
     ]
 });

@@ -8,55 +8,36 @@
  */
 
 define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
+
+    ko.components.register('ch-webelexis-agenda', { require: 'components/agenda/ch-webelexis-agenda'});
+    ko.components.register('ch-webelexis-patlist', { require: 'components/patlist/ch-webelexis-patlist'});
+    ko.components.register('ch-webelexis-patdetail', { require: 'components/patdetail/ch-webelexis-patdetail'});
+    ko.components.register('ch-webelexis-consdetail', { require: 'components/consultation/ch-webelexis-consdetail'});
+    
+    
+    
+
     var urlMapping = {
         agenda: {
             match: /^$/,
-            page: agendaPage
+            title: 'Agenda',
+            component: 'ch-webelexis-agenda'
         },
         patients: {
             match: /^Pat$/,
-            page: patList
+            title: 'Patienten',
+            component: 'ch-webelexis-patlist'
         },
         patient: {
             match: /^patid$/,
-            page: patDetail
+            title: "Patient",
+            component: 'ch-webelexis-patdetail'
         },
         kons: {
             match: /^kons$/,
-            page: consPage
+            title: "Konsultation",
+            component: 'ch-webelexis-consdetail'
         }
-    }
-
-    ko.components.register('ch-webelexis-agenda', {
-        viewModel: {
-            require: 'component-agenda'
-        },
-        template: {
-            require: 'text!component-agenda.html'
-        }
-
-    });
-
-    function agendaPage() {
-       
-    }
-
-    function patList() {
-        return new Router.Page('Patienten', 'patlist-template', {});
-    }
-
-    function patDetail() {
-        return new Router.Page('Patient Detail', 'patdetail-template', {});
-    }
-
-    function consPage() {
-        return new Router.Page('Konsultation', 'cons-template', {});
-    }
-
-    function failPage() {
-        return new Router.Page('Will it work?', 'simple-template', {
-            error: ko.observable('Deliberate error!')
-        });
     }
 
 

@@ -15,8 +15,18 @@ app/router.js
 lib/bootstrap.min.js
 app/main.js
 
-components/agenda/component-agenda.js
+components/agenda/ch-webelexis-agenda.js
 ----------------
 lib/jquery.min.js
 lib/knockout.js
-components/agenda/component-agenda.js
+lib/text.js
+text!ch-webelexis-agenda.html
+components/agenda/ch-webelexis-agenda.js
+
+components/consultation/ch-webelexis-consdetail.js
+----------------
+lib/jquery.min.js
+lib/knockout.js
+lib/text.js
+text!ch-webelexis-consdetail.html
+components/consultation/ch-webelexis-consdetail.js

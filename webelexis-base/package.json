@@ -7,7 +7,7 @@
     "license": "EPLv2",
     "scripts": {
         "clean": "rm -r dist",
-        "build:client": "r.js -o build-debug.js && npm run compile:jade", 
+        "build:client": "npm run create:dirs && npm run compile:jade && r.js -o build-debug.js", 
         "create:dirs": "mkdir -p dist/web",
         "copy:css": "cp -R src/main/resources/web/css dist/web",
         "copy:fonts": "cp -R src/main/resources/web/fonts dist/web",
