@@ -55,6 +55,6 @@ And point your favorite browser to dist/web/index.html. Of course, not much will
 ### Build tasks
 
 * npm run  - overview over defined tasks
-* npm env  - overview over the build environment
+* npm run env  - overview over the build environment
 * npm run clean - remove the "dist" folder and all subdirs
 * npm run build:client - create the clients side of the webelexis project and copy all to the "dist/web" folder
