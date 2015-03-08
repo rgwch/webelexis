@@ -7,8 +7,9 @@
  * Main view switcher. Heavily inspired from https://github.com/lshift/knockout-routing
  */
 
-define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
+define(['app/config', 'knockout', 'app/router'], function (config, ko, Router) {
 
+    // Register KnockoutJS components
     ko.components.register('ch-webelexis-agenda', {
         require: 'components/agenda/ch-webelexis-agenda'
     });
@@ -29,7 +30,7 @@ define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
     })
 
 
-
+    // Map URLs to KnockoutJS components
     var urlMapping = {
         agenda: {
             match: /^agenda$/,
@@ -61,9 +62,14 @@ define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
 
     // This is the KO ViewModel for the whole page, which contains our router, which
     // in turn keeps track of the current page.
+    // if the user is not logged-in, they can only reach the login page.
     var topLevelModel = {
         router: new Router(urlMapping, function(){
-            return new Router.Page('Anmelden', 'ch-webelexis-login')
+            if(config.sessionID===null){
+                return new Router.Page('Anmelden', 'ch-webelexis-login')
+            }else{
+                return null
+            }
         })
     };
     // Make model accessible in global context, purely to aid debugging.

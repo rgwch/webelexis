@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'knockout', 'text!ch-webelexis-login.html'], function (bus, config, ko, html) {
+define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-login.html'], function (bus, config, Router, ko, html) {
 
     function adapt(connected) {
         if (connected) {
@@ -30,13 +30,15 @@ define(['app/eb', 'app/config', 'knockout', 'text!ch-webelexis-login.html'], fun
         })
         adapt(bus.connected)
         self.dologin = function (formElement) {
-            console.log("login " + self.uname())
+            console.log("login " + self.uname() + self.pwd())
             bus.send('ch.webelexis.auth.login', {
                 username: self.uname(),
                 password: self.pwd()
             }, function (result) {
                 if (result.status === "ok") {
-                    config.sessionid = result.sessionID;
+                    config.sessionID = result.sessionID;
+                    console.log("logged in")
+                    $(window).trigger('hashchange')
                 } else {
                     console.log("login failed")
                 }
