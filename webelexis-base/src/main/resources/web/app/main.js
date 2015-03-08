@@ -35,7 +35,7 @@ define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
             component: 'ch-webelexis-agenda'
         },
         patients: {
-            match: /^Pat$/,
+            match: /^patlist$/,
             title: 'Patienten',
             component: 'ch-webelexis-patlist'
         },

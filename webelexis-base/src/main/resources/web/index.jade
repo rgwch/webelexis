@@ -8,6 +8,7 @@ html(lang="de")
         script(src="app/requirejs.config.js")
         script(data-main="app/main.js" src="lib/require.js")
     body
-        include ../includes/navbar.jade
-        #content(data-bind='component: router.currentPage().componentName')          
+        .container
+            include ../includes/navbar.jade
+            #content(data-bind='component: router.currentPage().componentName')          
     

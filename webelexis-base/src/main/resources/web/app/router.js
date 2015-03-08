@@ -40,6 +40,8 @@ define(['knockout', 'jquery'], function (ko, $) {
                 if (matches) {
                     // Pass the group matches from the regex.
                   //  return mapping.page.apply(this, matches.slice(1));
+                    $("#mainmenu").children(".active").removeClass("active")
+                    $("#mainmenu").find("[href$="+path+"]").parent().addClass("active")
                     return new Router.Page(mapping.title, mapping.component)
                 }
             }
