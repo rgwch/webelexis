@@ -5,18 +5,18 @@ nav.navbar.navbar-default
         button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#webelexis-main-collapsed")
             span.sr-only Menü erweitern
             span.glyphicon.glyphicon-menu-hamburger
-        a.navbar-brand(href="#login")
+        a.navbar-brand(href="http://github.com/rgwch/webelexis")
             img(alt="webelexis" src="img/elexis_logo.png" style="width: 30px; height: 30px")
     .collapse.navbar-collapse#webelexis-main-collapsed
         ul.nav.navbar-nav#mainmenu
-            li#agenda.active
+            li
                 a(href="#agenda") Agenda
-                    span.sr-only (current)
-            li#patlist
+                    span.sr-only#mainmenu_marker  (current)
+            li
                 a(href="#patlist") Patienten
-            li#patid
+            li
                 a(href="#patid") Patient Detail
-            li#kons
+            li
                 a(href="#kons") Konsultation
                     
                 

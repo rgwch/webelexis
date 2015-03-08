@@ -34,18 +34,18 @@ define(['knockout', 'jquery'], function (ko, $) {
         }
 
         function pageFromMapping(path) {
-            for (key in self.urlMapping) {
+            for (var key in self.urlMapping) {
                 var mapping = self.urlMapping[key];
                 var matches = mapping.match.exec(path);
                 if (matches) {
-                    // Pass the group matches from the regex.
-                  //  return mapping.page.apply(this, matches.slice(1));
+                    // mark the appropriate menu item as selected
                     $("#mainmenu").children(".active").removeClass("active")
-                    $("#mainmenu").find("[href$="+path+"]").parent().addClass("active")
+                    var marker = $("#mainmenu_marker").detach()
+                    $("#mainmenu").find("[href$=" + path + "]").append(marker).parent().addClass("active")
                     return new Router.Page(mapping.title, mapping.component)
                 }
             }
-            return new Router.Page('404 - Not Found', '404-template', {});
+            return new Router.Page('Nicht gefunden', 'ch-webelexis-page404');
         }
 
         // Manually trigger initial load of the relevant start page.

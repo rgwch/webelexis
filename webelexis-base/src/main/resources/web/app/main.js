@@ -24,7 +24,9 @@ define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
     ko.components.register('ch-webelexis-login', {
         require: 'components/login/ch-webelexis-login'
     });
-
+    ko.components.register('ch-webelexis-page404', {
+        require: 'components/page404/ch-webelexis-page404'
+    })
 
 
 
@@ -60,7 +62,9 @@ define(['knockout', 'app/router', 'bootstrap'], function (ko, Router) {
     // This is the KO ViewModel for the whole page, which contains our router, which
     // in turn keeps track of the current page.
     var topLevelModel = {
-        router: new Router(urlMapping)
+        router: new Router(urlMapping, function(){
+            return new Router.Page('Anmelden', 'ch-webelexis-login')
+        })
     };
     // Make model accessible in global context, purely to aid debugging.
     window.topLevelModel = topLevelModel
