@@ -4,6 +4,19 @@
  */
 define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-login.html'], function (bus, config, Router, ko, html) {
 
+    $("#navbar-button").bind("click",function(){
+        if(config.sessionID!==null){
+            bus.send('ch.webelexis.auth.logout',{ "sessionID": config.sessionID}, function(result){
+                if(result.status==="ok"){
+                    config.sessionID=null
+                    $("#navbar-button").text("Anmelden")
+                    $(window).trigger("hashchange")
+                }else{
+                    window.alert("Fehler beim Abmelden")
+                }
+            })
+        }
+    })
     function adapt(connected) {
         if (connected) {
             console.log("eventBus open")
@@ -44,7 +57,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-log
                 if (result.status === "ok") {
                     config.sessionID = result.sessionID;
                     console.log("logged in")
-                    $("#navbar-info").text("angemeldet als: "+self.uname())
+                    $("#navbar-button").text(self.uname()+" abmelden")
                     $(window).trigger('hashchange')
                 } else {
                     console.log("login failed")

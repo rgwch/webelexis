@@ -11,7 +11,7 @@ define(['app/config', 'vertxbus'], function (config) {
     var bus = null;
     var reopen = setInterval(function () {
         openBus()
-    }, 200);
+    }, 4000);
     var listeners = []
 
     function state() {
@@ -20,7 +20,9 @@ define(['app/config', 'vertxbus'], function (config) {
 
     function openBus() {
         if (state() === false) {
-            bus = new vertx.EventBus(config.eventbusUrl)
+            //bus = new vertx.EventBus(config.eventbusUrl)
+            var url="http://"+location.host+"/eventbus";
+            bus=new vertx.EventBus(url)
             bus.onopen = function () {
                 clearInterval(reopen)
                 config.connected = true
@@ -34,14 +36,16 @@ define(['app/config', 'vertxbus'], function (config) {
                     listeners[i]("close")
                 }
                 bus = null
+                clearInterval(reopen)
                 reopen = setInterval(function () {
                     openBus()
-                }, 3000)
+                }, 4000)
             }
         }
     }
 
-
+    openBus()
+    
     return {
         connected: function () {
             return state()
