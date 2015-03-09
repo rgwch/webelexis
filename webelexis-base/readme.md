@@ -30,6 +30,7 @@ Then continue with:
     npm install -g requirejs
     npm install -g marked
     npm install -g bower
+    npm install -g mocha
 
 (on some systems, you'll have to prepend each line with "sudo", as in: 'sudo npm install -g jade')
 
