@@ -20,7 +20,8 @@ define(['knockout', 'jquery'], function (ko, $) {
             // Note that when URL ends with just #, some browsers return '' for location.hash, others return '#'
             // but either way substr(1) will return '' which is what we want.
             var path = location.hash.substr(1).split('?')[0];
-
+            // ask the main script, if it wants to filter the request. If so, use the page from the filter, 
+            // otherweise use the urlMapping as provided in the constructor.
             var pageFromFilter = filterPath(path);
             if (pageFromFilter) {
                 self.currentPage(pageFromFilter);
@@ -33,13 +34,14 @@ define(['knockout', 'jquery'], function (ko, $) {
             return (typeof (filter) !== 'undefined') ? filter(path) : null;
         }
 
+        // Select the component to display according to the path
         function pageFromMapping(path) {
             for (var key in self.urlMapping) {
                 var mapping = self.urlMapping[key];
                 var matches = mapping.match.exec(path);
+                $("#mainmenu").children(".active").removeClass("active")
                 if (matches) {
                     // mark the appropriate menu item as selected
-                    $("#mainmenu").children(".active").removeClass("active")
                     var marker = $("#mainmenu_marker").detach()
                     $("#mainmenu").find("[href$=" + path + "]").append(marker).parent().addClass("active")
                     return new Router.Page(mapping.title, mapping.component)

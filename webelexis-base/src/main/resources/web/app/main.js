@@ -7,7 +7,7 @@
  * Main view switcher. Heavily inspired from https://github.com/lshift/knockout-routing
  */
 
-define(['app/config', 'knockout', 'app/router'], function (config, ko, Router) {
+define(['app/config', 'knockout', 'app/router', 'bootstrap'], function (config, ko, Router) {
 
     // Register KnockoutJS components
     ko.components.register('ch-webelexis-agenda', {

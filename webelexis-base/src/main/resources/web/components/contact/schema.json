@@ -38,7 +38,6 @@
     },
 
     "consultations": [
-
         {
             "datetime": 123456789,
             "reasons": ["hyperhidrosis", "headache"],
@@ -46,7 +45,7 @@
             "mandator": "chef",
             "responsible": "chef",
             "billing": "kvg",
-            "text": "lorem ipsum sit amet",
+            "text": "lorem ipsum sit amet.",
             "treatment": {
                 "ibidum": {
                     "for": 1,
@@ -56,10 +55,8 @@
                     "for": 2,
                     "adm": "up to 4x1"
                 }
-
             }
-            }
-
-        ]
+        }
+     ]
 
 }

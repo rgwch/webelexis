@@ -1,11 +1,14 @@
-h2 Anmelden
-Sie müssen sich zuerst im System anmelden, bevor Sie diese Funktionen aufrufen können.
-form.form(data-bind="submit: dologin")
-    .form-group
-        label(for="username") Benutzername
-        input.form-control#username(type="text" data-bind="value: uname")
-    .form-group
-        label(for="password") Passwort
-        input.form-control#password(type="text" data-bind="value: pwd")
-    button.btn.btn-default#loginbutton(type="submit" disabled="disabled") Warte auf Server...
-    
+.panel.panel-info#login-head
+    .panel-heading
+        .panel-title 
+            h3 Anmeldung
+        p#login-message Sie müssen sich zuerst im System anmelden.
+    .panel-body
+        form.form(data-bind="submit: dologin")
+            .form-group
+                label(for="username") Benutzername
+                input.form-control#username(type="text" data-bind="value: uname")
+            .form-group
+                label(for="password") Passwort
+                input.form-control#password(type="password" data-bind="value: pwd")
+            button.btn.btn-default#loginbutton(type="submit" disabled="disabled") Warte auf Server...
