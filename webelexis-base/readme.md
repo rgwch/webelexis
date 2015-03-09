@@ -29,6 +29,7 @@ Then continue with:
     npm install -g jade
     npm install -g requirejs
     npm install -g marked
+    npm install -g bower
 
 (on some systems, you'll have to prepend each line with "sudo", as in: 'sudo npm install -g jade')
 
