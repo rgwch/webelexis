@@ -29,45 +29,25 @@ define(['app/config', 'knockout', 'app/router', 'bootstrap'], function (config, 
         require: 'components/page404/ch-webelexis-page404'
     })
 
-
-    // Map URLs to KnockoutJS components
-    var urlMapping = {
-        agenda: {
-            match: /^agenda$/,
-            title: 'Agenda',
-            component: 'ch-webelexis-agenda'
-        },
-        patients: {
-            match: /^patlist$/,
-            title: 'Patienten',
-            component: 'ch-webelexis-patlist'
-        },
-        patient: {
-            match: /^patid$/,
-            title: "Patient",
-            component: 'ch-webelexis-patdetail'
-        },
-        kons: {
-            match: /^kons$/,
-            title: "Konsultation",
-            component: 'ch-webelexis-consdetail'
-        },
-        login: {
-            match: /^login$/,
-            title: "Webelexis-Anmeldung",
-            component: 'ch-webelexis-login'
+    var urlMapping = {}
+    var modules = config.modules
+    for (var key in modules) {
+        var page = modules[key]
+        if (page.active) {
+            urlMapping[key] = page
+            if (page.menuItem) {
+                $("#mainmenu").append('<li><a href="#' + page.baseUrl + '">' + page.title + '</a></li>')
+            }
         }
     }
-
-
     // This is the KO ViewModel for the whole page, which contains our router, which
     // in turn keeps track of the current page.
     // if the user is not logged-in, they can only reach the login page.
     var topLevelModel = {
-        router: new Router(urlMapping, function(){
-            if(config.sessionID===null){
+        router: new Router(urlMapping, function () {
+            if (config.sessionID === null) {
                 return new Router.Page('Anmelden', 'ch-webelexis-login')
-            }else{
+            } else {
                 return null
             }
         })
