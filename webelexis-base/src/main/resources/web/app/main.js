@@ -9,31 +9,14 @@
 
 define(['app/config', 'knockout', 'app/router', 'bootstrap'], function (config, ko, Router) {
 
-    // Register KnockoutJS components
-    ko.components.register('ch-webelexis-agenda', {
-        require: 'components/agenda/ch-webelexis-agenda'
-    });
-    ko.components.register('ch-webelexis-patlist', {
-        require: 'components/patlist/ch-webelexis-patlist'
-    });
-    ko.components.register('ch-webelexis-patdetail', {
-        require: 'components/patdetail/ch-webelexis-patdetail'
-    });
-    ko.components.register('ch-webelexis-consdetail', {
-        require: 'components/consultation/ch-webelexis-consdetail'
-    });
-    ko.components.register('ch-webelexis-login', {
-        require: 'components/login/ch-webelexis-login'
-    });
-    ko.components.register('ch-webelexis-page404', {
-        require: 'components/page404/ch-webelexis-page404'
-    })
-
     var urlMapping = {}
     var modules = config.modules
     for (var key in modules) {
         var page = modules[key]
         if (page.active) {
+            ko.components.register(page.component, {
+                require: page.location + '/' + page.component
+            })
             urlMapping[key] = page
             if (page.menuItem) {
                 $("#mainmenu").append('<li><a href="#' + page.baseUrl + '">' + page.title + '</a></li>')

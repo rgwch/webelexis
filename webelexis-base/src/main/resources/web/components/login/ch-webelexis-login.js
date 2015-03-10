@@ -11,6 +11,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-log
                     config.sessionID=null
                     $("#navbar-button").text("Anmelden")
                     $(window).trigger("hashchange")
+                    window.location.reload(true)
                 }else{
                     window.alert("Fehler beim Abmelden")
                 }
