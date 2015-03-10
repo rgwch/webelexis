@@ -20,7 +20,9 @@ This will install npm as well.  On Debian-/Ubuntu like linuxes, try:
 
 _Warning: "`apt-get install nodejs`" from the original ubuntu repository (i.e. WITHOUT previously adding chris lea's PPA) did not work on my system. Instead it produced a "weird error" (indeed, this was npm's error message)._
 
-	
+On Arch/Manjaro Linuxes, it is quite easy:
+
+       sudo pacman -S nodejs
 
 On other systems, refer to the documentation of node.js on how to install node and npm.
 
