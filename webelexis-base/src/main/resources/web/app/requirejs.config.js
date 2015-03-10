@@ -20,8 +20,5 @@ var require = {
         "knockout": {
             deps: ["jquery"]
         }
-    },
-    config: {
-        eventBusUrl: "http://localhost:2015/eventbus"
-    }
+    },  
 };

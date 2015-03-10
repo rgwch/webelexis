@@ -6,15 +6,18 @@
     appDir: "src/main/resources/web",
     dir: "dist/web",
     keepBuildDir: true,
-    modules: [
-        {
-            name: "app/main"
-        },
-        {
-            name: "components/agenda/ch-webelexis-agenda"
-        },
-        {
-            name: "components/consultation/ch-webelexis-consdetail"
-        }
-    ]
+    modules: [{
+        name: "app/main"
+    }, {
+        name: "components/agenda/ch-webelexis-agenda"
+    }, {
+        name: "components/consultation/ch-webelexis-consdetail"
+    }, {
+        name: 'components/login/ch-webelexis-login'
+    }, {
+        name: 'components/patdetail/ch-webelexis-patdetail'
+    }, {
+        name: 'components/patlist/ch-webelexis-patlist'
+    }]
 });
+
