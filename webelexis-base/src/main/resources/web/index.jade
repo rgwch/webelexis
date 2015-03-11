@@ -12,6 +12,7 @@ html(lang="de")
         script(data-main="app/main.js" src="lib/require.js")
     body
         .container
-            include ../includes/navbar.jade
+            // include ../includes/navbar.jade
+            #menu(data-bind="component: {name: 'ch-webelexis-menubar', params: {menu: 'mainMenu'}}")
             #content(data-bind='component: router.currentPage().componentName')          
     

@@ -6,9 +6,9 @@
 define(['knockout', 'jquery'], function (ko, $) {
 
     // Top-level KO ViewModel that detects URL changes and shows the relevant page.
-    function Router(urlMapping, filter) {
+    function Router(menuArray, filter) {
         var self = this;
-        this.urlMapping = urlMapping;
+        this.menu = menuArray;
 
         // We swap in Page instances here to make them the current page.
         this.currentPage = ko.observable(null);
@@ -36,15 +36,17 @@ define(['knockout', 'jquery'], function (ko, $) {
 
         // Select the component to display according to the path
         function pageFromMapping(path) {
-            for (var key in self.urlMapping) {
-                var mapping = self.urlMapping[key];
-                var matches = mapping.match.exec(path);
-                $("#mainmenu").children(".active").removeClass("active")
-                if (matches) {
-                    // mark the appropriate menu item as selected
-                    var marker = $("#mainmenu_marker").detach()
-                    $("#mainmenu").find("[href$=" + path + "]").append(marker).parent().addClass("active")
-                    return new Router.Page(mapping.title, mapping.component)
+            for (var i = 0; i < self.menu.length; i++) {
+                var mapping = self.menu[i];
+                if (mapping.match !== undefined) {
+                    var matches = mapping.match.exec(path);
+                    if (matches) {
+                        // mark the appropriate menu item as selected
+                        $("#mainmenu").children(".active").removeClass("active")
+                        var marker = $("#mainmenu_marker").detach()
+                        $("#mainmenu").find("[href$=" + path + "]").append(marker).parent().addClass("active")
+                        return new Router.Page(mapping.title, mapping.component)
+                    }
                 }
             }
             return new Router.Page('Nicht gefunden', 'ch-webelexis-page404');
