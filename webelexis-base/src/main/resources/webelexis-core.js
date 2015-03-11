@@ -99,10 +99,10 @@ if (config.bridge === undefined) {
 var httpServer = vertx.createHttpServer();
 httpServer.requestHandler(function(request) {
     log.info("got request: " + request.method()+" "+request.path())
-    if (request.path() == "/") {
+    if (request.path() === "/") {
         request.response.sendFile(config.bridge.webroot+"/index.html");
         console.log(config.bridge.webroot+"/index.html")
-    } else if (request.path().indexOf("..") != -1) {
+    } else if (request.path().indexOf("..") !== -1) {
         request.response.statusCode(404)
         request.response.end();
     } else {
