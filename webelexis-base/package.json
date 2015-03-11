@@ -10,7 +10,8 @@
         "build:client": "npm run create:dirs && (npm run compile:jade & r.js -o build-debug.js)", 
         "create:dirs": "mkdir -p dist/web",
         "compile:jade": "jade src/main/resources/web -o dist/web",
-        "verticle": "cp src/main/resources/webelexis-core.js dist && cd dist && vertx run webelexis-core.js",
+        "copy:java": "cp -R src/main/java/ dist",
+        "verticle": "npm run copy:java && cp src/main/resources/webelexis-core.js dist && cd dist && vertx run webelexis-core.js",
         "start": "npm run build:client && npm run verticle",
         "env": "env"
     },

@@ -66,11 +66,11 @@ if (config.auth === undefined) {
         "persistor_address": "ch.webelexis.nosql",
     }
 }
-container.deployModule("io.vertx~mod-auth-mgr~2.0.0-final", config.auth, function (err, id) {
+container.deployVerticle("ch/rgw/vertx/AuthManager.java", config.auth, function (err, id) {
     if (err) {
         log.fatal("could not launch authenticate module " + err.getMessage());
     } else {
-        log.info("authenticator module launched with id: " + id);
+        log.info("authenticator verticle launched with id: " + id);
     }
 
 });
