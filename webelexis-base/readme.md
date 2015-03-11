@@ -26,7 +26,7 @@ On Arch/Manjaro Linuxes, it is quite easy:
 
 On other systems, refer to the documentation of node.js on how to install node and npm.
 
-## Create and launch!
+### Create and launch!
 
 Checkout webelexis and let npm fetch and install all you need:
 	  
