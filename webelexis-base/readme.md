@@ -26,27 +26,23 @@ On Arch/Manjaro Linuxes, it is quite easy:
 
 On other systems, refer to the documentation of node.js on how to install node and npm.
 
-Then continue with:
-
-    npm install -g jade
-    npm install -g requirejs
-    npm install -g marked
-    npm install -g bower
-    npm install -g mocha
-
-(on some systems, you'll have to prepend each line with "sudo", as in: 'sudo npm install -g jade')
-
-check out webelexis
-
+Then checkout webelexis and let npm fetch and install all you need:
 	git clone https://github.com/rgw.ch/webelexis
-
+	cd webelexis/webelexis-base
+	npm install
+    
 Try it out with:
     
-	cd webelexis/webelexis-base
 	npm run build:client
 
 And point your favorite browser to dist/web/index.html. Of course, not much will happen here. But if everything was okay, you should see the main-menu structure of webelexis.
 
+If you have vertx installed, you can also try:
+
+     npm start
+     
+This will first run build:client, then build and launch the server. You should then be able to point your browser to `localhost:2015`and see the life version auf webelexis (which is not much at this time)
+    
 ### Folder layout
 
 - src/** 
