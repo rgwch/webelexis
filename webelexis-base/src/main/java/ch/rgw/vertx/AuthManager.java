@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ ** This file was originally published at http://github.com/vertx-x/mod-auth-mgr under the
+ ** license mentioned above.
+ ** Modifications for role based authentication
+ ** (c) 2015 by G. Weirich
+*/
+
 package ch.rgw.vertx;
 
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.json.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,10 +57,12 @@ public class AuthManager extends BusModBase {
   private static final class LoginInfo {
     final long timerID;
     final String sessionID;
+    final JsonArray roles;
 
-    private LoginInfo(long timerID, String sessionID) {
+    private LoginInfo(long timerID, String sessionID, JsonArray roles) {
       this.timerID = timerID;
       this.sessionID = sessionID;
+      this.roles=roles;
     }
   }
 
@@ -116,7 +125,8 @@ public class AuthManager extends BusModBase {
       public void handle(Message<JsonObject> reply) {
 
         if (reply.body().getString("status").equals("ok")) {
-          if (reply.body().getObject("result") != null) {
+          JsonObject result=reply.body().getObject("result");
+          if (result != null) {
 
             // Check if already logged in, if so logout of the old session
             LoginInfo info = logins.get(username);
@@ -133,8 +143,8 @@ public class AuthManager extends BusModBase {
               }
             });
             sessions.put(sessionID, username);
-            logins.put(username, new LoginInfo(timerID, sessionID));
-            JsonObject jsonReply = new JsonObject().putString("sessionID", sessionID);
+            logins.put(username, new LoginInfo(timerID, sessionID, result.getArray("roles")));
+            JsonObject jsonReply = new JsonObject().putString("sessionID", sessionID).putArray("roles",result.getArray("roles"));
             sendOK(message, jsonReply);
           } else {
             // Not found
@@ -181,7 +191,9 @@ public class AuthManager extends BusModBase {
     // The user is always authorised if they are logged in
 
     if (username != null) {
-      JsonObject reply = new JsonObject().putString("username", username);
+        LoginInfo li=logins.get(username);
+        
+      JsonObject reply = new JsonObject().putString("username", username).putArray("roles",li.roles);
       sendOK(message, reply);
     } else {
       sendStatus("denied", message);
