@@ -26,10 +26,13 @@ On Arch/Manjaro Linuxes, it is quite easy:
 
 On other systems, refer to the documentation of node.js on how to install node and npm.
 
-Then checkout webelexis and let npm fetch and install all you need:
-	git clone https://github.com/rgw.ch/webelexis
-	cd webelexis/webelexis-base
-	npm install
+## Create and launch!
+
+Checkout webelexis and let npm fetch and install all you need:
+	  
+	  git clone https://github.com/rgw.ch/webelexis
+	  cd webelexis/webelexis-base
+	  npm install
     
 Try it out with:
     
