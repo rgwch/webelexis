@@ -75,6 +75,14 @@ container.deployVerticle("ch/rgw/vertx/AuthManager.java", config.auth, function 
 
 });
 
+container.deployVerticle("ch.webelexis.agenda.Server", config, function (err, id) {
+    if (err) {
+        log.fatal("could not launch agenda module " + err.getMessage());
+    } else {
+        log.info("agenda verticle launched with id: " + id);
+    }
+});
+
 if (config.bridge === undefined) {
     config.bridge = {
         "webroot": "web",
