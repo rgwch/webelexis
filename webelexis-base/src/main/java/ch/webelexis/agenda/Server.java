@@ -1,4 +1,5 @@
 /**
+ * This file is part of Webelexis
  * (c) 2015 by G. Weirich 
  */
 package ch.webelexis.agenda;
@@ -9,20 +10,13 @@ import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
 /**
- * The main Verticle of Webelexis-Agenda. Launch necessary modules, create a
- * http- and sockjs- Server, and setup the bridge from sockjs to the vertx
- * eventbus.
- * 
+ * The main Verticle of Webelexis-Agenda. 
  * @author gerry
  * 
  */
 public class Server extends Verticle {
 	static Logger log;
 
-	/**
-	 * This method is always the entry point of a Vert.x verticle. The
-	 * "container" object exists here (not yet in the constructor!)
-	 */
 	@Override
 	public void start() {
 		// load the configuration as given to 'vertx -conf <config-file>'

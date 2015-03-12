@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>dist</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/dist</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

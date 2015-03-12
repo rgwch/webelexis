@@ -2,6 +2,7 @@
  * This file is part of Webelexis
  * (c) 2015 by G. Weirich
  */
+
 package ch.webelexis.agenda;
 
 import java.util.ArrayList;
