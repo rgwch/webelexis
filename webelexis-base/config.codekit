@@ -15,7 +15,7 @@
 		},
 	"\/dist\/web\/app\/config.js": {
 		"fileType": 64,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/app\/config.js",
 		"outputAbbreviatedPath": "\/dist\/web\/app\/config.js",
@@ -35,20 +35,9 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
-	"\/dist\/web\/app\/main.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/app\/main.js",
-		"outputAbbreviatedPath": "\/dist\/web\/app\/main.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
 	"\/dist\/web\/app\/requirejs.config.js": {
 		"fileType": 64,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/app\/requirejs.config.js",
 		"outputAbbreviatedPath": "\/dist\/web\/app\/requirejs.config.js",
@@ -59,7 +48,7 @@
 		},
 	"\/dist\/web\/app\/router.js": {
 		"fileType": 64,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/app\/router.js",
 		"outputAbbreviatedPath": "\/dist\/web\/app\/router.js",
@@ -95,6 +84,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/dist\/web\/ch-webelexis-menubar.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/ch-webelexis-menubar.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/dist\/web\/ch-webelexis-page404.html": {
 		"fileType": 8192,
 		"ignore": 1,
@@ -122,45 +120,12 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js",
-		"outputAbbreviatedPath": "\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/web\/components\/consultation\/ch-webelexis-consdetail.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/components\/consultation\/ch-webelexis-consdetail.js",
-		"outputAbbreviatedPath": "\/dist\/web\/components\/consultation\/ch-webelexis-consdetail.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
 	"\/dist\/web\/components\/contact\/contact.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/components\/contact\/contact.js",
 		"outputAbbreviatedPath": "\/dist\/web\/components\/contact\/contact.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/web\/components\/login\/ch-webelexis-login.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/components\/login\/ch-webelexis-login.js",
-		"outputAbbreviatedPath": "\/dist\/web\/components\/login\/ch-webelexis-login.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -183,28 +148,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/components\/page404\/ch-webelexis-page404.js",
 		"outputAbbreviatedPath": "\/dist\/web\/components\/page404\/ch-webelexis-page404.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/web\/components\/patdetail\/ch-webelexis-patdetail.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/components\/patdetail\/ch-webelexis-patdetail.js",
-		"outputAbbreviatedPath": "\/dist\/web\/components\/patdetail\/ch-webelexis-patdetail.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/web\/components\/patlist\/ch-webelexis-patlist.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/components\/patlist\/ch-webelexis-patlist.js",
-		"outputAbbreviatedPath": "\/dist\/web\/components\/patlist\/ch-webelexis-patlist.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -241,12 +184,12 @@
 		"fileType": 32768,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"initialSize": 670,
+		"initialSize": 581,
 		"inputAbbreviatedPath": "\/dist\/web\/img\/elexis_logo.png",
 		"outputAbbreviatedPath": "\/dist\/web\/img\/elexis_logo.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"processed": 1
+		"processed": 0
 		},
 	"\/dist\/web\/index.html": {
 		"fileType": 8192,
@@ -913,7 +856,7 @@
 	"javascriptCreateSourceMap": 1,
 	"javascriptOutputStyle": 0,
 	"javascriptSyntaxCheckerStyle": 1,
-	"jsCheckerReservedNamesString": "console,vertx,define",
+	"jsCheckerReservedNamesString": "console,vertx,define,require",
 	"jsHintFlags2": {
 		"asi": {
 			"active": 1,

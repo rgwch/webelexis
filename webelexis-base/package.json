@@ -1,22 +1,26 @@
 {
     "name": "webelexis-base",
-    "version": "0.0.1-beta",
+    "version": "0.0.2",
     "description": "base module for webelexis",
     "author": "weirich@elexis.ch",
     "private": true,
-    "license": "EPLv2",
+    "license": "EPL",
     "scripts": {
-        "clean": "rm -r dist",
-        "build:client": "npm run create:dirs && (npm run compile:jade & r.js -o build-debug.js)", 
-        "create:dirs": "mkdir -p dist/web",
+        "clean": "rimraf dist",
+        "build:client": "npm run create:dirs && (npm run compile:jade & r.js -o build-debug.js)",
+        "create:dirs": "mkdirp dist/web",
         "compile:jade": "jade src/main/resources/web -o dist/web",
-        "verticle": "cp src/main/resources/webelexis-core.js dist && cd dist && vertx run webelexis-core.js",
+        "copy:java": "ncp src/main/java/ dist",
+        "verticle": "npm run copy:java && ncp src/main/resources/webelexis-core.js dist && cd dist && vertx run webelexis-core.js",
         "start": "npm run build:client && npm run verticle",
         "env": "env"
     },
     "devDependencies": {
         "jade": ">=1.9.0",
         "requirejs": ">=2.1.16",
-        "bootstrap": ">=3.3.2"
+        "bootstrap": ">=3.3.2",
+        "rimraf": "latest",
+        "mkdirp": "latest",
+        "ncp": "latest"
     }
 }

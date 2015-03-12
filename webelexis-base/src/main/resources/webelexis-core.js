@@ -66,11 +66,11 @@ if (config.auth === undefined) {
         "persistor_address": "ch.webelexis.nosql",
     }
 }
-container.deployModule("io.vertx~mod-auth-mgr~2.0.0-final", config.auth, function (err, id) {
+container.deployVerticle("ch/rgw/vertx/AuthManager.java", config.auth, function (err, id) {
     if (err) {
         log.fatal("could not launch authenticate module " + err.getMessage());
     } else {
-        log.info("authenticator module launched with id: " + id);
+        log.info("authenticator verticle launched with id: " + id);
     }
 
 });
@@ -99,15 +99,15 @@ if (config.bridge === undefined) {
 var httpServer = vertx.createHttpServer();
 httpServer.requestHandler(function(request) {
     log.info("got request: " + request.method()+" "+request.path())
-    if (request.path() == "/") {
+    if (request.path() === "/") {
         request.response.sendFile(config.bridge.webroot+"/index.html");
-        console.log(config.bridge.webroot+"/index.html")
-    } else if (request.path().indexOf("..") != -1) {
+        //console.log(config.bridge.webroot+"/index.html")
+    } else if (request.path().indexOf("..") !== -1) {
         request.response.statusCode(404)
         request.response.end();
     } else {
-        console.log(config.bridge.webroot+"/"+request.path())
-        request.response.sendFile(config.bridge.webroot + "/" + request.path());
+        //console.log(config.bridge.webroot+request.path())
+        request.response.sendFile(config.bridge.webroot+request.path());
     }
 });
 var sockJSServer = vertx.createSockJSServer(httpServer);
