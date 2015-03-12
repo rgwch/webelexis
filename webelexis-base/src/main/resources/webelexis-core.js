@@ -66,7 +66,7 @@ if (config.auth === undefined) {
         "persistor_address": "ch.webelexis.nosql",
     }
 }
-container.deployVerticle("ch/rgw/vertx/AuthManager.java", config.auth, function (err, id) {
+container.deployVerticle("ch.rgw.vertx.AuthManager", config.auth, function (err, id) {
     if (err) {
         log.fatal("could not launch authenticate module " + err.getMessage());
     } else {
