@@ -101,13 +101,13 @@ httpServer.requestHandler(function(request) {
     log.info("got request: " + request.method()+" "+request.path())
     if (request.path() === "/") {
         request.response.sendFile(config.bridge.webroot+"/index.html");
-        console.log(config.bridge.webroot+"/index.html")
+        //console.log(config.bridge.webroot+"/index.html")
     } else if (request.path().indexOf("..") !== -1) {
         request.response.statusCode(404)
         request.response.end();
     } else {
-        console.log(config.bridge.webroot+"/"+request.path())
-        request.response.sendFile(config.bridge.webroot + "/" + request.path());
+        //console.log(config.bridge.webroot+request.path())
+        request.response.sendFile(config.bridge.webroot+request.path());
     }
 });
 var sockJSServer = vertx.createSockJSServer(httpServer);
