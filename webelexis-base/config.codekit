@@ -237,15 +237,6 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/dist\/web\/css\/datepicker3.css": {
-		"fileType": 16,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/css\/datepicker3.css",
-		"outputAbbreviatedPath": "No Output Path",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0
-		},
 	"\/dist\/web\/css\/style.css": {
 		"fileType": 16,
 		"ignore": 0,
@@ -303,28 +294,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap.min.js",
 		"outputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap.min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/web\/lib\/datepicker.de.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/lib\/datepicker.de.js",
-		"outputAbbreviatedPath": "\/dist\/web\/lib\/datepicker.de.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/web\/lib\/datepicker.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/lib\/datepicker.js",
-		"outputAbbreviatedPath": "\/dist\/web\/lib\/datepicker.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -415,6 +384,15 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
+		},
+	"\/readme.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/readme.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
 		},
 	"\/readme.md": {
 		"enableFootnoteSupport": 0,

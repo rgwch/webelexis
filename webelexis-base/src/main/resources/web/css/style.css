@@ -1,3 +1,16 @@
 .red {
     color:red;
 }
+.greyed{
+    background-color: #eee;
+    border-bottom: 1px solid blue;
+    border-top: 1px solid blue;
+}
+
+.available{
+    background-color: #A7D2A7;
+}
+
+.occupied{
+    background-color: #FF9494;
+}

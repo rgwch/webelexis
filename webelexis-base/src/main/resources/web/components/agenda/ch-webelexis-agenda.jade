@@ -1,15 +1,11 @@
 .row
-    .panel.panel-primary.col-sm-6
-        .panel-heading
-            .glyphicon.glyphicon-chevron-left(data-bind="click: yesterday")
-            span Datum
-            .glyphicon.glyphicon-chevron-right(data-bind="click: tomorrow")
-            .form-group#datumfeld
-                .input-group.date#datum(data-bind="event: {changeDate: load}")
-                    input.form-control.input-sm(type="text")
-                    span.input-group-addon
-                        i.glyphicon.glyphicon-th
-        .panel-body
+    .panel.panel-default.col-sm-6
+        .c1
+            form.form.form-inline
+                span.glyphicon.glyphicon-chevron-left(data-bind="click: yesterday")
+                input#agendaDatum(data-bind="value: actDate, event: {blur: load}" type="date")
+                span.glyphicon.glyphicon-chevron-right(data-bind="click: tomorrow")
+        .c1
             .row#appntlist(data-bind="foreach: appointments")
                 .col-xs-12.col-md-6
                     .well.well-sm(data-bind="text:displayText, css: displayClass, click: $parent.expand")
@@ -27,35 +23,35 @@
                             button.btn.btn-primary(type="submit") Termin vereinbaren
                             button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
     .panel.panel-info.col-sm-6
-        .panel-heading
-            h3.panel-title Termin direkt online eintragen
-        .panel-body
-            p.
-                Wählen Sie bitte zunächst im Feld links oben das gewünschte
-                Datum aus. Klicken Sie dann auf einen grünen Bereich, um einen
-                Termin zu vereinbaren. Wenn kein grüner Bereich vorhanden ist,
-                sind an diesem Tag keine Termine frei.
-            p.
-                In dringenden Fällen, oder falls etwas nicht klappt, können
-                Sie selbstverständlich weiterhin auch telefonisch Termine
-                vereinbaren.
-            p Unser Telefon 052 624 40 77 wird zu folgenden Zeiten bedient:
-            table.table.table-bordered
-                tr
-                    td(style="padding-right: 5px") Montag, Dienstag und Freitag
-                    td 08:00 bis 12:00 und 13:00 bis 17:00 Uhr
-                tr
-                    td Mittwoch
-                    td 09:00 bis 13:00 und 14:00 bis 18:00 Uhr
-                tr
-                    td Donnerstag
-                    td 08:00 bis 13:00 Uhr
-                tr
-                    td Samstag
-                    td 09:00 bis 12:00 Uhr
-        .panel-footer
-            p.small.
-                Bitte beachten Sie, dass wir bei einer
-                Terminvereinbarung über diese Website Ihre IP-Adresse und weitere
-                Angaben speichern. Sämtliche Daten werden nach dem vereinbarten
-                Termin wieder gelöscht.
+            .panel-heading
+                h3.panel-title Termin direkt online eintragen
+            .panel-body
+                p.
+                    Wählen Sie bitte zunächst im Feld links oben das gewünschte
+                    Datum aus. Klicken Sie dann auf einen grünen Bereich, um einen
+                    Termin zu vereinbaren. Wenn kein grüner Bereich vorhanden ist,
+                    sind an diesem Tag keine Termine frei.
+                p.
+                    In dringenden Fällen, oder falls etwas nicht klappt, können
+                    Sie selbstverständlich weiterhin auch telefonisch Termine
+                    vereinbaren.
+                p Unser Telefon 052 624 40 77 wird zu folgenden Zeiten bedient:
+                table.table.table-bordered
+                    tr
+                        td(style="padding-right: 5px") Montag, Dienstag und Freitag
+                        td 08:00 bis 12:00 und 13:00 bis 17:00 Uhr
+                    tr
+                        td Mittwoch
+                        td 09:00 bis 13:00 und 14:00 bis 18:00 Uhr
+                    tr
+                        td Donnerstag
+                        td 08:00 bis 13:00 Uhr
+                    tr
+                        td Samstag
+                        td 09:00 bis 12:00 Uhr
+            .panel-footer
+                p.small.
+                    Bitte beachten Sie, dass wir bei einer
+                    Terminvereinbarung über diese Website Ihre IP-Adresse und weitere
+                    Angaben speichern. Sämtliche Daten werden nach dem vereinbarten
+                    Termin wieder gelöscht.

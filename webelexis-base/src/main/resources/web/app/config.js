@@ -4,6 +4,7 @@ define(['knockout'], function (ko) {
         homepage: "http://github.com/rgwch/webelexis",
         sessionID: ko.observable(null),
         connected: false,
+        loc: {ip: "0.0.0.0"},
         mainMenu: [],
         modules: [
             {
