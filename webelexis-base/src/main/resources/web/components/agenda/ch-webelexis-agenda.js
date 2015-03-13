@@ -2,8 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html'], function(ko, bus, cfg, html) {
-
+define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'datepicker', 'datepicker.de'], function(ko, bus, cfg, html) {
 
     var dateStrings = function(date) {
         var month = (date.getMonth() + 1).toString();
@@ -95,25 +94,37 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html'], fu
                 return makeDateRFC3339(self.now())
             })
 
-
+            self.readDate = function() {
+                //var date = $("#agendaDatum input").datepicker('getDate')
+                var date = self.now()
+                if (date === null) {
+                    date = new Date()
+                    self.writeDate(date)
+                }
+                return date
+            }
+            self.writeDate = function(date) {
+                //$("#agendaDatum input").datepicker('setDate', date)
+                self.now(date)
+            }
             self.yesterday = function() {
-                self.now(new Date(self.now().getTime() - (24 * 60 * 60000)))
+                self.writeDate(new Date(self.readDate().getTime() - (24 * 60 * 60000)))
                 self.load()
             }
             self.tomorrow = function() {
-                self.now(new Date(self.now().getTime() + (24 * 60 * 60000)))
+                self.writeDate(new Date(self.readDate().getTime() + (24 * 60 * 60000)))
                 self.load()
             }
 
             self.load = function() {
-                var dt=$("#agendaDatum").val()
+                var now = self.readDate();
                 if (self.lastExpanded !== null) {
                     self.lastExpanded.expanded(false);
                     self.lastExpanded = null;
                 }
                 bus.send('ch.webelexis.agenda.appointments', {
-                    begin: makeCompactString(self.now()),
-                    end: makeCompactString(self.now()),
+                    begin: makeCompactString(now),
+                    end: makeCompactString(now),
                     token: cfg.sessionID()
                 }, function(result) {
                     //console.log("result: " + JSON.stringify(result));
@@ -184,15 +195,32 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html'], fu
                     }
                 });
             }
-            
-            bus.addListener(function(msg){
-                if(msg==="open"){
+
+            bus.addListener(function(msg) {
+                if (msg === "open") {
                     self.load();
                 }
             })
-            if(bus.connected()){
+            if (bus.connected()) {
                 self.load();
             }
+            /*
+            if (cfg.dp === undefined) {
+                var inputfield = $('#agendaDatum input')
+                cfg.dp = inputfield.datepicker({
+                    language: "de"
+                })
+            }
+            */
+
+            $('#agendaDatum input').datepicker({
+                todayBtn: "linked",
+                language: "de",
+                autoclose: true,
+                todayHighlight: true
+
+            })
+
         }
 
 

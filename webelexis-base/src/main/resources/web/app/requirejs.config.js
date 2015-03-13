@@ -6,13 +6,14 @@ var require = {
     baseUrl: ".",
     paths: {
         "bootstrap": "lib/bootstrap.min",
-        "datepicker": "lib/bootstrap-datepicker.min",
+        "datepicker": "lib/bootstrap-datepicker",
         "datepicker.de": "lib/bootstrap-datepicker.de.min",
         "jquery": "lib/jquery.min",
         "knockout": "lib/knockout",
         "sockjs": "lib/sockjs.min",
         "text": "lib/text",
         "vertxbus": "lib/vertxbus",
+        "domReady": "lib/domReady",
         "app": "app"
     },
     shim: {
@@ -23,7 +24,7 @@ var require = {
             deps: ["jquery"]
         },
         "datepicker": {
-            deps: ["jquery", "bootstrap"]
+            deps: ["jquery", "bootstrap", "knockout"]
         },
         "datepicker.de": {
             deps: ["jquery", "bootstrap", "datepicker"]

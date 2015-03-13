@@ -1,11 +1,12 @@
 .row
     .panel.panel-default.col-sm-6
-        .c1
-            form.form.form-inline
+        .panel-heading
+            #agendaDatum
                 span.glyphicon.glyphicon-chevron-left(data-bind="click: yesterday")
-                input#agendaDatum(data-bind="value: actDate, event: {blur: load}" type="date")
+                //input#agendaDatum(data-bind="value: actDate, event: {blur: load}" type="date")
+                input(type="text" data-bind="event: {changeDate: load}")
                 span.glyphicon.glyphicon-chevron-right(data-bind="click: tomorrow")
-        .c1
+        .panel-body
             .row#appntlist(data-bind="foreach: appointments")
                 .col-xs-12.col-md-6
                     .well.well-sm(data-bind="text:displayText, css: displayClass, click: $parent.expand")
@@ -22,6 +23,10 @@
                                 input.form-control#patmail(placholder="jemand@server.com" type="email" required)
                             button.btn.btn-primary(type="submit") Termin vereinbaren
                             button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
+        .panel-footer
+            .p.small.
+                Die Verwendung dieser Website geschieht ohne Gewähr. Für fehlerhaft übertragene Termine wird keine
+                Haftung übernommen. 
     .panel.panel-info.col-sm-6
             .panel-heading
                 h3.panel-title Termin direkt online eintragen
