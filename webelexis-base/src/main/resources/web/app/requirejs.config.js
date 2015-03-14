@@ -6,6 +6,7 @@ var require = {
     baseUrl: ".",
     paths: {
         "bootstrap": "lib/bootstrap.min",
+        "sammy": "lib/sammy-latest.min",
         //"datepicker": "lib/bootstrap-datepicker",
         //"datepicker.de": "lib/bootstrap-datepicker.de.min",
         "jquery": "lib/jquery.min",
@@ -25,7 +26,7 @@ var require = {
             deps: ["jquery"]
         },
         "jqueryui": {
-          deps: ["jquery"]  
+            deps: ["jquery"]
         },
         /*
         "datepicker": {

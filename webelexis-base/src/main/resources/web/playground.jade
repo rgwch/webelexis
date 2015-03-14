@@ -3,12 +3,27 @@ html(lang="de")
     head
         meta(charset="utf-8")
         title jQuery UI Datepicker - Default functionality
+        link(rel="stylesheet" href="css/bootstrap.min.css")
         link(rel="stylesheet" href="css/jquery-ui.min.css")
         link(rel="stylesheet" href="css/style.css")
         script(src="app/requirejs.config.js")
         script(data-main="app/playground.js" src="lib/require.js")
         //- script $(function () {$("#datepicker").datepicker();})
     body
-        p Datum: 
-            input(type="text" id="datepicker")
-    
+        ul.nav.nav-pills(data-bind="foreach:views")
+            li(data-bind="css: {active: $root.currentView()== $data}")
+                a(data-bind="text: $data, attr:{ href:'#'+$data}")
+        
+        .container
+            .row
+                .col-xs-12
+                    div(data-bind="component: {currentView()}")
+
+        script#Home(type="text/html")
+            h2 Home
+            p Datum:
+                input(type="text" id="datepicker")                
+                
+        script#Other(type="text/html")
+            h2 Other
+            
