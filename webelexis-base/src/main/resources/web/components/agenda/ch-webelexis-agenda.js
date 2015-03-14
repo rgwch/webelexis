@@ -34,30 +34,30 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
         return new Date(year, month, day)
     }
 
-    var makeDateFromlocal = function(datestring){
-        var ar=datestring.split(".")
-        return new Date(ar[2],ar[1]-1,ar[0])
+    var makeDateFromlocal = function (datestring) {
+        var ar = datestring.split(".")
+        return new Date(ar[2], ar[1] - 1, ar[0])
     }
-    
-    var makeTime = function (minutes) {
-        var hours = parseInt(minutes / 60)
-        var mins = (minutes - (hours * 60)).toString()
-        hours = hours.toString()
-        if (hours.length < 2) {
-            hours = "0" + hours
-        }
-        if (mins.length < 2) {
-            mins = "0" + mins
-        }
 
-        return hours + ":" + mins
-    }
-/*
-    var makeDateRFC3339 = function (date) {
-        var ret = dateStrings(date)
-        return ret.year + "-" + ret.month + "-" + ret.day
-    }
-    */
+    var makeTime = function (minutes) {
+            var hours = parseInt(minutes / 60)
+            var mins = (minutes - (hours * 60)).toString()
+            hours = hours.toString()
+            if (hours.length < 2) {
+                hours = "0" + hours
+            }
+            if (mins.length < 2) {
+                mins = "0" + mins
+            }
+
+            return hours + ":" + mins
+        }
+        /*
+            var makeDateRFC3339 = function (date) {
+                var ret = dateStrings(date)
+                return ret.year + "-" + ret.month + "-" + ret.day
+            }
+            */
     var makeDateString = function (date) {
         var ret = dateStrings(date)
         return ret.day + "." + ret.month + "." + ret.year
@@ -91,20 +91,20 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
 
     function AgendaViewModel() {
         var self = this;
-        self.tage=["So","Mo","Di","Mi","Do","Fr","Sa"]
-        self.monate=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"]
-        self.monateKurz=["Jan","Feb","März","April","Mai","Jun","Jul","Aug","Sept","Okt","Nov","Dez"]
+        self.tage = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
+        self.monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+        self.monateKurz = ["Jan", "Feb", "März", "April", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
         self.title = "Agenda"
         self.now = ko.observable(makeDateString(new Date()))
 
         self.appointments = ko.observableArray([]);
         self.lastExpanded = null
 
-/*
-        self.actDate = ko.computed(function () {
-            return makeDateRFC3339(self.now())
-        })
-*/
+        /*
+                self.actDate = ko.computed(function () {
+                    return makeDateRFC3339(self.now())
+                })
+        */
         self.readDate = function () {
             var date = makeDateFromlocal(self.now())
             return date
@@ -115,20 +115,20 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
         }
         self.yesterday = function () {
             self.writeDate(new Date(self.readDate().getTime() - (24 * 60 * 60000)))
-            self.load()
+            self.loadAppointments()
         }
         self.tomorrow = function () {
             self.writeDate(new Date(self.readDate().getTime() + (24 * 60 * 60000)))
-            self.load()
+            self.loadAppointments()
 
         }
 
-        self.dateChanged = function (datestring, widget){
+        self.dateChanged = function (datestring, widget) {
             self.now(datestring)
-            self.load()
+            self.loadAppointments()
         }
-        self.load = function () {
-            var act=self.readDate()
+        self.loadAppointments = function () {
+            var act = self.readDate()
             if (self.lastExpanded !== null) {
                 self.lastExpanded.expanded(false);
                 self.lastExpanded = null;
@@ -206,18 +206,23 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
                 }
             });
         }
-
-        bus.addListener(function (msg) {
+        var busListener = function (msg) {
             if (msg === "open") {
-                self.load();
+                self.loadAppointments()
             }
-        })
-        if (bus.connected()) {
-            self.load();
         }
-        
+        bus.addListener(busListener)
+
+        if (bus.connected()) {
+            self.loadAppointments();
+        }
+
     }
 
+
+    AgendaViewModel.prototype.dispose = function () {
+        bus.removeListener(AgendaViewModel.busListener)
+    }
     return {
         viewModel: AgendaViewModel,
         template: html

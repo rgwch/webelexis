@@ -44,7 +44,9 @@ If you have vertx installed, you can also try:
 
      npm start
      
-This will first run build:client, then build and launch the server. You should then be able to point your browser to `localhost:2015`and see the life version auf webelexis (which is not much at this time)
+This will first run build:client, then build and launch the server. You should then be able to point your browser to `localhost:2015`and see the life version auf webelexis (which is not much at this time).
+
+If this works, copy `webelexis-base/src/main/resources/config_sample.json` to `webelexis-base/cfglocal.json`. Edit the entries to match your system, but make sure to have a valid json-file. Then, relaunch the server with `npm start` from the top level directory.
     
 ### Folder layout
 
