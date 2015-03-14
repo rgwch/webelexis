@@ -1,4 +1,5 @@
-// Example JSON config file for webelexis 
+// Example JSON config file for webelexis-base. Rename ths file to 'cfglocal.json', copy it to the webelexis-base rootdir 
+// and modify as needed.
 // Note: comments are not part of the JSON spec. Some parsers will reject files with comments,
 // so it is recommended to remove these comments in your active conf.json.
 // Check the correctness of your config with http://jsonlint.com
