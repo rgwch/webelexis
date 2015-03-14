@@ -7,7 +7,7 @@
  * Main view switcher. Heavily inspired from https://github.com/lshift/knockout-routing
  */
 
-define(['app/config', 'knockout', 'app/router', 'bootstrap'], function (config, ko, Router) {
+define(['app/config', 'knockout', 'app/router', 'bootstrap', 'domReady!'], function (config, ko, Router) {
 
     for (var i = 0; i < config.modules.length; i++) {
         var page = config.modules[i]
@@ -42,5 +42,6 @@ define(['app/config', 'knockout', 'app/router', 'bootstrap'], function (config, 
 
     // Need to explicitly bind to 'html' node if we want setting the page title to work.
     ko.applyBindings(topLevelModel, $('html').get(0));
-
+    
+    
 });

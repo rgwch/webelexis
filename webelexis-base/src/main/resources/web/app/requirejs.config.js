@@ -6,9 +6,10 @@ var require = {
     baseUrl: ".",
     paths: {
         "bootstrap": "lib/bootstrap.min",
-        "datepicker": "lib/bootstrap-datepicker",
-        "datepicker.de": "lib/bootstrap-datepicker.de.min",
+        //"datepicker": "lib/bootstrap-datepicker",
+        //"datepicker.de": "lib/bootstrap-datepicker.de.min",
         "jquery": "lib/jquery.min",
+        "jqueryui": "lib/jquery-ui.min",
         "knockout": "lib/knockout",
         "sockjs": "lib/sockjs.min",
         "text": "lib/text",
@@ -23,11 +24,16 @@ var require = {
         "knockout": {
             deps: ["jquery"]
         },
+        "jqueryui": {
+          deps: ["jquery"]  
+        },
+        /*
         "datepicker": {
             deps: ["jquery", "bootstrap", "knockout"]
         },
         "datepicker.de": {
             deps: ["jquery", "bootstrap", "datepicker"]
         }
+        */
     },
 };

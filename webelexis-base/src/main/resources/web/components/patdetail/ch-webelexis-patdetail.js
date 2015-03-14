@@ -5,7 +5,6 @@
 define(['knockout', 'text!ch-webelexis-patdetail.html'], function (ko, html) {
     function PatDetailModel() {
         var title="Patientenliste"
-
     }
     return {
         viewModel: PatDetailModel,

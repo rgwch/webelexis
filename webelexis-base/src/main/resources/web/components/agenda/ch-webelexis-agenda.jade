@@ -4,7 +4,8 @@
             #agendaDatum
                 span.glyphicon.glyphicon-chevron-left(data-bind="click: yesterday")
                 //input#agendaDatum(data-bind="value: actDate, event: {blur: load}" type="date")
-                input(type="text" data-bind="event: {changeDate: load}")
+                //input(type="text" data-bind="event: {changeDate: load}")
+                input#datepicker(type="text")
                 span.glyphicon.glyphicon-chevron-right(data-bind="click: tomorrow")
         .panel-body
             .row#appntlist(data-bind="foreach: appointments")
@@ -60,3 +61,6 @@
                     Terminvereinbarung über diese Website Ihre IP-Adresse und weitere
                     Angaben speichern. Sämtliche Daten werden nach dem vereinbarten
                     Termin wieder gelöscht.
+.dapi2
+
+script $("#datepicker").datepicker(); $("#dapi2").datepicker()

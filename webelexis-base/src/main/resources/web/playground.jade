@@ -1,0 +1,14 @@
+doctype html
+html(lang="de")
+    head
+        meta(charset="utf-8")
+        title jQuery UI Datepicker - Default functionality
+        link(rel="stylesheet" href="css/jquery-ui.min.css")
+        link(rel="stylesheet" href="css/style.css")
+        script(src="app/requirejs.config.js")
+        script(data-main="app/playground.js" src="lib/require.js")
+        //- script $(function () {$("#datepicker").datepicker();})
+    body
+        p Datum: 
+            input(type="text" id="datepicker")
+    

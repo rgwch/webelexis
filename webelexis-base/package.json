@@ -12,7 +12,7 @@
     "compile:jade": "jade src/main/resources/web -o dist/web",
     "compile:java": "javac -cp \"${VERTX_HOME}/lib/*\" src/main/java/ch/rgw/vertx/*.java src/main/java/ch/webelexis/agenda/*.java -d dist",
     "preverticle": "npm run compile:java && cp src/main/resources/webelexis-core.js dist",
-    "verticle": "cd dist && vertx run webelexis-core.js",
+    "verticle": "cp cfglocal.json dist && cd dist && vertx run webelexis-core.js -conf cfglocal.json",
     "start": "npm run build:client && npm run verticle",
     "env": "env"
   },

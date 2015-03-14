@@ -32,7 +32,7 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-patdetail',
                 location: 'components/patdetail',
                 menuItem: true,
-                active: false
+                active: true
 
         },
             {
