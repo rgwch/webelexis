@@ -51,9 +51,15 @@ This will first run build:client, then build and launch the server. You should t
 - src/** 
     * src/main/ - everything that gets processed and goes into the final distribution
     * src/main/web - the raw (unprocessed) contents of the website.
+    * src/main/web/app - the javascript source files - will processed and written to dist/web/app
+    * src/mainweb/components - folders with webelexis components, each consisting of at least a *.js and a *.jade file. JavaScript files will be processed and placed to dist/web/components/*, while the jade files will be compiled to dist/web/*.html
+    * src/main/web/css/*, fonts/*, img/*, lib/* - will all copied to respective directories in dist/web
+    * src/main/java - java source files. will be compiled to dist/*
+    
     
 - dist/**
     * dist/web - The contents of the resulting website
+    
     
 ### Build tasks
 
