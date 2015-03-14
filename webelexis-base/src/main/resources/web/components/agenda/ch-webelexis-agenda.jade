@@ -3,7 +3,7 @@
         .panel-heading
             #agendaDatum
                 span.glyphicon.glyphicon-chevron-left(data-bind="click: yesterday")
-                input(type="text" data-bind='datepicker: {dateFormat: "dd.mm.yy"}, value: now')
+                input(type="text" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now')
                 span.glyphicon.glyphicon-chevron-right(data-bind="click: tomorrow")
         .panel-body
             .row#appntlist(data-bind="foreach: appointments")

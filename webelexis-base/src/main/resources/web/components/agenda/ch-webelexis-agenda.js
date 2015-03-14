@@ -91,6 +91,9 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
 
     function AgendaViewModel() {
         var self = this;
+        self.tage=["So","Mo","Di","Mi","Do","Fr","Sa"]
+        self.monate=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"]
+        self.monateKurz=["Jan","Feb","März","April","Mai","Jun","Jul","Aug","Sept","Okt","Nov","Dez"]
         self.title = "Agenda"
         self.now = ko.observable(makeDateString(new Date()))
 
@@ -120,15 +123,19 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
 
         }
 
+        self.dateChanged = function (datestring, widget){
+            self.now(datestring)
+            self.load()
+        }
         self.load = function () {
-            var now = self.readDate();
+            var act=self.readDate()
             if (self.lastExpanded !== null) {
                 self.lastExpanded.expanded(false);
                 self.lastExpanded = null;
             }
             bus.send('ch.webelexis.agenda.appointments', {
-                begin: makeCompactString(now),
-                end: makeCompactString(now),
+                begin: makeCompactString(act),
+                end: makeCompactString(act),
                 token: cfg.sessionID()
             }, function (result) {
                 //console.log("result: " + JSON.stringify(result));
