@@ -1,9 +1,9 @@
-define(['sammy', 'jquery', 'knockout', 'bootstrap', 'jqueryui'], function (Sammy, $, ko) {
+define(['sammy', 'jquery', 'knockout', 'bootstrap', 'knockout-jqueryui/datepicker'], function (Sammy, $, ko) {
     ko.components.register('agenda', {
-        require: '../components/agenda/ch-webelexis-agenda'
+        require: 'components/agenda/ch-webelexis-agenda'
     })
     ko.components.register('other', {
-        require: '../components/login/ch-webelexis-login'
+        require: 'components/login/ch-webelexis-login'
     })
 
     function ViewModel() {

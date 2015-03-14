@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!test.html', 'jquery', 'jqueryui', 'domReady!'], function (ko, bus, cfg, html) {
+define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'knockout-jqueryui/datepicker', 'domReady!'], function (ko, bus, cfg, html) {
 
 
     var dateStrings = function (date) {
@@ -34,6 +34,11 @@ define(['knockout', 'app/eb', 'app/config', 'text!test.html', 'jquery', 'jqueryu
         return new Date(year, month, day)
     }
 
+    var makeDateFromlocal = function(datestring){
+        var ar=datestring.split(".")
+        return new Date(ar[2],ar[1]-1,ar[0])
+    }
+    
     var makeTime = function (minutes) {
         var hours = parseInt(minutes / 60)
         var mins = (minutes - (hours * 60)).toString()
@@ -47,11 +52,12 @@ define(['knockout', 'app/eb', 'app/config', 'text!test.html', 'jquery', 'jqueryu
 
         return hours + ":" + mins
     }
-
+/*
     var makeDateRFC3339 = function (date) {
         var ret = dateStrings(date)
         return ret.year + "-" + ret.month + "-" + ret.day
     }
+    */
     var makeDateString = function (date) {
         var ret = dateStrings(date)
         return ret.day + "." + ret.month + "." + ret.year
@@ -86,27 +92,23 @@ define(['knockout', 'app/eb', 'app/config', 'text!test.html', 'jquery', 'jqueryu
     function AgendaViewModel() {
         var self = this;
         self.title = "Agenda"
-        self.now = ko.observable(new Date())
+        self.now = ko.observable(makeDateString(new Date()))
 
         self.appointments = ko.observableArray([]);
         self.lastExpanded = null
 
+/*
         self.actDate = ko.computed(function () {
             return makeDateRFC3339(self.now())
         })
-
+*/
         self.readDate = function () {
-            //var date = $("#agendaDatum input").datepicker('getDate')
-            var date = self.now()
-            if (date === null) {
-                date = new Date()
-                self.writeDate(date)
-            }
+            var date = makeDateFromlocal(self.now())
             return date
         }
         self.writeDate = function (date) {
             //$("#agendaDatum input").datepicker('setDate', date)
-            self.now(date)
+            self.now(makeDateString(date))
         }
         self.yesterday = function () {
             self.writeDate(new Date(self.readDate().getTime() - (24 * 60 * 60000)))
@@ -115,7 +117,6 @@ define(['knockout', 'app/eb', 'app/config', 'text!test.html', 'jquery', 'jqueryu
         self.tomorrow = function () {
             self.writeDate(new Date(self.readDate().getTime() + (24 * 60 * 60000)))
             self.load()
-            $('#agendaDatum input').datepicker('remove')
 
         }
 
@@ -207,27 +208,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!test.html', 'jquery', 'jqueryu
         if (bus.connected()) {
             self.load();
         }
-        /*
-        if (cfg.dp === undefined) {
-            var inputfield = $('#agendaDatum input')
-            cfg.dp = inputfield.datepicker({
-                language: "de"
-            })
-        }
         
-        $('#agendaDatum input').datepicker({
-            todayBtn: "linked",
-            language: "de",
-            autoclose: true,
-            todayHighlight: true
-        })
-
-        AgendaViewModel.prototype.dispose = function () {
-            $('#agendaDatum input').datepicker('remove')
-        }
-        */
-        $("#datepicker").datepicker()
-
     }
 
     return {
