@@ -1,5 +1,7 @@
 package ch.webelexis.agenda;
 
+import java.io.FileInputStream;
+
 import org.junit.Test;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.AsyncResultHandler;
@@ -10,11 +12,19 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
+import com.sun.corba.se.impl.orb.ParserTable.TestContactInfoListFactory;
+
 public class AgendaTest extends TestVerticle {
 
+	
 	@Test
 	public void TestLoggedIn() throws Exception {
-		JsonObject cfg = new JsonObject();
+		FileInputStream fis = new FileInputStream("cfglocal.json");
+		byte[] buffer = new byte[5000];
+		int len = fis.read(buffer);
+		fis.close();
+		String s = new String(buffer, 0, len, "utf-8");
+		JsonObject cfg = new JsonObject(s);
 		container.deployVerticle("webelexis-core.js", cfg,
 				new AsyncResultHandler<String>() {
 
@@ -37,7 +47,7 @@ public class AgendaTest extends TestVerticle {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
-			VertxAssert.assertEquals("ok", msg.body().getString("result"));
+			VertxAssert.assertEquals("ok", msg.body().getString("status"));
 			String sessionID=msg.body().getString("sessionID");
 			JsonObject jo=new JsonObject()
 				.putString("token", sessionID)
@@ -51,9 +61,11 @@ public class AgendaTest extends TestVerticle {
 	class AgendaResponse implements Handler<Message<JsonObject>>{
 
 		@Override
-		public void handle(Message<JsonObject> arg0) {
-			// TODO Auto-generated method stub
-			
+		public void handle(Message<JsonObject> msg) {
+			VertxAssert.assertEquals("ok", msg.body().getString("status"));
+			JsonObject apps=msg.body();
+			System.out.println(apps.toString());
+			VertxAssert.testComplete();
 		}
 		
 	}

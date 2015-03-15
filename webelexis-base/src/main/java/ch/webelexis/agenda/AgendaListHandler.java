@@ -282,7 +282,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 								}
 							});
 				} else {
-					log.info("first level failed");
+					log.info("first level failed "+returnvalue.body().getString("message"));
 					externalRequest.reply(new JsonObject().putString("status",
 							"failure"));
 				}
