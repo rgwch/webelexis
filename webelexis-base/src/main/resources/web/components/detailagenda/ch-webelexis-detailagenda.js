@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda-ext.html', 'knockout-jqueryui/datepicker', 'domReady!'], function (ko, bus, cfg, html) {
+define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-detailagenda.html', 'knockout-jqueryui/datepicker', 'domReady!'], function (ko, bus, cfg, html) {
 
 
     var dateStrings = function (date) {

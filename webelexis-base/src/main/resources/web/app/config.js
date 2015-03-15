@@ -27,8 +27,8 @@ define(['knockout'], function (ko) {
                 baseUrl: "#agext",
                 match:  /^agext$/,
                 title: "Agenda",
-                component: 'ch-webelexis-agenda-ext',
-                location: 'components/agenda-ext',
+                component: 'ch-webelexis-detailagenda',
+                location: 'components/detailagenda',
                 active: true,
                 menuItem: true,
                 roles: ["user","admin"]
