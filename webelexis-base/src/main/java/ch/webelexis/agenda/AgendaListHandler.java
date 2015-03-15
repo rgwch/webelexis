@@ -229,17 +229,19 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 		// first call: get all Appointments with valid PatientID
 		log.info("authorized agenda handler");
 		final Cleaner cl = new Cleaner(request);
+		final String resource = cfg.getString("resource") == null ? "" : cfg
+				.getString("resource");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and Tag>=? and Tag <=? and Bereich=? and A.deleted='0'")
+						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] {
 								cl.get("begin", ELEXISDATE),
-								cl.get("end", ELEXISDATE),
-								cl.get("resource", NAME) }));
+								cl.get("end", ELEXISDATE), resource }));
+		System.out.println(bridge.toString());
 		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
 			@Override
@@ -248,8 +250,9 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 				if (res.getString("status").equals("ok")) {
 
 					final JsonArray appts = res.getArray("results");
-					log.debug("first level okay with "+appts.size()+" results" );
-					
+					log.debug("first level okay with " + appts.size()
+							+ " results");
+
 					JsonObject bridge = new JsonObject()
 							.putString("action", "prepared")
 							.putString(
@@ -257,10 +260,11 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 									"SELECT ID from AGNTERMINE where Tag>=? And Tag <=? and Bereich=? and deleted='0'")
 							.putArray(
 									"values",
-									new JsonArray(new String[] {
-											cl.get("begin", ELEXISDATE),
-											cl.get("end", ELEXISDATE),
-											cl.get("resource", NAME) }));
+									new JsonArray(
+											new String[] {
+													cl.get("begin", ELEXISDATE),
+													cl.get("end", ELEXISDATE),
+													resource }));
 					eb.send("ch.webelexis.sql", bridge,
 							new Handler<Message<JsonObject>>() {
 
@@ -282,7 +286,8 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 								}
 							});
 				} else {
-					log.info("first level failed "+returnvalue.body().getString("message"));
+					log.info("first level failed "
+							+ returnvalue.body().getString("message"));
 					externalRequest.reply(new JsonObject().putString("status",
 							"failure"));
 				}
