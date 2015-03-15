@@ -13,12 +13,12 @@ nav.navbar.navbar-default
         form.navbar-form.navbar-right#loginform(data-bind="submit: doLogin")
             .form-group
                 label(for="username").sr-only Benutzername
-                input.input-sm.form-control#username(type="text" placeholder="Benutzername" data-bind="unam")
+                input.input-sm.form-control#username(type="text" placeholder="Benutzername" data-bind="value: unam")
             .form-group
                 label(for="password").sr-only Passwort
-                input.input-sm.form-control#password(type="password" placeholder="Passwort" data-bind="upwd")
+                input.input-sm.form-control#password(type="password" placeholder="Passwort" data-bind="value: upwd")
             button#navbar-button.btn.btn-default.btn-sm.navbar-btn(type="submit") Anmelden
-            p.red.hidden#badlogin-text falscher Name oder falsches Passwort
-            a.hidden#logged-in-text(href="#" role="button" data-bind="click: doLogout") Abmelden
+            p.red.hidden#badlogin-text Name oder Passwort waren falsch.
+        a.navbar-text.navbar-right.hidden#logged-in-text(href="#" role="button" data-bind="click: doLogout") Abmelden
         
      

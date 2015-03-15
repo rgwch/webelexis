@@ -12,22 +12,24 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb', 'd
                 password: self.upwd()
             }, function (result) {
                 if (result.status === "ok") {
-                    cfg.sessionID = result.sessionID
-                    if (result.roles === undefined || result.roles.length > 1) {
-                        cfg.roles = []
+                    cfg.sessionID(result.sessionID)
+                    if (result.roles === undefined || result.roles.length < 1) {
+                        cfg.roles = ['guest']
                     } else {
                         cfg.roles = result.roles
                     }
-                    self.menuItems.clear()
-                    for (var i = 0; i < cfg[params.menu].length; i++) {
-                        var item = cfg[params.menu][i]
-                        var newMenu = []
-                        item.roles.forEach(function (element) {
-                            if (cfg.roles.indexOf(element) !== -1) {
-                                newMenu.push(item)
-                            }
-                        })
+                    self.menuItems.removeAll()
+                    for (var i = 0; i < cfg.modules.length; i++) {
+                        var item = cfg.modules[i]
+                        if (item.menuItem && item.active) {
+                            item.roles.forEach(function (element) {
+                                if (cfg.roles.indexOf(element) !== -1) {
+                                    self.menuItems.push(item)
+                                }
+                            })
+                        }
                     }
+
                     $("#loginform").addClass("hidden")
                     $("#logged-in-text").removeClass("hidden")
                 } else {
@@ -39,9 +41,9 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb', 'd
             bus.send("ch.webelexis.auth.logout", {
                 sessionID: cfg.sessionID
             }, function (result) {
-                if(result.status==="ok"){
-                    cfg.sessionID=""
-                    cfg.roles=[]
+                if (result.status === "ok") {
+                    cfg.sessionID = ""
+                    cfg.roles = []
                     $("#loginform").removeClass("hidden")
                     $("#logged-in-text").addClass("hidden")
                 }

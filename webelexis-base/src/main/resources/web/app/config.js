@@ -1,3 +1,8 @@
+/**
+ ** This file is part of Webelexis
+ ** Copyrght (c) by G. Weirich 2015
+ */
+
 define(['knockout'], function (ko) {
     return {
         eventbusUrl: "http://localhost:2015/eventbus",
@@ -14,7 +19,8 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-agenda',
                 location: 'components/agenda',
                 active: true,
-                menuItem: true
+                menuItem: true,
+                roles: ["guest","user"]
         },
             {
                 baseUrl: "#patlist",
@@ -23,7 +29,8 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-patlist',
                 location: 'components/patlist',
                 active: true,
-                menuItem: true
+                menuItem: true,
+                roles: ["user"]
         },
             {
                 baseUrl: "#patid",
@@ -32,7 +39,8 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-patdetail',
                 location: 'components/patdetail',
                 menuItem: true,
-                active: true
+                active: true,
+                roles: ["user"]
 
         },
             {
@@ -42,7 +50,8 @@ define(['knockout'], function (ko) {
                 location: 'components/consultation',
                 component: 'ch-webelexis-consdetail',
                 menuItem: true,
-                active: false
+                active: false,
+                roles: ["user"]
         },
             {
                 baseUrl: "#login",
@@ -51,19 +60,22 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-login',
                 location: 'components/login',
                 active: true,
-                menuItem: false
+                menuItem: false,
+                roles: ["guest"]
         },
             {
                 title: 'page404',
                 component: 'ch-webelexis-page404',
                 location: 'components/page404',
                 active: true,
-                menuItem: false
+                menuItem: false,
+                roles: ["guest"]
         },
             {
                 component: 'ch-webelexis-menubar',
                 location: 'components/menubar',
-                active: true
+                active: true,
+                roles:["guest"]
             }
 
     ]

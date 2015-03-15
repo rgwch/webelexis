@@ -470,7 +470,7 @@
 		"fileType": 32768,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"initialSize": 581,
+		"initialSize": 814,
 		"inputAbbreviatedPath": "\/dist\/web\/img\/elexis_logo.png",
 		"outputAbbreviatedPath": "\/dist\/web\/img\/elexis_logo.png",
 		"outputPathIsOutsideProject": 0,
@@ -1714,7 +1714,7 @@
 		"outputAbbreviatedPath": "\/src\/main\/resources\/web\/img\/elexis_logo.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"processed": 1
+		"processed": 0
 		},
 	"\/src\/main\/resources\/web\/index.jade": {
 		"compileDebug": 1,
