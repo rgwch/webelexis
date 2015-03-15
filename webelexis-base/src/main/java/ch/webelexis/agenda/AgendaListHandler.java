@@ -19,8 +19,8 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 
 /**
- * A handler for list requests to the agenda. Since we won't allow random access to
- * the database, we translate external requests to internal messages here.
+ * A handler for list requests to the agenda. Since we won't allow random access
+ * to the database, we translate external requests to internal messages here.
  * 
  * @author gerry
  * 
@@ -87,7 +87,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 	 * @param event
 	 * @param request
 	 */
-	private void handlePublic(final Message<JsonObject> event,
+	private void handlePublic(final Message<JsonObject> externalRequest,
 			JsonObject request) {
 		Cleaner cl = new Cleaner(request);
 		log.info("public agenda handler");
@@ -110,11 +110,12 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
 
-					event.reply(fillBlanks(res.getArray("results").toArray(),
-							null));
+					externalRequest.reply(fillBlanks(res.getArray("results")
+							.toArray(), null));
 
 				} else {
-					event.reply(new JsonObject().putString("status", "failure"));
+					externalRequest.reply(new JsonObject().putString("status",
+							"failure"));
 				}
 			}
 		});
@@ -223,7 +224,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 	 * @param event
 	 * @param request
 	 */
-	private void handleAuthorized(final Message<JsonObject> event,
+	private void handleAuthorized(final Message<JsonObject> externalRequest,
 			final JsonObject request) {
 		// first call: get all Appointments with valid PatientID
 		log.info("authorized agenda handler");
@@ -245,7 +246,10 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 			public void handle(Message<JsonObject> returnvalue) {
 				JsonObject res = returnvalue.body();
 				if (res.getString("status").equals("ok")) {
+
 					final JsonArray appts = res.getArray("results");
+					log.debug("first level okay with "+appts.size()+" results" );
+					
 					JsonObject bridge = new JsonObject()
 							.putString("action", "prepared")
 							.putString(
@@ -264,16 +268,23 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 								public void handle(Message<JsonObject> second) {
 									if (second.body().getString("status")
 											.equals("ok")) {
-										fillBlanks(appts.toArray(), second
-												.body().getArray("results"));
+										log.debug("second level okay");
+										JsonObject ores = fillBlanks(appts
+												.toArray(), second.body()
+												.getArray("results"));
+										ores.putString("type", "full");
+										externalRequest.reply(ores);
 									} else {
-
+										log.info("second level failed");
+										externalRequest.reply(new JsonObject()
+												.putString("status", "failure"));
 									}
 								}
 							});
-					event.reply(res);
 				} else {
-					event.reply(res);
+					log.info("first level failed");
+					externalRequest.reply(new JsonObject().putString("status",
+							"failure"));
 				}
 			}
 		});

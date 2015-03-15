@@ -1,15 +1,16 @@
-/*************************************
- ** This file is part of Webelexis   **
- ** (c) 2015 by G. Weirich           **
- **************************************/
+/*******************************************************************************
+ * * This file is part of Webelexis ** * (c) 2015 by G. Weirich **
+ ******************************************************************************/
 
 /*
-This is the server-side core module for webelexis. It creates a HTTP Server and a Sockjs-Server as primary entry points for
-all subprojects.
-To connect, a subproject must simply define an address on the EventBus and listen to that address. If access from outside is required, that address must be registered in the config file (section bridge/inOK)
-
-Launch webelexis with 'vertx run webelexis-core.js -config <yourconfig.json>
-*/
+ * This is the server-side core module for webelexis. It creates a HTTP Server
+ * and a Sockjs-Server as primary entry points for all subprojects. To connect,
+ * a subproject must simply define an address on the EventBus and listen to that
+ * address. If access from outside is required, that address must be registered
+ * in the config file (section bridge/inOK)
+ * 
+ * Launch webelexis with 'vertx run webelexis-core.js -config <yourconfig.json>
+ */
 
 var vertx = require('vertx')
 var console = require('vertx/console')
@@ -37,13 +38,17 @@ if (config.sql === undefined) {
         "database": "elexis"
     }
 }
-container.deployModule("io.vertx~mod-mysql-postgresql_2.10~0.3.1", config.sql, function (err, id) {
-    if (err) {
-        log.fatal("could not launch sql connector " + err.getMessage());
-    } else {
-        log.info("sql connector launched with id: " + id);
-    }
-});
+
+var deploystate= function (name, err,id){
+	if(err){
+        log.fatal(name+": could not launch; " + err.getMessage());
+	}else{
+	      log.info(name+" connector launched successfully with id: " + id);
+	      
+	}
+	
+}
+container.deployModule("io.vertx~mod-mysql-postgresql_2.10~0.3.1", config.sql, function(err,id){ deploystate("sql",err,id)})
 
 if (config.mongo === undefined) {
     config.mongo = {
@@ -51,13 +56,7 @@ if (config.mongo === undefined) {
         "db_name": "webelexis"
     }
 }
-container.deployModule("io.vertx~mod-mongo-persistor~2.1.0", config.mongo, function (err, id) {
-    if (err) {
-        log.fatal("could not launch mongo connector " + err.getMessage());
-    } else {
-        log.info("mongo connector launched with id: " + id);
-    }
-});
+container.deployModule("io.vertx~mod-mongo-persistor~2.1.0", config.mongo, function (err, id) {deploystate("mongo-persistot", err, id)})
 
 if (config.auth === undefined) {
     config.auth = {
@@ -66,22 +65,9 @@ if (config.auth === undefined) {
         "persistor_address": "ch.webelexis.nosql",
     }
 }
-container.deployVerticle("ch.rgw.vertx.AuthManager", config.auth, function (err, id) {
-    if (err) {
-        log.fatal("could not launch authenticate module " + err.getMessage());
-    } else {
-        log.info("authenticator verticle launched with id: " + id);
-    }
+container.deployVerticle("ch.rgw.vertx.AuthManager", config.auth, function (err, id) {deploystate("Authentication manager", err, id)})
 
-});
-
-container.deployVerticle("ch.webelexis.agenda.Server", config, function (err, id) {
-    if (err) {
-        log.fatal("could not launch agenda module " + err.getMessage());
-    } else {
-        log.info("agenda verticle launched with id: " + id);
-    }
-});
+container.deployVerticle("ch.webelexis.agenda.Server", config, function (err, id){ deploystate("Agenda Server", err, id)}) 
 
 if (config.bridge === undefined) {
     config.bridge = {
@@ -109,12 +95,12 @@ httpServer.requestHandler(function(request) {
     log.info("got request: " + request.method()+" "+request.path())
     if (request.path() === "/") {
         request.response.sendFile(config.bridge.webroot+"/index.html");
-        //console.log(config.bridge.webroot+"/index.html")
+        // console.log(config.bridge.webroot+"/index.html")
     } else if (request.path().indexOf("..") !== -1) {
         request.response.statusCode(404)
         request.response.end();
     } else {
-        //console.log(config.bridge.webroot+request.path())
+        // console.log(config.bridge.webroot+request.path())
         request.response.sendFile(config.bridge.webroot+request.path());
     }
 });
