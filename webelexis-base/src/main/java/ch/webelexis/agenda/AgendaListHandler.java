@@ -154,6 +154,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 			@SuppressWarnings("rawtypes")
 			Iterator it = mixin.iterator();
 			while (it.hasNext()) {
+
 				orderedList.add((JsonArray) it.next());
 			}
 		}
@@ -235,7 +236,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 				.putString("action", "prepared")
 				.putString(
 						"statement",
-						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID, K.Bezeichnung1,K.Bezeichnung2,A.TerminStatus,A.Grund from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
+						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID,A.TerminStatus,A.Grund,K.Bezeichnung1,K.Bezeichnung2 from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
 				.putArray(
 						"values",
 						new JsonArray(new String[] {
@@ -257,7 +258,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 							.putString("action", "prepared")
 							.putString(
 									"statement",
-									"SELECT ID from AGNTERMINE where Tag>=? And Tag <=? and Bereich=? and deleted='0'")
+									"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID, PatID, TerminStatus, Grund from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 							.putArray(
 									"values",
 									new JsonArray(
