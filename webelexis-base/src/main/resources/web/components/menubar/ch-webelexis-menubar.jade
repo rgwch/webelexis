@@ -1,3 +1,4 @@
+//- This file is part of Webelexis, Copyright (c) 2015 by G. Weirich 
 nav.navbar.navbar-default
     .navbar-header
         button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#webelexis-main-collapsed")
@@ -9,5 +10,15 @@ nav.navbar.navbar-default
         ul.nav.navbar-nav#mainmenu(data-bind="foreach: menuItems")
             li
                 a(data-bind="attr: {href: baseUrl}, text: $index()+title")
-        button#navbar-button.btn.btn-default.navbar-btn.navbar-right(type="button") Anmelden
+        form.navbar-form.navbar-right#loginform(data-bind="submit: doLogin")
+            .form-group
+                label(for="username").sr-only Benutzername
+                input.input-sm.form-control#username(type="text" placeholder="Benutzername" data-bind="unam")
+            .form-group
+                label(for="password").sr-only Passwort
+                input.input-sm.form-control#password(type="password" placeholder="Passwort" data-bind="upwd")
+            button#navbar-button.btn.btn-default.btn-sm.navbar-btn(type="submit") Anmelden
+            p.red.hidden#badlogin-text falscher Name oder falsches Passwort
+            a.hidden#logged-in-text(href="#" role="button" data-bind="click: doLogout") Abmelden
+        
      
