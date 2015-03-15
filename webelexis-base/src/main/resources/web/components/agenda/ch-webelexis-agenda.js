@@ -123,7 +123,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
 
         }
 
-        self.dateChanged = function (datestring, widget) {
+        self.dateChanged = function (datestring /*,widget*/) {
             self.now(datestring)
             self.loadAppointments()
         }
@@ -138,31 +138,34 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
                 end: makeCompactString(act),
                 token: cfg.sessionID()
             }, function (result) {
-                //console.log("result: " + JSON.stringify(result));
+                console.log("result: " + JSON.stringify(result));
                 if (result.status !== "ok") {
                     window.alert("Verbindungsfehler: " + result.status);
                 } else {
                     self.appointments.removeAll()
                     var appnts = result.appointments;
-                    var prev = null;
-                    // combine occupied time slots
-                    appnts.forEach(function (value) {
-                        var act = new Appointment(value)
-                        if (act.type === 'occupied') {
-                            if (prev === null) {
-                                prev = act
+                    if (appnts !== undefined) {
+                        var prev = null;
+                        // combine occupied time slots
+                        appnts.forEach(function (value) {
+                            var act = new Appointment(value)
+                            if (act.type === 'occupied') {
+                                if (prev === null) {
+                                    prev = act
+                                }
+                                prev.end = act.end
+                            } else {
+                                if (prev !== null) {
+                                    self.appointments.push(prev)
+                                    prev = null
+                                }
+                                self.appointments.push(act);
                             }
-                            prev.end = act.end
-                        } else {
-                            if (prev !== null) {
-                                self.appointments.push(prev)
-                                prev = null
-                            }
-                            self.appointments.push(act);
+                        });
+
+                        if (prev !== null) {
+                            self.appointments.push(prev)
                         }
-                    });
-                    if (prev !== null) {
-                        self.appointments.push(prev)
                     }
                 }
             });
@@ -189,7 +192,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
             self.appointments.removeAll()
         }
 
-        self.addAppointment = function (formElement) {
+        self.addAppointment = function (/*formElement*/) {
             console.log("addApp" + $("input#patname").val())
             console.log(this.begin)
             bus.send('ch.webelexis.agenda.insert', {

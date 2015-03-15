@@ -1,11 +1,23 @@
 define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb', 'domReady!'], function (cfg, ko, html, bus) {
+    var hasRole = function (test) {
+        var result = false
+        test.forEach(function (item) {
+            if (cfg.roles.indexOf(item) > -1) {
+                result = true
+            }
+        })
+        return result
+    }
+
     function MenubarModel(params) {
         var self = this
         self.menuItems = ko.observableArray(cfg[params.menu])
             //console.log(self.menu()[0].baseUrl+","+self.menu()[0].title)
             //self.menuItems=ko.observableArray([{baseUrl: '#agenda', title: 'Agenda'},{baseUrl: 'haha', title: 'HiHi'}])
-        self.unam = ko.observable("hans")
+        self.unam = ko.observable()
         self.upwd = ko.observable()
+        self.loggedIn=ko.observable(false)
+        
         self.doLogin = function () {
             bus.send("ch.webelexis.auth.login", {
                 username: self.unam(),
@@ -18,20 +30,8 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb', 'd
                     } else {
                         cfg.roles = result.roles
                     }
-                    self.menuItems.removeAll()
-                    for (var i = 0; i < cfg.modules.length; i++) {
-                        var item = cfg.modules[i]
-                        if (item.menuItem && item.active) {
-                            item.roles.forEach(function (element) {
-                                if (cfg.roles.indexOf(element) !== -1) {
-                                    self.menuItems.push(item)
-                                }
-                            })
-                        }
-                    }
-
-                    $("#loginform").addClass("hidden")
-                    $("#logged-in-text").removeClass("hidden")
+                    self.loggedIn(true)
+                    self.adaptForUser()
                 } else {
                     $("#badlogin-text").removeClass("hidden")
                 }
@@ -39,15 +39,32 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb', 'd
         }
         self.doLogout = function () {
             bus.send("ch.webelexis.auth.logout", {
-                sessionID: cfg.sessionID
+                sessionID: cfg.sessionID()
             }, function (result) {
                 if (result.status === "ok") {
-                    cfg.sessionID = ""
-                    cfg.roles = []
-                    $("#loginform").removeClass("hidden")
-                    $("#logged-in-text").addClass("hidden")
+                    cfg.sessionID("")
+                    cfg.roles = ["guest"]
+                    self.unam("")
+                    self.upwd("")
+                    self.loggedIn(false)
+                    self.adaptForUser()
+                } else {
+                    window.alert("Problem beim Abmelden " + result.message)
                 }
             })
+        }
+
+        self.adaptForUser = function () {
+            self.menuItems.removeAll()
+            for (var i = 0; i < cfg.modules.length; i++) {
+                var item = cfg.modules[i]
+                if (item.menuItem && item.active) {
+                    if (hasRole(item.roles)) {
+                        self.menuItems.push(item)
+                    }
+                }
+            }
+
         }
     }
     return {

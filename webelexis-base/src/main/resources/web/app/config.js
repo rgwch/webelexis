@@ -11,6 +11,7 @@ define(['knockout'], function (ko) {
         connected: false,
         loc: {ip: "0.0.0.0"},
         mainMenu: [],
+        roles: [],
         modules: [
             {
                 baseUrl: "#agenda",
