@@ -153,15 +153,15 @@ public class AuthManager extends BusModBase {
 									}
 								});
 						sessions.put(sessionID, username);
-						JsonArray roles=result.getArray("roles");
-						if(roles==null){
-							roles=new JsonArray();
+						JsonArray roles = result.getArray("roles");
+						if (roles == null) {
+							roles = new JsonArray();
 						}
 						logins.put(username, new LoginInfo(timerID, sessionID,
 								roles));
 						JsonObject jsonReply = new JsonObject().putString(
-								"sessionID", sessionID).putArray("roles",
-								roles);
+								"sessionID", sessionID)
+								.putArray("roles", roles);
 						sendOK(message, jsonReply);
 					} else {
 						// Not found

@@ -15,10 +15,11 @@ define(['app/config', 'knockout', 'app/router', 'bootstrap', 'domReady!'], funct
             ko.components.register(page.component, {
                 require: page.location + '/' + page.component
             })
-            if (page.menuItem) {
+        
+            if (page.menuItem && page.roles.indexOf("guest")>-1) {
                 config.mainMenu.push(page)
             }
-            /*
+        /*    
             if (page.menuItem) {
                 $("#mainmenu").append('<li><a href="#' + page.baseUrl + '">' + page.title + '</a></li>')
             }

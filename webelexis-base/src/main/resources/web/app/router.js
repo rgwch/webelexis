@@ -10,8 +10,7 @@ define(['knockout', 'jquery'], function (ko, $) {
         var self = this;
         this.menu = menuArray;
 
-        // We swap in Page instances here to make them the current page.
-        this.currentPage = ko.observable(null);
+     
 
         // Listen for changes to the URL fragment (hash) triggered by links, back/forward etc.
         // and make the relevant Page instance current.
@@ -51,6 +50,8 @@ define(['knockout', 'jquery'], function (ko, $) {
             }
             return new Router.Page('Nicht gefunden', 'ch-webelexis-page404');
         }
+           // We swap in Page instances here to make them the current page.
+        this.currentPage = ko.observable(pageFromMapping("agenda"));
 
         // Manually trigger initial load of the relevant start page.
         $(window).trigger("hashchange");

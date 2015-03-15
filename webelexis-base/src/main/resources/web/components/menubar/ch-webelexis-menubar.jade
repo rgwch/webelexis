@@ -9,7 +9,7 @@ nav.navbar.navbar-default
     .collapse.navbar-collapse#webelexis-main-collapsed
         ul.nav.navbar-nav#mainmenu(data-bind="foreach: menuItems")
             li
-                a(data-bind="attr: {href: baseUrl}, text: $index()+title")
+                a(data-bind="attr: {href: baseUrl}, text: title")
         form.navbar-form.navbar-right#loginform(data-bind="submit: doLogin, ifnot: loggedIn")
             .form-group
                 label(for="username").sr-only Benutzername
