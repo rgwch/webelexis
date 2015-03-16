@@ -10,7 +10,7 @@ nav.navbar.navbar-default
         ul.nav.navbar-nav#mainmenu(data-bind="foreach: menuItems")
             li
                 a(data-bind="attr: {href: baseUrl}, text: title")
-        form.navbar-form.navbar-right#loginform(data-bind="submit: doLogin, ifnot: loggedIn")
+        form.navbar-form.navbar-right#loginform(data-bind="submit: doLogin, if: showLogin")
             .form-group
                 label(for="username").sr-only Benutzername
                 input.input-sm.form-control#username(type="text" placeholder="Benutzername" data-bind="value: unam")
@@ -19,6 +19,6 @@ nav.navbar.navbar-default
                 input.input-sm.form-control#password(type="password" placeholder="Passwort" data-bind="value: upwd")
             button#navbar-button.btn.btn-default.btn-sm.navbar-btn(type="submit") Anmelden
             p.red.hidden#badlogin-text Name oder Passwort waren falsch.
-        a.navbar-text.navbar-right#logged-in-text(href="#" role="button" data-bind="click: doLogout, if: loggedIn") Abmelden
+        a.navbar-text.navbar-right#logged-in-text(href="#" role="button" data-bind="click: doLogout, if: showLogout") Abmelden
         
      

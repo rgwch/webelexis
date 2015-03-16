@@ -1,3 +1,7 @@
+/**
+ ** This file is part of Webelexis
+ ** Copyright (c) 2015 by G. Weirich
+ **/
 define([ 'app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
 		'domReady!' ], function(cfg, ko, html, bus) {
 	var hasRole = function(test) {
@@ -13,13 +17,29 @@ define([ 'app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
 	function MenubarModel(params) {
 		var self = this
 		self.menuItems = ko.observableArray(cfg[params.menu])
-		// console.log(self.menu()[0].baseUrl+","+self.menu()[0].title)
-		// self.menuItems=ko.observableArray([{baseUrl: '#agenda', title:
-		// 'Agenda'},{baseUrl: 'haha', title: 'HiHi'}])
 		self.unam = ko.observable()
 		self.upwd = ko.observable()
 		self.loggedIn = ko.observable(false)
-
+        
+        self.showLogin = ko.computed(function(){
+            if(cfg.showLogin){
+                if(!self.loggedIn()){
+                    return true
+                }
+                
+            }
+            return false
+        })
+        
+        self.showLogout = ko.computed(function(){
+            if(cfg.showLogin){
+                if(self.loggedIn()){
+                    return true
+                }
+            }
+            return false
+        })
+                                      
 		self.doLogin = function() {
 			bus.send("ch.webelexis.auth.login", {
 				username : self.unam(),

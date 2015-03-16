@@ -100,11 +100,6 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'kn
         self.appointments = ko.observableArray([]);
         self.lastExpanded = null
 
-        /*
-                self.actDate = ko.computed(function () {
-                    return makeDateRFC3339(self.now())
-                })
-        */
         self.readDate = function () {
             var date = makeDateFromlocal(self.now())
             return date

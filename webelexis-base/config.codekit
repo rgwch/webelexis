@@ -35,6 +35,17 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
+	"\/dist\/web\/app\/main.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/app\/main.js",
+		"outputAbbreviatedPath": "\/dist\/web\/app\/main.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
 	"\/dist\/web\/app\/playground.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -68,15 +79,6 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
-	"\/dist\/web\/ch-webelexis-agenda-ext.html": {
-		"fileType": 8192,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/ch-webelexis-agenda-ext.html",
-		"outputAbbreviatedPath": "No Output Path",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0
-		},
 	"\/dist\/web\/ch-webelexis-agenda.html": {
 		"fileType": 8192,
 		"ignore": 1,
@@ -95,20 +97,20 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/dist\/web\/ch-webelexis-detailagenda.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/ch-webelexis-detailagenda.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/dist\/web\/ch-webelexis-login.html": {
 		"fileType": 8192,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/ch-webelexis-login.html",
-		"outputAbbreviatedPath": "No Output Path",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0
-		},
-	"\/dist\/web\/ch-webelexis-menubar.html": {
-		"fileType": 8192,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/ch-webelexis-menubar.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -140,12 +142,23 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/dist\/web\/components\/agenda-ext\/ch-webelexis-agenda-ext.js": {
+	"\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/components\/agenda-ext\/ch-webelexis-agenda-ext.js",
-		"outputAbbreviatedPath": "\/dist\/web\/components\/agenda-ext\/ch-webelexis-agenda-ext.js",
+		"inputAbbreviatedPath": "\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js",
+		"outputAbbreviatedPath": "\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/components\/consultation\/ch-webelexis-consdetail.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/components\/consultation\/ch-webelexis-consdetail.js",
+		"outputAbbreviatedPath": "\/dist\/web\/components\/consultation\/ch-webelexis-consdetail.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -172,6 +185,70 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/components\/login\/ch-webelexis-login.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/components\/login\/ch-webelexis-login.js",
+		"outputAbbreviatedPath": "\/dist\/web\/components\/login\/ch-webelexis-login.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/components\/menubar\/ch-webelexis-menubar.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/components\/menubar\/ch-webelexis-menubar.js",
+		"outputAbbreviatedPath": "\/dist\/web\/components\/menubar\/ch-webelexis-menubar.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/components\/page404\/ch-webelexis-page404.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/components\/page404\/ch-webelexis-page404.js",
+		"outputAbbreviatedPath": "\/dist\/web\/components\/page404\/ch-webelexis-page404.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/components\/patdetail\/ch-webelexis-patdetail.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/components\/patdetail\/ch-webelexis-patdetail.js",
+		"outputAbbreviatedPath": "\/dist\/web\/components\/patdetail\/ch-webelexis-patdetail.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/components\/patlist\/ch-webelexis-patlist.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/components\/patlist\/ch-webelexis-patlist.js",
+		"outputAbbreviatedPath": "\/dist\/web\/components\/patlist\/ch-webelexis-patlist.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/css\/bootstrap-datepicker3.min.css": {
+		"fileType": 16,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/css\/bootstrap-datepicker3.min.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
 		},
 	"\/dist\/web\/css\/bootstrap-theme.min.css": {
 		"fileType": 16,
@@ -422,7 +499,7 @@
 		"fileType": 32768,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"initialSize": 814,
+		"initialSize": 581,
 		"inputAbbreviatedPath": "\/dist\/web\/img\/elexis_logo.png",
 		"outputAbbreviatedPath": "\/dist\/web\/img\/elexis_logo.png",
 		"outputPathIsOutsideProject": 0,
@@ -437,6 +514,39 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
+		},
+	"\/dist\/web\/lib\/bootstrap-datepicker.de.min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap-datepicker.de.min.js",
+		"outputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap-datepicker.de.min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/lib\/bootstrap-datepicker.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap-datepicker.js",
+		"outputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap-datepicker.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/dist\/web\/lib\/bootstrap-datepicker.min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap-datepicker.min.js",
+		"outputAbbreviatedPath": "\/dist\/web\/lib\/bootstrap-datepicker.min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
 		},
 	"\/dist\/web\/lib\/bootstrap.min.js": {
 		"fileType": 64,
@@ -1114,6 +1224,15 @@
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/playground.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/dist\/web\/test.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/test.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0

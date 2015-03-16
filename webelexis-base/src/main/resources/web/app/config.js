@@ -10,12 +10,13 @@ define(['knockout'], function (ko) {
         sessionID: ko.observable(null),
         connected: false,
         loc: {ip: "0.0.0.0"},
+        showLogin: false,
         mainMenu: [],
         roles: [],
         modules: [
             {
-                baseUrl: "#agenda",
-                match: /^agenda$/,
+                baseUrl: "#",
+                match: /^$/,
                 title: 'Agenda',
                 component: 'ch-webelexis-agenda',
                 location: 'components/agenda',
