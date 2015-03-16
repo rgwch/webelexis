@@ -1,28 +1,35 @@
 /**
  ** This file is part of Webelexis
- ** Copyrght (c) by G. Weirich 2015
+ ** Copyright (c) by G. Weirich 2015
  */
 
 define(['knockout'], function (ko) {
     return {
+        // not really necessery in standard situations
         eventbusUrl: "http://localhost:2015/eventbus",
-        homepage: "http://github.com/rgwch/webelexis",
+        // any page you want to be called with a click on the logo
+        homepage: "http://github.com/rgwch/webelexis",  
+        // if false: The login field remains hidden
+        showLogin: true,
         sessionID: ko.observable(null),
         connected: false,
         loc: {ip: "0.0.0.0"},
-        showLogin: false,
         mainMenu: [],
         roles: [],
+        /* Definition of modules to use. Note: The access rights are ultimately defined on the server side.
+           So there's no point in activating a module here, if the user doesn't have respective rights on
+           the server. Doing so would only result in a "dead" module. */
         modules: [
             {
                 baseUrl: "#",
-                match: /^$/,
-                title: 'Agenda',
-                component: 'ch-webelexis-agenda',
-                location: 'components/agenda',
-                active: true,
-                menuItem: true,
-                roles: ["guest"]
+                match: /^$/,                        // regexp to match for this page
+                title: 'Agenda',                    // title to display on this page's tab
+                component: 'ch-webelexis-agenda',   // name pof the component that creates this pages
+                location: 'components/agenda',      // location of the componant
+                active: true,                       // to deactivate a component temporarily, set to 'false'
+                menuItem: true,                     // if the component doesn't need a menu item, set to 'false
+                roles: ["guest"]                    // which user roles are allowed to use this component.
+                                                    // again: The server side decides ultimately.
         },
             {
                 baseUrl: "#agext",
