@@ -4,11 +4,12 @@
  **/
 
 /*
- * Main view switcher. Heavily inspired from https://github.com/lshift/knockout-routing
+ * Main view switcher. Initially inspired from https://github.com/lshift/knockout-routing
  */
 
 define(['app/config', 'knockout', 'app/router', 'bootstrap', 'domReady!'], function (config, ko, Router) {
 
+    // Initial setup: Register all active components and create a minimal menu
     for (var i = 0; i < config.modules.length; i++) {
         var page = config.modules[i]
         if (page.active) {
@@ -19,11 +20,6 @@ define(['app/config', 'knockout', 'app/router', 'bootstrap', 'domReady!'], funct
             if (page.menuItem && page.roles.indexOf("guest")>-1) {
                 config.mainMenu.push(page)
             }
-        /*    
-            if (page.menuItem) {
-                $("#mainmenu").append('<li><a href="#' + page.baseUrl + '">' + page.title + '</a></li>')
-            }
-            */
         }
     }
     // This is the KO ViewModel for the whole page, which contains our router, which

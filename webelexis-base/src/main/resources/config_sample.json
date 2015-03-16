@@ -1,36 +1,36 @@
 // Example JSON config file for webelexis-base. Rename ths file to 'cfglocal.json', copy it to the webelexis-base rootdir 
 // and modify as needed.
 // Note: comments are not part of the JSON spec. Some parsers will reject files with comments,
-// so it is recommended to remove these comments in your active conf.json.
+// so it is recommended to remove these comments in your active cfglocal.json. (vert.x does accept comments at this time, however)
 // Check the correctness of your config with http://jsonlint.com
 {
     // config for the mod-mongo-persistor (https://github.com/vert-x/mod-mongo-persistor)
   "mongo" : {
-  	"address" : "ch.webelexis.nosql", // do not change this
-    "host": "localhost",			  // address of your mongo server. defaults to 'localhost'					
-    "port": <port>,					  // optional
-    "username": <username>,			  // optional
-    "password": <password>,			  // optional
-    "db_name": "webelexis",			  // do not change			 
-    "pool_size": <pool_size>,		  // optional
-    "use_ssl": <bool>,				  // only necessary, if access from outside
-    "read_preference": <e.g. "nearest" or "primary" etecetera>,  // optional
-    "use_mongo_types": <bool>,		  // optional; "false" is recommended
-    "socket_timeout": <default 60000>, // optional
-    "auto_connect_retry": <default true>   // optional, "true" recommended
+  	"address" : "ch.webelexis.nosql",    // do not change this
+    "host": "localhost",			     // address of your mongo server. defaults to 'localhost'					
+    "port": 27017,					     // optional
+    "username": "mongodb-user",			 // optional
+    "password": "mongodb-password",		 // optional
+    "db_name": "webelexis",			     // do not change			 
+    "pool_size": 20,		             // optional
+    "use_ssl": false,				     // only necessary, if access from outside
+    "read_preference": "nearest",        //  or "primary" etecetera>, optional
+    "use_mongo_types": false,		     // optional; "false" is recommended
+    "socket_timeout": 60000,             // optional
+    "auto_connect_retry": true           // optional, "true" recommended
   },
   
     // config for mod-mysql-postgresql (https://github.com/vert-x/mod-mysql-postgresql)
   "sql" : {
   
-  	"address" : "ch.webelexis.sql",  // do not change this
-  	"connection" : <MySQL|PostgreSQL>,
-  	"host" : <your-host>,
-  	"port" : <your-port>,
-  	"maxPoolSize" : <maximum-number-of-open-connections>,  // optional
-  	"username" : <your-username>,
-  	"password" : <your-password>,
-  	"database" : <name-of-your-database>			// usually 'elexis'
+  	"address" : "ch.webelexis.sql",      // do not change this
+  	"connection" : "MySQL"               // (or "PostgreSQL"),
+  	"host" : "localhost",                // address of the database server
+  	"port" : "3306",
+  	"maxPoolSize" : 20,                  // maximum number of open connections; optional
+  	"username" : "database-user",
+  	"password" : "database-password",
+  	"database" : "elexis"			     // or whatever
 	}, 
 	
     // config for mod-auth-mgr (https://github.com/vert-x/mod-auth-mgr)
@@ -47,20 +47,21 @@
 		"timeSlot": 30,				// how long should an appointment be
 		"maxPerDay": 4,				// maximum Number of appnts. per day via this app
 		"apptType" : "Normal",		// "TerminTyp" for our appointments
-		"apptState": "Via Internet"  // "TerminStatus" for our appointments
+		"apptState": "Via Internet",  // "TerminStatus" for our appointments
+        "roles": ["guest"]          // roles allowed to use the module
 	},
     
     // config for the EventBus-Websocket bridge and the html server
 "bridge" :{
-		"webroot": "web",	// Use this for the deployed module	(or just leave this entry away)
+		"webroot": "web",	        // Use this for the deployed module	(or just leave this entry away)
 		// "webroot": "src/main/resources/web",  // use this for "gradle runMod" within the build environment
-		"port": 2015,     // default port for webelexis
-		"inOK" : [        // allowed inbound messages (all other will be blocked)
+		"port": 2015,             // default port for webelexis
+		"inOK" : [                // allowed inbound messages (all other will be blocked)
 		{"address": "ch.webelexis.auth.login"},
 		{"address": "ch.webelexis.auth.logout"},
 		{"address": "ch.webelexis.agenda.appointments"},
 		{"address": "ch.webelexis.agenda.insert"}
-		],                // allowed outbound messages
+		],                        // allowed outbound messages
 		"outOK" : [
 		]
 	},

@@ -1,5 +1,5 @@
 /*!
- * This file is part of Webelexis
+ * This file is part of Webelexis, (c) 2015 By G. Weirich
  * originally created by Sam Carr of LShift (http://www.lshift.net/blog/2014/04/30/a-simple-knockout-page-router/)
  */
 

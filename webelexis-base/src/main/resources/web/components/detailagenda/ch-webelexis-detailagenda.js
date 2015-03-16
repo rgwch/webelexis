@@ -5,6 +5,7 @@
 define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-detailagenda.html', 'knockout-jqueryui/datepicker', 'domReady!'], function (ko, bus, cfg, html) {
 
 
+    // create standardized Strings from Date objects
     var dateStrings = function (date) {
         var month = (date.getMonth() + 1).toString();
         if (month.length < 2) {
@@ -21,12 +22,13 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-detailagenda.html
         }
     }
 
-
+    // Elexis-Style date string (yyyymmdd)
     var makeCompactString = function (date) {
         var ret = dateStrings(date)
         return ret.year + ret.month + ret.day
     }
 
+    // Create a Date-Object from an Elexis-Style String
     var makeDate = function (datestring) {
         var year = datestring.substring(0, 4)
         var month = datestring.substring(4, 6) - 1
@@ -34,11 +36,13 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-detailagenda.html
         return new Date(year, month, day)
     }
 
+    // Create a Date-Object from a dd.mm.yyyy string
     var makeDateFromlocal = function (datestring) {
         var ar = datestring.split(".")
         return new Date(ar[2], ar[1] - 1, ar[0])
     }
 
+    // Create a hh:mm String from minutes
     var makeTime = function (minutes) {
             var hours = parseInt(minutes / 60)
             var mins = (minutes - (hours * 60)).toString()
@@ -58,6 +62,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-detailagenda.html
                 return ret.year + "-" + ret.month + "-" + ret.day
             }
             */
+    // create a dd.mm.yyyy String from a Date object
     var makeDateString = function (date) {
         var ret = dateStrings(date)
         return ret.day + "." + ret.month + "." + ret.year
@@ -100,17 +105,11 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-detailagenda.html
         self.appointments = ko.observableArray([]);
         self.lastExpanded = null
 
-        /*
-                self.actDate = ko.computed(function () {
-                    return makeDateRFC3339(self.now())
-                })
-        */
         self.readDate = function () {
             var date = makeDateFromlocal(self.now())
             return date
         }
         self.writeDate = function (date) {
-            //$("#agendaDatum input").datepicker('setDate', date)
             self.now(makeDateString(date))
         }
         self.yesterday = function () {
