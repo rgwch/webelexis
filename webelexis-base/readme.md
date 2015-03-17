@@ -2,7 +2,7 @@
 
 ## build process
 
-After trying quite a few build tools (ant, maven, gradle, grunt, gulp), I finally returned to a radically simplified method: npm.
+After trying quite a few build tools, I finally returned to a radically simplified method: npm.
 The reasons are about the same as stated [here](http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/). Npm offers slightly more help in organising build subtasks, but essentially acts as a starter for command line tools. More on this topic [here](http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/). A [package.json](http://browsenpm.org/package.json) is all, npm needs to run.
 
 ### Prerequisites
