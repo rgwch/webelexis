@@ -1,0 +1,21 @@
+{
+  "sql" : {
+  	"address" : "ch.webelexis.sql",      
+  	"connection" : "MySQL",              
+  	"host" : "localhost",               
+  	"username" : "database-user",
+  	"password" : "database-password",
+  	"database" : "elexis"			     
+	}, 
+	
+"agenda":{
+		"resource":"gerry",			 
+		"timeSlot": 30,				
+		"maxPerDay": 4,				
+		"apptType" : "Normal",		
+		"apptState": "Via Internet", 
+        "roles": ["guest"]          
+	},
+    
+	"id": "this is an identification for this config"
+}

@@ -1,10 +1,15 @@
-// Example JSON config file for webelexis-base. Rename ths file to 'cfglocal.json', copy it to the webelexis-base rootdir 
-// and modify as needed.
+// Example JSON config file for webelexis-base. 
+// Copy this file to the webelexis-base rootdir. rename it to 'cfglocal.json' and modify as needed.
+
 // Note: comments are not part of the JSON spec. Some parsers will reject files with comments,
-// so it is recommended to remove these comments in your active cfglocal.json. (vert.x does accept comments at this time, however)
-// Check the correctness of your config with http://jsonlint.com
-{
-    // config for the mod-mongo-persistor (https://github.com/vert-x/mod-mongo-persistor)
+// therefore it is recommended to remove these comments in your active cfglocal.json. 
+// (vert.x does accept comments at this time, however)
+// If vert.x complains about invalid config, remove all comments and check the correctness of your config with http://jsonlint.com
+
+// Note 2: The file "config_minimal.json" is a miniumum set of options needed to run webelexis. Probably you'd rather start
+// from that file.
+
+// config for the mod-mongo-persistor (https://github.com/vert-x/mod-mongo-persistor)
   "mongo" : {
   	"address" : "ch.webelexis.nosql",    // do not change this
     "host": "localhost",			     // address of your mongo server. defaults to 'localhost'					
@@ -24,7 +29,7 @@
   "sql" : {
   
   	"address" : "ch.webelexis.sql",      // do not change this
-  	"connection" : "MySQL"               // (or "PostgreSQL"),
+  	"connection" : "MySQL",              // (or "PostgreSQL"),
   	"host" : "localhost",                // address of the database server
   	"port" : "3306",
   	"maxPoolSize" : 20,                  // maximum number of open connections; optional
@@ -53,8 +58,7 @@
     
     // config for the EventBus-Websocket bridge and the html server
 "bridge" :{
-		"webroot": "web",	        // Use this for the deployed module	(or just leave this entry away)
-		// "webroot": "src/main/resources/web",  // use this for "gradle runMod" within the build environment
+		"webroot": "web",	      // Base path. Optional, this is the default
 		"port": 2015,             // default port for webelexis
 		"inOK" : [                // allowed inbound messages (all other will be blocked)
 		{"address": "ch.webelexis.auth.login"},

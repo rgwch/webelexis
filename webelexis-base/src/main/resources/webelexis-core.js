@@ -18,6 +18,16 @@ var container = require('vertx/container')
 var config = container.config
 var log = container.logger
 
+// utility function for module launching
+var deploystate= function (name, err,id){
+	if(err){
+        log.fatal(name+": could not launch; " + err.getMessage());
+	}else{
+	      log.info(name+" connector launched successfully with id: " + id);
+	      
+	}
+}
+
 // provide a default config if none ws supplied
 if (config === undefined) {
     log.info("config is not defined")
@@ -39,15 +49,6 @@ if (config.sql === undefined) {
     }
 }
 
-var deploystate= function (name, err,id){
-	if(err){
-        log.fatal(name+": could not launch; " + err.getMessage());
-	}else{
-	      log.info(name+" connector launched successfully with id: " + id);
-	      
-	}
-	
-}
 container.deployModule("io.vertx~mod-mysql-postgresql_2.10~0.3.1", config.sql, function(err,id){ deploystate("sql",err,id)})
 
 if (config.mongo === undefined) {
