@@ -71,4 +71,5 @@ If this works, copy `webelexis-base/src/main/resources/config_sample.json` to `w
 * npm run build:client - create the clients side of the webelexis project and copy all to the "dist/web" folder
 * npm run verticle - copy and run the server side application
 * npm start - rebuild all and start the server ($VERTX_HOME must be set correctly)
-* npm run module - create and install ch.webelexis~base-module~x.y.z as a vert.x module in the system ($VERTX_HOME and $VERTX_MODS must be set correctly)
+* npm run build:module - create and install ch.webelexis~base-module~x.y.z as a vert.x module in the system ($VERTX_HOME and $VERTX_MODS must be set correctly)
+* npm run build:jar - create a self-contained jar (needs no vertx installation to run)
