@@ -1,74 +1,183 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-    </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+</head>
+
 <body>
+
     <h1>Webelexis anpassen</h1>
     <p>Das ist gar nicht so schwierig, wie Sie vielleicht denken würden.</p>
-<h1>Eine Virtuelle Maschine für die Webelexis-Entwicklung erstellen</h1>
+    <h1>Eine Virtuelle Maschine für die Webelexis-Entwicklung erstellen</h1>
     <p>Für diese Anleitung verwende ich das Programm <a href="https://www.virtualbox.org">VirtualBox</a>, welches kostenlos für Windows, Linux und MacOS erhältlich ist. Bitte installieren Sie dieses Programm, bevor Sie weiterfahren.</p>
     <h2>Schritt 1: Linux besorgen</h2>
     <p>Besorgen Sie sich ein ISO-Abbild von <a href="http://sourceforge.net/projects/manjarolinux/files/release/0.8.12/xfce/manjaro-xfce-0.8.12-x86_64.iso/download">manjaro-linux xfce 64 Bit</a> (Ausser, Wenn Ihr Computer nur einen 32-Bit Prozessor hat. Aber dann sollten Sie sich sowieso überlegen, ob Sie diesen Computer verwenden wollen)</p>
     <h2>Schritt 2: Virtuelle Maschine installieren</h2>
-    <p>Starten Sie VirtualBox und klicken Sie oben auf "Neu". Es erscheint folgendes Fenster:</p>
-    <img src="img/vertx_vm_1.png">
-    <p>Für den Namen können Sie etwas Beliebiges einsetzen, die anderen beiden Optionen setzen Sie bitte wie hier genannt, und klicken Sie dann auf "weiter".</p>
-    <img src="img/vertx_vm_2.png">
-    <p>Wieviel RAM Sie Ihrer Maschine spendieren können, hängt in erster Linie davon ab, wieviel Sie in ihrem Computer physikalisch installiert haben. Geben Sie maximal Ihr installiertes RAM minus 4 GB, wenn Sie nur eine VM gleichzeitig laufen lassen. Geben Sie aber nicht weniger, als 1 GB (entgegen der Empfehlung von VirtualBox: Wir wollen ja nicht nur, dass das Betriebssystem gerade so eben läuft, sondern es soll auch arbeiten).</p>
-    <img src="img/vertx_vm_3.png">
-    <p>Für die Festplatte können Sie alle Vorgaben übernehmen.</p>
-    <img src="img/vertx_vm_4.png">
-    <p>Auch hier übernehmen Sie die Vorgabe, ausser wenn Sie gute Gründe haben, einen anderen Typ auszuwählen.</p>
-    <img src="img/vertx_vm_5.png">
-    <p>Dynamisch ist besser, weil dann die Platte nicht sofort ihre volle Grösse erreicht, sondern allmählich ztum Maximum hin wächst, wenn es nötig ist.</p>
-    <img src="img/vertx_vm_6.png">
-    <p>Als Name für die Festplatte bietet sich derselbe Name wie für die VM an. Die Voreingestellte Grösse ist ok. Wie gesagt, die Platte wird nicht sofort in dieser Grösse erzeugt.</p>
-    <img src="img/vertx_vm_7.png">
-    <p>Danach können Sie die virtuelle Maschine erstmals starten. Beim ersten Start mit nagelneuer Festplatte, wird sie nach einer CD verlangen.</p>
-    <img src="img/vertx_vm_8.png">
-    <p>Klicken Sie auf das kleine Icon rechts neben dem Auswahlfeld, um eine virtuelle CD auszuwählen</p>
-    <img src="img/vertx_vm_9.png">
-    <p>Wählen Sie Ihre vorher heruntergeladenene Manjaro-Image-Datei aus...</p>
-    <img src="img/vertx_vm_10.png">
-    <p>...und klicken Sie dann auf "start".</p>
-    <img src="img/vertx_vm_11.png">
-    <p>Drücken Sie entweder &lt;EINGABETASTE&gt; oder warten Sie einen Moment, dann startet manjaro von allein.</p>
-    <img src="img/vertx_vm_12.png">
-    <p>Was Sie jetzt haben, ist eine von CD gestartete Manjaro Version. Um diese auf Ihre virtuelle Festplatte zu installieren, klicken Sie auf "Install Manjaro"</p>
-    <img src="img/vertx_vm_13.png">
-    <p>Wählen Sie Ihre gwwünschte Sprache (Achtung, wenn Sie eine Sprache wählen, die nicht Ihrer geographischen Lage entspricht, wird es nachher etwas schwieriger, die richtige Tastatur auszuwählen)</p>
-    <img src="img/vertx_vm_14.png">
-    <p>Auch hier ist es am Einfachsten, wenn Sie Ihren wirklichen Standort angeben.</p>
-    <img src="img/vertx_vm_15.png">
-    <p>Hier gibt es nichts auszuwählen, aber es sollten alle Häkchen gesetzt sein.</p>
-    <img src="img/vertx_vm_16.png">
-    <p>Machen Sie, was Sie wollen, aber am Einfachsten wird die Konfiguration, wenn Sie einen Ort in Ihrer Nähe auswählen.</p>
-    <img src="img/vertx_vm_17.png">
-    <p>Wählen Sie Ihre Tastatur aus. Wenn Sie nicht sicher sind, können Sie im Feld unten testen, ob vor Allem Umlaute und Sonderzeichen korrekt ankommen.</p>
-    <img src="img/vertx_vm_18.png">
-    <p>Wählen Sie hier am besten die Vollautomatische Variante. Keine Angst: Die Rede ist hier nur von der virtuellen Festplatte, die Sie vorhin eingerichtet haben. Wenn Sie alles so gemacht haben, wie oben angegeben, dann kann die Manjaro-Box Ihre echte Festplatte nicht einmal "sehen", geschweige denn etwas daran verändern.</p>
-    <img src="img/vertx_vm_19.png">
-    <p>Daher können Sie auch diese Warnung getrost ignorieren.</p>
-    <img src="img/vertx_vm_20.png">
-    <p>Und auch diese. Klicken Sie auf "yes"</p>
-    <img src="img/vertx_vm_21.png">
-    <p>Hier dürfen Sie Ihrer Kreativität freien Lauf machen. Das Passwort muss nicht unbedingt eahnsinnig sicher sein, da diese Virtuelle Maschine ohnehin nur für Leute zugänglich ist, die auf den Wirtscomputer Zugriff haben. Ich würde deshalb auch "automatische Anmeldung" wählen, damit man nicht jedesmal das Passwort eingeben muss. Wählen Sie trotzdem ein Passwort, an das Sie sich erinnern können, denn Sie müssen es zum Beispiel für Systemupdates eingeben.</p>
-    <img src="img/vertx_vm_22.png">
-    <p>Danach läuft die Installation durch, das wird einige Minuten dauern.</p>
-    <img src="img/vertx_vm_23.png">
-    <p>Die Rückfrage, ob Sie das System neustarten wollen, sollten Sie besser verneinen, denn sonst startet es gleich wieder von der CD. Klicken Sie also nein und stattdessen...</p>
-    <img src="img/vertx_vm_24.png">
-    <p>...fahren Sie das System herunter, indem Sie das Icon ganz rechts unten auswählen und dann..</p>
-    <img src="img/vertx_vm_25.png">
-    <p>...shut down klicken</p>
+    <div class="container">
+        <p>Starten Sie VirtualBox und klicken Sie oben auf "Neu". Es erscheint folgendes Fenster:</p>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_1.jpg">
+                    <div class="caption">
+                        <h4>1. Name der Maschine</h4>
+                    </div>
+                    <p>Für den Namen können Sie etwas Beliebiges einsetzen, die anderen beiden Optionen setzen Sie bitte wie hier genannt, und klicken Sie dann auf "weiter".</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_2.jpg">
+                    <div class="caption">
+                        <h4>2. Arbeitsspeicher</h4>
+                    </div>
+                    <p>Wieviel RAM Sie Ihrer Maschine spendieren können, hängt in erster Linie davon ab, wieviel Sie in ihrem Computer physikalisch installiert haben. Geben Sie maximal Ihr installiertes RAM minus 4 GB, wenn Sie nur eine VM gleichzeitig laufen lassen. Geben Sie aber nicht weniger, als 1 GB (entgegen der Empfehlung von VirtualBox: Wir wollen ja nicht nur, dass das Betriebssystem gerade so eben läuft, sondern es soll auch arbeiten).</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_3.jpg">
+                    <div class="caption">
+                        <h4>3. Festplatte</h4>
+                    </div>
+                    <p>Für die Festplatte können Sie alle Vorgaben übernehmen.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_4.jpg">
+                    <div class="caption">
+                        <h4>4. Festplattentyp</h4>
+                    </div>
+                    <p>Auch hier übernehmen Sie die Vorgabe, ausser wenn Sie gute Gründe haben, einen anderen Typ auszuwählen.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_5.jpg">
+                    <div class="caption">
+                        <h4>5. Dynamische Platte</h4>
+                    </div>
+                    <p>Dynamisch ist besser, weil dann die Platte nicht sofort ihre volle Grösse erreicht, sondern allmählich ztum Maximum hin wächst, wenn es nötig ist.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_6.jpg">
+                    <div class="caption">
+                        <h4>6. Festplatte erstellen</h4>
+                    </div>
+                    <p>Als Name für die Festplatte bietet sich derselbe Name wie für die VM an. Die Voreingestellte Grösse ist ok. Wie gesagt, die Platte wird nicht sofort in dieser Grösse erzeugt.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_7.jpg">
+                    <div class="caption">
+                        <h4>7. Maschine starten</h4>
+                    </div>
+                    <p>Danach können Sie die virtuelle Maschine erstmals starten. Beim ersten Start mit nagelneuer Festplatte, wird sie nach einer CD verlangen.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_8.jpg">
+                    <div class="caption">
+                        <h4>8. CD auwählen</h4>
+                    </div>
+                    <p>Klicken Sie auf das kleine Icon rechts neben dem Auswahlfeld, um eine virtuelle CD auszuwählen</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_9.jpg">
+                    <div class="caption">
+                        <h4>9. CD Image laden</h4>
+                    </div>
+                    <p>Wählen Sie Ihre vorher heruntergeladenene Manjaro-Image-Datei aus...</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_10.jpg">
+                    <div class="caption">
+                        <h4>10. System starten</h4>
+                    </div>
+                    <p>...und klicken Sie dann auf "start".</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_11.jpg">
+                    <div class="caption">
+                        <h4>11. Bootvorgang</h4>
+                    </div>
+                    <p>Drücken Sie entweder &lt;EINGABETASTE&gt; oder warten Sie einen Moment, dann startet manjaro von allein.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_12.jpg">
+                    <div class="caption"><h4>12. Installation beginnen</h4></div>
+                    <p>Was Sie jetzt haben, ist eine von CD gestartete Manjaro Version. Um diese auf Ihre virtuelle Festplatte zu installieren, klicken Sie auf "Install Manjaro"</p>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_13.jpg">
+                    <p>Wählen Sie Ihre gwwünschte Sprache (Achtung, wenn Sie eine Sprache wählen, die nicht Ihrer geographischen Lage entspricht, wird es nachher etwas schwieriger, die richtige Tastatur auszuwählen)</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_14.jpg">
+                    <p>Auch hier ist es am Einfachsten, wenn Sie Ihren wirklichen Standort angeben.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_15.jpg">
+                    <p>Hier gibt es nichts auszuwählen, aber es sollten alle Häkchen gesetzt sein.</p>
+                </div>
+            </div>
+            <img src="img/vertx_vm_16.jpg">
+            <p>Machen Sie, was Sie wollen, aber am Einfachsten wird die Konfiguration, wenn Sie einen Ort in Ihrer Nähe auswählen.</p>
+            <div class="col-sm-12 col-md-6">
+                <div class="thumbnail">
+                    <img src="img/vertx_vm_17.jpg">
+                    <p>Wählen Sie Ihre Tastatur aus. Wenn Sie nicht sicher sind, können Sie im Feld unten testen, ob vor Allem Umlaute und Sonderzeichen korrekt ankommen.</p>
+                </div>
+            </div>
+            <img src="img/vertx_vm_18.jpg">
+            <p>Wählen Sie hier am besten die Vollautomatische Variante. Keine Angst: Die Rede ist hier nur von der virtuellen Festplatte, die Sie vorhin eingerichtet haben. Wenn Sie alles so gemacht haben, wie oben angegeben, dann kann die Manjaro-Box Ihre echte Festplatte nicht einmal "sehen", geschweige denn etwas daran verändern.</p>
+            <img src="img/vertx_vm_19.jpg">
+            <p>Daher können Sie auch diese Warnung getrost ignorieren.</p>
+            <img src="img/vertx_vm_20.jpg">
+            <p>Und auch diese. Klicken Sie auf "yes"</p>
+            <img src="img/vertx_vm_21.jpg">
+            <p>Hier dürfen Sie Ihrer Kreativität freien Lauf machen. Das Passwort muss nicht unbedingt eahnsinnig sicher sein, da diese Virtuelle Maschine ohnehin nur für Leute zugänglich ist, die auf den Wirtscomputer Zugriff haben. Ich würde deshalb auch "automatische Anmeldung" wählen, damit man nicht jedesmal das Passwort eingeben muss. Wählen Sie trotzdem ein Passwort, an das Sie sich erinnern können, denn Sie müssen es zum Beispiel für Systemupdates eingeben.</p>
+            <img src="img/vertx_vm_22.jpg">
+            <p>Danach läuft die Installation durch, das wird einige Minuten dauern.</p>
+            <img src="img/vertx_vm_23.jpg">
+            <p>Die Rückfrage, ob Sie das System neustarten wollen, sollten Sie besser verneinen, denn sonst startet es gleich wieder von der CD. Klicken Sie also nein und stattdessen...</p>
+            <img src="img/vertx_vm_24.jpg">
+            <p>...fahren Sie das System herunter, indem Sie das Icon ganz rechts unten auswählen und dann..</p>
+            <img src="img/vertx_vm_25.jpg">
+            <p>...shut down klicken</p>
+        </div>
+    </div>
     <h2>Schritt 3: Eben installiertes System starten.</h2>
-  <img src="img/vertx_vm_26.png">
-  <p>Nun sollten Sie die virtuelle Manjaro-CD "auswerfen", damit das System von der virtuellen Festplatte starten kann. Klicken Sie dazu in VirtualBox auf "ändern"</p>
-    <img src="img/vertx_vm_27.png">
+    <img src="img/vertx_vm_26.jpg">
+    <p>Nun sollten Sie die virtuelle Manjaro-CD "auswerfen", damit das System von der virtuellen Festplatte starten kann. Klicken Sie dazu in VirtualBox auf "ändern"</p>
+    <img src="img/vertx_vm_27.jpg">
     <p>Dann auf "Massenspeicher"</p>
-    <img src="img/vertx_vm_28.png">
+    <img src="img/vertx_vm_28.jpg">
     <p>Nach Klick auf das CD-Symbol können Sie das Medium auswerfen. Danach klicken Sie wieder auf "Start"</p>
-    <img src="img/vertx_vm_29.png">
+    <img src="img/vertx_vm_29.jpg">
     <p>Nach dem ersten Start wird LInux sich updaten wollen, da das CD-Image zwangsläufig nie ganz auf dem neuesten Stand ist. Und hier kommen wir zu einem etwas unglücklichen Kapitel: Diese Update-Funktion scheitert öfters. Aber versuchen Sie es ruhig, klicken Sie auf "Übernehmen". Wenn es geht, ist okay, und sonst machen Sie es eben manuell: Rechtsklicken Sie auf den roren Punkt in der unteren Zeile und wählen Sie "beenden". Öffnen Sie dann ein Terminal (Links im Hauptmenü klicken und "Terminal" auswählen)</p>
     <h2>Schritt 4: System updaten</h2>
     <p>Als Erstes würde ich Ihnen empfehlen, jetzt einen "Snapshot" des eben installierten Systems zu erstellen. Das geht im VirtualBox-Menü der laufenden Maschine unter "Machine - Take Snapshot" (Nicht verwechseln mit dem gleich daneben liegenden "Take Screenshot"). Die Idee des Snapshots ist: der momentane Zustand der virtuellen Maschine wird gespeichert. Wenn später irgend etwas schief geht, kann man jederzeit wieder zu diesem Punkt zurückkehren.</p>
@@ -80,5 +189,6 @@
     <p>Im Gegensatz zu Ubuntu und SuSE hat Manjaro ein "rolling release". Das heisst, Sie müssen nach diesem ersten Mal nie mehr ein komplettes Systemupdate machen. Sie geben einfach ab und zu im Terminal <code>sudo pacman -Syu</code> ein, und das System bleibt immer aktuell.</p>
     <h2>Schritt 5: Zur Sache</h2>
     <p>Nun sind Sie bereit für das, weshalb Sie überhaupt angefangen haben, diesen Text zu lesen: Selber bauen von Webelexis. Lesen Sie die Anleitung dafür <a href="webelexis_env.html">hier</a>.</p>
-    </body>
+</body>
+
 </html>
