@@ -5,6 +5,7 @@
     "author": "weirich@elexis.ch",
     "private": true,
     "license": "EPL",
+    "fullname": "ch-webelexis~${npm_package_name}~${npm_package_version}",
     "scripts": {
         "clean": "rimraf dist",
         
@@ -19,10 +20,12 @@
         "preverticle": "npm run compile:java && cp src/main/resources/webelexis-core.js dist && cp cfglocal.json dist",
         "verticle": "cd dist && vertx run webelexis-core.js -conf cfglocal.json",
 
-        "prebuild:module": "npm run clean && npm run build:client && npm run preverticle && cp src/main/resources/mod.json dist",
+        "prebuild:module": "npm run clean && vertx uninstall ch-webelexis~${npm_package_name}~${npm_package_version} && npm run build:client && npm run preverticle && cp src/main/resources/mod.json dist",
         "build:module": "ncp dist ${VERTX_MODS}/dist && mv ${VERTX_MODS}/dist ${VERTX_MODS}/ch.webelexis~${npm_package_name}~${npm_package_version}",
 
-        "build:jar": "npm run build:module && vertx fatjar ch.webelexis~${npm_package_name}~${npm_package_version}",
+        "build:jar": "npm run build:module && cd .. && vertx fatjar ch.webelexis~${npm_package_name}~${npm_package_version}",
+        
+        "build:zip": "npm run build:jar && cd ${VERTX_MODS}/ch.webelexis~${npm_package_name}~${npm_package_version} && zip -r ../../ch-webelexis~${npm_package_name}~${npm_package_version}.zip *",
         
         "start": "npm run build:client && npm run verticle",
 
