@@ -6,9 +6,6 @@ var require = {
     baseUrl: ".",
     paths: {
         "bootstrap": "lib/bootstrap.min",
-        "sammy": "lib/sammy-latest.min",
-        //"datepicker": "lib/bootstrap-datepicker",
-        //"datepicker.de": "lib/bootstrap-datepicker.de.min",
         "jquery": "lib/jquery.min",
         "jquery-ui": "lib/jquery-ui",
         "knockout": "lib/knockout",
