@@ -1,6 +1,8 @@
 // Karma configuration
 // Generated on Thu Mar 19 2015 14:57:58 GMT+0100 (CET)
 
+// http://attackofzach.com/setting-up-a-project-using-karma-with-mocha-and-chai/
+
 module.exports = function (config) {
     config.set({
 
@@ -10,7 +12,7 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha', 'requirejs'],
+        frameworks: ['mocha', 'requirejs', 'chai'],
 
 
         // list of files / patterns to load in the browser
