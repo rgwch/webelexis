@@ -15,9 +15,10 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-      'src/test/resources/web/app/test-main.js',
+            'src/test/resources/web/app/test-main.js',
+           // 'test-main.js',
             {
-                pattern: 'src/main/resources/web/**/*.js',
+                pattern: 'dist/web/**/*.js',
                 included: false
             },
             {
@@ -29,8 +30,8 @@ module.exports = function (config) {
 
         // list of files to exclude
         exclude: [
-        'src/main/resources/web/app/main.js',
-        'src/main/resources/web/app/require.config.js'
+        'dist/web/app/main.js',
+        'dist/web/app/require.config.js'
     ],
 
 

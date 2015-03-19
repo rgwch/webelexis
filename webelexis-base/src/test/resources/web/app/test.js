@@ -1,3 +1,3 @@
 define(['app/config'], function (cfg) {
-    console.log("hier")
+    console.log("hier " + cfg.homepage)
 });
