@@ -57,13 +57,13 @@ define({
     },
     // make a YYYY-MM-DD String from a Date object
     makeDateRFC3339: function (date) {
-        var ret = dateStrings(date)
+        var ret = this.dateStrings(date)
         return ret.year + "-" + ret.month + "-" + ret.day
     },
     
     // male a dd.mm.yyyy String from a Date object
     makeDateString: function (date) {
-        var ret = dateStrings(date)
+        var ret = this.dateStrings(date)
         return ret.day + "." + ret.month + "." + ret.year
     }
 

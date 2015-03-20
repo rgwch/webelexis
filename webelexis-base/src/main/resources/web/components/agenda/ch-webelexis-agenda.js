@@ -2,10 +2,10 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'app/datetools','knockout-jqueryui/datepicker', 'domReady!'], function (ko, bus, cfg, html,dt) {
+define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'app/datetools', 'knockout-jqueryui/datepicker', 'domReady!'], function (ko, bus, cfg, html, dt) {
 
 
-       /**
+    /**
      * client side representation of an Elexis-appointment
      */
     function Appointment(row) {
@@ -37,7 +37,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
         self.monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
         self.monateKurz = ["Jan", "Feb", "März", "April", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
         self.title = "Agenda"
-        self.now = ko.observable(makeDateString(new Date()))
+        self.now = ko.observable(dt.makeDateString(new Date()))
 
         self.appointments = ko.observableArray([]);
         self.lastExpanded = null
@@ -60,7 +60,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
 
         }
 
-        self.dateChanged = function (datestring /*,widget*/) {
+        self.dateChanged = function (datestring /*,widget*/ ) {
             self.now(datestring)
             self.loadAppointments()
         }
@@ -129,9 +129,9 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
             self.appointments.removeAll()
         }
 
-        self.addAppointment = function (/*formElement*/) {
-            console.log("addApp" + $("input#patname").val())
-            console.log(this.begin)
+        self.addAppointment = function ( /*formElement*/ ) {
+            //console.log("addApp" + $("input#patname").val())
+            //console.log(this.begin)
             bus.send('ch.webelexis.agenda.insert', {
                 day: dt.makeCompactString(this.date),
                 time: this.begin,
