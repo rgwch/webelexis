@@ -4,13 +4,14 @@
  */
 
 define(['knockout'], function (ko) {
+    
     return {
         // not really necessery in standard situations
         eventbusUrl: "http://localhost:2015/eventbus",
         // any page you want to be called with a click on the logo
         homepage: "http://github.com/rgwch/webelexis",  
         // if false: The login field remains hidden
-        showLogin: true,
+        showLogin: ko.observable(false),
         sessionID: ko.observable(null),
         connected: false,
         loc: {ip: "0.0.0.0"},

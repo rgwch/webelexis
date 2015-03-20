@@ -39,10 +39,18 @@ define(['components/agenda/ch-webelexis-agenda', 'app/eb'], function(agenda, bus
         it('should go to yesterday and tomorrow',function(){
             ag.writeDate(new Date(2013,4,12))
             ag.tomorrow()
+            var nd=ag.readDate()
+            nd.getDate().should.equal(13)
+            nd.getMonth().should.equal(4)
+            nd.getFullYear().should.equal(2013)
+            ag.yesterday()
+            ag.now().should.equal("12.05.2013")
         })
 
     })
 })
+
+
 
 
 

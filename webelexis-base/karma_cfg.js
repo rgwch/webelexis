@@ -25,7 +25,13 @@ module.exports = function(config) {
             }, {
                 pattern: 'src/test/resources/web/**/*.js',
                 included: false
-            },
+            }, {
+                pattern: 'dist/web/*.html',
+                included: true,
+                served: true
+
+            }
+
         ],
 
 
