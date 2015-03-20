@@ -72,7 +72,8 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
                 self.lastExpanded.expanded(false);
                 self.lastExpanded = null;
             }
-            bus.send('ch.webelexis.agenda.appointments', {
+            bus.send('ch.webelexis.agenda', {
+                request: 'list',
                 begin: dt.makeCompactString(act),
                 end: dt.makeCompactString(act),
                 token: cfg.sessionID()
@@ -134,7 +135,8 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
         self.addAppointment = function( /*formElement*/ ) {
             //console.log("addApp" + $("input#patname").val())
             //console.log(this.begin)
-            bus.send('ch.webelexis.agenda.insert', {
+            bus.send('ch.webelexis.agenda', {
+                request: 'insert',
                 day: dt.makeCompactString(this.date),
                 time: this.begin,
                 //ip: cfg.loc.ip,

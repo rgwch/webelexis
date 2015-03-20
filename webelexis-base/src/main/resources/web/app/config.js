@@ -11,7 +11,7 @@ define(['knockout'], function (ko) {
         // any page you want to be called with a click on the logo
         homepage: "http://github.com/rgwch/webelexis",  
         // if false: The login field remains hidden
-        showLogin: ko.observable(false),
+        showLogin: ko.observable(true),
         sessionID: ko.observable(null),
         connected: false,
         loc: {ip: "0.0.0.0"},
