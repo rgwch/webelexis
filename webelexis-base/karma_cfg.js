@@ -3,7 +3,7 @@
 
 // http://attackofzach.com/setting-up-a-project-using-karma-with-mocha-and-chai/
 
-module.exports = function (config) {
+module.exports = function(config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -12,29 +12,28 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha', 'requirejs', 'chai'],
+        frameworks: ['mocha', 'requirejs', 'chai', 'sinon'],
 
 
         // list of files / patterns to load in the browser
         files: [
             'src/test/resources/web/app/test-main.js',
-           // 'test-main.js',
+            // 'test-main.js',
             {
                 pattern: 'dist/web/**/*.js',
                 included: false
-            },
-            {
+            }, {
                 pattern: 'src/test/resources/web/**/*.js',
                 included: false
             },
-    ],
+        ],
 
 
         // list of files to exclude
         exclude: [
-        'dist/web/app/main.js',
-        'dist/web/app/require.config.js'
-    ],
+            'dist/web/app/main.js',
+            'dist/web/app/require.config.js'
+        ],
 
 
         // preprocess matching files before serving them to the browser
@@ -75,3 +74,4 @@ module.exports = function (config) {
         singleRun: false
     });
 };
+
