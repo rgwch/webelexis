@@ -63,8 +63,7 @@
 		"inOK" : [                // allowed inbound messages (all other will be blocked)
 		{"address": "ch.webelexis.auth.login"},
 		{"address": "ch.webelexis.auth.logout"},
-		{"address": "ch.webelexis.agenda.appointments"},
-		{"address": "ch.webelexis.agenda.insert"}
+		{"address": "ch.webelexis.agenda"}
 		],                        // allowed outbound messages
 		"outOK" : [
 		]

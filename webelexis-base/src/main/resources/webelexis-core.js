@@ -82,10 +82,7 @@ if (config.bridge === undefined) {
                 "address": "ch.webelexis.auth.logout"
                 },
             {
-                "address": "ch.webelexis.agenda.appointments"
-                },
-            {
-                "address": "ch.webelexis.agenda.insert"
+                "address": "ch.webelexis.agenda"
                 }
             ],
         "outOK": []

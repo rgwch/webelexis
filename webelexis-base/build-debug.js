@@ -1,3 +1,4 @@
+// build directives for r.js
 ({
     mainConfigFile: 'src/main/resources/web/app/requirejs.config.js',
     optimize: "none",
@@ -8,7 +9,7 @@
     keepBuildDir: true,
     modules: [{
             name: "app/main"
-    }, {
+    }/*, {
             name: "components/agenda/ch-webelexis-agenda"
     }, {
             name: "components/consultation/ch-webelexis-consdetail"
@@ -23,6 +24,14 @@
     }, {
             name: 'components/page404/ch-webelexis-page404'
     }
-
+    
+*/
  ]
 });
+
+
+
+
+
+
+
