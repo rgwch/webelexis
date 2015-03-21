@@ -14,7 +14,7 @@ Object.keys(window.__karma__.files).forEach(function (file) {
 
 require.config({
     // Karma serves files under /base, which is the basePath from your config file
-    baseUrl: '/base',
+    baseUrl: '/base/',
     paths: {
         "bootstrap": "dist/web/lib/bootstrap.min",
         "jquery": "dist/web/lib/jquery.min",
@@ -25,9 +25,11 @@ require.config({
         "vertxbus": "dist/web/lib/vertxbus",
         "domReady": "dist/web/lib/domReady",
         "knockout-jqueryui": "dist/web/lib/knockout-jqueryui",
+        "domReady": "dist/web/lib/domReady",
         "chai": "node_modules/chai/lib/chai",
         "app": "dist/web/app",
-        "components": "dist/web/components"
+        "components": "dist/web/components",
+        "html": "dist/web/html"
     },
     shim: {
         "bootstrap": {

@@ -2,9 +2,9 @@
  ** This file is part of Webelexis
  ** Copyright (c) 2015 by G. Weirich
  **/
-define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
+define(['app/config', 'knockout', 'text!html/ch-webelexis-menubar.html', 'app/eb',
     'domReady!'
-], function(cfg, ko, html, bus) {
+], function (cfg, ko, html, bus) {
 
     function MenubarModel(params) {
         var self = this
@@ -13,9 +13,9 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
         self.upwd = ko.observable()
         self.loggedIn = ko.observable(false)
 
-        self.hasRole = function(test) {
+        self.hasRole = function (test) {
             var result = false
-            test.forEach(function(item) {
+            test.forEach(function (item) {
                 if (cfg.roles.indexOf(item) > -1) {
                     result = true
                 }
@@ -23,7 +23,7 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
             return result
         }
 
-        self.showLogin = ko.computed(function() {
+        self.showLogin = ko.computed(function () {
             if (cfg.showLogin()) {
                 if (!self.loggedIn()) {
                     return true
@@ -33,7 +33,7 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
             return false
         })
 
-        self.showLogout = ko.computed(function() {
+        self.showLogout = ko.computed(function () {
             if (cfg.showLogin()) {
                 if (self.loggedIn()) {
                     return true
@@ -42,11 +42,11 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
             return false
         })
 
-        self.doLogin = function() {
+        self.doLogin = function () {
             bus.send("ch.webelexis.auth.login", {
                 username: self.unam(),
                 password: self.upwd()
-            }, function(result) {
+            }, function (result) {
                 if (result.status === "ok") {
                     cfg.sessionID(result.sessionID)
                     if (result.roles === undefined || result.roles.length < 1) {
@@ -61,10 +61,10 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
                 }
             })
         }
-        self.doLogout = function() {
+        self.doLogout = function () {
             bus.send("ch.webelexis.auth.logout", {
                 sessionID: cfg.sessionID()
-            }, function(result) {
+            }, function (result) {
                 cfg.sessionID("")
                 cfg.roles = ["guest"]
                 self.unam("")
@@ -77,7 +77,7 @@ define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
             })
         }
 
-        self.adaptForUser = function() {
+        self.adaptForUser = function () {
             self.menuItems.removeAll()
             for (var i = 0; i < cfg.modules.length; i++) {
                 var item = cfg.modules[i]

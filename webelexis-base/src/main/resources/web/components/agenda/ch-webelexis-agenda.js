@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'app/datetools', 'knockout-jqueryui/datepicker', 'domReady!'], function(ko, bus, cfg, html, dt) {
+define(['knockout', 'app/eb', 'app/config', 'text!html/ch-webelexis-agenda.html', 'app/datetools', 'knockout-jqueryui/datepicker', 'domReady!'], function (ko, bus, cfg, html, dt) {
 
 
 
@@ -13,11 +13,11 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
         self.monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
         self.monateKurz = ["Jan", "Feb", "März", "April", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
         self.title = "Agenda"
-        /**
-         * client side representation of an Elexis-appointment
-         */
-        
-        self.Appointment=function (row) {
+            /**
+             * client side representation of an Elexis-appointment
+             */
+
+        self.Appointment = function (row) {
             var app = this;
             app.expanded = ko.observable(false)
             app.date = dt.makeDate(row[0])
@@ -31,10 +31,10 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
             app.patient = app.patName + " " + app.firstName;
             app.state = row[8];
             app.reason = row[9];
-            app.displayClass = ko.pureComputed(function() {
+            app.displayClass = ko.pureComputed(function () {
                 return app.type === 'available' ? "available" : "occupied"
             })
-            app.displayText = ko.pureComputed(function() {
+            app.displayText = ko.pureComputed(function () {
                 return app.begin + "-" + app.end + " " + (app.type === 'available' ? "frei" : "belegt")
             })
 
@@ -44,29 +44,29 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
         self.appointments = ko.observableArray([]);
         self.lastExpanded = null
 
-        self.readDate = function() {
+        self.readDate = function () {
             var date = dt.makeDateFromlocal(self.now())
             return date
         }
-        self.writeDate = function(date) {
+        self.writeDate = function (date) {
             //$("#agendaDatum input").datepicker('setDate', date)
             self.now(dt.makeDateString(date))
         }
-        self.yesterday = function() {
+        self.yesterday = function () {
             self.writeDate(new Date(self.readDate().getTime() - (24 * 60 * 60000)))
             self.loadAppointments()
         }
-        self.tomorrow = function() {
+        self.tomorrow = function () {
             self.writeDate(new Date(self.readDate().getTime() + (24 * 60 * 60000)))
             self.loadAppointments()
 
         }
 
-        self.dateChanged = function(datestring /*,widget*/ ) {
+        self.dateChanged = function (datestring /*,widget*/ ) {
             self.now(datestring)
             self.loadAppointments()
         }
-        self.loadAppointments = function() {
+        self.loadAppointments = function () {
             var act = self.readDate()
             if (self.lastExpanded !== null) {
                 self.lastExpanded.expanded(false);
@@ -77,7 +77,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
                 begin: dt.makeCompactString(act),
                 end: dt.makeCompactString(act),
                 token: cfg.sessionID()
-            }, function(result) {
+            }, function (result) {
                 console.log("result: " + JSON.stringify(result));
                 if (result.status !== "ok") {
                     window.alert("Verbindungsfehler: " + result.status);
@@ -87,7 +87,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
                     if (appnts !== undefined) {
                         var prev = null;
                         // combine occupied time slots
-                        appnts.forEach(function(value) {
+                        appnts.forEach(function (value) {
                             var act = new self.Appointment(value)
                             if (act.type === 'occupied') {
                                 if (prev === null) {
@@ -112,7 +112,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
 
         }
 
-        self.expand = function(idx) {
+        self.expand = function (idx) {
             if (idx.type === 'available') {
                 if (self.lastExpanded !== null) {
                     self.lastExpanded.expanded(false)
@@ -123,16 +123,16 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
             }
         }
 
-        self.collapse = function(idx) {
+        self.collapse = function (idx) {
             idx.expanded(false)
             self.lastExpanded = null;
         }
 
-        self.clear = function() {
+        self.clear = function () {
             self.appointments.removeAll()
         }
 
-        self.addAppointment = function( /*formElement*/ ) {
+        self.addAppointment = function ( /*formElement*/ ) {
             //console.log("addApp" + $("input#patname").val())
             //console.log(this.begin)
             bus.send('ch.webelexis.agenda', {
@@ -141,7 +141,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
                 time: this.begin,
                 //ip: cfg.loc.ip,
                 name: $("input#patname").val() + "," + $("input#patphone").val() + "," + $("input#patmail").val()
-            }, function(result) {
+            }, function (result) {
                 // console.log("insert: " + JSON.stringify(result))
                 if (result.status !== "ok") {
                     window.alert("Fehler beim Eintragen: " + result.status)
@@ -150,7 +150,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
                 }
             });
         }
-        var busListener = function(msg) {
+        var busListener = function (msg) {
             if (msg === "open") {
                 self.loadAppointments()
             }
@@ -164,7 +164,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!ch-webelexis-agenda.html', 'ap
     }
 
 
-    AgendaViewModel.prototype.dispose = function() {
+    AgendaViewModel.prototype.dispose = function () {
         bus.removeListener(AgendaViewModel.busListener)
     }
     return {

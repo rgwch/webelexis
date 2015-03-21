@@ -3,7 +3,7 @@
 
 // http://attackofzach.com/setting-up-a-project-using-karma-with-mocha-and-chai/
 
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -26,12 +26,10 @@ module.exports = function(config) {
                 pattern: 'src/test/resources/web/**/*.js',
                 included: false
             }, {
-                pattern: 'dist/web/*.html',
-                included: true,
-                served: true
-
+                pattern: '**/*.html',
+                served: true,
+                included: false
             }
-
         ],
 
 
@@ -72,7 +70,7 @@ module.exports = function(config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['PhantomJS'],
+        browsers: ['Chrome'],
 
 
         // Continuous Integration mode
@@ -80,4 +78,3 @@ module.exports = function(config) {
         singleRun: false
     });
 };
-
