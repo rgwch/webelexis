@@ -46,23 +46,23 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!ch-webelexis-
 
         self.appointments = ko.observableArray([]);
         self.lastExpanded = null
-        self.resources=ko.observableArray([])
-        self.resource=ko.observable()
-        self.loadResources = function(){
+        self.resources = ko.observableArray([])
+        self.resource = ko.observable()
+        self.loadResources = function () {
             self.resources.removeAllItems()
-            bus.send("ch.webelexis.agenda",{
+            bus.send("ch.webelexis.agenda", {
                 token: cfg.sessionID(),
                 request: 'getResources'
-            }, function(result){
-                if(result.status==="ok"){
-                    result.data.forEach(function(item){
+            }, function (result) {
+                if (result.status === "ok") {
+                    result.data.forEach(function (item) {
                         self.resources.push(item)
                     })
                     self.resource(self.resources()[0])
                 }
             })
         }
-        
+
         self.readDate = function () {
             var date = dt.makeDateFromlocal(self.now())
             return date
@@ -70,7 +70,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!ch-webelexis-
         self.writeDate = function (date) {
             self.now(dt.makeDateString(date))
         }
-        self.today = function(){
+        self.today = function () {
             self.writeDate(new Date())
             self.loadAppointments()
         }
@@ -84,7 +84,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!ch-webelexis-
 
         }
 
-        
+
         self.dateChanged = function (datestring /*,widget*/ ) {
             self.now(datestring)
             self.loadAppointments()
@@ -103,8 +103,8 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!ch-webelexis-
                 token: cfg.sessionID()
             }, function (result) {
                 //console.log("result: " + JSON.stringify(result));
-                if (result.status !== "ok") {
-                    window.alert("Verbindungsfehler: " + result.status);
+                if ((result.status === undefined) || result.status !== "ok") {
+                    window.alert("Verbindungsfehler: " + result.status === undefined ? "keine Verbindung" : result.status);
                 } else {
                     self.appointments.removeAll()
                     var appnts = result.appointments;

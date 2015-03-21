@@ -15,7 +15,6 @@ var require = {
         "domReady": "lib/domReady",
         "knockout-jqueryui": "lib/knockout-jqueryui",
         "app": "app",
-        "html": "html"
     },
     shim: {
         "bootstrap": {

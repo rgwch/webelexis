@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** Copyright (c) 2015 by G. Weirich
  **/
-define(['app/config', 'knockout', 'text!html/ch-webelexis-menubar.html', 'app/eb',
+define(['app/config', 'knockout', 'text!ch-webelexis-menubar.html', 'app/eb',
     'domReady!'
 ], function (cfg, ko, html, bus) {
 

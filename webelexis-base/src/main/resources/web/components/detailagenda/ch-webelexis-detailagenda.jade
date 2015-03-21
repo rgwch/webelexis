@@ -1,12 +1,12 @@
 //- This file is üart of Webelexis. Copyright (c) 2015 by G. Weirich
 .row
     .col-sm-12.col-md-6
-     .panel-heading
-            #agendaDatum
-                span.glyphicon.glyphicon-chevron-left(data-bind="click: yesterday")
-                input(type="text" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now')
-                span.glyphicon.glyphicon-chevron-right(data-bind="click: tomorrow")
-                button.btn(data-bind="click: today") Heute
+        .panel-heading
+            .form-inline
+                button.btn.glyphicon.glyphicon-circle-arrow-left(data-bind="click: yesterday" data-toggle="tooltip" title="Zum vorherigen Tag gehen")
+                button.btn.glyphicon.glyphicon-circle-arrow-down(data-bind="click: today" data-toggle="tooltip" title="auf Heute gehen")
+                button.btn.glyphicon.glyphicon-circle-arrow-right(data-bind="click: tomorrow" data-toggle="tooltip" title="Zum nächsten Tag gehen")            
+                input(type="text" style="margin-left:10px" data-toggle="tooltip" title="Klicken um den Kalender zu öffnen" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now')
                 select(data-bind="options: resources, value: resource")
         .panel-body
             .row(data-bind="foreach: appointments")
