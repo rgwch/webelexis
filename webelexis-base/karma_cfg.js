@@ -26,7 +26,7 @@ module.exports = function (config) {
                 pattern: 'src/test/resources/web/**/*.js',
                 included: false
             }, {
-                pattern: '**/*.html',
+                pattern: 'dist/**/*.html',
                 served: true,
                 included: false
             }
@@ -70,7 +70,7 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
 
 
         // Continuous Integration mode
@@ -78,3 +78,8 @@ module.exports = function (config) {
         singleRun: false
     });
 };
+
+
+
+
+

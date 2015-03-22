@@ -3,6 +3,7 @@ define(['components/menubar/ch-webelexis-menubar', 'app/eb', 'app/config'], func
     describe('webelexis main menu bar and login field', function() {
     
         var mb=null
+        
         beforeEach(function(){
             cfg.modules.forEach(function(item){
                 cfg.mainMenu.push(item)
@@ -15,7 +16,7 @@ define(['components/menubar/ch-webelexis-menubar', 'app/eb', 'app/config'], func
                 callback({"status": "ok", "sessionID": "1234"})
             }
         })
-        */
+ */       
         it('should show login/logout status correctly',function(){
             cfg.showLogin(false)
             mb.showLogin().should.be.false
@@ -32,6 +33,28 @@ define(['components/menubar/ch-webelexis-menubar', 'app/eb', 'app/config'], func
 
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
