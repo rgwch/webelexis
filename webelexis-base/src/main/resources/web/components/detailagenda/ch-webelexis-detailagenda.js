@@ -49,16 +49,20 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         self.resources = ko.observableArray([])
         self.resource = ko.observable()
         self.loadResources = function () {
-            self.resources.removeAllItems()
+            self.resources.removeAll()
             bus.send("ch.webelexis.agenda", {
                 token: cfg.sessionID(),
-                request: 'getResources'
+                request: 'resources'
             }, function (result) {
                 if (result.status === "ok") {
                     result.data.forEach(function (item) {
-                        self.resources.push(item)
+                        self.resources.push({
+                            display: item.title,
+                            resource: item.resource
+                        })
                     })
                     self.resource(self.resources()[0])
+                    self.loadAppointments()
                 }
             })
         }
@@ -97,7 +101,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
             }
             bus.send('ch.webelexis.agenda', {
                 request: 'list',
-                resource: self.resource,
+                resource: self.resource().resource,
                 begin: dt.makeCompactString(act),
                 end: dt.makeCompactString(act),
                 token: cfg.sessionID()
@@ -164,7 +168,8 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         bus.addListener(busListener)
 
         if (bus.connected()) {
-            self.loadAppointments();
+            self.loadResources()
+                //self.loadAppointments();
         }
 
     }

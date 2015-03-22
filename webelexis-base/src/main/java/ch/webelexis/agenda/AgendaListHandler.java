@@ -230,8 +230,6 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 		// first call: get all Appointments with valid PatientID
 		log.info("authorized agenda handler");
 		final Cleaner cl = new Cleaner(request);
-		final String resource = cfg.getString("resource") == null ? "" : cfg
-				.getString("resource");
 		JsonObject bridge = new JsonObject()
 				.putString("action", "prepared")
 				.putString(
@@ -241,7 +239,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 						"values",
 						new JsonArray(new String[] {
 								cl.get("begin", ELEXISDATE),
-								cl.get("end", ELEXISDATE), resource }));
+								cl.get("end", ELEXISDATE), cl.get("resource", NAME) }));
 		System.out.println(bridge.toString());
 		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
@@ -265,7 +263,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 											new String[] {
 													cl.get("begin", ELEXISDATE),
 													cl.get("end", ELEXISDATE),
-													resource }));
+													cl.get("resource", NAME) }));
 					eb.send("ch.webelexis.sql", bridge,
 							new Handler<Message<JsonObject>>() {
 

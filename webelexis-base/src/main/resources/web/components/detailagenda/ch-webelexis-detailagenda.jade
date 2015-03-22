@@ -7,7 +7,7 @@
                 button.btn.glyphicon.glyphicon-circle-arrow-down(data-bind="click: today" data-toggle="tooltip" title="auf Heute gehen")
                 button.btn.glyphicon.glyphicon-circle-arrow-right(data-bind="click: tomorrow" data-toggle="tooltip" title="Zum nächsten Tag gehen")            
                 input(type="text" style="margin-left:10px" data-toggle="tooltip" title="Klicken um den Kalender zu öffnen" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now')
-                select(data-bind="options: resources, value: resource")
+                select(data-bind="options: resources, optionsText: 'display', value: resource, event: {change: loadAppointments}")
         .panel-body
             .row(data-bind="foreach: appointments")
-                .well.well-sm.col-sm-12.col-md-6(data-bind="text: displayText, css: displayClass")
+                .well.well-sm.col-xs-12.col-sm-6.col-md-4(data-bind="text: displayText, css: displayClass")

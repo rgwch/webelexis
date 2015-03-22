@@ -56,6 +56,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                     }
                     self.loggedIn(true)
                     self.adaptForUser()
+                    location.hash = "#agext"
                 } else {
                     $("#badlogin-text").removeClass("hidden")
                 }
@@ -74,6 +75,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                 if (result.status !== "ok") {
                     console.log("Problem beim Abmelden " + result.message)
                 }
+                location.hash = "#"
             })
         }
 

@@ -25,8 +25,9 @@ public class Server extends Verticle {
 		JsonObject cfg = container.config();
 		log = container.logger();
 		EventBus eb = vertx.eventBus();
-		final AgendaListHandler listHandler=new AgendaListHandler(eb, cfg.getObject("agenda"));
-		final AgendaInsertHandler insertHandler=new AgendaInsertHandler(eb, cfg.getObject("agenda"));
+		final JsonObject aCfg=cfg.getObject("agenda");
+		final AgendaListHandler listHandler=new AgendaListHandler(eb, aCfg);
+		final AgendaInsertHandler insertHandler=new AgendaInsertHandler(eb, aCfg);
 
 
 		// Register handlers with the eventBus
@@ -40,6 +41,11 @@ public class Server extends Verticle {
 							listHandler.handle(msg);
 						}else if(req.equals("insert")){
 							insertHandler.handle(msg);
+						}else if(req.equals("resources")){
+							JsonObject result=new JsonObject()
+							.putString("status","ok")
+							.putArray("data", aCfg.getArray("resources"));
+							msg.reply(result);
 						}
 				
 					}

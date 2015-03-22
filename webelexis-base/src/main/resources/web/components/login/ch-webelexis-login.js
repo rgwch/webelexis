@@ -2,22 +2,25 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-login.html'], function (bus, config, Router, ko, html) {
+define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html'], function (bus, config, Router, ko, html) {
 
-    $("#navbar-button").bind("click",function(){
-        if(config.sessionID!==null){
-            bus.send('ch.webelexis.auth.logout',{ "sessionID": config.sessionID}, function(result){
-                if(result.status==="ok"){
-                    config.sessionID=null
+    $("#navbar-button").bind("click", function () {
+        if (config.sessionID !== null) {
+            bus.send('ch.webelexis.auth.logout', {
+                "sessionID": config.sessionID
+            }, function (result) {
+                if (result.status === "ok") {
+                    config.sessionID = null
                     $("#navbar-button").text("Anmelden")
                     $(window).trigger("hashchange")
                     window.location.reload(true)
-                }else{
+                } else {
                     window.alert("Fehler beim Abmelden")
                 }
             })
         }
     })
+
     function adapt(connected) {
         if (connected) {
             console.log("eventBus open")
@@ -26,7 +29,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-log
             $("#login-message").text("Bitte melden Sie sich zuerst an.")
             $("#login-head").removeClass()
             $("#login-head").addClass("panel panel-info")
- 
+
         } else {
             console.log("eventBus closed")
             $("#loginbutton").text("Nicht verbunden")
@@ -44,7 +47,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-log
         var title = "Login"
         self.uname = ko.observable("")
         self.pwd = ko.observable("")
-        
+
         bus.addListener(function (msg) {
             adapt(msg === "open")
         })
@@ -58,7 +61,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!ch-webelexis-log
                 if (result.status === "ok") {
                     config.sessionID = result.sessionID;
                     console.log("logged in")
-                    $("#navbar-button").text(self.uname()+" abmelden")
+                    $("#navbar-button").text(self.uname() + " abmelden")
                     $(window).trigger('hashchange')
                 } else {
                     console.log("login failed")

@@ -17,7 +17,7 @@
 /**
  ** This file was originally published at http://github.com/vertx-x/mod-auth-mgr under the
  ** license mentioned above.
- ** Modifications for role based authentication
+ ** Modifications for role based authentication, and refreshing timeout timer on every successful authotize request
  ** (c) 2015 by G. Weirich
  */
 
@@ -58,7 +58,7 @@ public class AuthManager extends BusModBase {
 	private long sessionTimeout;
 
 	private static final class LoginInfo {
-		final long timerID;
+		long timerID;
 		final String sessionID;
 		final JsonArray roles;
 
@@ -145,13 +145,7 @@ public class AuthManager extends BusModBase {
 
 						// Found
 						final String sessionID = UUID.randomUUID().toString();
-						long timerID = vertx.setTimer(sessionTimeout,
-								new Handler<Long>() {
-									public void handle(Long timerID) {
-										sessions.remove(sessionID);
-										logins.remove(username);
-									}
-								});
+						long timerID = setTimerFor(username, sessionID);
 						sessions.put(sessionID, username);
 						JsonArray roles = result.getArray("roles");
 						if (roles == null) {
@@ -173,9 +167,22 @@ public class AuthManager extends BusModBase {
 					sendError(message, "Failed to excecute login");
 				}
 			}
+
+			
 		});
 	}
-
+	
+	private long setTimerFor(final String username,
+			final String sessionID) {
+		long timerID = vertx.setTimer(sessionTimeout,
+				new Handler<Long>() {
+					public void handle(Long timerID) {
+						sessions.remove(sessionID);
+						logins.remove(username);
+					}
+				});
+		return timerID;
+	}
 	protected void doLogout(final Message<JsonObject> message) {
 		final String sessionID = getMandatoryString("sessionID", message);
 		if (sessionID != null) {
@@ -211,7 +218,8 @@ public class AuthManager extends BusModBase {
 
 		if (username != null) {
 			LoginInfo li = logins.get(username);
-
+			vertx.cancelTimer(li.timerID);
+			li.timerID=setTimerFor(username, li.sessionID);
 			JsonObject reply = new JsonObject().putString("username", username)
 					.putArray("roles", li.roles);
 			sendOK(message, reply);
