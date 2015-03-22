@@ -37,9 +37,9 @@
                             <ul class="list-group">
                                 <li class="list-group-item">Einen Computer mit Windows-, Linux- oder MacOS - Betriebssystem"</li>
                                 <li class="list-group-item">Java Runtime (JRE) 1.7 oder höher. Diese können Sie bei <a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Oracle</a> herunterladen.</li>
-                                <li class="list-group-item">Das <a href="http://webelexis.ch/files/fatjar">Webelexis fat-jar</a>.</li>
+                                <li class="list-group-item">Das <a href="http://elexis.ch:80/files/public-docs/webelexis/jar">Webelexis fat-jar</a>.</li>
                             </ul>
-                            <p>Laden Sie <a href="http://webelexis.ch/files.config.json">config.json</a> herunter und öffnen Sie die Datei in einem Text-Editor (Nicht in Microsoft Word(tm), sondern in einem reinen Texteditor, z.B. Notepad). Passen Sie folgende Zeilen an:
+                            <p>Laden Sie <a href="http://elexis.ch:80/files/public-docs/webelexis/config.json">config.json</a> herunter und öffnen Sie die Datei in einem Text-Editor (Nicht in Microsoft Word(tm), sondern in einem reinen Texteditor, z.B. Notepad). Passen Sie folgende Zeilen an:
                                 <ul>
                                     <li>"connection": "MySQL" - Wenn Sie einen PostgreSQL Server haben, schreiben Sie hier "PostgreSQL"</li>
                                     <li>"host": Schreiben Sie hier die IP Adresse oder den Computernahmen des Computers, auf dem die Elexis-Datenbank läuft. Das ist üblicherweise der Server.</li>
@@ -73,10 +73,10 @@
                             <ul class="list-group">
                                 <li class="list-group-item">Dasselbe, wie unter 1 genannt.</li>
                                 <li class="list-group-item">das vert.x framework, das Sie <a href="http://vertx.io">hier</a> herunterladen können.</li>
-                                <li class="list-group-item">Das <a href="http://www.webelexis.ch/files/zip">gezippte Webelexis-Modul</a>
+                                <li class="list-group-item">Das <a href="http://elexis.ch:80/files/public-docs/webelexis/zip">gezippte Webelexis-Modul</a>
                                 </li>
                             </ul>
-                            <p>Laden Sie conf.json herunter und modifizieren Sie es wie bei (1) erklärt. Starten Sie dann das programm mit:</p>
+                            <p>Laden Sie <a href="http://elexis.ch:80/files/public-docs/webelexis/config.json">config.json</a> herunter und modifizieren Sie es wie bei (1) erklärt. Starten Sie dann das programm mit:</p>
                             <code>vertx runzip ch.webelexis~base-module~x.y.z.zip -conf config.json</code>
                             <p>Für x.y.z müssen Sie die richtige Versionsnummer einsetzen. Und beachten Sie auch die beinden Tilden (~) im Dateinamen; es sind nicht alles Bindestriche.</p>
                             <p>Auch hier sollten Sie nach erfolgtem Start das Agenda Programm mit <code>localhost:2015</code> anzeigen können.</p>
