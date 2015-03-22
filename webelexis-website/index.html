@@ -3,7 +3,9 @@
 
 <head>
     <title>Webelexis</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 </head>
@@ -30,13 +32,27 @@
                             </table>
                         </div>
                         <div class="panel-body">
+                            <p>Der Vorteil dieser Methode ist: Sie brauchen ausser Java  ichts auf Ihrem Computer zu installieren, und webelexis-Agenda wird nach Programmende keinerlei Spuren im System hinterlassen. Der Nachteil ist: Jeder einzelne Start dauert relativ lang, da jedesmal benötigte Module aus dem Internet heruntergeladen werden müssen.</p>
                             <p>Sie benötigen:</p>
                             <ul class="list-group">
                                 <li class="list-group-item">Einen Computer mit Windows-, Linux- oder MacOS - Betriebssystem"</li>
                                 <li class="list-group-item">Java Runtime (JRE) 1.7 oder höher. Diese können Sie bei <a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Oracle</a> herunterladen.</li>
                                 <li class="list-group-item">Das <a href="http://webelexis.ch/files/fatjar">Webelexis fat-jar</a>.</li>
                             </ul>
-                            <p>Hier ist eine Schritt-für-Schritt-Anleitung</p>
+                            <p>Laden Sie <a href="http://webelexis.ch/files.config.json">config.json</a> herunter und öffnen Sie die Datei in einem Text-Editor (Nicht in Microsoft Word(tm), sondern in einem reinen Texteditor, z.B. Notepad). Passen Sie folgende Zeilen an:
+                                <ul>
+                                    <li>"connection": "MySQL" - Wenn Sie einen PostgreSQL Server haben, schreiben Sie hier "PostgreSQL"</li>
+                                    <li>"host": Schreiben Sie hier die IP Adresse oder den Computernahmen des Computers, auf dem die Elexis-Datenbank läuft. Das ist üblicherweise der Server.</li>
+                                    <li>"username": Tragen Sie hier den Datenbank-Usernamen ein. Also den usernamen, mit sich Ihre Elexix-Instanzen mit der Datenbank verbinden. (Nicht etwa Ihr Elexis-Login-Name)</li>
+                                    <li>"password": Auch hier: Das Passwort der Datenbankanmeldung ist gefragt, nicht das Passwort, der Elexis-Anmeldung.</li>
+                                    <li>"database": Der Name Ihrer Elexis Datenbank. Meistens lautet dieser "elexis".</li>
+                                    <li>Unter "Agenda" passen Sie die Zeile "resource" an den Namen des gewünschnten Agenda-Bereichs an. Den Rest können Sie vorerst so lassen</li>
+                                </ul>
+                            </p>
+<p>Starten Sie dann das Programm mit folgendem Befehl:</p>
+                        <code>java -jar base-module-x.y.z-fat.jar -conf config.json</code>
+                        <p>(Wobei Sie fpr x.y.z die korrekten Versionsnummern einsetzen müssen)</p>
+                        <p>Sobald das Programm gestartet ist, sollten Sie mit ihrem Lieblingsbwowser nach "localhost:2015" gehen können, und sehen die öffentliche Agenda.</p>
                         </div>
                     </div>
                     <div class="panel panel-warning col-xs-12 col-sm-6 col-md-4">
@@ -52,12 +68,18 @@
                             </table>
                         </div>
                         <div class="panel-body">
+                            <p>Der Vorteil dieser Methode ist: Abhängigkeiten werden nur einmal heruntergeladen und verbleiben auf dem Computer. Jeder weitere Start geht daher viel schneller, als der erste. Der Nachteil ist: Sie müssen vert.x installieren, und es werden einige Dateien auf Ihrem Computer installiert, die Sie ggf. manuell wieder löschen müssen.</p>
                             <p>Sie benötigen:</p>
                             <ul class="list-group">
                                 <li class="list-group-item">Dasselbe, wie unter 1 genannt.</li>
                                 <li class="list-group-item">das vert.x framework, das Sie <a href="http://vertx.io">hier</a> herunterladen können.</li>
-                                <li class="list-group-item">Das <a href="http://www.webelexis.ch/files/zip">gezippte Webelexis-Modul</a></li>
+                                <li class="list-group-item">Das <a href="http://www.webelexis.ch/files/zip">gezippte Webelexis-Modul</a>
+                                </li>
                             </ul>
+                            <p>Laden Sie conf.json herunter und modifizieren Sie es wie bei (1) erklärt. Starten Sie dann das programm mit:</p>
+                            <code>vertx runzip ch.webelexis~base-module~x.y.z.zip -conf config.json</code>
+                            <p>Für x.y.z müssen Sie die richtige Versionsnummer einsetzen. Und beachten Sie auch die beinden Tilden (~) im Dateinamen; es sind nicht alles Bindestriche.</p>
+                            <p>Auch hier sollten Sie nach erfolgtem Start das Agenda Programm mit <code>localhost:2015</code> anzeigen können.</p>
                         </div>
                     </div>
                     <div class="panel panel-danger col-xs-12 col-sm-6 col-md-4">
@@ -75,9 +97,10 @@
                         </div>
 
                         <div class="panel-body">
+                            <p>Der Vorteil dieser Methode ist: Sie können Webelexis an Ihre Bedürfnisse anpassen. Das ist - Bei Anpassungen in begrenztem Rahmen- nicht sehr schwierig. Mit etwas Programmierkenntnissen können Sie das Programm sogar vollkommen verändern.</p>
                             <p>Sie benötigen:</p>
                             <ul class="list-group">
-                                <li class="list-group-item">Einen Computer mit Linux oder MacOS, oder einen Windows-Computer mit VirtualBox und einer Linux-VM.  Folgen Sie dieser Anleitung, um eine solche VM zu erstellen. (Selbstverständlich können Sie dieses Konzept auch für die Entwicklung unter Mac oder Linux verwenden, wenn Sie die Entwicklungsumgebung strikt vom System trennen möchten)</li>
+                                <li class="list-group-item">Einen Computer mit Linux oder MacOS, oder einen Windows-Computer mit VirtualBox und einer Linux-VM. Folgen Sie dieser Anleitung, um eine solche VM zu erstellen. (Selbstverständlich können Sie dieses Konzept auch für die Entwicklung unter Mac oder Linux verwenden, wenn Sie die Entwicklungsumgebung strikt vom System trennen möchten)</li>
                                 <li class="list-group-item">Ein Java Development Kit (jdk) 1.7 oder höher, das Sie z.B. bei Oracle beziehen können</li>
                             </ul>
                         </div>
