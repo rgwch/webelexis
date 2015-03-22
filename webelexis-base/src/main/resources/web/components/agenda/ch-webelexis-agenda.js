@@ -146,7 +146,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
                 if (result.status !== "ok") {
                     window.alert("Fehler beim Eintragen: " + result.status)
                 } else {
-                    self.load();
+                    self.loadAppointments();
                 }
             });
         }
