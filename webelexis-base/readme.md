@@ -32,7 +32,7 @@ Checkout webelexis and let npm fetch and install all you need:
 	  
 	  git clone https://github.com/rgw.ch/webelexis
 	  cd webelexis/webelexis-base
-	  npm install
+	  npm install	# This might take quite a long time on first run
     
 Try it out with:
     
