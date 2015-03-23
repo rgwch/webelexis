@@ -54,7 +54,7 @@ If this works, copy `webelexis-base/src/main/resources/config_sample.json` to `w
     * `src/main/` - everything that gets processed and goes into the final distribution
     * `src/main/web` - the raw (unprocessed) contents of the website.
     * `src/main/web/app` - the javascript source files - will processed and written to `dist/web/app`.
-    * `src/main/web/components` - folders with webelexis components, each consisting of at least a `*.js` and a `*.jade` file. JavaScript files will be processed and placed to `dist/web/components/*`, while the jade files will be compiled to `dist/web/*.html`
+    * `src/main/web/components` - folders with webelexis components, each consisting of at least a `*.js` and a `*.jade` file. JavaScript files will be processed and placed to `dist/web/components/*`, while the jade files will be compiled to `dist/web/tmpl/*.html`
     * `src/main/web/css/*, fonts/*, img/*, lib/*` - will all copied to respective directories in dist/web
     * `src/main/java` - java source files. will be compiled to `dist/*`
     
@@ -73,3 +73,4 @@ If this works, copy `webelexis-base/src/main/resources/config_sample.json` to `w
 * npm start - rebuild all and start the server ($VERTX_HOME must be set correctly)
 * npm run build:module - create and install ch.webelexis~base-module~x.y.z as a vert.x module in the system ($VERTX_HOME and $VERTX_MODS must be set correctly)
 * npm run build:jar - create a self-contained jar (needs no vertx installation to run)
+* npm run build:zip - create a fat jar as before, and create a zipped module (can be run with `vertx runzip <name>`
