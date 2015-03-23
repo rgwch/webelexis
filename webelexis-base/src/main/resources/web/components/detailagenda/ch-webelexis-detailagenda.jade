@@ -10,4 +10,16 @@
                 select(data-bind="options: resources, optionsText: 'display', value: resource, event: {change: loadAppointments}")
         .panel-body
             .row(data-bind="foreach: appointments")
-                .well.well-sm.col-xs-12.col-sm-6.col-md-4(data-bind="text: displayText, css: displayClass")
+                .well.well-sm.col-xs-12.col-sm-6.col-md-4.col-lg-2(data-bind="text: displayText, css: displayClass, click: $parent.expand")
+                form.form.row(data-bind="if:expanded, submit: $parent.update")
+                    .form-group.col-xs-12.col-sm-6.col-md-4
+                        label(for="lastname") Name
+                        input.form-control#lastname(data-bind="value: lastName")
+                    .form-group.col-xs-12.col-sm-6.col-md-4
+                        label(for="firstname") Vorname
+                        input.form-control#firstname(data-bind="value: firstName")
+                    .form-group.col-xs-12.col-sm-6.col-md-4
+                        label(for="birthdate") Geburtsdatum
+                        input.form-control#birthdate(data-bind="value: patientID")
+                    button.btn.btn-primary(type="submit") Senden
+                    button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen

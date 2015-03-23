@@ -123,14 +123,12 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
             })
         }
         self.expand = function (idx) {
-            if (idx.type === 'available') {
-                if (self.lastExpanded !== null) {
-                    self.lastExpanded.expanded(false)
-                }
-                idx.expanded(true);
-                self.lastExpanded = idx;
-                console.log("opened: " + idx.begin)
+            if (self.lastExpanded !== null) {
+                self.lastExpanded.expanded(false)
             }
+            idx.expanded(true);
+            self.lastExpanded = idx;
+            console.log("opened: " + idx.begin)
         }
 
         self.collapse = function (idx) {
@@ -140,6 +138,11 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
 
         self.clear = function () {
             self.appointments.removeAll()
+        }
+
+
+        self.update = function () {
+            console.log("submit")
         }
 
         self.addAppointment = function ( /*formElement*/ ) {
