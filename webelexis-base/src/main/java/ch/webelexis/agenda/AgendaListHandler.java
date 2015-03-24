@@ -16,6 +16,7 @@ import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
 
 /**
@@ -114,6 +115,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 							.toArray(), null));
 
 				} else {
+					System.out.println(Json.encodePrettily(res));
 					externalRequest.reply(new JsonObject().putString("status",
 							"failure"));
 				}
@@ -279,14 +281,17 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 										externalRequest.reply(ores);
 									} else {
 										log.info("second level failed");
+										System.out.println(Json.encodePrettily(second.body()));
 										externalRequest.reply(new JsonObject()
-												.putString("status", "failure"));
+												.putString("status", "failure")
+												.putString("reason", second.body().getString("status")));
 									}
 								}
 							});
 				} else {
 					log.info("first level failed "
 							+ returnvalue.body().getString("message"));
+					System.out.println(Json.encodePrettily(res));
 					externalRequest.reply(new JsonObject().putString("status",
 							"failure"));
 				}

@@ -1,4 +1,4 @@
-package ch.webelexis.agenda;
+package ch.webelexis.agendatests;
 
 import java.io.FileInputStream;
 
@@ -12,8 +12,6 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
-import com.sun.corba.se.impl.orb.ParserTable.TestContactInfoListFactory;
-
 public class AgendaTest extends TestVerticle {
 
 	
@@ -25,7 +23,7 @@ public class AgendaTest extends TestVerticle {
 		fis.close();
 		String s = new String(buffer, 0, len, "utf-8");
 		JsonObject cfg = new JsonObject(s);
-		container.deployVerticle("webelexis-core.js", cfg,
+		container.deployVerticle("src/main/resources/webelexis-core.js", cfg,
 				new AsyncResultHandler<String>() {
 
 					@Override
