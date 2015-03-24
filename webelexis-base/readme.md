@@ -7,18 +7,9 @@ The reasons are about the same as stated [here](http://blog.keithcirkel.co.uk/wh
 
 ### Prerequisites
 
-Check the Build Environment for [Mac](https://github.com/rgwch/webelexis/wiki/Build-environment:-MacOS-X-10.10) or [Manjaro Linux](https://github.com/rgwch/webelexis/wiki/Build-environment:-Manjaro-Arch-Linux) to install the tools needed.
+Check the Build Environment for [Mac](https://github.com/rgwch/webelexis/wiki/Build-environment:-MacOS-X-10.10), [Manjaro Linux](https://github.com/rgwch/webelexis/wiki/Build-environment:-Manjaro-Arch-Linux), or [Ubuntu/Debian](https://github.com/rgwch/webelexis/wiki/Build-environment:-Ubuntu-Debian-Linux) to install the tools needed.
 
-On Debian-/Ubuntu like linuxes, try:
-
-	sudo apt-get install python-software-properties
-	sudo apt-add-repository ppa:chris-lea/node.js
-	sudo apt-get update
-	sudo apt-get install nodejs
-
-_Warning: "`apt-get install nodejs`" from the original ubuntu repository (i.e. WITHOUT previously adding chris lea's PPA) did not work on my system. Instead it produced a "weird error" (indeed, this was npm's error message)._
-
-On other systems, refer to the documentation of node.js on how to install node and npm.
+On other systems, refer to the documentation of node.js on how to install the respective tool chain
 
 ### Create and launch!
 
