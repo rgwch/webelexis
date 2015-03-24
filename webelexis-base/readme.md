@@ -7,13 +7,9 @@ The reasons are about the same as stated [here](http://blog.keithcirkel.co.uk/wh
 
 ### Prerequisites
 
-Check the Build Environment for [[Build environemnt: Mac|Mac]] or Arch Linux
+Check the Build Environment for [Mac](https://github.com/rgwch/webelexis/wiki/Build-environment:-MacOS-X-10.10) or [Manjaro Linux](https://github.com/rgwch/webelexis/wiki/Build-environment:-Manjaro-Arch-Linux) to install the tools needed.
 
-[npm](https://www.npmjs.com) while being primarly a package manager for node.js, it is useful for many tasks, especially finding and installing javascript utilities. You can install it by itself, or via the node.js installer. On [Homebrew](http://brew.sh)-enabled Mac: Simply type:
-    
-    brew install node
-    
-This will install npm as well.  On Debian-/Ubuntu like linuxes, try:
+On Debian-/Ubuntu like linuxes, try:
 
 	sudo apt-get install python-software-properties
 	sudo apt-add-repository ppa:chris-lea/node.js
@@ -21,10 +17,6 @@ This will install npm as well.  On Debian-/Ubuntu like linuxes, try:
 	sudo apt-get install nodejs
 
 _Warning: "`apt-get install nodejs`" from the original ubuntu repository (i.e. WITHOUT previously adding chris lea's PPA) did not work on my system. Instead it produced a "weird error" (indeed, this was npm's error message)._
-
-On Arch/Manjaro Linuxes, it is quite easy:
-
-       sudo pacman -S nodejs
 
 On other systems, refer to the documentation of node.js on how to install node and npm.
 
