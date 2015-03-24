@@ -7,6 +7,8 @@ The reasons are about the same as stated [here](http://blog.keithcirkel.co.uk/wh
 
 ### Prerequisites
 
+Check the Build Environment for [[Build environemnt: Mac|Mac]] or Arch Linux
+
 [npm](https://www.npmjs.com) while being primarly a package manager for node.js, it is useful for many tasks, especially finding and installing javascript utilities. You can install it by itself, or via the node.js installer. On [Homebrew](http://brew.sh)-enabled Mac: Simply type:
     
     brew install node
@@ -40,13 +42,15 @@ Try it out with:
 
 And point your favorite browser to dist/web/index.html. Of course, not much will happen here. But if everything was okay, you should see the main-menu structure of webelexis.
 
-If you have vertx installed, you can also try:
+If this works, copy `webelexis-base/src/main/resources/config_sample.json` or `config_minimal.json` to `webelexis-base/cfglocal.json`. Edit the entries to match your system, but make sure to have a valid json-file. 
+
+Then check if launching the whole system works:
 
      npm start
      
 This will first run build:client, then build and launch the server. You should then be able to point your browser to `localhost:2015`and see the life version auf webelexis (which is not much at this time).
 
-If this works, copy `webelexis-base/src/main/resources/config_sample.json` to `webelexis-base/cfglocal.json`. Edit the entries to match your system, but make sure to have a valid json-file. Then, relaunch the server with `npm start` from the top level directory.
+
     
 ### Folder layout
 
