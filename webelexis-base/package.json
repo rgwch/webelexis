@@ -1,6 +1,6 @@
 {
   "name": "base-module",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "base module for webelexis",
   "author": "weirich@elexis.ch",
   "private": true,
