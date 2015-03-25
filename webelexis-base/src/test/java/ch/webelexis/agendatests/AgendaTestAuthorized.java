@@ -12,7 +12,7 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
-public class AgendaTest extends TestVerticle {
+public class AgendaTestAuthorized extends TestVerticle {
 
 	
 	@Test
@@ -48,10 +48,11 @@ public class AgendaTest extends TestVerticle {
 			VertxAssert.assertEquals("ok", msg.body().getString("status"));
 			String sessionID=msg.body().getString("sessionID");
 			JsonObject jo=new JsonObject()
+				.putString("request","list")
 				.putString("token", sessionID)
 				.putString("begin", "20150313")
 				.putString("end", "20150313");
-			vertx.eventBus().send("ch.webelexis.agenda.appointments", jo, new AgendaResponse());
+			vertx.eventBus().send("ch.webelexis.agenda", jo, new AgendaResponse());
 		}
 		
 	}
