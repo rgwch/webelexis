@@ -14,3 +14,8 @@
 .occupied{
     background-color: #FF9494;
 }
+
+.abstand{
+    margin-left: 10px;
+    margin-right: 10px;
+}

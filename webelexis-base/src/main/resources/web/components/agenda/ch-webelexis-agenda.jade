@@ -4,7 +4,7 @@
         .panel-heading
             #agendaDatum
                 span.glyphicon.glyphicon-circle-arrow-left(data-bind="click: yesterday" data-toggle="tooltip" title="Zum vorherigen Tag gehen")
-                input(type="text" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now' data-toggle="tooltip" title="Klicken um den Kalender zu öffnen")
+                input.abstand(type="text" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now' data-toggle="tooltip" title="Klicken um den Kalender zu öffnen")
                 span.glyphicon.glyphicon-circle-arrow-right(data-bind="click: tomorrow" data-toggle="tooltip" title="Zum nächsten Tag gehen")
         .panel-body
             .row#appntlist(data-bind="foreach: appointments")

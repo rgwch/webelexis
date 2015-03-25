@@ -136,10 +136,10 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 						String day1 = o1.get(FLD_DAY);
 						String day2 = o2.get(FLD_DAY);
 						if (day1.equals(day2)) {
-							int start1 = Integer.parseInt((String) o1
-									.get(FLD_BEGIN));
-							int start2 = Integer.parseInt((String) o2
-									.get(FLD_BEGIN));
+							int start1 = Integer.parseInt(((String) o1
+									.get(FLD_BEGIN)).trim());
+							int start2 = Integer.parseInt(((String) o2
+									.get(FLD_BEGIN)).trim());
 							return start1 - start2;
 						}
 						return day1.compareTo(day2);
