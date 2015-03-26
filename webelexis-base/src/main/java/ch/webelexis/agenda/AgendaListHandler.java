@@ -175,7 +175,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 		// the length "slot" as defined in the config
 		while (lines.hasNext()) {
 			JsonArray aNext = (JsonArray) lines.next();
-			int startTime = Integer.parseInt((String) aNext.get(FLD_BEGIN));
+			int startTime = Integer.parseInt(((String) aNext.get(FLD_BEGIN)).trim());
 			while ((startTime - endTime) >= slot) {
 				String[] free = new String[aNext.size()];
 				free[FLD_DAY] = aNext.get(FLD_DAY);
@@ -199,7 +199,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 				arr.addArray(new JsonArray(free));
 			}
 			endTime = startTime
-					+ Integer.parseInt((String) aNext.get(FLD_DURATION));
+					+ Integer.parseInt(((String) aNext.get(FLD_DURATION)).trim());
 			arr.addArray(aNext);
 		}
 
