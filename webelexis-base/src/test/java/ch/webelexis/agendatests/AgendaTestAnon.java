@@ -12,8 +12,9 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
-public class AgendaTestAnon extends TestVerticle {
-
+public class AgendaTestAnon extends TestVerticle{
+    String deploymentID;
+    
 	@Test
 	public void TestRequest() throws Exception {
 		FileInputStream fis = new FileInputStream("cfglocal.json");
@@ -29,6 +30,7 @@ public class AgendaTestAnon extends TestVerticle {
 					public void handle(AsyncResult<String> event) {
 						org.vertx.testtools.VertxAssert.assertTrue(event
 								.succeeded());
+						deploymentID=event.result();
 						JsonObject jo = new JsonObject()
 								.putString("address", "ch.webelexis.agenda")
 								.putString("request", "list")
@@ -47,8 +49,11 @@ public class AgendaTestAnon extends TestVerticle {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
+			System.out.println("received sql result");
 			VertxAssert.assertEquals("ok", msg.body().getString("status"));
+            container.undeployVerticle(deploymentID);
 			VertxAssert.testComplete();
+			container.exit();
 		}
 
 	}

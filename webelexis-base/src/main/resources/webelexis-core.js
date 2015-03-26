@@ -57,7 +57,7 @@ if (config.mongo === undefined) {
         "db_name": "webelexis"
     }
 }
-container.deployModule("io.vertx~mod-mongo-persistor~2.1.0", config.mongo, function (err, id) {deploystate("mongo-persistot", err, id)})
+container.deployModule("io.vertx~mod-mongo-persistor~2.1.0", config.mongo, function (err, id) {deploystate("mongo-persistor", err, id)})
 
 if (config.auth === undefined) {
     config.auth = {
