@@ -16,8 +16,8 @@ define(['app/config', 'knockout', 'app/router', 'bootstrap', 'domReady!'], funct
             ko.components.register(page.component, {
                 require: page.location + '/' + page.component
             })
-        
-            if (page.menuItem && page.roles.indexOf("guest")>-1) {
+
+            if (page.menuItem && page.roles.indexOf("guest") > -1) {
                 config.mainMenu.push(page)
             }
         }
@@ -39,6 +39,9 @@ define(['app/config', 'knockout', 'app/router', 'bootstrap', 'domReady!'], funct
 
     // Need to explicitly bind to 'html' node if we want setting the page title to work.
     ko.applyBindings(topLevelModel, $('html').get(0));
-    
-    
+
+    function googleLogin(googleUser) {
+        var profile = googleUser.getBasicProfile()
+        console.log(profile.getId())
+    }
 });

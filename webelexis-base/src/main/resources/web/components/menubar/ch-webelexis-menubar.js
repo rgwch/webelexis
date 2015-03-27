@@ -6,6 +6,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
     'domReady!'
 ], function (cfg, ko, html, bus) {
 
+
     function MenubarModel(params) {
         var self = this
         self.menuItems = ko.observableArray(cfg[params.menu])

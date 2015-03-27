@@ -5,15 +5,16 @@ html(lang="de")
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width, initial-scale=1")
         meta(http-equiv="content-type" content="text/html; charset=utf-8")
+        meta(name="google-signin-client_id" content="873064950704-p2rs933cun5v3n1d63dp6vaknlb5kufp.apps.googleusercontent.com")
         link(rel="stylesheet" href="css/bootstrap.min.css")
         link(rel="stylesheet" href="css/jquery-ui.min.css")
         link(rel="stylesheet" href="css/style.css")
         title(data-bind="text: router.currentPage().title") Webelexis
         script(src="app/requirejs.config.js")
+        script(src="https://apis.google.com/js/platform.js" async defer)
         script(data-main="app/main.js" src="lib/require.js")
     body
         .container
-            // include ../includes/navbar.jade
             #menu(data-bind="component: {name: 'ch-webelexis-menubar', params: {menu: 'mainMenu'}}")
             #content(data-bind='component: router.currentPage().componentName')          
-    
+        .g-signin2(data-onsuccess="googleLogin")
