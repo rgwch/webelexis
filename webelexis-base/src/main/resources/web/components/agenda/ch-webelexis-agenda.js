@@ -72,13 +72,13 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
                 self.lastExpanded.expanded(false);
                 self.lastExpanded = null;
             }
-            bus.send('ch.webelexis.agenda', {
+            bus.send('ch.webelexis.publicagenda', {
                 request: 'list',
                 begin: dt.makeCompactString(act),
                 end: dt.makeCompactString(act),
                 token: cfg.sessionID()
             }, function (result) {
-                console.log("result: " + JSON.stringify(result));
+                // console.log("result: " + JSON.stringify(result));
                 if (result.status !== "ok") {
                     window.alert("Verbindungsfehler: " + result.status);
                 } else {
@@ -135,7 +135,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
         self.addAppointment = function ( /*formElement*/ ) {
             //console.log("addApp" + $("input#patname").val())
             //console.log(this.begin)
-            bus.send('ch.webelexis.agenda', {
+            bus.send('ch.webelexis.publicagenda', {
                 request: 'insert',
                 day: dt.makeCompactString(this.date),
                 time: this.begin,
