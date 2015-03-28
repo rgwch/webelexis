@@ -4,17 +4,19 @@
  */
 
 define(['knockout'], function (ko) {
-    
+
     return {
         // not really necessery in standard situations
         eventbusUrl: "http://localhost:2015/eventbus",
         // any page you want to be called with a click on the logo
-        homepage: "http://github.com/rgwch/webelexis",  
+        homepage: "http://github.com/rgwch/webelexis",
         // if false: The login field remains hidden
         showLogin: ko.observable(true),
         sessionID: ko.observable(null),
         connected: false,
-        loc: {ip: "0.0.0.0"},
+        loc: {
+            ip: "0.0.0.0"
+        },
         mainMenu: [],
         roles: [],
         /* Definition of modules to use. Note: The access rights are ultimately defined on the server side.
@@ -23,24 +25,34 @@ define(['knockout'], function (ko) {
         modules: [
             {
                 baseUrl: "#",
-                match: /^$/,                        // regexp to match for this page
-                title: 'Agenda',                    // title to display on this page's tab
-                component: 'ch-webelexis-agenda',   // name pof the component that creates this pages
-                location: 'components/agenda',      // location of the componant
-                active: true,                       // to deactivate a component temporarily, set to 'false'
-                menuItem: true,                     // if the component doesn't need a menu item, set to 'false
-                roles: ["guest"]                    // which user roles are allowed to use this component.
-                                                    // again: The server side decides ultimately.
-        },
+                match: /^$/, // regexp to match for this page
+                title: 'Agenda', // title to display on this page's tab
+                component: 'ch-webelexis-agenda', // name pof the component that creates this pages
+                location: 'components/agenda', // location of the componant
+                active: true, // to deactivate a component temporarily, set to 'false'
+                menuItem: true, // if the component doesn't need a menu item, set to 'false
+                roles: ["guest"] // which user roles are allowed to use this component.
+                    // again: The server side decides ultimately.
+            },
+            {
+                active: true,
+                title: "Konsole",
+                baseUrl: "#console",
+                match: /^console$/,
+                component: "ch-webelexis-console",
+                location: "components/console",
+                menuItem: true,
+                roles: ["guest"]
+            },
             {
                 baseUrl: "#agext",
-                match:  /^agext$/,
+                match: /^agext$/,
                 title: "Agenda",
                 component: 'ch-webelexis-detailagenda',
                 location: 'components/detailagenda',
                 active: true,
                 menuItem: true,
-                roles: ["user","admin"]
+                roles: ["user", "admin"]
             },
             {
                 baseUrl: "#patlist",
@@ -95,7 +107,7 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-menubar',
                 location: 'components/menubar',
                 active: true,
-                roles:["guest"]
+                roles: ["guest"]
             }
 
     ]

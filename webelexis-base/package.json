@@ -20,6 +20,9 @@
         "build:module": "ncp dist ${VERTX_MODS}/dist && mv ${VERTX_MODS}/dist ${VERTX_MODS}/ch.webelexis~${npm_package_name}~${npm_package_version}",
         "build:jar": "npm run build:module && cd .. && vertx fatjar ch.webelexis~${npm_package_name}~${npm_package_version}",
         "build:zip": "npm run build:jar && cd ${VERTX_MODS}/ch.webelexis~${npm_package_name}~${npm_package_version} && zip -r ../../ch-webelexis~${npm_package_name}~${npm_package_version}.zip *",
+        "watch:jade": "onchange 'src/main/resources/web/**/*.jade' -- npm run compile:jade",
+        "watch:js": "onchange 'src/main/resources/**/*.js' -- npm run compile:js",
+        "watch": "npm run test && parallelshell 'npm run watch:jade' 'npm run watch:js'",
         "start": "npm run build:client && npm run verticle",
         "env": "env",
         "test": "npm run clean && npm run build:client && karma start karma_cfg.js &",
@@ -42,6 +45,8 @@
         "ncp": "latest",
         "requirejs": ">=2.1.16",
         "rimraf": "latest",
-        "sinon": "^1.14.1"
+        "sinon": "^1.14.1",
+        "parallelshell": "latest",
+        "onchange": "latest"
     }
 }

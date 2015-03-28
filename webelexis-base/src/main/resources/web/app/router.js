@@ -10,7 +10,7 @@ define(['knockout', 'jquery'], function (ko, $) {
         var self = this;
         this.menu = menuArray;
 
-     
+
 
         // Listen for changes to the URL fragment (hash) triggered by links, back/forward etc.
         // and make the relevant Page instance current.
@@ -35,22 +35,22 @@ define(['knockout', 'jquery'], function (ko, $) {
 
         // Select the component to display according to the path
         function pageFromMapping(path) {
-            for (var i = 0; i < self.menu.length; i++) {
-                var mapping = self.menu[i];
-                if (mapping.match !== undefined) {
-                    var matches = mapping.match.exec(path);
-                    if (matches) {
-                        // mark the appropriate menu item as selected
-                        $("#mainmenu").children(".active").removeClass("active")
-                        var marker = $("#mainmenu_marker").detach()
-                        $("#mainmenu").find("[href$=" + path + "]").append(marker).parent().addClass("active")
-                        return new Router.Page(mapping.title, mapping.component)
+                for (var i = 0; i < self.menu.length; i++) {
+                    var mapping = self.menu[i];
+                    if (mapping.match !== undefined) {
+                        var matches = mapping.match.exec(path);
+                        if (matches) {
+                            // mark the appropriate menu item as selected
+                            $("#mainmenu").children(".active").removeClass("active")
+                            var marker = $("#mainmenu_marker").detach()
+                            $("#mainmenu").find("[href$=" + "#" + path + "]").append(marker).parent().addClass("active")
+                            return new Router.Page(mapping.title, mapping.component)
+                        }
                     }
                 }
+                return new Router.Page('Nicht gefunden', 'ch-webelexis-page404');
             }
-            return new Router.Page('Nicht gefunden', 'ch-webelexis-page404');
-        }
-           // We swap in Page instances here to make them the current page.
+            // We swap in Page instances here to make them the current page.
         this.currentPage = ko.observable(pageFromMapping("#"));
 
         // Manually trigger initial load of the relevant start page.
