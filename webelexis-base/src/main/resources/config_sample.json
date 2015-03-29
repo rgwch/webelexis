@@ -76,7 +76,7 @@
             "address": "ch.webelexis.auth.logout"
         },
         {
-            "address": "ch.webelexis.agenda"
+            "address": "ch.webelexis.publicagenda"
         }
   ], // allowed outbound messages
     "outOK": [
