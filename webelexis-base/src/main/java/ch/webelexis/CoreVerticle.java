@@ -34,12 +34,14 @@ import org.vertx.java.core.sockjs.SockJSServer;
  *
  */
 public class CoreVerticle extends BusModBase {
+	final static long TIMEOUT=60000;
 	JsonObject cfg_default;
 	JsonObject cfg;
 	Logger log;
 	ArrayList<String> pending = new ArrayList<String>();
 	Throwable reason = null;
-
+	long waitingTime;
+	
 	/**
 	 * Enter all modules and verticles to deploy here. Note: Webelexis will
 	 * deploy them asynchronously, so there is no guaranteed order for them to
@@ -70,7 +72,7 @@ public class CoreVerticle extends BusModBase {
 	public void start(final Future<Void> startedResult) {
 		log = container.logger();
 		cfg = cfg_default.mergeIn(container.config());
-
+		log.debug("CoreVerticle got config: "+cfg.encodePrettily());
 		for (V m : modules) {
 			pending.add(m.title);
 			container.deployModule(m.fullname, cfg.getObject(m.title),
@@ -81,7 +83,8 @@ public class CoreVerticle extends BusModBase {
 			container.deployVerticle(v.fullname, cfg.getObject(v.title),
 					new DeploymentHandler(v.title));
 		}
-		long waitingTime = System.currentTimeMillis();
+
+		waitingTime=System.currentTimeMillis();
 		vertx.setPeriodic(200, new Handler<Long>() {
 
 			@Override
@@ -90,7 +93,7 @@ public class CoreVerticle extends BusModBase {
 					vertx.cancelTimer(timerID);
 					startedResult.setResult(null);
 				} else {
-					if ((System.currentTimeMillis() - waitingTime) > 10000) {
+					if ((System.currentTimeMillis() - waitingTime) > TIMEOUT) {
 						vertx.cancelTimer(timerID);
 						startedResult.setFailure(new Exception(
 								"Timeout waiting for launching modules"));
@@ -102,7 +105,7 @@ public class CoreVerticle extends BusModBase {
 				}
 			}
 		});
-		JsonObject bridgeCfg = cfg.getObject("bridge");
+		final JsonObject bridgeCfg = cfg.getObject("bridge");
 		HttpServer http = vertx.createHttpServer();
 		http.requestHandler(new Handler<HttpServerRequest>() {
 			public void handle(HttpServerRequest req) {

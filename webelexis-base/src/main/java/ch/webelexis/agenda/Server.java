@@ -23,8 +23,9 @@ public class Server extends Verticle {
 	@Override
 	public void start() {
 		// load the configuration as given to 'vertx -conf <config-file>'
-		JsonObject cfg = container.config();
+		final JsonObject cfg = container.config();
 		log = container.logger();
+		log.debug("Agenda Server - got config: "+cfg.encodePrettily());
 		EventBus eb = vertx.eventBus();
 		// final JsonObject aCfg=cfg.getObject("agenda");
 		final AgendaListHandler listHandler = new AgendaListHandler(eb, cfg);
@@ -38,6 +39,7 @@ public class Server extends Verticle {
 					@Override
 					public void handle(Message<JsonObject> msg) {
 						String req = msg.body().getString("request");
+						log.info("Agenda Server: received : "+req);
 						if (req.equals("list")) {
 							listHandler.handle(msg);
 						} else if (req.equals("insert")) {

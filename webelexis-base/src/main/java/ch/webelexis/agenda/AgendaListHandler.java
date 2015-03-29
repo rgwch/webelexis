@@ -15,9 +15,12 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
+import org.vertx.java.core.json.JsonElement;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
+
+import com.fasterxml.jackson.core.JsonParser;
 
 /**
  * A handler for list requests to the agenda. Since we won't allow random access
@@ -104,6 +107,7 @@ public class AgendaListHandler implements Handler<Message<JsonObject>> {
 						new JsonArray(new String[] {
 								cl.get("begin", ELEXISDATE),
 								cl.get("begin", ELEXISDATE), resource }));
+		log.debug("sending message: "+bridge.encodePrettily());
 		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
 			@Override
