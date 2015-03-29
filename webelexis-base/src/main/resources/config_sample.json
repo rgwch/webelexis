@@ -10,6 +10,7 @@
 // from that file.
 
 // config for the mod-mongo-persistor (https://github.com/vert-x/mod-mongo-persistor)
+{
 "mongo": {
     "address": "ch.webelexis.nosql", // do not change this
     "host": "localhost", // address of your mongo server. defaults to 'localhost'					
