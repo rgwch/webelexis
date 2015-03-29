@@ -1,6 +1,6 @@
 {
 
-    "main": "webelexis-core.js",
+    "main": ch.webelexis.CoreVerticle",
     "worker": false,
 
     "description": "Core verticles for the Webelexis system",

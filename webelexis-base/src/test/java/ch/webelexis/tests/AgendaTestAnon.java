@@ -1,6 +1,7 @@
-package ch.webelexis.agendatests;
+package ch.webelexis.tests;
 
-import java.io.FileInputStream;
+import java.io.File;
+import java.io.FileReader;
 
 import org.junit.Test;
 import org.vertx.java.core.AsyncResult;
@@ -12,33 +13,35 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
-public class AgendaTestAnon extends TestVerticle{
-    String deploymentID;
-    
+public class AgendaTestAnon extends TestVerticle {
+	String deploymentID;
+
 	@Test
 	public void TestRequest() throws Exception {
-		FileInputStream fis = new FileInputStream("cfglocal.json");
-		byte[] buffer = new byte[5000];
-		int len = fis.read(buffer);
-		fis.close();
-		String s = new String(buffer, 0, len, "utf-8");
-		JsonObject cfg = new JsonObject(s);
-		container.deployVerticle("src/main/resources/webelexis-core.js", cfg,
+		File file = new File("cfglocal.json");
+		char[] buffer = new char[(int) file.length()];
+		FileReader fr = new FileReader(file);
+		fr.read(buffer);
+		fr.close();
+		String conf = new String(buffer);
+		VertxAssert.assertTrue(conf.length() > 0);
+		JsonObject cfg = new JsonObject(conf);
+		container.deployVerticle("ch.webelexis.CoreVerticle", cfg,
 				new AsyncResultHandler<String>() {
 
 					@Override
 					public void handle(AsyncResult<String> event) {
 						org.vertx.testtools.VertxAssert.assertTrue(event
 								.succeeded());
-						deploymentID=event.result();
+						deploymentID = event.result();
 						JsonObject jo = new JsonObject()
-								.putString("address", "ch.webelexis.agenda")
+								.putString("address", "ch.webelexis.publicagenda")
 								.putString("request", "list")
 								.putString("resource", "gerry")
 								.putString("begin", "20150324")
 								.putString("end", "20150324");
 						EventBus eb = vertx.eventBus();
-						eb.send("ch.webelexis.agenda", jo, new SqlAnswer());
+						eb.send("ch.webelexis.publicagenda", jo, new SqlAnswer());
 
 					}
 				});
@@ -51,7 +54,7 @@ public class AgendaTestAnon extends TestVerticle{
 		public void handle(Message<JsonObject> msg) {
 			System.out.println("received sql result");
 			VertxAssert.assertEquals("ok", msg.body().getString("status"));
-            container.undeployVerticle(deploymentID);
+			container.undeployVerticle(deploymentID);
 			VertxAssert.testComplete();
 			container.exit();
 		}
