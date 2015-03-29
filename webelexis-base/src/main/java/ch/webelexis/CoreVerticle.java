@@ -78,8 +78,8 @@ public class CoreVerticle extends BusModBase {
 		}
 		for (V v : verticles) {
 			pending.add(v.title);
-			container.deployWorkerVerticle(v.fullname, cfg.getObject(v.title),
-					1, true, new DeploymentHandler(v.title));
+			container.deployVerticle(v.fullname, cfg.getObject(v.title),
+					new DeploymentHandler(v.title));
 		}
 		long waitingTime = System.currentTimeMillis();
 		vertx.setPeriodic(200, new Handler<Long>() {
@@ -125,7 +125,6 @@ public class CoreVerticle extends BusModBase {
 				bridgeCfg.getArray("inOK"), bridgeCfg.getArray("outOK"));
 		sock.setHook(new EventBusHook());
 		http.listen(bridgeCfg.getInteger("port"));
-		startedResult.setResult(null);
 	}
 
 	private class DeploymentHandler implements AsyncResultHandler<String> {

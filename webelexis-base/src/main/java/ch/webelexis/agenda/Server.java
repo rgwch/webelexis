@@ -12,7 +12,8 @@ import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
 /**
- * The main Verticle of Webelexis-Agenda. 
+ * The main Verticle of Webelexis-Agenda.
+ * 
  * @author gerry
  * 
  */
@@ -25,10 +26,10 @@ public class Server extends Verticle {
 		JsonObject cfg = container.config();
 		log = container.logger();
 		EventBus eb = vertx.eventBus();
-		final JsonObject aCfg=cfg.getObject("agenda");
-		final AgendaListHandler listHandler=new AgendaListHandler(eb, aCfg);
-		final AgendaInsertHandler insertHandler=new AgendaInsertHandler(eb, aCfg);
-
+		// final JsonObject aCfg=cfg.getObject("agenda");
+		final AgendaListHandler listHandler = new AgendaListHandler(eb, cfg);
+		final AgendaInsertHandler insertHandler = new AgendaInsertHandler(eb,
+				cfg);
 
 		// Register handlers with the eventBus
 		eb.registerHandler("ch.webelexis.publicagenda",
@@ -36,20 +37,20 @@ public class Server extends Verticle {
 
 					@Override
 					public void handle(Message<JsonObject> msg) {
-						String req=msg.body().getString("request");
-						if(req.equals("list")){
+						String req = msg.body().getString("request");
+						if (req.equals("list")) {
 							listHandler.handle(msg);
-						}else if(req.equals("insert")){
+						} else if (req.equals("insert")) {
 							insertHandler.handle(msg);
-						}else if(req.equals("resources")){
-							JsonObject result=new JsonObject()
-							.putString("status","ok")
-							.putArray("data", aCfg.getArray("resources"));
+						} else if (req.equals("resources")) {
+							JsonObject result = new JsonObject().putString(
+									"status", "ok").putArray("data",
+									cfg.getArray("resources"));
 							msg.reply(result);
 						}
-				
+
 					}
 				});
-				
+
 	}
 }

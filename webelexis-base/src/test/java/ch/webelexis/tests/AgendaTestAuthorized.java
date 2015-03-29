@@ -14,7 +14,8 @@ import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
 public class AgendaTestAuthorized extends TestVerticle {
-
+	String resource;
+	
 	@Test
 	public void TestLoggedIn() throws Exception {
 		File file = new File("cfglocal.json");
@@ -25,6 +26,7 @@ public class AgendaTestAuthorized extends TestVerticle {
 		String conf = new String(buffer);
 		VertxAssert.assertTrue(conf.length() > 0);
 		JsonObject cfg = new JsonObject(conf);
+		resource=cfg.getObject("agenda").getString("resource");
 		container.deployVerticle("ch.webelexis.CoreVerticle", cfg,
 				new AsyncResultHandler<String>() {
 
@@ -50,9 +52,10 @@ public class AgendaTestAuthorized extends TestVerticle {
 			String sessionID = msg.body().getString("sessionID");
 			JsonObject jo = new JsonObject().putString("request", "list")
 					.putString("token", sessionID)
+					.putString("resource", resource)
 					.putString("begin", "20150313")
 					.putString("end", "20150313");
-			vertx.eventBus().send("ch.webelexis.agenda", jo,
+			vertx.eventBus().send("ch.webelexis.publicagenda", jo,
 					new AgendaResponse());
 		}
 
