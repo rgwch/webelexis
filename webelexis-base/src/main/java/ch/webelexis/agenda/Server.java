@@ -31,7 +31,7 @@ public class Server extends Verticle {
 
 
 		// Register handlers with the eventBus
-		eb.registerHandler("ch.webelexis.agenda",
+		eb.registerHandler("ch.webelexis.publicagenda",
 				new Handler<Message<JsonObject>>() {
 
 					@Override
