@@ -50,7 +50,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         self.resource = ko.observable()
         self.loadResources = function () {
             self.resources.removeAll()
-            bus.send("ch.webelexis.agenda", {
+            bus.send("ch.webelexis.publicagenda", {
                 token: cfg.sessionID(),
                 request: 'resources'
             }, function (result) {
@@ -99,7 +99,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 self.lastExpanded.expanded(false);
                 self.lastExpanded = null;
             }
-            bus.send('ch.webelexis.agenda', {
+            bus.send('ch.webelexis.publicagenda', {
                 request: 'list',
                 resource: self.resource().resource,
                 begin: dt.makeCompactString(act),
@@ -148,7 +148,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         self.addAppointment = function ( /*formElement*/ ) {
             console.log("addApp" + $("input#patname").val())
             console.log(this.begin)
-            bus.send('ch.webelexis.agenda', {
+            bus.send('ch.webelexis.publicagenda', {
                 request: 'insert',
                 day: dt.makeCompactString(this.date),
                 time: this.begin,

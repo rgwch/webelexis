@@ -56,6 +56,10 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
             self.writeDate(new Date(self.readDate().getTime() - (24 * 60 * 60000)))
             self.loadAppointments()
         }
+        self.today = function () {
+            self.writeDate(new Date())
+            self.loadAppointments()
+        }
         self.tomorrow = function () {
             self.writeDate(new Date(self.readDate().getTime() + (24 * 60 * 60000)))
             self.loadAppointments()

@@ -48,6 +48,7 @@ public class Server extends Verticle {
 							JsonObject result = new JsonObject().putString(
 									"status", "ok").putArray("data",
 									cfg.getArray("resources"));
+                            log.debug("answering: "+result.encodePrettily());
 							msg.reply(result);
 						}
 
