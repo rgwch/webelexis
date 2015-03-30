@@ -24,6 +24,7 @@
 package ch.rgw.vertx;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -168,21 +169,19 @@ public class AuthManager extends BusModBase {
 				}
 			}
 
-			
 		});
 	}
-	
-	private long setTimerFor(final String username,
-			final String sessionID) {
-		long timerID = vertx.setTimer(sessionTimeout,
-				new Handler<Long>() {
-					public void handle(Long timerID) {
-						sessions.remove(sessionID);
-						logins.remove(username);
-					}
-				});
+
+	private long setTimerFor(final String username, final String sessionID) {
+		long timerID = vertx.setTimer(sessionTimeout, new Handler<Long>() {
+			public void handle(Long timerID) {
+				sessions.remove(sessionID);
+				logins.remove(username);
+			}
+		});
 		return timerID;
 	}
+
 	protected void doLogout(final Message<JsonObject> message) {
 		final String sessionID = getMandatoryString("sessionID", message);
 		if (sessionID != null) {
@@ -207,25 +206,40 @@ public class AuthManager extends BusModBase {
 
 	protected void doAuthorise(Message<JsonObject> message) {
 		String sessionID = getMandatoryString("sessionID", message);
-		if (sessionID == null) {
-			return;
-		}
-		String username = sessions.get(sessionID);
+		if (sessionID != null) {
+			String username = sessions.get(sessionID);
 
-		// In this basic auth manager we don't do any resource specific
-		// authorisation
-		// The user is always authorised if they are logged in
+			if (username != null) {
+				LoginInfo li = logins.get(username);
 
-		if (username != null) {
-			LoginInfo li = logins.get(username);
-			vertx.cancelTimer(li.timerID);
-			li.timerID=setTimerFor(username, li.sessionID);
-			JsonObject reply = new JsonObject().putString("username", username)
-					.putArray("roles", li.roles);
-			sendOK(message, reply);
-		} else {
-			sendStatus("denied", message);
+				vertx.cancelTimer(li.timerID);
+				li.timerID = setTimerFor(username, li.sessionID);
+				JsonArray neededRoles = message.body().getArray("roles");
+				boolean bOk = true;
+				if (neededRoles != null) {
+					bOk = checkRoles(li.roles, neededRoles);
+				}
+				if (bOk) {
+					JsonObject reply = new JsonObject().putString("username",
+							username).putArray("roles", li.roles);
+					sendOK(message, reply);
+				}
+			}
 		}
+		sendStatus("denied", message);
 	}
 
+	private boolean checkRoles(JsonArray givenRoles, JsonArray neededRoles) {
+		Iterator<Object> it = givenRoles.iterator();
+		while (it.hasNext()) {
+			String role = (String) it.next();
+			Iterator<Object> nit = neededRoles.iterator();
+			while (nit.hasNext()) {
+				if (role.equalsIgnoreCase((String) nit.next())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
