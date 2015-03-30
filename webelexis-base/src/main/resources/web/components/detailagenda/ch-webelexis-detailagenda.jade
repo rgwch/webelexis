@@ -6,7 +6,7 @@
                 button.btn.glyphicon.glyphicon-circle-arrow-left(data-bind="click: yesterday" data-toggle="tooltip" title="Zum vorherigen Tag gehen")
                 button.btn.glyphicon.glyphicon-circle-arrow-down(data-bind="click: today" data-toggle="tooltip" title="auf Heute gehen")
                 button.btn.glyphicon.glyphicon-circle-arrow-right(data-bind="click: tomorrow" data-toggle="tooltip" title="Zum nächsten Tag gehen")            
-                input(type="text" style="margin-left:10px" data-toggle="tooltip" title="Klicken um den Kalender zu öffnen" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now')
+                input(type="text" style="margin-left:10px;text-align:center;max-width:50%" data-toggle="tooltip" title="Klicken um den Kalender zu öffnen" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now')
                 select(data-bind="options: resources, optionsText: 'display', value: resource, event: {change: loadAppointments}")
         .panel-body
             .row(data-bind="foreach: appointments")

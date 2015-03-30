@@ -2,10 +2,10 @@
 .row
     .panel.panel-default.col-sm-6
         .panel-heading
-            #agendaDatum
+            #agendaDatum(style="width:100%;")
                 button.btn.glyphicon.glyphicon-circle-arrow-left(data-bind="click: yesterday" data-toggle="tooltip" title="Zum vorherigen Tag gehen")
-                 button.btn.glyphicon.glyphicon-circle-arrow-down(data-bind="click: today" data-toggle="tooltip" title="auf Heute gehen")
-                input.abstand(type="text" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now' data-toggle="tooltip" title="Klicken um den Kalender zu öffnen")
+                button.btn.glyphicon.glyphicon-circle-arrow-down(data-bind="click: today" data-toggle="tooltip" title="auf Heute gehen")
+                input.abstand(type="text" style="max-width:50%;text-align:center" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now' data-toggle="tooltip" title="Klicken um den Kalender zu öffnen")
                 button.btn.glyphicon.glyphicon-circle-arrow-right(data-bind="click: tomorrow" data-toggle="tooltip" title="Zum nächsten Tag gehen")
         .panel-body
             .row#appntlist(data-bind="foreach: appointments")
