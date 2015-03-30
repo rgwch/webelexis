@@ -52,7 +52,7 @@ define(['knockout'], function (ko) {
                 location: 'components/detailagenda',
                 active: true,
                 menuItem: true,
-                roles: ["user", "admin"]
+                roles: ["guest","user", "admin"]
             },
             {
                 baseUrl: "#patlist",

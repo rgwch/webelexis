@@ -29,10 +29,11 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
             app.patientID = row[6]
             app.state = row[7]
             app.reason = row[8]
-            app.firstName = row[9]
-            app.lastName = row[10]
+            app.firstName = row[10]
+            app.lastName = row[9]
+            app.birthdate= row[11] ? dt.makeDateString(dt.makeDate(row[11])) : ""
 
-            app.displayName = app.lastName ? (app.lastName + " " + app.firstName) : app.PatientID
+            app.displayName = app.lastName ? (app.lastName + " " + app.firstName+", "+app.birthdate) : app.PatientID
             app.displayClass = ko.pureComputed(function () {
                 return app.type === 'available' ? "available" : "occupied"
             })

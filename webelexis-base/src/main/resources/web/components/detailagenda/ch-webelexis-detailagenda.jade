@@ -1,6 +1,6 @@
 //- This file is üart of Webelexis. Copyright (c) 2015 by G. Weirich
 .row
-    .col-sm-12.col-md-6
+    .col-sm-12
         .panel-heading
             .form-inline
                 button.btn.glyphicon.glyphicon-circle-arrow-left(data-bind="click: yesterday" data-toggle="tooltip" title="Zum vorherigen Tag gehen")
@@ -10,16 +10,21 @@
                 select(data-bind="options: resources, optionsText: 'display', value: resource, event: {change: loadAppointments}")
         .panel-body
             .row(data-bind="foreach: appointments")
-                .well.well-sm.col-xs-12.col-sm-6.col-md-4.col-lg-2(data-bind="text: displayText, css: displayClass, click: $parent.expand")
-                form.form.row(data-bind="if:expanded, submit: $parent.update")
-                    .form-group.col-xs-12.col-sm-6.col-md-4
-                        label(for="lastname") Name
-                        input.form-control#lastname(data-bind="value: lastName")
-                    .form-group.col-xs-12.col-sm-6.col-md-4
-                        label(for="firstname") Vorname
-                        input.form-control#firstname(data-bind="value: firstName")
-                    .form-group.col-xs-12.col-sm-6.col-md-4
-                        label(for="birthdate") Geburtsdatum
-                        input.form-control#birthdate(data-bind="value: patientID")
-                    button.btn.btn-primary(type="submit") Senden
-                    button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
+                .col-xs-12.col-sm-6
+                    div(data-bind="text: displayText, css: displayClass, click: $parent.expand")
+                    form.form.row(data-bind="if:expanded, submit: $parent.update")
+                        .form-group.col-xs-4
+                            label(for="lastname") Name
+                            input.form-control#lastname(data-bind="value: lastName")
+                        .form-group.col-xs-4
+                            label(for="firstname") Vorname
+                            input.form-control#firstname(data-bind="value: firstName")
+                        .form-group.col-xs-4
+                            label(for="birthdate") Geb. Dat.
+                            input.form-control#birthdate(data-bind="value: birthdate")
+                        .form-group.col-xs-12
+                            label(for="reason") Grund
+                            input.form-control#phone(data-bind="value: reason")
+                        .col-xs-12
+                            button.btn.btn-primary(type="submit") Senden
+                            button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
