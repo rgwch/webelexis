@@ -92,7 +92,7 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-login',
                 location: 'components/login',
                 active: true,
-                menuItem: false,
+                menuItem: true,
                 roles: ["guest"]
         },
             {

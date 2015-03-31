@@ -99,6 +99,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/dist\/web\/ch-webelexis-login.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/ch-webelexis-login.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -473,6 +482,17 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
+		},
+	"\/dist\/web\/lib\/async.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/lib\/async.js",
+		"outputAbbreviatedPath": "\/dist\/web\/lib\/async.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
 		},
 	"\/dist\/web\/lib\/bootstrap.min.js": {
 		"fileType": 64,
@@ -1172,11 +1192,11 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/dist\/web\/tmpl\/ch-webelexis-login.html": {
+	"\/dist\/web\/tmpl\/ch-webelexis-detailagenda.html": {
 		"fileType": 8192,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/web\/tmpl\/ch-webelexis-login.html",
+		"inputAbbreviatedPath": "\/dist\/web\/tmpl\/ch-webelexis-detailagenda.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -1440,7 +1460,7 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/main\/resources\/web\/components\/login\/ch-webelexis-login.jade",
-		"outputAbbreviatedPath": "\/dist\/web\/ch-webelexis-login.html",
+		"outputAbbreviatedPath": "\/dist\/web\/tmpl\/ch-webelexis-login.html",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0
@@ -1810,6 +1830,17 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0
+		},
+	"\/src\/main\/resources\/web\/lib\/async.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/main\/resources\/web\/lib\/async.js",
+		"outputAbbreviatedPath": "\/dist\/web\/lib\/async.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
 		},
 	"\/src\/main\/resources\/web\/lib\/bootstrap.min.js": {
 		"fileType": 64,

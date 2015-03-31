@@ -14,6 +14,7 @@ var require = {
         "vertxbus": "lib/vertxbus",
         "domReady": "lib/domReady",
         "knockout-jqueryui": "lib/knockout-jqueryui",
+        "async": "lib/async",
         "app": "app",
         "tmpl": "tmpl"
     },
