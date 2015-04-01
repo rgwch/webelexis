@@ -65,6 +65,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                 })
             }
             self.doLogout = function() {
+                
                 bus.send("ch.webelexis.auth.logout", {
                     sessionID: cfg.sessionID()
                 }, function(result) {
