@@ -83,7 +83,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
                 token: cfg.sessionID()
             }, function (result) {
                 // console.log("result: " + JSON.stringify(result));
-                if (result.status !== "ok") {
+                if ((result === undefined) || (result.status !== "ok")) {
                     window.alert("Verbindungsfehler: " + result.status);
                 } else {
                     self.appointments.removeAll()
