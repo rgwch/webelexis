@@ -1,19 +1,19 @@
-.panel.panel-info#login-head
-    .panel-heading
-        .panel-title 
-            h3 Anmeldung
-        p#login-message Sie müssen sich zuerst im System anmelden.
-    .panel-body
-        .row
-            .col-xs-6
-                form.form(data-bind="submit: dologin")
-                    .form-group
-                        label(for="username") Benutzername
-                        input.form-control#username(type="text" data-bind="value: uname")
-                    .form-group
-                        label(for="password") Passwort
-                        input.form-control#password(type="password" data-bind="value: pwd")
-                    button.btn.btn-default#loginbutton(type="submit" disabled="disabled") Warte auf Server...
-            .col-xs-6
-                button.btn#googleLogin Google
-                //.g-signin2(data-onsuccess="googleLogin")
+.col-xs-6.col-xs-offset-3
+    .panel.panel-info#login-head
+        .panel-heading
+            .panel-title 
+                h3 Anmeldung
+            p#login-message Sie müssen sich zuerst im System anmelden.
+        .panel-body
+            .row
+                .col-xs-6
+                    form.form(data-bind="submit: dologin")
+                        .form-group
+                            label(for="username") Benutzername
+                            input.form-control#username(type="text" data-bind="value: uname")
+                        .form-group
+                            label(for="password") Passwort
+                            input.form-control#password(type="password" data-bind="value: pwd")
+                        button.btn.btn-default#loginbutton(type="submit" disabled="disabled") Warte auf Server...
+                .col-xs-6
+                    button.btn#googleLogin(data-bind="click: googleLogin") Google

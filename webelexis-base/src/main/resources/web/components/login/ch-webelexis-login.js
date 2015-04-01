@@ -2,9 +2,8 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html'], function(bus, config, Router, ko, html) {
+define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html','domReady!'], function(bus, config, Router, ko, html) {
 
-    var google = {}
 
     $("#navbar-button").bind("click", function() {
         if (config.sessionID !== null) {
@@ -53,7 +52,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
             adapt(msg === "open")
         })
         adapt(bus.connected)
-        self.dologin = function(/*formElement*/) {
+        self.dologin = function( /*formElement*/ ) {
             console.log("login " + self.uname() + self.pwd())
             bus.send('ch.webelexis.auth.login', {
                 username: self.uname(),
@@ -72,54 +71,19 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
                 }
             });
         }
-        self.googleLogin = function(googleUser) {
-            var profile = googleUser.getBasicProfile()
-            console.log(profile.getId())
+        self.googleLogin = function() {
+            config.google.signIn()
         }
     }
 
-    var signInChanged = function(val) {
-        console.log('Signin state changed to ', val);
-
-    }
-
-    var userChanged = function(user) {
-        if (user) {
-            console.log("user now: " + user.getId()+", "+user.getBasicProfile().getName());
-        } else {
-            console.log("user now: nobody");
-        }
-    }
-
-    var refreshValues = function() {
-        console.log("refreshing values");
-    }
-    var initSigninV2 = function() {
-        var clientID=$("meta[name='clientID']").attr("content")
-        google = window.gapi.auth2.init({
-            client_id: clientID, 
-            cookiepolicy: 'single_host_origin'
-        })
-
-        google.attachClickHandler(document.getElementById("googleLogin"), {}, function(googleUser) {
-                console.log("Google signedIn: " + googleUser.getBasicProfile().getName());
-            },
-            function(error) {
-                window.alert(JSON.stringify(error, undefined, 2))
-            });
-        google.isSignedIn.listen(signInChanged);
-        google.currentUser.listen(userChanged);
-
-        // Sign in the user if they are currently signed in.
-        if (google.isSignedIn.get() === true) {
-            google.signIn();
-        }
-
-        // Start with the current live values.
-        refreshValues();
-    }
-
-    window.gapi.load('auth2', initSigninV2)
+    /*
+    config.google.attachClickHandler(gl, {}, function(googleUser) {
+            console.log("Google signedIn: " + googleUser.getBasicProfile().getName());
+        },
+        function(error) {
+            window.alert(JSON.stringify(error, undefined, 2))
+        });
+*/
 
     return {
         viewModel: LoginViewModel,
