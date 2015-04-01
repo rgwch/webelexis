@@ -5,9 +5,11 @@
 package ch.webelexis;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.AsyncResult;
@@ -34,14 +36,14 @@ import org.vertx.java.core.sockjs.SockJSServer;
  *
  */
 public class CoreVerticle extends BusModBase {
-	final static long TIMEOUT=60000;
+	final static long TIMEOUT = 60000;
 	JsonObject cfg_default;
 	JsonObject cfg;
 	Logger log;
 	ArrayList<String> pending = new ArrayList<String>();
 	Throwable reason = null;
 	long waitingTime;
-	
+
 	/**
 	 * Enter all modules and verticles to deploy here. Note: Webelexis will
 	 * deploy them asynchronously, so there is no guaranteed order for them to
@@ -72,7 +74,7 @@ public class CoreVerticle extends BusModBase {
 	public void start(final Future<Void> startedResult) {
 		log = container.logger();
 		cfg = cfg_default.mergeIn(container.config());
-		log.debug("CoreVerticle got config: "+cfg.encodePrettily());
+		log.debug("CoreVerticle got config: " + cfg.encodePrettily());
 		for (V m : modules) {
 			pending.add(m.title);
 			container.deployModule(m.fullname, cfg.getObject(m.title),
@@ -84,7 +86,7 @@ public class CoreVerticle extends BusModBase {
 					new DeploymentHandler(v.title));
 		}
 
-		waitingTime=System.currentTimeMillis();
+		waitingTime = System.currentTimeMillis();
 		vertx.setPeriodic(200, new Handler<Long>() {
 
 			@Override
@@ -107,26 +109,11 @@ public class CoreVerticle extends BusModBase {
 		});
 		final JsonObject bridgeCfg = cfg.getObject("bridge");
 		HttpServer http = vertx.createHttpServer();
-		http.requestHandler(new Handler<HttpServerRequest>() {
-			public void handle(HttpServerRequest req) {
-				String file = "";
-				if (req.path().equals("/")) {
-					file = "index.html";
-				} else if (req.path().contains("..")) {
-					req.response().setStatusCode(404);
-					req.response().end();
-				} else {
-					file = req.path();
-				}
-				File ans = new File(bridgeCfg.getString("webroot"), file);
-				// System.out.println(ans.getAbsolutePath());
-				req.response().sendFile(ans.getAbsolutePath());
-			}
-		});
+		http.requestHandler(new HTTPHandler(bridgeCfg));
 		SockJSServer sock = vertx.createSockJSServer(http);
 		sock.bridge(new JsonObject().putString("prefix", "/eventbus"),
 				bridgeCfg.getArray("inOK"), bridgeCfg.getArray("outOK"));
-		//sock.setHook(new EventBusHook());
+		// sock.setHook(new EventBusHook());
 		http.listen(bridgeCfg.getInteger("port"));
 	}
 

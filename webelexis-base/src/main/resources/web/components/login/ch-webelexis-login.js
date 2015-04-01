@@ -46,7 +46,6 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
 
     function LoginViewModel() {
         var self = this;
-        var title = "Login"
         self.uname = ko.observable("")
         self.pwd = ko.observable("")
 
@@ -54,7 +53,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
             adapt(msg === "open")
         })
         adapt(bus.connected)
-        self.dologin = function(formElement) {
+        self.dologin = function(/*formElement*/) {
             console.log("login " + self.uname() + self.pwd())
             bus.send('ch.webelexis.auth.login', {
                 username: self.uname(),
@@ -96,8 +95,9 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         console.log("refreshing values");
     }
     var initSigninV2 = function() {
+        var clientID=$("meta[name='clientID']").attr("content")
         google = window.gapi.auth2.init({
-            client_id: "873064950704-p2rs933cun5v3n1d63dp6vaknlb5kufp.apps.googleusercontent.com",
+            client_id: clientID, 
             cookiepolicy: 'single_host_origin'
         })
 
@@ -120,13 +120,6 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
     }
 
     window.gapi.load('auth2', initSigninV2)
-    /*
-    if (google.isSignedIn.get()) {
-        console.log("signed in: " + google.currentUser.get().getBasicProfile().getName())
-    } else {
-        console.log("not signed in by google");
-    }
-    */
 
     return {
         viewModel: LoginViewModel,
