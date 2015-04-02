@@ -1,5 +1,8 @@
 package ch.rgw.vertx;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +15,8 @@ import org.vertx.java.core.http.HttpClientRequest;
 import org.vertx.java.core.http.HttpClientResponse;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+
+import sun.security.provider.MD5;
 
 public class SessionManager extends BusModBase {
 	private static final long DEFAULT_TIMEOUT = 10 * 60 * 1000;
@@ -50,11 +55,8 @@ public class SessionManager extends BusModBase {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
-			Session session = sessions
-					.get(getMandatoryString("sessionID", msg));
-			if (session == null) {
-				sendError(msg, "no session");
-			} else {
+			Session session = checkSession(msg);
+			if (session != null) {
 				sessions.remove(session.id);
 			}
 
@@ -63,91 +65,127 @@ public class SessionManager extends BusModBase {
 	private Handler<Message<JsonObject>> loginHandler = new Handler<Message<JsonObject>>() {
 
 		@Override
-		public void handle(Message<JsonObject> arg0) {
-			// TODO Auto-generated method stub
+		public void handle(Message<JsonObject> msg) {
+			Session session = checkSession(msg);
+			if (session != null) {
 
+			}
 		}
 	};
 	private Handler<Message<JsonObject>> logoutHandler = new Handler<Message<JsonObject>>() {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
-			Session session = sessions
-					.get(getMandatoryString("sessionID", msg));
-			if (session == null) {
-				sendError(msg, "no session");
+			Session session = checkSession(msg);
+			if (session != null) {
+				session.roles = new JsonArray();
+				session.username = "";
+				session.loggedIn = false;
+				session.refresh();
+				sendOK(msg);
 			}
-			session.roles = new JsonArray();
-			session.username = "";
-			session.loggedIn = false;
-			session.refresh();
-			sendOK(msg);
 		}
 	};
 	private Handler<Message<JsonObject>> authorizeHandler = new Handler<Message<JsonObject>>() {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
-			Session session = sessions
-					.get(getMandatoryString("sessionID", msg));
-			if (session == null) {
-				sendStatus("no session", msg);
-			} else {
-				session.refresh();
-				String neededRole = getMandatoryString("role", msg);
-				if (neededRole == null || neededRole.equalsIgnoreCase("guest")) {
+			Session session = checkSession(msg);
+			if (session != null) {
+				if (isAuthorized(session, getMandatoryString("role", msg))) {
 					sendOK(msg);
 				} else {
-					JsonArray givenRoles = session.roles;
-					if (givenRoles.contains(neededRole)) {
-						sendOK(msg);
-					} else {
-						sendStatus("denied", msg);
-					}
+					sendStatus("denied", msg);
 				}
 			}
 
 		}
 	};
 
+	
 	private Handler<Message<JsonObject>> adminHandler = new Handler<Message<JsonObject>>() {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
-			Session session=sessions.get(getMandatoryString("sessionID", msg));
-			if(session==null){
-				sendError(msg, "no session");
-			}else{
-				if(!session.roles.contains("admin")){
-					sendStatus("denied",msg);
-				}else{
-					String cmd=getMandatoryString("command", msg);
-					if(cmd=="adduser"){
-						addUser(getMandatoryObject("user", msg));
+			Session session = checkSession(msg);
+			if (session != null) {
+				if (!session.roles.contains("admin")) {
+					sendStatus("denied", msg);
+				} else {
+					String cmd = getMandatoryString("command", msg);
+					if (cmd == "adduser") {
+						addUser(msg);
 					}
 				}
 			}
-			
+
 		}
 
-		private void addUser(JsonObject user) {
-			// TODO Auto-generated method stub
-			
-		}
 	};
 
-	private JsonObject verifyGoogleId(String id){
-		HttpClient htc=vertx.createHttpClient().setSSL(true).setHost("www.googleapis.com") //?id_token=XYZ123.)
+	private JsonObject verifyGoogleId(String id) {
+		HttpClient htc = vertx.createHttpClient().setSSL(true)
+				.setHost("www.googleapis.com") // ?id_token=XYZ123.)
 				.setPort(443).setTrustAll(true);
-		htc.getNow("/oauth2/v1/tokeninfo?id_token="+id, new Handler<HttpClientResponse>(){
+		htc.getNow("/oauth2/v1/tokeninfo?id_token=" + id,
+				new Handler<HttpClientResponse>() {
 
-			@Override
-			public void handle(HttpClientResponse arg0) {
-				// TODO Auto-generated method stub
-				
-			}});
+					@Override
+					public void handle(HttpClientResponse arg0) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 		return null;
 	}
+
+	
+	private Session checkSession(Message<JsonObject> msg) {
+		Session session = sessions.get(getMandatoryString("sessionID", msg));
+		if (session == null) {
+			sendError(msg, "no session");
+			return null;
+		}
+		session.refresh();
+		return session;
+	}
+
+	private boolean isAuthorized(Session session, String role) {
+
+		if ((role == null) || role.equalsIgnoreCase("guest")) {
+			return true;
+		}
+		JsonArray givenRoles = session.roles;
+		if (givenRoles.contains(role)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private void addUser(Message<JsonObject> msg){
+		JsonObject user=getMandatoryObject("user", msg);
+		if(user!=null){
+			JsonObject dbUser;
+		}
+	}
+
+	private JsonObject pwhash(String username, String password){
+		try {
+			MessageDigest md=MessageDigest.getInstance("MD5");
+			md.update(username.getBytes("utf-8"));
+			byte[] pwbytes=md.digest(password.getBytes("utf-8"));
+			return new JsonObject().putBinary("pwdhash", pwbytes).putString("username", username);
+	
+		} catch (NoSuchAlgorithmException e) {
+			container.logger().fatal("could not create password hash MD5", e);
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			container.logger().fatal("don't know how to handle utf-8", e);
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	private class Session {
 		Session() {
 			id = UUID.randomUUID().toString();
@@ -171,10 +209,10 @@ public class SessionManager extends BusModBase {
 		}
 
 		String id;
-		int loginFailures=0;
-		String username="";
+		int loginFailures = 0;
+		String username = "";
 		boolean loggedIn;
 		long timerID;
-		JsonArray roles=new JsonArray();
+		JsonArray roles = new JsonArray();
 	}
 }
