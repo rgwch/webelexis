@@ -7,11 +7,14 @@ import java.util.UUID;
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
+import org.vertx.java.core.http.HttpClient;
+import org.vertx.java.core.http.HttpClientRequest;
+import org.vertx.java.core.http.HttpClientResponse;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 public class SessionManager extends BusModBase {
-	private static final long DEFAULT_TIEMOUT = 10 * 60 * 1000;
+	private static final long DEFAULT_TIMEOUT = 10 * 60 * 1000;
 
 	private String basicAddress;
 	private String persistorAddress;
@@ -133,6 +136,18 @@ public class SessionManager extends BusModBase {
 		}
 	};
 
+	private JsonObject verifyGoogleId(String id){
+		HttpClient htc=vertx.createHttpClient().setSSL(true).setHost("www.googleapis.com") //?id_token=XYZ123.)
+				.setPort(443).setTrustAll(true);
+		htc.getNow("/oauth2/v1/tokeninfo?id_token="+id, new Handler<HttpClientResponse>(){
+
+			@Override
+			public void handle(HttpClientResponse arg0) {
+				// TODO Auto-generated method stub
+				
+			}});
+		return null;
+	}
 	private class Session {
 		Session() {
 			id = UUID.randomUUID().toString();
@@ -144,7 +159,7 @@ public class SessionManager extends BusModBase {
 				vertx.cancelTimer(timerID);
 			}
 			timerID = vertx.setTimer(
-					getOptionalLongConfig("timeout", DEFAULT_TIEMOUT),
+					getOptionalLongConfig("timeout", DEFAULT_TIMEOUT),
 					new Handler<Long>() {
 
 						@Override
