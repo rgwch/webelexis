@@ -42,7 +42,7 @@
 // config for mod-auth-mgr (https://github.com/vert-x/mod-auth-mgr)
 "auth": {
     "address": "ch.webelexis.auth", // do not change this
-    "user_collection": "users", // do not change this
+    "users_collection": "users", // do not change this
     "persistor_address": "ch.webelexis.nosql", // do not change this
     "session_timeout": 300000 // optional. Here: 5 Minutes
 },
