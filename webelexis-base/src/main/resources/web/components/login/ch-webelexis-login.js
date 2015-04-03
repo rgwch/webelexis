@@ -2,14 +2,14 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html','domReady!'], function(bus, config, Router, ko, html) {
+define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'domReady!'], function (bus, config, Router, ko, html) {
 
 
-    $("#navbar-button").bind("click", function() {
+    $("#navbar-button").bind("click", function () {
         if (config.sessionID !== null) {
-            bus.send('ch.webelexis.auth.logout', {
+            bus.send('ch.webelexis.session.logout', {
                 "sessionID": config.sessionID
-            }, function(result) {
+            }, function (result) {
                 if (result.status === "ok") {
                     config.sessionID = null
                     $("#navbar-button").text("Anmelden")
@@ -48,18 +48,18 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         self.uname = ko.observable("")
         self.pwd = ko.observable("")
 
-        bus.addListener(function(msg) {
+        bus.addListener(function (msg) {
             adapt(msg === "open")
         })
         adapt(bus.connected)
-        self.dologin = function( /*formElement*/ ) {
+        self.dologin = function ( /*formElement*/ ) {
             console.log("login " + self.uname() + self.pwd())
-            bus.send('ch.webelexis.auth.login', {
+            bus.send('ch.webelexis.session.login', {
+                sessionID: config.sessionID(),
                 username: self.uname(),
                 password: self.pwd()
-            }, function(result) {
+            }, function (result) {
                 if (result.status === "ok") {
-                    config.sessionID = result.sessionID;
                     console.log("logged in")
                     $("#navbar-button").text(self.uname() + " abmelden")
                     $(window).trigger('hashchange')
@@ -71,7 +71,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
                 }
             });
         }
-        self.googleLogin = function() {
+        self.googleLogin = function () {
             config.google.signIn()
         }
     }

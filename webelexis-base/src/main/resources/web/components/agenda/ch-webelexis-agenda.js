@@ -84,7 +84,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
             }, function (result) {
                 // console.log("result: " + JSON.stringify(result));
                 if ((result === undefined) || (result.status !== "ok")) {
-                    window.alert("Verbindungsfehler: " + result.status);
+                    window.alert("Verbindungsfehler: " + (result === undefined) ? "Anwendung nicht erreichbar" : result.status);
                 } else {
                     self.appointments.removeAll()
                     var appnts = result.appointments;

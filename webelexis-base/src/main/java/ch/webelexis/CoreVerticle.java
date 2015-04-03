@@ -68,6 +68,7 @@ public class CoreVerticle extends BusModBase {
 
 	@Override
 	public void start(final Future<Void> startedResult) {
+		super.start();
 		log = container.logger();
 		cfg = cfg_default.mergeIn(container.config());
 		log.debug("CoreVerticle got config: " + cfg.encodePrettily());
@@ -102,7 +103,7 @@ public class CoreVerticle extends BusModBase {
 		});
 		final JsonObject bridgeCfg = cfg.getObject("bridge");
 		HttpServer http = vertx.createHttpServer();
-		http.requestHandler(new HTTPHandler(bridgeCfg));
+		http.requestHandler(new HTTPHandler(bridgeCfg, eb));
 		SockJSServer sock = vertx.createSockJSServer(http);
 		sock.bridge(new JsonObject().putString("prefix", "/eventbus"), bridgeCfg.getArray("inOK"),
 				bridgeCfg.getArray("outOK"));

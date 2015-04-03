@@ -7,6 +7,11 @@
         "password": "database-password",
         "database": "elexis"
     },
+	"auth": {
+		"address": "ch.webelexis.session",
+		"persistor_address": "ch.webelexis.nosql",
+		"users_collection": "users"
+	}
 
     "agenda": {
         "resource": "gerry",

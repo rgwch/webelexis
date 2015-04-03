@@ -41,7 +41,7 @@
 
 // config for mod-auth-mgr (https://github.com/vert-x/mod-auth-mgr)
 "auth": {
-    "address": "ch.webelexis.auth", // do not change this
+    "address": "ch.webelexis.session", // do not change this
     "users_collection": "users", // do not change this
     "persistor_address": "ch.webelexis.nosql", // do not change this
     "session_timeout": 300000 // optional. Here: 5 Minutes
@@ -70,10 +70,10 @@
     "port": 2015, // default port for webelexis
     "inOK": [ // allowed inbound messages (all other will be blocked)
         {
-            "address": "ch.webelexis.auth.login"
+            "address": "ch.webelexis.session.login"
         },
         {
-            "address": "ch.webelexis.auth.logout"
+            "address": "ch.webelexis.session.logout"
         },
         {
             "address": "ch.webelexis.publicagenda"
@@ -81,7 +81,7 @@
   ], // allowed outbound messages
     "outOK": [
   ],
-    "googleID": "3452352634636aasf.apps.googleusercontent.com"  // Google client ID if Google SignIn is used.
+    "googleID": "3aa2352634636aasf.apps.googleusercontent.com"  // Google client ID if Google SignIn is used.
 },
 // Global identification primarly for debugging purposes to see, which config is active.
 "id": "this is an identification for this config"
