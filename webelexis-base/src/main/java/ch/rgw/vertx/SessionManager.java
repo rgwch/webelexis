@@ -28,8 +28,7 @@ public class SessionManager extends BusModBase {
 		super.start();
 
 		basicAddress = getOptionalStringConfig("address", "ch.rgw.sessions");
-		persistorAddress = getOptionalStringConfig("persistor_address",
-				"ch.rgw.nosql");
+		persistorAddress = getOptionalStringConfig("persistor_address", "ch.rgw.nosql");
 		usersCollection = getOptionalStringConfig("users_collection", "users");
 
 		eb.registerHandler(basicAddress + ".create", createHandler);
@@ -59,6 +58,9 @@ public class SessionManager extends BusModBase {
 			Session session = checkSession(msg);
 			if (session != null) {
 				sessions.remove(session.id);
+				sendOK(msg);
+			}else{
+				sendStatus("invalid session", msg);
 			}
 
 		}
@@ -69,7 +71,32 @@ public class SessionManager extends BusModBase {
 		public void handle(Message<JsonObject> msg) {
 			Session session = checkSession(msg);
 			if (session != null) {
-				
+				String username = getMandatoryString("username", msg);
+				String pwd = getMandatoryString("password", msg);
+				findUser(username, new Handler<Message<JsonObject>>() {
+
+					@Override
+					public void handle(Message<JsonObject> findResult) {
+						if (getMandatoryString("status", findResult).equals("ok")) {
+							JsonObject user = findResult.body().getObject("result");
+							if (user != null) {
+								if (checkPwd(user, pwd)) {
+									session.user = user;
+									session.loggedIn = true;
+									session.roles = user.getArray("roles");
+									sendOK(msg);
+								} else {
+									sendStatus("denied", msg);
+								}
+							} else {
+								sendStatus("user not found", msg);
+							}
+						} else {
+							sendStatus("db error", msg);
+						}
+
+					}
+				});
 			}
 		}
 	};
@@ -80,7 +107,7 @@ public class SessionManager extends BusModBase {
 			Session session = checkSession(msg);
 			if (session != null) {
 				session.roles = new JsonArray();
-				session.username = "";
+				session.user = null;
 				session.loggedIn = false;
 				session.refresh();
 				sendOK(msg);
@@ -115,7 +142,7 @@ public class SessionManager extends BusModBase {
 					String cmd = getMandatoryString("command", msg);
 					if (cmd == "adduser") {
 						addUser(msg);
-					}else if(cmd == "removeuser"){
+					} else if (cmd == "removeuser") {
 						removeUser(msg);
 					}
 				}
@@ -129,26 +156,25 @@ public class SessionManager extends BusModBase {
 	 * Verify, if an id_token is valid and issued by Google
 	 */
 	private void verifyGoogleId(String id, Handler<Message<JsonObject>> handler) {
-		HttpClient htc = vertx.createHttpClient().setSSL(true)
-				.setHost("www.googleapis.com") // ?id_token=XYZ123.)
+		HttpClient htc = vertx.createHttpClient().setSSL(true).setHost("www.googleapis.com") // ?id_token=XYZ123.)
 				.setPort(443).setTrustAll(true);
-		htc.getNow("/oauth2/v1/tokeninfo?id_token=" + id,
-				new Handler<HttpClientResponse>() {
+		htc.getNow("/oauth2/v1/tokeninfo?id_token=" + id, new Handler<HttpClientResponse>() {
 
-					@Override
-					public void handle(HttpClientResponse resp) {
-						if(resp.statusCode()==0){
-							
-						}
+			@Override
+			public void handle(HttpClientResponse resp) {
+				if (resp.statusCode() == 0) {
 
-					}
-				});
+				}
+
+			}
+		});
 	}
 
 	/*
-	 * check whether a valid session exists and is contained as an argument.
-	 * if not, send an error message to the original caller and return null.
-	 * Otherwise, refresh the session (i.e. set the expire-timer to its original value) and return it.
+	 * check whether a valid session exists and is contained as an argument. if
+	 * not, send an error message to the original caller and return null.
+	 * Otherwise, refresh the session (i.e. set the expire-timer to its original
+	 * value) and return it.
 	 */
 	private Session checkSession(Message<JsonObject> msg) {
 		Session session = sessions.get(getMandatoryString("sessionID", msg));
@@ -160,11 +186,11 @@ public class SessionManager extends BusModBase {
 		return session;
 	}
 
-	/* 
-	 * check whether a Session may act as "role". If a session is not logged in, it may only
-	 * behave as "guest". If it is logged-in, the rights depend on the roles of the user
-	 * the session belongs (If their "roles" field contains a matching role)
-	 * 
+	/*
+	 * check whether a Session may act as "role". If a session is not logged in,
+	 * it may only behave as "guest". If it is logged-in, the rights depend on the
+	 * roles of the user the session belongs (If their "roles" field contains a
+	 * matching role)
 	 */
 	private boolean isAuthorized(Session session, String role) {
 
@@ -182,91 +208,73 @@ public class SessionManager extends BusModBase {
 	 * find an entry for a username in the database
 	 */
 	private void findUser(String username, Handler<Message<JsonObject>> callback) {
-		JsonObject op = new JsonObject()
-				.putString("action", "findone")
-				.putString("collection", usersCollection)
-				.putObject("matcher",
-						new JsonObject().putString("username", username));
+		JsonObject op = new JsonObject().putString("action", "findone").putString("collection", usersCollection)
+				.putObject("matcher", new JsonObject().putString("username", username));
 		eb.send(persistorAddress, op, callback);
 	}
 
 	/*
-	 * Add a new user to the database. The user is a JsonObject with the following minimal contents:
-	 * username: <unique name>
-	 * password: <string>
+	 * Add a new user to the database. The user is a JsonObject with the following
+	 * minimal contents: username: <unique name> password: <string>
 	 * 
-	 * The user object may contain optional fields, such as
-	 * roles: <Array of Strings>
+	 * The user object may contain optional fields, such as roles: <Array of
+	 * Strings>
 	 * 
 	 * And any additional free fields
-	 * 
 	 */
 	private void addUser(final Message<JsonObject> msg) {
 		final JsonObject user = getMandatoryObject("user", msg);
 		if (user != null) {
-			findUser(user.getString("username"),
-					new Handler<Message<JsonObject>>() {
+			findUser(user.getString("username"), new Handler<Message<JsonObject>>() {
 
-						@Override
-						public void handle(Message<JsonObject> dbReply) {
-							if (getMandatoryString("status", dbReply).equals(
-									"ok")) {
-								sendError(msg,
-										"user " + user.getString("username")
-												+ " already exists");
-							} else {
-								JsonObject dbUser = makePwd(user);
-								if (dbUser != null) {
-									JsonArray roles = user.getArray("roles");
-									if (roles == null) {
-										roles = new JsonArray(
-												new String[] { "user" });
-									}
-									dbUser.putArray("roles", roles);
-									JsonObject op = new JsonObject()
-											.putString("action", "save")
-											.putString("collection",
-													usersCollection)
-											.putObject("document", dbUser);
-									eb.send(persistorAddress, op,
-											new Handler<Message<JsonObject>>() {
-
-												@Override
-												public void handle(
-														Message<JsonObject> reply) {
-													msg.reply(reply);
-												}
-											});
-								} else {
-									sendError(msg, "bad request");
-								}
-
+				@Override
+				public void handle(Message<JsonObject> dbReply) {
+					if (getMandatoryString("status", dbReply).equals("ok")) {
+						sendError(msg, "user " + user.getString("username") + " already exists");
+					} else {
+						JsonObject dbUser = makePwd(user);
+						if (dbUser != null) {
+							JsonArray roles = user.getArray("roles");
+							if (roles == null) {
+								roles = new JsonArray(new String[] { "user" });
 							}
+							dbUser.putArray("roles", roles);
+							JsonObject op = new JsonObject().putString("action", "save").putString("collection", usersCollection)
+									.putObject("document", dbUser);
+							eb.send(persistorAddress, op, new Handler<Message<JsonObject>>() {
 
+								@Override
+								public void handle(Message<JsonObject> reply) {
+									msg.reply(reply);
+								}
+							});
+						} else {
+							sendError(msg, "bad request");
 						}
-					});
+
+					}
+
+				}
+			});
 		} else {
 			sendError(msg, "no user supplied");
-			
+
 		}
 
 	}
-	
-	private void removeUser(final Message<JsonObject> msg){
-		JsonObject op=new JsonObject()
-			.putString("action", "delete")
-			.putString("collection", usersCollection)
-			.putObject("matcher", new JsonObject().putString("username", getMandatoryString("username", msg)));
+
+	private void removeUser(final Message<JsonObject> msg) {
+		JsonObject op = new JsonObject().putString("action", "delete").putString("collection", usersCollection)
+				.putObject("matcher", new JsonObject().putString("username", getMandatoryString("username", msg)));
 		eb.send(persistorAddress, op);
 	}
 
 	/*
-	 * convert the supplied password to a hash, so that no cleartext-passworts are stored in the
-	 * database .
+	 * convert the supplied password to a hash, so that no cleartext-passworts are
+	 * stored in the database .
 	 */
 	private JsonObject makePwd(JsonObject user) {
-		byte[] pwbytes = makeHash(user.getString("username"),
-				user.getString("password"));
+		byte[] pwbytes = makeHash(user.getString("username"), user.getString("password"));
 		if (pwbytes == null) {
 			return null;
 		}
@@ -279,6 +287,12 @@ public class SessionManager extends BusModBase {
 	 * Check a cleartext password against a hashed database password
 	 */
 	private boolean checkPwd(JsonObject user, String pwdToCheck) {
+		if (user.getBinary("pwhash") == null) {
+			makePwd(user);
+			eb.send(persistorAddress, new JsonObject().putString("action", "update").putString("collection", usersCollection)
+					.putObject("criteria", new JsonObject().putString("_id", user.getString("_id"))).putObject("objNew", user)
+					.putBoolean("upsert", false).putBoolean("multi", false));
+		}
 		byte[] checkBytes = makeHash(user.getString("username"), pwdToCheck);
 
 		if (Arrays.equals(user.getBinary("pwhash"), checkBytes)) {
@@ -314,21 +328,19 @@ public class SessionManager extends BusModBase {
 			if (timerID != 0L) {
 				vertx.cancelTimer(timerID);
 			}
-			timerID = vertx.setTimer(
-					getOptionalLongConfig("timeout", DEFAULT_TIMEOUT),
-					new Handler<Long>() {
+			timerID = vertx.setTimer(getOptionalLongConfig("timeout", DEFAULT_TIMEOUT), new Handler<Long>() {
 
-						@Override
-						public void handle(Long arg0) {
-							// TODO Auto-generated method stub
+				@Override
+				public void handle(Long arg0) {
+					// TODO Auto-generated method stub
 
-						}
-					});
+				}
+			});
 		}
 
 		String id;
 		int loginFailures = 0;
-		String username = "";
+		JsonObject user = null;
 		boolean loggedIn;
 		long timerID;
 		JsonArray roles = new JsonArray();
