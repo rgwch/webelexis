@@ -53,7 +53,7 @@ public class SessionManagerTest extends TestVerticle {
 											if (res2.succeeded()) {
 												SessionManagerTest.super.start();
 											} else {
-												result.cause().printStackTrace();
+												res2.cause().printStackTrace();
 											}
 										}
 
@@ -294,7 +294,7 @@ public class SessionManagerTest extends TestVerticle {
 					@Override
 					public void handle(Message<JsonObject> sid) {
 						VertxAssert.assertEquals(sid.body().getString("status"), "ok");
-						String sessionID = sid.body().getString("sessionID");
+						final String sessionID = sid.body().getString("sessionID");
 						JsonObject op = new JsonObject().putString("sessionID", sessionID);
 						eb.send(ADDRESS + ".destroy", op, new Handler<Message<JsonObject>>() {
 
@@ -334,7 +334,7 @@ public class SessionManagerTest extends TestVerticle {
 					@Override
 					public void handle(Message<JsonObject> sid) {
 						VertxAssert.assertEquals(sid.body().getString("status"), "ok");
-						String sessionID = sid.body().getString("sessionID");
+						final String sessionID = sid.body().getString("sessionID");
 						JsonObject op = new JsonObject().putString("sessionID", sessionID).putString("username", "Administrator")
 								.putString("password", "topSecret");
 						eb.send(ADDRESS + ".login", op, new Handler<Message<JsonObject>>() {
@@ -346,8 +346,8 @@ public class SessionManagerTest extends TestVerticle {
 								eb.send(ADDRESS + ".logout", op, new Handler<Message<JsonObject>>() {
 
 									@Override
-									public void handle(Message<JsonObject> arg0) {
-										VertxAssert.assertEquals("ok", result.body().getString("status"));
+									public void handle(Message<JsonObject> res2) {
+										VertxAssert.assertEquals("ok", res2.body().getString("status"));
 										JsonObject op = new JsonObject().putString("sessionID", sessionID).putString("role", "user");
 										eb.send(ADDRESS + ".authorize", op, new Handler<Message<JsonObject>>() {
 
@@ -382,7 +382,7 @@ public class SessionManagerTest extends TestVerticle {
 					@Override
 					public void handle(Message<JsonObject> sid) {
 						VertxAssert.assertEquals(sid.body().getString("status"), "ok");
-						String sessionID = sid.body().getString("sessionID");
+						final String sessionID = sid.body().getString("sessionID");
 						JsonObject op = new JsonObject().putString("sessionID", sessionID).putString("username", "Administrator")
 								.putString("password", "topSecret");
 						eb.send(ADDRESS + ".login", op, new Handler<Message<JsonObject>>() {

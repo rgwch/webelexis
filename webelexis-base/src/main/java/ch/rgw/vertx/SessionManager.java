@@ -68,11 +68,11 @@ public class SessionManager extends BusModBase {
 	private Handler<Message<JsonObject>> loginHandler = new Handler<Message<JsonObject>>() {
 
 		@Override
-		public void handle(Message<JsonObject> msg) {
-			Session session = checkSession(msg);
+		public void handle(final Message<JsonObject> msg) {
+			final Session session = checkSession(msg);
 			if (session != null) {
 				String username = getMandatoryString("username", msg);
-				String pwd = getMandatoryString("password", msg);
+				final String pwd = getMandatoryString("password", msg);
 				findUser(username, new Handler<Message<JsonObject>>() {
 
 					@Override
