@@ -48,7 +48,7 @@ public class CoreVerticle extends BusModBase {
 	 * vert.x module repository as needed.
 	 */
 	V[] modules = new V[] { new V("sql", "io.vertx~mod-mysql-postgresql_2.10~0.3.1"),
-			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0"), new V("auth", "ch.rgw~vertx-mod-sessionmgr~0.2.0") };
+			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0"), new V("auth", "rgwch~vertx-mod-sessionmgr~0.2.1") };
 
 	V[] verticles = new V[] { new V("agenda", "ch.webelexis.agenda.Server") };
 
