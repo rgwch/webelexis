@@ -3,13 +3,11 @@
  * originally created by Sam Carr of LShift (http://www.lshift.net/blog/2014/04/30/a-simple-knockout-page-router/)
  */
 
-define(['knockout', 'jquery'], function (ko, $) {
+define(['knockout', 'app/config', 'jquery'], function (ko, cfg, $) {
 
     // Top-level KO ViewModel that detects URL changes and shows the relevant page.
-    function Router(menuArray, filter) {
+    function Router(filter) {
         var self = this;
-        this.menu = menuArray;
-
 
 
         // Listen for changes to the URL fragment (hash) triggered by links, back/forward etc.
@@ -35,15 +33,17 @@ define(['knockout', 'jquery'], function (ko, $) {
 
         // Select the component to display according to the path
         function pageFromMapping(path) {
-                for (var i = 0; i < self.menu.length; i++) {
-                    var mapping = self.menu[i];
+                for (var i = 0; i < cfg.modules.length; i++) {
+                    var mapping = cfg.modules[i];
                     if (mapping.match !== undefined) {
                         var matches = mapping.match.exec(path);
                         if (matches) {
-                            // mark the appropriate menu item as selected
-                            $("#mainmenu").children(".active").removeClass("active")
-                            var marker = $("#mainmenu_marker").detach()
-                            $("#mainmenu").find("[href$=" + "#" + path + "]").append(marker).parent().addClass("active")
+                            if (cfg.mainMenu.indexOf(mapping)!==-1) {
+                                // mark the appropriate menu item as selected
+                                $("#mainmenu").children(".active").removeClass("active")
+                                var marker = $("#mainmenu_marker").detach()
+                                $("#mainmenu").find("[href$=" + "#" + path + "]").append(marker).parent().addClass("active")
+                            }
                             return new Router.Page(mapping.title, mapping.component)
                         }
                     }
@@ -51,7 +51,7 @@ define(['knockout', 'jquery'], function (ko, $) {
                 return new Router.Page('Nicht gefunden', 'ch-webelexis-page404');
             }
             // We swap in Page instances here to make them the current page.
-        this.currentPage = ko.observable(pageFromMapping("#"));
+        this.currentPage = ko.observable(pageFromMapping("#agenda"));
 
         // Manually trigger initial load of the relevant start page.
         $(window).trigger("hashchange");

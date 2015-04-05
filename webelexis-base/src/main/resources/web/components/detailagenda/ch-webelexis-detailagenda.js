@@ -52,7 +52,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         self.loadResources = function () {
             self.resources.removeAll()
             bus.send("ch.webelexis.publicagenda", {
-                token: cfg.sessionID(),
+                sessionID: cfg.sessionID,
                 request: 'resources'
             }, function (result) {
                 if (result.status === "ok") {
@@ -105,7 +105,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 resource: self.resource().resource,
                 begin: dt.makeCompactString(act),
                 end: dt.makeCompactString(act),
-                token: cfg.sessionID()
+                sessionID: cfg.sessionID
             }, function (result) {
                 //console.log("result: " + JSON.stringify(result));
                 if ((result.status === undefined) || result.status !== "ok") {

@@ -80,7 +80,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
                 request: 'list',
                 begin: dt.makeCompactString(act),
                 end: dt.makeCompactString(act),
-                token: cfg.sessionID()
+                token: cfg.sessionID
             }, function (result) {
                 // console.log("result: " + JSON.stringify(result));
                 if ((result === undefined) || (result.status !== "ok")) {

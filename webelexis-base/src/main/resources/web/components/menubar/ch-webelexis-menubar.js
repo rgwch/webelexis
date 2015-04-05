@@ -7,28 +7,22 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
 ], function (cfg, ko, html, bus) {
 
     var clientID = $("meta[name='clientID']").attr("content")
-    cfg.sessionID($("meta[name='UUID']").attr("content"))
+    cfg.sessionID = $("meta[name='UUID']").attr("content")
 
     function MenubarModel(params) {
         var self = this
         self.menuItems = ko.observableArray(cfg[params.menu])
         self.unam = ko.observable()
         self.upwd = ko.observable()
-        self.loggedIn = ko.observable(false)
+            //self.loggedIn = ko.observable(false)
 
-        self.hasRole = function (test) {
-            var result = false
-            test.forEach(function (item) {
-                if (cfg.roles.indexOf(item) > -1) {
-                    result = true
-                }
-            })
-            return result
-        }
+        cfg.user.subscribe(function () {
+            self.adaptForUser()
+        })
 
         self.showLogin = ko.computed(function () {
             if (cfg.showLogin()) {
-                if (!self.loggedIn()) {
+                if (!cfg.user().loggedIn) {
                     return true
                 }
 
@@ -38,43 +32,24 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
 
         self.showLogout = ko.computed(function () {
             if (cfg.showLogin()) {
-                if (self.loggedIn()) {
+                if (cfg.user().loggedIn) {
                     return true
                 }
             }
             return false
         })
 
-        self.doLogin = function () {
-            bus.send("ch.webelexis.session.login", {
-                username: self.unam(),
-                password: self.upwd()
-            }, function (result) {
-                if (result.status === "ok") {
-                    cfg.sessionID(result.sessionID)
-                    if (result.roles === undefined || result.roles.length < 1) {
-                        cfg.roles = ['guest']
-                    } else {
-                        cfg.roles = result.roles
-                    }
-                    self.loggedIn(true)
-                    self.adaptForUser()
-                    location.hash = "#agext"
-                } else {
-                    $("#badlogin-text").removeClass("hidden")
-                }
-            })
-        }
-        self.doLogout = function () {
 
+        self.doLogout = function () {
             bus.send("ch.webelexis.session.logout", {
-                sessionID: cfg.sessionID()
+                sessionID: cfg.sessionID
             }, function (result) {
-                cfg.sessionID("")
-                cfg.roles = ["guest"]
+                cfg.user({
+                    "loggedIn": false,
+                    "roles": ["guest"]
+                })
                 self.unam("")
                 self.upwd("")
-                self.loggedIn(false)
                 self.adaptForUser()
                 if (result.status !== "ok") {
                     console.log("Problem beim Abmelden " + result.message)
@@ -84,36 +59,59 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
         }
 
         self.adaptForUser = function () {
+            console.log(JSON.stringify(cfg.user()))
             self.menuItems.removeAll()
             for (var i = 0; i < cfg.modules.length; i++) {
                 var item = cfg.modules[i]
                 if (item.menuItem && item.active) {
-                    if (self.hasRole(item.roles)) {
+                    if (cfg.user().roles.indexOf(item.role) !== -1) {
                         self.menuItems.push(item)
                     }
                 }
             }
-
+            
+            if (cfg.user().loggedIn) {
+                //$("#logout-text").text(cfg.user().username)
+                $("#logout-text").attr("title",cfg.user().username+" abmelden")
+            }
+            
         }
 
 
         self.signInChanged = function (val) {
             console.log('Signin state changed to ', val);
-            self.loggedIn(val)
+            cfg.user().loggedIn(val)
 
         }
 
         self.userChanged = function (user) {
             if (user) {
                 console.log("user now: " + user.getId() + ", " + user.getBasicProfile().getName());
-                $("#logout-text").text(user.getBasicProfile().getName())
+                cfg.user({
+                    "loggedIn": true,
+                    "userid": user.getBasicProfile().getId(),
+                    "username": user.getBasicProfile().getName(),
+                    "email": user.getBasicProfile().getEmail(),
+                    "access_token": user.getAuthResponse().access_token,
+                    "id_token": user.getAuthResponse().id_token,
+                    "roles": ["user"]
+                })
             } else {
                 console.log("user now: nobody");
+                cfg.user({
+                    "loggedIn": false,
+                    "username": "",
+                    "access_token": {},
+                    "id_token": {},
+                    "email": "",
+                    "userid": "",
+                    "roles": ["guest"]
+                })
             }
         }
 
         self.refreshValues = function () {
-            console.log("refreshing values");
+            self.adaptForUser()
         }
 
         self.initSigninV2 = function () {

@@ -6,19 +6,24 @@
 define(['knockout'], function (ko) {
 
     return {
+
         // not really necessery in standard situations
         eventbusUrl: "http://localhost:2015/eventbus",
         // any page you want to be called with a click on the logo
         homepage: "http://github.com/rgwch/webelexis",
         // if false: The login field remains hidden
         showLogin: ko.observable(true),
-        sessionID: ko.observable(null),
+        sessionID: "",
+        user: ko.observable({
+            "loggedIn": false,
+            "roles": ["guest"]
+        }),
         connected: false,
         loc: {
             ip: "0.0.0.0"
         },
         mainMenu: [],
-        roles: [],
+    
         /* Definition of modules to use. Note: The access rights are ultimately defined on the server side.
            So there's no point in activating a module here, if the user doesn't have respective rights on
            the server. Doing so would only result in a "dead" module. */
@@ -31,7 +36,7 @@ define(['knockout'], function (ko) {
                 location: 'components/agenda', // location of the componant
                 active: true, // to deactivate a component temporarily, set to 'false'
                 menuItem: true, // if the component doesn't need a menu item, set to 'false
-                roles: ["guest"] // which user roles are allowed to use this component.
+                role: "guest" // which user role is allowed to use this component.
                     // again: The server side decides ultimately.
             },
             {
@@ -42,7 +47,7 @@ define(['knockout'], function (ko) {
                 component: "ch-webelexis-console",
                 location: "components/console",
                 menuItem: true,
-                roles: ["guest"]
+                role: "user"
             },
             {
                 baseUrl: "#agext",
@@ -52,7 +57,7 @@ define(['knockout'], function (ko) {
                 location: 'components/detailagenda',
                 active: true,
                 menuItem: true,
-                roles: ["guest","user", "admin"]
+                role: "user"
             },
             {
                 baseUrl: "#patlist",
@@ -62,7 +67,7 @@ define(['knockout'], function (ko) {
                 location: 'components/patlist',
                 active: true,
                 menuItem: true,
-                roles: ["user"]
+                role: "user"
         },
             {
                 baseUrl: "#patid",
@@ -72,7 +77,7 @@ define(['knockout'], function (ko) {
                 location: 'components/patdetail',
                 menuItem: true,
                 active: true,
-                roles: ["user"]
+                role: "user"
 
         },
             {
@@ -83,7 +88,7 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-consdetail',
                 menuItem: true,
                 active: false,
-                roles: ["user"]
+                role: "user"
         },
             {
                 baseUrl: "#login",
@@ -92,8 +97,8 @@ define(['knockout'], function (ko) {
                 component: 'ch-webelexis-login',
                 location: 'components/login',
                 active: true,
-                menuItem: true,
-                roles: ["guest"]
+                menuItem: false,
+                role: "guest"
         },
             {
                 title: 'page404',
@@ -101,13 +106,13 @@ define(['knockout'], function (ko) {
                 location: 'components/page404',
                 active: true,
                 menuItem: false,
-                roles: ["guest"]
+                role: "guest"
         },
             {
                 component: 'ch-webelexis-menubar',
                 location: 'components/menubar',
                 active: true,
-                roles: ["guest"]
+                role: "guest"
             }
 
     ]

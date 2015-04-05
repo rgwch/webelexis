@@ -14,8 +14,8 @@ nav.navbar.navbar-default
             a(href="#login" data-bind="visible: showLogin")#login
                 span.navbar-text Login 
                     span.glyphicon.glyphicon-log-in
-            a(href="#" onClick="logout" data-bind="visible: showLogout")#logout
-                span.navbar-text#logout-text Logout
+            a(href="#" data-bind="visible: showLogout, click: doLogout")#logout
+                span.navbar-text#logout-text(data-toggle="tooltip" title="Abmelden") Logout 
                     span.glyphicon.glyphicon-log-out
         
      

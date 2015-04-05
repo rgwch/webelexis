@@ -17,22 +17,15 @@ define(['app/config', 'knockout', 'app/router', 'bootstrap', 'domReady!'], funct
                 require: page.location + '/' + page.component
             })
 
-            if (page.menuItem && page.roles.indexOf("guest") > -1) {
+            if (page.menuItem && page.role === "guest") {
                 config.mainMenu.push(page)
             }
         }
     }
     // This is the KO ViewModel for the whole page, which contains our router, which
     // in turn keeps track of the current page.
-    // if the user is not logged-in, they can only reach the login page.
     var topLevelModel = {
-        router: new Router(config.mainMenu, function () {
-            if (config.sessionID === null) {
-                return new Router.Page('Anmelden', 'ch-webelexis-login')
-            } else {
-                return null
-            }
-        })
+        router: new Router()
     };
     // Make model accessible in global context, purely to aid debugging.
     window.topLevelModel = topLevelModel

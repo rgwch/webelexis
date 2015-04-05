@@ -5,22 +5,7 @@
 define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'domReady!'], function (bus, config, Router, ko, html) {
 
 
-    $("#navbar-button").bind("click", function () {
-        if (config.sessionID !== null) {
-            bus.send('ch.webelexis.session.logout', {
-                "sessionID": config.sessionID
-            }, function (result) {
-                if (result.status === "ok") {
-                    config.sessionID = null
-                    $("#navbar-button").text("Anmelden")
-                    $(window).trigger("hashchange")
-                    window.location.reload(true)
-                } else {
-                    window.alert("Fehler beim Abmelden")
-                }
-            })
-        }
-    })
+   
 
     function adapt(connected) {
         if (connected) {
@@ -53,16 +38,17 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         })
         adapt(bus.connected)
         self.dologin = function ( /*formElement*/ ) {
-            console.log("login " + self.uname() + self.pwd())
+            console.log("login " + self.uname() +","+ self.pwd()+","+config.sessionID)
             bus.send('ch.webelexis.session.login', {
-                sessionID: config.sessionID(),
+                sessionID: config.sessionID,
                 username: self.uname(),
                 password: self.pwd()
             }, function (result) {
                 if (result.status === "ok") {
                     console.log("logged in")
-                    $("#navbar-button").text(self.uname() + " abmelden")
-                    $(window).trigger('hashchange')
+                    config.user({"loggedIn": true, "username": self.uname(), "roles": result.roles})
+                    //console.log(JSON.stringify(config.user))
+                    location.hash = "#agext"
                 } else {
                     console.log("login failed")
                     $("#login-head").removeClass()
@@ -70,6 +56,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
                     $("#login-message").text("Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal").addClass("red")
                 }
             });
+        
         }
         self.googleLogin = function () {
             config.google.signIn()
