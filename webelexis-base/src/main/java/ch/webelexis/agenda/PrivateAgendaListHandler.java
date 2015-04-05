@@ -1,5 +1,9 @@
 package ch.webelexis.agenda;
 
+import static ch.webelexis.agenda.Cleaner.ELEXISDATE;
+import static ch.webelexis.agenda.Cleaner.NAME;
+import static ch.webelexis.agenda.Cleaner.WORD;
+
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
@@ -7,20 +11,19 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
-import static ch.webelexis.agenda.Cleaner.*;
 
 public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
-EventBus eb;
-JsonObject cfg;
-Logger log=Server.log;
+	EventBus eb;
+	JsonObject cfg;
+	Logger log = Server.log;
 
 	public PrivateAgendaListHandler(EventBus eb, JsonObject cfg) {
-			this.eb=eb;
-			this.cfg=cfg;
+		this.eb = eb;
+		this.cfg = cfg;
 	}
-	
+
 	@Override
-	public void handle(Message<JsonObject> request) {
+	public void handle(Message<JsonObject> externalRequest) {
 		/**
 		 * This is, what an authorized user gets. Due to an ill-designed database
 		 * layout, a single join does not return all appointments, since the "PatID"
@@ -39,77 +42,86 @@ Logger log=Server.log;
 		 * @param event
 		 * @param request
 		 */
-			// first call: get all Appointments with valid PatientID
-			log.info("authorized agenda handler");
-			final Cleaner cl = new Cleaner(request);
-			JsonObject bridge = new JsonObject()
+		// first call: get all Appointments with valid PatientID
+		log.info("authorized agenda handler");
+		final Cleaner cl = new Cleaner(externalRequest);
+		JsonObject bridge = new JsonObject()
 					.putString("action", "prepared")
 					.putString(
-							"statement",
-							"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID,A.TerminStatus,A.Grund,K.Bezeichnung1,K.Bezeichnung2, K.geburtsdatum from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
+								"statement",
+								"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID,A.TerminStatus,A.Grund,K.Bezeichnung1,K.Bezeichnung2, K.geburtsdatum from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
 					.putArray(
-							"values",
-							new JsonArray(new String[] {
-									cl.get("begin", ELEXISDATE),
-									cl.get("end", ELEXISDATE), cl.get("resource", NAME) }));
-			System.out.println(bridge.toString());
-			eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
+								"values",
+								new JsonArray(new String[] { cl.get("begin", ELEXISDATE),
+											cl.get("end", ELEXISDATE), cl.get("resource", NAME) }));
+		System.out.println(bridge.toString());
+		eb.send("ch.webelexis.sql", bridge, new firstLevel(externalRequest));
+	}
 
-				@Override
-				public void handle(Message<JsonObject> returnvalue) {
-					JsonObject res = returnvalue.body();
-					if (res.getString("status").equals("ok")) {
+	class firstLevel implements Handler<Message<JsonObject>> {
+		Message<JsonObject> externalRequest;
 
-						final JsonArray appts = res.getArray("results");
-						log.debug("first level okay with " + appts.size()
-								+ " results");
+		firstLevel(Message<JsonObject> externalRequest) {
+			this.externalRequest = externalRequest;
+		}
 
-						JsonObject bridge = new JsonObject()
-								.putString("action", "prepared")
-								.putString(
+		@Override
+		public void handle(Message<JsonObject> sqlResult1) {
+			Cleaner cl = new Cleaner(sqlResult1);
+			if (cl.get("status", WORD).equals("ok")) {
+
+				final JsonArray appts = cl.getArray("results", new JsonArray());
+				log.debug("first level okay with " + appts.size() + " results");
+
+				JsonObject bridge = new JsonObject()
+							.putString("action", "prepared")
+							.putString(
 										"statement",
 										"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID, PatID, TerminStatus, Grund from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
-								.putArray(
+							.putArray(
 										"values",
-										new JsonArray(
-												new String[] {
-														cl.get("begin", ELEXISDATE),
-														cl.get("end", ELEXISDATE),
-														cl.get("resource", NAME) }));
-						eb.send("ch.webelexis.sql", bridge,
-								new Handler<Message<JsonObject>>() {
+										new JsonArray(new String[] { cl.get("begin", ELEXISDATE),
+													cl.get("end", ELEXISDATE), cl.get("resource", NAME) }));
+				eb.send("ch.webelexis.sql", bridge, new secondLevel(externalRequest,appts));
 
-									@Override
-									public void handle(Message<JsonObject> second) {
-										if (second.body().getString("status")
-												.equals("ok")) {
-											log.debug("second level okay");
-											JsonObject ores = fillBlanks(appts
-													.toArray(), second.body()
-													.getArray("results"));
-											ores.putString("type", "full");
-											externalRequest.reply(ores);
-										} else {
-											log.info("second level failed");
-											System.out.println(Json.encodePrettily(second.body()));
-											externalRequest.reply(new JsonObject()
-													.putString("status", "failure")
-													.putString("reason", second.body().getString("status")));
-										}
-									}
-								});
-					} else {
-						log.info("first level failed "
-								+ returnvalue.body().getString("message"));
-						System.out.println(Json.encodePrettily(res));
-						externalRequest.reply(new JsonObject().putString("status",
-								"failure"));
-					}
-				}
-			});
+			} else {
+				log.info("first level failed " + sqlResult1.body().getString("message"));
+				System.out.println(Json.encodePrettily(sqlResult1.body()));
+				externalRequest.reply(new JsonObject().putString("status", "failure"));
+			}
 
 		}
 
 	}
 
+	class secondLevel implements Handler<Message<JsonObject>> {
+		Message<JsonObject> externalRequest;
+		JsonArray appts;
+
+		secondLevel(Message<JsonObject> externalRequest, JsonArray appts) {
+			this.externalRequest = externalRequest;
+			this.appts=appts;
+		}
+
+		@Override
+		public void handle(Message<JsonObject> second) {
+			if (second.body().getString("status").equals("ok")) {
+				Server.log.debug("second level okay");
+				JsonObject ores = fillBlanks(appts.toArray(), second.body().getArray("results"));
+				ores.putString("type", "full");
+				externalRequest.reply(ores);
+			} else {
+				Server.log.info("second level failed");
+				System.out.println(Json.encodePrettily(second.body()));
+				externalRequest.reply(new JsonObject().putString("status", "failure").putString("reason",
+							second.body().getString("status")));
+			}
+		}
+		
+		private JsonObject fillBlanks(Object[] a1, JsonArray a2){
+			return new JsonObject();
+		}
+	}
+
+	
 }

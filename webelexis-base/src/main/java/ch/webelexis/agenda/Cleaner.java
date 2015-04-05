@@ -5,6 +5,7 @@
 package ch.webelexis.agenda;
 
 import org.vertx.java.core.eventbus.Message;
+import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 /**
@@ -17,6 +18,7 @@ import org.vertx.java.core.json.JsonObject;
 public class Cleaner {
 	public static final String ELEXISDATE = "20[0-9]{6,6}";
 	public static final String NAME = "[0-9a-zA-Z \\.]+";
+	public static final String WORD = "[a-zA-Z]+";
 
 	Message<JsonObject> jo;
 
@@ -41,6 +43,10 @@ public class Cleaner {
 		} else {
 			return defaultValue;
 		}
-	}
+}
 
+	public JsonArray getArray(String name, JsonArray defaultValue){
+		JsonArray ret=jo.body().getArray(name);
+		return ret== null ? defaultValue : ret;
+	}
 }
