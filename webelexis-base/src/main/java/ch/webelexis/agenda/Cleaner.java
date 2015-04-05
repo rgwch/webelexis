@@ -4,6 +4,7 @@
  */
 package ch.webelexis.agenda;
 
+import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 
 /**
@@ -14,18 +15,31 @@ import org.vertx.java.core.json.JsonObject;
  * 
  */
 public class Cleaner {
-	JsonObject jo;
+	public static final String ELEXISDATE = "20[0-9]{6,6}";
+	public static final String NAME = "[0-9a-zA-Z \\.]+";
 
-	public Cleaner(JsonObject raw) {
+	Message<JsonObject> jo;
+
+	public Cleaner(Message<JsonObject> raw) {
 		jo = raw;
 	}
 
 	public String get(String field, String pattern) {
-		String raw = jo.getString(field);
+		String raw = jo.body().getString(field);
 		if ((raw != null) && raw.matches(pattern)) {
 			return raw;
 		} else {
+			jo.reply(new JsonObject().putString("status", "bad field value for " + field));
 			return "";
+		}
+	}
+
+	public String getOptional(String field, String pattern, String defaultValue) {
+		String raw = jo.body().getString(field);
+		if ((raw != null) && raw.matches(pattern)) {
+			return raw;
+		} else {
+			return defaultValue;
 		}
 	}
 

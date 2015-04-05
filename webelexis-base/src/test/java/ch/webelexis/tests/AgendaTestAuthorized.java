@@ -37,7 +37,7 @@ public class AgendaTestAuthorized extends TestVerticle {
 						JsonObject jo = new JsonObject().putString("username",
 								"user").putString("password", "pwd");
 						EventBus eb = vertx.eventBus();
-						eb.send("ch.webelexis.auth.login", jo, new IsLoggedIn());
+						eb.send("ch.webelexis.session.login", jo, new IsLoggedIn());
 
 					}
 				});

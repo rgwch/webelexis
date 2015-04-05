@@ -30,7 +30,6 @@ import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.HttpClientResponse;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
 
 public class SessionManager extends BusModBase {
@@ -45,14 +44,13 @@ public class SessionManager extends BusModBase {
 
 	public void start() {
 		super.start();
-		log=container.logger();
+		log = container.logger();
 		basicAddress = getOptionalStringConfig("address", "ch.rgw.sessions");
 		persistorAddress = getOptionalStringConfig("persistor_address", "ch.rgw.nosql");
 		usersCollection = getOptionalStringConfig("users_collection", "users");
 		TIMEOUT = getOptionalLongConfig("session_timeout", DEFAULT_TIMEOUT);
 
 		eb.registerHandler(basicAddress + ".create", createHandler);
-		eb.registerHandler(basicAddress + ".destroy", destroyHandler);
 		eb.registerHandler(basicAddress + ".login", loginHandler);
 		eb.registerHandler(basicAddress + ".logout", logoutHandler);
 		eb.registerHandler(basicAddress + ".authorize", authorizeHandler);
@@ -71,26 +69,7 @@ public class SessionManager extends BusModBase {
 			Session session = new Session();
 			sessions.put(session.id, session);
 			msg.reply(new JsonObject().putString("sessionID", session.id).putString("status", "ok"));
-			log.info("created session: "+session.id);
-		}
-	};
-
-	/*
-	 * remove a session
-	 */
-	private Handler<Message<JsonObject>> destroyHandler = new Handler<Message<JsonObject>>() {
-
-		@Override
-		public void handle(Message<JsonObject> msg) {
-			Session session = checkSession(msg);
-			if (session != null) {
-				sessions.remove(session.id);
-				sendOK(msg);
-				log.info("destroyed session: "+session.id);
-			} else {
-				sendStatus("invalid session", msg);
-			}
-			
+			log.info("created session: " + session.id);
 		}
 	};
 
@@ -103,8 +82,8 @@ public class SessionManager extends BusModBase {
 			if (session != null) {
 				if (session.failTime != 0) {
 					long timeSinceLastAttempt = System.currentTimeMillis() - session.failTime;
-					if (timeSinceLastAttempt < (session.loginFailures * 30000)) {
-						Number sec = ((session.loginFailures * 30000) - timeSinceLastAttempt) / 1000;
+					if (timeSinceLastAttempt < (session.loginFailures * 5000)) {
+						Number sec = ((session.loginFailures * 5000) - timeSinceLastAttempt) / 1000;
 						msg.reply(new JsonObject().putString("status", "wait").putNumber("seconds", sec));
 						return;
 					}
@@ -115,17 +94,14 @@ public class SessionManager extends BusModBase {
 
 					@Override
 					public void handle(Message<JsonObject> findResult) {
-						log.info("loggin in user "+username);
+						log.info("loggin in user " + username);
 						if (getMandatoryString("status", findResult).equals("ok")) {
 							JsonObject user = findResult.body().getObject("result");
 							if (user != null) {
 								if (checkPwd(user, pwd)) {
-									session.user = user;
-									session.loggedIn = true;
-									session.roles = user.getArray("roles");
-									session.loginFailures = 0;
-									session.failTime = 0;
-									msg.reply(new JsonObject().putString("status", "ok").putArray("roles", session.roles));
+									session.login(user);
+									msg.reply(new JsonObject().putString("status", "ok").putArray("roles",
+												session.getRoles()));
 								} else {
 									sendStatus("denied", msg);
 									session.loginFailures++;
@@ -137,7 +113,7 @@ public class SessionManager extends BusModBase {
 								session.failTime = System.currentTimeMillis();
 							}
 						} else {
-							sendStatus("db error", msg);
+							sendError(msg, "db error");
 						}
 
 					}
@@ -151,10 +127,7 @@ public class SessionManager extends BusModBase {
 		public void handle(Message<JsonObject> msg) {
 			Session session = checkSession(msg);
 			if (session != null) {
-				session.roles = new JsonArray();
-				session.user = null;
-				session.loggedIn = false;
-				session.refresh();
+				session.logout();
 				sendOK(msg);
 			}
 		}
@@ -181,7 +154,7 @@ public class SessionManager extends BusModBase {
 		public void handle(Message<JsonObject> msg) {
 			Session session = checkSession(msg);
 			if (session != null) {
-				if (!session.roles.contains("admin")) {
+				if (!session.getRoles().contains("admin")) {
 					sendStatus("denied", msg);
 				} else {
 					String cmd = getMandatoryString("command", msg);
@@ -234,7 +207,7 @@ public class SessionManager extends BusModBase {
 	 */
 	private void verifyGoogleId(String id, Handler<Message<JsonObject>> handler) {
 		HttpClient htc = vertx.createHttpClient().setSSL(true).setHost("www.googleapis.com") // ?id_token=XYZ123.)
-				.setPort(443).setTrustAll(true);
+					.setPort(443).setTrustAll(true);
 		htc.getNow("/oauth2/v1/tokeninfo?id_token=" + id, new Handler<HttpClientResponse>() {
 
 			@Override
@@ -274,7 +247,7 @@ public class SessionManager extends BusModBase {
 		if ((role == null) || role.equalsIgnoreCase("guest")) {
 			return true;
 		}
-		JsonArray givenRoles = session.roles;
+		JsonArray givenRoles = session.getRoles();
 		if (givenRoles != null && givenRoles.contains(role)) {
 			return true;
 		}
@@ -285,8 +258,8 @@ public class SessionManager extends BusModBase {
 	 * find an entry for a username in the database
 	 */
 	private void findUser(String username, Handler<Message<JsonObject>> callback) {
-		JsonObject op = new JsonObject().putString("action", "findone").putString("collection", usersCollection)
-				.putObject("matcher", new JsonObject().putString("username", username));
+		JsonObject op = new JsonObject().putString("action", "findone").putString("collection",
+					usersCollection).putObject("matcher", new JsonObject().putString("username", username));
 		eb.send(persistorAddress, op, callback);
 	}
 
@@ -316,8 +289,8 @@ public class SessionManager extends BusModBase {
 								roles = new JsonArray(new String[] { "user" });
 							}
 							dbUser.putArray("roles", roles);
-							JsonObject op = new JsonObject().putString("action", "save").putString("collection", usersCollection)
-									.putObject("document", dbUser);
+							JsonObject op = new JsonObject().putString("action", "save").putString("collection",
+										usersCollection).putObject("document", dbUser);
 							eb.send(persistorAddress, op, new Handler<Message<JsonObject>>() {
 
 								@Override
@@ -341,8 +314,9 @@ public class SessionManager extends BusModBase {
 	}
 
 	private void removeUser(final Message<JsonObject> msg) {
-		JsonObject op = new JsonObject().putString("action", "delete").putString("collection", usersCollection)
-				.putObject("matcher", new JsonObject().putString("username", getMandatoryString("username", msg)));
+		JsonObject op = new JsonObject().putString("action", "delete").putString("collection",
+					usersCollection).putObject("matcher",
+					new JsonObject().putString("username", getMandatoryString("username", msg)));
 		eb.send(persistorAddress, op);
 	}
 
@@ -366,13 +340,14 @@ public class SessionManager extends BusModBase {
 	private boolean checkPwd(JsonObject user, String pwdToCheck) {
 		if (user.getBinary("pwhash") == null) {
 			makePwd(user);
-			JsonObject criteria=new JsonObject().putObject("_id", user.getObject("_id"));
-			eb.send(persistorAddress, new JsonObject().putString("action", "update").putString("collection", usersCollection)
-					.putObject("criteria", criteria).putObject("objNew", user)
-					.putBoolean("upsert", false).putBoolean("multi", false));
+			JsonObject criteria = new JsonObject().putObject("_id", user.getObject("_id"));
+			eb.send(persistorAddress, new JsonObject().putString("action", "update").putString(
+						"collection", usersCollection).putObject("criteria", criteria)
+						.putObject("objNew", user).putBoolean("upsert", false).putBoolean("multi", false));
 		}
 		byte[] checkBytes = makeHash(user.getString("username"), pwdToCheck);
-		log.debug("comparing given "+new String(checkBytes) +" with users "+ new String(user.getBinary("pwhash")));
+		log.debug("comparing given " + new String(checkBytes) + " with users "
+					+ new String(user.getBinary("pwhash")));
 		if (Arrays.equals(user.getBinary("pwhash"), checkBytes)) {
 			log.debug("login successful.");
 			return true;
@@ -400,31 +375,54 @@ public class SessionManager extends BusModBase {
 	private class Session {
 		Session() {
 			id = UUID.randomUUID().toString();
+		}
+
+		void login(JsonObject user) {
+			this.user = user;
+			loggedIn = true;
+			loginFailures = 0;
+			failTime = 0;
 			refresh();
 		}
 
-		void refresh() {
+		void logout() {
+			this.user = new JsonObject();
 			if (timerID != 0L) {
 				vertx.cancelTimer(timerID);
 			}
-			timerID = vertx.setTimer(TIMEOUT, new Handler<Long>() {
+		}
 
-				@Override
-				public void handle(Long arg0) {
-					log.info("timout session "+id);
-					sessions.remove(id);
+		JsonArray getRoles() {
+			if (!loggedIn || user == null) {
+				return new JsonArray(new String[] { "guest" });
+			} else {
+				return user.getArray("roles");
+			}
+		}
 
+		void refresh() {
+			if (loggedIn) {
+				if (timerID != 0L) {
+					vertx.cancelTimer(timerID);
 				}
-			});
+				timerID = vertx.setTimer(TIMEOUT, new Handler<Long>() {
+
+					@Override
+					public void handle(Long arg0) {
+						log.info("timout session " + id);
+						sessions.remove(id);
+
+					}
+				});
+			}
 		}
 
 		String id;
 		int loginFailures = 0;
-		JsonObject user = null;
+		JsonObject user = new JsonObject();
 		boolean loggedIn;
 		long timerID;
 		long failTime = 0;
-		JsonArray roles = new JsonArray();
 		Map<String, JsonObject> store = new HashMap<String, JsonObject>();
 	}
 }

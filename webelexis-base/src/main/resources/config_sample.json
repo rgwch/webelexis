@@ -77,7 +77,11 @@
         },
         {
             "address": "ch.webelexis.publicagenda"
+        },
+         {
+           	"address": "ch.webelexis.privateagenda"
         }
+        
   ], // allowed outbound messages
     "outOK": [
   ],

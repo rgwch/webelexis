@@ -17,7 +17,7 @@ import org.vertx.java.core.json.JsonObject;
  * Handler for insert operations in the agenda. Listens to messages to "ch.webelexis.agenda.insert"
  * @author gerry
  */
-public class AgendaInsertHandler implements Handler<Message<JsonObject>> {
+public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 	static final String DATE = "20[0-9]{6,6}";
 	static final String TIME = "[0-2][0-9]:[0-5][0-9]";
 	static final String TEXT = "[A_Za-z \\.,-]";
@@ -25,7 +25,7 @@ public class AgendaInsertHandler implements Handler<Message<JsonObject>> {
 	EventBus eb;
 	JsonObject cfg;
 
-	AgendaInsertHandler(EventBus eb, JsonObject cfg) {
+	PublicAgendaInsertHandler(EventBus eb, JsonObject cfg) {
 		this.eb = eb;
 		this.cfg = cfg;
 	}

@@ -23,29 +23,7 @@ public class EventBusHook implements EventBusBridgeHook {
 	@Override
 	public boolean handleAuthorise(JsonObject message, String sessionID,
 			Handler<AsyncResult<Boolean>> handler) {
-		handler.handle(new AsyncResult<Boolean>() {
-
-			@Override
-			public Throwable cause() {
-				return null;
-			}
-
-			@Override
-			public boolean failed() {
-				return false;
-			}
-
-			@Override
-			public Boolean result() {
-				return Boolean.TRUE;
-			}
-
-			@Override
-			public boolean succeeded() {
-				return true;
-			}
-		});
-		return true;
+			return true;
 	}
 
 	@Override

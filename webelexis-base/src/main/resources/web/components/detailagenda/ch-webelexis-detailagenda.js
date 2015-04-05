@@ -107,7 +107,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 end: dt.makeCompactString(act),
                 sessionID: cfg.sessionID
             }, function (result) {
-                //console.log("result: " + JSON.stringify(result));
+                console.log("result: " + JSON.stringify(result));
                 if ((result.status === undefined) || result.status !== "ok") {
                     window.alert("Verbindungsfehler: " + result.status === undefined ? "keine Verbindung" : result.status);
                 } else {

@@ -25,35 +25,48 @@ public class Server extends Verticle {
 		// load the configuration as given to 'vertx -conf <config-file>'
 		final JsonObject cfg = container.config();
 		log = container.logger();
-		log.debug("Agenda Server - got config: "+cfg.encodePrettily());
+		log.debug("Agenda Server - got config: " + cfg.encodePrettily());
 		EventBus eb = vertx.eventBus();
 		// final JsonObject aCfg=cfg.getObject("agenda");
-		final AgendaListHandler listHandler = new AgendaListHandler(eb, cfg);
-		final AgendaInsertHandler insertHandler = new AgendaInsertHandler(eb,
-				cfg);
+		final PublicAgendaListHandler publiclistHandler = new PublicAgendaListHandler(eb, cfg);
+		final PublicAgendaInsertHandler publicinsertHandler = new PublicAgendaInsertHandler(eb, cfg);
+		final PrivateAgendaListHandler privateListHandler = new PrivateAgendaListHandler(eb, cfg);
+		final PrivateAgendaInsertHandler privateInsertHandler = new PrivateAgendaInsertHandler(eb, cfg);
 
 		// Register handlers with the eventBus
-		eb.registerHandler("ch.webelexis.publicagenda",
-				new Handler<Message<JsonObject>>() {
+		eb.registerHandler("ch.webelexis.publicagenda", new Handler<Message<JsonObject>>() {
 
-					@Override
-					public void handle(Message<JsonObject> msg) {
-						String req = msg.body().getString("request");
-						log.info("Agenda Server: received : "+req);
-						if (req.equals("list")) {
-							listHandler.handle(msg);
-						} else if (req.equals("insert")) {
-							insertHandler.handle(msg);
-						} else if (req.equals("resources")) {
-							JsonObject result = new JsonObject().putString(
-									"status", "ok").putArray("data",
-									cfg.getArray("resources"));
-                            log.debug("answering: "+result.encodePrettily());
-							msg.reply(result);
-						}
+			@Override
+			public void handle(Message<JsonObject> msg) {
+				String req = msg.body().getString("request");
+				log.info("Agenda public Server: received : " + req);
+				if (req.equals("list")) {
+					publiclistHandler.handle(msg);
+				} else if (req.equals("insert")) {
+					publicinsertHandler.handle(msg);
+				}
+			}
+		});
+		eb.registerHandler("ch.webelexis.privateagenda", new Handler<Message<JsonObject>>() {
 
-					}
-				});
+			@Override
+			public void handle(Message<JsonObject> msg) {
+				String req = msg.body().getString("request");
+				log.info("Agenda private Server: received : " + req);
+				if (req.equals("list")) {
+					privateListHandler.handle(msg);
+				} else if (req.equals("insert")) {
+					privateInsertHandler.handle(msg);
+				} else if (req.equals("resources")) {
+					JsonObject result = new JsonObject().putString("status", "ok").putArray("data",
+								cfg.getArray("resources"));
+					log.debug("answering: " + result.encodePrettily());
+					msg.reply(result);
+				}
+
+			}
+
+		});
 
 	}
 }
