@@ -36,7 +36,7 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 	 */
 	@Override
 	public void handle(final Message<JsonObject> externalEvent) {
-		Cleaner cl = new Cleaner(externalEvent.body());
+		Cleaner cl = new Cleaner(externalEvent);
 		String apptType = cfg.getString("apptType");
 		if (apptType == null) {
 			apptType = "Normal";

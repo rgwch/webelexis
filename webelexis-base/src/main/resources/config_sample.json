@@ -76,10 +76,12 @@
             "address": "ch.webelexis.session.logout"
         },
         {
-            "address": "ch.webelexis.publicagenda"
+            "address": "ch.webelexis.publicagenda",
+            "role":"guest"
         },
          {
-           	"address": "ch.webelexis.privateagenda"
+           	"address": "ch.webelexis.privateagenda",
+           	"role": "user"
         }
         
   ], // allowed outbound messages

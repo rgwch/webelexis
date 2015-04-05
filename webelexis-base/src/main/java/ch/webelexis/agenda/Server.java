@@ -11,6 +11,8 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
+import ch.webelexis.AuthorizingHandler;
+
 /**
  * The main Verticle of Webelexis-Agenda.
  * 
@@ -34,7 +36,7 @@ public class Server extends Verticle {
 		final PrivateAgendaInsertHandler privateInsertHandler = new PrivateAgendaInsertHandler(eb, cfg);
 
 		// Register handlers with the eventBus
-		eb.registerHandler("ch.webelexis.publicagenda", new Handler<Message<JsonObject>>() {
+		eb.registerHandler("ch.webelexis.publicagenda", new AuthorizingHandler(new Handler<Message<JsonObject>>() {
 
 			@Override
 			public void handle(Message<JsonObject> msg) {
@@ -46,8 +48,8 @@ public class Server extends Verticle {
 					publicinsertHandler.handle(msg);
 				}
 			}
-		});
-		eb.registerHandler("ch.webelexis.privateagenda", new Handler<Message<JsonObject>>() {
+		}));
+		eb.registerHandler("ch.webelexis.privateagenda", new AuthorizingHandler(new Handler<Message<JsonObject>>() {
 
 			@Override
 			public void handle(Message<JsonObject> msg) {
@@ -58,15 +60,14 @@ public class Server extends Verticle {
 				} else if (req.equals("insert")) {
 					privateInsertHandler.handle(msg);
 				} else if (req.equals("resources")) {
-					JsonObject result = new JsonObject().putString("status", "ok").putArray("data",
-								cfg.getArray("resources"));
+					JsonObject result = new JsonObject().putString("status", "ok").putArray("data", cfg.getArray("resources"));
 					log.debug("answering: " + result.encodePrettily());
 					msg.reply(result);
 				}
 
 			}
 
-		});
+		}));
 
 	}
 }
