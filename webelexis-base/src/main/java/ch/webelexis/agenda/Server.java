@@ -62,7 +62,7 @@ public class Server extends Verticle {
 				} else if (req.equals("insert")) {
 					privateInsertHandler.handle(msg);
 				} else if (req.equals("resources")) {
-					JsonObject result = new JsonObject().putString("status", "ok").putArray("data", cfg.getArray("resources"));
+					JsonObject result = new JsonObject().putString("status", "ok").putArray("data", priCfg.getArray("resources"));
 					log.debug("answering: " + result.encodePrettily());
 					msg.reply(result);
 				}

@@ -14,7 +14,15 @@
 	}
 
     "agenda": {
-        "resource": "gerry",
+    	"public": {
+        	"resource": "gerry",
+        	"timeSlot": 30,
+        "maxPerDay": 4,
+        "apptType": "Normal",
+        "apptState": "Via Internet",
+        "role": "guest"
+        },
+        "private":{
         "resources": [{
             "resource": "gerry",
             "title": "G. Weirich"
@@ -22,11 +30,7 @@
             "resource": "labor",
             "title": "Labor"
         }],
-        "timeSlot": 30,
-        "maxPerDay": 4,
-        "apptType": "Normal",
-        "apptState": "Via Internet",
-        "roles": ["guest"]
+        "role": "user"
     },
 
     "id": "this is an identification for this config"

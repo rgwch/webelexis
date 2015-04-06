@@ -31,14 +31,31 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
             app.reason = row[8]
             app.firstName = row[10]
             app.lastName = row[9]
-            app.birthdate= row[11] ? dt.makeDateString(dt.makeDate(row[11])) : ""
+            app.birthdate = row[11] ? dt.makeDateString(dt.makeDate(row[11])) : ""
 
-            app.displayName = app.lastName ? (app.lastName + " " + app.firstName+", "+app.birthdate) : app.PatientID
+            app.displayName = app.lastName ? (app.lastName + " " + app.firstName + ", " + app.birthdate) : app.PatientID
             app.displayClass = ko.pureComputed(function () {
-                return app.type === 'available' ? "available" : "occupied"
+                if (app.type === 'available') {
+                    return "available"
+                } else if (app.type === "Reserviert") {
+                    return "locked"
+                } else {
+                    return "occupied"
+                }
+
             })
             app.displayText = ko.pureComputed(function () {
-                return app.begin + "-" + app.end + " " + app.displayName
+                var ret = app.begin + "-" + app.end + " "
+                if (app.type === "Reserviert") {
+                    ret += "reserviert"
+                } else if (app.type === "available") {
+                    ret += "(frei)"
+                } else if (app.lastName === undefined) {
+                    ret += app.patientID
+                } else {
+                    ret += app.displayName
+                }
+                return ret
             })
 
 
@@ -51,7 +68,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         self.resource = ko.observable()
         self.loadResources = function () {
             self.resources.removeAll()
-            bus.send("ch.webelexis.publicagenda", {
+            bus.send("ch.webelexis.privateagenda", {
                 sessionID: cfg.sessionID,
                 request: 'resources'
             }, function (result) {
@@ -100,7 +117,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 self.lastExpanded.expanded(false);
                 self.lastExpanded = null;
             }
-            bus.send('ch.webelexis.publicagenda', {
+            bus.send('ch.webelexis.privateagenda', {
                 request: 'list',
                 resource: self.resource().resource,
                 begin: dt.makeCompactString(act),

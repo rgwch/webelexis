@@ -17,8 +17,8 @@ public class AuthorizingHandler implements Handler<Message<JsonObject>> {
 	}
 
 	@Override
-	public void handle(Message<JsonObject> originalMsg) {
-		Cleaner cl = new Cleaner(originalMsg);
+	public void handle(final Message<JsonObject> originalMsg) {
+		final Cleaner cl = new Cleaner(originalMsg);
 		if (roleToCheck == null || roleToCheck.length() == 0) {
 			originalMsg.reply(new JsonObject().putString("status", "denied").putString("message",
 					"insufficient rights for resource " + cl.get("address", Cleaner.NAME)));

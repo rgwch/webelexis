@@ -1,21 +1,27 @@
 .red {
-    color:red;
+    color: red;
 }
-.greyed{
+
+.greyed {
     background-color: #eee;
     border-bottom: 1px solid blue;
     border-top: 1px solid blue;
 }
 
-.available{
+.available {
     background-color: #A7D2A7;
 }
 
-.occupied{
+.occupied {
     background-color: #FF9494;
 }
 
-.abstand{
+.locked {
+    background-color: black;
+    color: white;
+}
+
+.abstand {
     margin-left: 10px;
     margin-right: 10px;
 }

@@ -23,7 +23,7 @@ define(['knockout'], function (ko) {
             ip: "0.0.0.0"
         },
         mainMenu: [],
-    
+
         /* Definition of modules to use. Note: The access rights are ultimately defined on the server side.
            So there's no point in activating a module here, if the user doesn't have respective rights on
            the server. Doing so would only result in a "dead" module. */
@@ -31,7 +31,7 @@ define(['knockout'], function (ko) {
             {
                 baseUrl: "#",
                 match: /^$/, // regexp to match for this page
-                title: 'Agenda', // title to display on this page's tab
+                title: 'Terminsuche', // title to display on this page's tab
                 component: 'ch-webelexis-agenda', // name pof the component that creates this pages
                 location: 'components/agenda', // location of the componant
                 active: true, // to deactivate a component temporarily, set to 'false'
