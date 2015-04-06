@@ -1,8 +1,8 @@
 package ch.webelexis.agenda;
 
-import static ch.webelexis.agenda.Cleaner.ELEXISDATE;
-import static ch.webelexis.agenda.Cleaner.NAME;
-import static ch.webelexis.agenda.Cleaner.WORD;
+import static ch.webelexis.Cleaner.ELEXISDATE;
+import static ch.webelexis.Cleaner.NAME;
+import static ch.webelexis.Cleaner.WORD;
 
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
@@ -11,6 +11,8 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
+
+import ch.webelexis.Cleaner;
 
 public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 	EventBus eb;

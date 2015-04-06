@@ -30,13 +30,15 @@ public class Server extends Verticle {
 		log.debug("Agenda Server - got config: " + cfg.encodePrettily());
 		EventBus eb = vertx.eventBus();
 		// final JsonObject aCfg=cfg.getObject("agenda");
-		final PublicAgendaListHandler publiclistHandler = new PublicAgendaListHandler(eb, cfg);
-		final PublicAgendaInsertHandler publicinsertHandler = new PublicAgendaInsertHandler(eb, cfg);
-		final PrivateAgendaListHandler privateListHandler = new PrivateAgendaListHandler(eb, cfg);
-		final PrivateAgendaInsertHandler privateInsertHandler = new PrivateAgendaInsertHandler(eb, cfg);
+		final JsonObject pubCfg=cfg.getObject("public");
+		final JsonObject priCfg=cfg.getObject("private");
+		final PublicAgendaListHandler publiclistHandler = new PublicAgendaListHandler(eb, pubCfg);
+		final PublicAgendaInsertHandler publicinsertHandler = new PublicAgendaInsertHandler(eb, pubCfg);
+		final PrivateAgendaListHandler privateListHandler = new PrivateAgendaListHandler(eb, priCfg);
+		final PrivateAgendaInsertHandler privateInsertHandler = new PrivateAgendaInsertHandler(eb, priCfg);
 
 		// Register handlers with the eventBus
-		eb.registerHandler("ch.webelexis.publicagenda", new AuthorizingHandler(new Handler<Message<JsonObject>>() {
+		eb.registerHandler("ch.webelexis.publicagenda", new AuthorizingHandler(eb,pubCfg.getString("role"),new Handler<Message<JsonObject>>() {
 
 			@Override
 			public void handle(Message<JsonObject> msg) {
@@ -49,7 +51,7 @@ public class Server extends Verticle {
 				}
 			}
 		}));
-		eb.registerHandler("ch.webelexis.privateagenda", new AuthorizingHandler(new Handler<Message<JsonObject>>() {
+		eb.registerHandler("ch.webelexis.privateagenda", new AuthorizingHandler(eb,priCfg.getString("role"),new Handler<Message<JsonObject>>() {
 
 			@Override
 			public void handle(Message<JsonObject> msg) {

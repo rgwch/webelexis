@@ -5,7 +5,7 @@
 
 package ch.webelexis.agenda;
 
-import static ch.webelexis.agenda.Cleaner.ELEXISDATE;
+import static ch.webelexis.Cleaner.ELEXISDATE;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,6 +20,8 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
+
+import ch.webelexis.Cleaner;
 
 /**
  * A handler for list requests to the agenda. Since we won't allow random access

@@ -49,21 +49,26 @@
 
 // config for webelexis-Agenda
 "agenda": {
-    "resource": "gerry", // which calendar resource should be used 
-    "resources": [{ // which calendar resources should be offered to chose
-        "resource": "gerry", // internal name of the resource
-        "title": "G. Weirich" // Name of the resource as to display in the frontemd
-        }, {
-        "resource": "labor",
-        "title": "Labor"
-        }],
-    "timeSlot": 30, // how long should an appointment be
-    "maxPerDay": 4, // maximum Number of appnts. per day via this app
-    "apptType": "Normal", // "TerminTyp" for our appointments
-    "apptState": "Via Internet", // "TerminStatus" for our appointments
-    "roles": ["guest"] // roles allowed to use the module
-},
+    "public": {
+        "resource": "gerry", // which calendar resource should be used 
+        "timeSlot": 30, // how long should an appointment be
+        "maxPerDay": 4, // maximum Number of appnts. per day via this app
+        "apptType": "Normal", // "TerminTyp" for our appointments
+        "apptState": "Via Internet", // "TerminStatus" for our appointments
+        "role": "guest"
+    },
+    "private": {
+        "resources": [{ // which calendar resources should be offered to chose
+            "resource": "gerry", // internal name of the resource
+            "title": "G. Weirich" // Name of the resource as to display in the frontemd
+         }, {
+            "resource": "labor",
+            "title": "Labor"
+         }],
+        "role": "user"
+    }
 
+},
 // config for the EventBus-Websocket bridge and the html server
 "bridge": {
     "webroot": "web", // Base path. Optional, this is the default

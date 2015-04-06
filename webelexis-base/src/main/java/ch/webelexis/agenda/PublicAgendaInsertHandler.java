@@ -13,6 +13,8 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
+import ch.webelexis.Cleaner;
+
 /**
  * Handler for insert operations in the agenda. Listens to messages to "ch.webelexis.agenda.insert"
  * @author gerry

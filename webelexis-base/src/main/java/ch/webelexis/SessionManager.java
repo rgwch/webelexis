@@ -132,6 +132,7 @@ public class SessionManager extends BusModBase {
 			}
 		}
 	};
+	
 	private Handler<Message<JsonObject>> authorizeHandler = new Handler<Message<JsonObject>>() {
 
 		@Override
@@ -147,7 +148,7 @@ public class SessionManager extends BusModBase {
 
 		}
 	};
-
+	
 	private Handler<Message<JsonObject>> adminHandler = new Handler<Message<JsonObject>>() {
 
 		@Override

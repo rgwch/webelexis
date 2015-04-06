@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * (c) 2015 by G. Weirich
  */
-package ch.webelexis.agenda;
+package ch.webelexis;
 
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
@@ -17,7 +17,7 @@ import org.vertx.java.core.json.JsonObject;
  */
 public class Cleaner {
 	public static final String ELEXISDATE = "20[0-9]{6,6}";
-	public static final String NAME = "[0-9a-zA-Z \\.]+";
+	public static final String NAME = "[0-9a-zA-Z \\.-]+";
 	public static final String WORD = "[a-zA-Z]+";
 
 	Message<JsonObject> jo;
@@ -31,11 +31,12 @@ public class Cleaner {
 		if ((raw != null) && raw.matches(pattern)) {
 			return raw;
 		} else {
-			jo.reply(new JsonObject().putString("status", "bad field value for " + field));
+			jo.reply(new JsonObject().putString("status", "bad or missing field value for " + field));
 			return "";
 		}
 	}
 
+	
 	public String getOptional(String field, String pattern, String defaultValue) {
 		String raw = jo.body().getString(field);
 		if ((raw != null) && raw.matches(pattern)) {

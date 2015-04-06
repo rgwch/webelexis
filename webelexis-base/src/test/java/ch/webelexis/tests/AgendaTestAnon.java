@@ -25,7 +25,12 @@ public class AgendaTestAnon extends TestVerticle {
 		fr.close();
 		String conf = new String(buffer);
 		VertxAssert.assertTrue(conf.length() > 0);
-		JsonObject cfg = new JsonObject(conf);
+		JsonObject cfg=new JsonObject();
+		try{
+			cfg = new JsonObject(conf);
+		}catch(Throwable t){
+			t.printStackTrace();
+		}
 		container.deployVerticle("ch.webelexis.CoreVerticle", cfg,
 				new AsyncResultHandler<String>() {
 
@@ -34,14 +39,23 @@ public class AgendaTestAnon extends TestVerticle {
 						org.vertx.testtools.VertxAssert.assertTrue(event
 								.succeeded());
 						deploymentID = event.result();
-						JsonObject jo = new JsonObject()
+						vertx.eventBus().send("ch.webelexis.session.create", new JsonObject(), new Handler<Message<JsonObject>>(){
+
+							@Override
+							public void handle(Message<JsonObject> auth) {
+								JsonObject jo = new JsonObject()
 								.putString("address", "ch.webelexis.publicagenda")
 								.putString("request", "list")
 								.putString("resource", "gerry")
 								.putString("begin", "20150324")
-								.putString("end", "20150324");
+								.putString("end", "20150324")
+								.putString("sessionID",auth.body().getString("sessionID"));
 						EventBus eb = vertx.eventBus();
 						eb.send("ch.webelexis.publicagenda", jo, new SqlAnswer());
+								
+							}
+							
+						});
 
 					}
 				});

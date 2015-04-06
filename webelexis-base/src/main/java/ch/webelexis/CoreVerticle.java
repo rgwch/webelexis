@@ -15,6 +15,7 @@ import org.vertx.java.core.AsyncResultHandler;
 import org.vertx.java.core.Future;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.http.HttpServer;
+import org.vertx.java.core.json.DecodeException;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.core.sockjs.SockJSServer;
@@ -63,7 +64,11 @@ public class CoreVerticle extends BusModBase {
 		/* int num= */fr.read(buffer);
 		fr.close();
 		String conf = new String(buffer).replaceAll("//.+\\n", "");
-		cfg_default = new JsonObject(conf);
+		try{
+			cfg_default = new JsonObject(conf);
+		}catch(DecodeException ex){
+			log.fatal("Invalid config json");
+		}
 	}
 
 	@Override
