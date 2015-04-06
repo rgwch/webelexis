@@ -35,7 +35,7 @@ public class AgendaTestAuthorized extends TestVerticle {
 			@Override
 			public void handle(AsyncResult<String> event) {
 				org.vertx.testtools.VertxAssert.assertTrue(event.succeeded());
-				EventBus eb = vertx.eventBus();
+				final EventBus eb = vertx.eventBus();
 				eb.send("ch.webelexis.session.create", new JsonObject(), new Handler<Message<JsonObject>>() {
 
 					@Override

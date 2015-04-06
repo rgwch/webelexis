@@ -1,6 +1,6 @@
 {
     "name": "base-module",
-    "version": "0.1.8",
+    "version": "0.2.0",
     "description": "base module for webelexis",
     "author": "weirich@elexis.ch",
     "private": true,
@@ -25,9 +25,9 @@
         "watch": "npm run test && parallelshell 'npm run watch:jade' 'npm run watch:js'",
         "start": "npm run build:client && npm run verticle",
         "env": "env",
-        "test": "npm run clean && npm run build:client && karma start karma_cfg.js &",
+        "test:karma": "npm run clean && npm run build:client && karma start karma_cfg.js &",
         "test:client": "npm run clean && npm run build:client && karma start karma_cfg.js --single-run",
-        "test:server": "npm run test:client && npm run preverticle && npm run compile:javatests && java -cp ${VERTX_HOME}/lib/*:${JUNIT_HOME}/*:dist org.junit.runner.JUnitCore ch.webelexis.tests.WebelexisTestSuite"
+        "test:all": "npm run test:client && npm run preverticle && npm run compile:javatests && java -cp ${VERTX_HOME}/lib/*:${JUNIT_HOME}/*:dist org.junit.runner.JUnitCore ch.webelexis.tests.WebelexisTestSuite"
     },
     "devDependencies": {
         "async": "^0.9.0",
