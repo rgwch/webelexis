@@ -57,8 +57,13 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 }
                 return ret
             })
-
-
+            app.isPatientEntry = ko.pureComputed(function () {
+                if (type === "Reserviert" || type === "available") {
+                    return false
+                } else {
+                    return true
+                }
+            })
         }
         self.now = ko.observable(dt.makeDateString(new Date()))
 
@@ -141,12 +146,14 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
             })
         }
         self.expand = function (idx) {
-            if (self.lastExpanded !== null) {
-                self.lastExpanded.expanded(false)
+            if (idx.isPatientEntry) {
+                if (self.lastExpanded !== null) {
+                    self.lastExpanded.expanded(false)
+                }
+                idx.expanded(true);
+                self.lastExpanded = idx;
+                // console.log("opened: " + idx.begin)
             }
-            idx.expanded(true);
-            self.lastExpanded = idx;
-            console.log("opened: " + idx.begin)
         }
 
         self.collapse = function (idx) {

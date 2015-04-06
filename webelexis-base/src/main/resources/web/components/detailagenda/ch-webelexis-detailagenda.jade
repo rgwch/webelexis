@@ -12,19 +12,10 @@
             .row(data-bind="foreach: appointments")
                 .col-xs-12.col-sm-6
                     div(data-bind="text: displayText, css: displayClass, click: $parent.expand")
-                    form.form.row(data-bind="if:expanded, submit: $parent.update")
-                        .form-group.col-xs-4
-                            label(for="lastname") Name
-                            input.form-control#lastname(data-bind="value: lastName")
-                        .form-group.col-xs-4
-                            label(for="firstname") Vorname
-                            input.form-control#firstname(data-bind="value: firstName")
-                        .form-group.col-xs-4
-                            label(for="birthdate") Geb. Dat.
-                            input.form-control#birthdate(data-bind="value: birthdate")
+                    .row(data-bind="if:expanded")
                         .form-group.col-xs-12
                             label(for="reason") Grund
                             input.form-control#phone(data-bind="value: reason")
                         .col-xs-12
-                            button.btn.btn-primary(type="submit") Senden
-                            button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
+                            button.btn.btn-default(data-bind="click: $parent.collapse") Schliessen
+                            
