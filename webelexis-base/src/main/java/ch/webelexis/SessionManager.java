@@ -341,7 +341,7 @@ public class SessionManager extends BusModBase {
 	private boolean checkPwd(JsonObject user, String pwdToCheck) {
 		if (user.getBinary("pwhash") == null) {
 			makePwd(user);
-			JsonObject criteria = new JsonObject().putObject("_id", user.getObject("_id"));
+			JsonObject criteria = new JsonObject().putValue("_id", user.getValue("_id"));
 			eb.send(persistorAddress, new JsonObject().putString("action", "update").putString(
 						"collection", usersCollection).putObject("criteria", criteria)
 						.putObject("objNew", user).putBoolean("upsert", false).putBoolean("multi", false));

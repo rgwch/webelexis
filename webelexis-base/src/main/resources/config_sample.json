@@ -69,6 +69,14 @@
         }
 
     },
+    "patient":{
+    	"icpc-problems": true,	// load problem list (Plugin ICPC is installed)
+    	"stickynotes": true,	// load sticky notes (Plugin "haftnotizen" is installed)
+    	"stickers": true,		// load stickers
+    	"prescriptions": true,	// load prescriptions
+    	"lab": true,			// load lab values
+		"role":"user"
+	},
     // config for the EventBus-Websocket bridge and the html server
     "bridge": {
         "webroot": "web", // Base path. Optional, this is the default

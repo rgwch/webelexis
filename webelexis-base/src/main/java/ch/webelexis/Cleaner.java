@@ -19,6 +19,7 @@ public class Cleaner {
 	public static final String ELEXISDATE = "20[0-9]{6,6}";
 	public static final String NAME = "[0-9a-zA-Z \\.-]+";
 	public static final String WORD = "[a-zA-Z]+";
+	public static final String NOTEMPTY ="\\.+";
 
 	Message<JsonObject> jo;
 
@@ -36,7 +37,6 @@ public class Cleaner {
 		}
 	}
 
-	
 	public String getOptional(String field, String pattern, String defaultValue) {
 		String raw = jo.body().getString(field);
 		if ((raw != null) && raw.matches(pattern)) {

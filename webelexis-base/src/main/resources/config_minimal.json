@@ -11,7 +11,7 @@
 		"address": "ch.webelexis.session",
 		"persistor_address": "ch.webelexis.nosql",
 		"users_collection": "users"
-	}
+	},
 
     "agenda": {
     	"public": {
