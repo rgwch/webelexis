@@ -25,6 +25,7 @@ require.config({
         "vertxbus": "dist/web/lib/vertxbus",
         "domReady": "dist/web/lib/domReady",
         "knockout-jqueryui": "dist/web/lib/knockout-jqueryui",
+        "knockout-mapping": "dist/web/lib/knockout.mapping-latest",
         "app": "dist/web/app",
         "components": "dist/web/components",
         "tmpl": "dist/web/tmpl"
