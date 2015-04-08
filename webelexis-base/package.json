@@ -10,7 +10,7 @@
         "clean": "rimraf dist",
         "create:dirs": "mkdirp dist/web",
         "compile:jade": "jade src/main/resources/web -o dist/web/tmpl && mv dist/web/tmpl/index.html dist/web",
-        "compile:java": "javac -encoding utf-8 -source 7 -target 7 -cp \"${VERTX_HOME}/lib/*\" src/main/java/ch/webelexis/*.java src/main/java/ch/webelexis/agenda/*.java -d dist",
+        "compile:java": "javac -encoding utf-8 -source 7 -target 7 -cp \"${VERTX_HOME}/lib/*\" src/main/java/ch/webelexis/*.java src/main/java/ch/webelexis/agenda/*.java src/main/java/ch/webelexis/patient/*.java -d dist",
         "compile:js": "r.js -o build-debug.js",
         "compile:javatests": "javac -encoding utf-8 -source 7 -target 7 -cp \"${VERTX_HOME}/lib/*:${JUNIT_HOME}/*\" src/test/java/ch/webelexis/tests/*.java -d dist",
         "build:client": "npm run create:dirs && npm run compile:jade && npm run compile:js",

@@ -62,7 +62,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	JsonObject ArrayToObject(JsonArray fields, JsonArray results) {
 		JsonObject ret = new JsonObject();
 		for (int i = 0; i < fields.size(); i++) {
-			ret.putString(fields.get(i), results.get(i));
+			ret.putString((String)fields.get(i), (String)results.get(i));
 		}
 		return ret;
 	}
