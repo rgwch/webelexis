@@ -24,11 +24,10 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	public void handle(Message<JsonObject> externalRequest) {
 		Cleaner cl = new Cleaner(externalRequest);
 		String patId = cl.get("patid", Cleaner.NOTEMPTY);
-		StringBuilder sb = new StringBuilder();
 		String sql = "SELECT " + String.join(",", fields)
-				+ " from KONTAKT as k where k.ID=?";
+				+ " from KONTAKT as k where k.id=?";
 		JsonObject jo = new JsonObject().putString("action", "prepared")
-				.putString("statement", "sql")
+				.putString("statement", sql)
 				.putArray("values", new JsonArray(new String[] { patId }));
 		server.eb().send("ch.webelexis.sql", jo,
 				new PatDataHandler(externalRequest));
@@ -51,6 +50,9 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 				JsonObject jPat = ArrayToObject(fields, results);
 				req.reply(new JsonObject().putString("status", "ok").putObject(
 						"patient", jPat));
+			}else{
+				server.log().error(j.getString("status"));
+				req.reply(new JsonObject().putString("status", "SQL error"));
 			}
 
 		}

@@ -93,6 +93,8 @@
         },
             {
                 "address": "ch.webelexis.privateagenda"
+        }, {
+        		"address": "ch.webelexis.patient"
         }
 
   ], // allowed outbound messages

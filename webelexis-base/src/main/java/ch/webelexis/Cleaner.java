@@ -19,7 +19,7 @@ public class Cleaner {
 	public static final String ELEXISDATE = "20[0-9]{6,6}";
 	public static final String NAME = "[0-9a-zA-Z \\.-]+";
 	public static final String WORD = "[a-zA-Z]+";
-	public static final String NOTEMPTY ="\\.+";
+	public static final String NOTEMPTY =".+";
 
 	Message<JsonObject> jo;
 
