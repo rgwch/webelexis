@@ -39,7 +39,7 @@
         "database": "elexis" // or whatever
     },
 
-    // config for mod-auth-mgr (https://github.com/vert-x/mod-auth-mgr)
+    // config for vertx-mod-sessionmgt (https://github.com/rgwch/vertx-mod-sessionmgr)
     "auth": {
         "address": "ch.webelexis.session", // do not change this
         "users_collection": "users", // do not change this
@@ -49,15 +49,15 @@
 
     // config for webelexis-Agenda
     "agenda": {
-        "public": {
+        "public": { // public accessible version. If you don't want public access, set "role" to "user" or to "nobody".
             "resource": "gerry", // which calendar resource should be used 
             "timeSlot": 30, // how long should an appointment be
             "maxPerDay": 4, // maximum Number of appnts. per day via this app
             "apptType": "Normal", // "TerminTyp" for our appointments
             "apptState": "Via Internet", // "TerminStatus" for our appointments
-            "role": "guest"
+            "role": "guest" // role needed to access this agende
         },
-        "private": {
+        "private": { // version for authorized access with patient details
             "resources": [{ // which calendar resources should be offered to chose
                 "resource": "gerry", // internal name of the resource
                 "title": "G. Weirich" // Name of the resource as to display in the frontemd
@@ -65,17 +65,18 @@
                 "resource": "labor",
                 "title": "Labor"
          }],
-            "role": "user"
+            "role": "user"  // role needed to access this agenda
         }
 
     },
+    // config for patient details
     "patient":{
     	"icpc-problems": true,	// load problem list (Plugin ICPC is installed)
     	"stickynotes": true,	// load sticky notes (Plugin "haftnotizen" is installed)
     	"stickers": true,		// load stickers
     	"prescriptions": true,	// load prescriptions
     	"lab": true,			// load lab values
-		"role":"user"
+		"role":"user"           // role needed to read patient details
 	},
     // config for the EventBus-Websocket bridge and the html server
     "bridge": {
@@ -100,6 +101,7 @@
   ], // allowed outbound messages
         "outOK": [
   ],
+        // remove the following property, if you don't want "Sign in with google"
         "googleID": "3aa2352634636aasf.apps.googleusercontent.com" // Google client ID if Google SignIn is used.
     },
     // Global identification primarly for debugging purposes to see, which config is active.
