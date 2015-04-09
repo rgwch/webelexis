@@ -2,10 +2,10 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'domReady!'], function (bus, config, Router, ko, html) {
+define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'domReady!'], function(bus, config, Router, ko, html) {
 
 
-   
+
 
     function adapt(connected) {
         if (connected) {
@@ -33,20 +33,25 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         self.uname = ko.observable("")
         self.pwd = ko.observable("")
 
-        bus.addListener(function (msg) {
+        bus.addListener(function(msg) {
             adapt(msg === "open")
         })
         adapt(bus.connected)
-        self.dologin = function ( /*formElement*/ ) {
-            console.log("login " + self.uname() +","+ self.pwd()+","+config.sessionID)
+        self.dologin = function( /*formElement*/ ) {
+            console.log("login " + self.uname() + "," + self.pwd() + "," + config.sessionID)
             bus.send('ch.webelexis.session.login', {
                 sessionID: config.sessionID,
+                mode: "local",
                 username: self.uname(),
                 password: self.pwd()
-            }, function (result) {
+            }, function(result) {
                 if (result.status === "ok") {
                     console.log("logged in")
-                    config.user({"loggedIn": true, "username": self.uname(), "roles": result.roles})
+                    config.user({
+                        "loggedIn": true,
+                        "username": self.uname(),
+                        "roles": result.roles
+                    })
                     //console.log(JSON.stringify(config.user))
                     location.hash = "#agext"
                 } else {
@@ -56,21 +61,15 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
                     $("#login-message").text("Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal").addClass("red")
                 }
             });
-        
+
         }
-        self.googleLogin = function () {
+
+        self.googleLogin = function() {
             config.google.signIn()
         }
+
     }
 
-    /*
-    config.google.attachClickHandler(gl, {}, function(googleUser) {
-            console.log("Google signedIn: " + googleUser.getBasicProfile().getName());
-        },
-        function(error) {
-            window.alert(JSON.stringify(error, undefined, 2))
-        });
-*/
 
     return {
         viewModel: LoginViewModel,

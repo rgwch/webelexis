@@ -73,7 +73,10 @@ define({
     makeDateString: function(date) {
         var ret = this.dateStrings(date)
         return ret.day + "." + ret.month + "." + ret.year
+    },
+
+    makeDateFromElexisDate: function(ed){
+        var ret=ed.substring(6,8)+"."+(ed.substring(4,6)-1)+"."+ed.substring(0,4)
+        return ret
     }
-
-
 })

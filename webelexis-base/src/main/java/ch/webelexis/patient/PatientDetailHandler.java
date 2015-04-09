@@ -10,7 +10,7 @@ import ch.webelexis.Cleaner;
 public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	private String tid = "7ba4632caba62c5b3a366";
 	private String[] fields = { "k.patientnr", "k.Bezeichnung1",
-			"k.Bezeichnung2", "k.geschlecht", "k.Strasse", "k.plz", "k.Ort",
+			"k.Bezeichnung2", "k.geschlecht", "k.geburtsdatum", "k.Strasse", "k.plz", "k.Ort",
 			"k.telefon1", "k.telefon2", "k.natelnr", "k.email", "k.gruppe",
 			"k.bemerkung" };
 

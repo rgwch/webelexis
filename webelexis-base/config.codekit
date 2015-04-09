@@ -79,6 +79,15 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
+	"\/dist\/web\/ch-webelexis-patdetail.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/dist\/web\/ch-webelexis-patdetail.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/dist\/web\/components\/agenda\/ch-webelexis-agenda.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -1212,7 +1221,7 @@
 		},
 	"\/dist\/web\/tmpl\/ch-webelexis-patdetail.html": {
 		"fileType": 8192,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/web\/tmpl\/ch-webelexis-patdetail.html",
 		"outputAbbreviatedPath": "No Output Path",
@@ -1517,7 +1526,7 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/main\/resources\/web\/components\/patdetail\/ch-webelexis-patdetail.jade",
-		"outputAbbreviatedPath": "\/dist\/web\/ch-webelexis-patdetail.html",
+		"outputAbbreviatedPath": "\/dist\/web\/tmpl\/ch-webelexis-patdetail.html",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0

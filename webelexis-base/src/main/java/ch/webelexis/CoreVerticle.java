@@ -49,9 +49,14 @@ public class CoreVerticle extends BusModBase {
 	 * vert.x module repository as needed.
 	 */
 	V[] modules = new V[] { new V("sql", "io.vertx~mod-mysql-postgresql_2.10~0.3.1"),
-			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0") , new V("auth", "rgwch~vertx-mod-sessionmgr~0.2.4") };
+			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0") /*
+																														 * , new V("auth",
+																														 * "rgwch~vertx-mod-sessionmgr~0.2.4"
+																														 * )
+																														 */};
 
-	V[] verticles = new V[] { new V("agenda", "ch.webelexis.agenda.Server"), new V("patient", "ch.webelexis.patient.Server") /* new V("auth", "ch.webelexis.SessionManager")*/ };
+	V[] verticles = new V[] { new V("agenda", "ch.webelexis.agenda.Server"),
+			new V("patient", "ch.webelexis.patient.Server"), new V("auth", "ch.webelexis.SessionManager") };
 
 	public CoreVerticle() throws IOException {
 		File file = new File("config_defaults.json"); // production mode
@@ -64,9 +69,9 @@ public class CoreVerticle extends BusModBase {
 		/* int num= */fr.read(buffer);
 		fr.close();
 		String conf = new String(buffer).replaceAll("//.+\\n", "");
-		try{
+		try {
 			cfg_default = new JsonObject(conf);
-		}catch(DecodeException ex){
+		} catch (DecodeException ex) {
 			log.fatal("Invalid config json");
 		}
 	}
