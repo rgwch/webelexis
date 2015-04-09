@@ -39,12 +39,12 @@ define(['knockout', 'app/config', 'jquery'], function (ko, cfg, $) {
                         var matches = mapping.match.exec(path);
                         if (matches) {
                             if (cfg.mainMenu.indexOf(mapping)!==-1) {
-                                // mark the appropriate menu item as selected
+                                // mark the appropriate menu item as selected, if the current module is part of the menu
                                 $("#mainmenu").children(".active").removeClass("active")
                                 var marker = $("#mainmenu_marker").detach()
                                 $("#mainmenu").find("[href$=" + "#" + path + "]").append(marker).parent().addClass("active")
                             }
-                            return new Router.Page(mapping.title, mapping.component)
+                            return new Router.Page(mapping.title, mapping.component, matches.slice(1))
                         }
                     }
                 }
@@ -59,7 +59,7 @@ define(['knockout', 'app/config', 'jquery'], function (ko, cfg, $) {
 
     // A 'page' that can be shown, encompassing the view (string identifying a template),
     // model (a KO ViewModel) and title.
-    Router.Page = function (titleName, componentName) {
+    Router.Page = function (titleName, componentName, params) {
         this.title = ko.observable(titleName);
         /*
           this.view = ko.computed( function() {
@@ -69,6 +69,7 @@ define(['knockout', 'app/config', 'jquery'], function (ko, cfg, $) {
           return view;
           */
         this.componentName = componentName;
+        this.params=params
         return componentName;
     }
 
