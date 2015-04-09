@@ -18,4 +18,4 @@ html(lang="de")
     body
         .container
             #menu(data-bind="component: {name: 'ch-webelexis-menubar', params: {menu: 'mainMenu'}}")
-            #content(data-bind='component: router.currentPage().componentName')          
+            #content(data-bind="component: { 'name': router.currentPage().componentName, 'params': {params: router.currentPage().params}}")          

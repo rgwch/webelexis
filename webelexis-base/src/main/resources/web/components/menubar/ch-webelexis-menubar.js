@@ -80,7 +80,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
 
         self.signInChanged = function (val) {
             console.log('Signin state changed to ', val);
-            cfg.user().loggedIn(val)
+            cfg.user().loggedIn=val
 
         }
 

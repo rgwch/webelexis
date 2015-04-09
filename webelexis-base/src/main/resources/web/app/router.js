@@ -42,7 +42,8 @@ define(['knockout', 'app/config', 'jquery'], function (ko, cfg, $) {
                                 // mark the appropriate menu item as selected, if the current module is part of the menu
                                 $("#mainmenu").children(".active").removeClass("active")
                                 var marker = $("#mainmenu_marker").detach()
-                                $("#mainmenu").find("[href$=" + "#" + path + "]").append(marker).parent().addClass("active")
+                                var menuName=path.split('/')[0]
+                                $("#mainmenu").find("[href$=" + "#" + menuName + "]").append(marker).parent().addClass("active")
                             }
                             return new Router.Page(mapping.title, mapping.component, matches.slice(1))
                         }

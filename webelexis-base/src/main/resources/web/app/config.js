@@ -71,7 +71,7 @@ define(['knockout'], function (ko) {
         },
             {
                 baseUrl: "#patid",
-                match: /^patid$/,
+                match: /^patid\/(.+)\/?$/,
                 title: "Patient",
                 component: 'ch-webelexis-patdetail',
                 location: 'components/patdetail',

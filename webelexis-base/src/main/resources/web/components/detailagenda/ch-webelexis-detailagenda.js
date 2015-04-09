@@ -58,7 +58,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 return ret
             })
             app.isPatientEntry = ko.pureComputed(function () {
-                if (type === "Reserviert" || type === "available") {
+                if (app.type === "Reserviert" || app.type === "available") {
                     return false
                 } else {
                     return true
@@ -188,6 +188,11 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 }
             });
         }
+        
+        self.patdetail=function(idx){
+            window.location.hash="#patid/"+idx.patientID
+        }
+        
         var busListener = function (msg) {
             if (msg === "open") {
                 self.loadAppointments()

@@ -16,6 +16,14 @@
                         .form-group.col-xs-12
                             label(for="reason") Grund
                             input.form-control#phone(data-bind="value: reason")
+                        .row
+                            .col-xs-4
+                                button.btn.btn-primary(data-bind="click: $parent.patdetail") Patient
+                            .col-xs-4
+                                button.btn Löschen
+                            .col-xs-4
+                                button.btn Konsultation
                         .col-xs-12
                             button.btn.btn-default(data-bind="click: $parent.collapse") Schliessen
+                            
                             
