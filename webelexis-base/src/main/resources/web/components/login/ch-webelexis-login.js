@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'domReady!'], function(bus, config, Router, ko, html) {
+define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'domReady!'], function (bus, config, Router, ko, html) {
 
 
 
@@ -33,26 +33,26 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         self.uname = ko.observable("")
         self.pwd = ko.observable("")
 
-        bus.addListener(function(msg) {
+        bus.addListener(function (msg) {
             adapt(msg === "open")
         })
         adapt(bus.connected)
-        self.dologin = function( /*formElement*/ ) {
+        self.dologin = function ( /*formElement*/ ) {
             console.log("login " + self.uname() + "," + self.pwd() + "," + config.sessionID)
             bus.send('ch.webelexis.session.login', {
                 sessionID: config.sessionID,
                 mode: "local",
                 username: self.uname(),
                 password: self.pwd()
-            }, function(result) {
+            }, function (result) {
                 if (result.status === "ok") {
                     console.log("logged in")
                     config.user({
-                        "loggedIn": true,
-                        "username": self.uname(),
-                        "roles": result.roles
-                    })
-                    //console.log(JSON.stringify(config.user))
+                            "loggedIn": true,
+                            "username": self.uname(),
+                            "roles": result.roles
+                        })
+                        //console.log(JSON.stringify(config.user))
                     location.hash = "#agext"
                 } else {
                     console.log("login failed")
@@ -64,7 +64,10 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
 
         }
 
-        self.googleLogin = function() {
+        self.hasGoogle = ko.pureComputed(function () {
+            return config.google !== undefined
+        })
+        self.googleLogin = function () {
             config.google.signIn()
         }
 

@@ -15,5 +15,5 @@
                             label(for="password") Passwort
                             input.form-control#password(type="password" data-bind="value: pwd")
                         button.btn.btn-default#loginbutton(type="submit" disabled="disabled") Warte auf Server...
-                .col-xs-6
+                .col-xs-6(data-bind="if: hasGoogle")
                     button.btn#googleLogin(data-bind="click: googleLogin") Google
