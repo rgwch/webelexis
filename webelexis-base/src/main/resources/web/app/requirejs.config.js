@@ -26,5 +26,8 @@ var require = {
         "knockout": {
             deps: ["jquery"]
         },
-    },
+        "knockout-mapping": {
+            deps: ["knockout"]
+        }
+    }
 };
