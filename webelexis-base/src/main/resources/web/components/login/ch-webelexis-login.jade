@@ -16,4 +16,5 @@
                             input.form-control#password(type="password" data-bind="value: pwd")
                         button.btn.btn-default#loginbutton(type="submit" disabled="disabled") Warte auf Server...
                 .col-xs-6(data-bind="if: hasGoogle")
-                    button.btn#googleLogin(data-bind="click: googleLogin") Google
+                    img.img.img-responsive.center-block#gbutton(src="img/Blue_signin_long_normal_32dp_v3.png" data-bind="click: googleLogin, event: {mouseover: google_mouseOver, mouseout: google_mouseOut}")
+        

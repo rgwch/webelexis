@@ -26,7 +26,10 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 	public void handle(HttpServerRequest req) {
 
 		if (req.path().equals("/") || req.path().equals("/index.html")) {
-			eb.send("ch.webelexis.session.create", "", new SessionHandler(req));
+			String rnd = UUID.randomUUID().toString();
+			JsonObject sessionParams = new JsonObject().putString("clientID", cfg.getString("googleID")).putString(
+					"state", rnd);
+			eb.send("ch.webelexis.session.create", sessionParams, new SessionHandler(req, rnd));
 		} else if (req.path().contains("..")) {
 			req.response().setStatusCode(404);
 			req.response().end();
@@ -38,9 +41,11 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 
 	class SessionHandler implements Handler<Message<JsonObject>> {
 		HttpServerRequest req;
+		String rnd;
 
-		SessionHandler(HttpServerRequest req) {
+		SessionHandler(HttpServerRequest req, String rnd) {
 			this.req = req;
+			this.rnd = rnd;
 		}
 
 		@Override
@@ -52,10 +57,10 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 			}
 			Scanner scanner = null;
 			try {
-				String rnd = UUID.randomUUID().toString();
 				scanner = new Scanner(in, "UTF-8");
-				String modified = scanner.useDelimiter("\\A").next().replaceAll("GUID", msg.body().getString("sessionID"))
-						.replaceAll("GOOGLE_CLIENT_ID", cid).replaceAll("GOOGLE_STATE", rnd);
+				String modified = scanner.useDelimiter("\\A").next()
+						.replaceAll("GUID", msg.body().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid)
+						.replaceAll("GOOGLE_STATE", rnd);
 
 				req.response().end(modified);
 			} catch (FileNotFoundException e) {

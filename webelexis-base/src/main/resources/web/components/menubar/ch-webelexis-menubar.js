@@ -8,6 +8,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
 
     var clientID = $("meta[name='clientID']").attr("content")
     cfg.sessionID = $("meta[name='UUID']").attr("content")
+    var state = $("meta[name='state']").attr("content")
 
         function MenubarModel(params) {
             var self = this
@@ -41,6 +42,9 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
 
 
             self.doLogout = function() {
+                if(cfg.google !== undefined){
+                    cfg.google.signOut()
+                }
                 bus.send("ch.webelexis.session.logout", {
                     sessionID: cfg.sessionID
                 }, function(result) {
@@ -94,12 +98,14 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                         "username": user.getBasicProfile().getEmail(),
                         "userid": user.getBasicProfile().getId(),
                         "realname": user.getBasicProfile().getName(),
-                        "id_token": user.getAuthResponse().id_token
+                        "id_token": user.getAuthResponse().id_token,
+                        "client_id": clientID,
+                        "state": state
                     }, function(result) {
                         if (result.status === undefined) {
                             window.alert("Verbindungsfehler")
                         } else if (result.status === "unknown") {
-                            window.alert("Dieser google user ist an diesem System nicht bekannt. Bitte melden Sie sich znächst an")
+                            window.alert("Dieser google user ist an diesem System nicht bekannt. Bitte melden Sie sich znächst an.")
                         } else if(result.status === "ok") {
                             cfg.user({
                                 "loggedIn": true,
