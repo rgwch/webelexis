@@ -21,6 +21,9 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                 self.adaptForUser()
             })
 
+            self.connected=ko.pureComputed(function(){
+                return cfg.connected()
+            })
             self.showLogin = ko.computed(function() {
                 if (cfg.showLogin()) {
                     if (!cfg.user().loggedIn) {
@@ -90,7 +93,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
 
             // google user signed in
             self.userChanged = function(user) {
-                if (user) {
+                if ((user !== undefined) && (user.getId() !== null)) {
                     console.log("user now: " + user.getId() + ", " + user.getBasicProfile().getName());
                     bus.send("ch.webelexis.session.login", {
                         "mode": "google",
@@ -115,6 +118,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                                 "id_token": user.getAuthResponse().id_token,
                                 "roles": result.roles
                             })
+                            location.hash="#agext"
                         }else{
                             window.alert(result.status)
                         }

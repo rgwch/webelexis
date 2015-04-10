@@ -15,7 +15,7 @@ define(['app/config', 'vertxbus'], function (config) {
     var listeners = []
 
     function state() {
-        return config.connected
+        return config.connected()
     }
 
     function openBus() {
@@ -28,13 +28,13 @@ define(['app/config', 'vertxbus'], function (config) {
                     config.loc = response;
                 }, "jsonp");
                 clearInterval(reopen)
-                config.connected = true
+                config.connected(true)
                 for (var i = 0; i < listeners.length; i++) {
                     listeners[i]("open")
                 }
             }
             bus.onclose = function () {
-                config.connected = false
+                config.connected(false)
                 for (var i = 0; i < listeners.length; i++) {
                     listeners[i]("close")
                 }

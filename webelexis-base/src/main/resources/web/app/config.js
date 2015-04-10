@@ -18,7 +18,7 @@ define(['knockout'], function (ko) {
             "loggedIn": false,
             "roles": ["guest"]
         }),
-        connected: false,
+        connected: ko.observable(false),
         loc: {
             ip: "0.0.0.0"
         },
