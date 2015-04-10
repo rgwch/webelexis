@@ -1,0 +1,15 @@
+//- This file is part of Webelexis, Copyright (c) 2015 by G. Weirich
+- var colspec="col-xs-6"
+.row
+    .col-xs-12
+        :markdown
+            # Patienteneintrag erstellen
+            
+            Bitte geben Sie hier Ihre Personalien ein und klicken Sie dann auf 'Abschicken'.
+            
+    - var fields=["Vorname","Name","Geburtsdatum","Strasse", "Plz", "Ort"]
+    - for(var i=0;i<fields.length;i++)
+        .form-group(class=colspec)
+            label(for=fields[i]) #{fields[i]}
+            input(id=fields[i] type="text")
+    

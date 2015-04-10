@@ -40,7 +40,7 @@ define(['knockout'], function (ko) {
                     // again: The server side decides ultimately.
             },
             {
-                active: true,
+                active: false,
                 title: "Konsole",
                 baseUrl: "#console",
                 match: /^console$/,
@@ -65,7 +65,7 @@ define(['knockout'], function (ko) {
                 title: 'Patienten',
                 component: 'ch-webelexis-patlist',
                 location: 'components/patlist',
-                active: true,
+                active: false,
                 menuItem: true,
                 role: "user"
         },
@@ -113,6 +113,16 @@ define(['knockout'], function (ko) {
                 location: 'components/menubar',
                 active: true,
                 role: "guest"
+            },
+            {
+                title: 'Personalien eintragen',
+                baseUrl: "#addpatient",
+                match: /^addpatient$/,
+                component: 'ch-webelexis-addpatient',
+                location: 'components/addpatient',
+                active: true,
+                role: "guest",
+                menuItem: true
             }
 
     ]

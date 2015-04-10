@@ -5,10 +5,10 @@ nav.navbar.navbar-default
             span.sr-only Menu erweitern
             span.glyphicon.glyphicon-menu-hamburger
         a.navbar-brand(href="http://www.webelexis.ch")
-            div(data-bind="if: connected")
+            div(data-bind="visible: connected")
                 img.img(alt="webelexis" src="img/elexis_logo.png" style="height: 32px" data-toogle="tooltip" title="mit Server verbunden")
-            div(data-bind="ifnot: connected")
-                img.img(alt="webelexis-offline" src="img/elexis_logo_bw.png" style="height: 32px" data-toggle="tooltip" title="nicht verbunden")
+            div(data-bind="visible: connected()===false")
+                img.img(alt="webelexis" src="img/elexis_logo_bw.png" style="height: 32px" data-toggle="tooltip" title="nicht verbunden")
     .collapse.navbar-collapse#webelexis-main-collapsed
         ul.nav.navbar-nav#mainmenu(data-bind="foreach: menuItems")
             li
