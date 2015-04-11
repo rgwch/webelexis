@@ -4,12 +4,7 @@
  */
 package ch.webelexis.patient;
 
-import static ch.webelexis.Cleaner.DATE;
-import static ch.webelexis.Cleaner.ELEXISDATE;
-import static ch.webelexis.Cleaner.MAIL;
-import static ch.webelexis.Cleaner.NAME;
-import static ch.webelexis.Cleaner.NOTEMPTY;
-import static ch.webelexis.Cleaner.PHONE;
+import static ch.webelexis.Cleaner.*;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -87,7 +82,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					String pid = UUID.randomUUID().toString();
 					JsonArray values = new JsonArray().addString(pid).addString(c.get("name", NAME))
 							.addString(c.get("vorname", NAME)).addString(c.get("geburtsdatum", DATE))
-							.addString(c.get("strasse", NAME)).addString(c.get("plz", NOTEMPTY)).addString(c.get("ort", NAME))
+							.addString(c.get("strasse", NAME)).addString(c.get("plz", ZIP)).addString(c.get("ort", NAME))
 							.addString(c.get("telefon", PHONE)).addString(c.get("mobil", PHONE)).addString(c.get("e-mail", MAIL))
 							.addString("via webelexis");
 					JsonObject sql = new JsonObject().putString("action", "insert").putString("table", "KONTAKT")

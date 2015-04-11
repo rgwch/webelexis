@@ -26,6 +26,7 @@ public class Cleaner {
 	public static final String TIME = "[0-2][0-9]:[0-5][0-9]";
 	public static final String TEXT = "[A_Za-z \\.,-]";
 	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
+	public static final String ZIP ="[A-Za-z 0-9]{4,8}";
 
 	Message<JsonObject> jo;
 
