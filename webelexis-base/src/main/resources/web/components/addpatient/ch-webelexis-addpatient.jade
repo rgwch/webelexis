@@ -1,14 +1,28 @@
 //- This file is part of Webelexis, Copyright (c) 2015 by G. Weirich
-- var colspec="col-xs-6"
 
-form(role="form")
-    #fields
-        .row
-        - var fields=["Vorname","Name","Geburtsdatum","Strasse", "Plz", "Ort","E-Mail","Telefon", "Mobil", "Krankenkasse", "Versicherungsnummer"]
-        - for(var i=0;i<fields.length;i++)
-            .form-group.col-md-4.col-sm-6.col-xs-12
-                label(for=fields[i]) #{fields[i]}
-                input.form-control(id=fields[i] type="text")
-    button.btn.btn-default(type="submit") Absenden
-        
+h2.h2 Personalien eintragen
+p. 
+ Wenn Sie noch nie bei uns waren, füllen Sie bitte alle untenstehenden Felder aus. Wenn Sie schon Patient/in bei uns sind, und jetzt nur ein Konto
+ für die Vereinbarung von Terminen via Internet erstellen wollen, genügt es, Name, Vorname, Geburtsdatum, E-Mail sowie das gewünschte Passwort anzugeben. 
     
+form(role="form")
+    .row
+        - var fields=["Vorname","Name","Geburtsdatum","Strasse", "Plz", "Ort","E-Mail","Telefon", "Mobil", "Krankenkasse", "Versicherungsnummer"]
+        each val, index in fields
+            .form-group.col-lg-3.col-md-4.col-sm-6.col-xs-12
+                label(for=val.toLowerCase()) #{val}
+                input.form-control(id=val.toLowerCase() type="text")
+        .clearfix
+        .form-group.col-sm-6.col-xs-12
+            label(for="password") Passwort
+            input.form-control(id="password" type="password")
+        .form-group.col-sm-6.col-xs-12
+            label(for="pwdrepeat") Passwort wiederholen
+            input.form-control(id="pwdrepeat" type="password")
+
+        h3.h3 Datenschutzerklärung
+        p. 
+           Ihre Angaben werden nur zum Erstellen der Patientenakte verwendet, und um Sie nötigenfalls zu kontaktieren, falls wir einen Termin verschieben müssen.
+           Unter keinen Umständen geben wir Daten an Dritte weiter. Wir werden Ihre Angaben auch nicht für Marketingzwecke missbrauchen. Sie können Jederzeit 
+           die Löschung Ihres Kontos und der hier eingetragenen Daten verlangen.
+        button.btn.btn-default(type="submit") Formular absenden
