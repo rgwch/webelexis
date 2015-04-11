@@ -46,7 +46,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 		server.eb().send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
 
 			@Override
-			public void handle(Message<JsonObject> mongoRequest) {
+			public void handle(final Message<JsonObject> mongoRequest) {
 				if (mongoRequest.body().getString("status").equals("ok")) {
 					/* user exists: error */
 					c.replyStatus("user exists");
@@ -75,7 +75,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 		}
 
 		@Override
-		public void handle(Message<JsonObject> result) {
+		public void handle(final Message<JsonObject> result) {
 			JsonObject rb = result.body();
 			if (rb.getString("status").equals("ok")) {
 				if (rb.getArray("results").size() > 0) {
@@ -114,7 +114,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 		}
 
 		@Override
-		public void handle(Message<JsonObject> result) {
+		public void handle(final Message<JsonObject> result) {
 			if (result.body().getString("status").equals("ok")) {
 				addUser(c,pid);
 			} else {
@@ -125,7 +125,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 		}
 	}
 
-	void addUser(Cleaner cle, String pid) {
+	void addUser(final Cleaner cle, final String pid) {
 		JsonObject user=new JsonObject().putString("username",cle.get("username", NAME));
 		user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
 		
