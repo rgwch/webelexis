@@ -117,7 +117,7 @@ public class CoreVerticle extends BusModBase {
 		SockJSServer sock = vertx.createSockJSServer(http);
 		sock.bridge(new JsonObject().putString("prefix", "/eventbus"), bridgeCfg.getArray("inOK"),
 				bridgeCfg.getArray("outOK"));
-		sock.setHook(new EventBusHook());
+		//sock.setHook(new EventBusHook());
 		http.listen(bridgeCfg.getInteger("port"));
 	}
 

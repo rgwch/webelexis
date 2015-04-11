@@ -17,7 +17,7 @@ define(['knockout', 'text!tmpl/ch-webelexis-addpatient.html'], function (ko, htm
             telefon: "",
             mobil: "",
             krankenkasse: "",
-            versicherunsnummer: "",
+            versicherungsnummer: "",
             password: "",
             pwdrepeat: ""
 

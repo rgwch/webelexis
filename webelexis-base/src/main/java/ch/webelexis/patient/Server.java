@@ -27,9 +27,9 @@ public class Server extends BusModBase {
 		JsonObject cfg = container.config();
 		JsonObject cAdd = cfg.getObject("add", new JsonObject().putString("role", "admin"));
 		eb.registerHandler("ch.webelexis.patient.detail",
-				new AuthorizingHandler(eb, cfg.getObject("detail", new JsonObject()).getString("role", "admin"),
+				new AuthorizingHandler(this, cfg.getObject("detail", new JsonObject()).getString("role", "admin"),
 						new PatientDetailHandler(this)));
-		eb.registerHandler("ch.webelexis.patient.add", new AuthorizingHandler(eb, cAdd.getString("role"),
+		eb.registerHandler("ch.webelexis.patient.add", new AuthorizingHandler(this, cAdd.getString("role"),
 				new AddPatientHandler(this, cAdd)));
 	}
 }
