@@ -65,19 +65,25 @@
                 "resource": "labor",
                 "title": "Labor"
          }],
-            "role": "user"  // role needed to access this agenda
+            "role": "mpa" // role needed to access this agenda
         }
 
     },
-    // config for patient details
-    "patient":{
-    	"icpc-problems": true,	// load problem list (Plugin ICPC is installed)
-    	"stickynotes": true,	// load sticky notes (Plugin "haftnotizen" is installed)
-    	"stickers": true,		// load stickers
-    	"prescriptions": true,	// load prescriptions
-    	"lab": true,			// load lab values
-		"role":"user"           // role needed to read patient details
-	},
+    // config for patient data
+    "patient": {
+        "add": {
+            "role": "guest", // role needed to create an account
+            "defaultRole": "patient" // role, a newly created account will have 
+        },
+        "detail": {
+            "icpc-problems": true, // load problem list (Plugin ICPC is installed)
+            "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)
+            "stickers": true, // load stickers
+            "prescriptions": true, // load prescriptions
+            "lab": true, // load lab values
+            "role": "arzt" // role needed to read patient details
+        }
+    },
     // config for the EventBus-Websocket bridge and the html server
     "bridge": {
         "webroot": "web", // Base path. Optional, this is the default
@@ -95,7 +101,9 @@
             {
                 "address": "ch.webelexis.privateagenda"
         }, {
-        		"address": "ch.webelexis.patient"
+                "address": "ch.webelexis.patient.detail"
+        }, {
+                "address": "ch.webelexis.patient.add"
         }
 
   ], // allowed outbound messages

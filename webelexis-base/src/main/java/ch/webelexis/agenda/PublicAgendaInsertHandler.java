@@ -14,16 +14,16 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 import ch.webelexis.Cleaner;
+import static ch.webelexis.Cleaner.*;
 
 /**
- * Handler for insert operations in the agenda. Listens to messages to "ch.webelexis.agenda.insert"
+ * Handler for insert operations in the agenda. Listens to messages to
+ * "ch.webelexis.agenda.insert"
+ * 
  * @author gerry
  */
 public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
-	static final String DATE = "20[0-9]{6,6}";
-	static final String TIME = "[0-2][0-9]:[0-5][0-9]";
-	static final String TEXT = "[A_Za-z \\.,-]";
-	static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
+
 	EventBus eb;
 	JsonObject cfg;
 
@@ -33,8 +33,8 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 	}
 
 	/**
-	 * expected parameter is a Json Object:
-	 * { day: 'yyyymmdd', time: 'hh:mm', name: 'name, firstname, DOB', ip: 'ip-address'}
+	 * expected parameter is a Json Object: { day: 'yyyymmdd', time: 'hh:mm',
+	 * name: 'name, firstname, DOB', ip: 'ip-address'}
 	 */
 	@Override
 	public void handle(final Message<JsonObject> externalEvent) {
@@ -52,11 +52,10 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 			resource = "default";
 		}
 		String day = cl.get("day", DATE);
-		String name = externalEvent.body().getString("name"); //)cl.get("name", TEXT);
+		String name = cl.get("name", NOTEMPTY);
 		String[] timeString = cl.get("time", TIME).split(":");
 		if (day.length() > 0 && name.length() > 0 && timeString.length == 2) {
-			int time = Integer.parseInt(timeString[0]) * 60
-					+ Integer.parseInt(timeString[1]);
+			int time = Integer.parseInt(timeString[0]) * 60 + Integer.parseInt(timeString[1]);
 			JsonObject bridge = new JsonObject()
 					.putString("action", "prepared")
 					.putString(
@@ -64,28 +63,20 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 							"INSERT INTO AGNTERMINE (ID,lastupdate,Tag,Bereich,Beginn,Dauer,TerminTyp,TerminStatus,Grund,PatID) VALUES(?,?,?,?,?,?,?,?,?,?)")
 					.putArray(
 							"values",
-							new JsonArray(
-									new String[] {
-											UUID.randomUUID().toString(),
-											Long.toString(new Date().getTime()),
-											day, resource,
-											Integer.toString(time), "30",
-											apptType, apptState,
-											cl.get("ip", IP), name }));
-			eb.send("ch.webelexis.sql", bridge,
-					new Handler<Message<JsonObject>>() {
+							new JsonArray(new String[] { UUID.randomUUID().toString(), Long.toString(new Date().getTime()), day,
+									resource, Integer.toString(time), "30", apptType, apptState, cl.get("ip", IP), name }));
+			eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
-						@Override
-						public void handle(Message<JsonObject> event) {
-							externalEvent.reply(event.body());
+				@Override
+				public void handle(Message<JsonObject> event) {
+					externalEvent.reply(event.body());
 
-						}
-					});
+				}
+			});
 
 		} else {
 			System.out.println(externalEvent.body().toString());
-			externalEvent.reply(new JsonObject().putString("status", "error")
-					.putString("message", "syntax error"));
+			externalEvent.reply(new JsonObject().putString("status", "error").putString("message", "syntax error"));
 		}
 	}
 }

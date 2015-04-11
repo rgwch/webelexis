@@ -19,7 +19,13 @@ public class Cleaner {
 	public static final String ELEXISDATE = "20[0-9]{6,6}";
 	public static final String NAME = "[0-9a-zA-Z \\.-]+";
 	public static final String WORD = "[a-zA-Z]+";
-	public static final String NOTEMPTY =".+";
+	public static final String NOTEMPTY = ".+";
+	public static final String DATE = "[0-3]?[0-9]\\.[01]?[0-9]\\.[0-9]{2,4}";
+	public static final String PHONE = "\\+?[0-9  -/]{7-20}";
+	public static final String MAIL = "\\w+@[a-zA-Z_0-9]+?\\.[a-zA-Z]{2,3}";
+	public static final String TIME = "[0-2][0-9]:[0-5][0-9]";
+	public static final String TEXT = "[A_Za-z \\.,-]";
+	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
 
 	Message<JsonObject> jo;
 
@@ -37,17 +43,43 @@ public class Cleaner {
 		}
 	}
 
-	public String getOptional(String field, String pattern, String defaultValue) {
+	public String getOptional(String field, String defaultValue) {
 		String raw = jo.body().getString(field);
-		if ((raw != null) && raw.matches(pattern)) {
+		if (raw != null) {
 			return raw;
 		} else {
 			return defaultValue;
 		}
-}
+	}
 
-	public JsonArray getArray(String name, JsonArray defaultValue){
-		JsonArray ret=jo.body().getArray(name);
-		return ret== null ? defaultValue : ret;
+	public JsonArray getArray(String name, JsonArray defaultValue) {
+		JsonArray ret = jo.body().getArray(name);
+		return ret == null ? defaultValue : ret;
+	}
+
+	public void reply(JsonObject result) {
+		jo.reply(result);
+	}
+
+	public void replyError() {
+		jo.reply(new JsonObject().putString("status", "error"));
+	}
+
+	public void replyError(String msg) {
+		JsonObject result = new JsonObject().putString("status", "error").putString("message", msg);
+		jo.reply(result);
+	}
+
+	public void replyOk() {
+		jo.reply(new JsonObject().putString("status", "ok"));
+	}
+
+	public void replyOk(String msg) {
+		JsonObject result = new JsonObject().putString("status", "ok").putString("message", msg);
+		jo.reply(result);
+	}
+
+	public void replyStatus(String msg) {
+		jo.reply(new JsonObject().putString("status", msg));
 	}
 }
