@@ -25,5 +25,8 @@ var require = {
         "knockout": {
             deps: ["jquery"]
         },
+        "validate": {
+            deps: ["jquery"]
+        }
     }
 };

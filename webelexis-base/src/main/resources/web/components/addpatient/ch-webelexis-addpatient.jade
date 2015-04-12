@@ -1,19 +1,41 @@
 //- This file is part of Webelexis, Copyright (c) 2015 by G. Weirich
 
 h2.h2 Personalien eintragen
-p. 
- Wenn Sie noch nie bei uns waren, füllen Sie bitte alle untenstehenden Felder aus. Wenn Sie schon Patient/in bei uns sind, und jetzt nur ein Konto
- für die Vereinbarung von Terminen via Internet erstellen wollen, genügt es, Name, Vorname, Geburtsdatum, E-Mail sowie das gewünschte Passwort anzugeben. 
-    
-form.form(data-bind="submit: send")
+
+- var fields1=["Vorname","Name","Geburtsdatum","EMail"]
+- var fields2=["Strasse", "Plz", "Ort","Telefon", "Mobil", "Krankenkasse", "Versicherungsnummer"]
+- var fcss="col-lg-3 col-md-4 col-sm-6 col-xs-12"
+mixin createFields
     .row(data-bind="with: data")
-        - var fields=["Vorname","Name","Geburtsdatum","Strasse", "Plz", "Ort","EMail","Telefon", "Mobil", "Krankenkasse", "Versicherungsnummer"]
-        each val, index in fields
+        each val, index in f
             - var fld=val.toLowerCase()
-            .form-group.col-lg-3.col-md-4.col-sm-6.col-xs-12
+            .form-group(class="#{fcss}")
                 label(for=fld) #{val}
-                input.form-control(id=fld type="text" data-bind="value: #{fld}")
-        .clearfix
+                input.form-control(id=fld type="text" data-bind="value: #{fld}" minlength="4")
+
+form.form(data-bind="submit: send")
+    div
+        input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
+        span  Wenn Sie noch nie bei uns waren, wählen Sie bitte diese Option und füllen Sie alle Felder aus.
+    div
+        input(type="radio" name="anzeige" id="anzeige_alt" value="palt" data-bind="checked: accountDisplay")
+        span  Wenn Sie schon Patient/in bei uns sind, und jetzt nur ein Konto für die Online-Terminvergabe erstellen möchten, wählen Sie bitte diese Option.
+    div
+        input(type="radio" name="anzeige" id="login_only" value="login" data-bind="checked: accountDisplay")
+        span  Wenn Sie bereits ein Konto haben, können Sie direkt zum 
+            a(href="#login") Login
+            span  gehen.
+
+    div(data-bind="visible: accountDisplay()=='palt'")
+        - var f=fields1
+        +createFields
+                    
+    div(data-bind="visible: accountDisplay()=='pneu'") 
+        - var f=fields1.concat(fields2)
+        +createFields
+
+    .clearfix
+    div(data-bind="visible: accountDisplay()!='login'")
         .form-group.col-sm-6.col-xs-12
             label(for="password") Passwort
             input.form-control(id="password" type="password" data-bind="value: password")
