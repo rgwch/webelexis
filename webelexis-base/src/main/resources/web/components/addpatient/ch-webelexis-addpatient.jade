@@ -12,6 +12,14 @@ mixin createFields
             .form-group(class="#{fcss}")
                 label(for=fld) #{val}
                 input.form-control(id=fld name=fld type="text" data-bind="value: #{fld}")
+        .clearfix
+        .form-group(class="#{fcss}")
+            label(for="pwd") Passwort
+            input.form-control(id="pwd" name="pwd" type="password" data-bind="value: pwd")
+        .form-group(class="#{fcss}")
+            label(for="pwdrep") Passwort wiederholen
+            input.form-control(id="pwdrep" name="pwdrep" type="password" data-bind="value: pwdrep")
+
 
 form.form#eingabe(data-bind="submit: send")
     div
@@ -36,13 +44,6 @@ form.form#eingabe(data-bind="submit: send")
 
     .clearfix
     div(data-bind="visible: accountDisplay()!='login'")
-        .form-group.col-sm-6.col-xs-12
-            label(for="password") Passwort
-            input.form-control(id="password" name="password" type="password" data-bind="value: password")
-        .form-group.col-sm-6.col-xs-12
-            label(for="pwdrepeat") Passwort wiederholen
-            input.form-control(id="pwdrepeat" name="pwdrepeat" type="password" data-bind="value: pwdrepeat")
-
         h3.h3 Datenschutzerklärung
         p. 
            Ihre Angaben werden nur zum Erstellen der Patientenakte verwendet, und um Sie nötigenfalls zu kontaktieren, falls wir einen Termin verschieben müssen.

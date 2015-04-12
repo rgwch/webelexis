@@ -153,7 +153,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					.putString("patientid", pid).putString("firstname", cle.get("vorname", NAME, false))
 					.putString("lastname", cle.get("name", NAME, false));
 			user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
-			String pwd = cle.getOptional("password", null);
+			String pwd = cle.getOptional("pwd", null);
 			if (pwd != null) {
 				user.putBinary("pwhash", makeHash(user.getString("username"), pwd));
 			}

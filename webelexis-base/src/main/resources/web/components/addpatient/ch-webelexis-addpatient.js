@@ -18,8 +18,8 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
             mobil: "",
             krankenkasse: "",
             versicherungsnummer: "",
-            password: "",
-            pwdrepeat: ""
+            pwd: "",
+            pwdrep: ""
         })
 
         self.send = function () {
@@ -62,13 +62,13 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                     required: true,
                     mailaddr: true
                 },
-                password: {
+                pwd: {
                     required: true,
                     minlength: 5
                 },
-                pwdrepeat: {
+                pwdrep: {
                     required: true,
-                    equalTo: "#password"
+                    equalTo: "#pwd"
                 }
 
             },
