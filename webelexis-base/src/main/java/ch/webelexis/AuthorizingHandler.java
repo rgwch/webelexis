@@ -35,7 +35,7 @@ public class AuthorizingHandler implements Handler<Message<JsonObject>> {
 							.send(
 									"ch.webelexis.session.authorize",
 									new JsonObject().putString("role", roleToCheck).putString("sessionID",
-											cl.get("sessionID", Cleaner.NAME)), new Handler<Message<JsonObject>>() {
+											cl.get("sessionID", Cleaner.NAME, false)), new Handler<Message<JsonObject>>() {
 
 										@Override
 										public void handle(Message<JsonObject> authMsg) {

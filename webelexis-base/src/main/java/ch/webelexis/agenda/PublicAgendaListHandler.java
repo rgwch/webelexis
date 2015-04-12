@@ -65,8 +65,10 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 					.putString("action", "prepared")
 					.putString("statement",
 							"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
-					.putArray("values",
-							new JsonArray(new String[] { cl.get("begin", ELEXISDATE), cl.get("begin", ELEXISDATE), resource }));
+					.putArray(
+							"values",
+							new JsonArray(new String[] { cl.get("begin", ELEXISDATE, false), cl.get("begin", ELEXISDATE, false),
+									resource }));
 			log.debug("sending message: " + bridge.encodePrettily());
 			eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 

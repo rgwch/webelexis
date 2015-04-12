@@ -61,9 +61,9 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 			resource = "default";
 		}
 		try {
-			String day = cl.get("day", DATE);
-			String name = cl.get("name", TEXT);
-			String[] timeString = cl.get("time", TIME).split(":");
+			String day = cl.get("day", DATE, false);
+			String name = cl.get("name", TEXT, false);
+			String[] timeString = cl.get("time", TIME, false).split(":");
 			if (day.length() > 0 && name.length() > 0 && timeString.length == 2) {
 				int time = Integer.parseInt(timeString[0]) * 60 + Integer.parseInt(timeString[1]);
 				JsonObject bridge = new JsonObject()
@@ -74,7 +74,7 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 						.putArray(
 								"values",
 								new JsonArray(new String[] { UUID.randomUUID().toString(), Long.toString(new Date().getTime()), day,
-										resource, Integer.toString(time), "30", apptType, apptState, cl.get("ip", IP), name }));
+										resource, Integer.toString(time), "30", apptType, apptState, cl.get("ip", IP, true), name }));
 				eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
 					@Override

@@ -2,7 +2,6 @@ package ch.webelexis.agenda;
 
 import static ch.webelexis.Cleaner.ELEXISDATE;
 import static ch.webelexis.Cleaner.NAME;
-import static ch.webelexis.Cleaner.WORD;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -66,8 +65,8 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 							"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID,A.TerminStatus,A.Grund,K.Bezeichnung1,K.Bezeichnung2, K.geburtsdatum from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
 					.putArray(
 							"values",
-							new JsonArray(new String[] { cl.get("begin", ELEXISDATE), cl.get("end", ELEXISDATE),
-									cl.get("resource", NAME) }));
+							new JsonArray(new String[] { cl.get("begin", ELEXISDATE, false), cl.get("end", ELEXISDATE, false),
+									cl.get("resource", NAME, false) }));
 			System.out.println(bridge.toString());
 			eb.send("ch.webelexis.sql", bridge, new firstLevel(cl));
 		} catch (ParametersException pex) {
@@ -99,8 +98,8 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 									"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID, PatID, TerminStatus, Grund from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 							.putArray(
 									"values",
-									new JsonArray(new String[] { cle.get("begin", ELEXISDATE), cle.get("end", ELEXISDATE),
-											cle.get("resource", NAME) }));
+									new JsonArray(new String[] { cle.get("begin", ELEXISDATE, false), cle.get("end", ELEXISDATE, false),
+											cle.get("resource", NAME, false) }));
 					log.info(bridge.encodePrettily());
 					eb.send("ch.webelexis.sql", bridge, new secondLevel(cle, appts));
 				} catch (ParametersException pex) {

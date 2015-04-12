@@ -27,7 +27,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	public void handle(Message<JsonObject> externalRequest) {
 		Cleaner cl = new Cleaner(externalRequest);
 		try {
-			String patId = cl.get("patid", Cleaner.NAME);
+			String patId = cl.get("patid", Cleaner.NAME, false);
 			String sql = "SELECT " + String.join(",", fields) + " from KONTAKT as k where k.id=?";
 			JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement", sql)
 					.putArray("values", new JsonArray(new String[] { patId }));

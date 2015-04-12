@@ -16,7 +16,8 @@ import org.vertx.java.core.json.JsonObject;
  * 
  */
 public class Cleaner {
-	public static final String ELEXISDATE = "20[0-9]{6,6}";
+	// /^\d{1,2}\.\d{1,2}\.(?:\d{4}|\d{2})$/
+	public static final String ELEXISDATE = "[12][09][0-9]{6,6}";
 	public static final String NAME = "[0-9a-zA-Z \\.-]+";
 	public static final String WORD = "[a-zA-Z]+";
 	public static final String NOTEMPTY = ".+";
@@ -26,7 +27,7 @@ public class Cleaner {
 	public static final String TIME = "[0-2][0-9]:[0-5][0-9]";
 	public static final String TEXT = "[A_Za-z \\.,-]";
 	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
-	public static final String ZIP ="[A-Za-z 0-9]{4,8}";
+	public static final String ZIP = "[A-Za-z 0-9]{4,8}";
 
 	Message<JsonObject> jo;
 
@@ -34,13 +35,20 @@ public class Cleaner {
 		jo = raw;
 	}
 
-	public String get(String field, String pattern) throws ParametersException{
+	public String get(String field, String pattern, boolean emptyok) throws ParametersException {
 		String raw = jo.body().getString(field);
+		if (raw == null || raw.length() == 0) {
+			if (emptyok) {
+				return raw;
+			} else {
+				throw new ParametersException("field " + field + " was not set.");
+			}
+		}
 		if ((raw != null) && raw.matches(pattern)) {
 			return raw;
 		} else {
 			jo.reply(new JsonObject().putString("status", "bad or missing field value for " + field));
-			throw new ParametersException("value of "+field+" does not match expected criteria");
+			throw new ParametersException("value of " + field + " does not match expected criteria");
 		}
 	}
 
@@ -83,9 +91,9 @@ public class Cleaner {
 	public void replyStatus(String msg) {
 		jo.reply(new JsonObject().putString("status", msg));
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return jo.body().encodePrettily();
 	}
 }
