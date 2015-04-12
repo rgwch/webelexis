@@ -8,14 +8,13 @@ var require = {
         "bootstrap": "lib/bootstrap.min",
         "jquery": "lib/jquery.min",
         "jquery-ui": "lib/jquery-ui",
+        "validate": "lib/jquery.validate.min",
         "knockout": "lib/knockout",
         "sockjs": "lib/sockjs.min",
         "text": "lib/text",
         "vertxbus": "lib/vertxbus",
         "domReady": "lib/domReady",
         "knockout-jqueryui": "lib/knockout-jqueryui",
-        "knockout-mapping": "lib/knockout.mapping-latest",
-        "async": "lib/async",
         "app": "app",
         "tmpl": "tmpl"
     },
@@ -26,8 +25,5 @@ var require = {
         "knockout": {
             deps: ["jquery"]
         },
-        "knockout-mapping": {
-            deps: ["knockout"]
-        }
     }
 };
