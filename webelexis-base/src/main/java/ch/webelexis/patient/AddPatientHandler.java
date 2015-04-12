@@ -4,7 +4,11 @@
  */
 package ch.webelexis.patient;
 
-import static ch.webelexis.Cleaner.*;
+import static ch.webelexis.Cleaner.ELEXISDATE;
+import static ch.webelexis.Cleaner.MAIL;
+import static ch.webelexis.Cleaner.NAME;
+import static ch.webelexis.Cleaner.PHONE;
+import static ch.webelexis.Cleaner.ZIP;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -17,6 +21,7 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 import ch.webelexis.Cleaner;
+import ch.webelexis.ParametersException;
 
 public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	Server server;
@@ -35,34 +40,44 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 		server.log().info("add patient: " + externalRequest.body().encodePrettily());
 		final Cleaner c = new Cleaner(externalRequest);
 
-		// check if username exists in webelexis users
-		JsonObject op = new JsonObject().putString("action", "findone").putString("collection", "users")
-				.putObject("matcher", new JsonObject().putString("username", c.get("username", MAIL)));
-		server.eb().send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
+		try {
+			// check if username exists in webelexis users
+			JsonObject op = new JsonObject().putString("action", "findone").putString("collection", "users")
+					.putObject("matcher", new JsonObject().putString("username", c.get("username", MAIL)));
+			server.eb().send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
 
-			@Override
-			public void handle(final Message<JsonObject> mongoRequest) {
-				if (mongoRequest.body().getString("status").equals("ok")) {
-					if (mongoRequest.body().getObject("result") != null) {
-						/* user exists: error */
-						c.replyStatus("user exists");
+				@Override
+				public void handle(final Message<JsonObject> mongoRequest) {
+					if (mongoRequest.body().getString("status").equals("ok")) {
+						if (mongoRequest.body().getObject("result") != null) {
+							/* user exists: error */
+							c.replyStatus("user exists");
+						} else {
+							try {
+								/* user does not exist; check if patient exists */
+								String sql = "select id from KONTAKT where Bezeichnung1=? and Bezeichnung2=? and Geburtsdatum=?";
+								JsonObject jo = new JsonObject()
+										.putString("action", "prepared")
+										.putString("statement", sql)
+										.putArray(
+												"values",
+												new JsonArray(new String[] { c.get("name", NAME), c.get("vorname", NAME),
+														c.get("geburtsdatum", ELEXISDATE) }));
+								server.eb().send("ch.webelexis.sql", jo, new QueryResultHandler(c));
+							} catch (ParametersException pex) {
+								server.log().error(pex.getMessage(), pex);
+								c.replyError("parameter error");
+							}
+						}
 					} else {
-						/* user does not exist; check if patient exists */
-						String sql = "select id from KONTAKT where Bezeichnung1=? and Bezeichnung2=? and Geburtsdatum=?";
-						JsonObject jo = new JsonObject()
-								.putString("action", "prepared")
-								.putString("statement", sql)
-								.putArray(
-										"values",
-										new JsonArray(new String[] { c.get("name", NAME), c.get("vorname", NAME),
-												c.get("geburtsdatum", ELEXISDATE) }));
-						server.eb().send("ch.webelexis.sql", jo, new QueryResultHandler(c));
+						c.replyError("mongo database failure");
 					}
-				} else {
-					c.replyError("mongo database failure");
 				}
-			}
-		});
+			});
+		} catch (ParametersException pex) {
+			server.log().error(pex.getMessage(), pex);
+			c.replyError("parameter error");
+		}
 	}
 
 	class QueryResultHandler implements Handler<Message<JsonObject>> {
@@ -82,17 +97,22 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					final String pid = rb.getArray("results").get(0);
 					addUser(c, pid);
 				} else {
-					/* create Patient and user */
-					String pid = UUID.randomUUID().toString();
-					JsonArray row = new JsonArray().addString(pid).addString(c.get("name", NAME))
-							.addString(c.get("vorname", NAME)).addString(c.get("geburtsdatum", ELEXISDATE))
-							.addString(c.get("strasse", NAME)).addString(c.get("plz", ZIP)).addString(c.get("ort", NAME))
-							.addString(c.get("telefon", PHONE)).addString(c.get("mobil", PHONE)).addString(c.get("email", MAIL))
-							.addString("via webelexis");
-					JsonArray values=new JsonArray().add(row);
-					JsonObject sql = new JsonObject().putString("action", "insert").putString("table", "KONTAKT")
-							.putArray("fields", new JsonArray(fields)).putArray("values", values);
-					server.eb().send("ch.webelexis.sql", sql, new SqlResultHandler(c, pid));
+					try {
+						/* create Patient and user */
+						String pid = UUID.randomUUID().toString();
+						JsonArray row = new JsonArray().addString(pid).addString(c.get("name", NAME))
+								.addString(c.get("vorname", NAME)).addString(c.get("geburtsdatum", ELEXISDATE))
+								.addString(c.get("strasse", NAME)).addString(c.get("plz", ZIP)).addString(c.get("ort", NAME))
+								.addString(c.get("telefon", PHONE)).addString(c.get("mobil", PHONE)).addString(c.get("email", MAIL))
+								.addString("via webelexis");
+						JsonArray values = new JsonArray().add(row);
+						JsonObject sql = new JsonObject().putString("action", "insert").putString("table", "KONTAKT")
+								.putArray("fields", new JsonArray(fields)).putArray("values", values);
+						server.eb().send("ch.webelexis.sql", sql, new SqlResultHandler(c, pid));
+					} catch (ParametersException pex) {
+						server.log().error(pex.getMessage(), pex);
+						c.replyError("parameter error");
+					}
 
 				}
 			} else {
@@ -126,25 +146,31 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	}
 
 	void addUser(final Cleaner cle, final String pid) {
-		server.log().debug("mongo insert: "+cle.toString());
-		JsonObject user = new JsonObject().putString("username", cle.get("username", MAIL));
-		user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
-
-		String pwd = cle.getOptional("password", null);
-		if (pwd != null) {
-			user.putBinary("pwhash", makeHash(user.getString("username"), pwd));
-		}
-
-		JsonObject op = new JsonObject().putString("action", "save").putString("collection", "users")
-				.putObject("document", user);
-		server.log().debug("inserting object: "+op.encodePrettily());
-		server.eb().send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
-
-			@Override
-			public void handle(Message<JsonObject> reply) {
-				cle.reply(reply.body());
+		server.log().debug("mongo insert: " + cle.toString());
+		try {
+			JsonObject user = new JsonObject().putString("username", cle.get("username", MAIL)).putString("patientid", pid)
+					.putString("firstname", cle.get("vorname", NAME)).putString("lastname", cle.get("name", NAME));
+			user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
+			String pwd = cle.getOptional("password", null);
+			if (pwd != null) {
+				user.putBinary("pwhash", makeHash(user.getString("username"), pwd));
 			}
-		});
+
+			JsonObject op = new JsonObject().putString("action", "save").putString("collection", "users")
+					.putObject("document", user);
+			server.eb().send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
+
+				@Override
+				public void handle(Message<JsonObject> reply) {
+					cle.reply(reply.body());
+				}
+			});
+
+		} catch (ParametersException pex) {
+			server.log().error(pex.getMessage(), pex);
+			cle.replyError("parameter error");
+
+		}
 	}
 
 	private byte[] makeHash(String username, String password) {

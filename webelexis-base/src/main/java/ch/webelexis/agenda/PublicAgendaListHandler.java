@@ -22,6 +22,7 @@ import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
 
 import ch.webelexis.Cleaner;
+import ch.webelexis.ParametersException;
 
 /**
  * A handler for list requests to the agenda. Since we won't allow random access
@@ -59,31 +60,33 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 		Cleaner cl = new Cleaner(externalRequest);
 		log.info("public agenda handler");
 		final String resource = cfg.getString("resource") == null ? "" : cfg.getString("resource");
-		JsonObject bridge = new JsonObject()
+		try {
+			JsonObject bridge = new JsonObject()
 					.putString("action", "prepared")
-					.putString(
-								"statement",
-								"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
-					.putArray(
-								"values",
-								new JsonArray(new String[] { cl.get("begin", ELEXISDATE),
-											cl.get("begin", ELEXISDATE), resource }));
-		log.debug("sending message: " + bridge.encodePrettily());
-		eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
+					.putString("statement",
+							"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+					.putArray("values",
+							new JsonArray(new String[] { cl.get("begin", ELEXISDATE), cl.get("begin", ELEXISDATE), resource }));
+			log.debug("sending message: " + bridge.encodePrettily());
+			eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
-			@Override
-			public void handle(Message<JsonObject> returnvalue) {
-				JsonObject res = returnvalue.body();
-				if (res.getString("status").equals("ok")) {
+				@Override
+				public void handle(Message<JsonObject> returnvalue) {
+					JsonObject res = returnvalue.body();
+					if (res.getString("status").equals("ok")) {
 
-					externalRequest.reply(fillBlanks(res.getArray("results").toArray(), null));
+						externalRequest.reply(fillBlanks(res.getArray("results").toArray(), null));
 
-				} else {
-					System.out.println(Json.encodePrettily(res));
-					externalRequest.reply(new JsonObject().putString("status", "failure"));
+					} else {
+						System.out.println(Json.encodePrettily(res));
+						externalRequest.reply(new JsonObject().putString("status", "failure"));
+					}
 				}
-			}
-		});
+			});
+		} catch (ParametersException pex) {
+			log.error(pex.getMessage(), pex);
+			cl.replyError("parameter error");
+		}
 	}
 
 	/*
@@ -162,7 +165,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 		}
 
 		JsonObject ores = new JsonObject().putString("status", "ok").putString("type", "basic")
-					.putArray("appointments", arr);
+				.putArray("appointments", arr);
 		return ores;
 
 	}

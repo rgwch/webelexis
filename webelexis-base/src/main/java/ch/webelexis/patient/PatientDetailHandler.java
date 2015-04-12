@@ -10,13 +10,12 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 import ch.webelexis.Cleaner;
+import ch.webelexis.ParametersException;
 
 public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	private String tid = "7ba4632caba62c5b3a366";
-	private String[] fields = { "k.patientnr", "k.Bezeichnung1",
-			"k.Bezeichnung2", "k.geschlecht", "k.geburtsdatum", "k.Strasse", "k.plz", "k.Ort",
-			"k.telefon1", "k.telefon2", "k.natelnr", "k.email", "k.gruppe",
-			"k.bemerkung" };
+	private String[] fields = { "k.patientnr", "k.Bezeichnung1", "k.Bezeichnung2", "k.geschlecht", "k.geburtsdatum",
+			"k.Strasse", "k.plz", "k.Ort", "k.telefon1", "k.telefon2", "k.natelnr", "k.email", "k.gruppe", "k.bemerkung" };
 
 	Server server;
 
@@ -27,14 +26,15 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	@Override
 	public void handle(Message<JsonObject> externalRequest) {
 		Cleaner cl = new Cleaner(externalRequest);
-		String patId = cl.get("patid", Cleaner.NOTEMPTY);
-		String sql = "SELECT " + String.join(",", fields)
-				+ " from KONTAKT as k where k.id=?";
-		JsonObject jo = new JsonObject().putString("action", "prepared")
-				.putString("statement", sql)
-				.putArray("values", new JsonArray(new String[] { patId }));
-		server.eb().send("ch.webelexis.sql", jo,
-				new PatDataHandler(externalRequest));
+		try {
+			String patId = cl.get("patid", Cleaner.NAME);
+			String sql = "SELECT " + String.join(",", fields) + " from KONTAKT as k where k.id=?";
+			JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement", sql)
+					.putArray("values", new JsonArray(new String[] { patId }));
+			server.eb().send("ch.webelexis.sql", jo, new PatDataHandler(externalRequest));
+		} catch (ParametersException pex) {
+			cl.replyError("parameter error");
+		}
 	}
 
 	class PatDataHandler implements Handler<Message<JsonObject>> {
@@ -52,9 +52,8 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 				JsonArray fields = j.getArray("fields");
 				JsonArray results = patData.body().getArray("results").get(0);
 				JsonObject jPat = ArrayToObject(fields, results);
-				req.reply(new JsonObject().putString("status", "ok").putObject(
-						"patient", jPat));
-			}else{
+				req.reply(new JsonObject().putString("status", "ok").putObject("patient", jPat));
+			} else {
 				server.log().error(j.getString("status"));
 				req.reply(new JsonObject().putString("status", "SQL error"));
 			}
@@ -66,7 +65,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	JsonObject ArrayToObject(JsonArray fields, JsonArray results) {
 		JsonObject ret = new JsonObject();
 		for (int i = 0; i < fields.size(); i++) {
-			ret.putString(((String)fields.get(i)).toLowerCase(), (String)results.get(i));
+			ret.putString(((String) fields.get(i)).toLowerCase(), (String) results.get(i));
 		}
 		return ret;
 	}

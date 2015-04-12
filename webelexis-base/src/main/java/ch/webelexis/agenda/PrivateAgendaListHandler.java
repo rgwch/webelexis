@@ -4,10 +4,8 @@ import static ch.webelexis.Cleaner.ELEXISDATE;
 import static ch.webelexis.Cleaner.NAME;
 import static ch.webelexis.Cleaner.WORD;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.TreeSet;
 
 import org.vertx.java.core.Handler;
@@ -19,6 +17,7 @@ import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
 
 import ch.webelexis.Cleaner;
+import ch.webelexis.ParametersException;
 
 public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 	static final int FLD_DAY = 0;
@@ -59,51 +58,60 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 		// first call: get all Appointments with valid PatientID
 		log.info("authorized agenda handler");
 		final Cleaner cl = new Cleaner(externalRequest);
-		JsonObject bridge = new JsonObject()
-				.putString("action", "prepared")
-				.putString(
-						"statement",
-						"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID,A.TerminStatus,A.Grund,K.Bezeichnung1,K.Bezeichnung2, K.geburtsdatum from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
-				.putArray(
-						"values",
-						new JsonArray(new String[] { cl.get("begin", ELEXISDATE), cl.get("end", ELEXISDATE),
-								cl.get("resource", NAME) }));
-		System.out.println(bridge.toString());
-		eb.send("ch.webelexis.sql", bridge, new firstLevel(externalRequest));
+		try {
+			JsonObject bridge = new JsonObject()
+					.putString("action", "prepared")
+					.putString(
+							"statement",
+							"SELECT A.Tag,A.Beginn,A.Dauer, A.Bereich, A.TerminTyp, A.ID, A.PatID,A.TerminStatus,A.Grund,K.Bezeichnung1,K.Bezeichnung2, K.geburtsdatum from AGNTERMINE as A, KONTAKT as K where K.id=A.PatID and A.Tag>=? and A.Tag <=? and A.Bereich=? and A.deleted='0'")
+					.putArray(
+							"values",
+							new JsonArray(new String[] { cl.get("begin", ELEXISDATE), cl.get("end", ELEXISDATE),
+									cl.get("resource", NAME) }));
+			System.out.println(bridge.toString());
+			eb.send("ch.webelexis.sql", bridge, new firstLevel(cl));
+		} catch (ParametersException pex) {
+			log.error(pex.getMessage());
+			pex.printStackTrace();
+			cl.replyError("bad parameters");
+		}
 	}
 
 	class firstLevel implements Handler<Message<JsonObject>> {
-		Message<JsonObject> externalRequest;
+		Cleaner cle;
 
-		firstLevel(Message<JsonObject> externalRequest) {
-			this.externalRequest = externalRequest;
+		firstLevel(Cleaner cle) {
+			this.cle = cle;
 		}
 
 		@Override
 		public void handle(Message<JsonObject> sqlResult1) {
-			Cleaner cl = new Cleaner(sqlResult1);
-			if (cl.get("status", WORD).equals("ok")) {
+			Cleaner cli = new Cleaner(sqlResult1);
+			if (cli.getOptional("status", "ok").equals("ok")) {
 
-				final JsonArray appts = cl.getArray("results", new JsonArray());
+				final JsonArray appts = cli.getArray("results", new JsonArray());
 				log.debug("first level okay with " + appts.size() + " results");
-
-				cl=new Cleaner(externalRequest);
-				JsonObject bridge = new JsonObject()
-						.putString("action", "prepared")
-						.putString(
-								"statement",
-								"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID, PatID, TerminStatus, Grund from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
-						.putArray(
-								"values",
-								new JsonArray(new String[] { cl.get("begin", ELEXISDATE), cl.get("end", ELEXISDATE),
-										cl.get("resource", NAME) }));
-				log.info(bridge.encodePrettily());
-				eb.send("ch.webelexis.sql", bridge, new secondLevel(externalRequest, appts));
+				try {
+					JsonObject bridge = new JsonObject()
+							.putString("action", "prepared")
+							.putString(
+									"statement",
+									"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID, PatID, TerminStatus, Grund from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+							.putArray(
+									"values",
+									new JsonArray(new String[] { cle.get("begin", ELEXISDATE), cle.get("end", ELEXISDATE),
+											cle.get("resource", NAME) }));
+					log.info(bridge.encodePrettily());
+					eb.send("ch.webelexis.sql", bridge, new secondLevel(cle, appts));
+				} catch (ParametersException pex) {
+					log.error(pex.getMessage(), pex);
+					cle.replyOk("parameters error");
+				}
 
 			} else {
 				log.info("first level failed " + sqlResult1.body().getString("message"));
 				System.out.println(Json.encodePrettily(sqlResult1.body()));
-				externalRequest.reply(new JsonObject().putString("status", "failure"));
+				cle.reply(new JsonObject().putString("status", "failure"));
 			}
 
 		}
@@ -111,11 +119,11 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 	}
 
 	class secondLevel implements Handler<Message<JsonObject>> {
-		Message<JsonObject> externalRequest;
+		Cleaner cle;
 		JsonArray appts;
 
-		secondLevel(Message<JsonObject> externalRequest, JsonArray appts) {
-			this.externalRequest = externalRequest;
+		secondLevel(Cleaner externalRequest, JsonArray appts) {
+			this.cle = externalRequest;
 			this.appts = appts;
 		}
 
@@ -125,12 +133,12 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 				Server.log.debug("second level okay");
 				JsonObject ores = fillBlanks(appts, second.body().getArray("results"));
 				ores.putString("type", "full");
-				externalRequest.reply(ores);
+				cle.reply(ores);
 			} else {
 				Server.log.error("second level failed");
 				System.out.println(Json.encodePrettily(second.body()));
-				externalRequest.reply(new JsonObject().putString("status", "failure").putString("reason",
-						second.body().getString("status")));
+				cle.reply(new JsonObject().putString("status", "failure")
+						.putString("reason", second.body().getString("status")));
 			}
 		}
 
@@ -157,15 +165,15 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 			});
 
 			@SuppressWarnings("rawtypes")
-			Iterator it=a1.iterator();
-			while(it.hasNext()){
-				Object o=it.next();
+			Iterator it = a1.iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
 				JsonArray line = (JsonArray) o;
 				// line.set(FLD_TYPE, "occupied");
 				orderedList.add(line);
 			}
-			it=a2.iterator();
-			while(it.hasNext()){
+			it = a2.iterator();
+			while (it.hasNext()) {
 				JsonArray line = (JsonArray) it.next();
 				// line.set(FLD_TYPE, "occupied");
 				orderedList.add(line);

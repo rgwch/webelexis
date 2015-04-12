@@ -34,13 +34,13 @@ public class Cleaner {
 		jo = raw;
 	}
 
-	public String get(String field, String pattern) {
+	public String get(String field, String pattern) throws ParametersException{
 		String raw = jo.body().getString(field);
 		if ((raw != null) && raw.matches(pattern)) {
 			return raw;
 		} else {
 			jo.reply(new JsonObject().putString("status", "bad or missing field value for " + field));
-			return "";
+			throw new ParametersException("value of "+field+" does not match expected criteria");
 		}
 	}
 
