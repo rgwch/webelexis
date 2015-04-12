@@ -113,7 +113,7 @@ public class SessionManager extends BusModBase {
 										fail("denied", session, externalRequest);
 									}
 								} else {
-									fail("unknown", session, externalRequest);
+									fail("unknown user", session, externalRequest);
 								}
 							} else if (mode.equals("google")) {
 								// TODO check id_user
@@ -147,8 +147,7 @@ public class SessionManager extends BusModBase {
 	/*
 	 * Verify, if an id_token is valid and issued by Google
 	 */
-	private void verifyGoogleId(final Message<JsonObject> externalRequest, final Session session,
-			final JsonObject user) {
+	private void verifyGoogleId(final Message<JsonObject> externalRequest, final Session session, final JsonObject user) {
 
 		String id = getMandatoryString("id_token", externalRequest);
 		HttpClient htc = vertx.createHttpClient().setSSL(true).setHost("www.googleapis.com") // ?id_token=XYZ123.)
@@ -172,14 +171,13 @@ public class SessionManager extends BusModBase {
 									state = params.getString("state");
 								}
 								if ((clientID != null) && (state != null) && jwt.getString("audience").equals(clientID)
-										&& (jwt.getString("issuer").endsWith("accounts.google.com"))
-										&& jwt.getInteger("expires_in") > 0
+										&& (jwt.getString("issuer").endsWith("accounts.google.com")) && jwt.getInteger("expires_in") > 0
 										&& jwt.getString("email").equals(user.getString("username"))) {
 									session.login(user);
 									externalRequest.reply(new JsonObject().putString("status", "ok").putArray("roles",
 											user.getArray("roles")));
 								} else {
-									log.error("bad credentials "+clientID);
+									log.error("bad credentials " + clientID);
 									fail("denied", session, externalRequest);
 								}
 
@@ -336,6 +334,8 @@ public class SessionManager extends BusModBase {
 
 				@Override
 				public void handle(Message<JsonObject> dbReply) {
+					log.info("mongo result: "+dbReply.body().encodePrettily());
+					
 					if (getMandatoryString("status", dbReply).equals("ok")) {
 						sendError(msg, "user " + user.getString("username") + " already exists");
 					} else {
@@ -346,8 +346,8 @@ public class SessionManager extends BusModBase {
 								roles = new JsonArray(new String[] { "user" });
 							}
 							dbUser.putArray("roles", roles);
-							JsonObject op = new JsonObject().putString("action", "save")
-									.putString("collection", usersCollection).putObject("document", dbUser);
+							JsonObject op = new JsonObject().putString("action", "save").putString("collection", usersCollection)
+									.putObject("document", dbUser);
 							eb.send(persistorAddress, op, new Handler<Message<JsonObject>>() {
 
 								@Override
@@ -404,8 +404,7 @@ public class SessionManager extends BusModBase {
 							.putBoolean("multi", false));
 		}
 		byte[] checkBytes = makeHash(user.getString("username"), pwdToCheck);
-		log.debug("comparing given " + new String(checkBytes) + " with users "
-				+ new String(user.getBinary("pwhash")));
+		log.debug("comparing given " + new String(checkBytes) + " with users " + new String(user.getBinary("pwhash")));
 		if (Arrays.equals(user.getBinary("pwhash"), checkBytes)) {
 			log.debug("login successful.");
 			return true;

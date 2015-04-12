@@ -21,8 +21,8 @@ public class Cleaner {
 	public static final String WORD = "[a-zA-Z]+";
 	public static final String NOTEMPTY = ".+";
 	public static final String DATE = "[0-3]?[0-9]\\.[01]?[0-9]\\.[0-9]{2,4}";
-	public static final String PHONE = "\\+?[0-9  -/]{7-20}";
-	public static final String MAIL = "\\w+@[a-zA-Z_0-9]+?\\.[a-zA-Z]{2,3}";
+	public static final String PHONE = "\\+?[0-9  -/]{7,20}";
+	public static final String MAIL = "\\w+@[a-zA-Z_0-9\\.]*[a-zA-Z_0-9]{2,}\\.[a-zA-Z]{2,3}";
 	public static final String TIME = "[0-2][0-9]:[0-5][0-9]";
 	public static final String TEXT = "[A_Za-z \\.,-]";
 	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
@@ -82,5 +82,10 @@ public class Cleaner {
 
 	public void replyStatus(String msg) {
 		jo.reply(new JsonObject().putString("status", msg));
+	}
+	
+	@Override
+	public String toString(){
+		return jo.body().encodePrettily();
 	}
 }

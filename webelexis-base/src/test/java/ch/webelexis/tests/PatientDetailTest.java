@@ -43,8 +43,8 @@ public class PatientDetailTest extends TestVerticle {
 					@Override
 					public void handle(Message<JsonObject> auth) {
 						String sid = auth.body().getString("sessionID");
-						JsonObject jo = new JsonObject().putString("username", "user").putString("password", "pwd")
-								.putString("sessionID", sid);
+						JsonObject jo = new JsonObject().putString("username", "hans").putString("password", "pwd")
+								.putString("sessionID", sid).putString("mode", "local");
 
 						eb.send("ch.webelexis.session.login", jo, new IsLoggedIn(sid));
 

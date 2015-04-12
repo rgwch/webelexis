@@ -25,3 +25,7 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+
+label.error {
+    color: red;
+}

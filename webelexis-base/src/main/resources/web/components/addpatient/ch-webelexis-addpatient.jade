@@ -11,9 +11,9 @@ mixin createFields
             - var fld=val.toLowerCase()
             .form-group(class="#{fcss}")
                 label(for=fld) #{val}
-                input.form-control(id=fld type="text" data-bind="value: #{fld}" minlength="4")
+                input.form-control(id=fld name=fld type="text" data-bind="value: #{fld}")
 
-form.form(data-bind="submit: send")
+form.form#eingabe(data-bind="submit: send")
     div
         input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
         span  Wenn Sie noch nie bei uns waren, wählen Sie bitte diese Option und füllen Sie alle Felder aus.
@@ -38,10 +38,10 @@ form.form(data-bind="submit: send")
     div(data-bind="visible: accountDisplay()!='login'")
         .form-group.col-sm-6.col-xs-12
             label(for="password") Passwort
-            input.form-control(id="password" type="password" data-bind="value: password")
+            input.form-control(id="password" name="password" type="password" data-bind="value: password")
         .form-group.col-sm-6.col-xs-12
             label(for="pwdrepeat") Passwort wiederholen
-            input.form-control(id="pwdrepeat" type="password" data-bind="value: pwdrepeat")
+            input.form-control(id="pwdrepeat" name="pwdrepeat" type="password" data-bind="value: pwdrepeat")
 
         h3.h3 Datenschutzerklärung
         p. 
