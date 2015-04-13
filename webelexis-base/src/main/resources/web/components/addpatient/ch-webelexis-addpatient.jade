@@ -14,11 +14,11 @@ mixin createFields
                 input.form-control(id=fld name=fld type="text" data-bind="value: #{fld}")
         .clearfix
         .form-group(class="#{fcss}")
-            label(for="pwd") Passwort
-            input.form-control(id="pwd" name="pwd" type="password" data-bind="value: pwd")
+            label(for="pass") Passwort
+            input.form-control(id="pass" name="pass" type="password" data-bind="value: pass")
         .form-group(class="#{fcss}")
             label(for="pwdrep") Passwort wiederholen
-            input.form-control(id="pwdrep" name="pwdrep" type="password" data-bind="value: pwdrep")
+            input.form-control(id="pwdrep" name="pwdrep" type="password")
 
 
 form.form#eingabe(data-bind="submit: send")

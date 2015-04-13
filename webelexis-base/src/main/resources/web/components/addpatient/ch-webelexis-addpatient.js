@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'jquery', 'validate', 'domReady!'], function (ko, bus, cfg, html, dt, $) {
+define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'jquery', 'validate', 'domReady!'], function(ko, bus, cfg, html, dt, $) {
     function AddPatientModel() {
         var self = this
         self.title = "Daten erfassen"
@@ -18,11 +18,10 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
             mobil: "",
             krankenkasse: "",
             versicherungsnummer: "",
-            pwd: "",
-            pwdrep: ""
+            pass: "",
         })
 
-        self.send = function () {
+        self.send = function() {
             // send request only if validate is okay. Cpnvert birthdate to Elexis format.
             if (self.vtor.numberOfInvalids() === 0) {
                 console.log(JSON.stringify(self.data()))
@@ -31,7 +30,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                 payload.geburtsdatum = dt.makeCompactString(date)
                 payload.sessionID = cfg.sessionID
                 payload.username = payload.email
-                bus.send("ch.webelexis.patient.add", payload, function (result) {
+                bus.send("ch.webelexis.patient.add", payload, function(result) {
                     if (result === undefined) {
                         window.alert("Verbindungsfehler")
                     } else if (result.status === "ok") {
@@ -42,6 +41,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                     }
                 })
             } else {
+                self.vtor.showErrors()
                 console.log("not sending: invalid fields: " + self.vtor.numberOfInvalids())
             }
         }
@@ -62,13 +62,13 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                     required: true,
                     mailaddr: true
                 },
-                pwd: {
+                pass: {
                     required: true,
                     minlength: 5
                 },
                 pwdrep: {
                     required: true,
-                    equalTo: "#pwd"
+                    equals: "#pass"
                 }
 
             },
@@ -80,19 +80,24 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                 pwd: "Ein mindestens 5 Zeichen langes Passwort muss eingetragen werden",
                 pwdrep: {
                     required: "Bitte bestätigen Sie Ihr Passwort hier.",
-                    equalTo: "Die Passwörter sind nicht identisch."
+                    equals: "Die Passwörter sind nicht identisch."
                 }
             }
         })
 
-        $.validator.addMethod("datum", function (act) {
+        $.validator.addMethod("datum", function(act) {
             var pattern = /^\d{1,2}\.\d{1,2}\.(?:\d{4}|\d{2})$/
             return (pattern.exec(act) !== null)
         }, "Bitte Datum in der Form tag.monat.jahr eingeben")
 
-        $.validator.addMethod("mailaddr", function (act) {
+        $.validator.addMethod("mailaddr", function(act) {
             var pattern = /\w+@[a-zA-Z_0-9\.]*[a-zA-Z_0-9]{2,}\.[a-zA-Z]{2,3}/
             return (pattern.exec(act) !== null)
+        })
+        // equalTo ddidn't work ?!??
+        $.validator.addMethod("equals", function(act) {
+            var other = self.data().pass
+            return act === other
         })
 
     }

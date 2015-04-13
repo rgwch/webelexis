@@ -37,7 +37,7 @@ public class CoreVerticle extends BusModBase {
 	final static long TIMEOUT = 60000;
 	JsonObject cfg_default;
 	JsonObject cfg;
-	Logger log;
+	public static Logger log;
 	ArrayList<String> pending = new ArrayList<String>();
 	Throwable reason = null;
 	long waitingTime;

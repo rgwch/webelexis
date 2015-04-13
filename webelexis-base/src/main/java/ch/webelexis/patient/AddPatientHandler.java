@@ -21,6 +21,7 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 import ch.webelexis.Cleaner;
+import ch.webelexis.EMail;
 import ch.webelexis.ParametersException;
 
 public class AddPatientHandler implements Handler<Message<JsonObject>> {
@@ -61,8 +62,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 										.putString("statement", sql)
 										.putArray(
 												"values",
-												new JsonArray(new String[] { c.get("name", NAME, false), c.get("vorname", NAME, false),
-														c.get("geburtsdatum", ELEXISDATE, false) }));
+												new JsonArray(new String[] { c.get("name", NAME, false),
+														c.get("vorname", NAME, false), c.get("geburtsdatum", ELEXISDATE, false) }));
 								server.eb().send("ch.webelexis.sql", jo, new QueryResultHandler(c));
 							} catch (ParametersException pex) {
 								server.log().error(pex.getMessage(), pex);
@@ -149,7 +150,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	void addUser(final Cleaner cle, final String pid) {
 		server.log().debug("mongo insert: " + cle.toString());
 		try {
-			JsonObject user = new JsonObject().putString("username", cle.get("username", MAIL, false))
+			final JsonObject user = new JsonObject().putString("username", cle.get("username", MAIL, false))
 					.putString("patientid", pid).putString("firstname", cle.get("vorname", NAME, false))
 					.putString("lastname", cle.get("name", NAME, false));
 			user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
@@ -157,14 +158,30 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 			if (pwd != null) {
 				user.putBinary("pwhash", makeHash(user.getString("username"), pwd));
 			}
-
-			JsonObject op = new JsonObject().putString("action", "save").putString("collection", "users")
+			user.putString("confirmID", UUID.randomUUID().toString());
+			JsonObject op = new JsonObject().putString("action", "Fsave").putString("collection", "users")
 					.putObject("document", user);
 			server.eb().send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
 
 				@Override
 				public void handle(Message<JsonObject> reply) {
-					cle.reply(reply.body());
+					// that's it, everything went successfully. Send User a conformation
+					// mail
+					JsonObject account = cfg.getObject("account");
+					if (account != null) {
+						EMail mail = new EMail(account.getString("mail"), account.getString(user.getString("unsername")),
+								account.getString("subject"), account.getString("message"));
+						if (mail.send(account.getString("smtphost"), account.getString("smtpuser"),
+								account.getString("smtppwd"))) {
+							cle.reply(reply.body());
+						} else {
+							server.log().error("error sending mail");
+							cle.replyError("sendmail fail");
+						}
+					} else {
+						server.log().error("no mail account set up");
+						cle.replyError("mail error");
+					}
 				}
 			});
 
