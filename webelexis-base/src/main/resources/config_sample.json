@@ -69,22 +69,30 @@
         }
 
     },
+    "mailer": {
+    	"address": "ch.webelexis.mailer",	// do not change this
+    	"host":	"smpt.example.com",			// URL of your mail provider
+    	"port":	25,							// optional
+    	"ssl":	true,						// optional, defaults to false
+    	"auth": true,						// optional, defaults to false
+    	"username": "user",					// username for auth
+    	"password": "password",				// password for auth
+    	"content-type":	"text/plain"		// optional. Or text/html to send html mails
+    }
+    
     // config for patient data
     "patient": {
         "add": {
             "role": "guest", // role needed to create an account
             "defaultRole": "patient" // role, a newly created account will have 
         },
-          "account":{
-    	"mail": "myself@myserver.com",
-    	"subject": "Webelexis account confirmation",
-    	"message": "To activate your account, please visit the following site: %s",
-    	"smtphost": "mail.example.com",
-    	"smtpuser": "username",
-    	"smptpwd":	"password"
-    	}
-        
-        "detail": {
+        "account":{
+        	"mail-from":	"me@mail.example.com",
+        	"mail-bcc":		"archive@mail.example.com",
+        	"mail-subject": "Confirm Webelexis account",
+        	"mail-body": "To activate your account, please vistit this url: %url%"
+        },
+    	"detail": {
             "icpc-problems": true, // load problem list (Plugin ICPC is installed)
             "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)
             "stickers": true, // load stickers

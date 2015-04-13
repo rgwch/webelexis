@@ -21,7 +21,6 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 import ch.webelexis.Cleaner;
-import ch.webelexis.EMail;
 import ch.webelexis.ParametersException;
 
 public class AddPatientHandler implements Handler<Message<JsonObject>> {
@@ -168,16 +167,27 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					// that's it, everything went successfully. Send User a conformation
 					// mail
 					JsonObject account = cfg.getObject("account");
+
 					if (account != null) {
-						EMail mail = new EMail(account.getString("mail"), account.getString(user.getString("unsername")),
-								account.getString("subject"), account.getString("message"));
-						if (mail.send(account.getString("smtphost"), account.getString("smtpuser"),
-								account.getString("smtppwd"))) {
-							cle.reply(reply.body());
-						} else {
-							server.log().error("error sending mail");
-							cle.replyError("sendmail fail");
-						}
+						JsonObject mail = new JsonObject().putString("from", account.getString("mail-from"))
+								.putString("to", user.getString("unsername")).putString("bcc", account.getString("mail-bcc"))
+								.putString("subject", account.getString("mail-subject"))
+								.putString("body", account.getString("mail-body"));
+
+						server.eb().send("ch.webelexis.mailer", mail, new Handler<Message<JsonObject>>() {
+
+							@Override
+							public void handle(Message<JsonObject> mailerReply) {
+								if (mailerReply.body().getString("status").equals("ok")) {
+									cle.replyOk();
+								} else {
+									server.log().error("mailer error: " + mailerReply.body().encodePrettily());
+									cle.replyError("mail error");
+								}
+							}
+						});
+						cle.reply(reply.body());
+
 					} else {
 						server.log().error("no mail account set up");
 						cle.replyError("mail error");
