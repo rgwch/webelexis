@@ -108,6 +108,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                     if (result.status === undefined) {
                         window.alert("Verbindungsfehler")
                     } else if (result.status === "unknown") {
+                        cfg.google.signOut()
                         window.alert("Dieser google user ist an diesem System nicht bekannt. Bitte melden Sie sich znächst an.")
                     } else if (result.status === "ok") {
                         cfg.user({

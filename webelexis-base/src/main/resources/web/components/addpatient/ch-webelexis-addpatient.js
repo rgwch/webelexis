@@ -24,7 +24,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
 
         self.send = function () {
             // send request only if validate is okay. Cpnvert birthdate to Elexis format.
-            if (self.vtor.numberOfInvalids() == 0) {
+            if (self.vtor.numberOfInvalids() === 0) {
                 console.log(JSON.stringify(self.data()))
                 var payload = self.data()
                 var date = dt.makeDateFromlocal(payload.geburtsdatum)
@@ -33,7 +33,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                 payload.username = payload.email
                 bus.send("ch.webelexis.patient.add", payload, function (result) {
                     if (result === undefined) {
-                        alert("Verbindungsfehler")
+                        window.alert("Verbindungsfehler")
                     } else if (result.status === "ok") {
                         console.log("ok")
                     } else {
@@ -77,22 +77,22 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                 name: "Bitte geben Sie Ihren Namen an",
                 geburtsdatum: "Die Angabe des Geburtsdatums ist erforderlich (t.m.j)",
                 email: "Die korrekte Mail-Adresse wird als Login-Name benötigt.",
-                password: "Ein mindestens 5 Zeichen langes Passwort muss eingetragen werden",
-                pwdrepeat: {
+                pwd: "Ein mindestens 5 Zeichen langes Passwort muss eingetragen werden",
+                pwdrep: {
                     required: "Bitte bestätigen Sie Ihr Passwort hier.",
-                    equalTo: "Die Passwoörter sind nicht identisch"
+                    equalTo: "Die Passwörter sind nicht identisch."
                 }
             }
         })
 
-        $.validator.addMethod("datum", function (act, element, params) {
+        $.validator.addMethod("datum", function (act) {
             var pattern = /^\d{1,2}\.\d{1,2}\.(?:\d{4}|\d{2})$/
-            return (pattern.exec(act) != null)
+            return (pattern.exec(act) !== null)
         }, "Bitte Datum in der Form tag.monat.jahr eingeben")
 
-        $.validator.addMethod("mailaddr", function (act, element, params) {
+        $.validator.addMethod("mailaddr", function (act) {
             var pattern = /\w+@[a-zA-Z_0-9\.]*[a-zA-Z_0-9]{2,}\.[a-zA-Z]{2,3}/
-            return (pattern.exec(act) != null)
+            return (pattern.exec(act) !== null)
         })
 
     }
