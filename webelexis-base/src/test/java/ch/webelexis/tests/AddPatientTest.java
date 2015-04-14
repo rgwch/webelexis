@@ -27,9 +27,9 @@ public class AddPatientTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			// container.deployModule("rgwch~vertx-mod-mock~0.1.1", cfg, new
-			// AsyncResultHandler<String>() {
-			container.deployVerticle("ch.webelexis.Verticle", cfg, new AsyncResultHandler<String>() {
+			container.deployModule("rgwch~vertx-mod-mock~0.1.3", cfg, new AsyncResultHandler<String>() {
+				// container.deployVerticle("ch.webelexis.Verticle", cfg, new
+				// AsyncResultHandler<String>() {
 
 				@Override
 				public void handle(AsyncResult<String> res2) {
@@ -55,7 +55,7 @@ public class AddPatientTest extends TestVerticle {
 		eb.send(AdminAddress, testDesc.getObject("mock-mailer"));
 		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, testDesc
 					.getObject("config-addpatient")));
-	
+
 		vertx.setTimer(50, new Handler<Long>() {
 
 			@Override
