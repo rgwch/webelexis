@@ -3,6 +3,13 @@
 	{
 		"admin-address": "ch.webelexis.tests"
 	},
+	"testuser1":{
+		"username": "hinz@kunz.ch",
+		"vorname": "hinz",
+		"name": "kunz",
+		"geburtsdatum": "19810331",
+		"pass": "topSecret"
+	},
 	"config-addpatient":{
 		"account":{
 			"mail-from": "me@here.ch",
