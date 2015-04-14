@@ -3,21 +3,27 @@
 	{
 		"admin-address": "ch.webelexis.tests"
 	},
-	"testuser1":{
+
+	"testuser1": 
+	{
 		"username": "hinz@kunz.ch",
 		"vorname": "hinz",
 		"name": "kunz",
 		"geburtsdatum": "19810331",
 		"pass": "topSecret"
 	},
-	"config-addpatient":{
-		"account":{
+
+	"config-addpatient": 
+	{
+		"account": 
+		{
 			"mail-from": "me@here.ch",
 			"mail-bcc": "also_me@here.ch",
 			"mail-subject": "webelexis registration",
 			"mail-body": "this is it %token%"
 		}
 	},
+
 	"mock-mongo": 
 	{
 		"task": "reply",
@@ -67,10 +73,10 @@
 					"collection": ".+",
 					"document": 
 					{
-						"user": ".+",
+						"username": ".+",
 						"patientid": ".{10,30}",
-						"firstname": "[\\w+ -.]",
-						"lastname": "[\\w+ -.]",
+						"firstname": "[\\w -.]+",
+						"lastname": "[\\w -.]+",
 						"pwhash": ".{5,}"
 					}
 				},
@@ -86,7 +92,7 @@
 
 		"nomatch-reply": 
 		{
-			"status": "test failure",
+			"status": "test failure mock-mongo",
 			"message": "unexpected message"
 		}
 	},
@@ -94,14 +100,14 @@
 	"mock-sql": 
 	{
 		"task": "reply",
-		"listen-address": "ch.webelexis-sql",
+		"listen-address": "ch.webelexis.sql",
 		"match": 
 		[
 			{
 				"message": 
 				{
 					"action": "prepared",
-					"statement": "select id from KONTAKT\\.+"
+					"statement": "select id from KONTAKT.+"
 				},
 
 				"case-sensitive": true,
@@ -110,15 +116,21 @@
 					"status": "ok",
 					"results": 
 					[
-						{
-							"id": "abcdefghijklmnopqrstuvwxyz"
-						}
+						[
+							"abcdefghijklmnopqrstuvwxyz"
+						]
 					]
 				}
 			},
 
 			{
-				"action": "insert"
+				"message": 
+				{
+					"action": "insert"
+				},
+				"match-reply":{
+					"status": "ok"
+				}
 			}
 		]
 	},
@@ -126,6 +138,7 @@
 	"mock-mailer": 
 	{
 		"task": "reply",
+		"listen-address": "ch.webelexis.mailer",
 		"match": 
 		[
 			{

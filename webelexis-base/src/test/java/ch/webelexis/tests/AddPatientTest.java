@@ -27,7 +27,9 @@ public class AddPatientTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			container.deployModule("rgwch~vertx-mod-mock~0.1.1", cfg, new AsyncResultHandler<String>() {
+			// container.deployModule("rgwch~vertx-mod-mock~0.1.1", cfg, new
+			// AsyncResultHandler<String>() {
+			container.deployVerticle("ch.webelexis.Verticle", cfg, new AsyncResultHandler<String>() {
 
 				@Override
 				public void handle(AsyncResult<String> res2) {
@@ -48,20 +50,28 @@ public class AddPatientTest extends TestVerticle {
 
 	@Test
 	public void runTest() {
-		eb.registerHandler("ch.webelexis.patient.add",
-				new AddPatientHandler(this, testDesc.getObject("config-addpatient")));
 		eb.send(AdminAddress, testDesc.getObject("mock-mongo"));
 		eb.send(AdminAddress, testDesc.getObject("mock-sql"));
 		eb.send(AdminAddress, testDesc.getObject("mock-mailer"));
-		JsonObject user1 = testDesc.getObject("testuser1");
-		eb.send("ch.webelexis.patient.add", user1, new AddUser2Handler());
+		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, testDesc
+					.getObject("config-addpatient")));
+	
+		vertx.setTimer(50, new Handler<Long>() {
+
+			@Override
+			public void handle(Long arg0) {
+				JsonObject user1 = testDesc.getObject("testuser1");
+				eb.send("ch.webelexis.patient.add", user1, new AddUser2Handler());
+			}
+		});
 	}
 
 	class AddUser2Handler implements Handler<Message<JsonObject>> {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
-			VertxAssert.assertEquals(msg.body().getString("status"), "ok");
+			VertxAssert.assertEquals("ok", msg.body().getString("status"));
+			VertxAssert.testComplete();
 		}
 
 	}

@@ -101,7 +101,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 			if (rb.getString("status").equals("ok")) {
 				if (rb.getArray("results").size() > 0) {
 					/* Patient exists, just create user */
-					final String pid = rb.getArray("results").get(0);
+					JsonArray row=rb.getArray("results").get(0);
+					final String pid = row.get(0);
 					addUser(c, pid);
 				} else {
 					try {
@@ -160,7 +161,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					.putString("patientid", pid).putString("firstname", cle.get("vorname", NAME, false))
 					.putString("lastname", cle.get("name", NAME, false));
 			user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
-			String pwd = cle.getOptional("pwd", null);
+			String pwd = cle.getOptional("pass", null);
 			if (pwd != null) {
 				user.putBinary("pwhash", makeHash(user.getString("username"), pwd));
 			}
