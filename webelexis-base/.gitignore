@@ -5,3 +5,5 @@ node_modules
 cfglocal.json
 /mods/
 /.settings/
+/npm-debug.log
+/config.codekit
