@@ -10,17 +10,10 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 
 import ch.webelexis.AuthorizingHandler;
+import ch.webelexis.VertxAccess;
 
-public class Server extends BusModBase {
-
-	EventBus eb() {
-		return eb;
-	}
-
-	Logger log() {
-		return logger;
-	}
-
+public class Server extends BusModBase implements VertxAccess{
+	
 	@Override
 	public void start() {
 		super.start();
@@ -31,5 +24,15 @@ public class Server extends BusModBase {
 						new PatientDetailHandler(this)));
 		eb.registerHandler("ch.webelexis.patient.add", new AuthorizingHandler(this, cAdd.getString("role"),
 				new AddPatientHandler(this, cAdd)));
+	}
+
+	@Override
+	public Logger getLog() {
+		return logger;
+	}
+
+	@Override
+	public EventBus getEventBus() {
+		return eb;
 	}
 }

@@ -1,0 +1,141 @@
+{
+	"config-mock": 
+	{
+		"admin-address": "ch.webelexis.tests"
+	},
+	"config-addpatient":{
+		"account":{
+			"mail-from": "me@here.ch",
+			"mail-bcc": "also_me@here.ch",
+			"mail-subject": "webelexis registration",
+			"mail-body": "this is it %token%"
+		}
+	},
+	"mock-mongo": 
+	{
+		"task": "reply",
+		"listen-address": "ch.webelexis.nosql",
+		"match": 
+		[
+			{
+				"message": 
+				{
+					"action": "findone"
+				},
+
+				"case-sensitive": true,
+				"match-reply": 
+				{
+					"status": "ok"
+				}
+			},
+
+			{
+				"message": 
+				{
+					"action": "findone",
+					"matcher": 
+					{
+						"username": "test-exists"
+					}
+				},
+
+				"case-sensitive": true,
+				"match-reply": 
+				{
+					"status": "ok",
+					"result": 
+					[
+						{
+							"username": "test-exists"
+						}
+					]
+				}
+			},
+
+			{
+				"message": 
+				{
+					"action": "save",
+					"collection": ".+",
+					"document": 
+					{
+						"user": ".+",
+						"patientid": ".{10,30}",
+						"firstname": "[\\w+ -.]",
+						"lastname": "[\\w+ -.]",
+						"pwhash": ".{5,}"
+					}
+				},
+
+				"match-reply": 
+				{
+					"status": "ok"
+				},
+
+				"case-sensitive": true
+			}
+		],
+
+		"nomatch-reply": 
+		{
+			"status": "test failure",
+			"message": "unexpected message"
+		}
+	},
+
+	"mock-sql": 
+	{
+		"task": "reply",
+		"listen-address": "ch.webelexis-sql",
+		"match": 
+		[
+			{
+				"message": 
+				{
+					"action": "prepared",
+					"statement": "select id from KONTAKT\\.+"
+				},
+
+				"case-sensitive": true,
+				"match-reply": 
+				{
+					"status": "ok",
+					"results": 
+					[
+						{
+							"id": "abcdefghijklmnopqrstuvwxyz"
+						}
+					]
+				}
+			},
+
+			{
+				"action": "insert"
+			}
+		]
+	},
+
+	"mock-mailer": 
+	{
+		"task": "reply",
+		"match": 
+		[
+			{
+				"message": 
+				{
+					"from": "[A-Z0-9_.]+@[a-z0-9_.]{2,}\\.[a-z]{2,4}",
+					"to": "[A-Z0-9_.]+@[a-z0-9_.]{2,}\\.[a-z]{2,4}",
+					"subject": ".+",
+					"body": ".+"
+				},
+
+				"case-sensitive": false,
+				"match-reply": 
+				{
+					"status": "ok"
+				}
+			}
+		]
+	}
+}

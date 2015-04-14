@@ -4,6 +4,11 @@
  */
 package ch.webelexis;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
@@ -95,5 +100,20 @@ public class Cleaner {
 	@Override
 	public String toString() {
 		return jo.body().encodePrettily();
+	}
+	
+	public static JsonObject createFromFile(String fpath) throws IOException{
+		File file = new File(fpath);
+		if (!file.exists()) {
+			System.out.println(file.getAbsolutePath());
+			throw new FileNotFoundException();
+		}
+		char[] buffer = new char[(int) file.length()];
+		FileReader fr = new FileReader(file);
+		fr.read(buffer);
+		fr.close();
+		String conf = new String(buffer).replaceAll("//.+\\n", "");
+		JsonObject ret=new JsonObject(conf);
+		return ret;
 	}
 }

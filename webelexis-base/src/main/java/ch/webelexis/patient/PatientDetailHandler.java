@@ -5,9 +5,12 @@
 package ch.webelexis.patient;
 
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.logging.Logger;
+import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
@@ -17,10 +20,14 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	private String[] fields = { "k.patientnr", "k.Bezeichnung1", "k.Bezeichnung2", "k.geschlecht", "k.geburtsdatum",
 			"k.Strasse", "k.plz", "k.Ort", "k.telefon1", "k.telefon2", "k.natelnr", "k.email", "k.gruppe", "k.bemerkung" };
 
-	Server server;
-
-	PatientDetailHandler(Server s) {
+	Verticle server;
+	EventBus eb;
+	Logger log;
+	
+	PatientDetailHandler(Verticle s) {
 		server = s;
+		eb=s.getVertx().eventBus();
+		log=s.getContainer().logger();
 	}
 
 	@Override
@@ -31,7 +38,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 			String sql = "SELECT " + String.join(",", fields) + " from KONTAKT as k where k.id=?";
 			JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement", sql)
 					.putArray("values", new JsonArray(new String[] { patId }));
-			server.eb().send("ch.webelexis.sql", jo, new PatDataHandler(externalRequest));
+			eb.send("ch.webelexis.sql", jo, new PatDataHandler(externalRequest));
 		} catch (ParametersException pex) {
 			cl.replyError("parameter error");
 		}
@@ -54,7 +61,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 				JsonObject jPat = ArrayToObject(fields, results);
 				req.reply(new JsonObject().putString("status", "ok").putObject("patient", jPat));
 			} else {
-				server.log().error(j.getString("status"));
+				log.error(j.getString("status"));
 				req.reply(new JsonObject().putString("status", "SQL error"));
 			}
 
