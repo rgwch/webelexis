@@ -78,7 +78,7 @@
     	"username": "user",					// username for auth
     	"password": "password",				// password for auth
     	"content-type":	"text/plain"		// optional. Or text/html to send html mails
-    }
+    },
     
     // config for patient data
     "patient": {

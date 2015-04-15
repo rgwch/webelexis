@@ -12,7 +12,7 @@
         "compile:jade": "jade src/main/resources/web -o dist/web/tmpl && mv dist/web/tmpl/index.html dist/web",
         "compile:java": "javac -encoding utf-8 -source 7 -target 7 -cp \"${VERTX_HOME}/lib/*\" src/main/java/ch/webelexis/*.java src/main/java/ch/webelexis/agenda/*.java src/main/java/ch/webelexis/patient/*.java -d dist",
         "compile:js": "r.js -o build-debug.js",
-        "compile:javatests": "javac -encoding utf-8 -source 7 -target 7 -cp \"${VERTX_HOME}/lib/*:${JUNIT_HOME}/*\" src/test/java/ch/webelexis/tests/*.java -d dist",
+        "compile:javatests": "javac -encoding utf-8 -source 7 -target 7 -cp \"${VERTX_HOME}/lib/*:${JUNIT_HOME}/*\" src/test/java/ch/webelexis/tests/*.java src/main/java/ch/webelexis/patient/*.java src/main/java/ch/webelexis/*.java -d dist",
         "build:client": "npm run create:dirs && npm run compile:jade && npm run compile:js",
         "preverticle": "npm run compile:java && cp cfglocal.json dist && cp src/main/resources/config_sample.json dist/config_defaults.json",
         "verticle": "cd dist && vertx run ch.webelexis.CoreVerticle -conf cfglocal.json",

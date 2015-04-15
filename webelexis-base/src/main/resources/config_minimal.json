@@ -32,6 +32,19 @@
         }],
         "role": "user"
     },
+     "mailer": {
+    	"address": "ch.webelexis.mailer",	
+    	"host":	"smpt.example.com"		
+    },
+    "patient": {
+        "add": {
+            "role": "guest",
+            "defaultRole": "patient" 
+        },
+    	"detail": {
+            "role": "arzt" 
+        }
+    },
 
     "id": "this is an identification for this config"
 }

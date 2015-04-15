@@ -72,7 +72,7 @@ public class CoreVerticle extends BusModBase {
 		try {
 			cfg_default = new JsonObject(conf);
 		} catch (DecodeException ex) {
-			log.fatal("Invalid config json");
+			System.out.println("Invalid config json");
 		}
 	}
 
