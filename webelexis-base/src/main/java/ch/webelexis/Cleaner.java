@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.vertx.java.core.eventbus.Message;
+import org.vertx.java.core.json.DecodeException;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
@@ -102,17 +103,24 @@ public class Cleaner {
 		return jo.body().encodePrettily();
 	}
 	
-	public static JsonObject createFromFile(String fpath) throws IOException{
+	/**
+	 * Create a JsonObject from a file. // Comments are stripped before parsing
+	 * @param fpath filename (with relative or absolute path)
+	 * @return a JsonObject created from that file
+	 * @throws IOException if the file was not found or could not be read
+	 * @throws DecodeException if the file was not a valid Json Object
+	 */
+	public static JsonObject createFromFile(String fpath) throws IOException, DecodeException{
 		File file = new File(fpath);
 		if (!file.exists()) {
 			System.out.println(file.getAbsolutePath());
-			throw new FileNotFoundException();
+			throw new IOException("File not found "+file.getAbsolutePath());
 		}
 		char[] buffer = new char[(int) file.length()];
 		FileReader fr = new FileReader(file);
 		fr.read(buffer);
 		fr.close();
-		String conf = new String(buffer).replaceAll("//.+\\n", "");
+		String conf = new String(buffer).replaceAll("//\\s+.+\\r?\\n+\\r?", "");
 		JsonObject ret=new JsonObject(conf);
 		return ret;
 	}

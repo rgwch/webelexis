@@ -34,6 +34,9 @@ public class AddPatientTest extends TestVerticle {
 				@Override
 				public void handle(AsyncResult<String> res2) {
 					if (res2.succeeded()) {
+						eb.send(AdminAddress, testDesc.getObject("mock-mongo"));
+						eb.send(AdminAddress, testDesc.getObject("mock-sql"));
+						eb.send(AdminAddress, testDesc.getObject("mock-mailer"));
 						startTests();
 					} else {
 						res2.cause().printStackTrace();
@@ -50,9 +53,7 @@ public class AddPatientTest extends TestVerticle {
 
 	@Test
 	public void runTest() {
-		eb.send(AdminAddress, testDesc.getObject("mock-mongo"));
-		eb.send(AdminAddress, testDesc.getObject("mock-sql"));
-		eb.send(AdminAddress, testDesc.getObject("mock-mailer"));
+	
 		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, testDesc
 					.getObject("config-addpatient")));
 

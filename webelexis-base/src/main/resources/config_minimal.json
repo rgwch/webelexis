@@ -1,50 +1,64 @@
 {
-    "sql": {
-        "address": "ch.webelexis.sql",
-        "connection": "MySQL",
-        "host": "localhost",
-        "username": "database-user",
-        "password": "database-password",
-        "database": "elexis"
-    },
-	"auth": {
+	"sql": 
+	{
+		"address": "ch.webelexis.sql",
+		"connection": "MySQL",
+		"host": "localhost",
+		"username": "database-user",
+		"password": "database-password",
+		"database": "elexis"
+	},
+
+	"auth": 
+	{
 		"address": "ch.webelexis.session",
 		"persistor_address": "ch.webelexis.nosql",
 		"users_collection": "users"
 	},
 
-    "agenda": {
-    	"public": {
-        	"resource": "gerry",
-        	"timeSlot": 30,
-        "maxPerDay": 4,
-        "apptType": "Normal",
-        "apptState": "Via Internet",
-        "role": "guest"
-        },
-        "private":{
-        "resources": [{
-            "resource": "gerry",
-            "title": "G. Weirich"
-        }, {
-            "resource": "labor",
-            "title": "Labor"
-        }],
-        "role": "user"
-    },
-     "mailer": {
-    	"address": "ch.webelexis.mailer",	
-    	"host":	"smpt.example.com"		
-    },
-    "patient": {
-        "add": {
-            "role": "guest",
-            "defaultRole": "patient" 
-        },
-    	"detail": {
-            "role": "arzt" 
-        }
-    },
+	"agenda": 
+	{
+		"public": 
+		{
+			"resource": "gerry",
+			"timeSlot": 30,
+			"maxPerDay": 4,
+			"apptType": "Normal",
+			"apptState": "Via Internet",
+			"role": "guest"
+		},
 
-    "id": "this is an identification for this config"
+		"private": 
+		{
+			"resources": 
+			[
+				{
+					"resource": "gerry",
+					"title": "G. Weirich"
+				},
+
+				{
+					"resource": "labor",
+					"title": "Labor"
+				}
+			],
+
+			"role": "user"
+		}
+	},
+
+	"account": 
+	{
+		"allow-creation": false
+	},
+
+	"patient": 
+	{
+		"detail": 
+		{
+			"role": "arzt"
+		}
+	},
+
+	"id": "this is an identification for this config"
 }

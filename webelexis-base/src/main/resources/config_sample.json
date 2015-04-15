@@ -69,30 +69,32 @@
         }
 
     },
-    "mailer": {
-    	"address": "ch.webelexis.mailer",	// do not change this
-    	"host":	"smpt.example.com",			// URL of your mail provider
-    	"port":	25,							// optional
-    	"ssl":	true,						// optional, defaults to false
-    	"auth": true,						// optional, defaults to false
-    	"username": "user",					// username for auth
-    	"password": "password",				// password for auth
-    	"content-type":	"text/plain"		// optional. Or text/html to send html mails
+    "account": {
+    	"allow-creation": true,
+    	"role": "guest", // role needed to create an account
+        "defaultRole": "patient", // role, a newly created account will have 
+    	
+    	"confirm-mail": true,		// true to send confirmation mail on account creation
+	    "mailer": {					// mailer only needed if confirm-mail is true
+	    	"address": "ch.webelexis.mailer",		// do not change this
+	    	"host":	"smpt.example.com",				// URL of your mail provider
+	    	"port":	25,								// optional
+	    	"ssl":	true,							// optional, defaults to false
+	    	"auth": true,							// optional, defaults to false
+	    	"username": "user",						// username for auth
+	    	"password": "password",					// password for auth
+	    	"content-type":	"text/plain",			// optional. Or text/html to send html mails
+	    	"mail-from":	"me@mail.example.com",	// sender of the confirmation mail
+	        "mail-bcc":		"archive@mail.example.com",
+	        "mail-subject": "Confirm Webelexis account",
+	        "mail-body": "To activate your account, please vistit this url: %url%"
+	        }
+    	
     },
-    
+    	
     // config for patient data
     "patient": {
-        "add": {
-            "role": "guest", // role needed to create an account
-            "defaultRole": "patient" // role, a newly created account will have 
-        },
-        "account":{
-        	"mail-from":	"me@mail.example.com",
-        	"mail-bcc":		"archive@mail.example.com",
-        	"mail-subject": "Confirm Webelexis account",
-        	"mail-body": "To activate your account, please vistit this url: %url%"
-        },
-    	"detail": {
+       	"detail": {
             "icpc-problems": true, // load problem list (Plugin ICPC is installed)
             "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)
             "stickers": true, // load stickers

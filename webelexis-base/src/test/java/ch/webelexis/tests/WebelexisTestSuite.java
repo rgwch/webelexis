@@ -5,9 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	CoreVerticleTest.class,
-	AgendaTestAnon.class,
-	AgendaTestAuthorized.class
+	ConfigFileChecker.class,
+	AddPatientTest.class,
 })
 public class WebelexisTestSuite {
 
