@@ -42,7 +42,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 	Logger log = Server.log;
 	JsonObject cfg;
 
-	PublicAgendaListHandler(EventBus eb, JsonObject cfg) {
+	public PublicAgendaListHandler(EventBus eb, JsonObject cfg) {
 		this.eb = eb;
 		this.cfg = cfg;
 	}

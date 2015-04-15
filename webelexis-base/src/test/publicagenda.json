@@ -1,0 +1,30 @@
+{
+	"config-mock":{"admin-address":"ch.webelexis.test.mock"},
+	"mock-sql":{
+		"task": "reply",
+		"listen-address":"ch.webelexis.sql",
+			"match":{
+			"message":{
+				"action":"prepared",
+				"statement":"SELECT Tag.+",
+				"values":[
+				"[0-9]{8,8}",
+				"[0-9]{8,8}",
+				"\\w+"	
+				]
+			},
+			"case-sensitive": true,
+			"match-reply": {
+				"status":"ok",
+				"results": [["20150331","700","30","blah","occupied","123456789abcdert"]]
+			}
+		}
+		
+	},
+	"listDay":{
+		"resource":"blah",
+		"begin":"20150331",
+		"end":"20150331"
+	}
+	
+}

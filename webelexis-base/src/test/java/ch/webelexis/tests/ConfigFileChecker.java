@@ -45,6 +45,11 @@ public class ConfigFileChecker{
 			JsonObject cfg=Cleaner.createFromFile("src/main/resources/mod.json");
 			assertNotNull(cfg);
 		}
+		@Test
+		public void checkPublicAgendaList() throws  DecodeException, IOException{
+			JsonObject cfg=Cleaner.createFromFile("src/test/publicagenda.json");
+			assertNotNull(cfg);
+		}
 		
 }
 
