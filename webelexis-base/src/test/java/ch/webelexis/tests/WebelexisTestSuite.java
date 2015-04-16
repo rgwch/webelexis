@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	ConfigFileChecker.class,
 	AddPatientTest.class,
+	PublicAgendaListTest.class
 })
 public class WebelexisTestSuite {
 

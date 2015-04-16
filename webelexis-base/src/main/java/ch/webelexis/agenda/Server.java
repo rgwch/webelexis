@@ -32,7 +32,7 @@ public class Server extends BusModBase {
 		// final JsonObject aCfg=cfg.getObject("agenda");
 		final JsonObject pubCfg = cfg.getObject("public");
 		final JsonObject priCfg = cfg.getObject("private");
-		final PublicAgendaListHandler publiclistHandler = new PublicAgendaListHandler(eb, pubCfg);
+		final PublicAgendaListHandler publiclistHandler = new PublicAgendaListHandler(this, pubCfg);
 		final PublicAgendaInsertHandler publicinsertHandler = new PublicAgendaInsertHandler(this, pubCfg);
 		final PrivateAgendaListHandler privateListHandler = new PrivateAgendaListHandler(eb, priCfg);
 		final PrivateAgendaInsertHandler privateInsertHandler = new PrivateAgendaInsertHandler(eb, priCfg);

@@ -20,6 +20,7 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.json.impl.Json;
 import org.vertx.java.core.logging.Logger;
+import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
@@ -39,11 +40,12 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 	static final int FLD_RESOURCE = 3;
 	static final int FLD_TYPE = 4;
 	static final int FLD_TERMIN_ID = 5;
-	Logger log = Server.log;
+	Logger log;
 	JsonObject cfg;
 
-	public PublicAgendaListHandler(EventBus eb, JsonObject cfg) {
-		this.eb = eb;
+	public PublicAgendaListHandler(Verticle v, JsonObject cfg) {
+		this.eb = v.getVertx().eventBus();
+		this.log=v.getContainer().logger();
 		this.cfg = cfg;
 	}
 

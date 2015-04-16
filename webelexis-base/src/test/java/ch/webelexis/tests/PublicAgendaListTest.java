@@ -30,7 +30,7 @@ public class PublicAgendaListTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			container.deployModule("rgwch~vertx-mod-mock~0.1.3", cfg, new AsyncResultHandler<String>() {
+			container.deployModule("rgwch~vertx-mod-mock~0.2.0", cfg, new AsyncResultHandler<String>() {
 				// container.deployVerticle("ch.webelexis.Verticle", cfg, new
 				// AsyncResultHandler<String>() {
 
@@ -54,13 +54,13 @@ public class PublicAgendaListTest extends TestVerticle {
 
 	@Test
 	public void listAppointments() {
-		eb.registerHandler(AGENDA_LIST, new PublicAgendaListHandler(eb,testDesc.getObject("agendaList")));
+		eb.registerHandler(AGENDA_LIST, new PublicAgendaListHandler(this,testDesc.getObject("agendaList")));
 		vertx.setTimer(DELAY, new Handler<Long>() {
 
 			@Override
 			public void handle(Long arg0) {
 				JsonObject listDay = testDesc.getObject("listDay");
-				eb.send("ch.webelexis.patient.add", listDay, new ListDayHandler() );
+				eb.send(AGENDA_LIST, listDay, new ListDayHandler() );
 			}
 		});
 	}
@@ -68,8 +68,8 @@ public class PublicAgendaListTest extends TestVerticle {
 	class ListDayHandler implements Handler<Message<JsonObject>>{
 
 		@Override
-		public void handle(Message<JsonObject> arg0) {
-			//VertxAssert.assertEquals(arg0, arg1);
+		public void handle(Message<JsonObject> msg) {
+			VertxAssert.testComplete();
 		}
 		
 	}

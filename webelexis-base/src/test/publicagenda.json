@@ -3,8 +3,9 @@
 	"mock-sql":{
 		"task": "reply",
 		"listen-address":"ch.webelexis.sql",
-			"match":{
-			"message":{
+			"match":[
+			{	
+				"message":{
 				"action":"prepared",
 				"statement":"SELECT Tag.+",
 				"values":[
@@ -12,14 +13,20 @@
 				"[0-9]{8,8}",
 				"\\w+"	
 				]
-			},
-			"case-sensitive": true,
-			"match-reply": {
-				"status":"ok",
-				"results": [["20150331","700","30","blah","occupied","123456789abcdert"]]
+				},
+				"case-sensitive": true,
+				"match-reply": {
+					"status":"ok",
+					"results": [["20150331","700","30","blah","occupied","123456789abcdert"],
+					["20150331","730","60","blah","available","abc"],
+					["20150331","830","30","blah","occupied","def"]]
+				}
 			}
-		}
+		]
 		
+	},
+	"agendaList":{
+		"resource": "blah"
 	},
 	"listDay":{
 		"resource":"blah",
