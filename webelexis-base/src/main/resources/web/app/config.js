@@ -16,7 +16,8 @@ define(['knockout'], function (ko) {
         sessionID: "",
         user: ko.observable({
             "loggedIn": false,
-            "roles": ["guest"]
+            "roles": ["guest"],
+            "username": ""
         }),
         connected: ko.observable(false),
         loc: {
@@ -115,14 +116,14 @@ define(['knockout'], function (ko) {
                 role: "guest"
             },
             {
-                title: 'Personalien eintragen',
+                title: 'Konto erstellen',
                 baseUrl: "#addpatient",
                 match: /^addpatient$/,
                 component: 'ch-webelexis-addpatient',
                 location: 'components/addpatient',
                 active: true,
                 role: "guest",
-                menuItem: true
+                menuItem: false
             }
 
     ]

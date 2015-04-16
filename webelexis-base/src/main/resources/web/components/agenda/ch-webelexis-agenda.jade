@@ -12,15 +12,12 @@
                 .col-xs-12.col-md-6
                     .well.well-sm(data-bind="text:displayText, css: displayClass, click: $parent.expand")
                     div(data-bind="if: expanded")
-                        form.form(data-bind="submit: $parent.addAppointment")
-                            .form-group
-                                label.sr-only(for="email") E-Mail
-                                input.form-control#email(type="email" placeholder="E-Mail Adresse" required)
-                            .form-group
-                                label.sr-only(for="password") Password
-                                input.form-control#password(type="password" placeholder="Passwort")
-                            button.btn.btn-primary(type="submit") Termin vereinbaren
-                            button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
+                        .alert.alert-info(role="alert" data-bind="visible: $parent.loggedIn().length==0") Bitte loggen Sie sich ein, um einen Termin zu vereinbaren.
+                        .alert.alert-success(role="alert" data-bind="visible: $parent.loggedIn().length!=0")
+                            form.form(data-bind="submit: $parent.addAppointment")
+                                div(data-bind="text: 'Angemeldet als:'+$parent.loggedIn()")
+                                button.btn.btn-primary(type="submit") Termin vereinbaren
+                        button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
         .panel-footer
             .p.small.
                 Die Verwendung dieser Website geschieht ohne Gewähr. Für fehlerhaft übertragene Termine wird keine

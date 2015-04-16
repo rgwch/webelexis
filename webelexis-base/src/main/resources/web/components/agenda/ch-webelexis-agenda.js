@@ -136,6 +136,10 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
             self.appointments.removeAll()
         }
 
+        self.loggedIn = ko.pureComputed(function(){
+            return cfg.user().username
+        })
+        
         self.addAppointment = function ( /*formElement*/ ) {
             //console.log("addApp" + $("input#patname").val())
             //console.log(this.begin)

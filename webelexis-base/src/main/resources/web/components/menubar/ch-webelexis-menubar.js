@@ -15,8 +15,8 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
         self.menuItems = ko.observableArray(cfg[params.menu])
         self.unam = ko.observable()
         self.upwd = ko.observable()
-            //self.loggedIn = ko.observable(false)
-
+    
+        // subscribe for changes of user
         cfg.user.subscribe(function () {
             self.adaptForUser()
         })
@@ -53,7 +53,8 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
             }, function (result) {
                 cfg.user({
                     "loggedIn": false,
-                    "roles": ["guest"]
+                    "roles": ["guest"],
+                    "username": ""
                 })
                 self.unam("")
                 self.upwd("")
