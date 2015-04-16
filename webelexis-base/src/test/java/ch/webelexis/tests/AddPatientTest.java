@@ -1,3 +1,7 @@
+/**
+ * This file is part of Webelexis
+ * Copyright (c) 2015 by G. Weirich
+ */
 package ch.webelexis.tests;
 
 import java.io.IOException;
@@ -13,12 +17,13 @@ import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
 import ch.webelexis.Cleaner;
-import ch.webelexis.patient.AddPatientHandler;
+import ch.webelexis.account.AddPatientHandler;
 
 public class AddPatientTest extends TestVerticle {
 	JsonObject testDesc;
 	EventBus eb;
 	String AdminAddress;
+	long DELAY = 50;
 
 	public void start() {
 		initialize();
@@ -27,10 +32,7 @@ public class AddPatientTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			container.deployModule("rgwch~vertx-mod-mock~0.1.3", cfg, new AsyncResultHandler<String>() {
-				// container.deployVerticle("ch.webelexis.Verticle", cfg, new
-				// AsyncResultHandler<String>() {
-
+			container.deployModule("rgwch~vertx-mod-mock~0.2.0", cfg, new AsyncResultHandler<String>() {
 				@Override
 				public void handle(AsyncResult<String> res2) {
 					if (res2.succeeded()) {
@@ -52,17 +54,42 @@ public class AddPatientTest extends TestVerticle {
 	}
 
 	@Test
-	public void runTest() {
-	
-		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, testDesc
-					.getObject("config-addpatient")));
+	public void addUser1() {
 
-		vertx.setTimer(50, new Handler<Long>() {
+		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, testDesc.getObject("config-addpatient")));
+
+		vertx.setTimer(DELAY, new Handler<Long>() {
 
 			@Override
 			public void handle(Long arg0) {
 				JsonObject user1 = testDesc.getObject("testuser1");
-				eb.send("ch.webelexis.patient.add", user1, new AddUser2Handler());
+				eb.send("ch.webelexis.patient.add", user1, new AddUserHandler());
+			}
+		});
+	}
+
+	class AddUserHandler implements Handler<Message<JsonObject>> {
+
+		@Override
+		public void handle(Message<JsonObject> msg) {
+			VertxAssert.assertEquals("ok", msg.body().getString("status"));
+			VertxAssert.testComplete();
+		}
+	}
+
+	@Test
+	public void addUser2() {
+
+		JsonObject addp = testDesc.getObject("config-addpatient");
+		addp.putBoolean("confirm-mail", true);
+		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, addp));
+
+		vertx.setTimer(DELAY, new Handler<Long>() {
+
+			@Override
+			public void handle(Long arg0) {
+				JsonObject user2 = testDesc.getObject("testuser2");
+				eb.send("ch.webelexis.patient.add", user2, new AddUser2Handler());
 			}
 		});
 	}
@@ -73,13 +100,8 @@ public class AddPatientTest extends TestVerticle {
 		public void handle(Message<JsonObject> msg) {
 			VertxAssert.assertEquals("ok", msg.body().getString("status"));
 			VertxAssert.testComplete();
+
 		}
 
 	}
-
-	/*
-	 * @Override public Logger getLog() { return getContainer().logger(); }
-	 * 
-	 * @Override public EventBus getEventBus() { return getVertx().eventBus(); }
-	 */
 }

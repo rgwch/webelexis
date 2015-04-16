@@ -12,15 +12,24 @@
 		"geburtsdatum": "19810331",
 		"pass": "topSecret"
 	},
-
+	"testuser2":
+	{
+		"username":"test@exis.ts",
+		"vorname":"Hans Guck",
+		"name":"In die-luft",
+		"geburtsdatum":"19501201",
+		"pass":"toppersecret"
+	},
+	
 	"config-addpatient": 
 	{
-		"account": 
+		"default-role": "patient",	
+		"mailer": 
 		{
-			"mail-from": "me@here.ch",
-			"mail-bcc": "also_me@here.ch",
-			"mail-subject": "webelexis registration",
-			"mail-body": "this is it %token%"
+			"from": "me@here.ch",
+			"bcc": "also_me@here.ch",
+			"subject": "webelexis registration",
+			"body": "this is it %url%"
 		}
 	},
 
@@ -49,7 +58,7 @@
 					"action": "findone",
 					"matcher": 
 					{
-						"username": "test-exists"
+						"username": "test@exis.ts"
 					}
 				},
 
@@ -60,7 +69,7 @@
 					"result": 
 					[
 						{
-							"username": "test-exists"
+							"username": "test@exis.ts"
 						}
 					]
 				}

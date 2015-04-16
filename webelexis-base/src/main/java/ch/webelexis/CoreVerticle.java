@@ -49,28 +49,20 @@ public class CoreVerticle extends BusModBase {
 	 * vert.x module repository as needed.
 	 */
 	V[] modules = new V[] { new V("sql", "io.vertx~mod-mysql-postgresql_2.10~0.3.1"),
-			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0"), new V("mailer", "io.vertx~mod-mailer~2.0.0-final") /*
-																														 * , new V("auth",
-																														 * "rgwch~vertx-msod-sessionmgr~0.2.4"
-																														 * )
-																														 */};
+			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0")
+	/* , new V("auth", "rgwch~vertx-msod-sessionmgr~0.2.4" ) */};
 
 	V[] verticles = new V[] { new V("agenda", "ch.webelexis.agenda.Server"),
-			new V("patient", "ch.webelexis.patient.Server"), new V("auth", "ch.webelexis.SessionManager") };
+			new V("account", "ch.webelexis.account.Server"), new V("auth", "ch.webelexis.SessionManager") };
 
 	public CoreVerticle() throws IOException {
 		File file = new File("config_defaults.json"); // production mode
 		if (!file.exists()) {
-			file = new File("src/main/resources/config_sample.json"); // IDE
+			file = new File("src/main/resources/fieldNameconfig_sample.json"); // IDE
 			// mode
 		}
-		char[] buffer = new char[(int) file.length()];
-		FileReader fr = new FileReader(file);
-		/* int num= */fr.read(buffer);
-		fr.close();
-		String conf = new String(buffer).replaceAll("//.+\\n", "");
 		try {
-			cfg_default = new JsonObject(conf);
+			cfg_default = Cleaner.createFromFile(file.getAbsolutePath());
 		} catch (DecodeException ex) {
 			System.out.println("Invalid config json");
 		}
@@ -117,7 +109,7 @@ public class CoreVerticle extends BusModBase {
 		SockJSServer sock = vertx.createSockJSServer(http);
 		sock.bridge(new JsonObject().putString("prefix", "/eventbus"), bridgeCfg.getArray("inOK"),
 				bridgeCfg.getArray("outOK"));
-		//sock.setHook(new EventBusHook());
+		// sock.setHook(new EventBusHook());
 		http.listen(bridgeCfg.getInteger("port"));
 	}
 

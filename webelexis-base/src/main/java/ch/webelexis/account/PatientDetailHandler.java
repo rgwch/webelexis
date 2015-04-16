@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-package ch.webelexis.patient;
+package ch.webelexis.account;
 
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;

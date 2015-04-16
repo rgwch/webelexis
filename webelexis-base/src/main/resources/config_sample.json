@@ -84,17 +84,12 @@
 	    	"username": "user",						// username for auth
 	    	"password": "password",					// password for auth
 	    	"content-type":	"text/plain",			// optional. Or text/html to send html mails
-	    	"mail-from":	"me@mail.example.com",	// sender of the confirmation mail
-	        "mail-bcc":		"archive@mail.example.com",
-	        "mail-subject": "Confirm Webelexis account",
-	        "mail-body": "To activate your account, please vistit this url: %url%"
-	        }
-    	
-    },
-    	
-    // config for patient data
-    "patient": {
-       	"detail": {
+	    	"from":	"me@mail.example.com",	// sender of the confirmation mail
+	        "bcc":		"archive@mail.example.com",
+	        "subject": "Confirm Webelexis account",
+	        "body": "To activate your account, please vistit this url: %url%"
+	        },	
+	   "emr": {	// config for the electronic medical record access
             "icpc-problems": true, // load problem list (Plugin ICPC is installed)
             "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)
             "stickers": true, // load stickers
@@ -102,7 +97,9 @@
             "lab": true, // load lab values
             "role": "arzt" // role needed to read patient details
         }
+    	
     },
+    	
     // config for the EventBus-Websocket bridge and the html server
     "bridge": {
         "webroot": "web", // Base path. Optional, this is the default

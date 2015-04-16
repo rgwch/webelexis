@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-package ch.webelexis.patient;
+package ch.webelexis.account;
 
 import static ch.webelexis.Cleaner.ELEXISDATE;
 import static ch.webelexis.Cleaner.MAIL;
@@ -15,6 +15,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+import org.vertx.java.core.AsyncResult;
+import org.vertx.java.core.AsyncResultHandler;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
@@ -38,8 +40,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	public AddPatientHandler(Verticle server, JsonObject cfg) {
 		this.server = server;
 		this.cfg = cfg;
-		log=server.getContainer().logger();
-		eb=server.getVertx().eventBus();
+		log = server.getContainer().logger();
+		eb = server.getVertx().eventBus();
 	}
 
 	@Override
@@ -68,8 +70,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 										.putString("statement", sql)
 										.putArray(
 												"values",
-												new JsonArray(new String[] { c.get("name", NAME, false),
-														c.get("vorname", NAME, false), c.get("geburtsdatum", ELEXISDATE, false) }));
+												new JsonArray(new String[] { c.get("name", NAME, false), c.get("vorname", NAME, false),
+														c.get("geburtsdatum", ELEXISDATE, false) }));
 								eb.send("ch.webelexis.sql", jo, new QueryResultHandler(c));
 							} catch (ParametersException pex) {
 								log.error(pex.getMessage(), pex);
@@ -101,7 +103,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 			if (rb.getString("status").equals("ok")) {
 				if (rb.getArray("results").size() > 0) {
 					/* Patient exists, just create user */
-					JsonArray row=rb.getArray("results").get(0);
+					JsonArray row = rb.getArray("results").get(0);
 					final String pid = row.get(0);
 					addUser(c, pid);
 				} else {
@@ -165,42 +167,51 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 			if (pwd != null) {
 				user.putBinary("pwhash", makeHash(user.getString("username"), pwd));
 			}
-			user.putString("confirmID", UUID.randomUUID().toString());
 			JsonObject op = new JsonObject().putString("action", "save").putString("collection", "users")
 					.putObject("document", user);
 			eb.send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
 
 				@Override
 				public void handle(Message<JsonObject> reply) {
-					// that's it, everything went successfully. Send User a conformation
+					// that's it, everything went successfully. Send User a confirmation
 					// mail
-					JsonObject account = cfg.getObject("account");
 
-					if (account != null) {
-						JsonObject mail = new JsonObject().putString("from", account.getString("mail-from"))
-								.putString("to", user.getString("username")).putString("bcc", account.getString("mail-bcc"))
-								.putString("subject", account.getString("mail-subject"))
-								.putString("body", account.getString("mail-body"));
+					if (cfg.getBoolean("confirm-mail",false)) {
+						JsonObject mailer = cfg.getObject("mailer");
+						user.putString("confirmID", UUID.randomUUID().toString());
+						mailer.putString("to", user.getString("username"));
+						mailer.putString("body", mailer.getString("body").replaceFirst("%url%", user.getString("confirmID")));
+						server.getContainer().deployModule("io.vertx~mod-mailer~2.0.0-final", mailer,
+								new AsyncResultHandler<String>() {
 
-						eb.send("ch.webelexis.mailer", mail, new Handler<Message<JsonObject>>() {
+									@Override
+									public void handle(AsyncResult<String> mailerResult) {
+										if (mailerResult.succeeded()) {
+											eb.send("ch.webelexis.mailer", mailer, new Handler<Message<JsonObject>>() {
 
-							@Override
-							public void handle(Message<JsonObject> mailerReply) {
-								if (mailerReply.body().getString("status").equals("ok")) {
-									cle.replyOk();
-								} else {
-									log.error("mailer error: " + mailerReply.body().encodePrettily());
-									cle.replyError("mail error");
-								}
-							}
-						});
+												@Override
+												public void handle(Message<JsonObject> mailerReply) {
+													if (mailerReply.body().getString("status").equals("ok")) {
+														cle.replyOk();
+													} else {
+														log.error("mailer error: " + mailerReply.body().encodePrettily());
+														cle.replyError("mail error");
+													}
+												}
+											});
+
+										} else {
+											log.error("error launching mailer " + mailerResult.result());
+											cle.replyError("mail error");
+										}
+									}
+								});
+
+					} else { // no confirmation mail
 						cle.reply(reply.body());
-
-					} else {
-						log.error("no mail account set up");
-						cle.replyError("mail error");
 					}
 				}
+
 			});
 
 		} catch (ParametersException pex) {
