@@ -4,10 +4,10 @@
  */
 package ch.webelexis.agenda;
 
-import static ch.webelexis.Cleaner.DATE;
+import static ch.webelexis.Cleaner.ELEXISDATE;
 import static ch.webelexis.Cleaner.IP;
-import static ch.webelexis.Cleaner.TEXT;
 import static ch.webelexis.Cleaner.TIME;
+import static ch.webelexis.Cleaner.UID;
 
 import java.util.Date;
 import java.util.UUID;
@@ -61,32 +61,29 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 			resource = "default";
 		}
 		try {
-			String day = cl.get("day", DATE, false);
-			String name = cl.get("name", TEXT, false);
+			String day = cl.get("day", ELEXISDATE, false);
+			String patid = cl.get("patid", UID, false);
 			String[] timeString = cl.get("time", TIME, false).split(":");
-			if (day.length() > 0 && name.length() > 0 && timeString.length == 2) {
-				int time = Integer.parseInt(timeString[0]) * 60 + Integer.parseInt(timeString[1]);
-				JsonObject bridge = new JsonObject()
-						.putString("action", "prepared")
-						.putString(
-								"statement",
-								"INSERT INTO AGNTERMINE (ID,lastupdate,Tag,Bereich,Beginn,Dauer,TerminTyp,TerminStatus,Grund,PatID) VALUES(?,?,?,?,?,?,?,?,?,?)")
-						.putArray(
-								"values",
-								new JsonArray(new String[] { UUID.randomUUID().toString(), Long.toString(new Date().getTime()), day,
-										resource, Integer.toString(time), "30", apptType, apptState, cl.get("ip", IP, true), name }));
-				eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
-					@Override
-					public void handle(Message<JsonObject> event) {
-						externalEvent.reply(event.body());
+			int time = Integer.parseInt(timeString[0]) * 60 + Integer.parseInt(timeString[1]);
+			JsonObject bridge = new JsonObject()
+					.putString("action", "prepared")
+					.putString(
+							"statement",
+							"INSERT INTO AGNTERMINE (ID,lastupdate,Tag,Bereich,Beginn,Dauer,TerminTyp,TerminStatus,Grund,PatID) VALUES(?,?,?,?,?,?,?,?,?,?)")
+					.putArray(
+							"values",
+							new JsonArray(new String[] { UUID.randomUUID().toString(), Long.toString(new Date().getTime()), day,
+									resource, Integer.toString(time), "30", apptType, apptState, cl.get("ip", IP, true), patid }));
+			eb.send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
 
-					}
-				});
-			} else {
-				System.out.println(cl.toString());
-				cl.reply(new JsonObject().putString("status", "error").putString("message", "syntax error"));
-			}
+				@Override
+				public void handle(Message<JsonObject> event) {
+					externalEvent.reply(event.body());
+
+				}
+			});
+
 		} catch (ParametersException pex) {
 			log.error(pex.getMessage(), pex);
 			cl.replyError("parameter error");

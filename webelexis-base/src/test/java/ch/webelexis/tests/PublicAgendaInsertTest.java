@@ -19,8 +19,8 @@ public class PublicAgendaInsertTest extends TestVerticle {
 	JsonObject testDesc;
 	EventBus eb;
 	String AdminAddress;
-	String AGENDA_INSERT="ch.webelexis.agenda.insert";
-	long DELAY=50;
+	String AGENDA_INSERT = "ch.webelexis.agenda.insert";
+	long DELAY = 50;
 
 	public void start() {
 		initialize();
@@ -50,29 +50,28 @@ public class PublicAgendaInsertTest extends TestVerticle {
 		}
 
 	}
-	
+
 	@Test
 	public void insertAppointment() {
-		eb.registerHandler(AGENDA_INSERT, new PublicAgendaInsertHandler(this,testDesc.getObject("agendaList")));
+		eb.registerHandler(AGENDA_INSERT, new PublicAgendaInsertHandler(this, testDesc.getObject("agendaList")));
 		vertx.setTimer(DELAY, new Handler<Long>() {
 
 			@Override
 			public void handle(Long arg0) {
 				JsonObject insert = testDesc.getObject("insertApp");
-				eb.send(AGENDA_INSERT, insert, new ListDayHandler() );
+				eb.send(AGENDA_INSERT, insert, new InsertAppntHandler());
 			}
 		});
 	}
 
-	class ListDayHandler implements Handler<Message<JsonObject>>{
+	class InsertAppntHandler implements Handler<Message<JsonObject>> {
 
 		@Override
 		public void handle(Message<JsonObject> msg) {
-			VertxAssert.assertEquals("ok",msg.body().getString("status"));
+			VertxAssert.assertEquals("ok", msg.body().getString("status"));
 			VertxAssert.testComplete();
 		}
-		
-	}
 
+	}
 
 }
