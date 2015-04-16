@@ -12,13 +12,13 @@ import static ch.webelexis.Cleaner.TIME;
 import java.util.Date;
 import java.util.UUID;
 
-import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
+import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
@@ -35,10 +35,10 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 	JsonObject cfg;
 	Logger log;
 
-	PublicAgendaInsertHandler(BusModBase bus, JsonObject cfg) {
-		this.eb = bus.getVertx().eventBus();
+	public PublicAgendaInsertHandler(Verticle v, JsonObject cfg) {
+		this.eb = v.getVertx().eventBus();
 		this.cfg = cfg;
-		this.log = bus.getContainer().logger();
+		this.log = v.getContainer().logger();
 	}
 
 	/**
