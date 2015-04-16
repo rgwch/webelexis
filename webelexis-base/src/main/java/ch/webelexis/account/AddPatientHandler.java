@@ -177,7 +177,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					// mail
 
 					if (cfg.getBoolean("confirm-mail",false)) {
-						JsonObject mailer = cfg.getObject("mailer");
+						final JsonObject mailer = cfg.getObject("mailer");
 						user.putString("confirmID", UUID.randomUUID().toString());
 						mailer.putString("to", user.getString("username"));
 						mailer.putString("body", mailer.getString("body").replaceFirst("%url%", user.getString("confirmID")));
