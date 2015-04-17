@@ -23,11 +23,11 @@ mixin createFields
 
 form.form#eingabe(data-bind="submit: send")
     div
-        input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
-        span  Wenn Sie noch nie bei uns waren, wählen Sie bitte diese Option und füllen Sie alle Felder aus.
-    div
         input(type="radio" name="anzeige" id="anzeige_alt" value="palt" data-bind="checked: accountDisplay")
         span  Wenn Sie schon Patient/in bei uns sind, und jetzt nur ein Konto für die Online-Terminvergabe erstellen möchten, wählen Sie bitte diese Option.
+    div
+        input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
+        span  Wenn Sie noch nie bei uns waren, wählen Sie bitte diese Option und füllen Sie alle Felder aus.
     div
         input(type="radio" name="anzeige" id="login_only" value="login" data-bind="checked: accountDisplay")
         span  Wenn Sie bereits ein Konto haben, können Sie direkt zum 
