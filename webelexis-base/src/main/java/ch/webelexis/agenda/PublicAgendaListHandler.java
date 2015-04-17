@@ -40,6 +40,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 	static final int FLD_RESOURCE = 3;
 	static final int FLD_TYPE = 4;
 	static final int FLD_TERMIN_ID = 5;
+	static final int FLD_PATIENT_ID=6;
 	Logger log;
 	JsonObject cfg;
 
@@ -66,7 +67,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 			JsonObject bridge = new JsonObject()
 					.putString("action", "prepared")
 					.putString("statement",
-							"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+							"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID, PatID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 					.putArray(
 							"values",
 							new JsonArray(new String[] { cl.get("begin", ELEXISDATE, false), cl.get("begin", ELEXISDATE, false),
@@ -79,7 +80,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 					JsonObject res = returnvalue.body();
 					if (res.getString("status").equals("ok")) {
 
-						externalRequest.reply(fillBlanks(res.getArray("results").toArray(), null));
+						externalRequest.reply(fillBlanks(res.getArray("results").toArray(),externalRequest.body().getObject("authorized_user")));
 
 					} else {
 						System.out.println(Json.encodePrettily(res));
@@ -98,7 +99,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 	 * 
 	 * @param set
 	 */
-	private JsonObject fillBlanks(Object[] appointments, JsonArray mixin) {
+	private JsonObject fillBlanks(Object[] appointments, JsonObject user) {
 		TreeSet<JsonArray> orderedList = new TreeSet<JsonArray>(new Comparator<JsonArray>() {
 			@Override
 			public int compare(JsonArray o1, JsonArray o2) {
@@ -112,22 +113,18 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 				return day1.compareTo(day2);
 			}
 		});
-
+		
+		String userid="-";
+		if(user!=null){
+			userid=user.getString("patientid","-");
+		}
 		for (Object li : appointments) {
 			@SuppressWarnings("unchecked")
 			List<Object> line = (ArrayList<Object>) li;
 			line.set(FLD_TYPE, "occupied");
 			orderedList.add(new JsonArray(line));
 		}
-		if (mixin != null) {
-			@SuppressWarnings("rawtypes")
-			Iterator it = mixin.iterator();
-			while (it.hasNext()) {
-
-				orderedList.add((JsonArray) it.next());
-			}
-		}
-
+	
 		int endTime = 0;
 		Iterator<JsonArray> lines = orderedList.iterator();
 		JsonArray arr = new JsonArray();
@@ -161,6 +158,9 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 				free[FLD_DURATION] = Integer.toString(startTime - endTime);
 				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
 				free[FLD_TYPE] = "occupied";
+				if(aNext.get(FLD_PATIENT_ID).equals(userid)){
+					free[FLD_PATIENT_ID]="Ihr Termin: "+user.getString("username");
+				}
 				// System.out.println("rest "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
 				arr.addArray(new JsonArray(free));
 			}

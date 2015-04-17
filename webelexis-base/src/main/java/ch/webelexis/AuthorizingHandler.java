@@ -10,7 +10,8 @@ public class AuthorizingHandler implements Handler<Message<JsonObject>> {
 	String roleToCheck;
 	BusModBase bm;
 
-	public AuthorizingHandler(BusModBase server, String roleToCheck, Handler<Message<JsonObject>> originalHandler) {
+	public AuthorizingHandler(BusModBase server, String roleToCheck,
+			Handler<Message<JsonObject>> originalHandler) {
 		realHandler = originalHandler;
 		this.roleToCheck = roleToCheck;
 		this.bm = server;
@@ -23,8 +24,8 @@ public class AuthorizingHandler implements Handler<Message<JsonObject>> {
 		final Cleaner cl = new Cleaner(originalMsg);
 		if (roleToCheck == null || roleToCheck.length() == 0) {
 			originalMsg.reply(new JsonObject().putString("status", "denied").putString("message",
-					"insufficient rights for resource ")); // + cl.get("address",
-																									// Cleaner.NOTEMPTY)));
+					"roleToCheck missing")); // + cl.get("address",
+																		// Cleaner.NOTEMPTY)));
 		} else {
 			if (roleToCheck.equalsIgnoreCase("guest")) {
 				realHandler.handle(originalMsg);
@@ -40,12 +41,14 @@ public class AuthorizingHandler implements Handler<Message<JsonObject>> {
 										@Override
 										public void handle(Message<JsonObject> authMsg) {
 											if (authMsg.body().getString("status").equals("ok")) {
+												originalMsg.body().putObject("authorized_user",
+														authMsg.body().getObject("authorized_user"));
 												realHandler.handle(originalMsg);
 											} else {
 												originalMsg.reply(new JsonObject().putString("status", "denied").putString("message",
-														"insufficient rights for resource ")); // +
-																																		// cl.get("address",
-																																		// Cleaner.NOTEMPTY)));
+														" insufficient rights for resource. Required " + roleToCheck)); // +
+												// cl.get("address",
+												// Cleaner.NOTEMPTY)));
 											}
 										}
 									});

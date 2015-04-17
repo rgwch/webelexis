@@ -31,7 +31,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webel
                 "sessionID": cfg.sessionID
             }, function (result) {
                 if ((result === undefined) || (result.status !== "ok")) {
-                    window.alert("fehler bei der abfrage " + result.status);
+                    window.alert("fehler bei der abfrage " + result.status + result.message);
                 } else {
                     self.data(result.patient)
                 }

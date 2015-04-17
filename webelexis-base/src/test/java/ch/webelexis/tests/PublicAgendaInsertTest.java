@@ -37,6 +37,7 @@ public class PublicAgendaInsertTest extends TestVerticle {
 				public void handle(AsyncResult<String> res2) {
 					if (res2.succeeded()) {
 						eb.send(AdminAddress, testDesc.getObject("mock-sql"));
+						eb.send(AdminAddress, testDesc.getObject("mock-nosql"));
 						startTests();
 					} else {
 						res2.cause().printStackTrace();

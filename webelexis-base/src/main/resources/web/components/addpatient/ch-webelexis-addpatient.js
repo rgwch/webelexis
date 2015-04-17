@@ -35,9 +35,22 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                         window.alert("Verbindungsfehler")
                     } else if (result.status === "ok") {
                         console.log("ok")
-                    } else {
-                        console.log(result.status)
-                        console.log(result.message)
+                        bus.send('ch.webelexis.session.login', {
+                            sessionID: cfg.sessionID,
+                            mode: "local",
+                            username: payload.email,
+                            password: payload.pass
+                        }, function(result) {
+                            if (result.status === "ok") {
+                                console.log("logged in")
+                                result.user.loggedIn = true
+                                cfg.user(result.user)
+                                location.hash = "#"
+                            } else {
+                                console.log(result.status)
+                                console.log(result.message)
+                            }
+                        })
                     }
                 })
             } else {
@@ -91,7 +104,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
         }, "Bitte Datum in der Form tag.monat.jahr eingeben")
 
         $.validator.addMethod("mailaddr", function(act) {
-            var pattern = /\w+@[a-zA-Z_0-9\.]*[a-zA-Z_0-9]{2,}\.[a-zA-Z]{2,3}/
+            var pattern = /.+@[a-zA-Z_0-9\.]*[a-zA-Z_0-9]{2,}\.[a-zA-Z]{2,3}/
             return (pattern.exec(act) !== null)
         })
         // equalTo ddidn't work ?!??

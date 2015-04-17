@@ -59,6 +59,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 				public void handle(final Message<JsonObject> mongoRequest) {
 					if (mongoRequest.body().getString("status").equals("ok")) {
 						if (mongoRequest.body().getObject("result") != null) {
+							log.warn("user exists " + externalRequest.body().getString("username"));
 							/* user exists: error */
 							c.replyStatus("user exists");
 						} else {
@@ -70,8 +71,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 										.putString("statement", sql)
 										.putArray(
 												"values",
-												new JsonArray(new String[] { c.get("name", NAME, false), c.get("vorname", NAME, false),
-														c.get("geburtsdatum", ELEXISDATE, false) }));
+												new JsonArray(new String[] { c.get("name", NAME, false),
+														c.get("vorname", NAME, false), c.get("geburtsdatum", ELEXISDATE, false) }));
 								eb.send("ch.webelexis.sql", jo, new QueryResultHandler(c));
 							} catch (ParametersException pex) {
 								log.error(pex.getMessage(), pex);
@@ -100,6 +101,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 		@Override
 		public void handle(final Message<JsonObject> result) {
 			JsonObject rb = result.body();
+			log.debug("SQL user answer: "+rb.encodePrettily());
 			if (rb.getString("status").equals("ok")) {
 				if (rb.getArray("results").size() > 0) {
 					/* Patient exists, just create user */
@@ -110,6 +112,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					try {
 						/* create Patient and user */
 						String pid = UUID.randomUUID().toString();
+						log.debug("creating Elexis user "+pid);
 						JsonArray row = new JsonArray().addString(pid).addString(c.get("name", NAME, false))
 								.addString(c.get("vorname", NAME, false)).addString(c.get("geburtsdatum", ELEXISDATE, false))
 								.addString(c.get("strasse", NAME, true)).addString(c.get("plz", ZIP, true))
@@ -176,11 +179,12 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					// that's it, everything went successfully. Send User a confirmation
 					// mail
 
-					if (cfg.getBoolean("confirm-mail",false)) {
+					if (cfg.getBoolean("confirm-mail", false)) {
 						final JsonObject mailer = cfg.getObject("mailer");
 						user.putString("confirmID", UUID.randomUUID().toString());
 						mailer.putString("to", user.getString("username"));
-						mailer.putString("body", mailer.getString("body").replaceFirst("%url%", user.getString("confirmID")));
+						mailer.putString("body",
+								mailer.getString("body").replaceFirst("%url%", user.getString("confirmID")));
 						server.getContainer().deployModule("io.vertx~mod-mailer~2.0.0-final", mailer,
 								new AsyncResultHandler<String>() {
 

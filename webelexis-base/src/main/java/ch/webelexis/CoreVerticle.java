@@ -58,7 +58,7 @@ public class CoreVerticle extends BusModBase {
 	public CoreVerticle() throws IOException {
 		File file = new File("config_defaults.json"); // production mode
 		if (!file.exists()) {
-			file = new File("src/main/resources/fieldNameconfig_sample.json"); // IDE
+			file = new File("src/main/resources/config_sample.json"); // IDE
 			// mode
 		}
 		try {
@@ -73,7 +73,7 @@ public class CoreVerticle extends BusModBase {
 		super.start();
 		log = container.logger();
 		cfg = cfg_default.mergeIn(container.config());
-		log.debug("CoreVerticle got config: " + cfg.encodePrettily());
+		log.info("CoreVerticle got config: " + cfg.encodePrettily());
 		for (V m : modules) {
 			pending.add(m.title);
 			container.deployModule(m.fullname, cfg.getObject(m.title), new DeploymentHandler(m.title));

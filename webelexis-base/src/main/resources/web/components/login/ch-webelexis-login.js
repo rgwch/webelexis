@@ -47,13 +47,17 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
             }, function (result) {
                 if (result.status === "ok") {
                     console.log("logged in")
+                    result.user.loggedIn=true
+                    config.user(result.user)
+                    /*
                     config.user({
                             "loggedIn": true,
                             "username": self.uname(),
                             "roles": result.roles
                         })
+                    */
                         //console.log(JSON.stringify(config.user))
-                    location.hash = "#agext"
+                    location.hash = "#"
                 } else {
                     console.log("login failed")
                     $("#login-head").removeClass()

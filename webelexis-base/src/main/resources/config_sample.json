@@ -74,7 +74,7 @@
     	"role": "guest", // role needed to create an account
         "defaultRole": "patient", // role, a newly created account will have 
     	
-    	"confirm-mail": true,		// true to send confirmation mail on account creation
+    	"confirm-mail": false,		// true to send confirmation mail on account creation
 	    "mailer": {					// mailer only needed if confirm-mail is true
 	    	"address": "ch.webelexis.mailer",		// do not change this
 	    	"host":	"smpt.example.com",				// URL of your mail provider

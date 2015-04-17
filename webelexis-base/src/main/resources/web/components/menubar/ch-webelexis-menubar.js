@@ -112,15 +112,10 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
                         cfg.google.signOut()
                         window.alert("Dieser google user ist an diesem System nicht bekannt. Bitte melden Sie sich znächst an.")
                     } else if (result.status === "ok") {
-                        cfg.user({
-                            "loggedIn": true,
-                            "userid": user.getBasicProfile().getId(),
-                            "username": user.getBasicProfile().getEmail(),
-                            "access_token": user.getAuthResponse().access_token,
-                            "id_token": user.getAuthResponse().id_token,
-                            "roles": result.roles
-                        })
-                        location.hash = "#agext"
+                        $.extend(true,user,result.user)
+                        user.loggedIn=true;
+                        cfg.user(user)
+                        location.hash = "#"
                     } else {
                         window.alert(result.status)
                     }
