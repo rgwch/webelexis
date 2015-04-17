@@ -59,7 +59,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
             }
         }
 
-        self.accountDisplay = ko.observable("pneu")
+        self.accountDisplay = ko.observable("palt")
 
         self.vtor = $("#eingabe").validate({
             debug: true,
@@ -90,7 +90,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                 name: "Bitte geben Sie Ihren Namen an",
                 geburtsdatum: "Die Angabe des Geburtsdatums ist erforderlich (t.m.j)",
                 email: "Die korrekte Mail-Adresse wird als Login-Name benötigt.",
-                pwd: "Ein mindestens 5 Zeichen langes Passwort muss eingetragen werden",
+                pass: "Ein mindestens 5 Zeichen langes Passwort muss eingetragen werden",
                 pwdrep: {
                     required: "Bitte bestätigen Sie Ihr Passwort hier.",
                     equals: "Die Passwörter sind nicht identisch."

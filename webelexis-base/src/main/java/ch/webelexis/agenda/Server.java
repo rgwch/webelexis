@@ -34,8 +34,10 @@ public class Server extends BusModBase {
 		final JsonObject priCfg = cfg.getObject("private");
 		final PublicAgendaListHandler publiclistHandler = new PublicAgendaListHandler(this, pubCfg);
 		final PublicAgendaInsertHandler publicinsertHandler = new PublicAgendaInsertHandler(this, pubCfg);
+		final PublicAgendaDeleteHandler publicdeletehandler=new PublicAgendaDeleteHandler(this, cfg);
 		final PrivateAgendaListHandler privateListHandler = new PrivateAgendaListHandler(eb, priCfg);
 		final PrivateAgendaInsertHandler privateInsertHandler = new PrivateAgendaInsertHandler(eb, priCfg);
+	
 
 		// Register handlers with the eventBus
 		eb.registerHandler("ch.webelexis.publicagenda", new AuthorizingHandler(this, pubCfg.getString("role"),
@@ -49,6 +51,8 @@ public class Server extends BusModBase {
 							publiclistHandler.handle(msg);
 						} else if (req.equals("insert")) {
 							publicinsertHandler.handle(msg);
+						} else if(req.equals("delete")){
+							publicdeletehandler.handle(msg);
 						}
 					}
 				}));
