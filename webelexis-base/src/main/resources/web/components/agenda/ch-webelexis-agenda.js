@@ -37,6 +37,13 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
             app.displayText = ko.pureComputed(function () {
                 return app.begin + "-" + app.end + " " + (app.type === 'available' ? "frei" : "belegt")
             })
+            
+            app.loggedInText = ko.pureComputed(function(){
+            var ret="Sie sind angemeldet als "+cfg.user().username+". Bitte bestätigen Sie den gewünschten Termin am "+
+                dt.makeDateString(app.date)+" um "+app.begin+" Uhr."
+            return ret;
+        })
+        
 
         }
         self.now = ko.observable(dt.makeDateString(new Date()))
@@ -140,6 +147,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
             return cfg.user().username
         })
         
+
         self.addAppointment = function ( /*formElement*/ ) {
             //console.log("addApp" + $("input#patname").val())
             //console.log(this.begin)

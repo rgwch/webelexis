@@ -58,17 +58,12 @@ define(['knockout', 'app/config', 'jquery'], function (ko, cfg, $) {
         $(window).trigger("hashchange");
     }
 
-    // A 'page' that can be shown, encompassing the view (string identifying a template),
-    // model (a KO ViewModel) and title.
+    /* A Page is just a KnockOut component, which makes view creation really simple. 
+     * Optional parameters are parts of the path that are captured by the "match" regex of the
+     * module definition in config.js. The component sees these parameters as an Array, passed as argument to
+     * the constructor. */
     Router.Page = function (titleName, componentName, params) {
         this.title = ko.observable(titleName);
-        /*
-          this.view = ko.computed( function() {
-          // If model has an error or loading property, respect it.
-          if (model.error && model.error()) return 'error-template';
-          if (model.loading && model.loading()) return 'loading-template';
-          return view;
-          */
         this.componentName = componentName;
         this.params=params
         return componentName;
