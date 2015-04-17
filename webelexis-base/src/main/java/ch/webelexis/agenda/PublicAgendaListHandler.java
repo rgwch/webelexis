@@ -37,10 +37,8 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 	static final int FLD_DAY = 0;
 	static final int FLD_BEGIN = 1;
 	static final int FLD_DURATION = 2;
-	static final int FLD_RESOURCE = 3;
-	static final int FLD_TYPE = 4;
-	static final int FLD_TERMIN_ID = 5;
-	static final int FLD_PATIENT_ID=6;
+	static final int FLD_TYPE = 3;
+	static final int FLD_PATIENT_ID=4;
 	Logger log;
 	JsonObject cfg;
 
@@ -61,13 +59,14 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 	@Override
 	public void handle(final Message<JsonObject> externalRequest) {
 		Cleaner cl = new Cleaner(externalRequest);
-		log.info("public agenda handler");
+		log.debug("public agenda handler "+externalRequest.body().encodePrettily());
+		
 		final String resource = cfg.getString("resource") == null ? "" : cfg.getString("resource");
 		try {
 			JsonObject bridge = new JsonObject()
 					.putString("action", "prepared")
 					.putString("statement",
-							"SELECT Tag,Beginn,Dauer,Bereich, TerminTyp, ID, PatID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
+							"SELECT Tag,Beginn,Dauer, TerminTyp, PatID from AGNTERMINE where Tag>=? and Tag <=? and Bereich=? and deleted='0'")
 					.putArray(
 							"values",
 							new JsonArray(new String[] { cl.get("begin", ELEXISDATE, false), cl.get("begin", ELEXISDATE, false),
@@ -118,10 +117,10 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 		if(user!=null){
 			userid=user.getString("patientid","-");
 		}
+		log.debug("user id:"+userid);
 		for (Object li : appointments) {
 			@SuppressWarnings("unchecked")
 			List<Object> line = (ArrayList<Object>) li;
-			line.set(FLD_TYPE, "occupied");
 			orderedList.add(new JsonArray(line));
 		}
 	
@@ -145,27 +144,30 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 				free[FLD_BEGIN] = Integer.toString(endTime);
 				free[FLD_DURATION] = Integer.toString(slot); // slotInteger.toString(startTime
 				// - endTime);
-				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
 				free[FLD_TYPE] = "available";
 				arr.addArray(new JsonArray(free));
 				endTime += slot;
 				// System.out.println("created "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
 			}
 			if ((startTime - endTime) > 0) {
-				String[] free = new String[aNext.size()];
-				free[FLD_DAY] = aNext.get(FLD_DAY);
-				free[FLD_BEGIN] = Integer.toString(endTime);
-				free[FLD_DURATION] = Integer.toString(startTime - endTime);
-				free[FLD_RESOURCE] = aNext.get(FLD_RESOURCE);
-				free[FLD_TYPE] = "occupied";
-				if(aNext.get(FLD_PATIENT_ID).equals(userid)){
-					free[FLD_PATIENT_ID]="Ihr Termin: "+user.getString("username");
-				}
+				String[] shorttime = new String[aNext.size()];
+				shorttime[FLD_DAY] = aNext.get(FLD_DAY);
+				shorttime[FLD_BEGIN] = Integer.toString(endTime);
+				shorttime[FLD_DURATION] = Integer.toString(startTime - endTime);
+				shorttime[FLD_TYPE] = "occupied";
 				// System.out.println("rest "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
-				arr.addArray(new JsonArray(free));
+				arr.addArray(new JsonArray(shorttime));
 			}
 			endTime = startTime + Integer.parseInt(((String) aNext.get(FLD_DURATION)).trim());
-			arr.addArray(aNext);
+			Object[] line = aNext.toArray();
+			if ((line[FLD_PATIENT_ID] != null) && (line[FLD_PATIENT_ID].equals(userid))) {
+				line[FLD_PATIENT_ID] = "Ihr Termin: " + user.getString("username");
+				line[FLD_TYPE] = "user";
+			} else {
+				line[FLD_PATIENT_ID] = "";
+				line[FLD_TYPE]="occupied";
+			}
+			arr.addArray(new JsonArray(line));
 		}
 
 		JsonObject ores = new JsonObject().putString("status", "ok").putString("type", "basic")

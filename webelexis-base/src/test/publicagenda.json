@@ -40,9 +40,9 @@
 				"case-sensitive": true,
 				"match-reply": {
 					"status":"ok",
-					"results": [["20150331","700","30","blah","occupied","123456789abcdert","apatient"],
-					["20150331","730","60","blah","available","abc","anotherPatient"],
-					["20150331","830","30","blah","occupied","def","123456"]]
+					"results": [["20150331","700","30","urps","apatient"],
+					["20150331","730","60","full","anotherPatient"],
+					["20150331","830","30","unfree","123456"]]
 				}
 			},
 			{

@@ -41,6 +41,7 @@ public class AuthorizingHandler implements Handler<Message<JsonObject>> {
 										@Override
 										public void handle(Message<JsonObject> authMsg) {
 											if (authMsg.body().getString("status").equals("ok")) {
+												bm.getContainer().logger().debug("AuthorizingHandler: "+authMsg.body().encodePrettily());
 												originalMsg.body().putObject("authorized_user",
 														authMsg.body().getObject("authorized_user"));
 												realHandler.handle(originalMsg);

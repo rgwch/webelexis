@@ -24,22 +24,19 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
             app.begin = dt.makeTime(parseInt(row[1]));
             app.end = dt.makeTime(parseInt(row[1]) + parseInt(row[2]));
             app.time = app.begin + "-" + app.end
-            app.type = row[4]
-            app.appid = row[5] ? row[5] : "none";
-            app.patid = row[6] ? row[6] : "";
+            app.type = row[3]
+            app.patid = row[4]
             app.displayClass = ko.pureComputed(function() {
                 return app.type === 'available' ? "available" : "occupied"
             })
             app.displayText = ko.pureComputed(function() {
                 var tr = app.begin + "-" + app.end + " "
-                if (app.type == "available") {
+                if (app.type === "available") {
                     tr += "frei"
+                } else if (app.type === 'user') {
+                    tr += "Ihr Termin"
                 } else {
-                    if(app.patid.length>0){
-                        tr+="Ihr Termin"
-                    }else{
-                        tr += "belegt"
-                    }
+                    tr += "belegt"
                 }
                 return tr
             })
@@ -93,9 +90,10 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
                 request: 'list',
                 begin: dt.makeCompactString(act),
                 end: dt.makeCompactString(act),
-                token: cfg.sessionID
+                token: cfg.sessionID,
+                authorized_user: cfg.user()
             }, function(result) {
-                // console.log("result: " + JSON.stringify(result));
+                console.log("result: " + JSON.stringify(result));
                 if ((result === undefined) || (result.status !== "ok")) {
                     window.alert("Verbindungsfehler: " + (result === undefined) ? "Anwendung nicht erreichbar" : result.status);
                 } else {
