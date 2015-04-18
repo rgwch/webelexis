@@ -69,6 +69,14 @@ define({
 
         return hours + ":" + mins
     },
+    
+    // make a number of minutes from a hh:mm String
+    makeMinutes: function(timeString){
+        var hm=timeString.split(":")
+        var ret=parseInt(hm[0])*60+parseInt(hm[1])
+        return ret;
+    },
+    
     // make a YYYY-MM-DD String from a Date object
     makeDateRFC3339: function (date) {
         var ret = this.dateStrings(date)

@@ -13,11 +13,34 @@ define(['app/datetools'], function (dt) {
             d.getDate().should.equal(20)
             dt.makeDateString(d).should.equal("20.03.2015")
             dt.makeDateRFC3339(d).should.equal("2015-03-20")
-            dt.makeTime(700).should.equal("11:40")
             
+        })
+        
+        it('should convert a numer of minutes in a hh:mm String', function(){
+            dt.makeTime(700).should.equal("11:40")
+        })
+        
+        it('should convert hh:mm Strings in minutes', function(){
+           dt.makeMinutes("11:40").should.equal(700)
         })
     })
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -35,11 +35,25 @@ public class Cleaner {
 	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
 	public static final String ZIP = "[A-Za-z 0-9]{4,8}";
 	public static final String UID = "[a-zA-Z0-9-]{8,}";
+	public static final String NUMBER = "[0-9]+";
 
 	Message<JsonObject> jo;
 
 	public Cleaner(Message<JsonObject> raw) {
 		jo = raw;
+	}
+
+	public int getInt(String field, int min, int max) throws ParametersException {
+		if (!jo.body().containsField(field)) {
+			throw new ParametersException("field " + field + " was not set.");
+		} else {
+			int val = jo.body().getInteger(field);
+			if (val < min || val > max) {
+				throw new ParametersException("field value out of range");
+			} else {
+				return val;
+			}
+		}
 	}
 
 	public String get(String field, String pattern, boolean emptyok) throws ParametersException {
@@ -103,26 +117,30 @@ public class Cleaner {
 	public String toString() {
 		return jo.body().encodePrettily();
 	}
-	
+
 	/**
 	 * Create a JsonObject from a file. // Comments are stripped before parsing
-	 * @param fpath filename (with relative or absolute path)
+	 * 
+	 * @param fpath
+	 *          filename (with relative or absolute path)
 	 * @return a JsonObject created from that file
-	 * @throws IOException if the file was not found or could not be read
-	 * @throws DecodeException if the file was not a valid Json Object
+	 * @throws IOException
+	 *           if the file was not found or could not be read
+	 * @throws DecodeException
+	 *           if the file was not a valid Json Object
 	 */
-	public static JsonObject createFromFile(String fpath) throws IOException, DecodeException{
+	public static JsonObject createFromFile(String fpath) throws IOException, DecodeException {
 		File file = new File(fpath);
 		if (!file.exists()) {
 			System.out.println(file.getAbsolutePath());
-			throw new IOException("File not found "+file.getAbsolutePath());
+			throw new IOException("File not found " + file.getAbsolutePath());
 		}
 		char[] buffer = new char[(int) file.length()];
 		FileReader fr = new FileReader(file);
 		fr.read(buffer);
 		fr.close();
 		String conf = new String(buffer).replaceAll("//\\s+.+\\r?\\n+\\r?", "");
-		JsonObject ret=new JsonObject(conf);
+		JsonObject ret = new JsonObject(conf);
 		return ret;
 	}
 }

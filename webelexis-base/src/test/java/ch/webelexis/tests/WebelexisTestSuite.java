@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 	ConfigFileChecker.class,
 	AddPatientTest.class,
 	PublicAgendaListTest.class,
-	PublicAgendaInsertTest.class
+	PublicAgendaInsertTest.class,
+	PublicAgendaDeleteTest.class
 })
 public class WebelexisTestSuite {
 

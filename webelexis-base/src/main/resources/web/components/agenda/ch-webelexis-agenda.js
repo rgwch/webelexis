@@ -175,9 +175,9 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
             bus.send('ch.webelexis.publicagenda',{
                 request:"delete",
                 day: dt.makeCompactString(this.date),
-                time:this.begin,
+                time:String(dt.makeMinutes(this.begin)),
                 ip:cfg.loc.ip,
-                patid:cfg.user().username
+                username:cfg.user().username
             }, function(result){
                 if(result.status!=="ok"){
                     window.alert("Fehler beim Löschen")
