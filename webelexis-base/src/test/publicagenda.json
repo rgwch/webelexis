@@ -119,9 +119,10 @@
 				"message": 
 				{
 					"action": "prepared",
-					"statement": "DELETE from AGNTERMINE.+",
+					"statement": "UPDATE AGNTERMINE.+",
 					"values": 
 					[
+						"1",
 						".+",
 						"[0-9]{8,8}",
 						"[0-9]+"
