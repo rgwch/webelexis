@@ -8,6 +8,7 @@ import static ch.webelexis.Cleaner.ELEXISDATE;
 import static ch.webelexis.Cleaner.MAIL;
 import static ch.webelexis.Cleaner.NAME;
 import static ch.webelexis.Cleaner.PHONE;
+import static ch.webelexis.Cleaner.TEXT;
 import static ch.webelexis.Cleaner.ZIP;
 
 import java.io.UnsupportedEncodingException;
@@ -28,6 +29,11 @@ import org.vertx.java.platform.Verticle;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 
+/** 
+ * Add a new Account for an existing patient or a new patient and a new account
+ * @author gerry
+ *
+ */
 public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	Verticle server;
 	JsonObject cfg;
@@ -35,7 +41,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	EventBus eb;
 
 	private String[] fields = { "id", "Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "Strasse", "Plz", "Ort",
-			"Telefon1", "NatelNr", "Email", "Bemerkung" };
+			"Telefon1", "NatelNr", "Email", "Bemerkung", "istPatient" };
 
 	public AddPatientHandler(Verticle server, JsonObject cfg) {
 		this.server = server;
@@ -65,7 +71,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						} else {
 							try {
 								/* user does not exist; check if patient exists */
-								String sql = "select id from KONTAKT where Bezeichnung1=? and Bezeichnung2=? and Geburtsdatum=?";
+								String sql = "select id from KONTAKT where Bezeichnung1=? and Bezeichnung2=? and Geburtsdatum=? and deleted='0'";
 								JsonObject jo = new JsonObject()
 										.putString("action", "prepared")
 										.putString("statement", sql)
@@ -90,6 +96,10 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 		}
 	}
 
+	/**
+	 * Called after query if patient exists in Elexis database
+	 *
+	 */
 	class QueryResultHandler implements Handler<Message<JsonObject>> {
 
 		Cleaner c;
@@ -115,10 +125,10 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						log.debug("creating Elexis user "+pid);
 						JsonArray row = new JsonArray().addString(pid).addString(c.get("name", NAME, false))
 								.addString(c.get("vorname", NAME, false)).addString(c.get("geburtsdatum", ELEXISDATE, false))
-								.addString(c.get("strasse", NAME, true)).addString(c.get("plz", ZIP, true))
+								.addString(c.get("strasse", TEXT, true)).addString(c.get("plz", ZIP, true))
 								.addString(c.get("ort", NAME, true)).addString(c.get("telefon", PHONE, true))
 								.addString(c.get("mobil", PHONE, true)).addString(c.get("email", MAIL, false))
-								.addString("via webelexis");
+								.addString("via webelexis").addString("1");
 						JsonArray values = new JsonArray().add(row);
 						JsonObject sql = new JsonObject().putString("action", "insert").putString("table", "KONTAKT")
 								.putArray("fields", new JsonArray(fields)).putArray("values", values);

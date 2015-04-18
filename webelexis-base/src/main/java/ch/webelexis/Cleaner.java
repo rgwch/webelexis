@@ -24,14 +24,14 @@ import org.vertx.java.core.json.JsonObject;
 public class Cleaner {
 	// /^\d{1,2}\.\d{1,2}\.(?:\d{4}|\d{2})$/
 	public static final String ELEXISDATE = "[12][09][0-9]{6,6}";
-	public static final String NAME = "[0-9a-zA-Z \\.-]+";
-	public static final String WORD = "[a-zA-Z]+";
+	public static final String NAME = "[0-9a-zA-ZäöüÄÖÜéàèß \\.-]+";
+	public static final String WORD = "[a-zA-ZäöüÄÖÜéàèß]+";
 	public static final String NOTEMPTY = ".+";
 	public static final String DATE = "[0-3]?[0-9]\\.[01]?[0-9]\\.[0-9]{2,4}";
 	public static final String PHONE = "\\+?[0-9  -/]{7,20}";
 	public static final String MAIL = ".+@[a-zA-Z_0-9\\.]*[a-zA-Z_0-9]{2,}\\.[a-zA-Z]{2,3}";
 	public static final String TIME = "[0-2][0-9]:[0-5][0-9]";
-	public static final String TEXT = "[A_Za-z \\.,-]";
+	public static final String TEXT = "[^%\\*;:]+";
 	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
 	public static final String ZIP = "[A-Za-z 0-9]{4,8}";
 	public static final String UID = "[a-zA-Z0-9-]{8,}";
