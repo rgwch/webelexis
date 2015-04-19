@@ -29,7 +29,7 @@ public class PublicAgendaDeleteTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			container.deployModule("rgwch~vertx-mod-mock~0.2.0", cfg, new AsyncResultHandler<String>() {
+			container.deployModule("rgwch~vertx-mod-mock~0.2.2", cfg, new AsyncResultHandler<String>() {
 				// container.deployVerticle("ch.webelexis.Verticle", cfg, new
 				// AsyncResultHandler<String>() {
 

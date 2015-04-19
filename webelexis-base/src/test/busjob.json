@@ -1,0 +1,40 @@
+{
+	"config-mock":
+	{
+		"admin-address":"ch.webelexis.tests"
+	},
+	"mock-busjob":{
+		"task": "reply",
+		"listen-address":"ch.webelexis.busjob",
+		"match":[
+			{
+				"message":{
+					"request":"existing"
+					},
+					"match-reply":{
+						"status":"ok",
+						"foo":"bar"
+					}
+				},
+				{
+				"message":{
+					"foul":"inexistent"
+				},
+				"match-reply":{}
+				}
+				
+		
+		],
+		"match-noreply":{
+			"status":"error",
+			"message":"bad call"
+		}
+			
+	},
+	"should_answer":{
+		"request":"existing"
+	},
+	"should_not_answer":{
+		"request":"inexistent"
+	}
+}

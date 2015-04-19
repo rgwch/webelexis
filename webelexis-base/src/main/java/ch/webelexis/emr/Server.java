@@ -11,9 +11,11 @@ public class Server extends BusModBase {
 	Logger log;
 	JsonObject cfg;
 	EventBus eb;
+	static Server instance;
 	
 	@Override
 	public void start(){
+		instance=this;
 		log=container.logger();
 		cfg=container.config();
 		eb=vertx.eventBus();

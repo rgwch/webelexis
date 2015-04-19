@@ -54,7 +54,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	public void handle(final Message<JsonObject> externalRequest) {
 		log.info("add patient: " + externalRequest.body().encodePrettily());
 		final Cleaner c = new Cleaner(externalRequest);
-
+		
 		try {
 			// check if username exists in webelexis users
 			JsonObject op = new JsonObject().putString("action", "findone").putString("collection", "users")
