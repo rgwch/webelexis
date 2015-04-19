@@ -37,7 +37,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                         console.log("ok")
                         bus.send('ch.webelexis.session.login', {
                             sessionID: cfg.sessionID,
-                            mode: "local",
+                          mode: "local",
                             username: payload.email.toLowerCase(),
                             password: payload.pass
                         }, function(result) {
@@ -102,12 +102,12 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
             }
         })
 
-        
+
         $.validator.addMethod("datum", function(act) {
             var pattern = /^\d{1,2}\.\d{1,2}\.(?:\d{4}|\d{2})$/
             return (pattern.exec(act) !== null)
         })
-        
+
         $.validator.addMethod("mailaddr", function(act) {
             var pattern = /.+@[a-zA-Z_0-9\.]*[a-zA-Z_0-9]{2,}\.[a-zA-Z]{2,3}/
             return (pattern.exec(act) !== null)
