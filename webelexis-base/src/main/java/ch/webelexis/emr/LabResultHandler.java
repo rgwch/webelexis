@@ -38,7 +38,7 @@ public class LabResultHandler implements Handler<Message<JsonObject>> {
 				dateFrom = "20000101";
 			}
 			Mapper mapper = new Mapper(fields);
-			String query = "SELECT FIELDS FROM LABOWERTE as v, LABORITEMS as li where v.Datum>=? and v.Datum<=? and v.PatientID=? and v.ItemID=li.id";
+			String query = "SELECT FIELDS FROM LABORWERTE as v, LABORITEMS as li where v.Datum>=? and v.Datum<=? and v.PatientID=? and v.ItemID=li.id";
 
 			JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement",
 						mapper.mapToString(query, "FIELDS")).putArray("values",

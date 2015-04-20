@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
 	AddPatientTest.class,
 	PublicAgendaListTest.class,
 	PublicAgendaInsertTest.class,
-	PublicAgendaDeleteTest.class
+	PublicAgendaDeleteTest.class,
+	LabValueTest.class
 })
 public class WebelexisTestSuite {
 

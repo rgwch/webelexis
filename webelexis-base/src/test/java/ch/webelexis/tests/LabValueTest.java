@@ -19,8 +19,8 @@ public class LabValueTest extends TestVerticle {
 	JsonObject testDesc;
 	EventBus eb;
 	String AdminAddress;
-	String REQUEST_ADDRESS="ch.webelexis.emr.labvalues";
-	long DELAY=50;
+	String REQUEST_ADDRESS = "ch.webelexis.emr.labvalues";
+	long DELAY = 50;
 
 	public void start() {
 		initialize();
@@ -29,8 +29,8 @@ public class LabValueTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			container.deployModule("rgwch~vertx-mod-mock~0.2.2", cfg, new AsyncResultHandler<String>() {
-		
+			container.deployModule("rgwch~vertx-mod-mock~0.3.0", cfg, new AsyncResultHandler<String>() {
+
 				@Override
 				public void handle(AsyncResult<String> res2) {
 					if (res2.succeeded()) {
@@ -50,7 +50,7 @@ public class LabValueTest extends TestVerticle {
 	}
 
 	@Test
-	public void LabValueCall(){
+	public void LabValueCall() {
 		eb.registerHandler(REQUEST_ADDRESS, new LabResultHandler(this));
 		vertx.setTimer(DELAY, new Handler<Long>() {
 
@@ -64,13 +64,13 @@ public class LabValueTest extends TestVerticle {
 
 	}
 
-	class LabRequestHandler implements Handler<Message<JsonObject>>{
+	class LabRequestHandler implements Handler<Message<JsonObject>> {
 
 		@Override
 		public void handle(Message<JsonObject> answer) {
 			VertxAssert.assertEquals("ok", answer.body().getString("status"));
 			VertxAssert.testComplete();
 		}
-		
+
 	}
 }

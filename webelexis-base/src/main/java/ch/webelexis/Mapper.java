@@ -24,7 +24,7 @@ public class Mapper {
 			String field=fields[i];
 			int pt=field.indexOf('.');
 			if(pt!=-1){
-				field=field.substring(pt);
+				field=field.substring(pt+1);
 			}
 			ret.putValue(field, values[i]);
 		}

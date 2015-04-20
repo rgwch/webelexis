@@ -8,7 +8,7 @@
     "match":[{
       "message":{
         "action":"prepared",
-        "statement":"SELECT [a-zA-Z\\.]+ from LABORWERTE"
+        "statement":"SELECT [a-z .,]+ FROM LABORWERTE.+"
       },
       "match-reply":{
         "status":"ok",
@@ -17,7 +17,11 @@
           ["a","b","c","d","e","f","g","h","i","j"]
         ]
       }
-    }]
+    }],
+    "nomatch-reply":{
+    	"status":"error",
+    	"message":"no matching message found"
+    }
   },
 
   "request":{
