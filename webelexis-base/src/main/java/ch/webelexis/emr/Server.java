@@ -11,17 +11,15 @@ public class Server extends BusModBase {
 	Logger log;
 	JsonObject cfg;
 	EventBus eb;
-	static Server instance;
 	
 	@Override
 	public void start(){
-		instance=this;
 		log=container.logger();
 		cfg=container.config();
 		eb=vertx.eventBus();
 		log.info("EMR Server started); got config "+cfg.encodePrettily());
 		if(cfg.getBoolean("lab")==true){
-			final LabResultHandler labResultHandler=new LabResultHandler();
+			final LabResultHandler labResultHandler=new LabResultHandler(this);
 			eb.registerHandler("ch.webelexis.emr.labresult", new AuthorizingHandler(this, cfg.getString("role","admin"), labResultHandler));
 		}
 	}

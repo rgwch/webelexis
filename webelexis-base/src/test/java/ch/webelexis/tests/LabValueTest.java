@@ -13,24 +13,24 @@ import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
 import ch.webelexis.Cleaner;
-import ch.webelexis.agenda.PublicAgendaListHandler;
+import ch.webelexis.emr.LabResultHandler;
 
-public class PublicAgendaListTest extends TestVerticle {
+public class LabValueTest extends TestVerticle {
 	JsonObject testDesc;
 	EventBus eb;
 	String AdminAddress;
-	String AGENDA_LIST = "ch.webelexis.agenda.list";
-	long DELAY = 50;
+	String REQUEST_ADDRESS="ch.webelexis.emr.labvalues";
+	long DELAY=50;
 
 	public void start() {
 		initialize();
 		try {
-			testDesc = Cleaner.createFromFile("src/test/publicagenda.json");
+			testDesc = Cleaner.createFromFile("src/test/labresults.json");
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
 			container.deployModule("rgwch~vertx-mod-mock~0.2.2", cfg, new AsyncResultHandler<String>() {
-
+		
 				@Override
 				public void handle(AsyncResult<String> res2) {
 					if (res2.succeeded()) {
@@ -50,25 +50,27 @@ public class PublicAgendaListTest extends TestVerticle {
 	}
 
 	@Test
-	public void listAppointments() {
-		eb.registerHandler(AGENDA_LIST, new PublicAgendaListHandler(this, testDesc
-					.getObject("agendaList")));
+	public void LabValueCall(){
+		eb.registerHandler(REQUEST_ADDRESS, new LabResultHandler(this));
 		vertx.setTimer(DELAY, new Handler<Long>() {
 
 			@Override
 			public void handle(Long arg0) {
-				JsonObject listDay = testDesc.getObject("listDay");
-				eb.send(AGENDA_LIST, listDay, new ListDayHandler());
+				JsonObject listDay = testDesc.getObject("request");
+				VertxAssert.assertNotNull(listDay);
+				eb.send(REQUEST_ADDRESS, listDay, new LabRequestHandler());
 			}
 		});
+
 	}
 
-	class ListDayHandler implements Handler<Message<JsonObject>> {
+	class LabRequestHandler implements Handler<Message<JsonObject>>{
 
 		@Override
-		public void handle(Message<JsonObject> msg) {
+		public void handle(Message<JsonObject> answer) {
+			VertxAssert.assertEquals("ok", answer.body().getString("status"));
 			VertxAssert.testComplete();
 		}
-
+		
 	}
 }
