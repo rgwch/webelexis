@@ -18,3 +18,7 @@ webelexis-base/readme.html
 .gradle
 
 *.codekit
+
+webelexis-base/cfglocal_lan.json
+
+webelexis-base/cfglocal_vpn.json
