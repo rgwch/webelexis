@@ -1,25 +1,28 @@
 //- This file is part of webelexis, Copyright (c) 2015 by G. Weirich
 .row
     h2.h2.col-sm-12(data-bind="text: displayName")
-    //h5.h5.col-sm-12(data-bind="text: address")
-    //- left panel on wider devices, topmost panel on narrow screens
     .col-sm-12.col-md-3(data-bind="template: {name: 'left_panel'}")
     .col-sm-12.col-md-6(data-bind="template: {name: activeCenterPanel, data: data}")
     .col-sm-12.col-md-3(data-bind="template: {name: 'right_panel'}")
         
+        
+//- left panel on wider devices, topmost panel on narrow screens
 script(type="text/html" id="left_panel")
+  //- on wider devices: show buttons left hand sinde stacked
   .visible-md-block.visible-lg-block
     .btn-group-vertical(role="group" data-bind="foreach: leftpanel")
       button.btn.btn-default(type="button" data-bind="text: title, click: $parent.setPanel")
-
+  //- on narrow devices, show buttons on top, side by side
   .visible-xs-block.visible-sm-block
     .btn-group(role="group" data-bind="foreach: leftpanel")
       button.btn.btn-default(type="button" data-bind="text: title, click: $parent.setPanel")
-
-
+        
+        
+//- right panel 
 script(type="text/html" id="right_panel")
   p Rechts
 
+//- Patient detail
 script(type="text/html" id="summaryView")
   -var fields=["bezeichnung1","bezeichnung2","geburtsdatum","strasse","plz","ort","telefon1","telefon2","natelnr","email","bemerkung"]
   -var labels=["Name","Vorname","Geburtsdatum","Strasse","Plz","Ort","Tel. privat","Tel. Geschäft","Tel. mobil","e-mail","Bemerkung"]
@@ -39,3 +42,6 @@ script(type="text/html" id="consView")
 
 script(type="text/html" id="problemView")
   p Probleme
+
+script(type="text/html" id="documentsView")
+  p Dokumente

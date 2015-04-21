@@ -28,7 +28,8 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webel
           {title:"Personalien",detail:"summaryView",handler:"summaryViewHandler"},
           {title:"Labor",detail:"labView",handler:"labViewHandler"},
           {title:"Konsultation",detail:"consView",handler:"consViewHandler"},
-          {title:"Probleme",detail:"problemView",handler:"problemViewHandler"}]
+          {title:"Probleme",detail:"problemView",handler:"problemViewHandler"},
+          {title:"Dokumente",detail:"documentsView",handler:"documentsViewHandler"}]
 
 
 
