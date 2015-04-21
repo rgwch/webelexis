@@ -13,6 +13,7 @@ import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
+import ch.webelexis.Mapper;
 import ch.webelexis.ParametersException;
 
 public class PatientDetailHandler implements Handler<Message<JsonObject>> {
@@ -33,9 +34,10 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 	@Override
 	public void handle(Message<JsonObject> externalRequest) {
 		Cleaner cl = new Cleaner(externalRequest);
+		Mapper mapper=new Mapper(fields);
 		try {
 			String patId = cl.get("patid", Cleaner.NAME, false);
-			String sql = "SELECT " + String.join(",", fields) + " from KONTAKT as k where k.id=?";
+			String sql=mapper.mapToString("SELECT FIELDS from KONTAKT as k where k.id=?", "FIELDS");
 			JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement", sql)
 					.putArray("values", new JsonArray(new String[] { patId }));
 			eb.send("ch.webelexis.sql", jo, new PatDataHandler(externalRequest));
