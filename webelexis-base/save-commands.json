@@ -1,7 +1,7 @@
 {
     "timeout": 4000,
     "commands": [
-      "src/main/**/*.js:npm run compile:json",
+      "src/main/**/*.js:npm run compile-js",
       "src/main/**/*.jade:npm run compile-jade"
     ]
 }

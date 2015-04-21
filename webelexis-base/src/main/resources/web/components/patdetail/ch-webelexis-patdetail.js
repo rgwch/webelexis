@@ -2,6 +2,8 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
+// jshint -W033
+
 define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webelexis-patdetail.html'], function (ko, bus, cfg, dt, html) {
     //var dummy = '7ba4632caba62c5b3a366'
 
@@ -12,6 +14,13 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webel
         self.data = ko.observable({
             "bezeichnung1": "unbekannt"
         })
+
+        self.leftpanel=[
+          {title:"Personalien",detail:"summaryView",handler:"summaryViewHandler"},
+          {title:"Labor",detail:"labView",handler:"labViewHandler"},
+          {title:"Konsultation",detail:"consView",handler:"consViewHandler"},
+          {title:"Probleme",detail:"problemView",handler:"problemViewHandler"}]
+
         self.displayName = ko.pureComputed(function () {
             var p = self.data()
             var now = new Date()

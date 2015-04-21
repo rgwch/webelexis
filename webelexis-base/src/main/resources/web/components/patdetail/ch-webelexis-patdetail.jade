@@ -2,3 +2,17 @@
 .row(data-bind="with: data")
     h2.h2.col-sm-12(data-bind="text:$parent.displayName")
     h5.h5.col-sm-12(data-bind="text:  $parent.address")
+    //- left panel on wider devices, topmost panel on narrow screens
+    .col-sm-12.col-md-3(data-bind="template: {name: 'left_panel'}")
+    .col-sm-12.col-md-6(data-bind="template: {name: 'center_panel'}")
+    .col-sm-12.col-md-3(data-bind="template: {name: 'right_panel'}")
+        
+script(type="text/html" id="left_panel")
+  .btn-group-vertical(role="group" data-bind="foreach: $parent.leftpanel")
+    button.btn.btn-default(type="button" data-bind="text: title")
+
+script(type="text/html" id="center_panel")
+  p Mitte
+
+script(type="text/html" id="right_panel")
+  p Rechts
