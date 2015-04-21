@@ -1,11 +1,11 @@
 {
-    "main": "ch.webelexis.CoreVerticle",
-  	"worker": false,
-  	"description": "Core verticles for the Webelexis system",
-  	"licenses": ["Eclipse Public License"],
-  	"author": "rgwch",
-    "developers": ["weirich@elexis.ch"],
-    "keywords": ["arzt", "praxis", "elexis", "swiss", "schweiz", "medelexis"],
-    "auto-redeploy": true,
-    "homepage": "http://www.webelexis.ch"
- }
+  "main": "ch.webelexis.CoreVerticle",
+  "worker": false,
+  "description": "Core verticles for the Webelexis system",
+  "licenses": ["Eclipse Public License"],
+  "author": "rgwch",
+  "developers": ["weirich@elexis.ch"],
+  "keywords": ["arzt", "praxis", "elexis", "swiss", "schweiz", "medelexis"],
+  "auto-redeploy": true,
+  "homepage": "http://www.webelexis.ch"
+}

@@ -1,34 +1,28 @@
 .red {
-    color: red;
+  color: red;
 }
-
 .greyed {
-    background-color: #eee;
-    border-bottom: 1px solid blue;
-    border-top: 1px solid blue;
+  background-color: #eee;
+  border-bottom: 1px solid blue;
+  border-top: 1px solid blue;
 }
-
 .available {
-    background-color: #A7D2A7;
+  background-color: #A7D2A7;
 }
-
 .occupied {
-    background-color: #FF9494;
+  background-color: #FF9494;
 }
-
 .user {
-    background-color: #55ff55;
+  background-color: #55ff55;
 }
 .locked {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
-
 .abstand {
-    margin-left: 10px;
-    margin-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
-
 label.error {
-    color: red;
+  color: red;
 }

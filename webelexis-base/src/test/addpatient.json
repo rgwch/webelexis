@@ -1,170 +1,137 @@
 {
-	"config-mock": 
-	{
-		"admin-address": "ch.webelexis.tests"
-	},
+  "config-mock": {
+    "admin-address": "ch.webelexis.tests"
+  },
 
-	"testuser1": 
-	{
-		"username": "hinz@kunz.ch",
-		"vorname": "hinz",
-		"name": "kunz",
-		"geburtsdatum": "19810331",
-		"pass": "topSecret"
-	},
-	"testuser2":
-	{
-		"username":"test@exis.ts",
-		"vorname":"Hans Guck",
-		"name":"In die-luft",
-		"geburtsdatum":"19501201",
-		"pass":"toppersecret"
-	},
-	
-	"config-addpatient": 
-	{
-		"default-role": "patient",	
-		"mailer": 
-		{
-			"from": "me@here.ch",
-			"bcc": "also_me@here.ch",
-			"subject": "webelexis registration",
-			"body": "this is it %url%"
-		}
-	},
+  "testuser1": {
+    "username": "hinz@kunz.ch",
+    "vorname": "hinz",
+    "name": "kunz",
+    "geburtsdatum": "19810331",
+    "pass": "topSecret"
+  },
+  "testuser2": {
+    "username": "test@exis.ts",
+    "vorname": "Hans Guck",
+    "name": "In die-luft",
+    "geburtsdatum": "19501201",
+    "pass": "toppersecret"
+  },
 
-	"mock-mongo": 
-	{
-		"task": "reply",
-		"listen-address": "ch.webelexis.nosql",
-		"match": 
-		[
-			{
-				"message": 
-				{
-					"action": "findone"
-				},
+  "config-addpatient": {
+    "default-role": "patient",
+    "mailer": {
+      "from": "me@here.ch",
+      "bcc": "also_me@here.ch",
+      "subject": "webelexis registration",
+      "body": "this is it %url%"
+    }
+  },
 
-				"case-sensitive": true,
-				"match-reply": 
-				{
-					"status": "ok"
-				}
-			},
+  "mock-mongo": {
+    "task": "reply",
+    "listen-address": "ch.webelexis.nosql",
+    "match": [{
+        "message": {
+          "action": "findone"
+        },
 
-			{
-				"message": 
-				{
-					"action": "findone",
-					"matcher": 
-					{
-						"username": "test@exis.ts"
-					}
-				},
+        "case-sensitive": true,
+        "match-reply": {
+          "status": "ok"
+        }
+      },
 
-				"case-sensitive": true,
-				"match-reply": 
-				{
-					"status": "ok",
-					"result": 
-					[
-						{
-							"username": "test@exis.ts"
-						}
-					]
-				}
-			},
+      {
+        "message": {
+          "action": "findone",
+          "matcher": {
+            "username": "test@exis.ts"
+          }
+        },
 
-			{
-				"message": 
-				{
-					"action": "save",
-					"collection": ".+",
-					"document": 
-					{
-						"username": ".+",
-						"patientid": ".{10,30}",
-						"firstname": "[\\w -.]+",
-						"lastname": "[\\w -.]+",
-						"pwhash": ".{5,}"
-					}
-				},
+        "case-sensitive": true,
+        "match-reply": {
+          "status": "ok",
+          "result": [{
+            "username": "test@exis.ts"
+          }]
+        }
+      },
 
-				"match-reply": 
-				{
-					"status": "ok"
-				},
+      {
+        "message": {
+          "action": "save",
+          "collection": ".+",
+          "document": {
+            "username": ".+",
+            "patientid": ".{10,30}",
+            "firstname": "[\\w -.]+",
+            "lastname": "[\\w -.]+",
+            "pwhash": ".{5,}"
+          }
+        },
 
-				"case-sensitive": true
-			}
-		],
+        "match-reply": {
+          "status": "ok"
+        },
 
-		"nomatch-reply": 
-		{
-			"status": "test failure mock-mongo",
-			"message": "unexpected message"
-		}
-	},
+        "case-sensitive": true
+      }
+    ],
 
-	"mock-sql": 
-	{
-		"task": "reply",
-		"listen-address": "ch.webelexis.sql",
-		"match": 
-		[
-			{
-				"message": 
-				{
-					"action": "prepared",
-					"statement": "select id from KONTAKT.+"
-				},
+    "nomatch-reply": {
+      "status": "test failure mock-mongo",
+      "message": "unexpected message"
+    }
+  },
 
-				"case-sensitive": true,
-				"match-reply": 
-				{
-					"status": "ok",
-					"results": 
-					[
-						[
-							"abcdefghijklmnopqrstuvwxyz"
-						]
-					]
-				}
-			},
+  "mock-sql": {
+    "task": "reply",
+    "listen-address": "ch.webelexis.sql",
+    "match": [{
+        "message": {
+          "action": "prepared",
+          "statement": "select id from KONTAKT.+"
+        },
 
-			{
-				"message": 
-				{
-					"action": "insert"
-				},
-				"match-reply":{
-					"status": "ok"
-				}
-			}
-		]
-	},
+        "case-sensitive": true,
+        "match-reply": {
+          "status": "ok",
+          "results": [
+            [
+              "abcdefghijklmnopqrstuvwxyz"
+            ]
+          ]
+        }
+      },
 
-	"mock-mailer": 
-	{
-		"task": "reply",
-		"listen-address": "ch.webelexis.mailer",
-		"match": 
-		[
-			{
-				"message": 
-				{
-					"from": "[A-Z0-9_.]+@[a-z0-9_.]{2,}\\.[a-z]{2,4}",
-					"to": "[A-Z0-9_.]+@[a-z0-9_.]{2,}\\.[a-z]{2,4}",
-					"subject": ".+",
-					"body": ".+"
-				},
+      {
+        "message": {
+          "action": "insert"
+        },
+        "match-reply": {
+          "status": "ok"
+        }
+      }
+    ]
+  },
 
-				"case-sensitive": false,
-				"match-reply": 
-				{
-					"status": "ok"
-				}
-			}
-		]
-	}
+  "mock-mailer": {
+    "task": "reply",
+    "listen-address": "ch.webelexis.mailer",
+    "match": [{
+      "message": {
+        "from": "[A-Z0-9_.]+@[a-z0-9_.]{2,}\\.[a-z]{2,4}",
+        "to": "[A-Z0-9_.]+@[a-z0-9_.]{2,}\\.[a-z]{2,4}",
+        "subject": ".+",
+        "body": ".+"
+      },
+
+      "case-sensitive": false,
+      "match-reply": {
+        "status": "ok"
+      }
+    }]
+  }
 }

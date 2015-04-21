@@ -1,8 +1,8 @@
 {
-    "timeout": 4000,
-    "commands": [
-      "src/main/**/*.js:npm run compile-js",
-      "src/main/**/*.jade:npm run compile-jade",
-      "less/*.less:lessc --plugin=less-plugin-clean-css bootstrap.less bootstrap.wlx.css"
-    ]
+  "timeout": 4000,
+  "commands": [
+    "src/main/**/*.js:npm run compile-js",
+    "src/main/**/*.jade:npm run compile-jade",
+    "less/*.less:lessc --plugin=less-plugin-clean-css bootstrap.less bootstrap.wlx.css"
+  ]
 }

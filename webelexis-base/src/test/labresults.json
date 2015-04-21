@@ -1,33 +1,33 @@
 {
-  "config-mock":{
-    "admin-address":"ch.webelexis.tests"
+  "config-mock": {
+    "admin-address": "ch.webelexis.tests"
   },
-  "mock-sql":{
-    "task":"reply",
-    "listen-address":"ch.webelexis.sql",
-    "match":[{
-      "message":{
-        "action":"prepared",
-        "statement":"SELECT [a-z .,]+ FROM LABORWERTE.+"
+  "mock-sql": {
+    "task": "reply",
+    "listen-address": "ch.webelexis.sql",
+    "match": [{
+      "message": {
+        "action": "prepared",
+        "statement": "SELECT [a-z .,]+ FROM LABORWERTE.+"
       },
-      "match-reply":{
-        "status":"ok",
-        "results":[
-          ["1","2","3","4","5","6","7","8","9","10"],
-          ["a","b","c","d","e","f","g","h","i","j"]
+      "match-reply": {
+        "status": "ok",
+        "results": [
+          ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
         ]
       }
     }],
-    "nomatch-reply":{
-    	"status":"error",
-    	"message":"no matching message found"
+    "nomatch-reply": {
+      "status": "error",
+      "message": "no matching message found"
     }
   },
 
-  "request":{
-    "patientid":"123456-7890",
-    "from":"20150301",
-    "until":"20150331"
+  "request": {
+    "patientid": "123456-7890",
+    "from": "20150301",
+    "until": "20150331"
   }
 
 }

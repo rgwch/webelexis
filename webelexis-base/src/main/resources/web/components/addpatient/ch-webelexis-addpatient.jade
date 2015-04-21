@@ -6,48 +6,48 @@ h2.h2 Personalien eintragen
 - var fields2=["Strasse", "Plz", "Ort","Telefon", "Mobil", "Krankenkasse", "Versicherungsnummer"]
 - var fcss="col-lg-3 col-md-4 col-sm-6 col-xs-12"
 mixin createFields
-    .row(data-bind="with: data")
-        each val, index in f
-            - var fld=val.toLowerCase()
-            .form-group(class="#{fcss}")
-                label(for=fld) #{val}
-                input.form-control(id=fld name=fld type="text" data-bind="value: #{fld}")
-        .clearfix
-        .form-group(class="#{fcss}")
-            label(for="pass") Passwort
-            input.form-control(id="pass" name="pass" type="password" data-bind="value: pass")
-        .form-group(class="#{fcss}")
-            label(for="pwdrep") Passwort wiederholen
-            input.form-control(id="pwdrep" name="pwdrep" type="password")
+  .row(data-bind="with: data")
+    each val, index in f
+      - var fld=val.toLowerCase()
+      .form-group(class="#{fcss}")
+          label(for=fld) #{val}
+          input.form-control(id=fld name=fld type="text" data-bind="value: #{fld}")
+    .clearfix
+    .form-group(class="#{fcss}")
+      label(for="pass") Passwort
+      input.form-control(id="pass" name="pass" type="password" data-bind="value: pass")
+    .form-group(class="#{fcss}")
+      label(for="pwdrep") Passwort wiederholen
+      input.form-control(id="pwdrep" name="pwdrep" type="password")
 
 
 form.form#eingabe(data-bind="submit: send")
-    div
-        input(type="radio" name="anzeige" id="anzeige_alt" value="palt" data-bind="checked: accountDisplay")
-        span  Wenn Sie schon Patient/in bei uns sind, und jetzt nur ein Konto für die Online-Terminvergabe erstellen möchten, wählen Sie bitte diese Option.
-    div
-        input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
-        span  Wenn Sie noch nie bei uns waren, wählen Sie bitte diese Option und füllen Sie alle Felder aus.
-    div
-        input(type="radio" name="anzeige" id="login_only" value="login" data-bind="checked: accountDisplay")
-        span  Wenn Sie bereits ein Konto haben, können Sie direkt zum 
-            a(href="#login") Login
-            span  gehen.
+  div
+    input(type="radio" name="anzeige" id="anzeige_alt" value="palt" data-bind="checked: accountDisplay")
+    span  Wenn Sie schon Patient/in bei uns sind, und jetzt nur ein Konto für die Online-Terminvergabe erstellen möchten, wählen Sie bitte diese Option.
+  div
+    input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
+    span  Wenn Sie noch nie bei uns waren, wählen Sie bitte diese Option und füllen Sie alle Felder aus.
+  div
+    input(type="radio" name="anzeige" id="login_only" value="login" data-bind="checked: accountDisplay")
+    span  Wenn Sie bereits ein Konto haben, können Sie direkt zum 
+      a(href="#login") Login
+      span  gehen.
 
-    div(data-bind="visible: accountDisplay()=='palt'")
-        - var f=fields1
-        +createFields
-                    
-    div(data-bind="visible: accountDisplay()=='pneu'") 
-        - var f=fields1.concat(fields2)
-        +createFields
+  div(data-bind="visible: accountDisplay()=='palt'")
+    - var f=fields1
+    +createFields
+                  
+  div(data-bind="visible: accountDisplay()=='pneu'") 
+    - var f=fields1.concat(fields2)
+    +createFields
 
-    .clearfix
-    div(data-bind="visible: accountDisplay()!='login'")
-        h3.h3 Datenschutzerklärung
-        p. 
-           Ihre Angaben werden nur zum Erstellen des Benutzerkontos und - falls noch nicht vorhanden - der Patientenakte verwendet, 
-           und um Sie nötigenfalls zu kontaktieren, falls wir einen Termin verschieben müssen.
-           Unter keinen Umständen geben wir Daten an Dritte weiter. Wir werden Ihre Angaben auch nicht für Marketingzwecke missbrauchen. Sie können Jederzeit 
-           die Löschung Ihres Kontos und der hier eingetragenen Daten verlangen.
-        button.btn.btn-primary(type="submit") Formular absenden
+  .clearfix
+  div(data-bind="visible: accountDisplay()!='login'")
+    h3.h3 Datenschutzerklärung
+    p. 
+       Ihre Angaben werden nur zum Erstellen des Benutzerkontos und - falls noch nicht vorhanden - der Patientenakte verwendet, 
+       und um Sie nötigenfalls zu kontaktieren, falls wir einen Termin verschieben müssen.
+       Unter keinen Umständen geben wir Daten an Dritte weiter. Wir werden Ihre Angaben auch nicht für Marketingzwecke missbrauchen. Sie können Jederzeit 
+       die Löschung Ihres Kontos und der hier eingetragenen Daten verlangen.
+    button.btn.btn-primary(type="submit") Formular absenden

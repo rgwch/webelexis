@@ -1,21 +1,21 @@
 // This file is part of Webelexis, copyright (c) 2015 by G. Weirich
 doctype html
 html(lang="de")
-    head
-        meta(charset="utf-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1")
-        meta(http-equiv="content-type" content="text/html; charset=utf-8")
-        meta(name="clientID" content="GOOGLE_CLIENT_ID")
-        meta(name="state" content="GOOGLE_STATE")
-        meta(name="UUID" content="GUID")
-        link(rel="stylesheet" href="css/bootstrap.wlx.css")
-        link(rel="stylesheet" href="css/jquery-ui.min.css")
-        link(rel="stylesheet" href="css/style.css")
-        title(data-bind="text: router.currentPage().title") Webelexis
-        script(src="app/requirejs.config.js")
-        script(src="https://apis.google.com/js/platform.js" async defer)
-        script(data-main="app/main.js" src="lib/require.js")
-    body
-        .container
-            #menu(data-bind="component: {name: 'ch-webelexis-menubar', params: {menu: 'mainMenu'}}")
-            #content(data-bind="component: { 'name': router.currentPage().componentName, 'params': {params: router.currentPage().params}}")          
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(http-equiv="content-type" content="text/html; charset=utf-8")
+    meta(name="clientID" content="GOOGLE_CLIENT_ID")
+    meta(name="state" content="GOOGLE_STATE")
+    meta(name="UUID" content="GUID")
+    link(rel="stylesheet" href="css/bootstrap.wlx.css")
+    link(rel="stylesheet" href="css/jquery-ui.min.css")
+    link(rel="stylesheet" href="css/style.css")
+    title(data-bind="text: router.currentPage().title") Webelexis
+    script(src="app/requirejs.config.js")
+    script(src="https://apis.google.com/js/platform.js" async defer)
+    script(data-main="app/main.js" src="lib/require.js")
+  body
+    .container
+        #menu(data-bind="component: {name: 'ch-webelexis-menubar', params: {menu: 'mainMenu'}}")
+        #content(data-bind="component: { 'name': router.currentPage().componentName, 'params': {params: router.currentPage().params}}")          
