@@ -26,7 +26,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
       if (self.vtor.numberOfInvalids() === 0) {
         console.log(JSON.stringify(self.data()))
         var payload = self.data()
-        var date = dt.makeDateFromlocal(payload.geburtsdatum)
+        var date = dt.makeDateFromLocal(payload.geburtsdatum)
         payload.geburtsdatum = dt.makeCompactString(date)
         payload.sessionID = cfg.sessionID
         payload.username = payload.email
