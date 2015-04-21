@@ -55,7 +55,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
         self.lastExpanded = null
 
         self.readDate = function() {
-            var date = dt.makeDateFromlocal(self.now())
+            var date = dt.makeDateFromLocal(self.now())
             return date
         }
         self.writeDate = function(date) {
@@ -170,7 +170,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
                 }
             });
         }
-        
+
         self.deleteAppointment = function(){
             bus.send('ch.webelexis.publicagenda',{
                 request:"delete",

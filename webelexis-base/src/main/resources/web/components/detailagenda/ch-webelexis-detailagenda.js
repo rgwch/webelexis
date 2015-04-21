@@ -91,7 +91,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         }
 
         self.readDate = function () {
-            var date = dt.makeDateFromlocal(self.now())
+            var date = dt.makeDateFromLocal(self.now())
             return date
         }
         self.writeDate = function (date) {
@@ -188,11 +188,11 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
                 }
             });
         }
-        
+
         self.patdetail=function(idx){
             window.location.hash="#patid/"+idx.patientID
         }
-        
+
         var busListener = function (msg) {
             if (msg === "open") {
                 self.loadAppointments()

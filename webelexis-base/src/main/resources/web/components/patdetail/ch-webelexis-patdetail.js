@@ -7,6 +7,9 @@
 define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webelexis-patdetail.html'], function (ko, bus, cfg, dt, html) {
     //var dummy = '7ba4632caba62c5b3a366'
 
+    function doIt(){
+      window.alert("click")
+  }
     function PatDetailModel(params) {
         var self = this
         var patid = params.params[0]
@@ -15,19 +18,31 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webel
             "bezeichnung1": "unbekannt"
         })
 
+        self.activeCenterPanel=ko.observable("summaryView")
+
+        self.setPanel = function(item){
+          self.activeCenterPanel(item.detail)
+        }
+
         self.leftpanel=[
           {title:"Personalien",detail:"summaryView",handler:"summaryViewHandler"},
           {title:"Labor",detail:"labView",handler:"labViewHandler"},
           {title:"Konsultation",detail:"consView",handler:"consViewHandler"},
           {title:"Probleme",detail:"problemView",handler:"problemViewHandler"}]
 
-        self.displayName = ko.pureComputed(function () {
+
+
+        self.displayName = ko.computed(function() {
             var p = self.data()
             var now = new Date()
-            var bdate = dt.makeDate(p.geburtsdatum)
-            var diff = now.getTime() - bdate.getTime();
-            var age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-            return p.bezeichnung1 + " " + p.bezeichnung2 + " (" + p.geschlecht + "), " + dt.makeDateString(bdate) + " (" + age + ") [" + p.patientnr + "]"
+            var bdate=new Date()
+            var age=0
+            if(p.geburtsdatum !== undefined){
+              bdate = dt.makeDateFromLocal(p.geburtsdatum)
+              var diff = now.getTime() - bdate.getTime();
+              age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            }
+            return p.bezeichnung1 + " " + p.bezeichnung2 + " (" + p.geschlecht + "), " + p.geburtsdatum + " (" + age + ") [" + p.patientnr + "]"
         })
         self.address = ko.pureComputed(function () {
             var p = self.data()
@@ -42,6 +57,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webel
                 if ((result === undefined) || (result.status !== "ok")) {
                     window.alert("fehler bei der abfrage " + result.status + result.message);
                 } else {
+                    result.patient.geburtsdatum=dt.makeDateFromElexisDate(result.patient.geburtsdatum)
                     self.data(result.patient)
                 }
             });

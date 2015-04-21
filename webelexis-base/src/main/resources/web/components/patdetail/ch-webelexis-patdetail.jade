@@ -1,18 +1,41 @@
 //- This file is part of webelexis, Copyright (c) 2015 by G. Weirich
-.row(data-bind="with: data")
-    h2.h2.col-sm-12(data-bind="text:$parent.displayName")
-    h5.h5.col-sm-12(data-bind="text:  $parent.address")
+.row
+    h2.h2.col-sm-12(data-bind="text: displayName")
+    //h5.h5.col-sm-12(data-bind="text: address")
     //- left panel on wider devices, topmost panel on narrow screens
     .col-sm-12.col-md-3(data-bind="template: {name: 'left_panel'}")
-    .col-sm-12.col-md-6(data-bind="template: {name: 'center_panel'}")
+    .col-sm-12.col-md-6(data-bind="template: {name: activeCenterPanel, data: data}")
     .col-sm-12.col-md-3(data-bind="template: {name: 'right_panel'}")
         
 script(type="text/html" id="left_panel")
-  .btn-group-vertical(role="group" data-bind="foreach: $parent.leftpanel")
-    button.btn.btn-default(type="button" data-bind="text: title")
+  .visible-md-block.visible-lg-block
+    .btn-group-vertical(role="group" data-bind="foreach: leftpanel")
+      button.btn.btn-default(type="button" data-bind="text: title, click: $parent.setPanel")
 
-script(type="text/html" id="center_panel")
-  p Mitte
+  .visible-xs-block.visible-sm-block
+    .btn-group(role="group" data-bind="foreach: leftpanel")
+      button.btn.btn-default(type="button" data-bind="text: title, click: $parent.setPanel")
+
 
 script(type="text/html" id="right_panel")
   p Rechts
+
+script(type="text/html" id="summaryView")
+  -var fields=["bezeichnung1","bezeichnung2","geburtsdatum","strasse","plz","ort","telefon1","telefon2","natelnr","email","bemerkung"]
+  -var labels=["Name","Vorname","Geburtsdatum","Strasse","Plz","Ort","Tel. privat","Tel. Geschäft","Tel. mobil","e-mail","Bemerkung"]
+  form.form#patdetail(submit="update")
+    each val, index in fields
+      .form-group.col-xs-6.col-md-4
+        label(for=val) #{labels[index]}
+        input.form-control(id=val type="text" data-bind="value: #{val}")
+    .clearfix
+    button.btn-btn-default.col-xs-12(type="submit") Änderungen speichern
+  
+script(type="text/html" id="labView")
+  p Labor
+
+script(type="text/html" id="consView")
+  p Konsultation
+
+script(type="text/html" id="problemView")
+  p Probleme
