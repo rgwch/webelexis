@@ -203,6 +203,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
   AgendaViewModel.prototype.dispose = function() {
     bus.removeListener(AgendaViewModel.busListener)
   }
+  
   return {
     viewModel: AgendaViewModel,
     template: html

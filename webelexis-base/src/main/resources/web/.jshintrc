@@ -1,3 +1,12 @@
 {
-  "asi":true
+  "asi":true,
+  "shadow":"outer",
+  "undef":true,
+  "boss":false,
+  "expr":false,
+  "loopfunc":false,
+  "jquery":true,
+  "globals":{
+    "define":true
+  }
 }

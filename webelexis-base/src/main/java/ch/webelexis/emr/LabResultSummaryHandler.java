@@ -14,14 +14,14 @@ import ch.webelexis.Cleaner;
 import ch.webelexis.Mapper;
 import ch.webelexis.ParametersException;
 
-public class LabResultHandler implements Handler<Message<JsonObject>> {
+public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 	Verticle v;
 	EventBus eb;
 	Logger log;
 	String[] fields = new String[] { "v.Datum", "v.ItemID", "v.Resultat", "v.Kommentar",
 				"li.kuerzel", "li.titel", "li.Gruppe", "li.prio", "li.RefMann", "li.RefFrauOrTx" };
 
-	public LabResultHandler(Verticle server) {
+	public LabResultSummaryHandler(Verticle server) {
 		v = server;
 		this.eb = v.getVertx().eventBus();
 		this.log = v.getContainer().logger();
@@ -32,17 +32,12 @@ public class LabResultHandler implements Handler<Message<JsonObject>> {
 		Cleaner cl = new Cleaner(externalRequest);
 		try {
 			String patId = cl.get("patientid", Cleaner.UID, false);
-			String dateFrom = cl.get("from", Cleaner.ELEXISDATE, false);
-			String dateUntil=  cl.get("until", Cleaner.ELEXISDATE, false);
-			if (dateFrom == null) {
-				dateFrom = "20000101";
-			}
 			Mapper mapper = new Mapper(fields);
-			String query = "SELECT FIELDS FROM LABORWERTE as v, LABORITEMS as li where v.Datum>=? and v.Datum<=? and v.PatientID=? and v.ItemID=li.id";
+			String query = "SELECT FIELDS FROM LABORWERTE as v, LABORITEMS as li where v.PatientID=? and v.ItemID=li.id and v.deleted='0' order by v.Datum";
 
 			JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement",
 						mapper.mapToString(query, "FIELDS")).putArray("values",
-						new JsonArray(new String[] { dateFrom, dateUntil, patId }));
+						new JsonArray(new String[] { patId }));
 			log.debug("sending message :" + jo.encodePrettily());
 			eb.send("ch.webelexis.sql", jo, new SqlResult(cl, mapper));
 

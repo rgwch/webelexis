@@ -1,7 +1,9 @@
 package ch.webelexis.emr;
 
 import org.vertx.java.busmods.BusModBase;
+import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
+import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 
@@ -17,10 +19,22 @@ public class Server extends BusModBase {
 		log=container.logger();
 		cfg=container.config();
 		eb=vertx.eventBus();
-		log.info("EMR Server started); got config "+cfg.encodePrettily());
+		log.info("EMR Server started. got config "+cfg.encodePrettily());
 		if(cfg.getBoolean("lab")==true){
-			final LabResultHandler labResultHandler=new LabResultHandler(this);
-			eb.registerHandler("ch.webelexis.emr.labresult", new AuthorizingHandler(this, cfg.getString("role","admin"), labResultHandler));
+			final LabResultSummaryHandler labResultHandler=new LabResultSummaryHandler(this);
+			eb.registerHandler("ch.webelexis.emr.labresult", new AuthorizingHandler(this, cfg.getString("role","admin"), new Handler<Message<JsonObject>>() {
+				
+				@Override
+				public void handle(Message<JsonObject> request) {
+					String mode=request.body().getString("mode");
+					if(mode==null || mode.equals("latest")){
+						labResultHandler.handle(request);
+					}else if(mode.equals("selection")){
+						// probably later
+					}
+					
+				}
+			}));
 		}
 	}
 }

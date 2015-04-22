@@ -13,7 +13,7 @@ import org.vertx.testtools.TestVerticle;
 import org.vertx.testtools.VertxAssert;
 
 import ch.webelexis.Cleaner;
-import ch.webelexis.emr.LabResultHandler;
+import ch.webelexis.emr.LabResultSummaryHandler;
 
 public class LabValueTest extends TestVerticle {
 	JsonObject testDesc;
@@ -51,7 +51,7 @@ public class LabValueTest extends TestVerticle {
 
 	@Test
 	public void LabValueCall() {
-		eb.registerHandler(REQUEST_ADDRESS, new LabResultHandler(this));
+		eb.registerHandler(REQUEST_ADDRESS, new LabResultSummaryHandler(this));
 		vertx.setTimer(DELAY, new Handler<Long>() {
 
 			@Override

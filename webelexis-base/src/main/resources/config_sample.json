@@ -111,11 +111,8 @@
       }, {
         "address": "ch.webelexis.privateagenda"
       }, {
-        "address": "ch.webelexis.patient.detail"
-      }, {
-        "address": "ch.webelexis.patient.add"
+        "address_re": "ch.webelexis.patient.\\w+"
       }
-
     ], // allowed outbound messages
     "outOK": [],
     // remove the following property, if you don't want "Sign in with google"
