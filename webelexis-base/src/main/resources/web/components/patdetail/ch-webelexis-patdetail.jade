@@ -8,7 +8,7 @@
         
 //- left panel on wider devices, topmost panel on narrow screens
 script(type="text/html" id="left_panel")
-  //- on wider devices: show buttons left hand sinde stacked
+  //- on wider devices: show buttons left hand side stacked
   .visible-md-block.visible-lg-block
     .btn-group-vertical(role="group" data-bind="foreach: leftpanel")
       button.btn.btn-default(type="button" data-bind="text: title, click: $parent.setPanel")

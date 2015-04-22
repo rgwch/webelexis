@@ -1,13 +1,10 @@
-// Example JSON config file for webelexis-base. 
+// Example JSON config file for webelexis-base.
 // Copy this file to the webelexis-base rootdir. rename it to 'cfglocal.json' and modify as needed.
 
 // Note: comments are not part of the JSON spec. Some parsers will reject files with comments,
 // therefore it is recommended to remove these comments in your active cfglocal.json.
 // (vert.x does accept comments at this time, however)
 // If vert.x complains about invalid config, remove all comments and check the correctness of your config with http://jsonlint.com
-
-// Note 2: The file "config_minimal.json" is a miniumum set of options needed to run webelexis. Probably you'd rather start
-// from that file.
 
 // config for the mod-mongo-persistor (https://github.com/vert-x/mod-mongo-persistor)
 {
