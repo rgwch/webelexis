@@ -18,8 +18,8 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 	Verticle v;
 	EventBus eb;
 	Logger log;
-	String[] fields = new String[] { "v.Datum", "v.ItemID", "v.Resultat", "v.Kommentar",
-				"li.kuerzel", "li.titel", "li.Gruppe", "li.prio", "li.RefMann", "li.RefFrauOrTx" };
+	String[] fields = new String[] { "v.Datum", "li.titel", "v.ItemID", "v.Resultat", "v.Kommentar",
+				"li.kuerzel", "li.Gruppe", "li.prio", "li.RefMann", "li.RefFrauOrTx" };
 
 	public LabResultSummaryHandler(Verticle server) {
 		v = server;
@@ -39,7 +39,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 						mapper.mapToString(query, "FIELDS")).putArray("values",
 						new JsonArray(new String[] { patId }));
 			log.debug("sending message :" + jo.encodePrettily());
-			eb.send("ch.webelexis.sql", jo, new SqlResult(cl, mapper));
+			eb.send("ch.webelexis.sql", jo, new SqlResult(cl));
 
 		} catch (ParametersException e) {
 			e.printStackTrace();
@@ -49,32 +49,16 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 
 	class SqlResult implements Handler<Message<JsonObject>> {
 		Cleaner cl;
-		Mapper mapper;
 
-		SqlResult(Cleaner c, Mapper m) {
+		SqlResult(Cleaner c) {
 			this.cl = c;
-			mapper = m;
 		}
 
 		@Override
 		public void handle(Message<JsonObject> sqlAnswer) {
+
 			JsonObject result = sqlAnswer.body();
-			if (result.getString("status").equals("ok")) {
-				JsonArray labValues = result.getArray("results");
-				JsonArray ja = new JsonArray();
-				Iterator<Object> it = labValues.iterator();
-				while (it.hasNext()) {
-					JsonArray row = (JsonArray) it.next();
-					JsonObject item = mapper.mapToJson(row.toArray());
-					ja.add(item);
-				}
-				cl.reply(new JsonObject().putString("status", "ok").putArray("results", ja));
-			} else {
-				log.error(result.encodePrettily());
-				cl.replyError("SQL Error");
-			}
+			cl.reply(result);
 		}
-
 	}
-
 }

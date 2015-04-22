@@ -2,27 +2,23 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-
-define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webelexis-patdetail.html'], function(ko, bus, cfg, dt, html) {
+define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'text!tmpl/ch-webelexis-patdetail.html'], function(ko, bus, cfg, dt, lh, html) {
   //var dummy = '7ba4632caba62c5b3a366'
-
-
   function PatDetailModel(params) {
     var self = this
     var patid = params.params[0]
     self.title = "Patient Detail"
     self.data = ko.observable({
-      "bezeichnung1": "",
-      "bezeichnung2": ""
-    })
-
-    // this panel is displayed in the center
+        "bezeichnung1": "",
+        "bezeichnung2": ""
+      })
+      // this panel is displayed in the center
     self.activeCenterPanel = ko.observable("summaryView")
-
-    // set center panel
+      // set center panel
     self.setPanel = function(item) {
       self.activeCenterPanel(item.detail)
     }
+
 
     // panels to display as buttons on the left/top
     self.leftpanel = [{
@@ -66,6 +62,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webel
       return p.strasse + ", " + p.plz + " " + p.ort + "; " + p.telefon1 + ", " + p.telefon2 + ", " + p.natelnr
     })
 
+
     // fetch patient summary
     self.loadSummary = function() {
       bus.send('ch.webelexis.patient.detail', {
@@ -80,12 +77,26 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'text!tmpl/ch-webel
           self.data(result.patient)
         }
       });
-
     }
 
-    self.loadSummary()
-  }
 
+    // fetch lab summary
+    self.loadLabSummary = function() {
+      bus.send("ch.webelexis.patient.labresult", {
+        "mode": "latest",
+        "patid": patid,
+        "sessionID": cfg.sessionID
+      }, function(result) {
+        if ((result === undefined) || (result.status !== "ok")) {
+          window.alert("Fehler bei der Abfrage: " + result.status + " " + result.message)
+        } else {
+          var cruncher = lh.loadLatest(result)
+        }
+      })
+    }
+    self.loadSummary()
+
+  }
   return {
     viewModel: PatDetailModel,
     template: html

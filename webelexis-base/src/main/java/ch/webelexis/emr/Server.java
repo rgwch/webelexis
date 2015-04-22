@@ -22,7 +22,7 @@ public class Server extends BusModBase {
 		log.info("EMR Server started. got config "+cfg.encodePrettily());
 		if(cfg.getBoolean("lab")==true){
 			final LabResultSummaryHandler labResultHandler=new LabResultSummaryHandler(this);
-			eb.registerHandler("ch.webelexis.emr.labresult", new AuthorizingHandler(this, cfg.getString("role","admin"), new Handler<Message<JsonObject>>() {
+			eb.registerHandler("ch.webelexis.patient.labresult", new AuthorizingHandler(this, cfg.getString("role","admin"), new Handler<Message<JsonObject>>() {
 				
 				@Override
 				public void handle(Message<JsonObject> request) {
