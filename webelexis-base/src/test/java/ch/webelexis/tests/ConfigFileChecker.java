@@ -22,12 +22,7 @@ public class ConfigFileChecker{
 			assertNotNull(cfg);
 		}
 		
-		@Test
-		public void checkCfgMinimal() throws  DecodeException, IOException{
-			JsonObject cfg=Cleaner.createFromFile("src/main/resources/config_minimal.json");
-			assertNotNull(cfg);
-		}
-		
+			
 		@Test
 		public void checkCfgLocal() throws  DecodeException, IOException{
 			JsonObject cfg=Cleaner.createFromFile("cfglocal.json");
