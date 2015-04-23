@@ -3,7 +3,7 @@
  * Copyright (c) 2015 by G. Weirich
  */
 
-/* Functios to convert an SQL response to something more handy */
+/* Functions to convert an SQL response to something more handy */
 define(['app/datetools'], function(dt) {
 
   function insert(arr, item, idx) {

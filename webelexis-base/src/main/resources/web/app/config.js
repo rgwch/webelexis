@@ -3,7 +3,7 @@
  ** Copyright (c) by G. Weirich 2015
  */
 
-define(['knockout'], function(ko) {
+define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
 
   return {
 
@@ -31,7 +31,7 @@ define(['knockout'], function(ko) {
     modules: [{
         baseUrl: "#",
         match: /^$/, // regexp to match for this page
-        title: 'Terminsuche', // title to display on this page's tab
+        title: T.findapp, // title to display on this page's tab
         component: 'ch-webelexis-agenda', // name pof the component that creates this pages
         location: 'components/agenda', // location of the componant
         active: true, // to deactivate a component temporarily, set to 'false'
@@ -40,7 +40,7 @@ define(['knockout'], function(ko) {
           // again: The server side decides ultimately.
       }, {
         active: false,
-        title: "Konsole",
+        title: "T.console",
         baseUrl: "#console",
         match: /^console$/,
         component: "ch-webelexis-console",
@@ -50,7 +50,7 @@ define(['knockout'], function(ko) {
       }, {
         baseUrl: "#agext",
         match: /^agext$/,
-        title: "Agenda",
+        title: T.agenda,
         component: 'ch-webelexis-detailagenda',
         location: 'components/detailagenda',
         active: true,
@@ -59,7 +59,7 @@ define(['knockout'], function(ko) {
       }, {
         baseUrl: "#patlist",
         match: /^patlist$/,
-        title: 'Patienten',
+        title: T.patients,
         component: 'ch-webelexis-patlist',
         location: 'components/patlist',
         active: false,
@@ -68,7 +68,7 @@ define(['knockout'], function(ko) {
       }, {
         baseUrl: "#patid",
         match: /^patid\/(.+)\/?$/,
-        title: "Patient",
+        title: T.patient,
         component: 'ch-webelexis-patdetail',
         location: 'components/patdetail',
         menuItem: true,
@@ -78,7 +78,7 @@ define(['knockout'], function(ko) {
       }, {
         baseUrl: "#kons",
         match: /^kons$/,
-        title: "Konsultation",
+        title: T.consultation,
         location: 'components/consultation',
         component: 'ch-webelexis-consdetail',
         menuItem: true,
@@ -87,7 +87,7 @@ define(['knockout'], function(ko) {
       }, {
         baseUrl: "#login",
         match: /^login$/,
-        title: "Webelexis-Anmeldung",
+        title: T.login,
         component: 'ch-webelexis-login',
         location: 'components/login',
         active: true,
@@ -106,7 +106,7 @@ define(['knockout'], function(ko) {
         active: true,
         role: "guest"
       }, {
-        title: 'Konto erstellen',
+        title: T.addpatient,
         baseUrl: "#addpatient",
         match: /^addpatient$/,
         component: 'ch-webelexis-addpatient',

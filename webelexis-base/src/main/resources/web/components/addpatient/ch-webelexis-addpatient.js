@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'jquery', 'validate', 'domReady!'], function(ko, bus, cfg, html, dt, $) {
+define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'app/i18n!nls/ui.js', 'jquery', 'validate', 'domReady!'], function(ko, bus, cfg, html, dt, T, $) {
   function AddPatientModel() {
     var self = this
     self.title = "Daten erfassen"
@@ -21,8 +21,10 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
       pass: "",
     })
 
+    self.labels = [T.firstname, T.name, T.dob, T.mail]
+
     self.send = function() {
-      // send request only if validate is okay. Cpnvert birthdate to Elexis format.
+      // send request only if validate is okay. Convert birthdate to Elexis format.
       if (self.vtor.numberOfInvalids() === 0) {
         console.log(JSON.stringify(self.data()))
         var payload = self.data()

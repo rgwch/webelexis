@@ -10,7 +10,7 @@ mixin createFields
     each val, index in f
       - var fld=val.toLowerCase()
       .form-group(class="#{fcss}")
-          label(for=fld) #{val}
+          label(for=fld data-bind="text: $parent.labels[#{index}]")
           input.form-control(id=fld name=fld type="text" data-bind="value: #{fld}")
     .clearfix
     .form-group(class="#{fcss}")
