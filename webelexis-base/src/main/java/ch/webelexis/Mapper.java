@@ -1,5 +1,13 @@
+/**
+ * This file is part of Webelexis
+ * Copyright (c) 2015 by G. Weirich
+ */
 package ch.webelexis;
 
+/**
+ * Helper class to create Strings from String arrays (similar to the String#join method in Java 8), and to create JsonObjects from
+ * SQL answers.
+ */
 import org.vertx.java.core.json.JsonObject;
 
 public class Mapper {

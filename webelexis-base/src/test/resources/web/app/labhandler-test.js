@@ -48,7 +48,10 @@ define(["components/patdetail/lab_handler", "app/datetools"], function(lh, dt) {
     var crunched = lh.crunch(result)
     var rotated = lh.makeTable(crunched)
     rotated[0].should.eql(["Krea", "80", "", ""])
-    rotated[1].should.eql(["Hämoglobin", "13.0", "", ""])
+    rotated[1].should.eql(["Hämoglobin", "13.0", "12.3", ""])
+    rotated[2].should.eql(["Glucose", "5.7", "7.2", ""])
+    rotated[3].should.eql(["HbA1c", "6.1", "", ""])
+    rotated[4].should.eql(["TSH", '', "1.4", ""])
   })
 
 })

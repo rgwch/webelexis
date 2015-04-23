@@ -1,6 +1,8 @@
+/**
+ * This file is part of Webelexis
+ * Copyright (c) 2015 by G. Weirich
+ */
 package ch.webelexis.emr;
-
-import java.util.Iterator;
 
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
@@ -14,6 +16,11 @@ import ch.webelexis.Cleaner;
 import ch.webelexis.Mapper;
 import ch.webelexis.ParametersException;
 
+/**
+ * Quite simple: Just return all lab results of a given patient. For efficiency reasons, we fetch all interesting fields in a single join.
+ * @author gerry
+ *
+ */
 public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 	Verticle v;
 	EventBus eb;

@@ -1,3 +1,7 @@
+/**
+ * This file is part of Webelexis
+ * Copyright (c) 2015 by G. Weirich
+ */
 package ch.webelexis;
 
 import java.io.File;
@@ -10,6 +14,15 @@ import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonObject;
+
+/**
+ * The handler for HTTP requests to the Webelexis server. If root (/) or
+ * /index.html is requested, a Session is created, and a custom made File is
+ * returned, which contains the SessionID, a unique STATE variable and the
+ * Google ClientID of the server (if there is such a ClientID configured).
+ * Paths are interpreted relative to the webroot of the Webelexis verticle. 
+ * Requests to travel the directory tree upwards, are rejected.
+ */
 
 public class HTTPHandler implements Handler<HttpServerRequest> {
 	File basePath;
@@ -27,8 +40,8 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 
 		if (req.path().equals("/") || req.path().equals("/index.html")) {
 			String rnd = UUID.randomUUID().toString();
-			JsonObject sessionParams = new JsonObject().putString("clientID", cfg.getString("googleID")).putString(
-					"state", rnd);
+			JsonObject sessionParams = new JsonObject().putString("clientID", cfg.getString("googleID"))
+						.putString("state", rnd);
 			eb.send("ch.webelexis.session.create", sessionParams, new SessionHandler(req, rnd));
 		} else if (req.path().contains("..")) {
 			req.response().setStatusCode(404);
@@ -58,9 +71,9 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 			Scanner scanner = null;
 			try {
 				scanner = new Scanner(in, "UTF-8");
-				String modified = scanner.useDelimiter("\\A").next()
-						.replaceAll("GUID", msg.body().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid)
-						.replaceAll("GOOGLE_STATE", rnd);
+				String modified = scanner.useDelimiter("\\A").next().replaceAll("GUID",
+							msg.body().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid).replaceAll(
+							"GOOGLE_STATE", rnd);
 
 				req.response().end(modified);
 			} catch (FileNotFoundException e) {

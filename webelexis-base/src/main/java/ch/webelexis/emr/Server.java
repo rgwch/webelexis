@@ -1,3 +1,8 @@
+/**
+ * This file is part of Webelexis
+ * Copyright (c) 2015 by G. Weirich
+ */
+
 package ch.webelexis.emr;
 
 import org.vertx.java.busmods.BusModBase;

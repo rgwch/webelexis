@@ -1,3 +1,6 @@
+/**
+ * Exception to throw if Webelexis got bad parameters
+ */
 package ch.webelexis;
 
 public class ParametersException extends Exception {

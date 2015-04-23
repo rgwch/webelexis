@@ -5,7 +5,6 @@
 package ch.webelexis;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -43,6 +42,20 @@ public class Cleaner {
 		jo = raw;
 	}
 
+	/**
+	 * get a required integer value
+	 * 
+	 * @param field
+	 *          field to get
+	 * @param min
+	 *          minimum accepted value
+	 * @param max
+	 *          maximum accepted value
+	 * @return the integer from the field "field"
+	 * @throws ParametersException
+	 *           if "field" was not set, or if the value was not between (not
+	 *           including) min and max.
+	 */
 	public int getInt(String field, int min, int max) throws ParametersException {
 		if (!jo.body().containsField(field)) {
 			throw new ParametersException("field " + field + " was not set.");
@@ -56,6 +69,20 @@ public class Cleaner {
 		}
 	}
 
+	/**
+	 * Get a String value
+	 * 
+	 * @param field
+	 *          field to get
+	 * @param pattern
+	 *          regexp-Pattern the String must match
+	 * @param emptyok
+	 *          if true: missing field is acceptable
+	 * @return
+	 * @throws ParametersException
+	 *           if the value is not set and emptyok was false, or if the value
+	 *           was set but did nor match the pattern.
+	 */
 	public String get(String field, String pattern, boolean emptyok) throws ParametersException {
 		String raw = jo.body().getString(field);
 		if (raw == null || raw.length() == 0) {
@@ -73,6 +100,12 @@ public class Cleaner {
 		}
 	}
 
+	/**
+	 * Get an optional String field without checks
+	 * @param field field to get
+	 * @param defaultValue value to return if the field is nor set
+	 * @return the requested field
+	 */
 	public String getOptional(String field, String defaultValue) {
 		String raw = jo.body().getString(field);
 		if (raw != null) {
@@ -82,37 +115,68 @@ public class Cleaner {
 		}
 	}
 
+	/**
+	 * Get an optional Array without checks
+	 * @param name name of the field to get
+	 * @param defaultValue value to return, if the field was not set
+	 * @return ClassCastException if the field exists, but is not a JsonArray
+	 */
 	public JsonArray getArray(String name, JsonArray defaultValue) {
 		JsonArray ret = jo.body().getArray(name);
 		return ret == null ? defaultValue : ret;
 	}
 
+	/**
+	 * send a result to the original sender of the message
+	 * @param result an arbitrary object. By convention, a field "status" should exist with the value of either "ok" or "error"
+	 */
 	public void reply(JsonObject result) {
 		jo.reply(result);
 	}
 
+	/**
+	 * send a canned "error" response (message with only one field: "status":"error")
+	 */
 	public void replyError() {
 		jo.reply(new JsonObject().putString("status", "error"));
 	}
 
+	/**
+	 * send a custom "error" response
+	 * @param msg a String describing the error. The method sends {"status":"error","message":msg}
+	 */
 	public void replyError(String msg) {
 		JsonObject result = new JsonObject().putString("status", "error").putString("message", msg);
 		jo.reply(result);
 	}
 
+	/**
+	 * send a canned "ok" response
+	 */
 	public void replyOk() {
 		jo.reply(new JsonObject().putString("status", "ok"));
 	}
 
+	/**
+	 * send a custom "ok" response
+	 * @param msg a String to add to the response. The method sends {"status":"ok","message":msg}
+	 */
 	public void replyOk(String msg) {
 		JsonObject result = new JsonObject().putString("status", "ok").putString("message", msg);
 		jo.reply(result);
 	}
 
+	/**
+	 * send a custom status message
+	 * @param msg any String describing a status. The method sends {"status":msg}
+	 */
 	public void replyStatus(String msg) {
 		jo.reply(new JsonObject().putString("status", msg));
 	}
 
+	/**
+	 * generate a String representation of the original message.body() in the constructor
+	 */
 	@Override
 	public String toString() {
 		return jo.body().encodePrettily();
