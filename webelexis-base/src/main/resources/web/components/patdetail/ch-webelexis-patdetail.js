@@ -14,6 +14,10 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdeta
       })
       // this panel is displayed in the center
     self.activeCenterPanel = ko.observable("summaryView")
+
+    self.labItems = ko.observableArray()
+
+
       // set center panel
     self.setPanel = function(item) {
       self.activeCenterPanel(item.detail)
@@ -36,7 +40,11 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdeta
         } else {
           var crunched = lh.crunch(result)
           var table=lh.makeTable(crunched)
-          self.labView(table)
+          self.labItems.removeAll();
+          for(var i=0;i<table.length;i++){
+            self.labItems.push(table[i])
+          }
+          //self.labItems.push([['a','1'],['b',"2"],['c',"3"]])
         }
       })
     }
@@ -64,7 +72,6 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdeta
       handler: "documentsViewHandler"
     }]
 
-    self.labView = ko.observable()
 
     // construct a string for the patient display (name, firstname, gender, dob, age, patient ID)
     self.displayName = ko.computed(function() {

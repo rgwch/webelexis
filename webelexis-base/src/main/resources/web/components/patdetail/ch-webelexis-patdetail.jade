@@ -37,10 +37,17 @@ script(type="text/html" id="summaryView")
 script(type="text/html" id="labView")
   table.table.table-striped
     thead
+      th Parameter
       th Ein Monat
       th Ein Jahr
       th Älter
-    tbody(data-bind="foreach: ")
+    tbody(data-bind="foreach: $parent.labItems")
+      tr
+        td(data-bind="text: $data[0]")
+        td(data-bind="text: $data[1]")
+        td(data-bind="text: $data[2]")
+        td(data-bind="text: $data[3]")
+
 
 script(type="text/html" id="consView")
   p Konsultation

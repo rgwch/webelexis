@@ -5,6 +5,18 @@
 
 define(['app/datetools'], function(dt) {
 
+ function insert(arr,item,idx){
+   for(var i=0;i<arr.length;i++){
+     if(arr[i][0] === (item[2])){
+       arr[i][idx]=item[3]
+       return
+     }
+   }
+   var row = []
+   row[0] = item[2]
+   row[idx] = item[3]
+   arr.push(row)
+ }
   return {
     /* rows in sqlResult are sorted by date. We just crunch all rows into a hashmap, so
       at the end, the latest values are set */
@@ -53,22 +65,14 @@ define(['app/datetools'], function(dt) {
       }
       for (key in crunched.thisYear) {
         var item = crunched.thisYear[key]
-        var row = []
-        row[0] = item[2]
-        row[1] = ""
-        row[2] = item[3]
-        row[3] = ""
-        ret.push(row)
+        insert(ret,item,2)
       }
       for (key in crunched.older) {
-        var row = []
         var item = crunched.older[key]
-        row[0] = item[2]
-        row[1] = ""
-        row[2] = ""
-        row[3] = item[3]
+        insert(ret,item,3)
       }
       return ret
     }
+
   }
 })
