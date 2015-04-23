@@ -43,6 +43,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'tex
       handler: "documentsViewHandler"
     }]
 
+    self.labView = ko.observable()
 
     // construct a string for the patient display (name, firstname, gender, dob, age, patient ID)
     self.displayName = ko.computed(function() {
@@ -71,7 +72,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'tex
         "sessionID": cfg.sessionID
       }, function(result) {
         if ((result === undefined) || (result.status !== "ok")) {
-          window.alert("fehler bei der abfrage " + result.status + result.message);
+          window.alert("Fehler bei der abfrage " + result.status + result.message);
         } else {
           result.patient.geburtsdatum = dt.makeDateFromElexisDate(result.patient.geburtsdatum)
           self.data(result.patient)
@@ -94,6 +95,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'tex
         }
       })
     }
+
     self.loadSummary()
 
   }

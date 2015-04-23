@@ -18,7 +18,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 	Verticle v;
 	EventBus eb;
 	Logger log;
-	String[] fields = new String[] { "v.Datum", "li.titel", "v.ItemID", "v.Resultat", "v.Kommentar",
+	String[] fields = new String[] { "v.Datum", "v.ItemID", "li.titel", "v.Resultat", "v.Kommentar",
 				"li.kuerzel", "li.Gruppe", "li.prio", "li.RefMann", "li.RefFrauOrTx" };
 
 	public LabResultSummaryHandler(Verticle server) {

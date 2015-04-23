@@ -38,6 +38,37 @@ define(['app/datetools'], function(dt) {
         }
       }
       return cruncher
+    },
+    // jshint -W004
+    makeTable: function(crunched) {
+      var ret = []
+      for (var key in crunched.thisMonth) {
+        var item = crunched.thisMonth[key]
+        var row = []
+        row[0] = item[2]
+        row[1] = item[3]
+        row[2] = ""
+        row[3] = ""
+        ret.push(row)
+      }
+      for (key in crunched.thisYear) {
+        var item = crunched.thisYear[key]
+        var row = []
+        row[0] = item[2]
+        row[1] = ""
+        row[2] = item[3]
+        row[3] = ""
+        ret.push(row)
+      }
+      for (key in crunched.older) {
+        var row = []
+        var item = crunched.older[key]
+        row[0] = item[2]
+        row[1] = ""
+        row[2] = ""
+        row[3] = item[3]
+      }
+      return ret
     }
   }
 })

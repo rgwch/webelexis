@@ -25,7 +25,7 @@ define(["components/patdetail/lab_handler", "app/datetools"], function(lh, dt) {
         [str(25), 1, "Hämoglobin", "11.9"], // 5
         [str(20), "5", "Glucose", "6.8"], // 6
         [str(14), "6", "HbA1c", "6.3"], // 7
-        [str(5), "1", "Hämoglobin", "13,0"], // 8
+        [str(5), "1", "Hämoglobin", "13.0"], // 8
         [str(5), "5", "Glucose", "5.7"], // 9
         [str(5), "6", "HbA1c", "6.1"] // 10
 
@@ -44,5 +44,11 @@ define(["components/patdetail/lab_handler", "app/datetools"], function(lh, dt) {
     cruncher.thisMonth["6HbA1c"].should.equal(result.results[10])
   })
 
+  it('should rotate the table correctly', function() {
+    var crunched = lh.crunch(result)
+    var rotated = lh.makeTable(crunched)
+    rotated[0].should.eql(["Krea", "80", "", ""])
+    rotated[1].should.eql(["Hämoglobin", "13.0", "", ""])
+  })
 
 })

@@ -35,7 +35,12 @@ script(type="text/html" id="summaryView")
     button.btn-btn-default.col-xs-12(type="submit") Änderungen speichern
   
 script(type="text/html" id="labView")
-  p Labor
+  table.table.table-striped
+    thead
+      th Ein Monat
+      th Ein Jahr
+      th Älter
+    tbody(data-bind="foreach: ")
 
 script(type="text/html" id="consView")
   p Konsultation
