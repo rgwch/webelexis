@@ -16,10 +16,6 @@ public class Server extends BusModBase{
 		super.start();
 		JsonObject cfg = container.config();
 		getContainer().logger().debug("Account Server got config: "+cfg.encodePrettily());
-		JsonObject emrCfg=cfg.getObject("emr");
-		eb.registerHandler("ch.webelexis.patient.detail",
-				new AuthorizingHandler(this, emrCfg.getString("role","admin"),
-						new PatientDetailHandler(this)));
 		eb.registerHandler("ch.webelexis.patient.add", new AuthorizingHandler(this, cfg.getString("role","admin"),
 				new AddPatientHandler(this, cfg)));
 	}

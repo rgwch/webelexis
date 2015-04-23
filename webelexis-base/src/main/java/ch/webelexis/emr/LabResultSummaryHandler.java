@@ -31,7 +31,8 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 	public void handle(Message<JsonObject> externalRequest) {
 		Cleaner cl = new Cleaner(externalRequest);
 		try {
-			String patId = cl.get("patientid", Cleaner.UID, false);
+			log.debug("LabResultSummaryHandler: Handling "+externalRequest.body().encode());
+			String patId = cl.get("patid", Cleaner.UID, false);
 			Mapper mapper = new Mapper(fields);
 			String query = "SELECT FIELDS FROM LABORWERTE as v, LABORITEMS as li where v.PatientID=? and v.ItemID=li.id and v.deleted='0' order by v.Datum";
 
@@ -43,6 +44,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 
 		} catch (ParametersException e) {
 			e.printStackTrace();
+			log.error("Parameter error "+cl.toString());
 			cl.replyError("parameter error");
 		}
 	}
@@ -56,7 +58,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
 
 		@Override
 		public void handle(Message<JsonObject> sqlAnswer) {
-
+			log.debug("LabReuslt: Got answer from sql server: "+sqlAnswer.body().encodePrettily());
 			JsonObject result = sqlAnswer.body();
 			cl.reply(result);
 		}

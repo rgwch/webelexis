@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'text!tmpl/ch-webelexis-patdetail.html'], function(ko, bus, cfg, dt, lh, html) {
+define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdetail/lab_handler', 'text!tmpl/ch-webelexis-patdetail.html'], function(ko, bus, cfg, dt, lh, html) {
   //var dummy = '7ba4632caba62c5b3a366'
   function PatDetailModel(params) {
     var self = this
@@ -17,8 +17,29 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'tex
       // set center panel
     self.setPanel = function(item) {
       self.activeCenterPanel(item.detail)
+      item.handler()
     }
 
+
+    // fetch lab summary
+    self.loadLabSummary = function() {
+      bus.send("ch.webelexis.patient.labresult", {
+        "mode": "latest",
+        "patid": patid,
+        "sessionID": cfg.sessionID
+      }, function(result) {
+        if (result === undefined){
+          window.alert("Keine Antwort vom Server")
+
+        } else if(result.status !== "ok") {
+          window.alert("Fehler bei der Abfrage: " + result.status + " " + result.message)
+        } else {
+          var crunched = lh.crunch(result)
+          var table=lh.makeTable(crunched)
+          self.labView(table)
+        }
+      })
+    }
 
     // panels to display as buttons on the left/top
     self.leftpanel = [{
@@ -28,7 +49,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'tex
     }, {
       title: "Labor",
       detail: "labView",
-      handler: "labViewHandler"
+      handler: self.loadLabSummary
     }, {
       title: "Konsultation",
       detail: "consView",
@@ -81,20 +102,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'lab_handler', 'tex
     }
 
 
-    // fetch lab summary
-    self.loadLabSummary = function() {
-      bus.send("ch.webelexis.patient.labresult", {
-        "mode": "latest",
-        "patid": patid,
-        "sessionID": cfg.sessionID
-      }, function(result) {
-        if ((result === undefined) || (result.status !== "ok")) {
-          window.alert("Fehler bei der Abfrage: " + result.status + " " + result.message)
-        } else {
-          var cruncher = lh.loadLatest(result)
-        }
-      })
-    }
+
 
     self.loadSummary()
 

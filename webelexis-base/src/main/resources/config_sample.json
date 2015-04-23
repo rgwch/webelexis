@@ -85,17 +85,17 @@
       "bcc": "archive@mail.example.com",
       "subject": "Confirm Webelexis account",
       "body": "To activate your account, please vistit this url: %url%"
-    },
-    "emr": { // config for the electronic medical record access
+    }
+  
+  },
+  "emr": { // config for the electronic medical record access
       "icpc-problems": true, // load problem list (Plugin ICPC is installed)
       "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)
       "stickers": true, // load stickers
       "prescriptions": true, // load prescriptions
       "lab": true, // load lab values
       "role": "arzt" // role needed to read patient details
-    }
-
-  },
+    },
 
   // config for the EventBus-Websocket bridge and the html server
   "bridge": {
