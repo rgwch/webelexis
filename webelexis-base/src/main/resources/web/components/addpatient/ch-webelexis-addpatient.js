@@ -2,7 +2,27 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'app/i18n!nls/ui.js', 'jquery', 'validate', 'domReady!'], function(ko, bus, cfg, html, dt, T, $) {
+define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'R', 'jquery', 'validate', 'domReady!'], function(ko, bus, cfg, html, dt, i18, $) {
+  var R = i18.R
+
+  R.registerLocale("de", {
+    firstname: "Vorname",
+    lastname: "Name",
+    dob: "Geburtsdatum",
+    mail: "E-Mail",
+    street:"Strasse",
+    zip:"Plz",
+    place:"Ort",
+    phone:"Telefon",
+    mobile:"Mobil",
+    insurance:"Krankenkasse",
+    insurance_no:"Versichertennummer",
+    password:"Passwort",
+    password_rep:"Passwort wiederholen"
+  })
+
+  R.setLocale(cfg.locale)
+
   function AddPatientModel() {
     var self = this
     self.title = "Daten erfassen"
@@ -21,7 +41,12 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
       pass: "",
     })
 
-    self.labels = [T.firstname, T.name, T.dob, T.mail]
+    self.labels = [R('firstname'), R('lastname'), R('dob'), R('mail'), R('street'), R('zip'),
+      R('place'), R('phone'), R('mobile'), R('insurance'), R('insurance_no')
+    ]
+    self.locale=function(name){
+      return R(name)
+    }
 
     self.send = function() {
       // send request only if validate is okay. Convert birthdate to Elexis format.

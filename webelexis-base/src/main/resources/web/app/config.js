@@ -3,11 +3,26 @@
  ** Copyright (c) by G. Weirich 2015
  */
 
-define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
+define(['knockout', 'R'], function(ko,i18) {
+  var R=i18.R
+
+  R.registerLocale('de',{
+    findapp:"Terminsuche",
+    console: "Konsole",
+    agenda: "Agenda",
+    patients: "Patienten",
+    patient: "Patient",
+    consultation: "Konsultation",
+    login: "Webelexis Anmeldung",
+    addpatient: "Konto erstellen"
+  })
+
+  R.setLocale("de")
 
   return {
 
-    // not really necessery in standard situations
+    locale: "de",
+    // not really necessary in standard situations
     eventbusUrl: "http://localhost:2015/eventbus",
     // any page you want to be called with a click on the logo
     homepage: "http://github.com/rgwch/webelexis",
@@ -31,7 +46,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
     modules: [{
         baseUrl: "#",
         match: /^$/, // regexp to match for this page
-        title: T.findapp, // title to display on this page's tab
+        title: R('findapp'), // title to display on this page's tab
         component: 'ch-webelexis-agenda', // name pof the component that creates this pages
         location: 'components/agenda', // location of the componant
         active: true, // to deactivate a component temporarily, set to 'false'
@@ -40,7 +55,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
           // again: The server side decides ultimately.
       }, {
         active: false,
-        title: "T.console",
+        title: R('console'),
         baseUrl: "#console",
         match: /^console$/,
         component: "ch-webelexis-console",
@@ -50,7 +65,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
       }, {
         baseUrl: "#agext",
         match: /^agext$/,
-        title: T.agenda,
+        title: R('agenda'),
         component: 'ch-webelexis-detailagenda',
         location: 'components/detailagenda',
         active: true,
@@ -59,7 +74,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
       }, {
         baseUrl: "#patlist",
         match: /^patlist$/,
-        title: T.patients,
+        title: R('patients'),
         component: 'ch-webelexis-patlist',
         location: 'components/patlist',
         active: false,
@@ -68,7 +83,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
       }, {
         baseUrl: "#patid",
         match: /^patid\/(.+)\/?$/,
-        title: T.patient,
+        title: R('patient'),
         component: 'ch-webelexis-patdetail',
         location: 'components/patdetail',
         menuItem: true,
@@ -78,7 +93,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
       }, {
         baseUrl: "#kons",
         match: /^kons$/,
-        title: T.consultation,
+        title: R('consultation'),
         location: 'components/consultation',
         component: 'ch-webelexis-consdetail',
         menuItem: true,
@@ -87,7 +102,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
       }, {
         baseUrl: "#login",
         match: /^login$/,
-        title: T.login,
+        title: R('login'),
         component: 'ch-webelexis-login',
         location: 'components/login',
         active: true,
@@ -106,7 +121,7 @@ define(['knockout', 'app/i18n!nls/cfg.js'], function(ko, T) {
         active: true,
         role: "guest"
       }, {
-        title: T.addpatient,
+        title: R('addpatient'),
         baseUrl: "#addpatient",
         match: /^addpatient$/,
         component: 'ch-webelexis-addpatient',

@@ -14,7 +14,7 @@ mixin createFields
           input.form-control(id=fld name=fld type="text" data-bind="value: #{fld}")
     .clearfix
     .form-group(class="#{fcss}")
-      label(for="pass") Passwort
+      label(for="pass" data-bind="text: $parent.locale('password')") 
       input.form-control(id="pass" name="pass" type="password" data-bind="value: pass")
     .form-group(class="#{fcss}")
       label(for="pwdrep") Passwort wiederholen

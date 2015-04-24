@@ -26,9 +26,11 @@ require.config({
     "domReady": "dist/web/lib/domReady",
     "knockout-jqueryui": "dist/web/lib/knockout-jqueryui",
     "knockout-mapping": "dist/web/lib/knockout.mapping-latest",
+    "R":"dist/web/lib/R",
     "app": "dist/web/app",
     "components": "dist/web/components",
-    "tmpl": "dist/web/tmpl"
+    "tmpl": "dist/web/tmpl",
+    "nls":"dist/web/app/nls"
   },
   shim: {
     "bootstrap": {

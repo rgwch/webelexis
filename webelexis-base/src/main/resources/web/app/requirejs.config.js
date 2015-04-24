@@ -16,6 +16,7 @@ var require = {
     "domReady": "lib/domReady",
     "knockout-jqueryui": "lib/knockout-jqueryui",
     "cookie": "lib/js.cookie-1.5.0.min",
+    "R":"lib/R",
     "app": "app",
     "tmpl": "tmpl"
   },
