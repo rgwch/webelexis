@@ -3,11 +3,12 @@
  ** Copyright (c) by G. Weirich 2015
  */
 
-define(['knockout', 'R'], function(ko,i18) {
-  var R=i18.R
+define(['knockout', 'R'], function(ko, i18) {
+  var R = i18.R
+  var lang = "de" // default language
 
-  R.registerLocale('de',{
-    findapp:"Terminsuche",
+  R.registerLocale('de', {
+    findapp: "Terminsuche",
     console: "Konsole",
     agenda: "Agenda",
     patients: "Patienten",
@@ -16,12 +17,20 @@ define(['knockout', 'R'], function(ko,i18) {
     login: "Webelexis Anmeldung",
     addpatient: "Konto erstellen"
   })
-
-  R.setLocale("de")
+  var supportedLanguages = ['de', 'en', 'fr']
+  var language = window.navigator.language
+  if (language !== undefined) {
+    if (supportedLanguages.indexOf(language.split("[-_]")[0]) != -1) {
+      lang = language
+    }
+  }
+  R.setLocale(lang)
 
   return {
 
-    locale: "de",
+    locale: function() {
+      return lang
+    },
     // not really necessary in standard situations
     eventbusUrl: "http://localhost:2015/eventbus",
     // any page you want to be called with a click on the logo

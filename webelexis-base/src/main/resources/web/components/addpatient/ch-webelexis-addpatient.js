@@ -21,7 +21,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
     password_rep:"Passwort wiederholen"
   })
 
-  R.setLocale(cfg.locale)
+  R.setLocale(cfg.locale())
 
   function AddPatientModel() {
     var self = this
