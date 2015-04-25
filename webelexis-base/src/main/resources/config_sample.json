@@ -29,7 +29,7 @@
     "address": "ch.webelexis.sql", // do not change this
     "connection": "MySQL", // (or "PostgreSQL"),
     "host": "localhost", // address of the database server
-    "port": "3306",
+    "port": 3306,
     "maxPoolSize": 20, // maximum number of open connections; optional
     "username": "database-user",
     "password": "database-password",
