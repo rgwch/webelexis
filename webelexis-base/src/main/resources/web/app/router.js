@@ -25,9 +25,9 @@ define(['knockout', 'app/config', 'jquery'], function(ko, cfg, $) {
       } else {
         self.currentPage(new Router.Page("Lade daten...", 'ch-webelexis-wait'))
         var newpage = pageFromMapping(path)
-        window.setTimeout(function() {
-          self.currentPage(newpage);
-        }, 2000)
+          //window.setTimeout(function() {
+        self.currentPage(newpage);
+        //}, 2000)
       }
     });
 
