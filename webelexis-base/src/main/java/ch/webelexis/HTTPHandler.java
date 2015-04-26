@@ -54,6 +54,9 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 			req.response().setStatusCode(404);
 			req.response().end();
 		} else {
+			if(req.path().endsWith(".css") || req.path().endsWith(".js")){
+				req.response().putHeader("Cache-Control", "max-age=86400");
+			}
 			req.response().sendFile(new File(basePath, req.path()).getAbsolutePath());
 		}
 

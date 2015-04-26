@@ -91,7 +91,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
         token: cfg.sessionID,
         authorized_user: cfg.user()
       }, function(result) {
-        console.log("result: " + JSON.stringify(result));
+        // console.log("result: " + JSON.stringify(result));
         if ((result === undefined) || (result.status !== "ok")) {
           window.alert("Verbindungsfehler: " + (result === undefined) ? "Anwendung nicht erreichbar" : result.status);
         } else {
@@ -132,7 +132,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
         }
         idx.expanded(true);
         self.lastExpanded = idx;
-        console.log("opened: " + idx.begin)
+        // console.log("opened: " + idx.begin)
       }
     }
 

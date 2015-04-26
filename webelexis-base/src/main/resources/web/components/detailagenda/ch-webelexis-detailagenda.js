@@ -129,7 +129,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
         end: dt.makeCompactString(act),
         sessionID: cfg.sessionID
       }, function(result) {
-        console.log("result: " + JSON.stringify(result));
+        // console.log("result: " + JSON.stringify(result));
         if ((result.status === undefined) || result.status !== "ok") {
           window.alert("Verbindungsfehler: " + result.status === undefined ? "keine Verbindung" : result.status);
         } else {
@@ -167,12 +167,12 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
 
 
     self.update = function() {
-      console.log("submit")
+      // console.log("submit")
     }
 
     self.addAppointment = function( /*formElement*/ ) {
-      console.log("addApp" + $("input#patname").val())
-      console.log(this.begin)
+      //console.log("addApp" + $("input#patname").val())
+      //console.log(this.begin)
       bus.send('ch.webelexis.publicagenda', {
         request: 'insert',
         day: dt.makeCompactString(this.date),
