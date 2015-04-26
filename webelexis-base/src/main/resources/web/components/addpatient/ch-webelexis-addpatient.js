@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'R', 'jquery', 'validate', 'domReady!'], function(ko, bus, cfg, html, dt, i18, $) {
+define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'R', 'jquery', 'validate'], function(ko, bus, cfg, html, dt, i18, $) {
   var R = i18.R
 
   R.registerLocale("de", {
@@ -25,43 +25,43 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
     send_form: "Formular absenden",
     privacy_header: "Datenschutzerklärung",
     privacy_body: "Ihre Angaben werden nur zum Erstellen des Benutzerkontos und - falls noch nicht vorhanden - der Patientenakte verwendet, und um Sie nötigenfalls zu kontaktieren, falls wir einen Termin verschieben müssen. Unter keinen Umständen geben wir Daten an Dritte weiter. Wir werden Ihre Angaben auch nicht für Marketingzwecke missbrauchen. Sie können Jederzeit die Löschung Ihres Kontos und der hier eingetragenen Daten verlangen.",
-    warn_firstname:"Bitte geben Sie Ihren Vornamen ein.",
-    warn_lastname:"Bitte geben Sie Ihren Namen ein.",
-    warn_dob:"Bitte geben Sie Ihr Geburtsdatum ein (Format: t.m.y).",
-    warn_mail:"Die Mailadresse ist erforderlich (sie ist Ihr Login-Name).",
-    warn_pwd:"Das Passwort ist erforderlich (mindestens 5 Zeichen).",
-    warn_pwd_rep:"Bitte wiederholen Sie Ihr Passwort hier.",
-    warn_pwd_match:"Die beiden Passwörter stimmen nicht überein."
+    warn_firstname: "Bitte geben Sie Ihren Vornamen ein.",
+    warn_lastname: "Bitte geben Sie Ihren Namen ein.",
+    warn_dob: "Bitte geben Sie Ihr Geburtsdatum ein (Format: t.m.y).",
+    warn_mail: "Die Mailadresse ist erforderlich (sie ist Ihr Login-Name).",
+    warn_pwd: "Das Passwort ist erforderlich (mindestens 5 Zeichen).",
+    warn_pwd_rep: "Bitte wiederholen Sie Ihr Passwort hier.",
+    warn_pwd_match: "Die beiden Passwörter stimmen nicht überein."
 
   })
 
-  R.registerLocale("en",{
-    firstname:"first name",
-    lastname:"last name",
-    dob:"birthdate",
-    mail:"mail",
-    street:"street",
-    zip:"zip",
-    place:"place",
-    phone:"phone #",
-    mobile:"mobile phone",
-    insurance:"insurance",
-    insurance_no:"insurance number",
-    password:"password",
-    password_rep:"password (repeat)",
-    existing_pat:" If you are already a patient in our practice bot don't have an account, check here.",
-    new_pat:" If you are new to our practice, please check here and fill out all required fields",
-    goto_login:"If you have already an account, please go directly to 'Login'",
-    send_form:"transmit form",
-    privacy_header:"Declaration of privacy",
-    privacy_body:"We will use your details exclusively to create your account, and to contact you in case we need to change an appointment. We shall never disclose any of your details to third parties, unless required to do so by legal enforcement authorities.",
-    warn_firstname:"Please enter your first name.",
-    warn_lastname:"Please enter your last name.",
-    warn_dob:"Please enter your birthdate (european form: d.m.y).",
-    warn_mail:"The mail address is required (it will be your login name).",
-    warn_pwd:"A password of at least 5 characters is required.",
-    warn_pwd_rep:"Please enter your password here again.",
-    warn_pwd_match:"The passwords do not match."
+  R.registerLocale("en", {
+    firstname: "first name",
+    lastname: "last name",
+    dob: "birthdate",
+    mail: "mail",
+    street: "street",
+    zip: "zip",
+    place: "place",
+    phone: "phone #",
+    mobile: "mobile phone",
+    insurance: "insurance",
+    insurance_no: "insurance number",
+    password: "password",
+    password_rep: "password (repeat)",
+    existing_pat: " If you are already a patient in our practice bot don't have an account, check here.",
+    new_pat: " If you are new to our practice, please check here and fill out all required fields",
+    goto_login: "If you have already an account, please go directly to 'Login'",
+    send_form: "transmit form",
+    privacy_header: "Declaration of privacy",
+    privacy_body: "We will use your details exclusively to create your account, and to contact you in case we need to change an appointment. We shall never disclose any of your details to third parties, unless required to do so by legal enforcement authorities.",
+    warn_firstname: "Please enter your first name.",
+    warn_lastname: "Please enter your last name.",
+    warn_dob: "Please enter your birthdate (european form: d.m.y).",
+    warn_mail: "The mail address is required (it will be your login name).",
+    warn_pwd: "A password of at least 5 characters is required.",
+    warn_pwd_rep: "Please enter your password here again.",
+    warn_pwd_match: "The passwords do not match."
   })
 
   R.setLocale(cfg.locale())

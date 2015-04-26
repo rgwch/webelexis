@@ -1,8 +1,10 @@
 {
   "timeout": 4000,
   "commands": [
-    "src/main/**/*.js:npm run compile-js",
-    "src/main/**/*.jade:npm run compile-jade",
+    "src/main/resources/web/app/*.js:cp {relFullPath} dist/web/app/{filename}",
+    "src/main/resources/web/components/**/*.js:cp {relFullPath} dist/web/components/{filename}",
+    "src/main/resources/web/components/**/*.jade: jade -P {relFullPath} -o dist/web/tmpl",
+    "src/main/resources/web/index.jade:jade -P {relFullPath} -o dist",
     "less/*.less:lessc --plugin=less-plugin-clean-css bootstrap.less bootstrap.wlx.css"
   ]
 }
