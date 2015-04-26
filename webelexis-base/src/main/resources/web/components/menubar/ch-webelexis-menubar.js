@@ -113,7 +113,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
             $.extend(true, user, result.user)
             user.loggedIn = true;
             cfg.user(user)
-            location.hash = "#"
+            window.location.hash = "#"
           } else {
             window.alert(result.status)
           }

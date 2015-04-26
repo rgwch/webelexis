@@ -51,7 +51,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
           result.user.loggedIn = true
           config.user(result.user)
             //console.log(JSON.stringify(config.user))
-          location.hash = "#"
+          window.location.hash = "#"
         } else {
           console.log("login failed")
           $("#login-head").removeClass()
