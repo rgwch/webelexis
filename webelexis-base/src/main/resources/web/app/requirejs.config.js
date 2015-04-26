@@ -13,7 +13,6 @@ var require = {
     "sockjs": "lib/sockjs.min",
     "text": "lib/text",
     "vertxbus": "lib/vertxbus",
-    "domReady": "lib/domReady",
     "knockout-jqueryui": "lib/knockout-jqueryui",
     "cookie": "lib/js.cookie-1.5.0.min",
     "R":"lib/R",
