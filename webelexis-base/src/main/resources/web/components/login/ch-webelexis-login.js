@@ -5,8 +5,6 @@
 define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'domReady!'], function(bus, config, Router, ko, html) {
 
 
-
-
   function adapt(connected) {
     if (connected) {
       console.log("eventBus open")
@@ -29,7 +27,6 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
       $("#login-head").addClass("panel panel-warning")
     }
   }
-
 
 
   function LoginViewModel() {
@@ -69,16 +66,16 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
       return config.google !== undefined
     })
     self.googleLogin = function() {
-      $("#gbutton").attr("src", "img/Blue_signin_long_pressed_32dp_v3.png")
+      $("#gbutton").attr("src", "img/Blue_signin_Long_pressed_32dp_v3.png")
       config.google.signIn()
     }
 
     self.google_mouseOver = function() {
-      $("#gbutton").attr("src", "img/Blue_signin_long_focused_32dp_v3.png")
+      $("#gbutton").attr("src", "img/Blue_signin_Long_focused_32dp_v3.png")
     }
 
     self.google_mouseOut = function() {
-      $("#gbutton").attr("src", "img/Blue_signin_long_normal_32dp_v3.png")
+      $("#gbutton").attr("src", "img/Blue_signin_Long_normal_32dp_v3.png")
     }
 
   }

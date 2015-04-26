@@ -103,10 +103,13 @@ public class CoreVerticle extends BusModBase {
 			}
 		});
 		final JsonObject bridgeCfg = cfg.getObject("bridge");
-		HttpServer http = vertx.createHttpServer()
-				.setSSL(true)
-				.setKeyStorePath(System.getProperty("user.home")+"/.jkeys/keystore.jks")
+		HttpServer http = vertx.createHttpServer();
+		if(bridgeCfg.getBoolean("ssl", true)){
+				String keystorePath=bridgeCfg.getString("keystore",System.getProperty("user.home")+"/.jkeys/keystore.jks");
+				http.setSSL(true)
+				.setKeyStorePath(keystorePath)
 				.setKeyStorePassword(bridgeCfg.getString("keystore-pwd"));
+		}
 		http.requestHandler(new HTTPHandler(bridgeCfg, eb));
 		SockJSServer sock = vertx.createSockJSServer(http);
 		sock.bridge(new JsonObject().putString("prefix", "/eventbus"), bridgeCfg.getArray("inOK"),

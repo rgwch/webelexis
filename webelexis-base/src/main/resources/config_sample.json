@@ -29,8 +29,8 @@
     "address": "ch.webelexis.sql", // do not change this
     "connection": "MySQL", // (or "PostgreSQL"),
     "host": "localhost", // address of the database server
-    "port": 3306,
-    "maxPoolSize": 20, // maximum number of open connections; optional
+    "port": 3306, // optional. Port of the database server. 3306 is default for mysql
+    "maxPoolSize": 20, // optional. maximum number of open connections; optional
     "username": "database-user",
     "password": "database-password",
     "database": "elexis" // or whatever
@@ -86,16 +86,16 @@
       "subject": "Confirm Webelexis account",
       "body": "To activate your account, please vistit this url: %url%"
     }
-  
+
   },
   "emr": { // config for the electronic medical record access
-      "icpc-problems": true, // load problem list (Plugin ICPC is installed)
-      "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)
-      "stickers": true, // load stickers
-      "prescriptions": true, // load prescriptions
-      "lab": true, // load lab values
-      "role": "arzt" // role needed to read patient details
-    },
+    "icpc-problems": true, // load problem list (Plugin ICPC is installed)
+    "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)
+    "stickers": true, // load stickers
+    "prescriptions": true, // load prescriptions
+    "lab": true, // load lab values
+    "role": "arzt" // role needed to read patient details
+  },
 
   // config for the EventBus-Websocket bridge and the html server
   "bridge": {
@@ -116,7 +116,10 @@
     ], // allowed outbound messages
     "outOK": [],
     // remove the following property, if you don't want "Sign in with google"
-    "googleID": "3aa2352634636aasf.apps.googleusercontent.com" // Google client ID if Google SignIn is used.
+    "googleID": "3aa2352634636aasf.apps.googleusercontent.com", // Google client ID if Google SignIn is used.
+    "ssl": true, // use tls/ssl/https. Strongly recommended
+    "keystore": "/some/where/ks.jks", // filepath of the keystore. Defaults to $HOME/.jkeys/keystore.jks
+    "keystore-pwd": "something" // password of the jks keystore and the server certificate/key
   },
   // Global identification primarly for debugging purposes to see, which config is active.
   "id": "this is an identification for this config"
