@@ -2,9 +2,7 @@
  ** This file is part of Webelexis
  ** Copyright (c) 2015 by G. Weirich
  **/
-define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb',
-  'domReady!'
-], function(cfg, ko, html, bus) {
+define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb', ], function(cfg, ko, html, bus) {
 
   var clientID = $("meta[name='clientID']").attr("content")
   cfg.sessionID = $("meta[name='UUID']").attr("content")

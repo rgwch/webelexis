@@ -20,7 +20,6 @@ var require = {
     "sockjs": "http://webelexis.ch/lib/sockjs.min",
     "text": "http://webelexis.ch/lib/text",
     "vertxbus": "http://webelexis.ch/lib/vertxbus",
-    "domReady": "http://webelexis.ch/lib/domReady",
     "knockout-jqueryui": "http://webelexis.ch/lib/knockout-jqueryui",
     "cookie": "http://webelexis.ch/lib/js.cookie-1.5.0.min",
     "R": "http://webelexis.ch/lib/R",
