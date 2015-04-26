@@ -31,8 +31,6 @@
     "test-all": "npm run test-client && npm run preverticle && npm run compile-javatests && java -cp ${VERTX_HOME}/lib/*:${JUNIT_HOME}/*:dist org.junit.runner.JUnitCore ch.webelexis.tests.WebelexisTestSuite"
   },
   "devDependencies": {
-    "async": "^0.9.0",
-    "bootstrap": ">=3.3.2",
     "chai": "^2.1.2",
     "jade": ">=1.9.0",
     "karma": "^0.12.31",
@@ -47,7 +45,6 @@
     "ncp": "latest",
     "onchange": "latest",
     "parallelshell": "latest",
-    "requirejs": ">=2.1.16",
     "rimraf": "latest",
     "sinon": "^1.14.1"
   }
