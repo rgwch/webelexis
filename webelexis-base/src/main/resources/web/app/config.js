@@ -15,7 +15,8 @@ define(['knockout', 'R'], function(ko, i18) {
     patient: "Patient",
     consultation: "Konsultation",
     login: "Webelexis Anmeldung",
-    addpatient: "Konto erstellen"
+    addpatient: "Konto erstellen",
+    wait: "Bitte einen Moment Geduld"
   })
   var supportedLanguages = ['de', 'en', 'fr']
   var language = window.navigator.language
@@ -137,6 +138,13 @@ define(['knockout', 'R'], function(ko, i18) {
         location: 'components/addpatient',
         active: true,
         role: "guest",
+        menuItem: false
+      }, {
+        title: R('wait'),
+        component: "ch-webelexis-wait",
+        location: 'components/wait',
+        active: true,
+        role: 'guest',
         menuItem: false
       }
 

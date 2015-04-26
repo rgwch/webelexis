@@ -16,14 +16,18 @@ define(['knockout', 'app/config', 'jquery'], function(ko, cfg, $) {
       // Use the path between # and ? (if present).
       // Note that when URL ends with just #, some browsers return '' for location.hash, others return '#'
       // but either way substr(1) will return '' which is what we want.
-      var path = location.hash.substr(1).split('?')[0];
+      var path = window.location.hash.substr(1).split('?')[0];
       // ask the main script, if it wants to filter the request. If so, use the page from the filter,
       // otherweise use the urlMapping as provided in the constructor.
       var pageFromFilter = filterPath(path);
       if (pageFromFilter) {
         self.currentPage(pageFromFilter);
       } else {
-        self.currentPage(pageFromMapping(path));
+        self.currentPage(new Router.Page("Lade daten...", 'ch-webelexis-wait'))
+        var newpage = pageFromMapping(path)
+        window.setTimeout(function() {
+          self.currentPage(newpage);
+        }, 2000)
       }
     });
 
