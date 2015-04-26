@@ -25,9 +25,11 @@ define(['app/config', 'vertxbus'], function(config) {
       var url = location.origin + "/eventbus";
       bus = new vertx.EventBus(url)
       bus.onopen = function() {
+        /*
         $.get("http://ipinfo.io", function(response) {
           config.loc = response;
         }, "jsonp");
+        */
         clearInterval(reopen)
         config.connected(true)
         for (var i = 0; i < listeners.length; i++) {

@@ -57,7 +57,8 @@ define(['knockout', 'app/config', 'jquery'], function(ko, cfg, $) {
         return new Router.Page('Nicht gefunden', 'ch-webelexis-page404');
       }
       // We swap in Page instances here to make them the current page.
-    this.currentPage = ko.observable(pageFromMapping("#agenda"));
+      //this.currentPage = ko.observable(pageFromMapping("#agenda"));
+    this.currentPage = ko.observable(new Router.Page("warte", "ch-webelexis-wait"))
 
     // Manually trigger initial load of the relevant start page.
     $(window).trigger("hashchange");
