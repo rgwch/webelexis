@@ -103,7 +103,7 @@ public class CoreVerticle extends BusModBase {
 			}
 		});
 		final JsonObject bridgeCfg = cfg.getObject("bridge");
-		HttpServer http = vertx.createHttpServer();
+		HttpServer http = vertx.createHttpServer().setCompressionSupported(true);
 		if(bridgeCfg.getBoolean("ssl", true)){
 				String keystorePath=bridgeCfg.getString("keystore",System.getProperty("user.home")+"/.jkeys/keystore.jks");
 				http.setSSL(true)

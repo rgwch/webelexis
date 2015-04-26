@@ -6,10 +6,12 @@ package ch.webelexis;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.InetSocketAddress;
 import java.util.Scanner;
 import java.util.UUID;
 
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.http.HttpServerRequest;
@@ -40,8 +42,13 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 
 		if (req.path().equals("/") || req.path().equals("/index.html")) {
 			String rnd = UUID.randomUUID().toString();
+			InetSocketAddress remote=req.remoteAddress();
+			String IP="0.0.0.0";
+			if(remote!=null){
+				IP=remote.toString();
+			}
 			JsonObject sessionParams = new JsonObject().putString("clientID", cfg.getString("googleID"))
-						.putString("state", rnd);
+						.putString("state", rnd).putString("remoteAddress", IP);
 			eb.send("ch.webelexis.session.create", sessionParams, new SessionHandler(req, rnd));
 		} else if (req.path().contains("..")) {
 			req.response().setStatusCode(404);
@@ -55,10 +62,14 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 	class SessionHandler implements Handler<Message<JsonObject>> {
 		HttpServerRequest req;
 		String rnd;
-
+		MultiMap headers;
+		InetSocketAddress remoteAdress;
+		
 		SessionHandler(HttpServerRequest req, String rnd) {
 			this.req = req;
 			this.rnd = rnd;
+			headers =req.headers();
+			remoteAdress=req.remoteAddress();
 		}
 
 		@Override

@@ -42,7 +42,8 @@ define(['knockout', 'R'], function(ko, i18) {
     user: ko.observable({
       "loggedIn": false,
       "roles": ["guest"],
-      "username": ""
+      "username": "",
+      "id_token": {}
     }),
     connected: ko.observable(false),
     loc: {
