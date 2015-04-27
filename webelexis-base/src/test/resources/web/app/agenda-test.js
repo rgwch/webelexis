@@ -1,4 +1,4 @@
-define(['components/agenda/ch-webelexis-agenda', 'app/eb', 'domReady!'], function(agenda, bus) {
+define(['components/agenda/ch-webelexis-agenda', 'app/eb'], function(agenda, bus) {
 
   describe('check some methods af the agenda ViewModel', function() {
     var ag = null;

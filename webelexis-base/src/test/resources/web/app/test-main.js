@@ -23,7 +23,6 @@ require.config({
     "sockjs": "dist/web/lib/sockjs.min",
     "text": "dist/web/lib/text",
     "vertxbus": "dist/web/lib/vertxbus",
-    "domReady": "dist/web/lib/domReady",
     "knockout-jqueryui": "dist/web/lib/knockout-jqueryui",
     "knockout-mapping": "dist/web/lib/knockout.mapping-latest",
     "R":"dist/web/lib/R",
