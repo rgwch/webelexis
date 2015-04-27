@@ -7,6 +7,9 @@ package ch.webelexis;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.InetSocketAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -30,6 +33,8 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 	File basePath;
 	JsonObject cfg;
 	EventBus eb;
+	// Date: Mon, 27 Apr 2015 16:51:46 GMT
+	SimpleDateFormat df=new SimpleDateFormat("E, dd M yyyy HH:mm:ss z");
 
 	HTTPHandler(JsonObject cfg, EventBus eb) {
 		this.cfg = cfg;
@@ -39,7 +44,9 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 
 	@Override
 	public void handle(HttpServerRequest req) {
-
+		Date date=new Date();
+		req.response().putHeader("Date", df.format(date));
+		req.response().putHeader("Server", "Webelexis");
 		if (req.path().equals("/") || req.path().equals("/index.html")) {
 			String rnd = UUID.randomUUID().toString();
 			InetSocketAddress remote=req.remoteAddress();
@@ -54,10 +61,14 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 			req.response().setStatusCode(404);
 			req.response().end();
 		} else {
+			File resr=new File(basePath, req.path());
+			Date lm=new Date(resr.lastModified());
+			req.response().putHeader("Last-Modified", df.format(lm));
 			if(req.path().endsWith(".css") || req.path().endsWith(".js")){
 				req.response().putHeader("Cache-Control", "max-age=86400");
+				
 			}
-			req.response().sendFile(new File(basePath, req.path()).getAbsolutePath());
+			req.response().sendFile(resr.getAbsolutePath());
 		}
 
 	}
@@ -78,6 +89,8 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 		@Override
 		public void handle(Message<JsonObject> msg) {
 			File in = new File(cfg.getString("webroot"), "index.html");
+			Date lm=new Date(in.lastModified());
+			req.response().putHeader("Last-Modified", df.format(lm));
 			String cid = cfg.getString("googleID");
 			if (cid == null) {
 				cid = "x-undefined";

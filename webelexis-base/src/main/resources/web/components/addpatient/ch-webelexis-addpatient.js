@@ -6,6 +6,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
   var R = i18.R
 
   R.registerLocale("de", {
+    heading:"Personalien eintragen",
     firstname: "Vorname",
     lastname: "Name",
     dob: "Geburtsdatum",
@@ -36,6 +37,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
   })
 
   R.registerLocale("en", {
+    heading:"Enter personal informations",
     firstname: "first name",
     lastname: "last name",
     dob: "birthdate",
@@ -115,7 +117,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
                 console.log("logged in")
                 result.user.loggedIn = true
                 cfg.user(result.user)
-                location.hash = "#"
+                window.location.hash = "#"
               } else {
                 console.log(result.status)
                 console.log(result.message)

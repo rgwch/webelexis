@@ -2,7 +2,7 @@
 ({
     mainConfigFile: 'src/main/resources/web/app/requirejs.config.js',
     optimize: "none",
-    inlineText: true,
+    inlineText: false,
     fileExclusionRegExp: /\.jade/,
     appDir: "src/main/resources/web",
     dir: "dist/web",
