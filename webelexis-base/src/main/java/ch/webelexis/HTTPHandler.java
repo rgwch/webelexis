@@ -52,6 +52,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 		req.response().putHeader("Date", df.format(date));
 		req.response().putHeader("Server", "Webelexis");
 		if (req.path().equals("/") || req.path().equals("/index.html")) {
+			// If the client requests the root file: create a new session.
 			String rnd = UUID.randomUUID().toString();
 			InetSocketAddress remote = req.remoteAddress();
 			String IP = "0.0.0.0";
@@ -59,41 +60,61 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 				IP = remote.toString();
 			}
 			JsonObject sessionParams = new JsonObject().putString("clientID", cfg.getString("googleID"))
-					.putString("state", rnd).putString("remoteAddress", IP);
+						.putString("state", rnd).putString("remoteAddress", IP);
 			eb.send("ch.webelexis.session.create", sessionParams, new SessionHandler(req, rnd));
 		} else if (req.path().contains("..")) {
-			req.response().setStatusCode(404);
+			// if the client tries to travel up the file system: forbidden
+			req.response().setStatusCode(403);
 			req.response().end();
 		} else {
 			File resr = new File(basePath, req.path());
-			Date lm = new Date(resr.lastModified());
-			String reqDat = req.headers().get("if-modified-since");
-			boolean noSend = false;
-			if (reqDat != null) {
-				try {
-					Date reqDate = df.parse(reqDat);
-					if (!reqDate.before(lm)) {   // after or equal
-						noSend = true;
-					}
-				} catch (ParseException e) {
-					Logger.getGlobal().warning("could not parse reqDat");
-				}
-			}
-			req.response().putHeader("Last-Modified", df.format(lm));
-			if (req.path().endsWith(".css") || req.path().endsWith(".js")) {
-				req.response().putHeader("Cache-Control", "max-age=168800");
-			}
-			if (noSend) {
-				req.response().setStatusCode(304);
-				//req.response().setStatusMessage("not modified");
+			if (!resr.exists() || !resr.canRead()) {
+				req.response().setStatusCode(404); // not found
 				req.response().end();
 			} else {
-				req.response().sendFile(resr.getAbsolutePath());
+				/*
+				 * If the client asks for an existing file: define cache control: (arbitrarily). let
+				 * css and js be valid for 12 hours, image files for 10 days. But both can
+				 * live longer, if the client knows and uses the "if-modified-since"-
+				 * Header on expired files.
+				 */
+
+				Date lm = new Date(resr.lastModified());
+				String reqDat = req.headers().get("if-modified-since");
+				boolean noSend = false;
+				if (reqDat != null) {
+					try {
+						Date reqDate = df.parse(reqDat);
+						if (!reqDate.before(lm)) { // after or equal
+							noSend = true;
+						}
+					} catch (ParseException e) {
+						Logger.getGlobal().warning("could not parse reqDat");
+					}
+				}
+				req.response().putHeader("Last-Modified", df.format(lm));
+				if (req.path().endsWith(".css") || req.path().endsWith(".js")) {
+					req.response().putHeader("Cache-Control", "max-age=43200");
+				} else if (req.path().endsWith(".png") || req.path().endsWith(".jpg")) {
+					req.response().putHeader("Cache-Control", "public, max-age=864000");
+				}
+				if (noSend) {
+					req.response().setStatusCode(304);
+					// req.response().setStatusMessage("not modified");
+					req.response().end();
+				} else {
+					req.response().sendFile(resr.getAbsolutePath());
+				}
 			}
 		}
 
 	}
 
+	/**
+	 * Called after a new session is created (the client asked for "/" or "/index.html")
+	 * @author gerry
+	 *
+	 */
 	class SessionHandler implements Handler<Message<JsonObject>> {
 		HttpServerRequest req;
 		String rnd;
@@ -119,9 +140,9 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 			Scanner scanner = null;
 			try {
 				scanner = new Scanner(in, "UTF-8");
-				String modified = scanner.useDelimiter("\\A").next()
-						.replaceAll("GUID", msg.body().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid)
-						.replaceAll("GOOGLE_STATE", rnd);
+				String modified = scanner.useDelimiter("\\A").next().replaceAll("GUID",
+							msg.body().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid).replaceAll(
+							"GOOGLE_STATE", rnd);
 
 				req.response().end(modified);
 			} catch (FileNotFoundException e) {
