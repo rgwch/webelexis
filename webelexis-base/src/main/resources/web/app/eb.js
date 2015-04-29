@@ -15,6 +15,17 @@ define(['app/config', 'vertxbus'], function(config) {
   }, 5000);
   var listeners = []
 
+  var timeoutHandler= function(msg) {
+    config.user({
+        "loggedIn": false,
+        "roles": ["guest"],
+        "username": ""
+      })
+      //window.alert("Wegen Timeout ausgeloggt")
+    window.location.hash = "#timeout"
+  }
+
+
   function state() {
     return config.connected()
   }
@@ -72,33 +83,27 @@ define(['app/config', 'vertxbus'], function(config) {
     subscribe: function(address, callback) {
       bus.registerHandler(address, callback)
     },
-    unsubscrbe: function(address, handler) {
+    unsubscribe: function(address, handler) {
       bus.unregisterHandler(address, handler)
     },
     stop: function() {
       bus.close()
       clearInterval(reopen)
     },
-    setFeedbackAddress: function(){
-      if(state()){
-        var ret="ch.webelexis.feedback."+config.sessionID
-        bus.registerHandler(ret, function(msg) {
-          config.user({
-            "loggedIn": false,
-            "roles": ["guest"],
-            "username": ""
-          })
-          //window.alert("Wegen Timeout ausgeloggt")
-          window.location.hash="#timeout"
-        })
+
+    setFeedbackAddress: function() {
+      if (state()) {
+        var ret = "ch.webelexis.feedback." + config.sessionID
+        bus.registerHandler(ret, timeoutHandler)
         return ret
-      }else{
+      } else {
+        bus.send("hello")
         return null;
       }
     },
-    clearFeedbackAddress: function(){
-      if(state()){
-        bus.unregisterHandler("ch.webelexis.feedback."+config.sessionID)
+    clearFeedbackAddress: function() {
+      if (state()) {
+        bus.unregisterHandler("ch.webelexis.feedback." + config.sessionID, timeoutHandler)
       }
     }
 
