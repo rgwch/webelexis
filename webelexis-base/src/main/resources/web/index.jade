@@ -16,6 +16,7 @@ html(lang="de")
     script(src="https://apis.google.com/js/platform.js" async defer)
     script(data-main="app/main.js" src="lib/require.js")
   body
+    noscript Sie können diese Seite nur mit einem JavaScript-fähigen Browser benutzen.
     .container
         #menu(data-bind="component: {name: 'ch-webelexis-menubar', params: {menu: 'mainMenu'}}")
         #content(data-bind="component: { 'name': router.currentPage().componentName, 'params': {params: router.currentPage().params}}")          
