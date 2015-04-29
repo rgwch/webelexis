@@ -25,9 +25,6 @@ define(['app/config', 'vertxbus'], function(config) {
       var url = location.origin + "/eventbus";
       bus = new vertx.EventBus(url)
       bus.onopen = function() {
-        bus.registerHandler("ch.webelexis.feedback", function() {
-          window.alert("Wegen Timeout ausgeloggt")
-        })
 
         /*
         $.get("http://ipinfo.io", function(response) {
@@ -81,6 +78,29 @@ define(['app/config', 'vertxbus'], function(config) {
     stop: function() {
       bus.close()
       clearInterval(reopen)
+    },
+    setFeedbackAddress: function(){
+      if(state()){
+        var ret="ch.webelexis.feedback."+config.sessionID
+        bus.registerHandler(ret, function(msg) {
+          config.user({
+            "loggedIn": false,
+            "roles": ["guest"],
+            "username": ""
+          })
+          //window.alert("Wegen Timeout ausgeloggt")
+          window.location.hash="#timeout"
+        })
+        return ret
+      }else{
+        return null;
+      }
+    },
+    clearFeedbackAddress: function(){
+      if(state()){
+        bus.unregisterHandler("ch.webelexis.feedback."+config.sessionID)
+      }
     }
+
   }
 });

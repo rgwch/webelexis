@@ -16,7 +16,8 @@ define(['knockout', 'R'], function(ko, i18) {
     consultation: "Konsultation",
     login: "Webelexis Anmeldung",
     addpatient: "Konto erstellen",
-    wait: "Bitte einen Moment Geduld"
+    wait: "Bitte einen Moment Geduld",
+    timeout:"Sitzung abgelaufen"
   })
   var supportedLanguages = ['de', 'en', 'fr']
   var language = window.navigator.language
@@ -26,6 +27,7 @@ define(['knockout', 'R'], function(ko, i18) {
     }
   }
   R.setLocale(lang)
+
 
   return {
 
@@ -147,6 +149,15 @@ define(['knockout', 'R'], function(ko, i18) {
         active: true,
         role: 'guest',
         menuItem: false
+      },{
+        title: R('timeout'),
+        baseURL: "#timeout",
+        match: /^timeout$/,
+        component: 'ch-webelexis-timeout',
+        location: 'components/timeout',
+        active: true,
+        menuItem: false,
+        role: 'guest'
       }
 
     ]

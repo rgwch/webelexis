@@ -49,6 +49,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
       bus.send("ch.webelexis.session.logout", {
         sessionID: cfg.sessionID
       }, function(result) {
+        bus.clearFeedbackAddress()
         cfg.user({
           "loggedIn": false,
           "roles": ["guest"],
@@ -103,7 +104,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           "id_token": user.getAuthResponse().id_token,
           "client_id": clientID,
           "state": state,
-          "feedback-address": "ch.webelexis.feedback"
+          "feedback-address": "ch.webelexis.feedback."+cfg.sessionID
         }, function(result) {
           if (result.status === undefined) {
             window.alert("Verbindungsfehler")

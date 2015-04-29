@@ -45,10 +45,11 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         mode: "local",
         username: self.uname(),
         password: self.pwd(),
-        "feedback-address": "ch.webelexis.feedback"
+        "feedback-address": "ch.webelexis.feedback."+config.sessionID
       }, function(result) {
         if (result.status === "ok") {
           //console.log("logged in")
+          bus.setFeedbackAddress()
           result.user.loggedIn = true
           config.user(result.user)
             //console.log(JSON.stringify(config.user))
