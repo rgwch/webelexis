@@ -115,7 +115,7 @@
       }
     ], // allowed outbound messages
     "outOK": [{
-      "address_re": "ch.webelexis.feedback.[\\n-]+"
+      "address_re": "ch\\.webelexis\\.feedback\\.[a-f0-9-]+"
     }],
     // remove the following property, if you don't want "Sign in with google"
     "googleID": "3aa2352634636aasf.apps.googleusercontent.com", // Google client ID if Google SignIn is used.
