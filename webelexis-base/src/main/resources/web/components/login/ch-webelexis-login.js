@@ -44,7 +44,8 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         sessionID: config.sessionID,
         mode: "local",
         username: self.uname(),
-        password: self.pwd()
+        password: self.pwd(),
+        "feedback-address": "ch.webelexis.feedback"
       }, function(result) {
         if (result.status === "ok") {
           //console.log("logged in")

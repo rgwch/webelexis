@@ -60,7 +60,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
         if (result.status !== "ok") {
           console.log("Problem beim Abmelden " + result.message)
         }
-        location.hash = "#"
+        window.location.hash = "#"
       })
     }
 
@@ -102,7 +102,8 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           "realname": user.getBasicProfile().getName(),
           "id_token": user.getAuthResponse().id_token,
           "client_id": clientID,
-          "state": state
+          "state": state,
+          "feedback-address": "ch.webelexis.feedback"
         }, function(result) {
           if (result.status === undefined) {
             window.alert("Verbindungsfehler")

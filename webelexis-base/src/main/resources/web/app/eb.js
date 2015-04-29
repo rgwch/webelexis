@@ -25,6 +25,10 @@ define(['app/config', 'vertxbus'], function(config) {
       var url = location.origin + "/eventbus";
       bus = new vertx.EventBus(url)
       bus.onopen = function() {
+        bus.registerHandler("ch.webelexis.feedback", function() {
+          window.alert("Wegen Timeout ausgeloggt")
+        })
+
         /*
         $.get("http://ipinfo.io", function(response) {
           config.loc = response;
