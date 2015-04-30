@@ -24,12 +24,11 @@ form.form#eingabe(data-bind="submit: send")
   div
     input(type="radio" name="anzeige" id="anzeige_alt" value="palt" data-bind="checked: accountDisplay")
     span(data-bind="text: locale('existing_pat')")  
+  hr
   div
     input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
     span(data-bind="text: locale('new_pat')") 
-  div
-    input(type="radio" name="anzeige" id="login_only" value="login" data-bind="checked: accountDisplay")
-    span(data-bind="text: locale('goto_login')") 
+  hr
 
   div(data-bind="visible: accountDisplay()=='palt'")
     - var f=fields1
