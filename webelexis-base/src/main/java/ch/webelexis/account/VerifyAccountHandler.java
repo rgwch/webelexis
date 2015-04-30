@@ -12,6 +12,12 @@ import org.vertx.java.core.logging.Logger;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 
+/**
+ * A new user has been created. If they enter the correct code which was sent per mail, the account becomes active.
+ * parameter username, verify (the verification code)
+ * @author gerry
+ *
+ */
 public class VerifyAccountHandler implements Handler<Message<JsonObject>> {
 	Server server;
 	Logger log;

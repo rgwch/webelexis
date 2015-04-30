@@ -48,11 +48,12 @@ public class CoreVerticle extends BusModBase {
 	 * vert.x module repository as needed.
 	 */
 	V[] modules = new V[] { new V("sql", "io.vertx~mod-mysql-postgresql_2.10~0.3.1"),
-			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0") , new V("auth", "rgwch~vertx-mod-sessionmgr~0.4.2") };
+			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0"), new V("auth", "rgwch~vertx-mod-sessionmgr~0.4.2"),
+			new V("mailer", "io.vertx~mod-mailer~2.0.0-final") };
 
 	V[] verticles = new V[] { new V("agenda", "ch.webelexis.agenda.Server"),
 			new V("account", "ch.webelexis.account.Server"), new V("emr", "ch.webelexis.emr.Server")
-	/*, new V("auth", "ch.webelexis.SessionManager")*/ };
+	/* , new V("auth", "ch.webelexis.SessionManager") */};
 
 	public CoreVerticle() throws IOException {
 		File file = new File("config_defaults.json"); // production mode
@@ -67,6 +68,16 @@ public class CoreVerticle extends BusModBase {
 		}
 	}
 
+	/*
+	 * Deploy every module and verticle defined in modules[] and verticles[].
+	 * Configuration of each object is the section with the matching
+	 * title-property. If a configuration contains a boolean "active", the value
+	 * of this boolean declares, if that object will be launched or not. E.g to
+	 * suppress launching of the mailer-module, just set {active: false} in the
+	 * "mailer" section of the cfglocal.json
+	 * 
+	 * @see org.vertx.java.platform.Verticle#start(org.vertx.java.core.Future)
+	 */
 	@Override
 	public void start(final Future<Void> startedResult) {
 		super.start();
@@ -74,14 +85,24 @@ public class CoreVerticle extends BusModBase {
 		cfg = cfg_default.mergeIn(container.config());
 		log.info("CoreVerticle got config: " + cfg.encodePrettily());
 		for (V m : modules) {
-			pending.add(m.title);
-			container.deployModule(m.fullname, cfg.getObject(m.title), new DeploymentHandler(m.title));
+			JsonObject moduleConfig = cfg.getObject(m.title);
+			if (moduleConfig.getBoolean("active", true)) {
+				pending.add(m.title);
+				container.deployModule(m.fullname, moduleConfig, new DeploymentHandler(m.title));
+			}
 		}
 		for (V v : verticles) {
-			pending.add(v.title);
-			container.deployVerticle(v.fullname, cfg.getObject(v.title), new DeploymentHandler(v.title));
+			JsonObject moduleConfig = cfg.getObject(v.title);
+			if (moduleConfig.getBoolean("active", true)) {
+				pending.add(v.title);
+				container.deployVerticle(v.fullname, moduleConfig, new DeploymentHandler(v.title));
+			}
 		}
 
+		/*
+		 * now we wait for all modules and verticles to launch successfully. Every 200ms we check, if the queue of pending
+		 * launches is empty. This method seems a bit expensive, but since the server will not restart very frequently, it's okay.
+		 */
 		waitingTime = System.currentTimeMillis();
 		vertx.setPeriodic(200, new Handler<Long>() {
 
@@ -104,11 +125,9 @@ public class CoreVerticle extends BusModBase {
 		});
 		final JsonObject bridgeCfg = cfg.getObject("bridge");
 		HttpServer http = vertx.createHttpServer().setCompressionSupported(true);
-		if(bridgeCfg.getBoolean("ssl", true)){
-				String keystorePath=bridgeCfg.getString("keystore",System.getProperty("user.home")+"/.jkeys/keystore.jks");
-				http.setSSL(true)
-				.setKeyStorePath(keystorePath)
-				.setKeyStorePassword(bridgeCfg.getString("keystore-pwd"));
+		if (bridgeCfg.getBoolean("ssl", true)) {
+			String keystorePath = bridgeCfg.getString("keystore", System.getProperty("user.home") + "/.jkeys/keystore.jks");
+			http.setSSL(true).setKeyStorePath(keystorePath).setKeyStorePassword(bridgeCfg.getString("keystore-pwd"));
 		}
 		http.requestHandler(new HTTPHandler(bridgeCfg, eb));
 		SockJSServer sock = vertx.createSockJSServer(http);

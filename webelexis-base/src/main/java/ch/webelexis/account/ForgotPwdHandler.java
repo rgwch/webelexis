@@ -15,6 +15,12 @@ import org.vertx.java.core.logging.Logger;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 
+/**
+ * The user forgot their password, so we generate a random password and send that by mail
+ * parameter: username
+ * @author gerry
+ *
+ */
 public class ForgotPwdHandler implements Handler<Message<JsonObject>> {
 	Server server;
 	Logger log;
@@ -39,11 +45,36 @@ public class ForgotPwdHandler implements Handler<Message<JsonObject>> {
 					if (user == null) {
 						cl.replyError("user not found " + username);
 					}else{
-						JsonObject mail=cfg.getObject("mailer");
-						mail.putString("to", username);
-						String npw=UUID.randomUUID().toString();
-						user.
-						server.getContainer().deployModule(Server.MAILER,cfg.geto);
+						JsonObject mailCfg=cfg.getObject("mailer");
+						String newPassword=UUID.randomUUID().toString();
+						user.putBinary("pwhash", UserDetailHandler.makeHash(username, newPassword));
+						udh.putUser(user, new Handler<Boolean>() {
+
+							@Override
+							public void handle(Boolean result) {
+								if(result){
+									JsonObject mail=new JsonObject().putString("to", username).putString("subject", mailCfg.getString("forgotpwd_subject"))
+									.putString("body", mailCfg.getString("forgotpwd_body").replaceFirst("%password%", newPassword));
+									server.getVertx().eventBus().send("ch.webelexis.mailer", mail, new Handler<Message<JsonObject>>() {
+
+										@Override
+										public void handle(Message<JsonObject> result) {
+											if(result.body().getString("status").equals("ok")){
+												cl.replyOk();
+											}else{
+												cl.replyError("System error sending mail.");
+												log.error("could not send mail. "+result.body().encode());
+											}
+											
+										}
+									});
+									
+								}
+								
+							}
+							
+						});
+						
 					}
 				}
 			});
