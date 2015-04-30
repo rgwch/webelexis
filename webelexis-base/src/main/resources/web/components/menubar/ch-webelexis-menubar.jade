@@ -13,12 +13,21 @@ nav.navbar.navbar-default
         ul.nav.navbar-nav#mainmenu(data-bind="foreach: menuItems")
             li
                 a(data-bind="attr: {href: baseUrl}, text: title")
-        .nav.navbar-nav.navbar-right
-            a(href="#login" data-bind="visible: showLogin")#login
+        .nav.navbar-nav.navbar-right(data-bind="visible: showLogin")
+            a(href="#login")#login
                 span.navbar-text Login 
                     span.glyphicon.glyphicon-log-in
-            a(href="#" data-bind="visible: showLogout, click: doLogout")#logout
-                span.navbar-text#logout-text(data-toggle="tooltip" title="Abmelden") Logout 
+        ul.nav.navbar-nav.navbar-right(data-bind="visible: showLogout")
+          li.dropdown 
+            a.dropdown-toggle(href="#" data-toggle="dropdown" role="button")
+              span Konto
+                span.caret
+            ul.dropdown-menu(role="menu")  
+              li
+                a(href="#" data-bind="click: doLogout")#logout
+                  span.navbar-text#logout-text(data-toggle="tooltip" title="Abmelden") Logout 
                     span.glyphicon.glyphicon-log-out
+              li 
+                a(href="#" data-bind="click: doLogout") Passwort ändern
         
      

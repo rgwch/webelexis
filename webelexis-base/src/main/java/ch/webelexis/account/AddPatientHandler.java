@@ -36,8 +36,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	Logger log;
 	EventBus eb;
 	UserDetailHandler udh;
-	private String[] fields = { "id", "Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "Strasse", "Plz", "Ort",
-			"Telefon1", "NatelNr", "Email", "Bemerkung", "istPatient" };
+	private String[] fields = { "id", "Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "Strasse",
+				"Plz", "Ort", "Telefon1", "NatelNr", "Email", "Bemerkung", "istPatient" };
 
 	public AddPatientHandler(Verticle server, JsonObject cfg) {
 		this.server = server;
@@ -65,13 +65,13 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						try {
 							/* user does not exist; check if patient exists */
 							String sql = "select id from KONTAKT where Bezeichnung1=? and Bezeichnung2=? and Geburtsdatum=? and deleted='0'";
-							JsonObject jo = new JsonObject()
-									.putString("action", "prepared")
-									.putString("statement", sql)
-									.putArray(
-											"values",
-											new JsonArray(new String[] { c.get("name", NAME, false), c.get("vorname", NAME, false),
-													c.get("geburtsdatum", ELEXISDATE, false) }));
+							JsonObject jo = new JsonObject().putString("action", "prepared").putString(
+										"statement", sql)
+										.putArray(
+													"values",
+													new JsonArray(new String[] { c.get("name", NAME, false),
+																c.get("vorname", NAME, false),
+																c.get("geburtsdatum", ELEXISDATE, false) }));
 							eb.send("ch.webelexis.sql", jo, new QueryResultHandler(c));
 						} catch (ParametersException pex) {
 							log.error(pex.getMessage(), pex);
@@ -116,14 +116,15 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						String pid = UUID.randomUUID().toString();
 						log.debug("creating Elexis user " + pid);
 						JsonArray row = new JsonArray().addString(pid).addString(c.get("name", NAME, false))
-								.addString(c.get("vorname", NAME, false)).addString(c.get("geburtsdatum", ELEXISDATE, false))
-								.addString(c.get("strasse", TEXT, true)).addString(c.get("plz", ZIP, true))
-								.addString(c.get("ort", NAME, true)).addString(c.get("telefon", PHONE, true))
-								.addString(c.get("mobil", PHONE, true)).addString(c.get("email", MAIL, false))
-								.addString("via webelexis").addString("1");
+									.addString(c.get("vorname", NAME, false)).addString(
+												c.get("geburtsdatum", ELEXISDATE, false)).addString(
+												c.get("strasse", TEXT, true)).addString(c.get("plz", ZIP, true)).addString(
+												c.get("ort", NAME, true)).addString(c.get("telefon", PHONE, true))
+									.addString(c.get("mobil", PHONE, true)).addString(c.get("email", MAIL, false))
+									.addString("via webelexis").addString("1");
 						JsonArray values = new JsonArray().add(row);
-						JsonObject sql = new JsonObject().putString("action", "insert").putString("table", "KONTAKT")
-								.putArray("fields", new JsonArray(fields)).putArray("values", values);
+						JsonObject sql = new JsonObject().putString("action", "insert").putString("table",
+									"KONTAKT").putArray("fields", new JsonArray(fields)).putArray("values", values);
 						eb.send("ch.webelexis.sql", sql, new SqlResultHandler(c, pid));
 					} catch (ParametersException pex) {
 						log.error(pex.getMessage(), pex);
@@ -164,9 +165,9 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 	void addUser(final Cleaner cle, final String pid) {
 		log.debug("mongo insert: " + cle.toString());
 		try {
-			final JsonObject user = new JsonObject().putString("username", cle.get("username", MAIL, false))
-					.putString("patientid", pid).putString("firstname", cle.get("vorname", NAME, false))
-					.putString("lastname", cle.get("name", NAME, false));
+			final JsonObject user = new JsonObject().putString("username",
+						cle.get("username", MAIL, false)).putString("patientid", pid).putString("firstname",
+						cle.get("vorname", NAME, false)).putString("lastname", cle.get("name", NAME, false));
 			user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
 			String pwd = cle.getOptional("pass", null);
 			if (pwd != null) {
@@ -184,13 +185,16 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						if (cfg.getBoolean("confirm-mail", false)) {
 							user.putString("confirmID", UUID.randomUUID().toString());
 							final JsonObject mailCfg = cfg.getObject("mailer");
-							final JsonObject mail = new JsonObject()
-									.putString("to", user.getString("username"))
-									.putString(
-											"body",
-											mailCfg.getString("activation_body")
-													.replaceFirst("%activationcode%", user.getString("confirmID")))
-									.putString("subject", mailCfg.getString("activation_subject"));
+							String bcc = mailCfg.getString("cfg");
+							final JsonObject mail = new JsonObject().putString("from", mailCfg.getString("from"))
+										.putString("to", user.getString("username")).putString(
+													"body",
+													mailCfg.getString("activation_body").replaceFirst("%activationcode%",
+																user.getString("confirmID"))).putString("subject",
+													mailCfg.getString("activation_subject"));
+							if (bcc != null) {
+								mail.putString("bcc", bcc);
+							}
 							eb.send("ch.webelexis.mailer", mail, new Handler<Message<JsonObject>>() {
 
 								@Override

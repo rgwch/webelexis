@@ -72,9 +72,7 @@
     "defaultRole": "patient", // role, a newly created account will have
 
     "confirm-mail": false, // true to send confirmation mail on account creation
-    "mails": { // mailer only needed if confirm-mail is true
-      "from": "me@mail.example.com", // sender of the confirmation mail
-      "bcc": "archive@mail.example.com",
+    "mails": { // only needed if confirm-mail is true
       "activation_subject": "Confirm Webelexis account",
       "activation_body": "To activate your account, please use this activation code: %activationcode%",
       "forgotpwd_subject": "Your new password",
@@ -82,18 +80,19 @@
     }
 
   },
-  "mailer":{
-  	"active":true,
-      "address": "ch.webelexis.mailer", // do not change this
-      "host": "smpt.example.com", // URL of your mail provider
-      "port": 25, // optional
-      "ssl": false, // optional, defaults to false
-      "auth": true, // optional, defaults to false
-      "username": "user", // username for auth
-      "password": "password", // password for auth
-      "content-type": "text/plain", // optional. Or text/html to send html mails
-  	
-  }
+  "mailer": {
+    "active": false, // if false: Do not load mail module, do not send mails.
+    "address": "ch.webelexis.mailer", // do not change this
+    "host": "smpt.example.com", // URL of your mail provider
+    "port": 25, // optional
+    "ssl": false, // optional, defaults to false
+    "auth": true, // optional, defaults to false
+    "username": "user", // username for auth
+    "password": "password", // password for auth
+    "content-type": "text/plain", // optional. Or text/html to send html mails
+    "from": "me@mail.example.com", // sender of the confirmation mail
+    "bcc": "archive@mail.example.com"
+  },
   "emr": { // config for the electronic medical record access
     "icpc-problems": true, // load problem list (Plugin ICPC is installed)
     "stickynotes": true, // load sticky notes (Plugin "haftnotizen" is installed)

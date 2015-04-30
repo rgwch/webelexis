@@ -17,7 +17,7 @@ define(['knockout', 'R'], function(ko, i18) {
     login: "Webelexis Anmeldung",
     addpatient: "Konto erstellen",
     wait: "Bitte einen Moment Geduld",
-    timeout:"Sitzung abgelaufen"
+    alert: "Mitteilung"
   })
   var supportedLanguages = ['de', 'en', 'fr']
   var language = window.navigator.language
@@ -95,7 +95,7 @@ define(['knockout', 'R'], function(ko, i18) {
         role: "user"
       }, {
         baseUrl: "#patid",
-        match: /^patid(\/(.+)\/?)?$/,
+        match: /^patid\/(.+)\/?$/,
         title: R('patient'),
         component: 'ch-webelexis-patdetail',
         location: 'components/patdetail',
@@ -149,12 +149,12 @@ define(['knockout', 'R'], function(ko, i18) {
         active: true,
         role: 'guest',
         menuItem: false
-      },{
-        title: R('timeout'),
-        baseURL: "#timeout",
-        match: /^timeout$/,
-        component: 'ch-webelexis-timeout',
-        location: 'components/timeout',
+      }, {
+        title: R('alert'),
+        baseURL: "#alert",
+        match: /^alert\/(\w+)\/(\w+)$/,
+        component: 'ch-webelexis-alert',
+        location: 'components/alert',
         active: true,
         menuItem: false,
         role: 'guest'

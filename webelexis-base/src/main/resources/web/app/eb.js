@@ -15,14 +15,14 @@ define(['app/config', 'vertxbus'], function(config) {
   }, 5000);
   var listeners = []
 
-  var timeoutHandler= function(msg) {
+  var timeoutHandler = function(msg) {
     config.user({
         "loggedIn": false,
         "roles": ["guest"],
         "username": ""
       })
       //window.alert("Wegen Timeout ausgeloggt")
-    window.location.hash = "#timeout"
+    window.location.hash = "#alert/sysmsg/timeout"
   }
 
 
