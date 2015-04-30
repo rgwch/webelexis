@@ -17,7 +17,7 @@ import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
-import ch.webelexis.account.UserDetailProvider;
+import ch.webelexis.account.UserDetailHandler;
 
 public class PublicAgendaDeleteHandler implements Handler<Message<JsonObject>> {
 	Verticle verticle;
@@ -35,7 +35,7 @@ public class PublicAgendaDeleteHandler implements Handler<Message<JsonObject>> {
 			final String username=cl.get("username", MAIL, false);
 			final String day=cl.get("day", ELEXISDATE, false);
 			final String time=cl.get("time",NUMBER , false);
-			new UserDetailProvider(verticle).getUser(username, new Handler<JsonObject>(){
+			new UserDetailHandler(verticle).getUser(username, new Handler<JsonObject>(){
 
 				@Override
 				public void handle(JsonObject userMsg) {

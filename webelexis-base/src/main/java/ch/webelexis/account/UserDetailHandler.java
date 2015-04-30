@@ -9,10 +9,10 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.platform.Verticle;
 
-public class UserDetailProvider {
+public class UserDetailHandler {
 	Verticle verticle;
 
-	public UserDetailProvider(Verticle v) {
+	public UserDetailHandler(Verticle v) {
 		verticle = v;
 	}
 
@@ -32,6 +32,10 @@ public class UserDetailProvider {
 				}
 			}
 		});
+	}
+	
+	public void updateUser(final JsonObject user, final Handler<Boolean> handler){
+		
 	}
 	
 }

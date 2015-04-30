@@ -9,15 +9,20 @@ import org.vertx.java.core.json.JsonObject;
 
 import ch.webelexis.AuthorizingHandler;
 
-public class Server extends BusModBase{
-	
+public class Server extends BusModBase {
+	static final String MAILER = "io.vertx~mod-mailer~2.0.0-final";
+
 	@Override
 	public void start() {
 		super.start();
 		JsonObject cfg = container.config();
-		getContainer().logger().debug("Account Server got config: "+cfg.encodePrettily());
-		eb.registerHandler("ch.webelexis.patient.add", new AuthorizingHandler(this, cfg.getString("role","admin"),
-				new AddPatientHandler(this, cfg)));
+		getContainer().logger().debug("Account Server got config: " + cfg.encodePrettily());
+		eb.registerHandler("ch.webelexis.patient.add", new AuthorizingHandler(this, cfg.getString(
+					"role", "admin"), new AddPatientHandler(this, cfg)));
+		eb.registerHandler("ch.webelexis.patient.verify", new AuthorizingHandler(this, cfg.getString(
+					"role", "admin"), new VerifyAccountHandler(this)));
+		eb.registerHandler("ch.webelexis.patient.forgotPwd", new AuthorizingHandler(this, cfg
+					.getString("role", "admin"), new ForgotPwdHandler(this, cfg)));
 	}
 
 }

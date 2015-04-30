@@ -67,7 +67,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						if (mongoRequest.body().getObject("result") != null) {
 							log.warn("user exists " + externalRequest.body().getString("username"));
 							/* user exists: error */
-							c.replyStatus("user exists");
+							c.replyError("user exists");
 						} else {
 							try {
 								/* user does not exist; check if patient exists */
@@ -180,6 +180,11 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 			if (pwd != null) {
 				user.putBinary("pwhash", makeHash(user.getString("username"), pwd));
 			}
+			if(cfg.getBoolean("confirm-mail", false)){
+				user.putBoolean("active", false);
+			}else{
+				user.putBoolean("active", true);
+			}
 			JsonObject op = new JsonObject().putString("action", "save").putString("collection", "users")
 					.putObject("document", user);
 			eb.send("ch.webelexis.nosql", op, new Handler<Message<JsonObject>>() {
@@ -194,8 +199,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						user.putString("confirmID", UUID.randomUUID().toString());
 						mailer.putString("to", user.getString("username"));
 						mailer.putString("body",
-								mailer.getString("body").replaceFirst("%url%", user.getString("confirmID")));
-						server.getContainer().deployModule("io.vertx~mod-mailer~2.0.0-final", mailer,
+								mailer.getString("body").replaceFirst("%activationcode%", user.getString("confirmID")));
+						server.getContainer().deployModule(Server.MAILER, mailer,
 								new AsyncResultHandler<String>() {
 
 									@Override

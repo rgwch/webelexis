@@ -20,7 +20,7 @@ import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
-import ch.webelexis.account.UserDetailProvider;
+import ch.webelexis.account.UserDetailHandler;
 
 /**
  * Handler for insert operations in the agenda. Listens to messages to
@@ -54,7 +54,7 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 			final String[] timeString = cl.get("time", TIME, false).split(":");
 			final String ip = cl.get("ip", IP, true);
 
-			new UserDetailProvider(verticle).getUser(username, new Handler<JsonObject>() {
+			new UserDetailHandler(verticle).getUser(username, new Handler<JsonObject>() {
 
 				@Override
 				public void handle(JsonObject patMsg) {

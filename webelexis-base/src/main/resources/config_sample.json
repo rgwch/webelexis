@@ -84,7 +84,7 @@
       "from": "me@mail.example.com", // sender of the confirmation mail
       "bcc": "archive@mail.example.com",
       "subject": "Confirm Webelexis account",
-      "body": "To activate your account, please vistit this url: %url%"
+      "body": "To activate your account, please use this activation code: %activationcode%"
     }
 
   },
