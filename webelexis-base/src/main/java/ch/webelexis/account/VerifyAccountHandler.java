@@ -13,18 +13,22 @@ import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 
 /**
- * A new user has been created. If they enter the correct code which was sent per mail, the account becomes active.
- * parameter username, verify (the verification code)
+ * A new user has been created. If they enter the correct code which was sent
+ * per mail, the account becomes active.<br>
+ * parameters: username, verify (the verification code)
+ * 
  * @author gerry
  *
  */
 public class VerifyAccountHandler implements Handler<Message<JsonObject>> {
 	Server server;
 	Logger log;
+	UserDetailHandler udh;
 
 	public VerifyAccountHandler(Server server) {
 		this.server = server;
 		log = server.getContainer().logger();
+		udh = new UserDetailHandler(server);
 	}
 
 	@Override
@@ -32,52 +36,36 @@ public class VerifyAccountHandler implements Handler<Message<JsonObject>> {
 		final Cleaner cl = new Cleaner(externalRequest);
 		try {
 			final String uname = cl.get("username", Cleaner.MAIL, false);
-			String code = cl.get("verify", Cleaner.UID, false);
-			JsonObject op = new JsonObject().putString("action", "findone").putObject("matcher",
-						new JsonObject().putString("username", uname).putString("verify", code)).putString(
-						"collection", "users");
-			server.getVertx().eventBus().send("ch.webelexis.nosql", op,
-						new Handler<Message<JsonObject>>() {
+			final String code = cl.get("verify", Cleaner.UID, false);
+			udh.getUser(uname, new Handler<JsonObject>() {
+				@Override
+				public void handle(JsonObject user) {
+					if (user == null) {
+						cl.replyError("user not found");
+					} else {
+						if (user.getString("confirmID").equals(code)) {
 
-							@Override
-							public void handle(Message<JsonObject> nosqlAnswer) {
-								JsonObject result = nosqlAnswer.body();
-								if (result.getString("status").equals("ok")) {
-									JsonObject user = result.getObject("result");
-									if (user == null) {
-										cl.replyError("user not found");
+							user.putBoolean("verified", true);
+							user.removeField("confirmID");
+							udh.putUser(user, new Handler<Boolean>() {
+								@Override
+								public void handle(Boolean result) {
+									if (result) {
+										cl.replyOk();
 									} else {
-										user.putBoolean("active", true);
-										user.removeField("verify");
-										JsonObject op = new JsonObject().putString("action", "update").putString(
-													"collection", "users").putObject("criteria",
-													new JsonObject().putString("username", uname)).putObject("objNew", user)
-													.putBoolean("upsert", false).putBoolean("multi", false);
-										server.getVertx().eventBus().send("ch.webelexis.nosql", op,
-													new Handler<Message<JsonObject>>() {
-
-														@Override
-														public void handle(Message<JsonObject> ans) {
-															if (ans.body().getString("status").equals("ok")) {
-																cl.replyOk();
-															} else {
-																cl.replyError(ans.body().getString("message"));
-																log.error(ans.body().encode());
-															}
-
-														}
-													});
+										cl.replyError("system error: Could not write user");
 									}
-								} else {
-									cl.replyError("database error");
 								}
-							}
-						});
+							});
+						} else {
+							cl.replyError("bad verification code");
+						}
+					}
+				}
+			});
 		} catch (ParametersException pex) {
 			log.error(pex.getMessage(), pex);
 			cl.replyError("parameter error");
-
 		}
 	}
-
 }

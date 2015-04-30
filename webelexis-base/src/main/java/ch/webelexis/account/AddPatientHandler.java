@@ -173,9 +173,9 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 				user.putBinary("pwhash", UserDetailHandler.makeHash(user.getString("username"), pwd));
 			}
 			if (cfg.getBoolean("confirm-mail", false)) {
-				user.putBoolean("active", false);
+				user.putBoolean("verified", false);
 			} else {
-				user.putBoolean("active", true);
+				user.putBoolean("verified", true);
 			}
 			udh.putUser(user, new Handler<Boolean>() {
 				@Override
