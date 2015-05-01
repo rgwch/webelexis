@@ -31,6 +31,7 @@ public class Cleaner {
 	public static final String MAIL = ".+@[a-zA-Z_0-9\\.]*[a-zA-Z_0-9]{2,}\\.[a-zA-Z]{2,3}";
 	public static final String TIME = "[0-2][0-9]:[0-5][0-9]";
 	public static final String TEXT = "[^%\\*;:]+";
+	public static final String URL = "https?://[a-zA-Z0-9-_]+(\\.[a-zA-Z0-9-_]{2,})*(:[0-9]+)?";
 	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
 	public static final String ZIP = "[A-Za-z 0-9]{4,8}";
 	public static final String UID = "[a-fA-F0-9-]{8,}";

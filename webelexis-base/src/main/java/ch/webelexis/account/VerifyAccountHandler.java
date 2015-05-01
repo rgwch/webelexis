@@ -43,22 +43,26 @@ public class VerifyAccountHandler implements Handler<Message<JsonObject>> {
 					if (user == null) {
 						cl.replyError("user not found");
 					} else {
-						if (user.getString("confirmID").equals(code)) {
-
-							user.putBoolean("verified", true);
-							user.removeField("confirmID");
-							udh.putUser(user, new Handler<Boolean>() {
-								@Override
-								public void handle(Boolean result) {
-									if (result) {
-										cl.replyOk();
-									} else {
-										cl.replyError("system error: Could not write user");
-									}
-								}
-							});
+						String cfid = user.getString("confirmID");
+						if (cfid == null) {
+							cl.replyError("account not waiting for verification");
 						} else {
-							cl.replyError("bad verification code");
+							if (user.getString("confirmID").equals(code)) {
+								user.putBoolean("verified", true);
+								user.removeField("confirmID");
+								udh.putUser(user, new Handler<Boolean>() {
+									@Override
+									public void handle(Boolean result) {
+										if (result) {
+											cl.replyOk();
+										} else {
+											cl.replyError("system error: Could not write user");
+										}
+									}
+								});
+							} else {
+								cl.replyError("bad verification code");
+							}
 						}
 					}
 				}

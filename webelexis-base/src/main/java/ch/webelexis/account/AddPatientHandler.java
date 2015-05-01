@@ -170,11 +170,14 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 						cle.get("vorname", NAME, false)).putString("lastname", cle.get("name", NAME, false));
 			user.putArray("roles", new JsonArray().addString(cfg.getString("defaultRole")));
 			String pwd = cle.getOptional("pass", null);
+			final String confirmURL = cle.get("origin", Cleaner.URL, false) + "/#verify/"
+						+ user.getString("username") + "/";
 			if (pwd != null) {
 				user.putBinary("pwhash", UserDetailHandler.makeHash(user.getString("username"), pwd));
 			}
 			if (cfg.getBoolean("confirm-mail", false)) {
 				user.putBoolean("verified", false);
+				user.putString("confirmID", UUID.randomUUID().toString());
 			} else {
 				user.putBoolean("verified", true);
 			}
@@ -183,14 +186,13 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 				public void handle(Boolean insertOK) {
 					if (insertOK) {
 						if (cfg.getBoolean("confirm-mail", false)) {
-							user.putString("confirmID", UUID.randomUUID().toString());
 							final JsonObject mailCfg = cfg.getObject("mails");
 							String bcc = mailCfg.getString("bcc");
 							final JsonObject mail = new JsonObject().putString("from", mailCfg.getString("from"))
 										.putString("to", user.getString("username")).putString(
 													"body",
 													mailCfg.getString("activation_body").replaceFirst("%activationcode%",
-																user.getString("confirmID"))).putString("subject",
+																confirmURL + user.getString("confirmID"))).putString("subject",
 													mailCfg.getString("activation_subject"));
 							if (bcc != null) {
 								mail.putString("bcc", bcc);

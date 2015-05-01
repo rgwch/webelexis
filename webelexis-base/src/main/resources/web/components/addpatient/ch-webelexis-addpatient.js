@@ -22,8 +22,6 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
     password_rep: "Passwort wiederholen",
     existing_pat: " Wenn Sie schon Patient/in bei uns sind, und jetzt nur ein Konto für die Online-Terminvergabe erstellen möchten, wählen Sie bitte diese Option. Achten Sie bitte darauf, Namen und Geburtsdatum korrekt einzugeben, damit die Termine richtig zugeordnet werden können. Die E-Mail-Adresse wird der Beutzername sein, mit dem Sie sich später hier einloggen können.",
     new_pat: " Wenn Sie noch nie bei uns waren, wählen Sie bitte diese Option und füllen Sie möglichst alle Felder aus. Fehlende Angaben können Sie selbstverständlich auch noch auf dem gewohnten Papier-Formular ergänzen, wenn Sie bei uns eintreffen.",
-    doverify: " Wenn Sie Ihr Konto nur noch bestätigen müssen, dann wählen Sie bitte diese Option und fügen den Verifikationscode, den wir Ihnen per Mail geschickt haben, hier ein.",
-    send_code: "Code abschicken und Konto bestätigen.",
     send_form: "Formular absenden",
     privacy_header: "Datenschutzerklärung",
     privacy_body: "Ihre Angaben werden nur zum Erstellen des Benutzerkontos und - falls noch nicht vorhanden - der Patientenakte verwendet, und um Sie nötigenfalls zu kontaktieren, falls wir einen Termin verschieben müssen. Unter keinen Umständen geben wir Daten an Dritte weiter. Wir werden Ihre Angaben auch nicht für Marketingzwecke missbrauchen. Sie können Jederzeit die Löschung Ihres Kontos und der hier eingetragenen Daten verlangen.",
@@ -54,8 +52,6 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
     password_rep: "password (repeat)",
     existing_pat: " If you are already a patient in our practice bot don't have an account, check here.",
     new_pat: " If you are new to our practice, please check here and fill out all required fields",
-    doverify: " Wenn Sie Ihr Konto nur noch bestätigen müssen, dann wählen Sie bitte diese Option und fügen den Verifikationscode, den wir Ihnen per Mail geschickt haben, hier ein.",
-    send_code: "Code abschicken und Konto bestätigen.",
     send_form: "transmit form",
     privacy_header: "Declaration of privacy",
     privacy_body: "We will use your details exclusively to create your account, and to contact you in case we need to change an appointment. We shall never disclose any of your details to third parties, unless required to do so by legal enforcement authorities.",
@@ -104,6 +100,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
         payload.geburtsdatum = dt.makeCompactString(date)
         payload.sessionID = cfg.sessionID
         payload.username = payload.email.toLowerCase()
+        payload.origin = window.location.origin
         bus.send("ch.webelexis.patient.add", payload, function(result) {
           if (result === undefined) {
             window.alert("Verbindungsfehler")
@@ -121,9 +118,6 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.h
     }
 
     self.accountDisplay = ko.observable("palt")
-    self.sendVerify = function() {
-
-    }
 
     self.vtor = $("#eingabe").validate({
       debug: true,

@@ -17,7 +17,8 @@ define(['knockout', 'R'], function(ko, i18) {
     login: "Webelexis Anmeldung",
     addpatient: "Konto erstellen",
     wait: "Bitte einen Moment Geduld",
-    alert: "Mitteilung"
+    alert: "Mitteilung",
+    verify: "Kontobestätigung"
   })
   var supportedLanguages = ['de', 'en', 'fr']
   var language = window.navigator.language
@@ -85,14 +86,14 @@ define(['knockout', 'R'], function(ko, i18) {
         menuItem: true,
         role: "user"
       }, {
-        baseUrl: "#patlist",
-        match: /^patlist$/,
-        title: R('patients'),
-        component: 'ch-webelexis-patlist',
-        location: 'components/patlist',
-        active: false,
-        menuItem: true,
-        role: "user"
+        baseUrl: "#verify",
+        match: /^verify\/([^;,:]+@[a-zA-Z0-9]{2,}\.[a-zA-Z]{2,})\/([a-f0-9-]+)$/,
+        title: R('verify'),
+        component: 'ch-webelexis-verify',
+        location: 'components/verify',
+        active: true,
+        menuItem: false,
+        role: "guest"
       }, {
         baseUrl: "#patid",
         match: /^patid\/(.+)\/?$/,
