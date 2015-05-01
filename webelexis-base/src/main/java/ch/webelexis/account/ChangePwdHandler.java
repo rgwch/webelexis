@@ -38,7 +38,7 @@ public class ChangePwdHandler implements Handler<Message<JsonObject>> {
 	public void handle(Message<JsonObject> externalRequest) {
 		final Cleaner cl = new Cleaner(externalRequest);
 		try {
-			final String username = cl.get("username", Cleaner.MAIL, false);
+			final String username = cl.get("username", Cleaner.TEXT, false);
 			final String oldPwd = cl.get("old-pwd", Cleaner.NOTEMPTY, false);
 			final String newPwd = cl.get("new-pwd", Cleaner.NOTEMPTY, false);
 			udh.getUser(username, new Handler<JsonObject>() {

@@ -193,14 +193,24 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
         } else {
 
           bus.send("ch.webelexis.patient.changepwd", {
-            username: cfg.user.username,
+            username: cfg.user().username,
             "old-pwd": old,
             "new-pwd": new1
           }, function(result) {
             if (result.status === "ok") {
               self.pwdDialogOpen(false);
+              window.alert("Das Passwort wurde geändert und ist ab sofort gültig");
             } else {
-              console.log(JSON.stringify(result))
+              if (result === undefined || result.status === undefined) {
+                window.alert("Server error.");
+              } else {
+                if (result.status === "error" && result.message === "bad password") {
+                  window.alert("Sie haben das falsche Passwort eingegeben")
+                } else {
+                  window.alert("Unbekannter Fehler")
+                  console.log(JSON.stringify(result))
+                }
+              }
             }
           })
         }
