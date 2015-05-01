@@ -94,7 +94,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 				}
 				req.response().putHeader("Last-Modified", df.format(lm));
 				if (req.path().endsWith(".css") || req.path().endsWith(".js")) {
-					req.response().putHeader("Cache-Control", "max-age=43200");
+					req.response().putHeader("Cache-Control", "max-age=300");
 				} else if (req.path().endsWith(".png") || req.path().endsWith(".jpg")) {
 					req.response().putHeader("Cache-Control", "public, max-age=864000");
 				}

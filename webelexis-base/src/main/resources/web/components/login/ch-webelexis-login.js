@@ -2,27 +2,29 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html'], function(bus, config, Router, ko, html) {
+define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'R'], function(bus, config, Router, ko, html, i18n) {
+
+  var R = i18n.R
 
 
   function adapt(connected) {
     if (connected) {
       //console.log("eventBus open")
-      $("#loginbutton").text("Anmelden")
+      $("#loginbutton").text(R('loginButton'))
       $("#loginbutton").removeAttr("disabled")
       if (config.google !== undefined) {
-        $("#login-message").text("Bitte melden Sie sich entweder mit E-Mail und Passwort, oder mit Ihrem Google-Konto an.")
+        $("#login-message").text(R('loginMessage1'))
       } else {
-        $("#login-message").text("Bitte melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.")
+        $("#login-message").text(R('loginMessage1'))
       }
       $("#login-head").removeClass()
       $("#login-head").addClass("panel panel-info")
 
     } else {
       // console.log("eventBus closed")
-      $("#loginbutton").text("Nicht verbunden")
+      $("#loginbutton").text(R('notConnectedHead'))
       $("#loginbutton").attr("disabled", "disabled")
-      $("#login-message").text("Es besteht keine Verbindung zum Server. Warten Sie bitte einen Moment, oder versuchen Sie es später noch einmal.")
+      $("#login-message").text(R('notConnectedBody'))
       $("#login-head").removeClass()
       $("#login-head").addClass("panel panel-warning")
     }
@@ -31,6 +33,17 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
 
   function LoginViewModel() {
     var self = this;
+    R.registerLocale("de", {
+      loginButton: "Anmelden",
+      loginMessage1: "Bitte melden Sie sich entweder mit E-Mail und Passwort, oder mit Ihrem Google-Konto an.",
+      loginMessage2: "Bitte melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.",
+      notConnectedHead: "Nicht verbunden",
+      notConnectedBody: "Es besteht keine Verbindung zum Server. Warten Sie bitte einen Moment, oder versuchen Sie es später noch einmal.",
+      badLogin: "Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal"
+    })
+
+
+    R.setLocale(config.locale())
     self.uname = ko.observable("")
     self.pwd = ko.observable("")
 
@@ -45,7 +58,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
         mode: "local",
         username: self.uname(),
         password: self.pwd(),
-        "feedback-address": "ch.webelexis.feedback."+config.sessionID
+        "feedback-address": "ch.webelexis.feedback." + config.sessionID
       }, function(result) {
         if (result.status === "ok") {
           //console.log("logged in")
@@ -58,7 +71,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
           //console.log("login failed")
           $("#login-head").removeClass()
           $("#login-head").addClass("panel panel-danger")
-          $("#login-message").text("Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal").addClass("red")
+          $("#login-message").text(R('badLogin')).addClass("red")
         }
       });
 

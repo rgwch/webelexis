@@ -184,8 +184,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 					if (insertOK) {
 						if (cfg.getBoolean("confirm-mail", false)) {
 							user.putString("confirmID", UUID.randomUUID().toString());
-							final JsonObject mailCfg = cfg.getObject("mailer");
-							String bcc = mailCfg.getString("cfg");
+							final JsonObject mailCfg = cfg.getObject("mails");
+							String bcc = mailCfg.getString("bcc");
 							final JsonObject mail = new JsonObject().putString("from", mailCfg.getString("from"))
 										.putString("to", user.getString("username")).putString(
 													"body",

@@ -110,7 +110,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
 
     // google user signed in
     self.userChanged = function(user) {
-      if ((user !== undefined) && (user.getId() !== null)) {
+      if ((user !== undefined) && (user.getId() !== null) && (user.getAuthResponse() !== null)) {
         console.log("user now: " + user.getId() + ", " + user.getBasicProfile().getName());
         bus.send("ch.webelexis.session.login", {
           "mode": "google",
@@ -125,9 +125,10 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
         }, function(result) {
           if (result.status === undefined) {
             window.alert("Verbindungsfehler")
-          } else if (result.status === "unknown") {
+          } else if (result.status === "unknown user") {
             cfg.google.signOut()
-            window.alert("Dieser google user ist an diesem System nicht bekannt. Bitte melden Sie sich zunächst an.")
+              //window.alert("Dieser google user ist an diesem System nicht bekannt. Bitte melden Sie sich zunächst an.")
+            window.location.hash = "#alert/ghead/gbody"
           } else if (result.status === "ok") {
             $.extend(true, user, result.user)
             user.loggedIn = true;
@@ -199,7 +200,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           }, function(result) {
             if (result.status === "ok") {
               self.pwdDialogOpen(false);
-              window.alert("Das Passwort wurde geändert und ist ab sofort gültig");
+              window.location.hash = "#alert/pwdchange_heading/pwdchange_body"
             } else {
               if (result === undefined || result.status === undefined) {
                 window.alert("Server error.");

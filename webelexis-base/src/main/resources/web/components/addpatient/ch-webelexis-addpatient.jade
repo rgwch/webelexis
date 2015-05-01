@@ -29,6 +29,8 @@ form.form#eingabe(data-bind="submit: send")
     input(type="radio" name="anzeige" id="anzeige_neu" value="pneu" data-bind="checked: accountDisplay") 
     span(data-bind="text: locale('new_pat')") 
   hr
+  input(type="radio" name="anzeige" id="verify" value="pverify" data-bind="checked: accountDisplay")
+  span(data-bind="text: locale('doverify')")
 
   div(data-bind="visible: accountDisplay()=='palt'")
     - var f=fields1
@@ -37,9 +39,14 @@ form.form#eingabe(data-bind="submit: send")
   div(data-bind="visible: accountDisplay()=='pneu'") 
     - var f=fields1.concat(fields2)
     +createFields
+    
+  div.col-xs-12(data-bind="visible: accountDisplay()=='pverify'")
+    .row
+      .col-xs-12
+        input#verifycode(type="text")
+        button.btn.btn-default(data-bind="text: locale('send_form'); click: sendVerify")
 
-  .clearfix
-  div(data-bind="visible: accountDisplay()!='login'")
+  div(data-bind="visible: accountDisplay()!='pverify'")
     h3.h3(data-bind="text: locale('privacy_header')")
     p(data-bind="text: locale('privacy_body')")
        

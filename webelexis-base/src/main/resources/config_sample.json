@@ -73,12 +73,13 @@
 
     "confirm-mail": false, // true to send confirmation mail on account creation
     "mails": { // only needed if confirm-mail is true
+      "from": "me@mail.example.com", // sender of the confirmation mail
+      "bcc": "archive@mail.example.com",
       "activation_subject": "Confirm Webelexis account",
       "activation_body": "To activate your account, please use this activation code: %activationcode%",
       "lostpwd_subject": "Your new password",
       "lostpwd_body": "Your new password is: %password%"
     }
-
   },
   "mailer": {
     "active": false, // if false: Do not load mail module, do not send mails.
@@ -89,9 +90,7 @@
     "auth": true, // optional, defaults to false
     "username": "user", // username for auth
     "password": "password", // password for auth
-    "content-type": "text/plain", // optional. Or text/html to send html mails
-    "from": "me@mail.example.com", // sender of the confirmation mail
-    "bcc": "archive@mail.example.com"
+    "content-type": "text/plain" // optional. Or text/html to send html mails
   },
   "emr": { // config for the electronic medical record access
     "icpc-problems": true, // load problem list (Plugin ICPC is installed)

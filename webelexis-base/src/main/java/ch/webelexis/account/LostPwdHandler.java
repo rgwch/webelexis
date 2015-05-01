@@ -47,7 +47,7 @@ public class LostPwdHandler implements Handler<Message<JsonObject>> {
 					if (user == null) {
 						cl.replyError("user not found " + username);
 					} else {
-						final JsonObject mailCfg = cfg.getObject("mailer");
+						final JsonObject mailCfg = cfg.getObject("mails");
 						final String newPassword = UUID.randomUUID().toString();
 						user.putBinary("pwhash", UserDetailHandler.makeHash(username, newPassword));
 						udh.putUser(user, new Handler<Boolean>() {

@@ -34,8 +34,8 @@ import org.vertx.java.core.sockjs.SockJSServer;
  */
 public class CoreVerticle extends BusModBase {
 	final static long TIMEOUT = 60000;
+	public static JsonObject rootConfig;
 	JsonObject cfg_default;
-	JsonObject cfg;
 	public static Logger log;
 	ArrayList<String> pending = new ArrayList<String>();
 	Throwable reason = null;
@@ -82,17 +82,18 @@ public class CoreVerticle extends BusModBase {
 	public void start(final Future<Void> startedResult) {
 		super.start();
 		log = container.logger();
-		cfg = cfg_default.mergeIn(container.config());
-		log.info("CoreVerticle got config: " + cfg.encodePrettily());
+		rootConfig = cfg_default.mergeIn(container.config());
+		log.debug("CoreVerticle got config: " + rootConfig.encodePrettily());
+		
 		for (V m : modules) {
-			JsonObject moduleConfig = cfg.getObject(m.title);
+			JsonObject moduleConfig = rootConfig.getObject(m.title);
 			if (moduleConfig.getBoolean("active", true)) {
 				pending.add(m.title);
 				container.deployModule(m.fullname, moduleConfig, new DeploymentHandler(m.title));
 			}
 		}
 		for (V v : verticles) {
-			JsonObject moduleConfig = cfg.getObject(v.title);
+			JsonObject moduleConfig = rootConfig.getObject(v.title);
 			if (moduleConfig.getBoolean("active", true)) {
 				pending.add(v.title);
 				container.deployVerticle(v.fullname, moduleConfig, new DeploymentHandler(v.title));
@@ -123,7 +124,7 @@ public class CoreVerticle extends BusModBase {
 				}
 			}
 		});
-		final JsonObject bridgeCfg = cfg.getObject("bridge");
+		final JsonObject bridgeCfg = rootConfig.getObject("bridge");
 		HttpServer http = vertx.createHttpServer().setCompressionSupported(true);
 		if (bridgeCfg.getBoolean("ssl", true)) {
 			String keystorePath = bridgeCfg.getString("keystore", System.getProperty("user.home") + "/.jkeys/keystore.jks");
