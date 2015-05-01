@@ -20,7 +20,7 @@ public class Server extends BusModBase {
 		eb.registerHandler("ch.webelexis.patient.add", new AuthorizingHandler(this, role, new AddPatientHandler(this, cfg)));
 		eb.registerHandler("ch.webelexis.patient.verify",
 				new AuthorizingHandler(this, role, new VerifyAccountHandler(this)));
-		eb.registerHandler("ch.webelexis.patient.forgotpwd", new AuthorizingHandler(this, role, new ForgotPwdHandler(this,
+		eb.registerHandler("ch.webelexis.patient.lostpwd", new AuthorizingHandler(this, role, new LostPwdHandler(this,
 				cfg)));
 		eb.registerHandler("ch.webelexis.patient.changepwd", new AuthorizingHandler(this, role, new ChangePwdHandler(this,
 				cfg)));

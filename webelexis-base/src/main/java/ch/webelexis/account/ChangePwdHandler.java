@@ -10,23 +10,24 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
+import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 
 /**
- * The user wants to change their password
- * parameters:username, old-pwd, new-pwd
+ * The user wants to change their password parameters:username, old-pwd, new-pwd
+ * 
  * @author gerry
  *
  */
 public class ChangePwdHandler implements Handler<Message<JsonObject>> {
-	Server server;
+	Verticle server;
 	Logger log;
 	JsonObject cfg;
 	UserDetailHandler udh;
 
-	public ChangePwdHandler(Server server, JsonObject cfg) {
+	public ChangePwdHandler(Verticle server, JsonObject cfg) {
 		this.server = server;
 		log = server.getContainer().logger();
 		this.cfg = cfg;
@@ -48,7 +49,12 @@ public class ChangePwdHandler implements Handler<Message<JsonObject>> {
 						cl.replyError("user not found");
 					} else {
 						byte[] checkBytes = UserDetailHandler.makeHash(username, oldPwd);
-						if (Arrays.equals(user.getBinary("pwhash"), checkBytes)) {
+						byte[] userBytes=user.getBinary("pwhash");
+						if(userBytes==null){
+							userBytes=UserDetailHandler.makeHash(username, user.getString("password"));
+							user.removeField("password");
+						}
+						if (Arrays.equals(userBytes, checkBytes)) {
 							user.putBinary("pwhash", UserDetailHandler.makeHash(username, newPwd));
 							udh.putUser(user, new Handler<Boolean>() {
 

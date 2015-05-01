@@ -18,6 +18,8 @@ import org.vertx.testtools.VertxAssert;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.account.AddPatientHandler;
+import ch.webelexis.account.ChangePwdHandler;
+import ch.webelexis.account.LostPwdHandler;
 
 public class AddPatientTest extends TestVerticle {
 	JsonObject testDesc;
@@ -32,7 +34,7 @@ public class AddPatientTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			container.deployModule("rgwch~vertx-mod-mock~0.2.2", cfg, new AsyncResultHandler<String>() {
+			container.deployModule("rgwch~vertx-mod-mock~0.3.0", cfg, new AsyncResultHandler<String>() {
 				@Override
 				public void handle(AsyncResult<String> res2) {
 					if (res2.succeeded()) {
@@ -56,7 +58,8 @@ public class AddPatientTest extends TestVerticle {
 	@Test
 	public void addUser1() {
 
-		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, testDesc.getObject("config-addpatient")));
+		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, testDesc
+					.getObject("config-addpatient")));
 
 		vertx.setTimer(DELAY, new Handler<Long>() {
 
@@ -77,6 +80,7 @@ public class AddPatientTest extends TestVerticle {
 		}
 	}
 
+	// with mailer
 	@Test
 	public void addUser2() {
 
@@ -88,7 +92,7 @@ public class AddPatientTest extends TestVerticle {
 
 			@Override
 			public void handle(Long arg0) {
-				JsonObject user2 = testDesc.getObject("testuser2");
+				JsonObject user2 = testDesc.getObject("testuser1");
 				eb.send("ch.webelexis.patient.add", user2, new AddUser2Handler());
 			}
 		});
@@ -104,4 +108,73 @@ public class AddPatientTest extends TestVerticle {
 		}
 
 	}
+
+	// existing user must fail
+	@Test
+	public void addUserFail() {
+
+		JsonObject addp = testDesc.getObject("config-addpatient");
+		addp.putBoolean("confirm-mail", true);
+		eb.registerHandler("ch.webelexis.patient.add", new AddPatientHandler(this, addp));
+
+		vertx.setTimer(DELAY, new Handler<Long>() {
+
+			@Override
+			public void handle(Long arg0) {
+				JsonObject user2 = testDesc.getObject("testuser2");
+				eb.send("ch.webelexis.patient.add", user2, new Handler<Message<JsonObject>>() {
+
+					@Override
+					public void handle(Message<JsonObject> msg) {
+						VertxAssert.assertEquals("error", msg.body().getString("status"));
+						VertxAssert.assertEquals("user exists", msg.body().getString("message"));
+						VertxAssert.testComplete();
+					}
+				});
+			}
+		});
+	}
+
+	@Test
+	public void changePassword() {
+		final JsonObject chp = testDesc.getObject("config-changepwd");
+		VertxAssert.assertNotNull(chp);
+		eb.registerHandler("ch.webelexis.patient.changepwd", new ChangePwdHandler(this, chp));
+		vertx.setTimer(DELAY, new Handler<Long>() {
+
+			@Override
+			public void handle(Long arg0) {
+				eb.send("ch.webelexis.patient.changepwd", chp, new Handler<Message<JsonObject>>() {
+
+					@Override
+					public void handle(Message<JsonObject> ans) {
+						VertxAssert.assertEquals("ok", ans.body().getString("status"));
+						VertxAssert.testComplete();
+					}
+				});
+			}
+		});
+	}
+	
+	@Test
+	public void lostPassword() {
+		final JsonObject chp = testDesc.getObject("config-lostpwd");
+		VertxAssert.assertNotNull(chp);
+		eb.registerHandler("ch.webelexis.patient.lostpwd", new LostPwdHandler(this,chp));
+		vertx.setTimer(DELAY, new Handler<Long>() {
+
+			@Override
+			public void handle(Long arg0) {
+				eb.send("ch.webelexis.patient.lostpwd", chp, new Handler<Message<JsonObject>>() {
+
+					@Override
+					public void handle(Message<JsonObject> ans) {
+						VertxAssert.assertEquals("ok", ans.body().getString("status"));
+						VertxAssert.testComplete();
+					}
+				});
+			}
+		});
+	}
+
 }

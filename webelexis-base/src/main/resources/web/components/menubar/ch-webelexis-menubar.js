@@ -174,6 +174,10 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
       // Start with the current live values.
       self.refreshValues();
     }
+
+    /*************
+    change password
+    *********/
     self.pwdDialogOpen = ko.observable(false)
 
     self.changePwd = function() {
@@ -201,34 +205,10 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           })
         }
       }
-      /*
-          self.changePwd = function() {
-            var p = "#pwdDialog"
-            $(p).dialog("option", "title", self.locale("chpwdTitle"))
-            $(p + " #oldpwd").attr("placeholder", self.locale('chpwdOldpw'))
-            $(p + " #newpwd").attr("placeholder", self.locale('chpwdNewpw'))
-            $(p + " #newpwdrep").attr("placeholder", self.locale('chpwdNewpwRep'))
-            $(p + " #pwd_send").text(self.locale('chpwdSubmit'))
-            $(p + " form").attr("data-bind", "submit: submitChangePwd")
-
-            $("#pwdDialog").dialog("open")
-          }
-
-          self.submitChangePwd = function() {
-              var p = "#pwdDialog"
-              var old = $(p + " #oldpwd").val()
-              var new1 = $(p + " #newpwd").val()
-              var new2 = $(p + " #newpwdrep").val()
-            }
-            // Initialize Google only, if we have a Google client ID
-          if (clientID !== undefined && clientID !== "x-undefined") {
-            window.gapi.load('auth2', self.initSigninV2)
-          }
-
-          $("#pwdDialog").dialog({
-            autoOpen: false
-          })
-          */
+      /* Initialize 'Signin with Google', if we have a Google client ID */
+    if (clientID !== undefined && clientID !== "x-undefined") {
+      window.gapi.load('auth2', self.initSigninV2)
+    }
   }
   return {
     viewModel: MenubarModel,

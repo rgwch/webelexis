@@ -11,6 +11,7 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
+import org.vertx.java.platform.Verticle;
 
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
@@ -22,12 +23,12 @@ import ch.webelexis.ParametersException;
  * @author gerry
  *
  */
-public class ForgotPwdHandler implements Handler<Message<JsonObject>> {
-	Server server;
+public class LostPwdHandler implements Handler<Message<JsonObject>> {
+	Verticle server;
 	Logger log;
 	JsonObject cfg;
 
-	public ForgotPwdHandler(Server server, JsonObject cfg) {
+	public LostPwdHandler(Verticle server, JsonObject cfg) {
 		this.server = server;
 		log = server.getContainer().logger();
 		this.cfg = cfg;
@@ -55,11 +56,15 @@ public class ForgotPwdHandler implements Handler<Message<JsonObject>> {
 							public void handle(Boolean result) {
 								if (result) {
 									String bcc = mailCfg.getString("bcc");
+									String lpwd=mailCfg.getString("lostpwd_body");
+									if(lpwd==null){
+										cl.replyError("configuration error on server");
+									}
 									JsonObject mail = new JsonObject().putString("from", mailCfg.getString("from"))
 												.putString("to", username).putString("subject",
-															mailCfg.getString("forgotpwd_subject")).putString(
+															mailCfg.getString("lostpwd_subject")).putString(
 															"body",
-															mailCfg.getString("forgotpwd_body").replaceFirst("%password%",
+															mailCfg.getString("lostpwd_body").replaceFirst("%password%",
 																		newPassword));
 									if (bcc != null) {
 										mail.putString("bcc", bcc);

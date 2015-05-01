@@ -75,8 +75,8 @@
     "mails": { // only needed if confirm-mail is true
       "activation_subject": "Confirm Webelexis account",
       "activation_body": "To activate your account, please use this activation code: %activationcode%",
-      "forgotpwd_subject": "Your new password",
-      "forgotpwd_body": "Your new password is: %password%"
+      "lostpwd_subject": "Your new password",
+      "lostpwd_body": "Your new password is: %password%"
     }
 
   },

@@ -208,11 +208,13 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 								}
 							});
 
-						} else { // no confirmation mail
-							cle.replyError("could not create user in nosql");
+						} else { // no confirmation mail; we're done
+							cle.replyOk();
 						}
 
 					} else {
+						// inserOK was false
+						cle.replyError("could not create user in nosql");
 
 					}
 				}
