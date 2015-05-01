@@ -34,7 +34,7 @@ public class AddPatientTest extends TestVerticle {
 			JsonObject cfg = testDesc.getObject("config-mock");
 			AdminAddress = cfg.getString("admin-address");
 			eb = vertx.eventBus();
-			container.deployModule("rgwch~vertx-mod-mock~0.3.0", cfg, new AsyncResultHandler<String>() {
+			container.deployModule("rgwch~vertx-mod-mock~0.3.1", cfg, new AsyncResultHandler<String>() {
 				@Override
 				public void handle(AsyncResult<String> res2) {
 					if (res2.succeeded()) {
