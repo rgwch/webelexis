@@ -2,11 +2,27 @@
  ** This file is part of Webelexis
  ** Copyright (c) 2015 by G. Weirich
  **/
-define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb', ], function(cfg, ko, html, bus) {
+define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb', 'R', 'knockout-jqueryui/dialog'], function(cfg, ko, html, bus, i18n) {
 
+  var R = i18n.R
   var clientID = $("meta[name='clientID']").attr("content")
   cfg.sessionID = $("meta[name='UUID']").attr("content")
   var state = $("meta[name='state']").attr("content")
+
+  R.registerLocale("de", {
+    connected: "mit Server verbunden",
+    notconnected: "vom Server getrennt",
+    login: "Anmelden",
+    logout: "Abmelden",
+    chpwd: "Passwort ändern",
+    chpwdTitle: "Passwort ändern",
+    chpwdOldpw: "Altes Passwort",
+    chpwdNewpw: "Neues Passwort",
+    chpwdNewpwRep: "Neues Password wiederholen",
+    chpwdSubmit: "Absenden"
+  })
+
+  R.setLocale(cfg.locale())
 
   function MenubarModel(params) {
     var self = this
@@ -14,7 +30,10 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
     self.unam = ko.observable()
     self.upwd = ko.observable()
 
-    // subscribe for changes of user
+    self.locale = function(varb) {
+        return R(varb)
+      }
+      // subscribe for changes of user
     cfg.user.subscribe(function() {
       self.adaptForUser()
     })
@@ -76,10 +95,8 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           }
         }
       }
-
       if (cfg.user().loggedIn) {
-        //$("#logout-text").text(cfg.user().username)
-        $("#logout-text").attr("title", cfg.user().username + " abmelden")
+        $('#displayName').html(cfg.user().username + "<span class='caret'></span>")
       }
 
     }
@@ -104,7 +121,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           "id_token": user.getAuthResponse().id_token,
           "client_id": clientID,
           "state": state,
-          "feedback-address": "ch.webelexis.feedback."+cfg.sessionID
+          "feedback-address": "ch.webelexis.feedback." + cfg.sessionID
         }, function(result) {
           if (result.status === undefined) {
             window.alert("Verbindungsfehler")
@@ -157,13 +174,61 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
       // Start with the current live values.
       self.refreshValues();
     }
+    self.pwdDialogOpen = ko.observable(false)
 
-    // Initialize Google only, if we have a Google client ID
-    if (clientID !== undefined && clientID !== "x-undefined") {
-      window.gapi.load('auth2', self.initSigninV2)
+    self.changePwd = function() {
+      self.pwdDialogOpen(true)
     }
+    self.submitChangePwd = function() {
+        var p = "#chpwd"
+        var old = $(p + " #oldpwd").val()
+        var new1 = $(p + " #newpwd").val()
+        var new2 = $(p + " #newpwdrep").val()
+        if (new1 !== new2) {
+          window.alert("Das neue Passwort wurde nicht zweimal identich eingegeben")
+        } else {
 
+          bus.send("ch.webelexis.patient.changepwd", {
+            username: cfg.user.username,
+            "old-pwd": old,
+            "new-pwd": new1
+          }, function(result) {
+            if (result.status === "ok") {
+              self.pwdDialogOpen(false);
+            } else {
+              console.log(JSON.stringify(result))
+            }
+          })
+        }
+      }
+      /*
+          self.changePwd = function() {
+            var p = "#pwdDialog"
+            $(p).dialog("option", "title", self.locale("chpwdTitle"))
+            $(p + " #oldpwd").attr("placeholder", self.locale('chpwdOldpw'))
+            $(p + " #newpwd").attr("placeholder", self.locale('chpwdNewpw'))
+            $(p + " #newpwdrep").attr("placeholder", self.locale('chpwdNewpwRep'))
+            $(p + " #pwd_send").text(self.locale('chpwdSubmit'))
+            $(p + " form").attr("data-bind", "submit: submitChangePwd")
 
+            $("#pwdDialog").dialog("open")
+          }
+
+          self.submitChangePwd = function() {
+              var p = "#pwdDialog"
+              var old = $(p + " #oldpwd").val()
+              var new1 = $(p + " #newpwd").val()
+              var new2 = $(p + " #newpwdrep").val()
+            }
+            // Initialize Google only, if we have a Google client ID
+          if (clientID !== undefined && clientID !== "x-undefined") {
+            window.gapi.load('auth2', self.initSigninV2)
+          }
+
+          $("#pwdDialog").dialog({
+            autoOpen: false
+          })
+          */
   }
   return {
     viewModel: MenubarModel,
