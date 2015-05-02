@@ -5,7 +5,7 @@
 define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html', 'app/datetools', 'knockout-jqueryui/datepicker'], function(ko, bus, cfg, html, dt) {
 
 
-  function AgendaViewModel() {
+  function AgendaViewModel(dprm) {
     var self = this;
     self.tage = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
     self.monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
@@ -183,6 +183,9 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
           self.loadAppointments();
         }
       })
+    }
+    if (dprm.params[0] !== undefined) {
+      self.now(dt.makeDateFromElexisDate(dprm.params[0]))
     }
     var busListener = function(msg) {
       if (msg === "open") {

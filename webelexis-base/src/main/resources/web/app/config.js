@@ -59,7 +59,7 @@ define(['knockout'], function(ko) {
        the server. Doing so would only result in a "dead" module. */
     modules: [{
         baseUrl: "#",
-        match: /^$/, // regexp to match for this page
+        match: /^([0-9]{8,8})?$/, // regexp to match for this page
         title: R.findapp, // title to display on this page's tab
         component: 'ch-webelexis-agenda', // name pof the component that creates this pages
         location: 'components/agenda', // location of the componant
