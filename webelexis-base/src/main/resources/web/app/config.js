@@ -3,23 +3,24 @@
  ** Copyright (c) by G. Weirich 2015
  */
 
-define(['knockout', 'R'], function(ko, i18) {
-  var R = i18.R
+define(['knockout', 'R'], function(ko) {
   var lang = "de" // default language
 
-  R.registerLocale('de', {
+  var Locale = {
+    'de': {
     findapp: "Terminsuche",
-    console: "Konsole",
-    agenda: "Agenda",
-    patients: "Patienten",
-    patient: "Patient",
-    consultation: "Konsultation",
-    login: "Webelexis Anmeldung",
-    addpatient: "Konto erstellen",
-    wait: "Bitte einen Moment Geduld",
-    alert: "Mitteilung",
-    verify: "Kontobestätigung"
-  })
+      console: "Konsole",
+      agenda: "Agenda",
+      patients: "Patienten",
+      patient: "Patient",
+      consultation: "Konsultation",
+      login: "Webelexis Anmeldung",
+      addpatient: "Konto erstellen",
+      wait: "Bitte einen Moment Geduld",
+      alert: "Mitteilung",
+      verify: "Kontobestätigung"
+    }
+  }
   var supportedLanguages = ['de', 'en', 'fr']
   var language = window.navigator.language
   if (language !== undefined) {
@@ -27,8 +28,7 @@ define(['knockout', 'R'], function(ko, i18) {
       lang = language
     }
   }
-  R.setLocale(lang)
-
+  var R=Locale[lang];
 
   return {
 
@@ -60,7 +60,7 @@ define(['knockout', 'R'], function(ko, i18) {
     modules: [{
         baseUrl: "#",
         match: /^$/, // regexp to match for this page
-        title: R('findapp'), // title to display on this page's tab
+        title: R.findapp, // title to display on this page's tab
         component: 'ch-webelexis-agenda', // name pof the component that creates this pages
         location: 'components/agenda', // location of the componant
         active: true, // to deactivate a component temporarily, set to 'false'
@@ -69,7 +69,7 @@ define(['knockout', 'R'], function(ko, i18) {
           // again: The server side decides ultimately.
       }, {
         active: false,
-        title: R('console'),
+        title: R.console,
         baseUrl: "#console",
         match: /^console$/,
         component: "ch-webelexis-console",
@@ -79,7 +79,7 @@ define(['knockout', 'R'], function(ko, i18) {
       }, {
         baseUrl: "#agext",
         match: /^agext$/,
-        title: R('agenda'),
+        title: R.agenda,
         component: 'ch-webelexis-detailagenda',
         location: 'components/detailagenda',
         active: true,
@@ -88,7 +88,7 @@ define(['knockout', 'R'], function(ko, i18) {
       }, {
         baseUrl: "#verify",
         match: /^verify\/([^;,:]+@[a-zA-Z0-9]{2,}\.[a-zA-Z]{2,})\/([a-f0-9-]+)$/,
-        title: R('verify'),
+        title: R.verify,
         component: 'ch-webelexis-verify',
         location: 'components/verify',
         active: true,
@@ -97,7 +97,7 @@ define(['knockout', 'R'], function(ko, i18) {
       }, {
         baseUrl: "#patid",
         match: /^patid\/(.+)\/?$/,
-        title: R('patient'),
+        title: R.patient,
         component: 'ch-webelexis-patdetail',
         location: 'components/patdetail',
         menuItem: true,
@@ -107,7 +107,7 @@ define(['knockout', 'R'], function(ko, i18) {
       }, {
         baseUrl: "#kons",
         match: /^kons$/,
-        title: R('consultation'),
+        title: R.consultation,
         location: 'components/consultation',
         component: 'ch-webelexis-consdetail',
         menuItem: true,
@@ -116,7 +116,7 @@ define(['knockout', 'R'], function(ko, i18) {
       }, {
         baseUrl: "#login",
         match: /^login$/,
-        title: R('login'),
+        title: R.login,
         component: 'ch-webelexis-login',
         location: 'components/login',
         active: true,
@@ -135,7 +135,7 @@ define(['knockout', 'R'], function(ko, i18) {
         active: true,
         role: "guest"
       }, {
-        title: R('addpatient'),
+        title: R.addpatient,
         baseUrl: "#addpatient",
         match: /^addpatient$/,
         component: 'ch-webelexis-addpatient',
@@ -144,14 +144,14 @@ define(['knockout', 'R'], function(ko, i18) {
         role: "guest",
         menuItem: false
       }, {
-        title: R('wait'),
+        title: R.wait,
         component: "ch-webelexis-wait",
         location: 'components/wait',
         active: true,
         role: 'guest',
         menuItem: false
       }, {
-        title: R('alert'),
+        title: R.alert,
         baseURL: "#alert",
         match: /^alert\/(\w+)\/(\w+)$/,
         component: 'ch-webelexis-alert',
