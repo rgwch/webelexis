@@ -3,12 +3,12 @@
  ** Copyright (c) by G. Weirich 2015
  */
 
-define(['knockout', 'R'], function(ko) {
+define(['knockout'], function(ko) {
   var lang = "de" // default language
 
   var Locale = {
     'de': {
-    findapp: "Terminsuche",
+      findapp: "Terminsuche",
       console: "Konsole",
       agenda: "Agenda",
       patients: "Patienten",
@@ -28,7 +28,7 @@ define(['knockout', 'R'], function(ko) {
       lang = language
     }
   }
-  var R=Locale[lang];
+  var R = Locale[lang];
 
   return {
 

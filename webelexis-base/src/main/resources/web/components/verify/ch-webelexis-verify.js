@@ -2,20 +2,27 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'R', 'text!tmpl/ch-webelexis-verify.html'], function(ko, bus, i18n, html) {
+define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-verify.html'], function(ko, bus, cfg, html) {
 
-
-  function VerifyModel(p) {
-    var self = this
-    self.R = i18n.R
-    self.R.registerLocale("de", {
+  var Locale = {
+    de: {
       verify_heading: "Konto Freischaltung",
       verify_start: "Ihr Freischaltcode wird geprüft",
       verify_ok: "Code wird zum Server geschickt.",
       badparams: "Fehler! Die Seite wurde mit ungültigen Parametern aufgerufen.",
       failure: "Vorgang konnte nicht erfolgreich abgeschlossen werden."
-    })
-    self.proc = ko.observable(self.R('verify_ok'))
+    }
+  }
+
+  var R = Locale[cfg.locale()]
+
+  function VerifyModel(p) {
+    var self = this
+
+    self.locale = function(name) {
+      return R[name]
+    }
+    self.proc = ko.observable(R.verify_ok)
     self.result = ko.observable("...")
     self.uid = ko.observable()
     self.vcode = ko.observable()
@@ -36,8 +43,8 @@ define(['knockout', 'app/eb', 'R', 'text!tmpl/ch-webelexis-verify.html'], functi
       }
     }
     if (p.params === undefined || p.params.length < 2) {
-      self.proc(self.R('badparams'))
-      self.result(self.R('failure'))
+      self.proc(R.badparams)
+      self.result(R.failure)
     } else {
       self.uid(p.params[0])
       self.vcode(p.params[1])
@@ -50,7 +57,7 @@ define(['knockout', 'app/eb', 'R', 'text!tmpl/ch-webelexis-verify.html'], functi
       console.log("bus is connected")
       self.busListener("open")
     } else {
-      console.log("bis is disconnected")
+      console.log("bus is disconnected")
       bus.addListener(self.busListener)
     }
   }

@@ -2,27 +2,27 @@
  ** This file is part of Webelexis
  ** Copyright (c) 2015 by G. Weirich
  **/
-define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb', 'R', 'knockout-jqueryui/dialog'], function(cfg, ko, html, bus, i18n) {
+define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb', 'knockout-jqueryui/dialog'], function(cfg, ko, html, bus) {
 
-  var R = i18n.R
+  var Locale = {
+    de: {
+      connected: "mit Server verbunden",
+      notconnected: "vom Server getrennt",
+      login: "Anmelden",
+      logout: "Abmelden",
+      chpwd: "Passwort ändern",
+      chpwdTitle: "Passwort ändern",
+      chpwdOldpw: "Altes Passwort",
+      chpwdNewpw: "Neues Passwort",
+      chpwdNewpwRep: "Neues Password wiederholen",
+      chpwdSubmit: "Absenden"
+    }
+  }
   var clientID = $("meta[name='clientID']").attr("content")
   cfg.sessionID = $("meta[name='UUID']").attr("content")
   var state = $("meta[name='state']").attr("content")
 
-  R.registerLocale("de", {
-    connected: "mit Server verbunden",
-    notconnected: "vom Server getrennt",
-    login: "Anmelden",
-    logout: "Abmelden",
-    chpwd: "Passwort ändern",
-    chpwdTitle: "Passwort ändern",
-    chpwdOldpw: "Altes Passwort",
-    chpwdNewpw: "Neues Passwort",
-    chpwdNewpwRep: "Neues Password wiederholen",
-    chpwdSubmit: "Absenden"
-  })
-
-  R.setLocale(cfg.locale())
+  var R = Locale[cfg.locale()]
 
   function MenubarModel(params) {
     var self = this
@@ -31,7 +31,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
     self.upwd = ko.observable()
 
     self.locale = function(varb) {
-        return R(varb)
+        return R[varb]
       }
       // subscribe for changes of user
     cfg.user.subscribe(function() {
@@ -190,7 +190,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
         var new1 = $(p + " #newpwd").val()
         var new2 = $(p + " #newpwdrep").val()
         if (new1 !== new2) {
-          window.alert("Das neue Passwort wurde nicht zweimal identich eingegeben")
+          window.alert("Das neue Passwort wurde nicht zweimal identisch eingegeben")
         } else {
 
           bus.send("ch.webelexis.patient.changepwd", {
@@ -200,7 +200,7 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           }, function(result) {
             if (result.status === "ok") {
               self.pwdDialogOpen(false);
-              window.location.hash = "#alert/pwdchange_heading/pwdchange_body"
+              window.location.hash = "#alert/pwdheading/pwdbody"
             } else {
               if (result === undefined || result.status === undefined) {
                 window.alert("Server error.");

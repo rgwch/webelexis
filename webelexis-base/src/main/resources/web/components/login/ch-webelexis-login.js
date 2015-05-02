@@ -4,8 +4,8 @@
  */
 define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html'], function(bus, config, Router, ko, html) {
 
-  var Locale={
-    de:{
+  var Locale = {
+    de: {
       loginButton: "Anmelden",
       loginMessage1: "Bitte melden Sie sich entweder mit E-Mail und Passwort, oder mit Ihrem Google-Konto an.",
       loginMessage2: "Bitte melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.",
@@ -14,7 +14,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
       badLogin: "Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal"
     }
   }
-  var R=Locale[config.locale()]
+  var R = Locale[config.locale()]
 
   function adapt(connected) {
     if (connected) {
@@ -70,7 +70,7 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
           //console.log("login failed")
           $("#login-head").removeClass()
           $("#login-head").addClass("panel panel-danger")
-          $("#login-message").text(R('badLogin')).addClass("red")
+          $("#login-message").text(R.badLogin).addClass("red")
         }
       });
 
