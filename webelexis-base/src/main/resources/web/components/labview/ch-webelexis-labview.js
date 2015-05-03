@@ -24,6 +24,9 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
       self.activeGroup(index())
     }
 
+    self.hello = function() {
+      return "hello"
+    }
     self.itemsInGroup = function(group) {
       var ret = []
       for (var key in group.items) {

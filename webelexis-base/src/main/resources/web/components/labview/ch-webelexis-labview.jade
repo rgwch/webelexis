@@ -1,14 +1,14 @@
 //- This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
 mixin createGroup(item,range)
   .col-xs-3
-    span(data-bind="text: $parent.displayText(#{item}.min), css: {red: $parent.outOfRange(#{range},#{item}.min)}" style="font-size:smaller")
-    span.abstand(data-bind="text: $parent.displayText(#{item}.avg), css: {red: $parent.outOfRange(#{range},#{item}.avg)}" style="font-size:larger")
-    span(data-bind="text: $parent.displayText(#{item}.max), css: {red: $parent.outOfRange(#{range},#{item}.max)}" style="font-size:smaller")
+    span(data-bind="text: $parents[1].displayText(#{item}.min), css: {red: $parents[1].outOfRange(#{range},#{item}.min)}" style="font-size:smaller")
+    span.abstand(data-bind="text: $parents[1].displayText(#{item}.avg), css: {red: $parents[1].outOfRange(#{range},#{item}.avg)}" style="font-size:larger")
+    span(data-bind="text: $parents[1].displayText(#{item}.max), css: {red: $parents[1].outOfRange(#{range},#{item}.max)}" style="font-size:smaller")
           
 mixin createHeading(item)
   .col-xs-3
     h3.h3 #{item}
-    
+  
 .row(data-bind="visible: loaded()==false")
   .col-xs-12
     img(src="img/ekg.gif" data-bind="attr: {alt: R['loading']}")
@@ -19,7 +19,10 @@ mixin createHeading(item)
       span.caret 
       div(data-bind="if: $parent.activeGroup()==$index()")
         .row(data-bind="foreach: $parent.itemsInGroup($data)")
-          p(data-bind="text: $data.avg")
-          
+          .col-xs-3
+            span(data-bind="text: name")
+          +createGroup('act','range')
+          +createGroup('med','range')
+          +createGroup('old','range')
         
           
