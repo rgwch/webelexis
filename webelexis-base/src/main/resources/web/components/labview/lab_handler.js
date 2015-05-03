@@ -54,7 +54,7 @@ define(['app/datetools'], function(dt) {
       var cruncher = {}
       cruncher.fields = sqlResult.fields
       cruncher.rows = sqlResult.results
-      cruncher.items = {}
+      cruncher.groups = {}
 
       /* insert all SQL result rows grouped by Item ID into the cruncher */
       for (var i = 0; i < cruncher.rows.length; i++) {
@@ -84,8 +84,18 @@ define(['app/datetools'], function(dt) {
             count: 0
           }
         }
-        if (cruncher.items.hasOwnProperty(key)) {
-          item = cruncher.items[key]
+        if (row[10].match(/[fFwW]/) != null) {
+          item.range = row[9]
+        }
+        var group = {
+          name: row[6],
+          items: {}
+        }
+        if (cruncher.groups.hasOwnProperty(row[6])) {
+          group = cruncher.groups[row[6]]
+        }
+        if (group.items.hasOwnProperty(key)) {
+          item = group.items[key]
         }
         var labDate = dt.makeDate(row[0])
         var sample = {
@@ -101,7 +111,8 @@ define(['app/datetools'], function(dt) {
         } else {
           item.old = checkSample(item.old, sample)
         }
-        cruncher.items[key] = item
+        group.items[key] = item
+        cruncher.groups[row[6]] = group
       }
       return cruncher
     },

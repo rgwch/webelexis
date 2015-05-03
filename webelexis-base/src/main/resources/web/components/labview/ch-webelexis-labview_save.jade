@@ -12,14 +12,18 @@ mixin createHeading(item)
 .row(data-bind="visible: loaded()==false")
   .col-xs-12
     img(src="img/ekg.gif" data-bind="attr: {alt: R['loading']}")
- div(data-bind="visible: loaded, foreach: groups")
+.row(data-bind="visible: loaded")
+  +createHeading('Parameter')
+  +createHeading('30 Tage')
+  +createHeading('12 Monate')
+  +createHeading('älter')
+  // ko foreach: items 
   .row
-    .col-xs-12
-      span(data-bind="text: $parent.groupname($data), click: $parent.openGroup($index)")
-      span.caret 
-      div(data-bind="if: $parent.activeGroup()==$index()")
-        .row(data-bind="foreach: $parent.itemsInGroup($data)")
-          p(data-bind="text: $data.avg")
-          
-        
-          
+    .col-xs-3
+      span(data-bind="text: name+' '+range")
+    +createGroup('act','range')
+    +createGroup('med','range')
+    +createGroup('old','range')
+  // /ko 
+
+  

@@ -16,24 +16,40 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
     self.R = Locale[cfg.locale()]
     self.crunched = {}
     self.loaded = ko.observable(false)
-    self.items = ko.observableArray()
+    self.groups = ko.observableArray()
+      //self.items = ko.observableArray()
+    self.activeGroup = ko.observable(0)
 
-    self.outOfRange = function(refvalue, value) {
-        var range = refvalue.split("-")
-        if (range.length === 2) {
-          if (isNaN(range[0]) || isNaN(range[1]) || isNaN(value)) {
-            return false
-          }
-          var min = parseFloat(range[0])
-          var max = parseFloat(range[1])
-          var val = parseFloat(value)
-          if (val < min || val > max) {
-            return true
-          }
-        }
-        return false;
+    self.openGroup = function(index) {
+      self.activeGroup(index())
+    }
+
+    self.itemsInGroup = function(group) {
+      var ret = []
+      for (var key in group.items) {
+        ret.push(group.items[key])
       }
-      //
+      return ret
+    }
+    self.groupname = function(group) {
+      return group.name.slice(group.name.indexOf(" "));
+    }
+    self.outOfRange = function(refvalue, value) {
+      var range = refvalue.split("-")
+      if (range.length === 2) {
+        if (isNaN(range[0]) || isNaN(range[1]) || isNaN(value)) {
+          return false
+        }
+        var min = parseFloat(range[0])
+        var max = parseFloat(range[1])
+        var val = parseFloat(value)
+        if (val < min || val > max) {
+          return true
+        }
+      }
+      return false;
+    }
+
     self.displayText = function(value) {
         if (isNaN(value)) {
           return ""
@@ -59,8 +75,8 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
           self.crunched = lh.crunch(result)
             //console.log(JSON.stringify(self.crunched))
 
-          for (var item in self.crunched.items) {
-            self.items.push(self.crunched.items[item])
+          for (var key in self.crunched.groups) {
+            self.groups.push(self.crunched.groups[key])
           }
           self.loaded(true)
             //var crunched = lh.crunch(result)
