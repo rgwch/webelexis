@@ -18,12 +18,15 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdeta
     self.labItems = ko.observableArray()
 
 
-      // set center panel
+    // set center panel
     self.setPanel = function(item) {
       self.activeCenterPanel(item.detail)
       item.handler()
     }
 
+    self.labPanel = function() {
+      window.location.hash = "#labview/" + patid
+    }
 
     // fetch lab summary
     self.loadLabSummary = function() {
@@ -32,16 +35,16 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdeta
         "patid": patid,
         "sessionID": cfg.sessionID
       }, function(result) {
-        if (result === undefined){
+        if (result === undefined) {
           window.alert("Keine Antwort vom Server")
 
-        } else if(result.status !== "ok") {
+        } else if (result.status !== "ok") {
           window.alert("Fehler bei der Abfrage: " + result.status + " " + result.message)
         } else {
           var crunched = lh.crunch(result)
-          var table=lh.makeTable(crunched)
+          var table = lh.makeTable(crunched)
           self.labItems.removeAll();
-          for(var i=0;i<table.length;i++){
+          for (var i = 0; i < table.length; i++) {
             self.labItems.push(table[i])
           }
           //self.labItems.push([['a','1'],['b',"2"],['c',"3"]])
@@ -57,7 +60,7 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdeta
     }, {
       title: "Labor",
       detail: "labView",
-      handler: self.loadLabSummary
+      handler: self.labPanel
     }, {
       title: "Konsultation",
       detail: "consView",
@@ -107,8 +110,6 @@ define(['knockout', 'app/eb', 'app/config', 'app/datetools', 'components/patdeta
         }
       });
     }
-
-
 
 
     self.loadSummary()

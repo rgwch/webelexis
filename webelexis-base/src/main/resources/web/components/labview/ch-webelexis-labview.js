@@ -19,6 +19,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
     self.groups = ko.observableArray()
       //self.items = ko.observableArray()
     self.activeGroup = ko.observable(0)
+    self.patid = prm.params[0]
 
     self.openGroup = function(index) {
       self.activeGroup(index())
@@ -66,7 +67,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
     self.loadLabSummary = function() {
       bus.send("ch.webelexis.patient.labresult", {
         "mode": "latest",
-        "patid": dummy,
+        "patid": self.patid,
         "sessionID": cfg.sessionID
       }, function(result) {
         if (result === undefined) {
