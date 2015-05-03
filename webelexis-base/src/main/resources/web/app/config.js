@@ -18,7 +18,8 @@ define(['knockout'], function(ko) {
       addpatient: "Konto erstellen",
       wait: "Bitte einen Moment Geduld",
       alert: "Mitteilung",
-      verify: "Kontobestätigung"
+      verify: "Kontobestätigung",
+      labview: "Laborwerte"
     }
   }
   var supportedLanguages = ['de', 'en', 'fr']
@@ -67,6 +68,15 @@ define(['knockout'], function(ko) {
         menuItem: true, // if the component doesn't need a menu item, set to 'false
         role: "guest" // which user role is allowed to use this component.
           // again: The server side decides ultimately.
+      }, {
+        baseUrl: "#labview",
+        match: /^labview\/(.+)\/?$/,
+        title: R.labview,
+        component: "ch-webelexis-labview",
+        location: "components/labview",
+        menuItem: false,
+        role: "arzt",
+        active: true
       }, {
         active: false,
         title: R.console,

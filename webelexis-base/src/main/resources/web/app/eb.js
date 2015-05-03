@@ -68,8 +68,18 @@ define(['app/config', 'vertxbus'], function(config) {
     connected: function() {
       return state()
     },
-    addListener: function(callback) {
+    /* Add a bus listener. Will be called with a String "open" or "close"
+     param: callback: The Listener, directCall: If true: will be called immediately
+     after adding with the actual value */
+    addListener: function(callback, directCall) {
       listeners.push(callback)
+      if (directCall !== undefined && directCall === true) {
+        if (state()) {
+          callback("open")
+        } else {
+          callback("close")
+        }
+      }
     },
     removeListener: function(callback) {
       var idx = listeners.indexOf(callback)

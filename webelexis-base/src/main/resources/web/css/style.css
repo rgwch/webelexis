@@ -1,6 +1,12 @@
 .red {
   color: red;
 }
+span.smaller {
+  font-size: smaller;
+}
+span.larger {
+  font-size: larger;
+}
 .greyed {
   background-color: #eee;
   border-bottom: 1px solid blue;
