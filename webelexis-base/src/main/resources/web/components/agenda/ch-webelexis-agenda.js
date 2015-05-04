@@ -192,11 +192,8 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
         self.loadAppointments()
       }
     }
-    bus.addListener(busListener)
+    bus.addListener(busListener, true)
 
-    if (bus.connected()) {
-      self.loadAppointments();
-    }
 
   }
 

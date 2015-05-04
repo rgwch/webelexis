@@ -1,0 +1,34 @@
+//- This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
+mixin createGroup(item,range)
+  .col-xs-3
+    span(data-bind="text: $parents[1].displayText(#{item}.min), css: {red: $parents[1].outOfRange(#{range},#{item}.min)}" style="font-size:smaller")
+    span.abstand(data-bind="text: $parents[1].displayText(#{item}.avg), css: {red: $parents[1].outOfRange(#{range},#{item}.avg)}" style="font-size:larger")
+    span(data-bind="text: $parents[1].displayText(#{item}.max), css: {red: $parents[1].outOfRange(#{range},#{item}.max)}" style="font-size:smaller")
+          
+mixin createHeading(item)
+  .col-xs-3
+    h4.h4(data-bind="text: $parent.R['#{item}']")
+  
+.row(data-bind="visible: loaded()==false")
+  .col-xs-12
+    img(src="img/ekg.gif" data-bind="attr: {alt: R['loading']}")
+ div(data-bind="visible: loaded, foreach: groups")
+  .row
+    .col-xs-12
+      span(data-bind="text: $parent.groupname($data), click: $parent.openGroup($index)")
+      span.caret 
+      div(data-bind="if: $parent.activeGroup()==$index()")
+        .row
+          +createHeading('parameter')
+          +createHeading('actual')
+          +createHeading('twelvemonths')
+          +createHeading('older')
+          // ko foreach: $parent.itemsInGroup($data) 
+          .col-xs-3
+            span(data-bind="text: name+' ('+range+') ' ")
+          +createGroup('act','range')
+          +createGroup('med','range')
+          +createGroup('old','range')
+          // /ko 
+        
+          

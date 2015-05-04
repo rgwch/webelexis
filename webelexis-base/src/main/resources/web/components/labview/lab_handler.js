@@ -64,6 +64,7 @@ define(['app/datetools'], function(dt) {
         var item = {
           name: row[2],
           range: row[8],
+          key: key,
           samples: [],
           old: {
             min: 0,

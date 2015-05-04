@@ -21,14 +21,31 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
     self.crunched = {}
     self.loaded = ko.observable(false)
     self.groups = ko.observableArray()
-      //self.items = ko.observableArray()
     self.activeGroup = ko.observable(0)
     self.patid = prm.params[0]
+    self.checkedItems=ko.observable({})
 
     self.openGroup = function(index) {
       self.activeGroup(index())
     }
 
+
+    self.isChecked = function(item){
+      return self.checkedItems().hasOwnProperty(item.key)
+    }
+
+    self.toggleItem = function(item){
+      var o=self.checkedItems()
+      var key=item.key
+      if(o.hasOwnProperty(key)){
+        delete o[key]
+      }else{
+        o[key]=item
+      }
+      self.checkedItems(o)
+    }
+
+      /* push all items of a group into an array */
     self.itemsInGroup = function(group) {
       var ret = []
       for (var key in group.items) {

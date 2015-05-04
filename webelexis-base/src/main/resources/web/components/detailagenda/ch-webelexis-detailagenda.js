@@ -10,7 +10,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
    * 0 tag,1 beginn,2 dauer, 3 bereich, 4 termintyp,5 terminID,6 PatientID,7 Terminstatus,8 Grund,9 Kontakt-bez, 10 Kontakt-bez2
    */
 
-  function AgendaViewModel() {
+  function AgendaViewModel(dprm) {
     var self = this;
     self.tage = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
     self.monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
@@ -71,6 +71,7 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
     self.lastExpanded = null
     self.resources = ko.observableArray([])
     self.resource = ko.observable()
+
     self.loadResources = function() {
       self.resources.removeAll()
       bus.send("ch.webelexis.privateagenda", {
@@ -192,18 +193,17 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
     self.patdetail = function(idx) {
       window.location.hash = "#patid/" + idx.patientID
     }
+    if (dprm !== undefined && dprm.params[0] !== undefined) {
+      self.now(dt.makeDateFromElexisDate(dprm.params[0]))
+    }
 
     var busListener = function(msg) {
       if (msg === "open") {
-        self.loadAppointments()
+        self.loadResources()
       }
     }
-    bus.addListener(busListener)
+    bus.addListener(busListener, true)
 
-    if (bus.connected()) {
-      self.loadResources()
-        //self.loadAppointments();
-    }
 
   }
 
