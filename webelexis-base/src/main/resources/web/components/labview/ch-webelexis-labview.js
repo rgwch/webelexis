@@ -11,7 +11,9 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
       parameter: "Parameter",
       twelvemonths: "12 Monate",
       older: "Älter",
-      actual: "Aktuell"
+      actual: "Aktuell",
+      details:"Details",
+      verlauf:"Verlauf"
     }
   }
 

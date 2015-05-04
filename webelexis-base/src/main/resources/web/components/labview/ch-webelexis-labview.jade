@@ -29,9 +29,9 @@ mixin createHeading(item)
             tfoot
               tr
                 th
-                  button.btn.btn-default Details
+                  button.btn.btn-default(data-bind="text: R.details")
                 th
-                  button.btn.btn-default Verlauf
+                  button.btn.btn-default(data-bind="text: R.verlauf")
             tbody
               // ko foreach: $parent.itemsInGroup($data) 
               tr(data-bind="click: function(){$parents[1].toggleItem($data)}")

@@ -15,6 +15,7 @@ var require = {
     "vertxbus": "lib/vertxbus",
     "knockout-jqueryui": "lib/knockout-jqueryui",
     "cookie": "lib/js.cookie-1.5.0.min",
+    "chart": "https://cdnjs.com/libraries/chart",
     "app": "app",
     "tmpl": "tmpl"
   },
