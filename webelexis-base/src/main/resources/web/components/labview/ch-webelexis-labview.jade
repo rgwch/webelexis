@@ -12,37 +12,36 @@ mixin createHeading(item)
   .col-xs-12
     img(src="img/ekg.gif" data-bind="attr: {alt: R['loading']}")
  div(data-bind="visible: loaded, foreach: groups")
-  .row
-    .col-xs-12
-      span(data-bind="text: $parent.groupname($data), click: $parent.openGroup($index)")
-      span.caret 
-      div(data-bind="if: $parent.activeGroup()==$index()")
-        .table-responsive 
-          table.table.table-striped.table-hover.table-condensed
-            thead
-              tr
-                th
-                +createHeading('parameter')
-                +createHeading('actual')
-                +createHeading('twelvemonths')
-                +createHeading('older')
-            tfoot
-              tr
-                th
-                  button.btn.btn-default(data-bind="text: R.details")
-                th
-                  button.btn.btn-default(data-bind="text: R.verlauf")
-            tbody
-              // ko foreach: $parent.itemsInGroup($data) 
-              tr(data-bind="click: function(){$parents[1].toggleItem($data)}")
-                td
-                  span.glyphicon.glyphicon-unchecked(data-bind="visible: !$parents[1].isChecked($data)")
-                  span.glyphicon.glyphicon-check(data-bind="visible: $parents[1].isChecked($data)")
-                td(data-bind="text: name+' ('+range+') ' ")
-                +createGroup('act','range')
-                +createGroup('med','range')
-                +createGroup('old','range')
-              // /ko 
-              
+  div(style="width: 100%; height:2em;background: #a8ccdb; border-top: 1px solid black;")
+    span(data-bind="text: $parent.groupname($data), click: $parent.openGroup($index)" )
+    span.caret 
+  div(data-bind="if: $parent.activeGroup()==$index()")
+    .table-responsive 
+      table.table.table-striped.table-hover.table-condensed
+        thead
+          tr
+            th
+            +createHeading('parameter')
+            +createHeading('actual')
+            +createHeading('twelvemonths')
+            +createHeading('older')
+        tfoot
+          tr
+            th
+              button.btn.btn-default(data-bind="text: $parent.R.details")
+            th
+              button.btn.btn-default(data-bind="text: $parent.R.verlauf")
+        tbody
+          // ko foreach: $parent.itemsInGroup($data) 
+          tr(data-bind="click: function(){$parents[1].toggleItem($data)}")
+            td
+              span.glyphicon.glyphicon-unchecked(data-bind="visible: !$parents[1].isChecked($data)")
+              span.glyphicon.glyphicon-check(data-bind="visible: $parents[1].isChecked($data)")
+            td(data-bind="text: name+' ('+range+') ' ")
+            +createGroup('act','range')
+            +createGroup('med','range')
+            +createGroup('old','range')
+          // /ko 
+          
         
           
