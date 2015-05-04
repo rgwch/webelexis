@@ -10,7 +10,8 @@
 		"vorname": "hinz",
 		"name": "kunz",
 		"geburtsdatum": "19810331",
-		"pass": "topSecret"
+		"pass": "topSecret",
+		"origin": "http://tests.webelexis.ch"
 	},
 
 	"testuser2": 
@@ -19,13 +20,14 @@
 		"vorname": "Hans Guck",
 		"name": "In die-luft",
 		"geburtsdatum": "19501201",
-		"pass": "toppersecret"
+		"pass": "toppersecret",
+		"origin": "http://tests.webelexis.ch"
 	},
 
 	"config-addpatient": 
 	{
 		"default-role": "patient",
-		"mailer": 
+		"mails": 
 		{
 			"from": "me@here.ch",
 			"bcc": "also_me@here.ch",
@@ -44,7 +46,7 @@
 	"config-lostpwd": 
 	{
 		"username": "test@exis.ts",
-		"mailer": 
+		"mails": 
 		{
 			"from": "me@here.ch",
 			"bcc": "also_me@here.ch",

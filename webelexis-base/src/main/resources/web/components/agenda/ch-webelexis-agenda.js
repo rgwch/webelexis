@@ -184,7 +184,7 @@ define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-agenda.html'
         }
       })
     }
-    if (dprm.params[0] !== undefined) {
+    if (dprm !== undefined && dprm.params[0] !== undefined) {
       self.now(dt.makeDateFromElexisDate(dprm.params[0]))
     }
     var busListener = function(msg) {
