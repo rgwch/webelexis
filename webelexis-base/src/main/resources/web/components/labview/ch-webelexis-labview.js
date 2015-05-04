@@ -7,7 +7,11 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
 
   var Locale = {
     de: {
-      loading: "Lade Daten..."
+      loading: "Lade Daten...",
+      parameter: "Parameter",
+      twelvemonths: "12 Monate",
+      older: "Älter",
+      actual: "Aktuell"
     }
   }
 
@@ -25,9 +29,6 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
       self.activeGroup(index())
     }
 
-    self.hello = function() {
-      return "hello"
-    }
     self.itemsInGroup = function(group) {
       var ret = []
       for (var key in group.items) {
@@ -39,16 +40,29 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
       return group.name.slice(group.name.indexOf(" "));
     }
     self.outOfRange = function(refvalue, value) {
-      var range = refvalue.split("-")
-      if (range.length === 2) {
-        if (isNaN(range[0]) || isNaN(range[1]) || isNaN(value)) {
-          return false
-        }
-        var min = parseFloat(range[0])
-        var max = parseFloat(range[1])
+      if ((refvalue !== undefined) && (refvalue !== null) && (typeof refvalue == 'string')) {
         var val = parseFloat(value)
-        if (val < min || val > max) {
-          return true
+        var range = refvalue.split("-")
+        if (range.length === 2) {
+          if (isNaN(range[0]) || isNaN(range[1]) || isNaN(value)) {
+            return false
+          }
+          var min = parseFloat(range[0])
+          var max = parseFloat(range[1])
+          if (val < min || val > max) {
+            return true
+          }
+        } else {
+          var margin = refvalue.trim()
+          if (margin.charAt(0) == '<') {
+            if (val > parseFloat(margin.substring(1))) {
+              return true
+            }
+          } else if (margin.charAt(0) == '>') {
+            if (val < parseFloat(margin.substring(1))) {
+              return true
+            }
+          }
         }
       }
       return false;

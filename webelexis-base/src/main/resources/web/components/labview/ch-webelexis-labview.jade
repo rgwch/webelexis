@@ -7,7 +7,7 @@ mixin createGroup(item,range)
           
 mixin createHeading(item)
   .col-xs-3
-    h4.h4 #{item}
+    h4.h4(data-bind="text: $parent.R['#{item}']")
   
 .row(data-bind="visible: loaded()==false")
   .col-xs-12
@@ -19,13 +19,13 @@ mixin createHeading(item)
       span.caret 
       div(data-bind="if: $parent.activeGroup()==$index()")
         .row
-          +createHeading('Parameter')
-          +createHeading('Aktuell')
-          +createHeading('12 Monate')
-          +createHeading('Älter')
+          +createHeading('parameter')
+          +createHeading('actual')
+          +createHeading('twelvemonths')
+          +createHeading('older')
           // ko foreach: $parent.itemsInGroup($data) 
           .col-xs-3
-            span(data-bind="text: name")
+            span(data-bind="text: name+' ('+range+') ' ")
           +createGroup('act','range')
           +createGroup('med','range')
           +createGroup('old','range')

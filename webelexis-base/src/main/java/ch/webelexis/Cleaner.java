@@ -34,7 +34,7 @@ public class Cleaner {
 	public static final String URL = "https?://[a-zA-Z0-9-_]+(\\.[a-zA-Z0-9-_]{2,})*(:[0-9]+)?";
 	public static final String IP = "[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]";
 	public static final String ZIP = "[A-Za-z 0-9]{4,8}";
-	public static final String UID = "[a-fA-F0-9-]{8,}";
+	public static final String UID = "[a-zA-Z0-9][a-fA-F0-9-]{8,}";
 	public static final String NUMBER = "[0-9]+";
 
 	Message<JsonObject> jo;
