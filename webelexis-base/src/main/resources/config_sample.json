@@ -115,7 +115,7 @@
       }, {
         "address": "ch.webelexis.privateagenda"
       }, {
-        "address_re": "ch.webelexis.patient.\\w+"
+        "address_re": "ch\\.webelexis\\.patient\\.\\w+"
       }
     ], // allowed outbound messages
     "outOK": [{

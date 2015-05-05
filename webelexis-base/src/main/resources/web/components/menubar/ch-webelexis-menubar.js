@@ -81,11 +81,12 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           console.log("Problem beim Abmelden " + result.message)
         }
         window.location.hash = "#"
+        window.location.reload()
       })
     }
 
     self.adaptForUser = function() {
-      console.log(JSON.stringify(cfg.user()))
+      //console.log(JSON.stringify(cfg.user()))
       self.menuItems.removeAll()
       for (var i = 0; i < cfg.modules.length; i++) {
         var item = cfg.modules[i]
@@ -132,10 +133,11 @@ define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb
           } else if (result.status === "ok") {
             $.extend(true, user, result.user)
             user.loggedIn = true;
+            bus.setFeedbackAddress()
             cfg.user(user)
             window.location.hash = "#"
           } else {
-            window.alert(result.status)
+            window.alert("userchange error: "+result.status+" "+result.message)
           }
 
         })
