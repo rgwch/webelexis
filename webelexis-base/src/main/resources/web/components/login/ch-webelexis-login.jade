@@ -3,8 +3,8 @@
     .panel.panel-info#login-head
         .panel-heading
             .panel-title 
-                h3 Anmeldung
-            p#login-message Sie müssen sich zuerst im System anmelden.
+                h3(data-bind="text: msg('heading')")
+            p#login-message(data-bind="text: msg('headmsg')")
         .panel-body
             .row
                 .col-xs-6
@@ -19,8 +19,6 @@
                 .col-xs-6(data-bind="if: hasGoogle")
                     img.img.img-responsive.center-block#gbutton(src="img/Blue_signin_Long_normal_32dp_v3.png" data-bind="click: googleLogin, event: {mouseover: google_mouseOver, mouseout: google_mouseOut}")
         .panel-footer
-            p 
-              | Noch kein Konto? Klicken Sie 
-              a(href="#addpatient") hier
-              | , um eines zu erstellen.
-        
+            .center-block(style="width:100%")
+              a.btn(href="#addpatient" data-bind="text: msg('noaccount')" style="width:100%;")
+              

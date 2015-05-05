@@ -193,6 +193,10 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'text!tmpl/ch-webel
     self.patdetail = function(idx) {
       window.location.hash = "#patid/" + idx.patientID
     }
+    self.labview = function(idx) {
+      window.location.hash = "#labview/" + idx.patientID
+    }
+
     if (dprm !== undefined && dprm.params[0] !== undefined) {
       self.now(dt.makeDateFromElexisDate(dprm.params[0]))
     }

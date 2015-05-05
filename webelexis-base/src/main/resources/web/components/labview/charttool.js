@@ -13,8 +13,8 @@ define(['chart', "app/datetools"], function(ch, dt) {
   var pointHighlightStrokes = ['blue', 'red', 'blue']
 
   return {
-    create: function(values, canvas) {
-      var ctx = window.document.getElementById(canvas).getContext("2d")
+    create: function(values, ctx) {
+      //var ctx = window.document.getElementById(canvas).getContext("2d")
       var lbl_raw = []
       var datasets = []
       var num = 0
@@ -47,17 +47,18 @@ define(['chart', "app/datetools"], function(ch, dt) {
         labels.push(dt.makeDateFromElexisDate(lbl_raw[i]))
       }
       var data = {
-          labels: labels,
-          datasets: datasets
-        }
-        //var options = {}
-      var lineChart =
-        new ch(ctx).Line(data, {
-          responsive: true,
-          datasetFill: datasets.length == 1
-        })
-      $(canvas).parent().append(lineChart.generateLegend() );
-      return lineChart
+        labels: labels,
+        datasets: datasets
+      }
+      if (data.datasets.length > 0) {
+        var lineChart = new ch(ctx).Line(data, {
+            responsive: true,
+            datasetFill: datasets.length == 1
+          }).generateLegend()
+          //$(canvas).parent().append(lineChart.generateLegend() );
+        return lineChart
+      }
+      return {}
     }
   }
 

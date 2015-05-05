@@ -38,3 +38,9 @@ div.labgroup {
   background: #a8ccdb;
   border-top: 1px solid black;
 }
+div.agendabox {
+  border-top-style: solid;
+  border-width: 1px;
+  border-color: black;
+  height: 2.5em;
+}

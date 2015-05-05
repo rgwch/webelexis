@@ -6,12 +6,15 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
 
   var Locale = {
     de: {
+      heading: "Anmeldung",
+      headmsg: "Sie müssen sich zuerst im System anmelden.",
       loginButton: "Anmelden",
       loginMessage1: "Bitte melden Sie sich entweder mit E-Mail und Passwort, oder mit Ihrem Google-Konto an.",
       loginMessage2: "Bitte melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.",
       notConnectedHead: "Nicht verbunden",
       notConnectedBody: "Es besteht keine Verbindung zum Server. Warten Sie bitte einen Moment, oder versuchen Sie es später noch einmal.",
-      badLogin: "Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal"
+      badLogin: "Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal",
+      noaccount: 'Noch kein Konto? Klicken Sie hier, um eines zu erstellen.'
     }
   }
   var R = Locale[config.locale()]
@@ -43,6 +46,9 @@ define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexi
   function LoginViewModel() {
     var self = this;
 
+    self.msg = function(id) {
+      return R[id]
+    }
     self.uname = ko.observable("")
     self.pwd = ko.observable("")
 

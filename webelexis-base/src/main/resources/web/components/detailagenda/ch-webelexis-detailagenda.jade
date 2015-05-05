@@ -10,20 +10,16 @@
                 select(data-bind="options: resources, optionsText: 'display', value: resource, event: {change: loadAppointments}")
         .panel-body
             .row(data-bind="foreach: appointments")
-                .col-xs-12.col-sm-6
-                    div(data-bind="text: displayText, css: displayClass, click: $parent.expand")
-                    .row(data-bind="if:expanded")
-                        .form-group.col-xs-12
-                            label(for="reason") Grund
-                            input.form-control#phone(data-bind="value: reason")
-                        .row
-                            .col-xs-4
-                                button.btn.btn-primary(data-bind="click: $parent.patdetail") Patient
-                            .col-xs-4
-                                button.btn Löschen
-                            .col-xs-4
-                                button.btn Konsultation
-                        .col-xs-12
-                            button.btn.btn-default(data-bind="click: $parent.collapse") Schliessen
+                .col-xs-12
+                    div.agendabox(data-bind="css: displayClass, click: $parent.expand")
+                      span(data-bind="text: displayText")
+                      span(data-bind="text: reason" style="font-size:x-small")
+                    div(data-bind="if:expanded")
+                      div  
+                        button.btn.btn-primary(data-bind="click: $parent.patdetail") Personalien
+                        button.btn.btn-default(data-bind="click: $parent.labview") Labor
+                        button.btn Konsultation
+                        button.btn Dokumente
+                      button.btn.btn-default(data-bind="click: $parent.collapse") Schliessen
                             
                             

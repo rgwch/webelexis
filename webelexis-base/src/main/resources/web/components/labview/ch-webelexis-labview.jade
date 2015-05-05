@@ -18,7 +18,7 @@ mixin createHeading(item)
   div(data-bind="if: $parent.activeGroup()==$index()")
     div(data-bind="visible: $parent.display()=='chart'" style="width: 100%")
       canvas#chartCanvas(style="width: 100%")
-      button.btn.btn-default(data-bind="click: $parent.display('table')")  OK
+      button.btn.btn-default(data-bind="click: $parent.closeChart")  OK
     .table-responsive(data-bind="visible: $parent.display()=='table'") 
       table.table.table-striped.table-hover.table-condensed
         thead
