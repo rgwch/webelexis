@@ -1,12 +1,12 @@
 {
 	"name": "base-module",
-	"version": "0.3.1",
+	"version": "0.4.0",
 	"description": "base module for webelexis",
 	"author": "weirich@elexis.ch",
 	"private": true,
 	"license": "EPL",
 	"fullname": "ch-webelexis~${npm_package_name}~${npm_package_version}",
-	"scripts": 
+	"scripts":
 	{
 		"clean": "rimraf dist",
 		"create-dirs": "mkdirp dist/web",
@@ -31,7 +31,7 @@
 		"test-all": "npm run test-client && npm run preverticle && npm run compile-javatests && java -cp ${VERTX_HOME}/lib/*:${JUNIT_HOME}/*:dist org.junit.runner.JUnitCore ch.webelexis.tests.WebelexisTestSuite"
 	},
 
-	"devDependencies": 
+	"devDependencies":
 	{
 		"chai": "^2.1.2",
 		"jade": ">=1.9.0",
