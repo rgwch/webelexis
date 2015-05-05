@@ -3,11 +3,11 @@
  * Copyright (c) 2015 by G. Weirich
  */
 
-define(['chart'], function(ch) {
+define(['chart', "app/datetools"], function(ch, dt) {
 
-  var fillColors = ["grey", "white", "white"]
-  var strokeColors = ["red", "blue", "green"]
-  var pointColors = ['black', 'black', 'black']
+  var fillColors = ["#e8f5d7", "#95e3f3", "#dcadee"]
+  var strokeColors = ["black", "blue", "green"]
+  var pointColors = ['black', '#ff0000', 'black']
   var pointStrokeColors = ['black', 'black', 'black']
   var pointHighlightFills = ['red', 'red', 'red']
   var pointHighlightStrokes = ['blue', 'red', 'blue']
@@ -15,7 +15,7 @@ define(['chart'], function(ch) {
   return {
     create: function(values, canvas) {
       var ctx = window.document.getElementById(canvas).getContext("2d")
-      var labels = []
+      var lbl_raw = []
       var datasets = []
       var num = 0
       for (var key in values) {
@@ -31,19 +31,32 @@ define(['chart'], function(ch) {
           data: []
         }
         for (var i = 0; i < item.samples.length; i++) {
-          labels.push(item.samples[i].date.getMonth())
+          var lbl = dt.makeCompactString(item.samples[i].date)
+          if (lbl_raw.indexOf(lbl) == -1) {
+            lbl_raw.push(lbl)
+          }
           dataset.data.push(item.samples[i].result)
         }
         datasets.push(dataset)
         num++
+      }
+      var labels = []
+        // jshint -W004
+      lbl_raw = lbl_raw.sort()
+      for (var i = 0; i < lbl_raw.length; i++) {
+        labels.push(dt.makeDateFromElexisDate(lbl_raw[i]))
       }
       var data = {
           labels: labels,
           datasets: datasets
         }
         //var options = {}
-      var lineChart = new ch(ctx).Line(data)
-      lineChart.update()
+      var lineChart =
+        new ch(ctx).Line(data, {
+          responsive: true,
+          datasetFill: datasets.length == 1
+        })
+      $(canvas).parent().append(lineChart.generateLegend() );
       return lineChart
     }
   }

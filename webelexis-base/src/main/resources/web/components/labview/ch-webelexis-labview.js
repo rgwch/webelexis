@@ -51,8 +51,8 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
 
     /* create a chart of checked labItem(s) */
     self.createChart = function() {
-      var lineChart = chart.create(self.checkedItems(), 'chartCanvas')
       self.display('chart')
+      /*var lineChart = */chart.create(self.checkedItems(), 'chartCanvas')
     }
 
     /* push all items of a group into an array */
