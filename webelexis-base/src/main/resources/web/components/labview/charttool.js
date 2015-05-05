@@ -5,7 +5,7 @@
 
 define(['chart'], function(ch) {
 
-  var fillColors = ["white", "white", "white"]
+  var fillColors = ["grey", "white", "white"]
   var strokeColors = ["red", "blue", "green"]
   var pointColors = ['black', 'black', 'black']
   var pointStrokeColors = ['black', 'black', 'black']

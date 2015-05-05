@@ -27,6 +27,7 @@ require.config({
     "knockout-mapping": "dist/web/lib/knockout.mapping-latest",
     "R":"dist/web/lib/R",
     "app": "dist/web/app",
+    "chart":"dist/web/lib/Chart.min",
     "components": "dist/web/components",
     "tmpl": "dist/web/tmpl",
     "nls":"dist/web/app/nls"
