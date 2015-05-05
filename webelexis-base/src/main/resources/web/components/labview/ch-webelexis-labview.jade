@@ -12,11 +12,12 @@ mixin createHeading(item)
   .col-xs-12
     img(src="img/ekg.gif" data-bind="attr: {alt: R['loading']}")
  div(data-bind="visible: loaded, foreach: groups")
-  div(style="width: 100%; height:2em;background: #a8ccdb; border-top: 1px solid black;")
+  div.labgroup
     span(data-bind="text: $parent.groupname($data), click: $parent.openGroup($index)" )
     span.caret 
   div(data-bind="if: $parent.activeGroup()==$index()")
-    .table-responsive 
+    canvas#chartCanvas(width="600" height="400" data-bind="visible: $parent.display()=='chart'")
+    .table-responsive(data-bind="visible: $parent.display()=='table'") 
       table.table.table-striped.table-hover.table-condensed
         thead
           tr
@@ -30,7 +31,7 @@ mixin createHeading(item)
             th
               button.btn.btn-default(data-bind="text: $parent.R.details")
             th
-              button.btn.btn-default(data-bind="text: $parent.R.verlauf")
+              button.btn.btn-default(data-bind="text: $parent.R.verlauf, click: function(){$parent.createChart()}")
         tbody
           // ko foreach: $parent.itemsInGroup($data) 
           tr(data-bind="click: function(){$parents[1].toggleItem($data)}")

@@ -32,3 +32,9 @@ span.larger {
 label.error {
   color: red;
 }
+div.labgroup {
+  width: 100%;
+  height: 2em;
+  background: #a8ccdb;
+  border-top: 1px solid black;
+}

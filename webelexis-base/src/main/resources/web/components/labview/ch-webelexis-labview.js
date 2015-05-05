@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html'], function(ko, dt, bus, cfg, lh, html) {
+define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html', 'components/labview/charttool'], function(ko, dt, bus, cfg, lh, html, chart) {
   var dummy = '7ba4632caba62c5b3a366'
 
   var Locale = {
@@ -12,8 +12,8 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
       twelvemonths: "12 Monate",
       older: "Älter",
       actual: "Aktuell",
-      details:"Details",
-      verlauf:"Verlauf"
+      details: "Details",
+      verlauf: "Verlauf"
     }
   }
 
@@ -22,32 +22,40 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
     self.R = Locale[cfg.locale()]
     self.crunched = {}
     self.loaded = ko.observable(false)
+    self.display = ko.observable("table")
     self.groups = ko.observableArray()
     self.activeGroup = ko.observable(0)
     self.patid = prm.params[0]
-    self.checkedItems=ko.observable({})
+    self.checkedItems = ko.observable({})
 
     self.openGroup = function(index) {
       self.activeGroup(index())
     }
 
-
-    self.isChecked = function(item){
+    /* is a labItem checked? */
+    self.isChecked = function(item) {
       return self.checkedItems().hasOwnProperty(item.key)
     }
 
-    self.toggleItem = function(item){
-      var o=self.checkedItems()
-      var key=item.key
-      if(o.hasOwnProperty(key)){
+    /* toggle checked/unchecked state of labItem */
+    self.toggleItem = function(item) {
+      var o = self.checkedItems()
+      var key = item.key
+      if (o.hasOwnProperty(key)) {
         delete o[key]
-      }else{
-        o[key]=item
+      } else {
+        o[key] = item
       }
       self.checkedItems(o)
     }
 
-      /* push all items of a group into an array */
+    /* create a chart of checked labItem(s) */
+    self.createChart = function() {
+      var lineChart = chart.create(self.checkedItems(), 'chartCanvas')
+      self.display('chart')
+    }
+
+    /* push all items of a group into an array */
     self.itemsInGroup = function(group) {
       var ret = []
       for (var key in group.items) {
