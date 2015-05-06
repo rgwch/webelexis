@@ -5,7 +5,9 @@
 package ch.webelexis;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.vertx.java.busmods.BusModBase;
@@ -48,21 +50,29 @@ public class CoreVerticle extends BusModBase {
 	 * vert.x module repository as needed.
 	 */
 	V[] modules = new V[] { new V("sql", "io.vertx~mod-mysql-postgresql_2.10~0.3.1"),
-			new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0"), new V("auth", "rgwch~vertx-mod-sessionmgr~0.5.2"),
-			new V("mailer", "io.vertx~mod-mailer~2.0.0-final") };
+				new V("mongo", "io.vertx~mod-mongo-persistor~2.1.0"),
+				new V("auth", "rgwch~vertx-mod-sessionmgr~0.5.2"),
+				new V("mailer", "io.vertx~mod-mailer~2.0.0-final") };
 
 	V[] verticles = new V[] { new V("agenda", "ch.webelexis.agenda.Server"),
-			new V("account", "ch.webelexis.account.Server"), new V("emr", "ch.webelexis.emr.Server")
+				new V("account", "ch.webelexis.account.Server"), new V("emr", "ch.webelexis.emr.Server")
 	/* , new V("auth", "ch.webelexis.SessionManager") */};
 
 	public CoreVerticle() throws IOException {
-		File file = new File("config_defaults.json"); // production mode
-		if (!file.exists()) {
-			file = new File("src/main/resources/config_sample.json"); // IDE
+		InputStream in = getClass().getResourceAsStream("/config_defaults.json");
+		if (in == null) {
+			System.out.print("config_defaults.json not found. Trying alternative");
+			File file = new File("src/main/resources/config_sample.json"); // IDE
 			// mode
+			if (!file.exists()) {
+				System.out.print(file.getAbsolutePath() + " not found. Fatal exit");
+				System.exit(-1);
+			} else {
+				in = new FileInputStream(file);
+			}
 		}
 		try {
-			cfg_default = Cleaner.createFromFile(file.getAbsolutePath());
+			cfg_default = Cleaner.createFromStream(in);
 		} catch (DecodeException ex) {
 			System.out.println("Invalid config json");
 		}
@@ -84,7 +94,7 @@ public class CoreVerticle extends BusModBase {
 		log = container.logger();
 		rootConfig = cfg_default.mergeIn(container.config());
 		log.debug("CoreVerticle got config: " + rootConfig.encodePrettily());
-		
+
 		for (V m : modules) {
 			JsonObject moduleConfig = rootConfig.getObject(m.title);
 			if (moduleConfig.getBoolean("active", true)) {
@@ -101,8 +111,10 @@ public class CoreVerticle extends BusModBase {
 		}
 
 		/*
-		 * now we wait for all modules and verticles to launch successfully. Every 200ms we check, if the queue of pending
-		 * launches is empty. This method seems a bit expensive, but since the server will not restart very frequently, it's okay.
+		 * now we wait for all modules and verticles to launch successfully. Every
+		 * 200ms we check, if the queue of pending launches is empty. This method
+		 * seems a bit expensive, but since the server will not restart very
+		 * frequently, it's okay.
 		 */
 		waitingTime = System.currentTimeMillis();
 		vertx.setPeriodic(200, new Handler<Long>() {
@@ -127,13 +139,15 @@ public class CoreVerticle extends BusModBase {
 		final JsonObject bridgeCfg = rootConfig.getObject("bridge");
 		HttpServer http = vertx.createHttpServer().setCompressionSupported(true);
 		if (bridgeCfg.getBoolean("ssl", true)) {
-			String keystorePath = bridgeCfg.getString("keystore", System.getProperty("user.home") + "/.jkeys/keystore.jks");
-			http.setSSL(true).setKeyStorePath(keystorePath).setKeyStorePassword(bridgeCfg.getString("keystore-pwd"));
+			String keystorePath = bridgeCfg.getString("keystore", System.getProperty("user.home")
+						+ "/.jkeys/keystore.jks");
+			http.setSSL(true).setKeyStorePath(keystorePath).setKeyStorePassword(
+						bridgeCfg.getString("keystore-pwd"));
 		}
 		http.requestHandler(new HTTPHandler(bridgeCfg, eb));
 		SockJSServer sock = vertx.createSockJSServer(http);
 		sock.bridge(new JsonObject().putString("prefix", "/eventbus"), bridgeCfg.getArray("inOK"),
-				bridgeCfg.getArray("outOK"));
+					bridgeCfg.getArray("outOK"));
 		// sock.setHook(new EventBusHook());
 		http.listen(bridgeCfg.getInteger("port"));
 	}

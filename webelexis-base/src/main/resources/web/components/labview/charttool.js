@@ -13,6 +13,9 @@ define(['chart', "app/datetools"], function(ch, dt) {
   var pointHighlightStrokes = ['blue', 'red', 'blue']
 
   return {
+    clear: function() {
+      Chart.destroy()
+    },
     create: function(values, ctx) {
       //var ctx = window.document.getElementById(canvas).getContext("2d")
       var lbl_raw = []
@@ -54,7 +57,7 @@ define(['chart', "app/datetools"], function(ch, dt) {
         var lineChart = new ch(ctx).Line(data, {
             responsive: true,
             datasetFill: datasets.length == 1
-          }).generateLegend()
+          })
           //$(canvas).parent().append(lineChart.generateLegend() );
         return lineChart
       }

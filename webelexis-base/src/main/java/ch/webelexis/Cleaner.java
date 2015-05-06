@@ -7,6 +7,8 @@ package ch.webelexis;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.DecodeException;
@@ -103,8 +105,11 @@ public class Cleaner {
 
 	/**
 	 * Get an optional String field without checks
-	 * @param field field to get
-	 * @param defaultValue value to return if the field is nor set
+	 * 
+	 * @param field
+	 *          field to get
+	 * @param defaultValue
+	 *          value to return if the field is nor set
 	 * @return the requested field
 	 */
 	public String getOptional(String field, String defaultValue) {
@@ -118,8 +123,11 @@ public class Cleaner {
 
 	/**
 	 * Get an optional Array without checks
-	 * @param name name of the field to get
-	 * @param defaultValue value to return, if the field was not set
+	 * 
+	 * @param name
+	 *          name of the field to get
+	 * @param defaultValue
+	 *          value to return, if the field was not set
 	 * @return ClassCastException if the field exists, but is not a JsonArray
 	 */
 	public JsonArray getArray(String name, JsonArray defaultValue) {
@@ -129,14 +137,18 @@ public class Cleaner {
 
 	/**
 	 * send a result to the original sender of the message
-	 * @param result an arbitrary object. By convention, a field "status" should exist with the value of either "ok" or "error"
+	 * 
+	 * @param result
+	 *          an arbitrary object. By convention, a field "status" should exist
+	 *          with the value of either "ok" or "error"
 	 */
 	public void reply(JsonObject result) {
 		jo.reply(result);
 	}
 
 	/**
-	 * send a canned "error" response (message with only one field: "status":"error")
+	 * send a canned "error" response (message with only one field:
+	 * "status":"error")
 	 */
 	public void replyError() {
 		jo.reply(new JsonObject().putString("status", "error"));
@@ -144,7 +156,10 @@ public class Cleaner {
 
 	/**
 	 * send a custom "error" response
-	 * @param msg a String describing the error. The method sends {"status":"error","message":msg}
+	 * 
+	 * @param msg
+	 *          a String describing the error. The method sends
+	 *          {"status":"error","message":msg}
 	 */
 	public void replyError(String msg) {
 		JsonObject result = new JsonObject().putString("status", "error").putString("message", msg);
@@ -160,7 +175,10 @@ public class Cleaner {
 
 	/**
 	 * send a custom "ok" response
-	 * @param msg a String to add to the response. The method sends {"status":"ok","message":msg}
+	 * 
+	 * @param msg
+	 *          a String to add to the response. The method sends
+	 *          {"status":"ok","message":msg}
 	 */
 	public void replyOk(String msg) {
 		JsonObject result = new JsonObject().putString("status", "ok").putString("message", msg);
@@ -169,14 +187,17 @@ public class Cleaner {
 
 	/**
 	 * send a custom status message
-	 * @param msg any String describing a status. The method sends {"status":msg}
+	 * 
+	 * @param msg
+	 *          any String describing a status. The method sends {"status":msg}
 	 */
 	public void replyStatus(String msg) {
 		jo.reply(new JsonObject().putString("status", msg));
 	}
 
 	/**
-	 * generate a String representation of the original message.body() in the constructor
+	 * generate a String representation of the original message.body() in the
+	 * constructor
 	 */
 	@Override
 	public String toString() {
@@ -195,6 +216,7 @@ public class Cleaner {
 	 *           if the file was not a valid Json Object
 	 */
 	public static JsonObject createFromFile(String fpath) throws IOException, DecodeException {
+
 		File file = new File(fpath);
 		if (!file.exists()) {
 			System.out.println(file.getAbsolutePath());
@@ -207,5 +229,21 @@ public class Cleaner {
 		String conf = new String(buffer).replaceAll("//\\s+.+\\r?\\n+\\r?", "");
 		JsonObject ret = new JsonObject(conf);
 		return ret;
+	}
+
+	public static JsonObject createFromStream(InputStream is) throws IOException, DecodeException {
+		InputStreamReader ir = new InputStreamReader(is);
+		StringBuilder sb = new StringBuilder(10000);
+		char[] buffer = new char[1024];
+		int chars = 0;
+		do {
+			chars = ir.read(buffer);
+			sb.append(buffer, 0, chars);
+		} while (chars == buffer.length);
+		ir.close();
+		String conf = sb.toString().replaceAll("//\\s+.+\\r?\\n+\\r?", "");
+		JsonObject ret = new JsonObject(conf);
+		return ret;
+
 	}
 }

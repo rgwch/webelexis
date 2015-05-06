@@ -22,7 +22,9 @@ define(['knockout', 'text!tmpl/ch-webelexis-alert.html', 'app/config'], function
       pwdheading: "Password change",
       pwdbody: "Your password has been changed. It is valid by now.",
       newpathead: "Your account is created",
-      newpatbody: "We sent you an e-mail with a verification code. After entering that verification code, your account will be ready."
+      newpatbody: "We sent you an e-mail with a verification code. After entering that verification code, your account will be ready.",
+      ghead: "Google user unknown",
+      gbody: "The browser tried to log you in automatically with your Google account. But there is no account with that username (the google mail address) known to this system. Please register an account first if you want to log-in automatically with \"Sign-In with Google\"."
     }
   }
 

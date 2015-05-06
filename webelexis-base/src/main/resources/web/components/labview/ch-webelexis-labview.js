@@ -27,7 +27,8 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
     self.activeGroup = ko.observable(0)
     self.patid = prm.params[0]
     self.checkedItems = ko.observable({})
-    self.context = {}
+    self.context2d = {}
+    self.lineChart = {}
 
     self.openGroup = function(index) {
       self.activeGroup(index())
@@ -53,12 +54,11 @@ define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview
     /* create a chart of checked labItem(s) */
     self.createChart = function() {
       self.display('chart')
-      self.context = $("#chartCanvas").get(0).getContext("2d")
-      var lineChart = chart.create(self.checkedItems(), self.context)
+      self.context2d = $("#chartCanvas").get(0).getContext("2d")
+      self.lineChart = chart.create(self.checkedItems(), self.context2d)
     }
     self.closeChart = function() {
-        var c = $("#chartCanvas").get(0)
-        self.context.clearRect(0, 0, c.width, c.height)
+        self.lineChart.destroy()
         self.display('table')
       }
       /* push all items of a group into an array */
