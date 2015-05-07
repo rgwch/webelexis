@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html', 'components/labview/charttool'], function(ko, dt, bus, cfg, lh, html, chart) {
+define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html', 'components/labview/charttool', 'spark'], function(ko, dt, bus, cfg, lh, html, chart) {
   var dummy = '7ba4632caba62c5b3a366'
 
   var Locale = {
@@ -32,6 +32,8 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
 
     self.openGroup = function(index) {
       self.activeGroup(index())
+
+      $(".sparkline").sparkline()
     }
 
     /* is a labItem checked? */
@@ -40,12 +42,12 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     }
 
     /* create the sparks for sparkline */
-    self.createSparks= function(item){
-      var ret=""
-      for(var i=0;i<item.samples.length;i++){
-        ret+=parseFloat(item.samples[i])+","
+    self.createSparks = function(item) {
+      var ret = ""
+      for (var i = 0; i < item.samples.length; i++) {
+        ret += parseFloat(item.samples[i].result) + ","
       }
-      return ret.substring(0,ret.length-1)
+      return ret.substring(0, ret.length - 1)
     }
 
     /* toggle checked/unchecked state of labItem */
@@ -81,6 +83,31 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.groupname = function(group) {
       return group.name.slice(group.name.indexOf(" "));
     }
+    self.getRef = function(refvalue) {
+      var ret = {}
+      if ((refvalue !== undefined) && (refvalue !== null) && (typeof refvalue == 'string')) {
+        var range = refvalue.split("-")
+        if (range.length == 2) {
+          var min = range[0].trim()
+          var max = range[1].trim()
+          if (!isNaN(min)) {
+            ret.min = parseFloat(min)
+          }
+          if (!isNaN(max)) {
+            ret.max = parseFloat(max)
+          }
+        } else {
+          var margin = refvalue.trim()
+          if (margin.charAt(0) == '<') {
+            ret.max = parseFloat(margin.substring(1))
+          } else if (margin.charAt(0) == '>') {
+            ret.min = parseFloat(margin.substring(1))
+          }
+        }
+      }
+      return ret;
+    }
+
     self.outOfRange = function(refvalue, value) {
       if ((refvalue !== undefined) && (refvalue !== null) && (typeof refvalue == 'string')) {
         var val = parseFloat(value)
