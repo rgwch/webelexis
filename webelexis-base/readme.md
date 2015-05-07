@@ -123,4 +123,31 @@ The interesting part, i.e. the ViewModel is from Line 4
 
 The variables "heading" ad "body" are the ones, we found in the View (LIne 5 and Line 8). The variables are "ko.observable"'s which means, the view gets an update, if they change.
 
+They are set with the Parameter array p.params. That's an iteresting feature of the routing system. See next chapter "wiring up".
+
 Line 5 defines the return value, which follows the convention for a Knockout-Component: Definition of viewModel and template.
+
+#### 3: Wiring up
+
+Actually, this won't work. Webelexis does not know, when it should load and display this component at all. We have to tell.
+The place to do so, is in app/config.js:
+
+      modules: [{
+        ...
+        {
+          title: R.alert,
+          baseURL: "#alert",
+          match: /^alert\/(\w+)\/(\w+)$/,
+          component: 'ch-webelexis-alert',
+          location: 'components/alert',
+          active: true,
+          menuItem: false,
+          role: 'guest'
+        }
+      ]
+
+Here, we tell the system where ot can find the component, and which URL should open it. The interesting part ist the "match" expression: This regex matches an URL of the type server/#alert/foo/bar and captures the foo and bar parts of the URL. The captured texts ar sent to the viewmodel in the parameter Array p.params.
+
+So, to recap: This component listens for an URL of the form #alert/header/body and then displays a bootstrap-panel with heading and body with that name and the matching locale.
+
+Thatttt's all about it, folks
