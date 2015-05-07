@@ -25,6 +25,7 @@ mixin createHeading(item)
           tr
             th
             +createHeading('parameter')
+            +createHeading('sparkline')
             +createHeading('actual')
             +createHeading('twelvemonths')
             +createHeading('older')
@@ -41,6 +42,8 @@ mixin createHeading(item)
               span.glyphicon.glyphicon-unchecked(data-bind="visible: !$parents[1].isChecked($data)")
               span.glyphicon.glyphicon-check(data-bind="visible: $parents[1].isChecked($data)")
             td(data-bind="text: name+' ('+range+') ' ")
+            td
+              span.sparkline(data-bind="text: $parents[1].createSparks($data)")
             +createGroup('act','range')
             +createGroup('med','range')
             +createGroup('old','range')

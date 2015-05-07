@@ -39,6 +39,15 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       return self.checkedItems().hasOwnProperty(item.key)
     }
 
+    /* create the sparks for sparkline */
+    self.createSparks= function(item){
+      var ret=""
+      for(var i=0;i<item.samples.length;i++){
+        ret+=parseFloat(item.samples[i])+","
+      }
+      return ret.substring(0,ret.length-1)
+    }
+
     /* toggle checked/unchecked state of labItem */
     self.toggleItem = function(item) {
       var o = self.checkedItems()

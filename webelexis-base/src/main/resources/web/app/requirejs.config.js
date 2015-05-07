@@ -17,6 +17,7 @@ var require = {
     "cookie": "lib/js.cookie-1.5.0.min",
     "chart": "lib/Chart.min",
     "bus": "app/eb",
+    "spark": "https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min",
     "app": "app",
     "tmpl": "tmpl"
   },
