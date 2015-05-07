@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'jquery', 'validate'], function(ko, bus, cfg, html, dt, $) {
+define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'jquery', 'validate'], function(ko, bus, cfg, html, dt, $) {
 
   var Locale = {
     de: {

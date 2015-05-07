@@ -16,6 +16,7 @@ var require = {
     "knockout-jqueryui": "lib/knockout-jqueryui",
     "cookie": "lib/js.cookie-1.5.0.min",
     "chart": "lib/Chart.min",
+    "bus": "bus",
     "app": "app",
     "tmpl": "tmpl"
   },

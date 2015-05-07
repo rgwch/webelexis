@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/datetools', 'app/eb', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html', 'components/labview/charttool'], function(ko, dt, bus, cfg, lh, html, chart) {
+define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html', 'components/labview/charttool'], function(ko, dt, bus, cfg, lh, html, chart) {
   var dummy = '7ba4632caba62c5b3a366'
 
   var Locale = {

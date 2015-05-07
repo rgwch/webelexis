@@ -12,13 +12,16 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'requirejs', 'chai', 'sinon'],
+    frameworks: ['mocha', 'requirejs', 'chai-sinon'],
 
 
     // list of files / patterns to load in the browser
     files: [
       'src/test/resources/web/app/test-main.js',
-      // 'test-main.js',
+      {
+        pattern: 'src/test/resources/ebmock.js',
+        included: false
+      },
       {
         pattern: 'dist/web/**/*.js',
         included: false

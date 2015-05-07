@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['app/eb', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html'], function(bus, config, Router, ko, html) {
+define(['bus', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html'], function(bus, config, Router, ko, html) {
 
   var Locale = {
     de: {

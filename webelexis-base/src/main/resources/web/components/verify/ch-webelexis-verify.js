@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/eb', 'app/config', 'text!tmpl/ch-webelexis-verify.html'], function(ko, bus, cfg, html) {
+define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-verify.html'], function(ko, bus, cfg, html) {
 
   var Locale = {
     de: {

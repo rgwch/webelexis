@@ -24,13 +24,11 @@ require.config({
     "text": "dist/web/lib/text",
     "vertxbus": "dist/web/lib/vertxbus",
     "knockout-jqueryui": "dist/web/lib/knockout-jqueryui",
-    "knockout-mapping": "dist/web/lib/knockout.mapping-latest",
-    "R":"dist/web/lib/R",
+    "bus": "src/test/resources/ebmock",
     "app": "dist/web/app",
-    "chart":"dist/web/lib/Chart.min",
+    "chart": "dist/web/lib/Chart.min",
     "components": "dist/web/components",
     "tmpl": "dist/web/tmpl",
-    "nls":"dist/web/app/nls"
   },
   shim: {
     "bootstrap": {

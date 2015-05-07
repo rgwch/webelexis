@@ -114,7 +114,7 @@ define(['app/config', 'vertxbus'], function(config) {
     clearFeedbackAddress: function() {
       if (state()) {
         bus.unregisterHandler("ch.webelexis.feedback." + config.sessionID, timeoutHandler)
-      }else{
+      } else {
         console.log("bus error: can't unregister feedback address")
       }
     }

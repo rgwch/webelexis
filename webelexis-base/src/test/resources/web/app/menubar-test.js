@@ -1,4 +1,4 @@
-define(['components/menubar/ch-webelexis-menubar', 'app/eb', 'app/config'], function(menu, bus, cfg) {
+define(['components/menubar/ch-webelexis-menubar', 'bus', 'app/config'], function(menu, bus, cfg) {
 
   describe('webelexis main menu bar and login field', function() {
 

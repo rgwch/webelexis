@@ -1,4 +1,5 @@
-define(['components/agenda/ch-webelexis-agenda', 'app/eb'], function(agenda, bus) {
+// jshint -W033
+define(['components/agenda/ch-webelexis-agenda', 'bus'], function(agenda, bus) {
 
   describe('check some methods af the agenda ViewModel', function() {
     var ag = null;

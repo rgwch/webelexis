@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** Copyright (c) 2015 by G. Weirich
  **/
-define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'app/eb', 'knockout-jqueryui/dialog'], function(cfg, ko, html, bus) {
+define(['app/config', 'knockout', 'text!tmpl/ch-webelexis-menubar.html', 'bus', 'knockout-jqueryui/dialog'], function(cfg, ko, html, bus) {
 
   var Locale = {
     de: {
