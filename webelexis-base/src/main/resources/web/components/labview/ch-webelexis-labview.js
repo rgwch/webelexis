@@ -2,7 +2,7 @@
  * This file is part of Webelexis
  * Copyright (c) 2015 by G. Weirich
  */
-define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html', 'components/labview/charttool', 'spark'], function(ko, dt, bus, cfg, lh, html, chart) {
+define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/lab_handler', 'text!tmpl/ch-webelexis-labview.html', 'components/labview/charttool', 'underscore', 'spark'], function(ko, dt, bus, cfg, lh, html, chart, _) {
   var dummy = '7ba4632caba62c5b3a366'
 
   var Locale = {
@@ -35,7 +35,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.openGroup = function(index) {
       self.activeGroup(index())
 
-      $(".sparkline").sparkline("html",{tooltipOffsetY: 0})
+      $(".sparkline").sparkline("html", {
+        tooltipOffsetY: 0
+      })
     }
 
     /* is a labItem checked? */
@@ -87,7 +89,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.groupname = function(group) {
       return group.name.slice(group.name.indexOf(" "));
     }
+    self.noteworthy = function(group) {
 
+    }
 
     self.outOfRange = function(refvalue, value) {
       var minmax = lh.getRange(refvalue)

@@ -7,6 +7,7 @@
   appDir: "src/main/resources/web",
   dir: "dist/web",
   keepBuildDir: true,
+  optimizeCss: "standard",
   modules: [{
     name: "app/main"
   }]

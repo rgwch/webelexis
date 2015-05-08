@@ -18,6 +18,7 @@ var require = {
     "chart": "lib/Chart.min",
     "bus": "app/eb",
     "spark": "https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min",
+    "underscore": "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js",
     "app": "app",
     "tmpl": "tmpl"
   },

@@ -12,9 +12,10 @@ mixin createHeading(item)
   .col-xs-12
     img(src="img/ekg.gif" data-bind="attr: {alt: R['loading']}")
  div(data-bind="visible: loaded, foreach: groups")
-  div.labgroup
-    span(data-bind="text: $parent.groupname($data), click: $parent.openGroup($index)" )
-    span.caret 
+  div.labgroup(data-bind="click: $parent.openGroup($index)")
+    span.caret
+    span(data-bind="text: $parent.groupname($data)")
+    span.abstand(data-bind="text: $parent.noteworthy($data)")
   div(data-bind="if: $parent.activeGroup()==$index()")
     div(data-bind="visible: $parent.display()=='chart'" style="width: 100%")
       canvas#chartCanvas(style="width: 100%")
