@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'app/config', 'app/datetools', 'components/patdetail/lab_handler', 'text!tmpl/ch-webelexis-patdetail.html'], function(ko, bus, cfg, dt, lh, html) {
+define(['knockout', 'bus', 'app/config', 'app/datetools', 'text!tmpl/ch-webelexis-patdetail.html'], function(ko, bus, cfg, dt, html) {
   //var dummy = '7ba4632caba62c5b3a366'
   function PatDetailModel(params) {
     var self = this

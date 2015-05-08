@@ -13,7 +13,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       older: "Älter",
       actual: "Aktuell",
       details: "Details",
-      verlauf: "Verlauf"
+      verlauf: "Verlauf",
+      sparkline: "Verlauf",
+      noanswer: "Keine Antwort vom Server"
     }
   }
 
@@ -33,7 +35,7 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.openGroup = function(index) {
       self.activeGroup(index())
 
-      $(".sparkline").sparkline()
+      $(".sparkline").sparkline("html",{tooltipOffsetY: 0})
     }
 
     /* is a labItem checked? */
@@ -69,7 +71,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       self.lineChart = chart.create(self.checkedItems(), self.context2d)
     }
     self.closeChart = function() {
-        self.lineChart.destroy()
+        if (self.linechart !== undefined) {
+          self.lineChart.destroy()
+        }
         self.display('table')
       }
       /* push all items of a group into an array */
@@ -91,15 +95,16 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     }
 
     self.displayText = function(value) {
-        if (isNaN(value)) {
-          return ""
-        } else if (parseFloat(value) === 0) {
-          return ""
-        } else {
-          return value.toFixed(2)
-        }
+      if (isNaN(value)) {
+        return ""
+      } else if (parseFloat(value) === 0) {
+        return ""
+      } else {
+        return value.toFixed(2)
       }
-      // fetch lab summary
+    }
+
+    // fetch lab summary
     self.loadLabSummary = function() {
       bus.send("ch.webelexis.patient.labresult", {
         "mode": "latest",
@@ -107,7 +112,7 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
         "sessionID": cfg.sessionID
       }, function(result) {
         if (result === undefined) {
-          window.alert("Keine Antwort vom Server")
+          window.alert(self.R.noanswer)
 
         } else if (result.status !== "ok") {
           window.alert("Fehler bei der Abfrage: " + result.status + " " + result.message)
@@ -119,13 +124,7 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
             self.groups.push(self.crunched.groups[key])
           }
           self.loaded(true)
-            //var crunched = lh.crunch(result)
-            //var table=lh.makeTable(crunched)
-            //self.labItems.removeAll();
-            //for(var i=0;i<table.length;i++){
-            //  self.labItems.push(table[i])
-            //}
-            //self.labItems.push([['a','1'],['b',"2"],['c',"3"]])
+
         }
       })
     }
