@@ -41,7 +41,47 @@ define(['app/datetools'], function(dt) {
   }
 
   return {
+    /* create a min/max object from a "min-max" or a ">min" or a "<max" string */
+    getRange: function(refvalue) {
+      var ret = {}
+      if ((refvalue !== undefined) && (refvalue !== null) && (typeof refvalue == 'string')) {
+        var range = refvalue.split("-")
+        if (range.length == 2) {
+          var min = range[0].trim()
+          var max = range[1].trim()
+          if (!isNaN(min)) {
+            ret.min = parseFloat(min)
+          }
+          if (!isNaN(max)) {
+            ret.max = parseFloat(max)
+          }
+        } else {
+          var margin = refvalue.trim()
+          if (margin.charAt(0) === '<') {
+            ret.max = parseFloat(margin.substring(1))
+          } else if (margin.charAt(0) === '>') {
+            ret.min = parseFloat(margin.substring(1))
+          }
+        }
+      }
+      return ret;
+    },
 
+    isOutOfRange: function(value, minmax) {
+      if (isNaN(value)) {
+        return false
+      }
+      var val = parseFloat(value)
+
+      if (minmax.min !== undefined && minmax.min > val) {
+        return true
+      }
+      if (minmax.max !== undefined && minmax.max < val) {
+        return true
+      }
+      return false;
+
+    },
     crunch: function(sqlResult) {
       var self = this
       if ((sqlResult === undefined) || (sqlResult.status !== 'ok')) {

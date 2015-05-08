@@ -83,58 +83,11 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.groupname = function(group) {
       return group.name.slice(group.name.indexOf(" "));
     }
-    self.getRef = function(refvalue) {
-      var ret = {}
-      if ((refvalue !== undefined) && (refvalue !== null) && (typeof refvalue == 'string')) {
-        var range = refvalue.split("-")
-        if (range.length == 2) {
-          var min = range[0].trim()
-          var max = range[1].trim()
-          if (!isNaN(min)) {
-            ret.min = parseFloat(min)
-          }
-          if (!isNaN(max)) {
-            ret.max = parseFloat(max)
-          }
-        } else {
-          var margin = refvalue.trim()
-          if (margin.charAt(0) == '<') {
-            ret.max = parseFloat(margin.substring(1))
-          } else if (margin.charAt(0) == '>') {
-            ret.min = parseFloat(margin.substring(1))
-          }
-        }
-      }
-      return ret;
-    }
+
 
     self.outOfRange = function(refvalue, value) {
-      if ((refvalue !== undefined) && (refvalue !== null) && (typeof refvalue == 'string')) {
-        var val = parseFloat(value)
-        var range = refvalue.split("-")
-        if (range.length === 2) {
-          if (isNaN(range[0]) || isNaN(range[1]) || isNaN(value)) {
-            return false
-          }
-          var min = parseFloat(range[0])
-          var max = parseFloat(range[1])
-          if (val < min || val > max) {
-            return true
-          }
-        } else {
-          var margin = refvalue.trim()
-          if (margin.charAt(0) == '<') {
-            if (val > parseFloat(margin.substring(1))) {
-              return true
-            }
-          } else if (margin.charAt(0) == '>') {
-            if (val < parseFloat(margin.substring(1))) {
-              return true
-            }
-          }
-        }
-      }
-      return false;
+      var minmax = lh.getRange(refvalue)
+      return lh.isOutOfRange(value, minmax)
     }
 
     self.displayText = function(value) {
