@@ -3,7 +3,7 @@
  * Copyright (c) 2015 by G. Weirich
  */
 
-define(['chart', "app/datetools"], function(ch, dt) {
+define(['chart', "app/datetools", 'underscore'], function(ch, dt, _) {
 
   var fillColors = ["#e8f5d7", "#95e3f3", "#dcadee"]
   var strokeColors = ["black", "blue", "green"]
@@ -13,11 +13,8 @@ define(['chart', "app/datetools"], function(ch, dt) {
   var pointHighlightStrokes = ['blue', 'red', 'blue']
 
   return {
-    clear: function() {
-      Chart.destroy()
-    },
+
     create: function(values, ctx) {
-      //var ctx = window.document.getElementById(canvas).getContext("2d")
       var lbl_raw = []
       var datasets = []
       var num = 0
@@ -38,7 +35,17 @@ define(['chart', "app/datetools"], function(ch, dt) {
           if (lbl_raw.indexOf(lbl) == -1) {
             lbl_raw.push(lbl)
           }
-          dataset.data.push(item.samples[i].result)
+          var result=item.samples[i].result
+          if(!_.isNumber(result)){
+            result=result.trim()
+            if(result.charAt(0)==='<' || result.charAt(0)==='>'){
+              result=result.substring(1)
+            }
+          }
+          if(isNaN(result)){
+            result=0
+          }
+          dataset.data.push(parseFloat(result))
         }
         datasets.push(dataset)
         num++

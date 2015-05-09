@@ -12,7 +12,7 @@ mixin createHeading(item)
   .col-xs-12
     img(src="img/ekg.gif" data-bind="attr: {alt: R['loading']}")
  div(data-bind="visible: loaded, foreach: groups")
-  div.labgroup(data-bind="click: $parent.openGroup($index)")
+  div.labgroup(data-bind="click: function(){$parent.openGroup($index)}")
     span.caret
     span(data-bind="text: $parent.groupname($data)")
     span.abstand.red(data-bind="text: $parent.noteworthy($data)")
@@ -44,7 +44,8 @@ mixin createHeading(item)
               span.glyphicon.glyphicon-check(data-bind="visible: $parents[1].isChecked($data)")
             td(data-bind="text: name+' ('+range+') ' ")
             td
-              span.sparkline(data-bind="text: $parents[1].createSparks($data), click: function(){$parents[1].createChart($data)}")
+              span(data-bind: "text: key")
+              span(data-bind="click: function(){$parents[1].createChart($data)}, attr: {id: key}")
             +createGroup('act','range')
             +createGroup('med','range')
             +createGroup('old','range')

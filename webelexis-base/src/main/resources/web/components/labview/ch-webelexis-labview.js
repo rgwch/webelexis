@@ -26,20 +26,34 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.loaded = ko.observable(false)
     self.display = ko.observable("table")
     self.groups = ko.observableArray()
-    self.activeGroup = ko.observable(0)
+    self.activeGroup = ko.observable(-1)
     self.patid = prm.params[0]
     self.checkedItems = ko.observable({})
     self.context2d = {}
     self.lineChart = {}
 
+    /* If the user clicks on a greoup heading, we display the labvalues inside that group and
+       create a sparkline-chart on the fly */
     self.openGroup = function(index) {
       if (self.activeGroup() == index()) {
-        self.activeGroup(1000)
+        self.activeGroup(-1)
       } else {
         self.activeGroup(index())
-
-        $(".sparkline").sparkline("html", {
-          tooltipOffsetY: 0
+        var list = self.groups()[index()]
+        _.each(list.items, function(labitem) {
+          var vals = _.map(labitem.samples, function(sample) {
+            var value = sample.result
+            if (value.charAt(0) === '<' || value.charAt(0) === '>') {
+              value = value.substring(1)
+            }
+            return value
+          })
+          var minmax = lh.getRange(labitem.range)
+          $("#" + labitem.key).sparkline(vals, {
+            spotColor: false,
+            normalRangeMin: minmax.min,
+            normalRangeMax: minmax.max
+          })
         })
       }
     }
@@ -49,14 +63,6 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       return self.checkedItems().hasOwnProperty(item.key)
     }
 
-    /* create the sparks for sparkline */
-    self.createSparks = function(item) {
-      var ret = ""
-      for (var i = 0; i < item.samples.length; i++) {
-        ret += parseFloat(item.samples[i].result) + ","
-      }
-      return ret.substring(0, ret.length - 1)
-    }
 
     /* toggle checked/unchecked state of labItem */
     self.toggleItem = function(item) {
@@ -70,7 +76,7 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       self.checkedItems(o)
     }
 
-    /* create a chart of checked labItem(s) */
+    /* create a chart of checked labItem(s). If an item is given as parameter, show only this item and uncheck others */
     self.createChart = function(item) {
       if (_.isObject(item)) {
         var ci = {}
@@ -78,13 +84,16 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
         ci[key] = item
         self.checkedItems(ci)
       }
-
-      self.display('chart')
-      self.context2d = $("#chartCanvas").get(0).getContext("2d")
-      self.lineChart = chart.create(self.checkedItems(), self.context2d)
+      if (_.isEmpty(self.checkedItems())) {
+        window.alert("Sie müssen mindestens einen parameter auswählen")
+      } else {
+        self.display('chart')
+        self.context2d = $("#chartCanvas").get(0).getContext("2d")
+        self.lineChart = chart.create(self.checkedItems(), self.context2d)
+      }
     }
     self.closeChart = function() {
-        if (self.linechart !== undefined) {
+        if (self.lineChart !== undefined && !_.isEmpty(self.lineChart)) {
           self.lineChart.destroy()
         }
         self.display('table')

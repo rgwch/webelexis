@@ -24,6 +24,7 @@ require.config({
     "text": "dist/web/lib/text",
     "vertxbus": "dist/web/lib/vertxbus",
     "knockout-jqueryui": "dist/web/lib/knockout-jqueryui",
+    "underscore": "dist/web/lib/underscore-min",
     "bus": "src/test/resources/ebmock",
     "app": "dist/web/app",
     "chart": "dist/web/lib/Chart.min",

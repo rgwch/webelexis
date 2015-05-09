@@ -1,3 +1,4 @@
+// jshint -W033
 define(['app/datetools'], function(dt) {
 
   describe('datetools should convert between Date objects and Strings', function() {
@@ -22,6 +23,10 @@ define(['app/datetools'], function(dt) {
 
     it('should convert hh:mm Strings in minutes', function() {
       dt.makeMinutes("11:40").should.equal(700)
+    })
+
+    it('should convert YYYYMMDD String into DD.MM.YYYY correctly', function(){
+      dt.makeDateFromElexisDate("20150317").should.equal("17.03.2015")
     })
   })
 });
