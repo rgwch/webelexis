@@ -19,6 +19,8 @@ var require = {
     "bus": "app/eb",
     "spark": "https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min",
     "underscore": "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min",
+    "flot": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min",
+    "flot-time": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min",
     "app": "app",
     "tmpl": "tmpl"
   },
@@ -31,6 +33,9 @@ var require = {
     },
     "validate": {
       deps: ["jquery"]
+    },
+    "flot-time":{
+      deps: ["flot"]
     }
   }
 };

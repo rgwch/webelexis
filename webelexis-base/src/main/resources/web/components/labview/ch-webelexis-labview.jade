@@ -18,7 +18,7 @@ mixin createHeading(item)
     span.abstand.red(data-bind="text: $parent.noteworthy($data)")
   div(data-bind="if: $parent.activeGroup()==$index()")
     div(data-bind="visible: $parent.display()=='chart'" style="width: 100%")
-      canvas#chartCanvas(style="width: 100%")
+      div#chartCanvas(style="width: 100%; height: 400px;")
       button.btn.btn-default(data-bind="click: $parent.closeChart")  OK
     .table-responsive(data-bind="visible: $parent.display()=='table'") 
       table.table.table-striped.table-hover.table-condensed

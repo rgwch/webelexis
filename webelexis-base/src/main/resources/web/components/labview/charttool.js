@@ -3,7 +3,7 @@
  * Copyright (c) 2015 by G. Weirich
  */
 
-define(['chart', "app/datetools", 'underscore'], function(ch, dt, _) {
+define(['flot', "app/datetools", 'underscore','flot-time'], function(ch, dt, _) {
 
   var fillColors = ["#e8f5d7", "#95e3f3", "#dcadee"]
   var strokeColors = ["black", "blue", "green"]
@@ -13,8 +13,54 @@ define(['chart', "app/datetools", 'underscore'], function(ch, dt, _) {
   var pointHighlightStrokes = ['blue', 'red', 'blue']
 
   return {
+    /* LabItem:
+    {
+     key: item-key1,
+     name: name,
+     range: normrange,
+     samples: [{date: Date(), result: result, remark: "remark"},{},...]
+     old:{
+         min: <min value>,
+         max: <max value>,
+         avg: <avg value>,
+         count:<number of samples>
+     },
+     med: {
+       min: <min value>,
+       max: <max value>,
+       avg: <avg value>,
+       count:<number of samples>
+     },
+     act: {
+       min: <min value>,
+       max: <max value>,
+       avg: <avg value>,
+       count:<number of samples>
+     }
+   }
+   */
 
-    create: function(values, ctx) {
+    create: function(labItems,ctx){
+      var datasets=[]
+      _.each(labItems, function(item){
+        var dataset={}
+        dataset.data=item.samples.map(function(sample){
+          return [sample.date.getTime(),sample.result]
+        })
+        dataset.label=item.name
+        dataset.points={show: true}
+        dataset.lines={show:true}
+        datasets.push(dataset)
+      })
+      ctx.plot(datasets,{
+        xaxis: {
+          mode: "time",
+          timeformat: "%d.%m.%y",
+          position: "bottom"
+        }
+      })
+    },
+    create_o: function(values, ctx) {
       var lbl_raw = []
       var datasets = []
       var num = 0

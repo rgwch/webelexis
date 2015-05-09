@@ -88,8 +88,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
         window.alert("Sie müssen mindestens einen parameter auswählen")
       } else {
         self.display('chart')
-        self.context2d = $("#chartCanvas").get(0).getContext("2d")
-        self.lineChart = chart.create(self.checkedItems(), self.context2d)
+        self.lineChart=chart.create(self.checkedItems(),$('#chartCanvas'))
+        //self.context2d = $("#chartCanvas").get(0).getContext("2d")
+        //self.lineChart = chart.create(self.checkedItems(), self.context2d)
       }
     }
     self.closeChart = function() {
