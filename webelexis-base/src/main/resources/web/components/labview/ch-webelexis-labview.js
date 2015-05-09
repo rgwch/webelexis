@@ -80,17 +80,24 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       }
       /* push all items of a group into an array */
     self.itemsInGroup = function(group) {
-      var ret = []
-      for (var key in group.items) {
-        ret.push(group.items[key])
-      }
-      return ret
+      return  _.values(group.items)
     }
+
     self.groupname = function(group) {
       return group.name.slice(group.name.indexOf(" "));
     }
     self.noteworthy = function(group) {
-
+      var ret=""
+      _.each(group.items,function(item){
+        var check=item.act
+        if(check.count && parseInt(check.count) !== 0){
+          var range=lh.getRange(item.range)
+          if(lh.isOutOfRange(check.min,range) || lh.isOutOfRange(check.max,range)){
+            ret+=" "+item.name
+          }
+        }
+      })
+      return ret
     }
 
     self.outOfRange = function(refvalue, value) {
