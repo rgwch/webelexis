@@ -2,8 +2,8 @@
 mixin createGroup(item,range)
   td
     span(data-bind="text: $parents[1].displayText(#{item}.min), css: {red: $parents[1].outOfRange(#{range},#{item}.min)}" style="font-size:xx-small")
-    span(data-bind="text: $parents[1].displayText(#{item}.avg), css: {red: $parents[1].outOfRange(#{range},#{item}.avg)}" style="margin-left:0.4em;margin-right:0.4em")
-    span(data-bind="text: $parents[1].displayText(#{item}.max), css: {red: $parents[1].outOfRange(#{range},#{item}.max)}" style="font-size:smaller")
+    span(data-bind="text: $parents[1].displayText(#{item}.avg), css: {red: $parents[1].outOfRange(#{range},#{item}.avg)}" style="margin-left:0.3em;margin-right:0.3em")
+    span(data-bind="text: $parents[1].displayText(#{item}.max), css: {red: $parents[1].outOfRange(#{range},#{item}.max)}" style="font-size:xx-small")
           
 mixin createHeading(item)
     th(data-bind="text: $parent.R['#{item}']")
@@ -44,7 +44,7 @@ mixin createHeading(item)
               span.glyphicon.glyphicon-check(data-bind="visible: $parents[1].isChecked($data)")
             td(data-bind="text: name+' ('+range+') ' ")
             td
-              span.sparkline(data-bind="text: $parents[1].createSparks($data)")
+              span.sparkline(data-bind="text: $parents[1].createSparks($data), click: function(){$parents[1].createChart($data)}")
             +createGroup('act','range')
             +createGroup('med','range')
             +createGroup('old','range')

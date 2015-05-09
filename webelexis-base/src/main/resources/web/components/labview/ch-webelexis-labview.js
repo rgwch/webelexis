@@ -33,11 +33,15 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.lineChart = {}
 
     self.openGroup = function(index) {
-      self.activeGroup(index())
+      if (self.activeGroup() == index()) {
+        self.activeGroup(1000)
+      } else {
+        self.activeGroup(index())
 
-      $(".sparkline").sparkline("html", {
-        tooltipOffsetY: 0
-      })
+        $(".sparkline").sparkline("html", {
+          tooltipOffsetY: 0
+        })
+      }
     }
 
     /* is a labItem checked? */
@@ -67,7 +71,14 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     }
 
     /* create a chart of checked labItem(s) */
-    self.createChart = function() {
+    self.createChart = function(item) {
+      if (_.isObject(item)) {
+        var ci = {}
+        var key = item.key
+        ci[key] = item
+        self.checkedItems(ci)
+      }
+
       self.display('chart')
       self.context2d = $("#chartCanvas").get(0).getContext("2d")
       self.lineChart = chart.create(self.checkedItems(), self.context2d)
@@ -80,21 +91,37 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       }
       /* push all items of a group into an array */
     self.itemsInGroup = function(group) {
-      return  _.values(group.items)
+      return _.values(group.items)
     }
 
     self.groupname = function(group) {
       return group.name.slice(group.name.indexOf(" "));
     }
+
+    /* Message to display in group header. If one of the results of the last month is outOfRange, or if the latest measured
+    result is outOfRange -> mark Item as "to check"
+    */
     self.noteworthy = function(group) {
-      var ret=""
-      _.each(group.items,function(item){
-        var check=item.act
-        if(check.count && parseInt(check.count) !== 0){
-          var range=lh.getRange(item.range)
-          if(lh.isOutOfRange(check.min,range) || lh.isOutOfRange(check.max,range)){
-            ret+=" "+item.name
+      var ret = ""
+      _.each(group.items, function(item) {
+        var check = item.act
+        var addit = false
+        var range = lh.getRange(item.range)
+        if (check.count && parseInt(check.count) !== 0) {
+          if (lh.isOutOfRange(check.min, range) || lh.isOutOfRange(check.max, range)) {
+            addit = true
           }
+        }
+        if (addit === false) {
+          var latest = _.max(item.samples, function(a) {
+            return a.date.getTime()
+          })
+          if (lh.isOutOfRange(latest.result, range)) {
+            addit = true
+          }
+        }
+        if (addit) {
+          ret += " " + item.name
         }
       })
       return ret

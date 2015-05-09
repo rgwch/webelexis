@@ -3,7 +3,6 @@
  * Copyright (c) 2015 by G. Weirich
  */
 
-/* Functions to convert an SQL response to something more handy */
 define(['app/datetools'], function(dt) {
 
   function insert(arr, item, idx) {
@@ -82,6 +81,53 @@ define(['app/datetools'], function(dt) {
       return false;
 
     },
+    /*
+    convert an sql result with lab items and lab results into an object like:
+    {
+      fields: <name of all fields>,
+      rows: [[result1],[result2],...],
+      groups : {
+        groupname1:{
+          name: groupname1,
+          items:{
+            item-key1 : {
+              key: item-key1,
+              name: name,
+              range: normrange,
+              samples: [{date: Date(), result: result, remark: "remark"},{},...]
+              old:{
+                  min: <min value>,
+                  max: <max value>,
+                  avg: <avg value>,
+                  count:<number of samples>
+              },
+              med: {
+                min: <min value>,
+                max: <max value>,
+                avg: <avg value>,
+                count:<number of samples>
+              },
+              act: {
+                min: <min value>,
+                max: <max value>,
+                avg: <avg value>,
+                count:<number of samples>
+              }
+            },
+            item-key2 : {
+              ...
+            },
+            ...
+          } // items
+        },
+        groupname2 : {
+        ...
+        }.
+      ...
+      } // groups
+    }
+    */
+
     crunch: function(sqlResult) {
       var self = this
       if ((sqlResult === undefined) || (sqlResult.status !== 'ok')) {
@@ -125,7 +171,8 @@ define(['app/datetools'], function(dt) {
             count: 0
           }
         }
-        if (row[10].match(/[fFwW]/) != null) {
+        // insert female norm range, if patient is female
+        if (row[10].match(/[fFwW]/) !== null) {
           item.range = row[9]
         }
         var group = {
@@ -157,24 +204,6 @@ define(['app/datetools'], function(dt) {
       }
       return cruncher
     },
-    //jshint -W004
-
-    makeTable: function(crunched) {
-      var ret = []
-      for (var key in crunched.thisMonth) {
-        var item = crunched.thisMonth[key]
-        insert(ret, item, 1)
-      }
-      for (key in crunched.thisYear) {
-        var item = crunched.thisYear[key]
-        insert(ret, item, 2)
-      }
-      for (key in crunched.older) {
-        var item = crunched.older[key]
-        insert(ret, item, 3)
-      }
-      return ret
-    }
 
   }
 })
