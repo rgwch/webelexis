@@ -19,32 +19,28 @@ span.larger {
   margin-right: 10px;
 }
 
-// error messages of jQuery input validator
+/* error messages of jQuery input validator */
 label.error {
   color: red;
 }
 
 
 /* styles for ch-webelexis-agenda and ch-webelexis-detailagenda */
-// agenda "available" field
 .available {
   background-color: #A7D2A7;
 }
-// agenda "occupied" field
 .occupied {
   background-color: #FF9494;
 }
-// agenda "your appointment" field
 .user {
   background-color: #55ff55;
 }
-// agenda "locked" field
 .locked {
   background-color: black;
   color: white;
 }
 
-// style for the entries in "detailagenda"
+/* entries in "detailagenda" */
 div.agendabox {
   border-top-style: solid;
   border-width: 1px;
@@ -53,7 +49,7 @@ div.agendabox {
 }
 
 /* Styles for ch-webelexis-labview */
-// style for labview-groups
+
 div.labgroup {
   width: 100%;
   height: 2em;
@@ -61,8 +57,9 @@ div.labgroup {
   border-top: 1px solid black;
 }
 
-// workaround for sparkline tooltips
-// http://stackoverflow.com/questions/18894820/jquery-sparklines-and-twitter-bootstrap-3-tooltip-style-overrides
+/* workaround for sparkline tooltips
+ http://stackoverflow.com/questions/18894820/jquery-sparklines-and-twitter-bootstrap-3-tooltip-style-overrides
+ */
 .jqstooltip{
   width: auto !important;
   height: auto !important;
