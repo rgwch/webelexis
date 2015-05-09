@@ -94,9 +94,6 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       }
     }
     self.closeChart = function() {
-        if (self.lineChart !== undefined && !_.isEmpty(self.lineChart)) {
-          self.lineChart.destroy()
-        }
         self.display('table')
       }
       /* push all items of a group into an array */

@@ -3,7 +3,7 @@
  * Copyright (c) 2015 by G. Weirich
  */
 
-define(['flot', "app/datetools", 'underscore','flot-time'], function(ch, dt, _) {
+define(['flot', "app/datetools", 'underscore', 'flot-time', 'smooth'], function(ch, dt, _) {
 
   var fillColors = ["#e8f5d7", "#95e3f3", "#dcadee"]
   var strokeColors = ["black", "blue", "green"]
@@ -40,81 +40,62 @@ define(['flot', "app/datetools", 'underscore','flot-time'], function(ch, dt, _) 
    }
    */
 
-    create: function(labItems,ctx){
-      var datasets=[]
-      _.each(labItems, function(item){
-        var dataset={}
-        dataset.data=item.samples.map(function(sample){
-          return [sample.date.getTime(),sample.result]
+    create: function(labItems, ctx) {
+      var cutoff=_.now()-86400000*6*365
+
+      var datasets = []
+      _.each(labItems, function(item) {
+        var samples=_.reject(item.samples,function(expl){
+            if(expl.date.getTime()<cutoff){
+              return true;
+            }
+            if(isNaN(expl.result)){
+              return true
+            }
+            if(expl.result===0){
+              return true
+            }
+            return false
         })
-        dataset.label=item.name
-        dataset.points={show: true}
-        dataset.lines={show:true}
+        samples=_.sortBy(samples, function(sample){return sample.date.getTime()})
+        var dataset = {
+          label: item.name,
+          points: {
+            show: false
+          },
+          lines: {
+            show: true
+          },
+          curvedLines: {
+            apply: true
+          },
+          data: samples.map(function(sample) {
+            return [sample.date.getTime(), sample.result]
+          })
+        }
         datasets.push(dataset)
+        var points={
+          points: {
+            show:true
+          },
+          data: dataset.data
+        }
+        datasets.push(points)
       })
-      ctx.plot(datasets,{
+      return ctx.plot(datasets, {
+        series: {
+          curvedLines: {
+            active: true,
+            monotonicFit: true
+          }
+        },
         xaxis: {
           mode: "time",
           timeformat: "%d.%m.%y",
           position: "bottom"
         }
       })
-    },
-    create_o: function(values, ctx) {
-      var lbl_raw = []
-      var datasets = []
-      var num = 0
-      for (var key in values) {
-        var item = values[key]
-        var dataset = {
-          label: item.name,
-          fillColor: fillColors[num],
-          strokeColor: strokeColors[num],
-          pointColor: pointColors[num],
-          pointStrokeColor: pointStrokeColors[num],
-          pointHighlightFill: pointHighlightFills[num],
-          pointHighlightStroke: pointHighlightStrokes[num],
-          data: []
-        }
-        for (var i = 0; i < item.samples.length; i++) {
-          var lbl = dt.makeCompactString(item.samples[i].date)
-          if (lbl_raw.indexOf(lbl) == -1) {
-            lbl_raw.push(lbl)
-          }
-          var result=item.samples[i].result
-          if(!_.isNumber(result)){
-            result=result.trim()
-            if(result.charAt(0)==='<' || result.charAt(0)==='>'){
-              result=result.substring(1)
-            }
-          }
-          if(isNaN(result)){
-            result=0
-          }
-          dataset.data.push(parseFloat(result))
-        }
-        datasets.push(dataset)
-        num++
-      }
-      var labels = []
-        // jshint -W004
-      lbl_raw = lbl_raw.sort()
-      for (var i = 0; i < lbl_raw.length; i++) {
-        labels.push(dt.makeDateFromElexisDate(lbl_raw[i]))
-      }
-      var data = {
-        labels: labels,
-        datasets: datasets
-      }
-      if (data.datasets.length > 0) {
-        var lineChart = new ch(ctx).Line(data, {
-            responsive: true,
-            datasetFill: datasets.length == 1
-          })
-          //$(canvas).parent().append(lineChart.generateLegend() );
-        return lineChart
-      }
-      return {}
+
     }
   }
 

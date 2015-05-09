@@ -27,7 +27,7 @@ require.config({
     "underscore": "dist/web/lib/underscore-min",
     "bus": "src/test/resources/ebmock",
     "app": "dist/web/app",
-    "chart": "dist/web/lib/Chart.min",
+    "flot": "dist/web/lib/flot.min",
     "components": "dist/web/components",
     "tmpl": "dist/web/tmpl",
   },

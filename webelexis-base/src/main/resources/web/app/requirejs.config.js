@@ -15,12 +15,13 @@ var require = {
     "vertxbus": "lib/vertxbus",
     "knockout-jqueryui": "lib/knockout-jqueryui",
     "cookie": "lib/js.cookie-1.5.0.min",
-    "chart": "lib/Chart.min",
     "bus": "app/eb",
     "spark": "https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min",
     "underscore": "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min",
     "flot": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min",
     "flot-time": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min",
+    "smooth": "lib/curvedLines",
+    "grow": "lib/grow",
     "app": "app",
     "tmpl": "tmpl"
   },
@@ -36,6 +37,12 @@ var require = {
     },
     "flot-time":{
       deps: ["flot"]
+    },
+    "smooth":{
+      deps:["flot"]
+    },
+    "grow":{
+      deps:["flot"]
     }
   }
 };
