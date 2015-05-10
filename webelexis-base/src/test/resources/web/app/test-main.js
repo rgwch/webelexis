@@ -27,7 +27,9 @@ require.config({
     "underscore": "dist/web/lib/underscore-min",
     "bus": "src/test/resources/ebmock",
     "app": "dist/web/app",
-    "flot": "dist/web/lib/flot.min",
+    "flot": "dist/web/lib/jquery.flot.min",
+    "flot-time": "dist/web/lib/jquery.flot.time.min",
+    "smooth": "dist/web/lib/curvedLines",
     "components": "dist/web/components",
     "tmpl": "dist/web/tmpl",
   },
@@ -38,6 +40,12 @@ require.config({
     "knockout": {
       deps: ["jquery", "text"]
     },
+    "flot-time":{
+      deps: ["flot"]
+    },
+    "smooth":{
+      deps:["flot"]
+    }
   },
 
   // dynamically load all test files

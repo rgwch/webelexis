@@ -5,7 +5,7 @@
 // jshint -W033
 define(['jquery', 'components/labview/charttool'], function($, ch) {
 
-  describe("given a canvas and the Chart.js library", function() {
+  describe("given a canvas and the a chart library library", function() {
     it('should create and draw a chart', function() {
       $('body').append('<canvas id="chartCanvas" width="600", height="400"></canvas>')
       var items = {
@@ -20,8 +20,7 @@ define(['jquery', 'components/labview/charttool'], function($, ch) {
           }]
         }
       }
-      var ctx = $("#chartCanvas").get(0).getContext("2d")
-      var testChart = ch.create(items, ctx)
+      var testChart = ch.create(items, $("#chartCanvas"))
       expect(testChart).to.not.be.undefined
         //console.log(testChart)
     })
