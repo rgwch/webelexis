@@ -3,7 +3,7 @@
  * Copyright (c) 2015 by G. Weirich
  */
 
-define(['app/datetools'], function(dt) {
+define(['app/datetools','underscore'], function(dt,_) {
 
   function insert(arr, item, idx) {
     for (var i = 0; i < arr.length; i++) {
@@ -146,36 +146,42 @@ define(['app/datetools'], function(dt) {
       /* insert all SQL result rows grouped by Item ID into the cruncher */
       for (var i = 0; i < cruncher.rows.length; i++) {
         var row = cruncher.rows[i]
+          // skip non-numeric samples
+        if ((row[3] === undefined) || isNaN(row[3]) || (parseFloat(row[3]) === 0)) {
+          continue
+        }
         var key = row[1] // itemId
           // get or create the item
         var item = {
-          name: row[2],
-          range: row[8],
-          prio: row[7],
-          key: key,
-          samples: [],
-          old: {
-            min: 0,
-            max: 0,
-            avg: 0,
-            count: 0
-          },
-          med: {
-            min: 0,
-            max: 0,
-            avg: 0,
-            count: 0
-          },
-          act: {
-            min: 0,
-            max: 0,
-            avg: 0,
-            count: 0
+            name: row[2],
+            range: row[8],
+            prio: row[7],
+            key: key,
+            samples: [],
+            old: {
+              min: 0,
+              max: 0,
+              avg: 0,
+              count: 0
+            },
+            med: {
+              min: 0,
+              max: 0,
+              avg: 0,
+              count: 0
+            },
+            act: {
+              min: 0,
+              max: 0,
+              avg: 0,
+              count: 0
+            }
           }
-        }
-        // insert female norm range, if patient is female
+          // insert female norm range, if patient is female
         if (row[10].match(/[fFwW]/) !== null) {
-          item.range = row[9]
+          if (typeof(row[9]) === "string") {
+            item.range = row[9].split("#")[0]
+          }
         }
         var group = {
           name: row[6],
@@ -207,5 +213,13 @@ define(['app/datetools'], function(dt) {
       return cruncher
     },
 
+    makeTable: function(group){
+      var table=[]
+      _.each(group.items, function(item){
+        table.push(item.samples.pluck("date"))
+      })
+      return _.uniq(table)
+    },
+    
   }
 })

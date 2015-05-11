@@ -49,7 +49,19 @@ mixin createHeading(item)
             +createGroup('act','range')
             +createGroup('med','range')
             +createGroup('old','range')
-          // /ko 
+          // /ko
+         
           
-        
+    .table-responsive(data-bind="visible: $parent.display()=='detail'")
+      table.table.table-striped.table-condensed
+        thead
+          tr(data-bind="foreach: $parent.detaildates")
+            td(data-bind="text: $date")  
+        tfoot
+          tr
+            th
+              button.btn.btn-default(data-bind="click: $parent.display('table')")
+        tbody(data-bind="foreach: $parent.itemsInGroup($data) as item")
+          tr(data-bind="foreach: $parent.detaildates as date")
+            td(data-bind="text: $parent.getValueForDate(item,date)")
           

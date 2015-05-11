@@ -98,7 +98,10 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       }
       /* push all items of a group into an array */
     self.itemsInGroup = function(group) {
-      return _.sortBy(_.values(group.items),function(item){parseInt(item.prio)})
+      var ret= _.values(group.items).sort(function(a,b){
+        return (parseInt(a.prio)-parseInt(b.prio))
+      })
+      return ret
     }
 
     self.groupname = function(group) {
@@ -132,6 +135,21 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
         }
       })
       return ret
+    }
+
+    self.detaildates= function(){
+      var table=[]
+      _.each(self.groups(self.activeGroup()).items, function(item){
+        table.push(_(item.samples).pluck("date"))
+      })
+      return _.uniq(table)
+
+    }
+    self.getValueForDate = function(item,date){
+      var sample=_.find(item.samples,function(s){
+        return(s.date === date)
+      })
+      return ""
     }
 
     self.outOfRange = function(refvalue, value) {
