@@ -31,6 +31,7 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
     self.checkedItems = ko.observable({})
     self.context2d = {}
     self.lineChart = {}
+    self.detailDates=ko.observableArray()
 
     /* If the user clicks on a greoup heading, we display the labvalues inside that group and
        create a sparkline-chart on the fly */
@@ -137,14 +138,17 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       return ret
     }
 
-    self.detaildates= function(){
+    self.showdetails=function(){
       var table=[]
-      _.each(self.groups(self.activeGroup()).items, function(item){
-        table.push(_(item.samples).pluck("date"))
+      _.each(self.groups()[self.activeGroup()].items, function(item){
+        table.push(_(item.samples).map(function(sample){
+          return(dt.makeDateString(sample.date))
+        }))
       })
-      return _.uniq(table)
-
+      self.detailDates(_.uniq(_.flatten(table)))
+      self.display("detail")
     }
+
     self.getValueForDate = function(item,date){
       var sample=_.find(item.samples,function(s){
         return(s.date === date)

@@ -33,7 +33,7 @@ mixin createHeading(item)
         tfoot
           tr
             th
-              button.btn.btn-default(data-bind="text: $parent.R.details")
+              button.btn.btn-default(data-bind="text: $parent.R.details, click: function(){$parent.showdetails()}")
             th
               button.btn.btn-default(data-bind="text: $parent.R.verlauf, click: function(){$parent.createChart()}")
         tbody
@@ -49,19 +49,18 @@ mixin createHeading(item)
             +createGroup('act','range')
             +createGroup('med','range')
             +createGroup('old','range')
-          // /ko
-         
+          // /ko     
           
-    .table-responsive(data-bind="visible: $parent.display()=='detail'")
+    .table-responsive(data-bind="visible: $parent.display()==='detail'")
       table.table.table-striped.table-condensed
         thead
-          tr(data-bind="foreach: $parent.detaildates")
-            td(data-bind="text: $date")  
+          tr(data-bind="foreach: $parent.detailDates")
+            th(data-bind="text: $data")
         tfoot
           tr
             th
-              button.btn.btn-default(data-bind="click: $parent.display('table')")
-        tbody(data-bind="foreach: $parent.itemsInGroup($data) as item")
-          tr(data-bind="foreach: $parent.detaildates as date")
-            td(data-bind="text: $parent.getValueForDate(item,date)")
-          
+              button.btn.btn-default(data-bind="click: function(){$parent.display('table')}") OK
+        tbody
+            tr
+              td body 1
+              td body 2
