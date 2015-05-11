@@ -94,6 +94,7 @@ define(['app/datetools'], function(dt) {
               key: item-key1,
               name: name,
               range: normrange,
+              prio: sortrank,
               samples: [{date: Date(), result: result, remark: "remark"},{},...]
               old:{
                   min: <min value>,
@@ -150,6 +151,7 @@ define(['app/datetools'], function(dt) {
         var item = {
           name: row[2],
           range: row[8],
+          prio: row[7],
           key: key,
           samples: [],
           old: {

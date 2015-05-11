@@ -88,9 +88,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
         window.alert("Sie müssen mindestens einen parameter auswählen")
       } else {
         self.display('chart')
-        self.lineChart=chart.create(self.checkedItems(),$('#chartCanvas'))
-        //self.context2d = $("#chartCanvas").get(0).getContext("2d")
-        //self.lineChart = chart.create(self.checkedItems(), self.context2d)
+        self.lineChart = chart.create(self.checkedItems(), $('#chartCanvas'))
+          //self.context2d = $("#chartCanvas").get(0).getContext("2d")
+          //self.lineChart = chart.create(self.checkedItems(), self.context2d)
       }
     }
     self.closeChart = function() {
@@ -98,7 +98,7 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       }
       /* push all items of a group into an array */
     self.itemsInGroup = function(group) {
-      return _.values(group.items)
+      return _.sortBy(_.values(group.items),function(item){parseInt(item.prio)})
     }
 
     self.groupname = function(group) {
@@ -163,11 +163,15 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
           window.alert("Fehler bei der Abfrage: " + result.status + " " + result.message)
         } else {
           self.crunched = lh.crunch(result)
-            //console.log(JSON.stringify(self.crunched))
-
-          for (var key in self.crunched.groups) {
-            self.groups.push(self.crunched.groups[key])
-          }
+          var sorted=_.sortBy(_(self.crunched.groups).values(), function(group) {
+              return (group.name)
+            })
+            self.groups(sorted)
+            /*
+            for (var key in self.crunched.groups) {
+              self.groups.push(self.crunched.groups[key])
+            }
+            */
           self.loaded(true)
 
         }
