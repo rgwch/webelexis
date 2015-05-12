@@ -25,6 +25,7 @@ mixin createHeading(item)
         thead
           tr
             th
+              span.glyphicon.glyphicon-plus-sign(data-bind="click: $parent.checkAll")
             +createHeading('parameter')
             +createHeading('sparkline')
             +createHeading('actual')

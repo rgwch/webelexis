@@ -64,6 +64,18 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       return self.checkedItems().hasOwnProperty(item.key)
     }
 
+    self.checkAll=function(){
+      var o=self.checkedItems()
+      if(_.isEmpty(o)){
+        var list=self.groups()[self.activeGroup()]
+        _.each(list.items,function(item){
+          o[item.key]=item
+        })
+        self.checkedItems(o)
+      }else{
+        self.checkedItems({})
+      }
+    }
 
     /* toggle checked/unchecked state of labItem */
     self.toggleItem = function(item) {
@@ -156,9 +168,14 @@ sample exists at the given date
       var tr=$("#detailtable tr")
       _.each(items,function(item){
         var row=tr.clone()
-        row.append("<td>"+item.name+"</td>")
+        row.append("<td><b>"+item.name+"</b></td>")
         _.each(uniqueDates,function(date){
-          row.append("<td>"+self.getValueForDate(item,date)+"</td>")
+          var result=self.getValueForDate(item,date)
+          if(lh.isOutOfRange(result,lh.getRange(item.range))){
+            row.append('<td class="red">'+result+"</td>")
+          }else{
+            row.append("<td>"+result+"</td>")
+          }
         })
         html.append(row)
       })
