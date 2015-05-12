@@ -24,8 +24,8 @@ Webelexis is made up of following parts:
 
 * Client
   * the single HTML page: index.jade
-  * basic functions, located in src/resources/web/app
-  * components, located in src/resources/web/components
+  * basic functions, located in src/main/resources/web/app
+  * components, located in src/main/resources/web/components
 
 * Tests
   * Server side tests, located in test/java
