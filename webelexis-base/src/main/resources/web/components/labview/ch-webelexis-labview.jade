@@ -54,13 +54,11 @@ mixin createHeading(item)
     .table-responsive(data-bind="visible: $parent.display()==='detail'")
       table.table.table-striped.table-condensed
         thead
-          tr(data-bind="foreach: $parent.detailDates")
+          tr#detailheader(data-bind="foreach: $parent.detailDates")
             th(data-bind="text: $data")
         tfoot
           tr
             th
               button.btn.btn-default(data-bind="click: function(){$parent.display('table')}") OK
-        tbody
-            tr
-              td body 1
-              td body 2
+        tbody#detailtable
+          tr

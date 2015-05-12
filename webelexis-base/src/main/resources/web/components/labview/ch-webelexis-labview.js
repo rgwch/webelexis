@@ -140,20 +140,39 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
 
     self.showdetails=function(){
       var table=[]
-      _.each(self.groups()[self.activeGroup()].items, function(item){
+      var items=self.groups()[self.activeGroup()].items
+      _.each(items, function(item){
         table.push(_(item.samples).map(function(sample){
           return(dt.makeDateString(sample.date))
         }))
       })
-      self.detailDates(_.uniq(_.flatten(table)))
+      var uniqueDates=_.uniq(_.flatten(table))
+      var html=$("#detailtable")
+      var tr=$("#detailtable tr")
+      _.each(items,function(item){
+        var row=tr.clone()
+        row.append("<td>"+item.name+"</td>")
+        _.each(uniqueDates,function(date){
+          row.append("<td>"+self.getValueForDate(item,date)+"</td>")
+        })
+        html.append(row)
+      })
+      $("#detailheader").prepend("<th></th>")
+      self.detailDates(uniqueDates)
       self.display("detail")
     }
 
     self.getValueForDate = function(item,date){
+
       var sample=_.find(item.samples,function(s){
-        return(s.date === date)
+        return(dt.makeDateString(s.date) === date)
       })
-      return ""
+      if(sample === undefined){
+        return ""
+      }else{
+        return sample.result
+      }
+
     }
 
     self.outOfRange = function(refvalue, value) {
