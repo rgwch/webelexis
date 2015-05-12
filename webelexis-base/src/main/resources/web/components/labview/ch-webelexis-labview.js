@@ -138,6 +138,11 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
       return ret
     }
 
+/**
+Create the detail-table: First, find all unique sample dates within the lab items of the currently
+opened lab group, then for each item, create a table cell for every sample, or add an empty cell, if no
+sample exists at the given date
+*/
     self.showdetails=function(){
       var table=[]
       var items=self.groups()[self.activeGroup()].items
@@ -157,9 +162,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'components/labview/la
         })
         html.append(row)
       })
-      $("#detailheader").prepend("<th></th>")
       self.detailDates(uniqueDates)
       self.display("detail")
+      $("#detailheader").prepend("<th></th>")
     }
 
     self.getValueForDate = function(item,date){
