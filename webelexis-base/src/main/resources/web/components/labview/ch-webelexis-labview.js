@@ -164,10 +164,10 @@ sample exists at the given date
         }))
       })
       var uniqueDates=_.uniq(_.flatten(table))
-      var html=$("#detailtable")
-      var tr=$("#detailtable tr")
+      $("#detailtable").empty()
+
       _.each(items,function(item){
-        var row=tr.clone()
+        var row=$("<tr>")
         row.append("<td><b>"+item.name+"</b></td>")
         _.each(uniqueDates,function(date){
           var result=self.getValueForDate(item,date)
@@ -177,7 +177,7 @@ sample exists at the given date
             row.append("<td>"+result+"</td>")
           }
         })
-        html.append(row)
+        $("#detailtable").append(row)
       })
       self.detailDates(uniqueDates)
       self.display("detail")

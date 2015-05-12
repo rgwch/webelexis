@@ -93,6 +93,10 @@ define(['flot', "app/datetools", 'underscore', 'flot-time', 'smooth'], function(
           mode: "time",
           timeformat: "%d.%m.%y",
           position: "bottom"
+        },
+        legend: {
+          show: true,
+          position: "nw"
         }
       })
 
