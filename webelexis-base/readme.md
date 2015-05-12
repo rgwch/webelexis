@@ -41,7 +41,7 @@ All verticles must be registered in the Array "verticles" of ch.webelexis.CoreVe
 
 ### Client
 
-The client part of a Webelexis component is essentially a [Knockout.js](http://www.knockoutjs.com) component. As such, it consists of separate ViewModel- and View parts. Each component is in its own subdirectory within src/resources/web/components.To understand the concept, you'd probably want to consider a very simple example: The component ch-webelexis-alert, which you can find in the directory src/resources/web/components/alert.
+The client part of a Webelexis component is essentially a [Knockout.js](http://www.knockoutjs.com) component. As such, it consists of separate ViewModel- and View parts. Each component is in its own subdirectory within src/main/resources/web/components.To understand the concept, you'd probably want to consider a very simple example: The component ch-webelexis-alert, which you can find in the directory src/resources/web/components/alert.
 
 There are 2 files:
 
@@ -146,7 +146,7 @@ The place to do so, is in app/config.js:
         }
       ]
 
-Here, we tell the system where ot can find the component, and which URL should open it. The interesting part ist the "match" expression: This regex matches an URL of the type server/#alert/foo/bar and captures the foo and bar parts of the URL. The captured texts ar sent to the viewmodel in the parameter Array p.params.
+Here, we tell the system where it can find the component, and which URL should open it. The interesting part ist the "match" expression: This regex matches an URL of the type server/#alert/foo/bar and captures the foo and bar parts of the URL. The captured texts ar sent to the viewmodel in the parameter Array p.params.
 
 So, to recap: This component listens for an URL of the form #alert/header/body and then displays a bootstrap-panel with heading and body with that name and the matching locale.
 
