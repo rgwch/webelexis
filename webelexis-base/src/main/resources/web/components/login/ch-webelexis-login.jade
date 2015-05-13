@@ -24,7 +24,7 @@
               a.btn(href="#addpatient" data-bind="text: msg('noaccount')" style="width:100%;")
               
 #forgotpwd(data-bind="dialog: {isOpen: forgotpwdDlgOpen, 'title': msg('pwdDlgHeader')}")
-  p(data-bind="text: msg('pwdDlgExplain')")
+  p(style="font-size: small" data-bind="text: msg('pwdDlgExplain')")
   form.form(data-bind="submit: submitSendPwd")
     .form-group
       label(for="mailaddr" data-bind="text: msg('mailaddr')")
