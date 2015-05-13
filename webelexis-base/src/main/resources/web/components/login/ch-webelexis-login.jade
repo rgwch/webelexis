@@ -15,10 +15,18 @@
                         .form-group
                             label(for="password") Passwort
                             input.form-control#password(type="password" data-bind="value: pwd")
-                        button.btn.btn-default#loginbutton(type="submit" disabled="disabled") Warte auf Server...
+                        button.btn.btn-primary#loginbutton(type="submit" disabled="disabled" style="width: 100%") Warte auf Server...
+                        button.btn.btn-default(type="button" style="width: 100%" data-bind="click: forgotPwd, text: msg('forgotpwd')")
                 .col-xs-6(data-bind="if: hasGoogle")
                     img.img.img-responsive.center-block#gbutton(src="img/Blue_signin_Long_normal_32dp_v3.png" data-bind="click: googleLogin, event: {mouseover: google_mouseOver, mouseout: google_mouseOut}")
         .panel-footer
             .center-block(style="width:100%")
               a.btn(href="#addpatient" data-bind="text: msg('noaccount')" style="width:100%;")
               
+#forgotpwd(data-bind="dialog: {isOpen: forgotpwdDlgOpen, 'title': msg('pwdDlgHeader')}")
+  p(data-bind="text: msg('pwdDlgExplain')")
+  form.form(data-bind="submit: submitSendPwd")
+    .form-group
+      label(for="mailaddr" data-bind="text: msg('mailaddr')")
+      input(type="text" id="mailaddr")
+    button.btn.btn-default(type="submit" id="mail_send" data-bind="text: msg('sendPwdSubmit')")

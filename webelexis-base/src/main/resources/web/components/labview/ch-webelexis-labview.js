@@ -159,22 +159,21 @@ sample exists at the given date
       var table=[]
       var items=self.groups()[self.activeGroup()].items
       _.each(items, function(item){
-        table.push(_(item.samples).map(function(sample){
-          return(dt.makeDateString(sample.date))
-        }))
+        table.push(_(item.samples).pluck("date"))
       })
-      var uniqueDates=_.uniq(_.flatten(table))
+      var tb=_.sortBy(_.flatten(table),function(date){return date.getTime()})
+      var uniqueDates=_.uniq(_.map(tb,function(date){return dt.makeDateString(date)}))
       $("#detailtable").empty()
 
       _.each(items,function(item){
         var row=$("<tr>")
-        row.append("<td><b>"+item.name+"</b></td>")
+        row.append('<td class="labitem"><b>'+item.name+"</b></td>")
         _.each(uniqueDates,function(date){
           var result=self.getValueForDate(item,date)
           if(lh.isOutOfRange(result,lh.getRange(item.range))){
-            row.append('<td class="red">'+result+"</td>")
+            row.append('<td class="labitem"><span class="red">'+result+"</span></td>")
           }else{
-            row.append("<td>"+result+"</td>")
+            row.append('<td class="labitem">'+result+"</td>")
           }
         })
         $("#detailtable").append(row)

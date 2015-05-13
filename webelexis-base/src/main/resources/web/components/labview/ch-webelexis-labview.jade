@@ -56,10 +56,10 @@ mixin createHeading(item)
       table.table.table-striped.table-condensed
         thead
           tr#detailheader(data-bind="foreach: $parent.detailDates")
-            th(data-bind="text: $data")
+            th.labitem(data-bind="text: $data")
         tfoot
           tr
             th
               button.btn.btn-default(data-bind="click: function(){$parent.display('table')}") OK
         tbody#detailtable
-          tr
+        

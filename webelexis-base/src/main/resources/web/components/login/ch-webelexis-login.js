@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['bus', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html'], function(bus, config, Router, ko, html) {
+define(['bus', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-login.html', 'knockout-jqueryui/dialog'], function(bus, config, Router, ko, html) {
 
   var Locale = {
     de: {
@@ -14,7 +14,12 @@ define(['bus', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-l
       notConnectedHead: "Nicht verbunden",
       notConnectedBody: "Es besteht keine Verbindung zum Server. Warten Sie bitte einen Moment, oder versuchen Sie es später noch einmal.",
       badLogin: "Name oder Passwort waren nicht korrekt. Versuchen Sie es noch einmal",
-      noaccount: 'Noch kein Konto? Klicken Sie hier, um eines zu erstellen.'
+      noaccount: 'Noch kein Konto? Klicken Sie hier, um eines zu erstellen.',
+      forgotpwd: "Passwort vergessen?",
+      pwdDlgHeader: "Neues Passwort anfordern",
+      pwdDlgExplain: "Geben Sie bitte Ihre E-Mail-Adresse ein und klicken Sie 'Senden', um Ihr Passwort zurückzusetzen.",
+      mailaddr: "Mail-Adresse (=Kontoname)",
+      sendPwdSubmit: "Senden"
     }
   }
   var R = Locale[config.locale()]
@@ -96,6 +101,17 @@ define(['bus', 'app/config', 'app/router', 'knockout', 'text!tmpl/ch-webelexis-l
 
     self.google_mouseOut = function() {
       $("#gbutton").attr("src", "img/Blue_signin_Long_normal_32dp_v3.png")
+    }
+
+    /* ------ forgot password dialog */
+    self.forgotpwdDlgOpen = ko.observable(false)
+
+    self.forgotPwd = function() {
+      self.forgotpwdDlgOpen(true)
+    }
+
+    self.submitSendPwd = function(){
+      
     }
 
   }
