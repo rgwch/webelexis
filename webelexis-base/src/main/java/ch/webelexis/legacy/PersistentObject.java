@@ -1,3 +1,8 @@
+/**
+ * This file is part of Webelexis
+ * Copyright (c) 2015 by G. Weirich
+ */
+
 package ch.webelexis.legacy;
 
 import org.vertx.java.core.Handler;
@@ -29,9 +34,9 @@ public class PersistentObject {
 				if(msg.getString("status").equals("ok")){
 					JsonObject ret=new JsonObject().putString("status", "ok");
 					JsonArray fields=msg.getArray("fields");
-					JsonArray values=msg.getArray("results");
+					JsonArray values=msg.getArray("results").get(0);
 					for(int i=0;i<fields.size();i++){
-						ret.putValue(fields.get(i), values.get(i));
+						ret.putValue((String)fields.get(i), values.get(i));
 					}
 					request.reply(ret);
 				}else{

@@ -25,26 +25,31 @@ public class Server extends BusModBase {
 		cfg = container.config();
 		eb = vertx.eventBus();
 		log.info("EMR Server started. got config " + cfg.encodePrettily());
-		eb.registerHandler("ch.webelexis.patient.detail",
-				new AuthorizingHandler(this, cfg.getString("role", "admin"), new PatientDetailHandler(this)));
+		eb.registerHandler("ch.webelexis.patient.detail", new AuthorizingHandler(this, cfg.getString(
+					"role", "admin"), new PatientDetailHandler(this)));
 
 		if (cfg.getBoolean("lab") == true) {
 			final LabResultSummaryHandler labResultHandler = new LabResultSummaryHandler(this);
-			eb.registerHandler("ch.webelexis.patient.labresult",
-					new AuthorizingHandler(this, cfg.getString("role", "admin"), new Handler<Message<JsonObject>>() {
+			eb.registerHandler("ch.webelexis.patient.labresult", new AuthorizingHandler(this, cfg
+						.getString("role", "admin"), new Handler<Message<JsonObject>>() {
 
-						@Override
-						public void handle(Message<JsonObject> request) {
-							log.debug("EMR server; got request: " + request.body().encode());
-							String mode = request.body().getString("mode");
-							if (mode == null || mode.equals("latest")) {
-								labResultHandler.handle(request);
-							} else if (mode.equals("selection")) {
-								// probably later
-							}
+				@Override
+				public void handle(Message<JsonObject> request) {
+					log.debug("EMR server; got request: " + request.body().encode());
+					String mode = request.body().getString("mode");
+					if (mode == null || mode.equals("latest")) {
+						labResultHandler.handle(request);
+					} else if (mode.equals("selection")) {
+						// probably later
+					}
 
-						}
-					}));
+				}
+			}));
+		}
+		if (cfg.getBoolean("consultations") == true) {
+			final ConsultationHandler consHandler = new ConsultationHandler(this);
+			eb.registerHandler("ch.webelexis.patient.cons", new AuthorizingHandler(this, cfg.getString(
+						"role", "admin"), consHandler));
 		}
 	}
 }
