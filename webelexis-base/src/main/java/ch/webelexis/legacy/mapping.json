@@ -1,0 +1,35 @@
+{
+    "ch.elexis.data.Kontakt": {
+        "table": "KONTAKT",
+        "plugin": "ch.elexis.core.data"
+    },
+    "ch.elexis.data.Patient": {
+        "table": "KONTAKT",
+        "plugin": "ch.elexis.core.data"
+    },
+    "ch.elexis.data.Fall": {
+        "table": "FAELLE",
+        "plugin": "ch.elexis.core.data"
+    },
+    "ch.elexis.data.Konsultation": {
+        "table": "BEHANDLUNGEN",
+        "plugin": "ch.elexis.core.data"
+    },
+    "ch.elexis.data.Artikel": {
+        "table": "ARTIKEL",
+        "plugin": "ch.elexis.core.data"
+    },
+    "ch.elexis.data.Prescription": {
+        "table": "PATIENT_ARTIKEL_JOINT",
+        "plugin": "ch.elexis.core.data"
+    },
+    "ch.elexis.icpc.Episode": {
+        "table": "CH_ELEXIS_ICPC_EPISODES",
+        "plugin": "ch.elexis.icpc"
+    },
+    "ch.elexis.stickynotes.data.Stickynote": {
+        "table": "CH_ELEXIS_STICKYNOTES",
+        "plugin": "ch.elexis.stickynotes"
+    }
+
+}
