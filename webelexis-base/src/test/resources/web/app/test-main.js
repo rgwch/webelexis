@@ -32,6 +32,7 @@ require.config({
     "smooth": "dist/web/lib/curvedLines",
     "components": "dist/web/components",
     "tmpl": "dist/web/tmpl",
+    "partials": "dist/web/partials"
   },
   shim: {
     "bootstrap": {
