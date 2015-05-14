@@ -3,10 +3,10 @@
   .panel.panel-default.col-sm-6
     .panel-heading
       #agendaDatum(style="width:100%;")
-        button.btn.glyphicon.glyphicon-circle-arrow-left(data-bind="click: yesterday" data-toggle="tooltip" title="Zum vorherigen Tag gehen")
-        button.btn.glyphicon.glyphicon-circle-arrow-down(data-bind="click: today" data-toggle="tooltip" title="auf Heute gehen")
-        input.abstand(type="text" style="max-width:50%;text-align:center" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now' data-toggle="tooltip" title="Klicken um den Kalender zu öffnen")
-        button.btn.glyphicon.glyphicon-circle-arrow-right(data-bind="click: tomorrow" data-toggle="tooltip" title="Zum nächsten Tag gehen")
+        button.btn.glyphicon.glyphicon-circle-arrow-left(data-bind="click: yesterday, attr: {title: msg('yesterday')}" data-toggle="tooltip")
+        button.btn.glyphicon.glyphicon-circle-arrow-down(data-bind="click: today, attr: {title: msg('today')}" data-toggle="tooltip")
+        input.abstand(type="text" style="max-width:50%;text-align:center" data-bind='datepicker: {dateFormat: "dd.mm.yy", dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz, onSelect: dateChanged}, value: now, attr: {title: msg("openCal")}' data-toggle="tooltip")
+        button.btn.glyphicon.glyphicon-circle-arrow-right(data-bind="click: tomorrow, attr: {title: msg('tomorrow')}" data-toggle="tooltip")
     .panel-body
       .row#appntlist(data-bind="foreach: appointments")
         .col-xs-12.col-md-6
@@ -20,45 +20,17 @@
             .alert.alert-success(role="alert" data-bind="visible: $parent.loggedIn().length!=0 && type=='available'")
               form.form(data-bind="submit: $parent.addAppointment")
                 p(data-bind="text: loggedInText")
-                button.btn.btn-primary(type="submit") Termin vereinbaren
+                button.btn.btn-primary(type="submit" data-bind="text: $parent.msg('makeAppnt')")
             .alert.alert-warning(role="alert" data-bind="visible: type=='user' && $parent.loggedIn().length!=0")
               form.form(data-bind="submit: $parent.deleteAppointment")
-                button.btn.btn-primary(type="submit") Termin löschen
-            button.btn.btn-default(data-bind="click: $parent.collapse") Abbrechen
+                button.btn.btn-primary(type="submit" data-bind="text: $parent.msg('deleteAppnt')")
+            button.btn.btn-default(data-bind="click: $parent.collapse, text: $parent.msg('cancel')")
     .panel-footer
-      .p.small.
-          Die Verwendung dieser Website geschieht ohne Gewähr. Für fehlerhaft übertragene Termine wird keine
-          Haftung übernommen. In wichtigen Fällen bestätigen Sie Ihren Termin bitte telefonisch.
+      .p.small(data-bind="text: msg('disclaimer')")
   .panel.panel-info.col-sm-6
     .panel-heading
-        h3.panel-title Termin direkt online eintragen
-    .panel-body
-      p.
-          Wählen Sie bitte zunächst im Feld links oben das gewünschte
-          Datum aus. Klicken Sie dann auf einen grünen Bereich, um einen
-          Termin zu vereinbaren. Wenn kein grüner Bereich vorhanden ist,
-          sind an diesem Tag keine Termine frei.
-      p.
-          In dringenden Fällen, oder falls etwas nicht klappt, können
-          Sie selbstverständlich weiterhin auch telefonisch Termine
-          vereinbaren.
-      p Unser Telefon 0xx xxx xx xx wird zu folgenden Zeiten bedient:
-      table.table.table-bordered
-          tr
-              td(style="padding-right: 5px") Montag, Dienstag und Freitag
-              td 08:00 bis 12:00 und 13:00 bis 17:00 Uhr
-          tr
-              td Mittwoch
-              td 09:00 bis 13:00 und 14:00 bis 18:00 Uhr
-          tr
-              td Donnerstag
-              td 08:00 bis 13:00 Uhr
-          tr
-              td Samstag
-              td 09:00 bis 12:00 Uhr
+        h3.panel-title(data-bind="text:msg('rightHeading')") 
+    .panel-body(data-bind="html: howto")
     .panel-footer
-      p.small.
-          Bitte beachten Sie, dass wir bei einer
-          Terminvereinbarung über diese Website Ihre IP-Adresse und weitere
-          Angaben speichern. Sämtliche Daten werden nach dem vereinbarten
-          Termin wieder gelöscht.
+      p.small(data-bind="text:msg('rightFooter')")
+    

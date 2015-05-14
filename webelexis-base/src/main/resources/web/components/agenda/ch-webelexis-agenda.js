@@ -2,15 +2,67 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-agenda.html', 'app/datetools', 'knockout-jqueryui/datepicker'], function(ko, bus, cfg, html, dt) {
+define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-agenda.html', 'text!partials/agenda-howto.html','app/datetools', 'knockout-jqueryui/datepicker'], function(ko, bus, cfg, html, howto, dt) {
 
+  var Locale={
+    de: {
+      sun: "So",
+      mon: "Mo",
+      tue: "Di",
+      wed: "Mi",
+      thu: "Do",
+      fri: "Fr",
+      sat: "Sa",
+      january: "Januar",
+      february: "Februar",
+      march: "März",
+      april: "April",
+      may: "Mai",
+      june: "Juni",
+      july: "Juli",
+      august: "August",
+      september: "September",
+      october: "Oktober",
+      november: "November",
+      december: "Dezember",
+      jan: "Jan",
+      feb: "Feb",
+      mar: "März",
+      apr:"Apr",
+      ma:"Mai",
+      jun:"Jun",
+      jul:"Jul",
+      aug:"Aug",
+      sep:"Sep",
+      oct:"Okt",
+      nov:"Nov",
+      dec:"Dec",
+      yesterday: "Einen Tag zurück",
+      today:"Heute",
+      tomorrow: "Einen Tag weiter",
+      openCal:"Kalender öffnen",
+      makeAppnt:"Termin vereinbaren",
+      deleteAppnt:"Termin löschen",
+      cancel:"Abbrechen",
+      disclaimer: "Die Verwendung dieser Website geschieht ohne Gewähr. Für fehlerhaft übertragene Termine wird keine Haftung übernommen. In wichtigen Fällen bestätigen Sie Ihren Termin bitte telefonisch.",
+      rightHeading:"Termin direkt online eintragen",
+      rightFooter:"Bitte beachten Sie, dass wir bei einer Terminvereinbarung über diese Website Ihre IP-Adresse und weitere Angaben speichern. Sämtliche Daten werden nach dem vereinbarten Termin wieder gelöscht."
+
+    }
+  }
+
+  var R=Locale[cfg.locale()]
 
   function AgendaViewModel(dprm) {
     var self = this;
-    self.tage = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
-    self.monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
-    self.monateKurz = ["Jan", "Feb", "März", "April", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
+    self.tage = [R.sun, R.mon, R.tue, R.wed, R.thu, R.fri, R.sat]
+    self.monate = [R.january, R.february, R.march, R.april, R.may, R.june, R.july, R.august, R.september, R.october, R.november, R.december]
+    self.monateKurz = [R.jan, R.feb, R.mar, R.apr, R.ma, R.jun, R.jul, R.aug, R.sep, R.oct, R.nov, R.dec]
     self.title = "Agenda"
+    self.msg=function(id){
+      return R[id]
+    }
+
       /**
        * client side representation of an Elexis-appointment
        */
@@ -47,6 +99,7 @@ define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-agenda.html', '
 
 
     }
+    self.howto=ko.observable()
     self.now = ko.observable(dt.makeDateString(new Date()))
 
     self.appointments = ko.observableArray([]);
@@ -192,6 +245,7 @@ define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-agenda.html', '
         self.loadAppointments()
       }
     }
+    self.howto(howto)
     bus.addListener(busListener, true)
 
 
