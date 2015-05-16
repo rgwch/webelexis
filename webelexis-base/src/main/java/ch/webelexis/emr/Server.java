@@ -28,7 +28,7 @@ public class Server extends BusModBase {
 		eb.registerHandler("ch.webelexis.patient.detail", new AuthorizingHandler(this, cfg.getString(
 					"role", "admin"), new PatientDetailHandler(this)));
 
-		if (cfg.getBoolean("lab") == true) {
+		if (cfg.getBoolean("lab",false) == true) {
 			final LabResultSummaryHandler labResultHandler = new LabResultSummaryHandler(this);
 			eb.registerHandler("ch.webelexis.patient.labresult", new AuthorizingHandler(this, cfg
 						.getString("role", "admin"), new Handler<Message<JsonObject>>() {
@@ -46,7 +46,7 @@ public class Server extends BusModBase {
 				}
 			}));
 		}
-		if (cfg.getBoolean("consultations") == true) {
+		if (cfg.getBoolean("consultations",false) == true) {
 			final ConsultationHandler consHandler = new ConsultationHandler(this);
 			eb.registerHandler("ch.webelexis.patient.cons", new AuthorizingHandler(this, cfg.getString(
 						"role", "admin"), consHandler));
