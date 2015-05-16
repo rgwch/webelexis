@@ -123,7 +123,7 @@
     }],
     // remove the following property, if you don't want "Sign in with google"
     "googleID": "3aa2352634636aasf.apps.googleusercontent.com", // Google client ID if Google SignIn is used.
-    "ssl": true, // use tls/ssl/https. Strongly recommended
+    "ssl": false, // use tls/ssl/https. Strongly recommended
     "keystore": "/some/where/ks.jks", // filepath of the keystore. Defaults to $HOME/.jkeys/keystore.jks
     "keystore-pwd": "something" // password of the jks keystore and the server certificate/key
   },
