@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	CoreVerticleTest.class,
 	ConfigFileChecker.class,
 	AddPatientTest.class,
 	PublicAgendaListTest.class,
