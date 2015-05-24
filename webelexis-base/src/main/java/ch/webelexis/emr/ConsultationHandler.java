@@ -24,7 +24,7 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
 	EventBus eb;
 	Logger log;
 	String[] fields = new String[] { "k.datum", "k.diagnosen", "k.eintrag" };
-	final static String sql = "select k.id, k.datum, k.diagnosen, k.eintrag from BEHANDLUNGEN as k, FAELLE as f, KONTAKT as ko where ko.id=? and f.patientid=ko.id and k.fallid=f.id and k.deleted='0'";
+	final static String sql = "select k.id, k.datum, k.diagnosen, k.eintrag from BEHANDLUNGEN as k, FAELLE as f, KONTAKT as ko where ko.id=? and f.patientid=ko.id and k.fallid=f.id and k.deleted='0' order by k.datum DESC";
 
 	public ConsultationHandler(Verticle server) {
 		v = server;
