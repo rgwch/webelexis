@@ -121,8 +121,8 @@ define(['knockout'], function(ko) {
         location: 'components/consultation',
         component: 'ch-webelexis-consdetail',
         menuItem: true,
-        active: false,
-        role: "user"
+        active: true,
+        role: "guest"
       }, {
         baseUrl: "#login",
         match: /^login$/,
