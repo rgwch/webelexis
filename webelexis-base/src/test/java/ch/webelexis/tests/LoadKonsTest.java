@@ -58,6 +58,7 @@ public class LoadKonsTest extends TestVerticle {
           @Override
           public void handle(Message<JsonObject> result) {
             VertxAssert.assertEquals("ok", result.body().getString("status"));
+            VertxAssert.testComplete();
           }
         });
       }
