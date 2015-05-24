@@ -98,6 +98,7 @@
     "stickers": true, // load stickers
     "prescriptions": true, // load prescriptions
     "lab": true, // load lab values
+    "consultations": true,
     "role": "arzt" // role needed to read patient details
   },
 

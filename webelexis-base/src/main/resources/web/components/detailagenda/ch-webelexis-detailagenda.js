@@ -196,6 +196,9 @@ define(['knockout', 'app/datetools', 'bus', 'app/config', 'text!tmpl/ch-webelexi
     self.labview = function(idx) {
       window.location.hash = "#labview/" + idx.patientID
     }
+    self.consview=function(idx){
+      window.location.hash="#conslist/"+idx.patientID
+    }
 
     if (dprm !== undefined && dprm.params[0] !== undefined) {
       self.now(dt.makeDateFromElexisDate(dprm.params[0]))

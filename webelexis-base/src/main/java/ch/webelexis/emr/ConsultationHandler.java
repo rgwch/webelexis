@@ -56,7 +56,7 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
 
 		@Override
 		public void handle(Message<JsonObject> sqlAnswer) {
-			log.debug("LabReuslt: Got answer from sql server: " + sqlAnswer.body().encodePrettily());
+			log.debug("ConsHandler: Got answer from sql server: " + sqlAnswer.body().encodePrettily());
 			JsonObject result = sqlAnswer.body();
 			if (result.getString("status").equals("ok")) {
 				JsonArray rows = result.getArray("results");
@@ -65,9 +65,9 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
 					JsonArray row = (JsonArray) o;
 					if (row.size() >= 4) {
 						JsonObject jk = new JsonObject();
-						jk.putString("date", row.get(1));
-						jk.putString("diags", row.get(2));
-						JsonArray entry = row.get(3);
+						jk.putString("date", (String) row.get(1));
+						jk.putString("diags", (String) row.get(2));
+						JsonArray entry = (JsonArray) row.get(3);
 						if (entry != null) {
 							byte[] ba = new byte[entry.size()];
 							for (int i = 0; i < entry.size(); i++) {
