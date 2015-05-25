@@ -1,4 +1,4 @@
-define(['knockout', 'text!tmpl/ch-webelexis-conslist.html', 'bus', 'app/config', 'underscore'], function (ko, html, bus, cfg, _) {
+define(['knockout', 'text!tmpl/ch-webelexis-conslist.html', 'bus', 'app/config', 'underscore', 'app/datetools'], function (ko, html, bus, cfg, _, dt) {
 
     var Locale = {
         de: {
@@ -22,15 +22,22 @@ define(['knockout', 'text!tmpl/ch-webelexis-conslist.html', 'bus', 'app/config',
 
         self.loadConses = function () {
             bus.send("ch.webelexis.patient.cons", {
+                action: "list",
                 patid: self.patid,
                 sessionID: cfg.sessionID
             }, function (result) {
                 if (result === undefined) {
-                    alert(self.R.noanswer)
+                    window.alert(self.R.noanswer)
                 }else if(result.status === "ok"){
-                    _.each(result.results,function(cons){self.entries.push(cons.entry)})
+                    self.entries(_.map(result.results,function(cons){
+                        var parser=new window.DOMParser()
+                        var xml=parser.parseFromString(cons.entry,"text/xml")
+                        var text=xml.getElementsByTagName("text")[0]
+                        return({id: cons.id, date: dt.makeDateFromElexisDate(cons.date), text: text.innerHTML})
+                      })
+                    )
                 }else{
-                    alert("error "+result.message)
+                    window.alert("error "+result.message)
                 }
             })
         }

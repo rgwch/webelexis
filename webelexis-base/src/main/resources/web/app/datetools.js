@@ -83,12 +83,13 @@ define({
     return ret.year + "-" + ret.month + "-" + ret.day
   },
 
-  // male a dd.mm.yyyy String from a Date object
+  // make a dd.mm.yyyy String from a Date object
   makeDateString: function(date) {
     var ret = this.dateStrings(date)
     return ret.day + "." + ret.month + "." + ret.year
   },
 
+  // make a dd.mm.yyyy from yyyymmdd
   makeDateFromElexisDate: function(ed) {
     var ret = ed.substring(6, 8) + "." + ed.substring(4, 6)  + "." + ed.substring(0, 4)
     return ret
