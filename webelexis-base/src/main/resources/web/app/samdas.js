@@ -18,7 +18,13 @@ define(['underscore'], function (_) {
 		var ret = left + '<span class="' + css + '">' + middle + '</span>' + right
 		return ret
 	}
+
+	var cleanHTML = function (text) {
+		var ret = text.replace(/<br ?\/>/g, "\n");
+		return ret.replace(/<.+?>/g, "")
+	}
 	return {
+		/* extract plaintext from a Samdas document */
 		plaintext: function (samdasText) {
 			var xml = parser.parseFromString(samdasText, "text/xml")
 			var textElem = xml.getElementsByTagName("text")[0]
@@ -29,7 +35,8 @@ define(['underscore'], function (_) {
 			}
 		},
 
-		html: function (samdasText) {
+		/* convert a Samdas document to html */
+		html  : function (samdasText) {
 			var xml = parser.parseFromString(samdasText, "text/xml")
 			var textElem = xml.getElementsByTagName("text")[0]
 			if (textElem === undefined) {
@@ -92,6 +99,53 @@ define(['underscore'], function (_) {
 				}
 
 			}
+		},
+		/* convert html text to a Samdas document */
+		samdas: function (htmlText) {
+			var bootstrap = '<?xml version="1.0" encoding="UTF-8"?><samdas:EMR xmlns:samdas="http://www.elexis.ch/XSD"></samdas:EMR>'
+			var xml = parser.parseFromString(bootstrap, "text/xml")
+			var record = xml.createElement("record")
+			var plain = ""
+			var markpos = 0
+			var markupPattern = /<span class="(bold|italic|underlined|xref)">.+?<\/span>/gm
+
+			var matches = htmlText.match(markupPattern)
+			if (matches !== null) {
+				_.each(matches, function (match) {
+					console.log(match)
+					var origPos = htmlText.indexOf(match, markpos)
+					if (origPos > markpos) {
+						plain += cleanHTML(htmlText.substring(markpos, origPos))
+					}
+					var destpos = plain.length
+					markpos = origPos + match.length;
+					var checkPattern = /<span class="(.+?)">(.+?)<\/span>/
+					var types = checkPattern.exec(match)
+					var subst = cleanHTML(types[2])
+					plain += subst
+					if (types[1] === "xref") {
+						var xref = xml.createElement("xref")
+						xref.setAttribute("from", destpos)
+						xref.setAttribute("length", subst.length)
+						xref.setAttribute("provider", "ch.elexis.text.DocXRef")  // todo
+						xref.setAttribute("id", "0")
+						record.appendChild(xref)
+					} else {
+						var markup = xml.createElement("markup")
+						markup.setAttribute("from", destpos)
+						markup.setAttribute("length", subst.length)
+						markup.setAttribute("type", types[1])
+						record.appendChild(markup)
+					}
+
+				})
+			}
+			plain += cleanHTML(htmlText.substr(markpos))
+			var textNode = xml.createElement("text")
+			textNode.appendChild(xml.createTextNode(plain))
+			record.appendChild(textNode)
+			var emrNode = xml.childNodes[0]
+			emrNode.appendChild(record)
 		}
 	}
 })

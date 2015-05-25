@@ -10,7 +10,9 @@ define(['knockout', 'text!tmpl/ch-webelexis-consdetail.html', 'app/editor', 'app
 		self.contents = ko.observable()
 		ed(self.contents)
 		self.getText = function () {
-			console.log($("#edit").trumbowyg('html'))
+			var htmltext = $("#edit").trumbowyg('html')
+			console.log(htmltext)
+			smd.samdas(htmltext)
 		}
 
 		self.loadCons = function () {

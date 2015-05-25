@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5c2c138f-caa9-49b9-bf41-6ffb750b7775" name="Default" comment="extracted Samdas handling to external toolfile">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/web/app/editor.js" afterPath="$PROJECT_DIR$/src/main/resources/web/app/editor.js" />
+    <list default="true" id="5c2c138f-caa9-49b9-bf41-6ffb750b7775" name="Default" comment="konstext interprets Samdas markup correctly">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" afterPath="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/web/app/samdas.js" afterPath="$PROJECT_DIR$/src/main/resources/web/app/samdas.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/web/css/style.css" afterPath="$PROJECT_DIR$/src/main/resources/web/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="webelexis-base.iws" />
@@ -28,11 +27,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="ch-webelexis-consdetail.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="samdas.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/web/app/samdas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5885287">
-              <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.9625935">
+              <caret line="147" column="33" selection-start-line="147" selection-start-column="33" selection-end-line="147" selection-end-column="33" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="router.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/web/app/router.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -53,8 +74,8 @@
       <file leaf-file-name="cfglocal.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cfglocal.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.041666">
-              <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+            <state vertical-scroll-proportion="-0.29166666">
+              <caret line="115" column="103" selection-start-line="115" selection-start-column="103" selection-end-line="115" selection-end-column="103" />
               <folding />
             </state>
           </provider>
@@ -108,12 +129,12 @@
         <option value="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/config.js" />
         <option value="$PROJECT_DIR$/src/main/resources/web/components/conslist/ch-webelexis-conslist.js" />
-        <option value="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" />
         <option value="$PROJECT_DIR$/build" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/router.js" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/editor.js" />
-        <option value="$PROJECT_DIR$/cfglocal.json" />
         <option value="$PROJECT_DIR$/src/main/resources/web/css/style.css" />
+        <option value="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" />
+        <option value="$PROJECT_DIR$/cfglocal.json" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/samdas.js" />
       </list>
     </option>
@@ -185,6 +206,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webelexis-base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webelexis-base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -199,6 +230,7 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="FullScreen" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="jsx.switch.disabled" value="true" />
   </component>
   <component name="RunManager" selected="Chromium Remote.webelexis">
     <configuration default="true" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" port="2015">
@@ -280,7 +312,13 @@
       <option name="project" value="LOCAL" />
       <updated>1432543602466</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="konstext interprets Samdas markup correctly">
+      <created>1432560711314</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1432560711314</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -323,11 +361,14 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="start with trumbowyg editor" />
     <MESSAGE value="extracted Samdas handling to external toolfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="extracted Samdas handling to external toolfile" />
+    <MESSAGE value="konstext interprets Samdas markup correctly" />
+    <option name="LAST_COMMIT_MESSAGE" value="konstext interprets Samdas markup correctly" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -335,9 +376,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#69#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -409,9 +448,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#69#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -653,16 +690,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="16" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#69#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -703,9 +730,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/web/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/web/app/router.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5954632">
+        <state vertical-scroll-proportion="0.0">
           <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -726,24 +761,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cfglocal.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.041666">
-          <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+        <state vertical-scroll-proportion="-0.29166666">
+          <caret line="115" column="103" selection-start-line="115" selection-start-column="103" selection-end-line="115" selection-end-column="103" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/web/css/style.css">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/web/app/samdas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5885287">
-          <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.9625935">
+          <caret line="147" column="33" selection-start-line="147" selection-start-column="33" selection-end-line="147" selection-end-column="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
