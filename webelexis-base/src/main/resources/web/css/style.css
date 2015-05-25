@@ -75,3 +75,22 @@ th.labitem, td.labitem {
 	width  : auto !important;
 	height : auto !important;
 }
+
+/* Styles for consultation entries */
+span.bold {
+	color       : blue;
+	font-weight : bold;
+}
+
+span.italic {
+	color      : #2bc06a;
+	font-style : italic;
+}
+
+span.xref {
+	background-color : #6fccd2;
+}
+
+span.underline {
+	text-decoration : underline;
+}
