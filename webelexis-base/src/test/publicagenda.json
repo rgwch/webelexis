@@ -2,35 +2,34 @@
   "config-mock": {
     "admin-address": "ch.webelexis.test.mock"
   },
-
   "mock-nosql": {
     "task": "reply",
     "listen-address": "ch.webelexis.nosql",
-    "match": [{
-      "message": {
-        "action": "findone"
-      },
-
-      "case-sensitive": true,
-      "match-reply": {
-        "status": "ok",
-        "result": {
-          "patientid": "123456",
-          "username": "user@domain.tld"
+    "match": [
+      {
+        "message": {
+          "action": "findone"
+        },
+        "case-sensitive": true,
+        "match-reply": {
+          "status": "ok",
+          "result": {
+            "patientid": "123456",
+            "username": "user@domain.tld"
+          }
         }
       }
-    }],
-
+    ],
     "nomatch-reply": {
       "status": "error",
       "message": "nosql: no matchine message"
     }
   },
-
   "mock-sql": {
     "task": "reply",
     "listen-address": "ch.webelexis.sql",
-    "match": [{
+    "match": [
+      {
         "message": {
           "action": "prepared",
           "statement": "SELECT Tag.+",
@@ -40,7 +39,6 @@
             "\\w+"
           ]
         },
-
         "case-sensitive": true,
         "match-reply": {
           "status": "ok",
@@ -52,7 +50,6 @@
               "urps",
               "apatient"
             ],
-
             [
               "20150331",
               "730",
@@ -60,7 +57,6 @@
               "full",
               "anotherPatient"
             ],
-
             [
               "20150331",
               "830",
@@ -71,7 +67,6 @@
           ]
         }
       },
-
       {
         "message": {
           "action": "prepared",
@@ -89,13 +84,11 @@
             ".+"
           ]
         },
-
         "case-sensitive": true,
         "match-reply": {
           "status": "ok"
         }
       },
-
       {
         "message": {
           "action": "prepared",
@@ -107,23 +100,19 @@
             "[0-9]+"
           ]
         },
-
         "case-sensitive": true,
         "match-reply": {
           "status": "ok"
         }
       }
     ],
-
     "nomatch-reply": {
       "status": "no matching message found (mock-sql)"
     }
   },
-
   "agendaList": {
     "resource": "blah"
   },
-
   "listDay": {
     "resource": "blah",
     "begin": "20150331",
@@ -133,14 +122,12 @@
       "username": "user@domain.tld"
     }
   },
-
   "insertApp": {
     "day": "20150331",
     "patid": "user@domain.tld",
     "time": "10:15",
     "ip": "192.168.47.9"
   },
-
   "deleteApp": {
     "day": "20150331",
     "time": "760",

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="KnockoutJS" type="javaScript">
+    <properties>
+      <option name="frameworkName" value="Knockout" />
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/src/main/resources/web/lib/knockout.js" />
+    </CLASSES>
+    <DOCUMENTATION>
+      <root url="http://knockoutjs.com/documentation/introduction.html" />
+    </DOCUMENTATION>
+    <SOURCES />
+  </library>
+</component>

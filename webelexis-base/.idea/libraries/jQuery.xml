@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="jQuery" type="javaScript">
+    <properties>
+      <option name="frameworkName" value="jQuery" />
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/src/main/resources/web/lib/jquery.flot.time.min.js" />
+      <root url="file://$PROJECT_DIR$/src/main/resources/web/lib/jquery.validate.min.js" />
+      <root url="file://$PROJECT_DIR$/src/main/resources/web/lib/jquery.flot.min.js" />
+      <root url="file://$PROJECT_DIR$/src/main/resources/web/lib/jquery.min.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

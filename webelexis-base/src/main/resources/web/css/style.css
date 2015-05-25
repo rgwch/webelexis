@@ -1,72 +1,77 @@
 /* general styles */
 .red {
-  color: red;
+	color : red;
 }
+
 span.smaller {
-  font-size: smaller;
+	font-size : smaller;
 }
+
 span.larger {
-  font-size: larger;
+	font-size : larger;
 }
+
 .greyed {
-  background-color: #eee;
-  border-bottom: 1px solid blue;
-  border-top: 1px solid blue;
+	background-color : #eee;
+	border-bottom    : 1px solid blue;
+	border-top       : 1px solid blue;
 }
 
 .abstand {
-  margin-left: 10px;
-  margin-right: 10px;
+	margin-left  : 10px;
+	margin-right : 10px;
 }
 
 /* error messages of jQuery input validator */
 label.error {
-  color: red;
+	color : red;
 }
-
 
 /* styles for ch-webelexis-agenda and ch-webelexis-detailagenda */
 .available {
-  background-color: #A7D2A7;
+	background-color : #a7d2a7;
 }
+
 .occupied {
-  background-color: #FF9494;
+	background-color : #ff9494;
 }
+
 .user {
-  background-color: #55ff55;
+	background-color : #5f5;
 }
+
 .locked {
-  background-color: black;
-  color: white;
+	background-color : black;
+	color            : white;
 }
 
 /* entries in "detailagenda" */
 div.agendabox {
-  border-top-style: solid;
-  border-width: 1px;
-  border-color: black;
-  min-height: 2.5em;
+	border-top-style : solid;
+	border-width     : 1px;
+	border-color     : black;
+	min-height       : 2.5em;
 }
 
 /* Styles for ch-webelexis-labview */
 
 div.labgroup {
-  width: 100%;
-  min-height: 2em;
-  background: #a8ccdb;
-  border-top: 1px solid black;
+	width      : 100%;
+	min-height : 2em;
+	background : #a8ccdb;
+	border-top : 1px solid black;
 }
 
-th.labitem, td.labitem{
-  text-align: center;
-  border: 1px solid;
-  border-collapse: collapse;
-
+th.labitem, td.labitem {
+	text-align      : center;
+	border          : 1px solid;
+	border-collapse : collapse;
 }
+
 /* workaround for sparkline tooltips
  http://stackoverflow.com/questions/18894820/jquery-sparklines-and-twitter-bootstrap-3-tooltip-style-overrides
  */
-.jqstooltip{
-  width: auto !important;
-  height: auto !important;
+.jqstooltip {
+	width  : auto !important;
+	height : auto !important;
 }

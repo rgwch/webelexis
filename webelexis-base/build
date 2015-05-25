@@ -4,7 +4,7 @@ mkdirp dist/web
 jade -D src/main/resources/web -o dist/web/tmpl
 jade -D src/main/resources/personalize -o dist/web/partials
 mv dist/web/tmpl/index.html dist/web
-javac -g:none -nowarn -encoding utf-8 -source 7 -target 7 -cp "${VERTX_HOME}/lib/*" src/main/java/ch/webelexis/*.java src/main/java/ch/webelexis/agenda/*.java src/main/java/ch/webelexis/account/*.java src/main/java/ch/webelexis/emr/*.java -d dist
+javac -g:none -nowarn -encoding utf-8 -source 7 -target 7 -cp "${VERTX_HOME}/lib/*" src/main/java/ch/webelexis/*.java src/main/java/ch/webelexis/agenda/*.java src/main/java/ch/webelexis/account/*.java src/main/java/ch/webelexis/emr/*.java src/main/java/ch/rgw/tools/*.java -d dist
 r.js -o build-release.js
 cp cfglocal.json dist
 cp src/main/resources/config_sample.json dist/config_defaults.json
