@@ -13,8 +13,12 @@ define(['knockout', 'text!tmpl/ch-webelexis-consdetail.html', 'app/editor', 'app
 			var htmltext = $("#edit").trumbowyg('html')
 			console.log(htmltext)
 			smd.samdas(htmltext)
+			window.history.back()
 		}
 
+		self.cancel = function () {
+			window.history.back()
+		}
 		self.loadCons = function () {
 			bus.send("ch.webelexis.patient.cons", {
 				action   : "get",

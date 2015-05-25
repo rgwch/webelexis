@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5c2c138f-caa9-49b9-bf41-6ffb750b7775" name="Default" comment="konstext interprets Samdas markup correctly">
+    <list default="true" id="5c2c138f-caa9-49b9-bf41-6ffb750b7775" name="Default" comment="conversion back from html to samdas">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade" afterPath="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" afterPath="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/web/app/samdas.js" afterPath="$PROJECT_DIR$/src/main/resources/web/app/samdas.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="webelexis-base.iws" />
@@ -27,20 +27,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ch-webelexis-consdetail.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ch-webelexis-consdetail.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.628882">
+              <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="samdas.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ch-webelexis-consdetail.jade" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="51" selection-start-line="6" selection-start-column="51" selection-end-line="6" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="samdas.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/web/app/samdas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9625935">
+            <state vertical-scroll-proportion="0.0">
               <caret line="147" column="33" selection-start-line="147" selection-start-column="33" selection-end-line="147" selection-end-column="33" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -57,16 +67,6 @@
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/web/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -126,16 +126,16 @@
         <option value="$PROJECT_DIR$/karma_cfg.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/save-commands.json" />
-        <option value="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/config.js" />
         <option value="$PROJECT_DIR$/src/main/resources/web/components/conslist/ch-webelexis-conslist.js" />
         <option value="$PROJECT_DIR$/build" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/router.js" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/editor.js" />
         <option value="$PROJECT_DIR$/src/main/resources/web/css/style.css" />
-        <option value="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" />
         <option value="$PROJECT_DIR$/cfglocal.json" />
         <option value="$PROJECT_DIR$/src/main/resources/web/app/samdas.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade" />
+        <option value="$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js" />
       </list>
     </option>
   </component>
@@ -204,16 +204,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="webelexis-base" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webelexis-base" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webelexis-base" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -318,7 +308,13 @@
       <option name="project" value="LOCAL" />
       <updated>1432560711314</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="conversion back from html to samdas">
+      <created>1432571998373</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1432571998373</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -331,7 +327,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293124" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19059107" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19059107" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -362,7 +358,8 @@
     <MESSAGE value="start with trumbowyg editor" />
     <MESSAGE value="extracted Samdas handling to external toolfile" />
     <MESSAGE value="konstext interprets Samdas markup correctly" />
-    <option name="LAST_COMMIT_MESSAGE" value="konstext interprets Samdas markup correctly" />
+    <MESSAGE value="conversion back from html to samdas" />
+    <option name="LAST_COMMIT_MESSAGE" value="conversion back from html to samdas" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -674,14 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/web/app/datetools.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -767,21 +756,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/web/app/samdas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9625935">
+        <state vertical-scroll-proportion="0.0">
           <caret line="147" column="33" selection-start-line="147" selection-start-column="33" selection-end-line="147" selection-end-column="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="51" selection-start-line="6" selection-start-column="51" selection-end-line="6" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/web/components/consultation/ch-webelexis-consdetail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.628882">
+          <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>

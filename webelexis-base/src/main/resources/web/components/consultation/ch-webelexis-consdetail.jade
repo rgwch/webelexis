@@ -3,4 +3,5 @@ h3 Konsultation
 .row
 	.col-xs-12
 		#edit(data-bind="trumbowyg: {lang: 'de'}")
-		button(data-bind="click: getText") Speichern
+		button.btn.btn-primary(data-bind="click: getText") Speichern und zurück
+		button.btn.btn-default(data-bind="click: cancel") Zurück ohne Speichern
