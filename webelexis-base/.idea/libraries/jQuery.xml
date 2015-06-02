@@ -9,7 +9,6 @@
       <root url="file://$PROJECT_DIR$/src/main/resources/web/lib/jquery.flot.min.js" />
       <root url="file://$PROJECT_DIR$/src/main/resources/web/lib/jquery.min.js" />
     </CLASSES>
-    <JAVADOC />
     <SOURCES />
   </library>
 </component>

@@ -30,7 +30,11 @@ define(['knockout', 'text!tmpl/ch-webelexis-consdetail.html', 'app/editor', 'app
 					window.alert("no response from server")
 				} else if (result.status === "ok") {
 					var cons = result.result
-					self.contents(smd.html(cons.entry))
+					if(cons) {
+						self.contents(smd.html(cons.entry))
+					}else{
+						window.alert("empty result")
+					}
 				} else {
 					window.alert("error " + result.message)
 				}
