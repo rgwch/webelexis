@@ -8,10 +8,15 @@
  */
 define(['knockout', 'cke'], function (ko, ckeditor) {
 
-	var Editor = function (textObservable) {
+	var Editor = function (elementID) {
 		var self = this;
+		var myID = elementID
 
-		ko.bindingHandlers.richText = {
+		self.getText = function () {
+			return CKEDITOR.instances[myID].getData()
+		}
+
+		ko.bindingHandlers.ckeditor = {
 			init: function (element, valueAccessor) {
 
 				var modelValue = valueAccessor();
@@ -24,13 +29,14 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
 				var editor = CKEDITOR.replace(element)
 
 				// bind to change events and link it to the observable
+				/*
 				editor.on('change', function (e) {
 					var self = this;
 					if (ko.isWriteableObservable(self)) {
 						self($(e.listenerData).val());
 					}
 				}, modelValue, element);
-
+				 */
 
 				/* Handle disposal if KO removes an editor
 				 * through template binding */
@@ -68,7 +74,7 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
 			return self.content;
 		}
 		 */
-
+		return self
 	}
 	return Editor;
 })

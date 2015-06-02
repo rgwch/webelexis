@@ -7,12 +7,13 @@ define(['knockout', 'text!tmpl/ch-webelexis-consdetail.html', 'app/editor', 'app
 	function ConsDetailModel(prm) {
 		var self = this;
 		self.consid = prm.params[0]
-		self.contents = ko.observable(self.consid)
-		ed(self.contents)
+		self.contents = ko.observable("loading..")
+		var edit = ed("edit")
 		self.getText = function () {
-			var htmltext = $("#edit").
+			var htmltext = edit.getText()
 			console.log(htmltext)
-			smd.samdas(htmltext)
+			var samdastext = smd.samdas(htmltext)
+			console.log(samdastext)
 			window.history.back()
 		}
 

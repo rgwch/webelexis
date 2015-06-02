@@ -10,6 +10,7 @@
 define(['underscore'], function (_) {
 
 	var parser = new window.DOMParser()
+	var serializer = new window.XMLSerializer()
 
 	var insert = function (text, start, len, css) {
 		var left = text.substr(0, start)
@@ -146,6 +147,8 @@ define(['underscore'], function (_) {
 			record.appendChild(textNode)
 			var emrNode = xml.childNodes[0]
 			emrNode.appendChild(record)
+
+			return serializer.serializeToString(xml)
 		}
 	}
 })
