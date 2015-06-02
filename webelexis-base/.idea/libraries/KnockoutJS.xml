@@ -9,6 +9,7 @@
     <DOCUMENTATION>
       <root url="http://knockoutjs.com/documentation/introduction.html" />
     </DOCUMENTATION>
+    <JAVADOC />
     <SOURCES />
   </library>
 </component>
