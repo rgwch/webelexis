@@ -20,9 +20,8 @@ var require = {
 		"underscore"       : "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min",
 		"flot"             : "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min",
 		"flot-time"        : "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min",
-		"tbw"              : "lib/trumbowyg.min",
+		"cke": "https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.4.5/ckeditor",
 		"smooth"           : "lib/curvedLines",
-		"grow"             : "lib/grow",
 		"app"              : "app",
 		"tmpl"             : "tmpl"
 	},
