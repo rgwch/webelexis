@@ -26,7 +26,11 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
 				// Set initial value and create the CKEditor
 				element$.html(value);
 				//var editor = element$.ckeditor().editor;
-				var editor = CKEDITOR.replace(element)
+				var editor = CKEDITOR.replace(element, {
+					language: "de",
+					contentsLanguage:"de",
+					toolbar: [['Source','-','Bold','Maximize']]
+				})
 
 				// bind to change events and link it to the observable
 				/*
@@ -57,23 +61,7 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
 				}
 			}
 		}
-		/*
-		ko.bindingHandlers.trumbowyg = {
 
-			init: function (element, valueAccessor, allBindings) {
-				$(element).trumbowyg()
-				$(element).trumbowyg('html', "init")
-			},
-
-			update: function (element, valueAccessor, allBindings) {
-				$(element).trumbowyg('html', textObservable())
-			}
-
-		}
-		self.getText = function () {
-			return self.content;
-		}
-		 */
 		return self
 	}
 	return Editor;
