@@ -4,7 +4,7 @@
  */
 
 /**
- * custom binding (http://knockoutjs.com/documentation/custom-bindings.html) to embed the trumbowyg Editor in a knockout component.
+ * custom binding (http://knockoutjs.com/documentation/custom-bindings.html) to embed the CKEditor in a knockout component.
  */
 define(['knockout', 'cke'], function (ko, ckeditor) {
 
