@@ -1,0 +1,7 @@
+section
+  h2 Hello! What is your name?
+  form.form-inline
+    .fieldset
+      .label Name
+      input(type="text" data-bind="value: name, valueUpdate: 'afterkeydown'")
+      button(type="submit" class="btn" data-bind="click: sayHello, enable: name") Click Me
