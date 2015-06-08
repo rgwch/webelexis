@@ -18,5 +18,11 @@ or you run the vertx-server separately:
 
    vertx runmod rgwch~webelexis-server~0.5.0 -conf &lt;yourconfig.json>
 
-The module resides on bintray, so vertx will find and download it automagically. In &lt;yourconfig.json>, make sure that the 'webroot'-key in the section 'bridge' points to your development client.
+The module resides on bintray, so vertx will find and download it automagically. In &lt;yourconfig.json>, make sure that the 'webroot'-key in the section 'bridge' points to your development client, e.g. 
+
+    "bridge":{
+        "webroot": "../../webelexis-client/dist" 
+    }
+
+if you did not change the layout of the subprojects within webelexis.
 
