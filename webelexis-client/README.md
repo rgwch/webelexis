@@ -4,7 +4,7 @@
 
 1. install nodejs and npm
 2. install git
-2. npm install -g mimosa
+2. sudo npm install -g mimosa
 3. git clone https://github.com/rgwch/webelexis.git webelexis
 4. cd webelexis/webelexis-client
 5. mimosa build (or: mimosa watch)
