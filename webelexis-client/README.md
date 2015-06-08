@@ -1,8 +1,22 @@
-Durandal Mimosa Skeleton
-========================
+# Webelexis Client
 
-This repository contains the Durandal skeleton for the Mimosa browser development toolkit.
+## Setup build environment
 
-1. Use `make start` to start up an asset server and begin coding immediately.
-2. Use `make build-opt` to create your optimized application. The deployable source will be output to a 'dist' folder.
-3. See the [Mimosa](http://mimosajs.com/) project for details on how to customize the solution and use other features.
+1. install nodejs
+2. npm install -g bower
+2. npm install -g mimosa
+3. git clone https://rgwch/webelexis.git webelexis
+4. cd webelexis/webelexis-client
+5. mimosa build (or: mimosa watch)
+
+Note: This does not run the vertx-server. You can run a simple server in dist for client-only testing purposes, e.g.
+
+    cd dist
+    php -S localhost:4000
+    
+or you run the vertx-server separately:
+
+   vertx runmod rgwch~webelexis-server~0.5.0 -conf <yourconfig.json>
+
+The module resides on bintray, so vertx will find and download it automagically. In <yourconfig.json>, make sure that the 'webroot'-key in the section 'bridge' points to your development client.
+
