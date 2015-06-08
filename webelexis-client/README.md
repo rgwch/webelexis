@@ -24,5 +24,5 @@ The module resides on bintray, so vertx will find and download it automagically.
         "webroot": "../../webelexis-client/dist" 
     }
 
-if you did not change the layout of the subprojects within webelexis.
+if you did not change the layout of the subprojects within webelexis. Please look [here](https://github.com/rgwch/webelexis/wiki/Build) for more informations on configuring and running the webelexis server.
 
