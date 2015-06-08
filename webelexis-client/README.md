@@ -2,7 +2,8 @@
 
 ## Setup build environment
 
-1. install nodejs
+1. install nodejs and npm
+2. install git
 2. npm install -g bower
 2. npm install -g mimosa
 3. git clone https://rgwch/webelexis.git webelexis
