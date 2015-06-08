@@ -6,7 +6,7 @@
 2. install git
 2. npm install -g bower
 2. npm install -g mimosa
-3. git clone https://rgwch/webelexis.git webelexis
+3. git clone https://github.com/rgwch/webelexis.git webelexis
 4. cd webelexis/webelexis-client
 5. mimosa build (or: mimosa watch)
 
