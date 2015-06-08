@@ -6,10 +6,27 @@ define(function (require) {
 
   return {
     router: router,
+    changePwd: function(){},
+    connected: function(){
+      return true
+    },
+    locale: function(text){
+      return text
+    },
+    showLogin: function(){
+      return true
+    },
+    showLogout: function(){
+      return false
+    },
+    doLogout: function(){
+
+    },
+
     activate: function () {
       router.map([
-       // { route: '', title:'Home', moduleId: 'hello/index', nav: true },
-        { route: '', title: "Agenda", moduleId: 'agenda/module', nav: true}
+       { route: '', title:'Home', moduleId: 'hello/index', nav: true },
+        { route: 'agenda', title: "Agenda", moduleId: 'agenda/module', nav: true}
       ]).buildNavigationModel();
 
       return router.activate();

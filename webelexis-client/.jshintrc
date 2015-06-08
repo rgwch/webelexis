@@ -10,6 +10,7 @@
     "define": true,
     "window": true,
     "console": true,
-    "CKEDITOR": true
+    "CKEDITOR": true,
+    "require": true
   }
 }

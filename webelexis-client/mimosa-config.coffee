@@ -27,6 +27,15 @@ exports.config =
      javascripts: 'js/lib'
 
 
+  clientJadeStatic:
+    outputExtension: 'html',
+    extensionRegex: /\.jade$/,
+    prettyOutput: true
+
+  jade:
+    compileOptions:
+      compileDebug: true
+
   requireBuildTextPluginInclude:
     pluginPath: 'text'
     extensions: ['html']

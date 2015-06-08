@@ -3,11 +3,11 @@
 	color : red;
 }
 
-span.smaller {
+.smaller {
 	font-size : smaller;
 }
 
-span.larger {
+.larger {
 	font-size : larger;
 }
 
@@ -77,20 +77,20 @@ th.labitem, td.labitem {
 }
 
 /* Styles for consultation entries */
-span.bold {
+.bold {
 	color       : blue;
 	font-weight : bold;
 }
 
-span.italic {
+.italic {
 	color      : #2bc06a;
 	font-style : italic;
 }
 
-span.xref {
+.xref {
 	background-color : #6fccd2;
 }
 
-span.underline {
+.underline {
 	text-decoration : underline;
 }
