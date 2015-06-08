@@ -46,20 +46,7 @@ exports.config =
             js: "durandal"
             css: "durandal"
           }
-        ],
-        "font-awesome": [
-          {
-            css: "stylesheets"
-          }
-        ],
-        "jqueryui-datepicker": [
-          "datepicker.js",
-          "core.js",
-          {
-            js: "jquery-ui"
-            css: "jquery-ui"
-          }
-        ]
+         ]
 
   combine:
     sourceMap: true
@@ -72,18 +59,31 @@ exports.config =
           'vendor/bootstrap/bootstrap-responsive.css'
           'vendor/font-awesome/font-awesome.css'
           'vendor/durandal/durandal.css'
+          'webelexis.css'
           'starterkit.css'
+        ],
+        exclude: [
+          "vendor/bootstrap/bootstrap.min.css",
+          "vendor/bootstrap/bootstrap-theme.css",
+          "vendor/bootstrab/bootstrap-theme.min.css",
+          "vendor/font-awesome/font-awesome.min.css"
         ]
       }
     ]
+    removeCombined: {
+      enabled: true
+    }
 
   server:
     defaultServer:
       enabled: true
       onePager: true
     views:
-      compileWith: 'html'
-      extension: 'html'
+      compileWith: 'jade'
+      extension: 'html.jade'
+      path: "src"
+
+
 
   require:
     commonConfig: 'js/app/requirejs.config.js'
@@ -94,3 +94,4 @@ exports.config =
         stubModules: ['text']
         pragmas:
           build: true
+

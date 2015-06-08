@@ -6,7 +6,7 @@
 /**
  * custom binding (http://knockoutjs.com/documentation/custom-bindings.html) to embed the CKEditor in a knockout component.
  */
-define(['knockout', 'cke'], function (ko, ckeditor) {
+define(['knockout'], function (ko) {
 
 	var Editor = function (elementID) {
 		var self = this;

@@ -1,25 +1,24 @@
 // This file is part of Webelexis, copyright (c) 2015 by G. Weirich
 doctype html
 html(lang="de")
-	head
-		meta(charset="utf-8")
-		meta(name="viewport" content="width=device-width, initial-scale=1")
-		meta(http-equiv="content-type" content="text/html; charset=utf-8")
-		meta(name="clientID" content="GOOGLE_CLIENT_ID")
-		meta(name="state" content="GOOGLE_STATE")
-		meta(name="UUID" content="GUID")
-		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
-		link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css")
-		link(rel="stylesheet" href="stylesheets/styles.css")
-		title Webelexis
-	body
-		noscript
-			p Sie können diese Seite nur mit einem JavaScript-f&auml;higen Browser benutzen.
-			p Please use a browser with JavaScript enabled to visit this site.
-			p Activer JavaScript pour ce site s.v.p.
-		#applicationHost
-			.splash
-				.message Webelexis startet.
-				i.fa.fa-spinner.fa-spin
-			script(src="https://apis.google.com/js/platform.js" async defer)
-			script(data-main="js/app/main.js" src="js/lib/requirejs/require.js")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(http-equiv="content-type" content="text/html; charset=utf-8")
+    meta(name="clientID" content="GOOGLE_CLIENT_ID")
+    meta(name="state" content="GOOGLE_STATE")
+    meta(name="UUID" content="GUID")
+    link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css")
+    link(rel="stylesheet" href="stylesheets/styles.css")
+    title Webelexis
+  body
+    noscript
+      p Sie können diese Seite nur mit einem JavaScript-f&auml;higen Browser benutzen.
+      p Please use a browser with JavaScript enabled to visit this site.
+      p Activer JavaScript pour ce site s.v.p.
+    #applicationHost
+      .splash
+        .message Webelexis startet.
+        i.fa.fa-spinner.fa-spin
+      script(src="https://apis.google.com/js/platform.js" async defer)
+      script(data-main="js/app/main.js" src="js/lib/requirejs/require.js")
