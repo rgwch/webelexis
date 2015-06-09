@@ -9,7 +9,7 @@
 4. cd webelexis/webelexis-client
 5. mimosa build (or: mimosa watch)
 
-Note: This does not run the vertx-server. You can run a simple server in dist for client-only testing purposes, e.g.
+Note: This does not run the vertx-server. You can run a simple server for client-only testing purposes, e.g.
 
     mimosa watch -s  # and point your browser to localhost:3000
     
