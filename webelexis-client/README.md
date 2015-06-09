@@ -2,7 +2,7 @@
 
 ## Build from scratch
 
-1. install nodejs and npm
+1. install npm
 2. install git
 2. sudo npm install -g mimosa
 3. git clone https://github.com/rgwch/webelexis.git webelexis
@@ -15,7 +15,7 @@ Note: This does not run the vertx-server. You can run a simple server in dist fo
     
 or you run the vertx-server separately:
 
-    vertx runmod rgwch~webelexis-server~0.5.0 -conf &lt;yourconfig.json>
+    vertx runmod rgwch~webelexis-server~0.5.0 -conf <yourconfig.json>
 
 The module resides on bintray, so vertx will find and download it automagically. In &lt;yourconfig.json>, make sure that the 'webroot'-key in the section 'bridge' points to your development client, e.g. 
 
