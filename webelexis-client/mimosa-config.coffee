@@ -55,7 +55,12 @@ exports.config =
             js: "durandal"
             css: "durandal"
           }
-         ]
+        ],
+        "i18next": [
+          "i18next.amd.withJQuery.js"
+        ]
+
+
 
   combine:
     sourceMap: true

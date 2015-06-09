@@ -21,7 +21,7 @@
     ul.nav.navbar-nav.navbar-right(data-bind="visible: showLogout()")
       li.dropdown
         a.dropdown-toggle(href="#" data-toggle="dropdown" role="button")
-          span#displayName Konto
+          span#displayName(data-bind="text: locale('account')")
             span.caret
         ul.dropdown-menu(role="menu")
           li

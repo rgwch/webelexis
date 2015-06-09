@@ -20,7 +20,7 @@
     "jade-runtime": "~0.0.2",
     "js-cookie": "~1.5.1",
     "jqueryui-datepicker": "~0.0.3",
-    "almond": "~0.3.1"
+    "i18next": "~1.9.0"
   },
   "resolutions": {
     "requirejs": "2.1.18",
