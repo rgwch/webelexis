@@ -1,0 +1,33 @@
+{
+  "m": {
+    "add": {
+      "account": "Create account",
+      "heading": "Enter personal informations",
+      "firstname": "first name",
+      "lastname": "last name",
+      "dob": "birthdate",
+      "mail": "mail",
+      "street": "street",
+      "zip": "zip",
+      "place": "place",
+      "phone": "phone #",
+      "mobile": "mobile phone",
+      "insurance": "insurance",
+      "insurance_no": "insurance number",
+      "password": "password",
+      "password_rep": "password (repeat)",
+      "existing_pat": " If you are already a patient in our practice bot don't have an account, check here.",
+      "new_pat": " If you are new to our practice, please check here and fill out all required fields",
+      "send_form": "transmit form",
+      "privacy_header": "Declaration of privacy",
+      "privacy_body": "We will use your details exclusively to create your account, and to contact you in case we need to change an appointment. We shall never disclose any of your details to third parties, unless required to do so by legal enforcement authorities.",
+      "warn_firstname": "Please enter your first name.",
+      "warn_lastname": "Please enter your last name.",
+      "warn_dob": "Please enter your birthdate (european form: d.m.y).",
+      "warn_mail": "The mail address is required (it will be your login name).",
+      "warn_pwd": "A password of at least 5 characters is required.",
+      "warn_pwd_rep": "Please enter your password here again.",
+      "warn_pwd_match": "The passwords do not match."
+    }
+  }
+}
