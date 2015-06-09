@@ -4,7 +4,7 @@
  */
 
 // Login Module
-define(['bus', 'config', 'knockout', 'i18n', './forgotpwd'], function (bus, config, ko, R, pwd) {
+define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], function (bus, config, ko, R, pwd, appl) {
 
 
   function adapt(connected) {
@@ -91,13 +91,20 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd'], function (bus, conf
     self.forgotPwd = function () {
       new pwd().show().then(function (response) {
         if (response !== undefined && response.length > 3) {
-          self.submitSendPwd(response)
+          bus.send("ch.webelxis.patient.lostpwd", {
+            "username": response,
+            "sessionId": config.sessionID
+          }, function (response) {
+            if (response === undefined) {
+              system.log("communication error")
+            } else if (response.status === "ok") {
+                // resetpwd ok
+            }else{
+              // user not found
+            }
+          })
         }
       })
-    }
-
-    self.submitSendPwd = function (mail) {
-      window.alert(mail)
     }
 
   }

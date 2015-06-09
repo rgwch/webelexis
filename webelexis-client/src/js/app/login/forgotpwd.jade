@@ -7,6 +7,6 @@
     form.form(data-bind="submit: submitSendPwd")
       .form-group
         label(for="mailaddr" data-i18n="m.login.mailaddr")
-        input(type="email" id="mailaddr" data-bind="value: email")
+        input(style="width: 100%" type="email" id="mailaddr" data-bind="value: email")
       button.btn.btn-primary(type="submit" id="mail_send" data-i18n="global.send")
       button.btn.btn-default(data-bind="click: close" data-i18n="global.cancel")

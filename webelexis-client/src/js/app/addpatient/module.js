@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html', 'app/datetools', 'i18n', 'jquery', 'validate'], function (ko, bus, cfg, html, dt, R, $) {
+define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'jquery', 'validate'], function (ko, bus, cfg, dt, R, $) {
 
 
   function AddPatientModel() {
@@ -113,8 +113,6 @@ define(['knockout', 'bus', 'app/config', 'text!tmpl/ch-webelexis-addpatient.html
 
   }
 
-  return {
-    viewModel: AddPatientModel,
-    template: html
-  }
+  return AddPatientModel
+
 });
