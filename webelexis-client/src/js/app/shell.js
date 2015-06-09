@@ -6,27 +6,29 @@ define(function (require) {
 
   return {
     router: router,
-    changePwd: function(){},
-    connected: function(){
+    changePwd: function () {
+    },
+    connected: function () {
       return true
     },
-    locale: function(text){
+    locale: function (text) {
       return text
     },
-    showLogin: function(){
+    showLogin: function () {
       return true
     },
-    showLogout: function(){
+    showLogout: function () {
       return false
     },
-    doLogout: function(){
+    doLogout: function () {
 
     },
 
     activate: function () {
       router.map([
-       { route: '', title:'Home', moduleId: 'hello/index', nav: true },
-        { route: 'agenda', title: "Agenda", moduleId: 'agenda/module', nav: true}
+        {route: 'agenda', title: "Termine", moduleId: 'agenda/module', nav: 1},
+        {route: 'detail', title: "Agenda", moduleId: 'detailagenda/module', nav: 2},
+        {route: 'findpat', title: "Patient", moduleId: 'patients/module', nav: 3}
       ]).buildNavigationModel();
 
       return router.activate();

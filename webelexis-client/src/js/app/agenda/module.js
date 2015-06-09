@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'config','datetools', './datepicker'], function(ko, bus, cfg, dt) {
+define(['knockout', 'bus', 'config','datetools', 'datepicker'], function(ko, bus, cfg, dt) {
 
   var Locale={
     de: {
