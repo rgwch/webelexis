@@ -22,9 +22,9 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], fun
 
     } else {
       // console.log("eventBus closed")
-      $("#loginbutton").text(R.t('m.login.notConnectedHead'))
+      $("#loginbutton").text(R.t('global.notConnectedHead'))
       $("#loginbutton").attr("disabled", "disabled")
-      $("#login-message").text(R.t('m.login.notConnectedBody'))
+      $("#login-message").text(R.t('global.notConnectedBody'))
       $("#login-head").removeClass()
       $("#login-head").addClass("panel panel-warning")
     }
@@ -94,13 +94,13 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], fun
           bus.send("ch.webelxis.patient.lostpwd", {
             "username": response,
             "sessionId": config.sessionID
-          }, function (response) {
-            if (response === undefined) {
-              system.log("communication error")
-            } else if (response.status === "ok") {
-                // resetpwd ok
+          }, function (result) {
+            if (result === undefined) {
+              window.alert("communication error")
+            } else if (result.status === "ok") {
+              appl.showMessage(R.t('m.login.sendingPwd'), R.t('global.chpwd'))
             }else{
-              // user not found
+              appl.showMessage(R.t('m.login.badUsername'), R.t('global.chpwd'))
             }
           })
         }

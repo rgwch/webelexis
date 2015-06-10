@@ -2,9 +2,26 @@
  * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
  */
 define(function (require) {
-  var router = require('plugins/router');
-  var R = require('i18n')
+  var router = require('plugins/router'),
+    R = require('i18n'),
+    _ = require('underscore'),
+    cfg = require('config')
 
+  var routes = function (roles) {
+    var ret = []
+    _.each(cfg.modules, function (module) {
+      if (module.active) {
+        if ((module.role === 'guest') || (roles.indexOf(module.role) !== -1)) {
+          ret.push({
+            route: module.route,
+            title: module.title,
+            moduleId: module.locaction,
+            nav: module.menuItem
+          })
+        }
+      }
+    })
+  }
   return {
     router: router,
     changePwd: function () {

@@ -2,12 +2,11 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'jquery', 'validate'], function (ko, bus, cfg, dt, R, $) {
+define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'jquery', 'validate'], function (ko, bus, cfg, dt, R, appl, $) {
 
 
   function AddPatientModel() {
     var self = this
-    self.title = "Daten erfassen"
     self.data = ko.observable({
       vorname: "",
       name: "",
@@ -27,13 +26,13 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'jquery', 'validate'],
       R.t('m.add.place'), R.t('m.add.phone'), R.t('m.add.mobile'), R.t('m.add.insurance'), R.t('m.add.insurance_no')
     ]
     self.locale = function (name) {
-      return R[name]
+      return R.t('m.add.' + name)
     }
 
     self.send = function () {
       // send request only if validate is okay. Convert birthdate to Elexis format.
       if (self.vtor.numberOfInvalids() === 0) {
-        console.log(JSON.stringify(self.data()))
+        system.log(JSON.stringify(self.data()))
         var payload = self.data()
         var date = dt.makeDateFromLocal(payload.geburtsdatum)
         payload.geburtsdatum = dt.makeCompactString(date)
@@ -42,17 +41,17 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'jquery', 'validate'],
         payload.origin = window.location.origin
         bus.send("ch.webelexis.patient.add", payload, function (result) {
           if (result === undefined) {
-            window.alert("Verbindungsfehler")
+            appl.showMessage(R.t('global.notConnectedBody'), R.t('global.notConnectedHead'))
           } else if (result.status === "ok") {
             window.location.hash = "#alert/newpathead/newpatbody"
           } else {
-            console.log(result.status + " " + result.message)
-            window.alert(result.status)
+            system.log(result.status + " " + result.message)
+            appl.showMessage(result.status, R.t('global.error'))
           }
         })
       } else {
         self.vtor.showErrors()
-        console.log("not sending: invalid fields: " + self.vtor.numberOfInvalids())
+        system.log("not sending: invalid fields: " + self.vtor.numberOfInvalids())
       }
     }
 
@@ -83,14 +82,14 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'jquery', 'validate'],
 
       },
       messages: {
-        vorname: R.warn_firstname,
-        name: R.warn_lastname,
-        geburtsdatum: R.warn_dob,
-        email: R.warn_mail,
-        pass: R.warn_pwd,
+        vorname: R.t('m.add.warn_firstname'),
+        name: R.t('m.add.warn_lastname'),
+        geburtsdatum: R.t('m.add.warn_dob'),
+        email: R.t('m.add.warn_mail'),
+        pass: R.t('m.add.warn_pwd'),
         pwdrep: {
-          required: R.warn_pwd_rep,
-          equals: R.warn_pwd_match
+          required: R.t('m.add.warn_pwd_rep'),
+          equals: R.t('m.add.warn_pwd_match')
         }
       }
     })

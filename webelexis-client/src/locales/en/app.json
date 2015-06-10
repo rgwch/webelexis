@@ -1,4 +1,20 @@
 {
+  "login": {
+    "heading": "login",
+    "headmsg": "Please login",
+    "loginButton": "Login",
+    "loginMessage1": "Please use your email-address and password, or your google account to log in",
+    "loginMessage2": "Enter your e-mail address and your password please",
+    "badLogin": "The mail address or the password were not correct. Please try again.",
+    "noaccount": "No account? Click here to create one",
+    "forgotpwd": "Forgot password?",
+    "pwdDlgHeader": "Request new password",
+    "pwdDlgExplain": "Enter your email-address and press 'send' to generate a new password.",
+    "mailaddr": "mail-address (=username)",
+    "waitForServer": "Waiting for server...",
+    "sendingPwd": "A new password has been sent by mail.",
+    "badUsername": "There is no account with the given mail address."
+  },
   "m": {
     "add": {
       "account": "Create account",
@@ -29,5 +45,10 @@
       "warn_pwd_rep": "Please enter your password here again.",
       "warn_pwd_match": "The passwords do not match."
     }
+  },
+  "global": {
+    "notConnectedHead": "Not connected",
+    "notConnectedBody": "Not connected with the remote server. Please try again later.",
+    "error": "error"
   }
 }

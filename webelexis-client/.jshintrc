@@ -11,6 +11,7 @@
     "window": true,
     "console": true,
     "CKEDITOR": true,
-    "require": true
+    "require": true,
+    "system": true
   }
 }
