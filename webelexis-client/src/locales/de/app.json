@@ -4,7 +4,54 @@
       "title": "Termine"
     },
     "agenda": {
-      "title": "Agenda"
+      "title": "Agenda",
+      "sun": "So",
+      "mon": "Mo",
+      "tue": "Di",
+      "wed": "Mi",
+      "thu": "Do",
+      "fri": "Fr",
+      "sat": "Sa",
+      "january": "Januar",
+      "february": "Februar",
+      "march": "März",
+      "april": "April",
+      "may": "Mai",
+      "june": "Juni",
+      "july": "Juli",
+      "august": "August",
+      "september": "September",
+      "october": "Oktober",
+      "november": "November",
+      "december": "Dezember",
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "März",
+      "apr": "Apr",
+      "ma": "Mai",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Okt",
+      "nov": "Nov",
+      "dec": "Dec",
+      "yesterday": "Einen Tag zurück",
+      "today": "Heute",
+      "tomorrow": "Einen Tag weiter",
+      "openCal": "Kalender öffnen",
+      "makeAppnt": "Termin vereinbaren",
+      "deleteAppnt": "Termin löschen",
+      "cancel": "Abbrechen",
+      "disclaimer": "Die Verwendung dieser Website geschieht ohne Gewähr. Für fehlerhaft übertragene Termine wird keine Haftung übernommen. In wichtigen Fällen bestätigen Sie Ihren Termin bitte telefonisch.",
+      "rightHeading": "Termin direkt online eintragen",
+      "rightFooter": "Bitte beachten Sie, dass wir bei einer Terminvereinbarung über diese Website Ihre IP-Adresse und weitere Angaben speichern. Sämtliche Daten werden nach dem vereinbarten Termin wieder gelöscht.",
+      "yourapp": "Ihr Termin",
+      "occupied": "belegt",
+      "loggedin": "Sie sind angemeldet als __user__. Bitte bestätigen Sie den gewünschten Termin am __day__ um __time__ Uhr.",
+      "error_entry": "Fehler eim Eintragen",
+      "error_delete": "Fehler beim Löschen"
+
     },
     "patient": {
       "title": "Patient"
@@ -66,6 +113,7 @@
     "cancel": "Abbruch",
     "notConnectedHead": "Nicht verbunden",
     "notConnectedBody": "Es besteht keine Verbindung zum Server. Warten Sie bitte einen Moment, oder versuchen Sie es später noch einmal.",
-    "error": "Fehler"
+    "error": "Fehler",
+    "connection_error": "Verbindungsfehler "
   }
 }

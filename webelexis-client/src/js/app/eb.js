@@ -9,7 +9,7 @@
  message bus object. While the bus is closed, it will try a reconnect every 5 seconds
  */
 define(['config', 'vertxbus'], function (config) {
-	var bus = null;
+  var bus = null
 	var reopen = setInterval(function () {
 		openBus()
 	}, 500000);
