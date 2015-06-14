@@ -3,9 +3,14 @@ section
   .col-md-6.col-md-offset-3.col.xs-12
     .panel.panel-default
       .panel-heading
-        form.form.form-horizontal
+        form.form.form-horizontal(data-bind="submit: sendQuery")
           p Bitte geben Sie einen Teil des Vornamens, des Namens oder des Geburtsdatums ein.
-          input.abstand(type=text style="width: 100%")
-
+          input.abstand#queryString(type=text style="width: 100%")
+          button.btn.btn-primary(type="submit") Abfragen
       .panel-body
+        .row(data-bind="foreach: people")
+          .col-xs-3 Test
+          .col-xs-3(data-bind="bezeichnung1")
+          .col-xs-3(data-bind="bezeichnung2")
+          .col.xs-3(data-bind="geburtsdatum")
       .panel-footer

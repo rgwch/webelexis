@@ -35,12 +35,12 @@ public class FindPatientHandler implements Handler<Message<JsonObject>> {
 
     @Override
     public void handle(Message<JsonObject> externalEvent) {
-        Cleaner cl = new Cleaner(externalEvent);
+        final Cleaner cl = new Cleaner(externalEvent);
         try {
             String expr = "%" + cl.get("expr", Cleaner.TEXT, false) + "%";
-            Mapper mapper = new Mapper(fields);
+            final Mapper mapper = new Mapper(fields);
             JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement", mapper.mapToString(sql, "FIELDS"))
-                    .putArray("values", new JsonArray(new String[]{expr}));
+                    .putArray("values", new JsonArray(new String[]{expr, expr}));
             log.debug("sending Query " + jo.encode());
             eb.send("ch.webelexis.sql", jo, new Handler<Message<JsonObject>>() {
                 @Override
@@ -51,8 +51,8 @@ public class FindPatientHandler implements Handler<Message<JsonObject>> {
                         Iterator it = rows.iterator();
                         JsonArray ret = new JsonArray();
                         while (it.hasNext()) {
-                            Object[] row = (Object[]) it.next();
-                            JsonObject jo = mapper.mapToJson(row);
+                            JsonArray row = (JsonArray) it.next();
+                            JsonObject jo = mapper.mapToJson(row.toArray());
                             ret.add(jo);
                         }
                         JsonObject result = new JsonObject().putString("status", "ok").putArray("result", ret);
