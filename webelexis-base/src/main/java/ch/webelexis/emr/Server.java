@@ -27,6 +27,7 @@ public class Server extends BusModBase {
 		log.info("EMR Server started. got config " + cfg.encodePrettily());
 		eb.registerHandler("ch.webelexis.patient.detail", new AuthorizingHandler(this, cfg.getString(
 					"role", "admin"), new PatientDetailHandler(this)));
+		eb.registerHandler("ch.webelexis.patient.find", new AuthorizingHandler(this, cfg.getString("role", "admin"), new FindPatientHandler(this)));
 
 		if (cfg.getBoolean("lab",false) == true) {
 			final LabResultSummaryHandler labResultHandler = new LabResultSummaryHandler(this);
