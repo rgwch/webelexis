@@ -12,9 +12,8 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
       R.t("m.agenda.august"), R.t("m.agenda.september"), R.t("m.agenda.october"), R.t("m.agenda.november"), R.t("m.agenda.december")]
     self.monateKurz = [R.t("m.agenda.jan"), R.t("m.agenda.feb"), R.t("m.agenda.mar"), R.t("m.agenda.apr"), R.t("m.agenda.ma"), R.t("m.agenda.jun"), R.t("m.agenda.jul"),
       R.t("m.agenda.aug"), R.t("m.agenda.sep"), R.t("m.agenda.oct"), R.t("m.agenda.nov"), R.t("m.agenda.dec")]
-    self.title = "Agenda"
     self.msg = function (id) {
-      return R[id]
+      return R.t("m.agenda." + id)
     }
 
     /**

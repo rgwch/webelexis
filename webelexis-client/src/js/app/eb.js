@@ -12,7 +12,7 @@ define(['config', 'vertxbus'], function (config) {
   var bus = null
 	var reopen = setInterval(function () {
 		openBus()
-	}, 500000);
+	}, 5000);
 	var listeners = []
 
 	var timeoutHandler = function (msg) {

@@ -73,8 +73,8 @@ exports.config =
           'vendor/bootstrap/bootstrap-responsive.css'
           'vendor/font-awesome/font-awesome.css'
           'vendor/durandal/durandal.css'
-          'webelexis.css'
           'starterkit.css'
+          'webelexis.css'
         ],
         exclude: [
           "vendor/bootstrap/bootstrap.min.css",

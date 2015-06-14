@@ -114,6 +114,7 @@
     "notConnectedHead": "Nicht verbunden",
     "notConnectedBody": "Es besteht keine Verbindung zum Server. Warten Sie bitte einen Moment, oder versuchen Sie es später noch einmal.",
     "error": "Fehler",
-    "connection_error": "Verbindungsfehler "
+    "connection_error": "Verbindungsfehler ",
+    "reload": "Bitte versuchen Sie, die Seite neu zu laden."
   }
 }

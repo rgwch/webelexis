@@ -1,5 +1,5 @@
 //- This file is part of Webelexis, Copyright (c) 2015 by G. Weirich
-.navbar.navbar-default
+nav.navbar.navbar-default
   .navbar-header
     button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#webelexis-main-collapsed")
       span.sr-only Menu erweitern
@@ -8,9 +8,9 @@
       div(data-bind="visible: connected")
         img.img(alt="webelexis" src="images/elexis_logo.png" style="height: 32px; width=32px;" data-toogle="tooltip" data-bind="attr: {title: locale('connected')}")
       div(data-bind="visible: connected()===false")
-        img.img(alt="webelexis" src="imagesg/elexis_logo_bw.png" style="height: 32px; width=32px;" data-toggle="tooltip" data-bind="attr: {title: locale('notconnected')}")
+        img.img(alt="webelexis" src="images/elexis_logo_bw.png" style="height: 32px; width=32px;" data-toggle="tooltip" data-bind="attr: {title: locale('notconnected')}")
   .collapse.navbar-collapse#webelexis-main-collapsed
-    ul.nav.navbar-nav(data-bind="foreach: router.navigationModel")
+    ul.nav.navbar-nav#mainmenu(data-bind="foreach: router.navigationModel")
       li(data-bind="css: { active: isActive }")
         a(data-bind="attr: { href: hash }, html: title")
     .nav.navbar-text(data-bind="click: changePwd")

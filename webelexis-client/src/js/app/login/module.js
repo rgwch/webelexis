@@ -4,12 +4,13 @@
  */
 
 // Login Module
-define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], function (bus, config, ko, R, pwd, appl) {
+define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app', 'durandal/system'], function (bus, config, ko, R, pwd, appl, system) {
 
 
-  function adapt(connected) {
+  var adapt = function (connected) {
+
     if (connected) {
-      //console.log("eventBus open")
+      system.log("eventBus open")
       $("#loginbutton").text(R.t('m.login.loginButton'))
       $("#loginbutton").removeAttr("disabled")
       if (config.google !== undefined) {
@@ -21,7 +22,7 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], fun
       $("#login-head").addClass("panel panel-info")
 
     } else {
-      // console.log("eventBus closed")
+      system.log("eventBus closed")
       $("#loginbutton").text(R.t('global.notConnectedHead'))
       $("#loginbutton").attr("disabled", "disabled")
       $("#login-message").text(R.t('global.notConnectedBody'))
@@ -40,10 +41,7 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], fun
     self.uname = ko.observable("")
     self.pwd = ko.observable("")
 
-    bus.addListener(function (msg) {
-      adapt(msg === "open")
-    })
-    adapt(bus.connected)
+
     self.dologin = function (/*formElement*/) {
       //console.log("login " + self.uname() + "," + self.pwd() + "," + config.sessionID)
       bus.send('ch.webelexis.session.login', {
@@ -61,10 +59,14 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], fun
           //console.log(JSON.stringify(config.user))
           window.location.hash = "#"
         } else {
-          //console.log("login failed")
-          $("#login-head").removeClass()
-          $("#login-head").addClass("panel panel-danger")
-          $("#login-message").text(R.t('m.login.badLogin')).addClass("red")
+          system.log("login failed")
+          if (result.message === "no session") {
+            appl.showMessage(R.t("global.reload"), R.t("global.connection_error"))
+          } else {
+            $("#login-head").removeClass()
+            $("#login-head").addClass("panel panel-danger")
+            $("#login-message").text(R.t('m.login.badLogin')).addClass("red")
+          }
         }
       });
 
@@ -99,15 +101,25 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app'], fun
               window.alert("communication error")
             } else if (result.status === "ok") {
               appl.showMessage(R.t('m.login.sendingPwd'), R.t('global.chpwd'))
-            }else{
+            } else {
               appl.showMessage(R.t('m.login.badUsername'), R.t('global.chpwd'))
             }
           })
         }
       })
     }
+    var busListener = function () {
+      adapt(bus.connected())
+      system.log("bus Listener: " + bus.connected())
+    }
 
+    bus.addListener(busListener, false)
   }
 
+  LoginViewModel.prototype.dispose = function () {
+    bus.removeListener(LoginViewModel.busListener)
+  }
+
+  adapt(bus.connected())
   return LoginViewModel
 });

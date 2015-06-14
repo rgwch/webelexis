@@ -47,7 +47,7 @@ label.error {
 
 /* entries in "detailagenda" */
 div.agendabox {
-	border-top-style : solid;
+	border-bottom-style: solid;
 	border-width     : 1px;
 	border-color     : black;
 	min-height       : 2.5em;
