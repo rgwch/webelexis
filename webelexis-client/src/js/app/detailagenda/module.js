@@ -6,7 +6,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'datetools', 'bus', 'config', 'datepicker'], function (ko, dt, bus, cfg) {
+define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], function (ko, dt, bus, cfg, R) {
 
 
   /**
@@ -16,11 +16,14 @@ define(['knockout', 'datetools', 'bus', 'config', 'datepicker'], function (ko, d
 
   function AgendaViewModel(dprm) {
     var self = this;
-    self.tage = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
-    self.monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
-    self.monateKurz = ["Jan", "Feb", "März", "April", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
-    self.title = "Agenda"
-
+    self.tage = [R.t("m.agenda.sun"), R.t("m.agenda.mon"), R.t("m.agenda.tue"), R.t("m.agenda.wed"), R.t("m.agenda.thu"), R.t("m.agenda.fri"), R.t("m.agenda.sat")]
+    self.monate = [R.t("m.agenda.january"), R.t("m.agenda.february"), R.t("m.agenda.march"), R.t("m.agenda.april"), R.t("m.agenda.may"), R.t("m.agenda.june"), R.t("m.agenda.july"),
+      R.t("m.agenda.august"), R.t("m.agenda.september"), R.t("m.agenda.october"), R.t("m.agenda.november"), R.t("m.agenda.december")]
+    self.monateKurz = [R.t("m.agenda.jan"), R.t("m.agenda.feb"), R.t("m.agenda.mar"), R.t("m.agenda.apr"), R.t("m.agenda.ma"), R.t("m.agenda.jun"), R.t("m.agenda.jul"),
+      R.t("m.agenda.aug"), R.t("m.agenda.sep"), R.t("m.agenda.oct"), R.t("m.agenda.nov"), R.t("m.agenda.dec")]
+    self.msg = function (id) {
+      return R.t("m.agenda." + id)
+    }
     self.Appointment = function (row) {
       var app = this;
       app.expanded = ko.observable(false)

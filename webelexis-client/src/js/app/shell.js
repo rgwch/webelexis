@@ -91,15 +91,6 @@ define(['plugins/router', 'i18n', 'underscore', 'config', 'knockout', 'bus', 'bo
     },
 
     activate: function () {
-      /*
-      router.map([
-        {route: ['', 'agenda'], title: R.t('app:m.termine.title'), moduleId: 'agenda/module', nav: 1},
-        {route: 'detail', title: R.t('app:m.agenda.title'), moduleId: 'detailagenda/module', nav: 2},
-        {route: 'findpat', title: R.t('m.patient.title'), moduleId: 'patients/module', nav: 3},
-        {route: 'login', title: R.t("global.login"), moduleId: 'login/module', nav: false},
-        {route: 'addpatient', title: R.t("m.add.account"), moduleId: "addpatient/module", nav: false}
-      ]).buildNavigationModel();
-       */
       var initialRoutes = routes(["guest"])
       router.map(initialRoutes).buildNavigationModel()
       return router.activate();
