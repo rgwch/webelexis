@@ -1,5 +1,7 @@
 # Webelexis Client
 
+As of Webelexis-release 0.5.0, webelexis server and webelexis client are separate subprojects. 
+
 ## Build from scratch
 
 1. install npm
@@ -15,7 +17,7 @@ Note: This does not run the vertx-server. You can run a simple server for client
     
 or you run the vertx-server separately:
 
-    vertx runmod rgwch~webelexis-server~0.5.0 -conf <yourconfig.json>
+    vertx runmod rgwch~webelexis-server~0.5.0 -conf <yourconfig.json>  # and point brwoser to localhost:2015
 
 The module resides on bintray, so vertx will find and download it automagically. In &lt;yourconfig.json>, make sure that the 'webroot'-key in the section 'bridge' points to your development client, e.g. 
 
