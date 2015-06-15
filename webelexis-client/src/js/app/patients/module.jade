@@ -9,8 +9,8 @@ section
           button.btn.btn-primary(type="submit") Abfragen
       .panel-body
         .row(data-bind="foreach: people")
-          .col-xs-3 Test
-          .col-xs-3(data-bind="bezeichnung1")
-          .col-xs-3(data-bind="bezeichnung2")
-          .col.xs-3(data-bind="geburtsdatum")
+          .col-xs-4(data-bind="text: Bezeichnung1")
+          .col-xs-4(data-bind="text: Bezeichnung2")
+          .col.xs-4(data-bind="text: Geburtsdatum")
+          .clearfix
       .panel-footer

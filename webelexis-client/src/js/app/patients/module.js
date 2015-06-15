@@ -7,9 +7,11 @@
  */
 
 define(['knockout', 'bus', 'config', 'durandal/system'], function (ko, eb, cfg, system) {
-  var people = ko.observableArray()
-  return {
-    sendQuery: function () {
+
+  function FindPat() {
+    var self = this;
+    self.people = ko.observableArray()
+    self.sendQuery = function () {
       eb.send("ch.webelexis.patient.find", {
         "expr": $("#queryString").val(),
         "sessionID": cfg.sessionID
@@ -18,12 +20,14 @@ define(['knockout', 'bus', 'config', 'durandal/system'], function (ko, eb, cfg, 
           system.log("connection error")
         } else {
           if (result.status === "ok") {
-            people(result.result);
+            self.people(result.result);
           } else {
             system.log("bad result")
           }
         }
       })
-    },
+    }
   }
+
+  return FindPat
 });
