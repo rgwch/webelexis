@@ -93,7 +93,7 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app', 'dur
     self.forgotPwd = function () {
       new pwd().show().then(function (response) {
         if (response !== undefined && response.length > 3) {
-          bus.send("ch.webelxis.patient.lostpwd", {
+          bus.send("ch.webelexis.patient.lostpwd", {
             "username": response,
             "sessionId": config.sessionID
           }, function (result) {

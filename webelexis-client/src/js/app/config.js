@@ -62,7 +62,7 @@ define(['knockout', 'i18n'], function (ko, R) {
       {
         route: 'login',
         title: R.t("global.login"),
-        location: 'login/module',
+        location: 'account/login',
         nav: false,
         active: true,
         role: "guest"
@@ -70,7 +70,7 @@ define(['knockout', 'i18n'], function (ko, R) {
       {
         route: 'addpatient',
         title: R.t("m.add.account"),
-        location: "addpatient/module",
+        location: "account/create",
         nav: false,
         active: true,
         role: "guest"
