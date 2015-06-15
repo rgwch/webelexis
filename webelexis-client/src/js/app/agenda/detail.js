@@ -14,7 +14,7 @@ define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], functio
    * 0 tag,1 beginn,2 dauer, 3 bereich, 4 termintyp,5 terminID,6 PatientID,7 Terminstatus,8 Grund,9 Kontakt-bez, 10 Kontakt-bez2
    */
 
-  function AgendaViewModel(dprm) {
+  function AgendaViewModel() {
     var self = this;
     self.tage = [R.t("m.agenda.sun"), R.t("m.agenda.mon"), R.t("m.agenda.tue"), R.t("m.agenda.wed"), R.t("m.agenda.thu"), R.t("m.agenda.fri"), R.t("m.agenda.sat")]
     self.monate = [R.t("m.agenda.january"), R.t("m.agenda.february"), R.t("m.agenda.march"), R.t("m.agenda.april"), R.t("m.agenda.may"), R.t("m.agenda.june"), R.t("m.agenda.july"),
@@ -207,24 +207,25 @@ define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], functio
       window.location.hash = "#conslist/" + idx.patientID
     }
 
-    if (dprm !== undefined && dprm.params[0] !== undefined) {
-      self.now(dt.makeDateFromElexisDate(dprm.params[0]))
+    self.activate = function (day) {
+      bus.addListener(busListener, true)
+      if (day) {
+        self.now(dt.makeDateFromElexisDate(day))
+      }
     }
+
 
     var busListener = function (msg) {
       if (msg === "open") {
         self.loadResources()
       }
     }
-    bus.addListener(busListener, true)
 
-
+    self.deactivate = function () {
+      bus.removeListener(busListener)
+    }
   }
 
-
-  AgendaViewModel.prototype.dispose = function () {
-    bus.removeListener(AgendaViewModel.busListener)
-  }
   return AgendaViewModel
 
 });

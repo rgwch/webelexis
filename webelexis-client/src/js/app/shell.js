@@ -10,6 +10,7 @@ define(['plugins/router', 'i18n', 'underscore', 'config', 'knockout', 'bus', 'bo
         if ((module.role === 'guest') || (roles.indexOf(module.role) !== -1)) {
           ret.push({
             route: module.route,
+            hash: module.hash,
             title: module.title,
             moduleId: module.location,
             nav: module.nav

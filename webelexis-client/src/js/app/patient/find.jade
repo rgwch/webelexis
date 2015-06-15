@@ -8,9 +8,6 @@ section
           input.abstand#queryString(type=text style="width: 100%")
           button.btn.btn-primary(type="submit") Abfragen
       .panel-body
-        .row(data-bind="foreach: people")
-          .col-xs-4(data-bind="text: Bezeichnung1")
-          .col-xs-4(data-bind="text: Bezeichnung2")
-          .col.xs-4(data-bind="text: Geburtsdatum")
-          .clearfix
+        .list-group(data-bind="foreach: people")
+          a.list-group-item(data-bind="text: text, css: css, attr: {href: href}")
       .panel-footer

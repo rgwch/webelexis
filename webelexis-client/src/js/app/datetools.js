@@ -5,7 +5,7 @@
 define({
 
   // Helper function to take day, month and year from a Date object
-  dateStrings: function(date) {
+  dateStrings: function (date) {
     var month = (date.getMonth() + 1).toString();
     if (month.length < 2) {
       month = '0' + month
@@ -22,13 +22,13 @@ define({
   },
 
   // create a YYYYMMDD String from a Date object
-  makeCompactString: function(date) {
+  makeCompactString: function (date) {
     var ret = this.dateStrings(date)
     return ret.year + ret.month + ret.day
   },
 
   // Create a Date object from a YYYYMMDD String
-  makeDate: function(datestring) {
+  makeDate: function (datestring) {
     if (datestring !== undefined && datestring.length === 8) {
       var year = datestring.substring(0, 4)
       var month = datestring.substring(4, 6) - 1
@@ -40,7 +40,7 @@ define({
   },
 
   // Create a Date object from a dd.mm.yyyy String
-  makeDateFromLocal: function(datestring) {
+  makeDateFromLocal: function (datestring) {
     if (datestring !== undefined) {
       var ar = datestring.split(".")
       var yr = parseInt(ar[2])
@@ -56,7 +56,7 @@ define({
   },
 
   // make a hh:mm String from a number of minutes
-  makeTime: function(minutes) {
+  makeTime: function (minutes) {
     var hours = parseInt(minutes / 60)
     var mins = (minutes - (hours * 60)).toString()
     hours = hours.toString()
@@ -71,27 +71,31 @@ define({
   },
 
   // make a number of minutes from a hh:mm String
-  makeMinutes: function(timeString) {
+  makeMinutes: function (timeString) {
     var hm = timeString.split(":")
     var ret = parseInt(hm[0]) * 60 + parseInt(hm[1])
     return ret;
   },
 
   // make a YYYY-MM-DD String from a Date object
-  makeDateRFC3339: function(date) {
+  makeDateRFC3339: function (date) {
     var ret = this.dateStrings(date)
     return ret.year + "-" + ret.month + "-" + ret.day
   },
 
   // make a dd.mm.yyyy String from a Date object
-  makeDateString: function(date) {
+  makeDateString: function (date) {
     var ret = this.dateStrings(date)
     return ret.day + "." + ret.month + "." + ret.year
   },
 
   // make a dd.mm.yyyy from yyyymmdd
-  makeDateFromElexisDate: function(ed) {
-    var ret = ed.substring(6, 8) + "." + ed.substring(4, 6)  + "." + ed.substring(0, 4)
-    return ret
+  makeDateFromElexisDate: function (ed) {
+    if (ed === undefined || ed === null || ed.length != 8) {
+      return ""
+    } else {
+      return ed.substring(6, 8) + "." + ed.substring(4, 6) + "." + ed.substring(0, 4)
+    }
+
   }
 })

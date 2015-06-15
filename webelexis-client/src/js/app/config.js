@@ -26,17 +26,19 @@ define(['knockout', 'i18n'], function (ko, R) {
     },
     modules: [
       {
-        route: ['', 'agenda'],
+        route: ['', 'termine(/:day)'],
+        hash: '#termine',
         title: R.t('app:m.termine.title'),
-        location: 'agenda/module',
+        location: 'agenda/public',
         nav: 1,
         active: true,
         role: "guest"
       },
       {
-        route: 'detail',
+        route: 'detail(/:day)',
+        hash: '#detail',
         title: R.t('app:m.agenda.title'),
-        location: 'detailagenda/module',
+        location: 'agenda/detail',
         nav: 2,
         active: true,
         role: "arzt"
@@ -44,12 +46,27 @@ define(['knockout', 'i18n'], function (ko, R) {
       {
         route: 'findpat',
         title: R.t('m.patient.title'),
-        location: 'patients/module',
+        location: 'patient/find',
         nav: 3,
         active: true,
         role: "arzt"
       },
-      {route: 'login', title: R.t("global.login"), location: 'login/module', nav: false, active: true, role: "guest"},
+      {
+        route: "patdetail/:id",
+        title: R.t('m.patient.title'),
+        nav: false,
+        location: 'patient/detail',
+        active: true,
+        role: "arzt"
+      },
+      {
+        route: 'login',
+        title: R.t("global.login"),
+        location: 'login/module',
+        nav: false,
+        active: true,
+        role: "guest"
+      },
       {
         route: 'addpatient',
         title: R.t("m.add.account"),

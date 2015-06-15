@@ -82,7 +82,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'i18n', 'dura
   });
 
   app.start().then(function () {
-    viewLocator.useConvention();
+    //viewLocator.useConvention();
     i18n.init(i18NOptions, function () {
       //Call localization on view before binding...
       binder.binding = function (obj, view) {

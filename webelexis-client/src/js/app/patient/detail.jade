@@ -1,0 +1,14 @@
+//- This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
+
+section
+  h2.h2.col-sm-12(data-bind="text: displayName")
+  -var fields=["bezeichnung1","bezeichnung2","geburtsdatum","strasse","plz","ort","telefon1","telefon2","natelnr","email","bemerkung"]
+  -var labels=["Name","Vorname","Geburtsdatum","Strasse","Plz","Ort","Tel. privat","Tel. Geschäft","Tel. mobil","e-mail","Bemerkung"]
+  form.form#patdetail(data-bind="submit: update, with: data")
+    each val, index in fields
+      .form-group.col-xs-6.col-md-4
+        label(for=val) #{labels[index]}
+        input.form-control(id=val type="text" data-bind="value: #{val}")
+    .clearfix
+    button.btn-btn-default.col-xs-12(type="submit") Änderungen speichern
+

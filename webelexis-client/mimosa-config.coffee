@@ -6,6 +6,7 @@ exports.config =
     'require'
     'minify-js'
     'minify-css'
+    'coffeescript'
     'live-reload'
     'combine'
     'requirebuild-include'
