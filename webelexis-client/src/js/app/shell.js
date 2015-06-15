@@ -40,9 +40,79 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
       adaptForUser()
     })
 
+    var initSigninV2 = function () {
+      cfg.google = window.gapi.auth2.init({
+        client_id: clientID,
+        cookiepolicy: 'single_host_origin'
+      })
+
+
+      cfg.google.isSignedIn.listen(signInChanged);
+      cfg.google.currentUser.listen(userChanged);
+
+      // Sign in the user if they are currently signed in.
+      if (cfg.google.isSignedIn.get() === true) {
+        cfg.google.signIn();
+      }
+
+      // Start with the current live values.
+      adaptForUser();
+    }
+
+    var signInChanged = function (val) {
+      console.log('Signin state changed to ', val);
+      cfg.user().loggedIn = val
+
+    }
+
+    // google user signed in
+    var userChanged = function (user) {
+      if ((user !== undefined) && (user.getId() !== null) && (user.getAuthResponse() !== null)) {
+        console.log("user now: " + user.getId() + ", " + user.getBasicProfile().getName());
+        bus.send("ch.webelexis.session.login", {
+          "mode": "google",
+          "sessionID": cfg.sessionID,
+          "username": user.getBasicProfile().getEmail(),
+          "userid": user.getBasicProfile().getId(),
+          "realname": user.getBasicProfile().getName(),
+          "id_token": user.getAuthResponse().id_token,
+          "client_id": clientID,
+          "state": state,
+          "feedback-address": "ch.webelexis.feedback." + cfg.sessionID
+        }, function (result) {
+          if (result.status === undefined) {
+            window.alert("Verbindungsfehler")
+          } else if (result.status === "unknown user") {
+            cfg.google.signOut()
+            //window.alert("Dieser google user ist an diesem System nicht bekannt. Bitte melden Sie sich zunächst an.")
+            window.location.hash = "#alert/ghead/gbody"
+          } else if (result.status === "ok") {
+            $.extend(true, user, result.user)
+            user.loggedIn = true;
+            bus.setFeedbackAddress()
+            cfg.user(user)
+            window.location.hash = "#"
+          } else {
+            window.alert("userchange error: " + result.status + " " + result.message)
+          }
+
+        })
+      } else {
+        console.log("user now: nobody");
+        cfg.user({
+          "loggedIn": false,
+          "username": "",
+          "access_token": {},
+          "id_token": {},
+          "email": "",
+          "userid": "",
+          "roles": ["guest"]
+        })
+      }
+    }
     return {
-      router: router,
-      changePwd: function () {
+      "router": router,
+      "changePwd": function () {
         new pwd().show().then(function (oldpwd, newpwd) {
           if (oldpwd !== undefined && newpwd !== undefined) {
             system.log(oldpwd + ", " + newpwd)
@@ -63,7 +133,6 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
             })
           }
         })
-
       },
       connected: function () {
         return true
@@ -109,14 +178,14 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
           window.location.reload()
         })
       },
-      hasGoogle: function () {
-        return false
-      },
-
       activate: function () {
+        /* Initialize 'Signin with Google', if we have a Google client ID */
+        if (clientID !== undefined && clientID !== "x-undefined") {
+          window.gapi.load('auth2', initSigninV2)
+        }
         var initialRoutes = routes(["guest"])
         router.map(initialRoutes).buildNavigationModel()
         return router.activate();
       }
-    };
+    }
   });
