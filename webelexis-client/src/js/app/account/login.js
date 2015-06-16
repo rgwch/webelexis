@@ -113,13 +113,16 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app', 'dur
       system.log("bus Listener: " + bus.connected())
     }
 
-    bus.addListener(busListener, false)
+
+    self.activate = function () {
+      bus.addListener(busListener, false)
+
+    }
+
+    self.deactivate = function () {
+      bus.removeListener(LoginViewModel.busListener)
+    }
   }
 
-  LoginViewModel.prototype.dispose = function () {
-    bus.removeListener(LoginViewModel.busListener)
-  }
-
-  adapt(bus.connected())
   return LoginViewModel
 });
