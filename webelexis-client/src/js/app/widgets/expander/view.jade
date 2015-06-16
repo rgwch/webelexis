@@ -1,0 +1,9 @@
+//- This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
+.accordion(data-bind="foreach: { data: settings.items, afterRender: afterRenderItem }")
+  .accordion-group
+    .accordion-heading
+      a.accordion-toggle(data-part="headerContainer")
+        div(data-part="header" data-bind="text: $parent.getHeaderText($data)")
+    .accordion-body.collapse.in
+      .accordion-inner(data-part="itemContainer")
+        div(data-part="item" data-bind="compose: $data")

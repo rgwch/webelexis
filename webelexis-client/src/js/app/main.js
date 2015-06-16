@@ -77,7 +77,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'i18n', 'dura
     router: true,
     dialog: true,
     widget: {
-      kinds: ['expander']
+      kinds: ['expander', 'datepicker']
     }
   });
 

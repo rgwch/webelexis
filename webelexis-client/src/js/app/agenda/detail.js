@@ -6,7 +6,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], function (ko, dt, bus, cfg, R) {
+define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'config', 'i18n', 'datepicker'], function (ko, system, dt, router, bus, cfg, R) {
 
 
   /**
@@ -16,11 +16,6 @@ define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], functio
 
   function AgendaViewModel() {
     var self = this;
-    self.tage = [R.t("m.agenda.sun"), R.t("m.agenda.mon"), R.t("m.agenda.tue"), R.t("m.agenda.wed"), R.t("m.agenda.thu"), R.t("m.agenda.fri"), R.t("m.agenda.sat")]
-    self.monate = [R.t("m.agenda.january"), R.t("m.agenda.february"), R.t("m.agenda.march"), R.t("m.agenda.april"), R.t("m.agenda.may"), R.t("m.agenda.june"), R.t("m.agenda.july"),
-      R.t("m.agenda.august"), R.t("m.agenda.september"), R.t("m.agenda.october"), R.t("m.agenda.november"), R.t("m.agenda.december")]
-    self.monateKurz = [R.t("m.agenda.jan"), R.t("m.agenda.feb"), R.t("m.agenda.mar"), R.t("m.agenda.apr"), R.t("m.agenda.ma"), R.t("m.agenda.jun"), R.t("m.agenda.jul"),
-      R.t("m.agenda.aug"), R.t("m.agenda.sep"), R.t("m.agenda.oct"), R.t("m.agenda.nov"), R.t("m.agenda.dec")]
     self.msg = function (id) {
       return R.t("m.agenda." + id)
     }
@@ -103,20 +98,22 @@ define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], functio
       return date
     }
     self.writeDate = function (date) {
+      //window.history.pushState({}, "", "#detail/" + dt.makeCompactString(date))
+      router.navigate("#detail/" + dt.makeCompactString(date))
+      system.log("pushed " + date)
       self.now(dt.makeDateString(date))
+      self.loadAppointments()
     }
     self.today = function () {
       self.writeDate(new Date())
-      self.loadAppointments()
     }
     self.yesterday = function () {
-      self.writeDate(new Date(self.readDate().getTime() - (24 * 60 * 60000)))
-      self.loadAppointments()
+      var dayback = new Date(self.readDate().getTime() - (24 * 60 * 60000))
+      self.writeDate(dayback)
     }
     self.tomorrow = function () {
-      self.writeDate(new Date(self.readDate().getTime() + (24 * 60 * 60000)))
-      self.loadAppointments()
-
+      var dayfwd = new Date(self.readDate().getTime() + (24 * 60 * 60000))
+      self.writeDate(dayfwd)
     }
 
 
@@ -198,7 +195,7 @@ define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], functio
     }
 
     self.patdetail = function (idx) {
-      window.location.hash = "#patid/" + idx.patientID
+      window.location.hash = "#patdetail/" + idx.patientID
     }
     self.labview = function (idx) {
       window.location.hash = "#labview/" + idx.patientID
@@ -210,7 +207,9 @@ define(['knockout', 'datetools', 'bus', 'config', 'i18n', 'datepicker'], functio
     self.activate = function (day) {
       bus.addListener(busListener, true)
       if (day) {
-        self.now(dt.makeDateFromElexisDate(day))
+        self.writeDate(dt.makeDate(day))
+      } else {
+        self.writeDate(new Date())
       }
     }
 
