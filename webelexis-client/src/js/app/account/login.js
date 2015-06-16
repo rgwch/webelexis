@@ -85,7 +85,7 @@ define(['bus', 'config', 'knockout', 'i18n', './forgotpwd', 'durandal/app', 'dur
     }
 
     self.google_mouseOut = function () {
-      $("#gbutton").attr("src", "imgages/Blue_signin_Long_normal_32dp_v3.png")
+      $("#gbutton").attr("src", "images/Blue_signin_Long_normal_32dp_v3.png")
     }
 
     /* ------ forgot password dialog */
