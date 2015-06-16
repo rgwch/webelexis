@@ -34,8 +34,8 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'jquer
       if (self.vtor.numberOfInvalids() === 0) {
         system.log(JSON.stringify(self.data()))
         var payload = self.data()
-        var date = dt.makeDateFromLocal(payload.geburtsdatum)
-        payload.geburtsdatum = dt.makeCompactString(date)
+        var date = dt.makeDateObjectFromLocal(payload.geburtsdatum)
+        payload.geburtsdatum = dt.makeCompactFromDateObject(date)
         payload.sessionID = cfg.sessionID
         payload.username = payload.email.toLowerCase()
         payload.origin = window.location.origin

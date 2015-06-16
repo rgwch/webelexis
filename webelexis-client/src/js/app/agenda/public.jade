@@ -2,12 +2,7 @@
 .row
   .panel.panel-default.col-sm-6
     .panel-heading
-      #agendaDatum(style="width:100%;")
-        button.btn.fa.fa-chevron-left(data-bind="click: yesterday, attr: {title: msg('yesterday')}" data-toggle="tooltip")
-        button.btn.fa.fa-crosshairs(data-bind="click: today, attr: {title: msg('today')}" data-toggle="tooltip")
-        button.btn.fa.fa-chevron-right(data-bind="click: tomorrow, attr: {title: msg('tomorrow')}" data-toggle="tooltip")
-        input.abstand(type="text" style="max-width:50%;text-align:center" data-bind="ko_datepicker_handler: " +
-        "'selectedDate', value: now, datepickerOptions: {changeYear: true, dateFormat: 'dd.mm.yy', dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz}" placeholder="tt.mm.jjjj")
+      #agendaDatum(style="width:100%;" data-bind="datepicker: {routeTo: '#termine/', date: actDate}")
     .panel-body
       .row#appntlist(data-bind="foreach: appointments")
         .col-xs-12.col-md-6

@@ -22,13 +22,13 @@ define({
   },
 
   // create a YYYYMMDD String from a Date object
-  makeCompactString: function (date) {
+  makeCompactFromDateObject: function (date) {
     var ret = this.dateStrings(date)
     return ret.year + ret.month + ret.day
   },
 
   // Create a Date object from a YYYYMMDD String
-  makeDate: function (datestring) {
+  makeDateObjectFromCompact: function (datestring) {
     if (datestring !== undefined && datestring.length === 8) {
       var year = datestring.substring(0, 4)
       var month = datestring.substring(4, 6) - 1
@@ -40,7 +40,7 @@ define({
   },
 
   // Create a Date object from a dd.mm.yyyy String
-  makeDateFromLocal: function (datestring) {
+  makeDateObjectFromLocal: function (datestring) {
     if (datestring !== undefined) {
       var ar = datestring.split(".")
       var yr = parseInt(ar[2])
@@ -84,13 +84,13 @@ define({
   },
 
   // make a dd.mm.yyyy String from a Date object
-  makeDateString: function (date) {
+  makeLocalFromDateObject: function (date) {
     var ret = this.dateStrings(date)
     return ret.day + "." + ret.month + "." + ret.year
   },
 
   // make a dd.mm.yyyy from yyyymmdd
-  makeDateFromElexisDate: function (ed) {
+  makeLocalFromCompact: function (ed) {
     if (ed === undefined || ed === null || ed.length != 8) {
       return ""
     } else {

@@ -38,7 +38,7 @@ define(['knockout', 'bus', 'config', 'durandal/system', 'i18n', 'datetools', 'un
           if (result.status === "ok") {
             self.people(_.map(result.result, function (pat) {
               return {
-                text: pat.Bezeichnung1 + " " + pat.Bezeichnung2 + ", " + dt.makeDateFromElexisDate(pat.Geburtsdatum),
+                text: pat.Bezeichnung1 + " " + pat.Bezeichnung2 + ", " + dt.makeLocalFromCompact(pat.Geburtsdatum),
                 css: self.displayClass(pat.geschlecht),
                 href: "#patdetail/" + pat.id
               }

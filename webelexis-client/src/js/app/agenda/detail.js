@@ -22,7 +22,7 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
     self.Appointment = function (row) {
       var app = this;
       app.expanded = ko.observable(false)
-      app.date = dt.makeDate(row[0])
+      app.date = dt.makeDateObjectFromCompact(row[0])
       app.begin = dt.makeTime(parseInt(row[1]));
       app.end = dt.makeTime(parseInt(row[1]) + parseInt(row[2]));
       app.time = app.begin + "-" + app.end
@@ -33,7 +33,7 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
       app.reason = row[8]
       app.firstName = row[10]
       app.lastName = row[9]
-      app.birthdate = row[11] ? dt.makeDateString(dt.makeDate(row[11])) : ""
+      app.birthdate = row[11] ? dt.makeLocalFromDateObject(dt.makeDateObjectFromCompact(row[11])) : ""
 
       app.displayName = app.lastName ? (app.lastName + " " + app.firstName + ", " + app.birthdate) : app.PatientID
       app.displayClass = ko.pureComputed(function () {
@@ -67,7 +67,7 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
         }
       })
     }
-    self.now = ko.observable(dt.makeDateString(new Date()))
+    self.now = ko.observable(dt.makeLocalFromDateObject(new Date()))
 
     self.appointments = ko.observableArray([]);
     self.lastExpanded = null
@@ -94,14 +94,14 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
     }
 
     self.readDate = function () {
-      var date = dt.makeDateFromLocal(self.now())
+      var date = dt.makeDateObjectFromLocal(self.now())
       return date
     }
     self.writeDate = function (date) {
-      //window.history.pushState({}, "", "#detail/" + dt.makeCompactString(date))
-      router.navigate("#detail/" + dt.makeCompactString(date))
+      //window.history.pushState({}, "", "#detail/" + dt.makeCompactFromDateObject(date))
+      router.navigate("#detail/" + dt.makeCompactFromDateObject(date))
       system.log("pushed " + date)
-      self.now(dt.makeDateString(date))
+      self.now(dt.makeLocalFromDateObject(date))
       self.loadAppointments()
     }
     self.today = function () {
@@ -130,8 +130,8 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
       bus.send('ch.webelexis.privateagenda', {
         request: 'list',
         resource: self.resource().resource,
-        begin: dt.makeCompactString(act),
-        end: dt.makeCompactString(act),
+        begin: dt.makeCompactFromDateObject(act),
+        end: dt.makeCompactFromDateObject(act),
         sessionID: cfg.sessionID
       }, function (result) {
         // console.log("result: " + JSON.stringify(result));
@@ -180,7 +180,7 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
       //console.log(this.begin)
       bus.send('ch.webelexis.publicagenda', {
         request: 'insert',
-        day: dt.makeCompactString(this.date),
+        day: dt.makeCompactFromDateObject(this.date),
         time: this.begin,
         //ip: cfg.loc.ip,
         name: $("input#patname").val() + "," + $("input#patphone").val() + "," + $("input#patmail").val()
@@ -207,7 +207,7 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
     self.activate = function (day) {
       bus.addListener(busListener, true)
       if (day) {
-        self.writeDate(dt.makeDate(day))
+        self.writeDate(dt.makeDateObjectFromCompact(day))
       } else {
         self.writeDate(new Date())
       }

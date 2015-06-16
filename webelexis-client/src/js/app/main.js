@@ -61,9 +61,12 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'i18n', 'dura
   var i18NOptions = {
     detectFromHeaders: false,
     lng: window.navigator.userLanguage || window.navigator.language || 'de-CH',
-    fallbackLang: 'de',
-    ns: 'app',
-    resGetPath: 'locales/__lng__/__ns__.json',
+    fallbackLng: 'de',
+    ns: {
+      namespaces: ['base', 'datepicker'],
+      defaultNs: 'base'
+    },
+    resGetPath: 'locales/__ns__-__lng__.json',
     useCookie: false,
     useLocalStorage: false,
     fallbackOnNull: true,

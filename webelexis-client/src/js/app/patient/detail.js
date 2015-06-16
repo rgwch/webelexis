@@ -23,7 +23,7 @@ define(['bus', 'config', 'knockout', 'durandal/app', 'i18n', 'datetools'], funct
           appl.showMessage(R.t('global.timeout'), R.t('global.connection_error'))
         } else {
           if (result.status === "ok") {
-            result.patient.geburtsdatum = dt.makeDateFromElexisDate(result.patient.geburtsdatum)
+            result.patient.geburtsdatum = dt.makeLocalFromCompact(result.patient.geburtsdatum)
             self.data(result.patient)
             self.displayName(result.patient.bezeichnung1 + " " + result.patient.bezeichnung2 + ", " + result.patient.geburtsdatum)
           } else {

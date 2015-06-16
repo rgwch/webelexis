@@ -2,19 +2,11 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datepicker'], function (ko, bus, cfg, dt, R, appl) {
+define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app'], function (ko, bus, cfg, dt, R, appl) {
 
 
-  function AgendaViewModel(dprm) {
+  function AgendaViewModel() {
     var self = this;
-    self.tage = [R.t("m.agenda.sun"), R.t("m.agenda.mon"), R.t("m.agenda.tue"), R.t("m.agenda.wed"), R.t("m.agenda.thu"), R.t("m.agenda.fri"), R.t("m.agenda.sat")]
-    self.monate = [R.t("m.agenda.january"), R.t("m.agenda.february"), R.t("m.agenda.march"), R.t("m.agenda.april"), R.t("m.agenda.may"), R.t("m.agenda.june"), R.t("m.agenda.july"),
-      R.t("m.agenda.august"), R.t("m.agenda.september"), R.t("m.agenda.october"), R.t("m.agenda.november"), R.t("m.agenda.december")]
-    self.monateKurz = [R.t("m.agenda.jan"), R.t("m.agenda.feb"), R.t("m.agenda.mar"), R.t("m.agenda.apr"), R.t("m.agenda.ma"), R.t("m.agenda.jun"), R.t("m.agenda.jul"),
-      R.t("m.agenda.aug"), R.t("m.agenda.sep"), R.t("m.agenda.oct"), R.t("m.agenda.nov"), R.t("m.agenda.dec")]
-    self.msg = function (id) {
-      return R.t("m.agenda." + id)
-    }
 
     /**
      * client side representation of an Elexis-appointment
@@ -23,7 +15,7 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
     self.Appointment = function (row) {
       var app = this;
       app.expanded = ko.observable(false)
-      app.date = dt.makeDate(row[0])
+      app.date = dt.makeDateObjectFromCompact(row[0])
       app.begin = dt.makeTime(parseInt(row[1]));
       app.end = dt.makeTime(parseInt(row[1]) + parseInt(row[2]));
       app.time = app.begin + "-" + app.end
@@ -47,11 +39,11 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
       app.loggedInText = ko.pureComputed(function () {
         /*
          var ret = "Sie sind angemeldet als " + cfg.user().username + ". Bitte bestätigen Sie den gewünschten Termin am " +
-         dt.makeDateString(app.date) + " um " + app.begin + " Uhr."
+         dt.makeLocalFromDateObject(app.date) + " um " + app.begin + " Uhr."
          */
         var ret = R.t("m.agenda.loggedin", {
           user: cfg.user().username,
-          day: dt.makeDateString(app.date),
+          day: dt.makeLocalFromDateObject(app.date),
           time: app.begin
         })
         return ret;
@@ -59,48 +51,24 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
 
 
     }
+    self.actDate = ko.observable()
     self.howto = ko.observable()
-    self.now = ko.observable(dt.makeDateString(new Date()))
+    self.now = ko.observable(dt.makeLocalFromDateObject(new Date()))
 
     self.appointments = ko.observableArray([]);
     self.lastExpanded = null
 
-    self.readDate = function () {
-      var date = dt.makeDateFromLocal(self.now())
-      return date
-    }
-    self.writeDate = function (date) {
-      //$("#agendaDatum input").datepicker('setDate', date)
-      self.now(dt.makeDateString(date))
-    }
-    self.yesterday = function () {
-      self.writeDate(new Date(self.readDate().getTime() - (24 * 60 * 60000)))
-      self.loadAppointments()
-    }
-    self.today = function () {
-      self.writeDate(new Date())
-      self.loadAppointments()
-    }
-    self.tomorrow = function () {
-      self.writeDate(new Date(self.readDate().getTime() + (24 * 60 * 60000)))
-      self.loadAppointments()
 
-    }
-
-    self.dateChanged = function (datestring /*,widget*/) {
-      self.now(datestring)
-      self.loadAppointments()
-    }
     self.loadAppointments = function () {
-      var act = self.readDate()
+      var act = dt.makeDateObjectFromLocal(self.actDate())
       if (self.lastExpanded !== null) {
         self.lastExpanded.expanded(false);
         self.lastExpanded = null;
       }
       bus.send('ch.webelexis.publicagenda', {
         request: 'list',
-        begin: dt.makeCompactString(act),
-        end: dt.makeCompactString(act),
+        begin: dt.makeCompactFromDateObject(act),
+        end: dt.makeCompactFromDateObject(act),
         token: cfg.sessionID,
         authorized_user: cfg.user()
       }, function (result) {
@@ -162,19 +130,15 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
       return cfg.user().username
     })
 
-    self.selectedDate = "05/10/2014"
 
     self.addAppointment = function (/*formElement*/) {
-      //console.log("addApp" + $("input#patname").val())
-      //console.log(this.begin)
       bus.send('ch.webelexis.publicagenda', {
         request: 'insert',
-        day: dt.makeCompactString(this.date),
+        day: dt.makeCompactFromDateObject(this.date),
         time: this.begin,
         ip: cfg.loc.ip,
         patid: cfg.user().username
       }, function (result) {
-        // console.log("insert: " + JSON.stringify(result))
         if (result.status !== "ok") {
           appl.showMessage(result.status, R.t("m.agenda.error_entry"))
         } else {
@@ -186,7 +150,7 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
     self.deleteAppointment = function () {
       bus.send('ch.webelexis.publicagenda', {
         request: "delete",
-        day: dt.makeCompactString(this.date),
+        day: dt.makeCompactFromDateObject(this.date),
         time: String(dt.makeMinutes(this.begin)),
         ip: cfg.loc.ip,
         username: cfg.user().username
@@ -198,8 +162,17 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
         }
       })
     }
-    if (dprm !== undefined && dprm.params[0] !== undefined) {
-      self.now(dt.makeDateFromElexisDate(dprm.params[0]))
+
+    self.activate = function (day) {
+      if (day) {
+        self.actDate(dt.makeLocalFromCompact(day))
+      } else {
+        self.actDate(dt.makeLocalFromDateObject(new Date()))
+      }
+      bus.addListener(busListener, true)
+    }
+    self.deactivate = function () {
+      bus.removeListener(busListener)
     }
     var busListener = function (msg) {
       if (msg === "open") {
@@ -207,15 +180,9 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'datep
       }
     }
     self.howto("yes")
-    bus.addListener(busListener, true)
-
 
   }
 
-
-  AgendaViewModel.prototype.dispose = function () {
-    bus.removeListener(AgendaViewModel.busListener)
-  }
 
   return AgendaViewModel
 

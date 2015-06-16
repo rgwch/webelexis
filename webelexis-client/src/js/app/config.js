@@ -28,7 +28,7 @@ define(['knockout', 'i18n'], function (ko, R) {
       {
         route: ['', 'termine(/:day)'],
         hash: '#termine',
-        title: R.t('app:m.termine.title'),
+        title: R.t('m.termine.title'),
         location: 'agenda/public',
         nav: 1,
         active: true,
@@ -37,7 +37,7 @@ define(['knockout', 'i18n'], function (ko, R) {
       {
         route: 'detail(/:day)',
         hash: '#detail',
-        title: R.t('app:m.agenda.title'),
+        title: R.t('m.agenda.title'),
         location: 'agenda/detail',
         nav: 2,
         active: true,
