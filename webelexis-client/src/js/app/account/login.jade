@@ -11,10 +11,10 @@
         .col-xs-6
           form.form(data-bind="submit: dologin")
             .form-group
-              label(for="username") E-Mail
+              label(for="username" data-i18n="m.add.mail")
               input.form-control#username(type="text" data-bind="value: uname")
             .form-group
-              label(for="password") Passwort
+              label(for="password" data-i18n="m.add.password")
               input.form-control#password(type="password" data-bind="value: pwd")
             button.btn.btn-primary#loginbutton(type="submit" style="width: 100%" data-bind="text:" +
             " msg('loginButton')")
