@@ -8,7 +8,9 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'plugi
 
     function AgendaViewModel() {
       var self = this;
-
+      self.msg = function (id) {
+        return R.t("m.agenda." + id)
+      }
       /**
        * client side representation of an Elexis-appointment
        */
