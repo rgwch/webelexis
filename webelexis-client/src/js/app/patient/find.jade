@@ -10,5 +10,6 @@ section
       .panel-body
         .list-group(data-bind="foreach: people")
           li.list-group-item(data-bind="text: text, css: css, click: $parent.openClose")
-          div(data-bind="visible: opened,summary: {patient: entry}")
+          div(data-bind="if: opened")
+            div(data-bind="summary: {patient: entry}")
       .panel-footer

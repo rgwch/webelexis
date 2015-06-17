@@ -44,8 +44,20 @@ define(['knockout', 'datetools', 'i18n', 'plugins/router'], function (ko, dt, R,
 
       self.activate = function (settings) {
         self.patient(settings.patient)
+      };
+      self.compositionComplete = function (parent, context) {
+        var $parent = $(parent);
+        var $buttons = $parent.find("button");
+        var max = 0;
+        $buttons.each(function (b) {
+          if ($(this).width() > max) {
+            max = $(this).width()
+          }
+        });
+        $buttons.each(function () {
+          $(this).width(max)
+        })
       }
-
     };
     return PatientSummary
   }
