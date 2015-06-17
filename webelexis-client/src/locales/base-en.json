@@ -1,21 +1,51 @@
 {
-  "login": {
-    "heading": "login",
-    "headmsg": "Please login",
-    "loginButton": "Login",
-    "loginMessage1": "Please use your email-address and password, or your google account to log in",
-    "loginMessage2": "Enter your e-mail address and your password please",
-    "badLogin": "The mail address or the password were not correct. Please try again.",
-    "noaccount": "No account? Click here to create one",
-    "forgotpwd": "Forgot password?",
-    "pwdDlgHeader": "Request new password",
-    "pwdDlgExplain": "Enter your email-address and press 'send' to generate a new password.",
-    "mailaddr": "mail-address (=username)",
-    "waitForServer": "Waiting for server...",
-    "sendingPwd": "A new password has been sent by mail.",
-    "badUsername": "There is no account with the given mail address."
+  "lab": {
+    "title": "Lab findings",
+    "loading": "Loading...",
+    "parameter": "Parameter",
+    "twelvemonths": "12 months",
+    "older": "older",
+    "actual": "actual",
+    "details": "details",
+    "verlauf": "trend",
+    "sparkline": "trend"
   },
+
   "m": {
+    "termine": {
+      "title": "Appointments"
+    },
+    "agenda": {
+      "title": "Schedule",
+      "makeAppnt": "make appointment",
+      "deleteAppnt": "cancel appointment",
+      "cancel": "Cancel",
+      "disclaimer": "Die Verwendung dieser Website geschieht ohne Gewähr. Für fehlerhaft übertragene Termine wird keine Haftung übernommen. In wichtigen Fällen bestätigen Sie Ihren Termin bitte telefonisch.",
+      "rightHeading": "Termin direkt online eintragen",
+      "rightFooter": "Bitte beachten Sie, dass wir bei einer Terminvereinbarung über diese Website Ihre IP-Adresse und weitere Angaben speichern. Sämtliche Daten werden nach dem vereinbarten Termin wieder gelöscht.",
+      "yourapp": "Your appointment",
+      "occupied": "occupied",
+      "loggedin": "Sie sind angemeldet als __user__. Bitte bestätigen Sie den gewünschten Termin am __day__ um __time__ Uhr.",
+      "error_entry": "error while saving",
+      "error_delete": "error while deleting"
+
+    },
+    "login": {
+      "heading": "login",
+      "headmsg": "Please login",
+      "loginButton": "Login",
+      "loginMessage1": "Please use your email-address and password, or your google account to log in",
+      "loginMessage2": "Enter your e-mail address and your password please",
+      "badLogin": "The mail address or the password were not correct. Please try again.",
+      "noaccount": "No account? Click here to create one",
+      "forgotpwd": "Forgot password?",
+      "pwdDlgHeader": "Request new password",
+      "pwdDlgExplain": "Enter your email-address and press 'send' to generate a new password.",
+      "mailaddr": "mail-address (=username)",
+      "waitForServer": "Waiting for server...",
+      "sendingPwd": "A new password has been sent by mail.",
+      "badUsername": "There is no account with the given mail address."
+    },
     "add": {
       "account": "Create account",
       "heading": "Enter personal informations",
@@ -47,8 +77,24 @@
     }
   },
   "global": {
+    "connected": "connected",
+    "notconnected": "disconnected",
+    "login": "Login",
+    "logout": "Logout",
+    "chpwd": "change password",
+    "account": "Account",
+    "send": "Send",
+    "cancel": "Cancel",
+    "chpwdHeader": "Change password",
+    "chpwdOk": "Your password has been changed and is valid by now.",
+    "oldPwd": "old password",
+    "newPwd": "new password",
+    "repPwd": "repeat new password",
     "notConnectedHead": "Not connected",
     "notConnectedBody": "Not connected with the remote server. Please try again later.",
-    "error": "error"
+    "error": "error",
+    "reload": "Please try reloading this page",
+    "timeout": "The server didn't answer. Please try to reconnect."
+
   }
 }

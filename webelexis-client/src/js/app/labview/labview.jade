@@ -45,7 +45,7 @@ div(data-bind="visible: loaded, foreach: groups")
               span.glyphicon.glyphicon-check(data-bind="visible: $parents[1].isChecked($data)")
             td(data-bind="text: name+' ('+range+') ' ")
             td
-              span(data-bind: "text: key")
+              span(data-bind="text: key")
               span(data-bind="click: function(){$parents[1].createChart($data)}, attr: {id: key}")
             +createGroup('act','range')
             +createGroup('med','range')
