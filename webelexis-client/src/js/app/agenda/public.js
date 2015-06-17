@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app'], function (ko, bus, cfg, dt, R, appl) {
+define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'durandal/events'], function (ko, bus, cfg, dt, R, appl) {
 
 
   function AgendaViewModel() {
@@ -170,6 +170,10 @@ define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app'], funct
         self.actDate(dt.makeLocalFromDateObject(new Date()))
       }
       bus.addListener(busListener, true)
+      appl.on("datepicker:change").then(function (newdate) {
+        self.actDate(newdate)
+        self.loadAppointments()
+      })
     }
     self.deactivate = function () {
       bus.removeListener(busListener)

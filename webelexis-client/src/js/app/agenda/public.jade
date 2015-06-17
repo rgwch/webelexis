@@ -2,7 +2,7 @@
 .row
   .panel.panel-default.col-sm-6
     .panel-heading
-      #agendaDatum(style="width:100%;" data-bind="datepicker: {routeTo: '#termine/', date: actDate}")
+      #agendaDatum(style="width:100%;" data-bind="datepicker: {eventID: 'datepicker', date: actDate}")
     .panel-body
       .row#appntlist(data-bind="foreach: appointments")
         .col-xs-12.col-md-6

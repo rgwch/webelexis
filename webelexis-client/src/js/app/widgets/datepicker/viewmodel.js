@@ -3,8 +3,8 @@
  ** Copyright (c) 2015 by G. Weirich
  **/
 
-define(['knockout', 'durandal/system', 'durandal/composition', 'plugins/router', 'i18n', 'datetools', 'jquery-ui'],
-  function (ko, system, composition, router, R, dt) {
+define(['knockout', 'durandal/app', 'durandal/system', 'durandal/composition', 'i18n', 'datetools', 'durandal/events', 'jquery-ui'],
+  function (ko, app, system, composition, R, dt) {
 
 
     ko.bindingHandlers.ko_datepicker_handler = {
@@ -25,15 +25,8 @@ define(['knockout', 'durandal/system', 'durandal/composition', 'plugins/router',
         ko.utils.registerEventHandler(element, "change", function () {
           system.log('datePicker value: ' + $el.datepicker("getDate"));
           var obj = viewModel;
-          /*
-           for (var i = 0; i < props.length - 1; i++) {
-           if (obj.hasOwnProperty(props[i])) {
-           obj = obj[props[i]];
-           }
-           }
-
-           obj[props[props.length - 1]] = $el.val();
-           */
+          var value = $el.val()
+          app.trigger("datepicker:change", value)
         });
 
         //handle disposal (if KO removes by the template binding)
@@ -41,35 +34,32 @@ define(['knockout', 'durandal/system', 'durandal/composition', 'plugins/router',
           $el.datepicker("destroy");
         });
 
-      },
-      update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        var modelValue = valueAccessor(),
-          value = null,
-          props = modelValue.split('.'),
-          $el = $(element),
-          obj = viewModel;
-        /*
-         for (var i = 0; i < props.length - 1; i++) {
-         if (obj.hasOwnProperty(props[i])) {
-         obj = obj[props[i]];
-         }
-         }
-
-         value = obj[props[props.length - 1]];
-         $el.val(value);
-         */
-        system.log('datepicker update - value: ' + value + ', $el: ' + $el.id);
-        //handle date data coming via json from Microsoft
-        if (String(value).indexOf('/Date(') === 0) {
-          value = new Date(parseInt(value.replace(/\/Date\((.*?)\)\//gi, "$1")));
-        }
-
-        var current = $el.datepicker("getDate");
-
-        if (value - current !== 0) {
-          $el.datepicker("setDate", value);
-        }
       }
+      /*
+       update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+       var modelValue = valueAccessor(),
+       value = null,
+       props = modelValue.split('.'),
+       $el = $(element),
+       obj = viewModel;
+
+       for (var i = 0; i < props.length - 1; i++) {
+       if (obj.hasOwnProperty(props[i])) {
+       obj = obj[props[i]];
+       }
+       }
+
+       value = obj[props[props.length - 1]];
+       $el.val(value);
+       system.log('datepicker update - value: ' + value + ', $el: ' + $el.id);
+
+       var current = $el.datepicker("getDate");
+
+       if (value - current !== 0) {
+       $el.datepicker("setDate", value);
+       }
+       }
+       */
     };
     var Datepicker = function () {
       var self = this
@@ -79,7 +69,7 @@ define(['knockout', 'durandal/system', 'durandal/composition', 'plugins/router',
           R.t("datepicker:august"), R.t("datepicker:september"), R.t("datepicker:october"), R.t("datepicker:november"), R.t("datepicker:december")]
         self.monateKurz = [R.t("datepicker:jan"), R.t("datepicker:feb"), R.t("datepicker:mar"), R.t("datepicker:apr"), R.t("datepicker:ma"), R.t("datepicker:jun"), R.t("datepicker:jul"),
           R.t("datepicker:aug"), R.t("datepicker:sep"), R.t("datepicker:oct"), R.t("datepicker:nov"), R.t("datepicker:dec")]
-        self.route = settings.routeTo
+        self.eventID = settings.eventID
         self.actDate = settings.date
         self.dateformat = "dd.mm.yy"
       }
@@ -92,7 +82,8 @@ define(['knockout', 'durandal/system', 'durandal/composition', 'plugins/router',
       }
       self.writeDate = function (date) {
         self.actDate(dt.makeLocalFromDateObject(date))
-        router.navigate(self.route + dt.makeCompactFromDateObject(date))
+        //router.navigate(self.route + dt.makeCompactFromDateObject(date))
+        app.trigger(self.eventID + ":change", self.actDate())
       }
       self.forward = function (days) {
         var nDate = new Date(self.readDate().getTime() + days * 24 * 60 * 60000)
