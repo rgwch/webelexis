@@ -1,9 +1,19 @@
 /*
  * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
  */
+
+/*
+ View root for the webelexis client
+ Create the routes, the menu bar and initialize "signIn with google", if given.
+ */
 define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd', 'i18n', 'underscore', 'config', 'knockout', 'bus', 'bootstrap'],
   function (router, system, appl, pwd, R, _, cfg, ko, bus) {
 
+    /**
+     * Construction of the routes from modules defined in config.js
+     * @param roles roles for which the menu should be created (only allowed items  are created)
+     * @returns {Array} modules to integrate in the active module set.
+     */
     var routes = function (roles) {
       var ret = []
       _.each(cfg.modules, function (module) {
@@ -22,6 +32,9 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
       return ret
     }
 
+    /**
+     * create a module set and a menu bar matching the role(s) of the currently logged-in user
+     */
     var adaptForUser = function () {
       router.reset()
       router.map(routes(cfg.user().roles))
@@ -32,6 +45,9 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
 
     }
 
+    /**
+     * persistent values from index.html
+     */
     var clientID = $("meta[name='clientID']").attr("content")
     cfg.sessionID = $("meta[name='UUID']").attr("content")
     var state = $("meta[name='state']").attr("content")
@@ -40,6 +56,9 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
       adaptForUser()
     })
 
+    /**
+     * initialize the "SignIn with Google" system
+     */
     var initSigninV2 = function () {
       cfg.google = window.gapi.auth2.init({
         client_id: clientID,
@@ -65,7 +84,7 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
 
     }
 
-    // google user signed in
+    // google user signed in or out
     var userChanged = function (user) {
       if ((user !== undefined) && (user.getId() !== null) && (user.getAuthResponse() !== null)) {
         console.log("user now: " + user.getId() + ", " + user.getBasicProfile().getName());
@@ -110,6 +129,9 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
         })
       }
     }
+    /**
+     * public interface of this module
+     */
     return {
       "router": router,
       "changePwd": function () {
@@ -135,7 +157,7 @@ define(['plugins/router', 'durandal/system', 'durandal/app', 'account/changepwd'
         })
       },
       connected: function () {
-        return true
+        return bus.connected()
       },
       locale: function (text) {
         return R.t("global." + text)

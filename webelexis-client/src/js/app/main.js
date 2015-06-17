@@ -6,6 +6,9 @@
  * Created by gerry on 06.06.15.
  */
 
+/*
+ Configuration for RequireJS
+ */
 require.config({
   baseUrl: "js/app",
   paths: {
@@ -53,11 +56,17 @@ require.config({
   }
 });
 
+/*
+ Entry point for the Durandal framework
+ */
 define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'i18n', 'durandal/binder'], function (system, app, viewLocator, i18n, binder) {
   //>>excludeStart("build", true);
   system.debug(true);
   //>>excludeEnd("build");
 
+  /*
+   Configuration für i18next
+   */
   var i18NOptions = {
     detectFromHeaders: false,
     lng: window.navigator.userLanguage || window.navigator.language || 'de-CH',
@@ -84,8 +93,11 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'i18n', 'dura
     }
   });
 
+  /*
+   Initialize the Durandal app, the i18next-localization, the Durandal binding aystem and then launch shell.js/shell.jade as
+   the root view.
+   */
   app.start().then(function () {
-    //viewLocator.useConvention();
     i18n.init(i18NOptions, function () {
       //Call localization on view before binding...
       binder.binding = function (obj, view) {

@@ -4,6 +4,6 @@
   button.btn.fa.fa-chevron-left(data-bind="click: function(){backwards(1)}, attr: {title: msg('yesterday')}" data-toggle="tooltip")
   button.btn.fa.fa-crosshairs(data-bind="click: today, attr: {title: msg('today')}" data-toggle="tooltip")
   button.btn.fa.fa-chevron-right(data-bind="click: function(){forward(1)}, attr: {title: msg('tomorrow')}" data-toggle="tooltip")
-  input(type="text" style="margin-left:10px;text-align:center;max-width:50%"
+  input.datepicker(type="text"
   data-toggle="tooltip"
-  data-bind="ko_datepicker_handler: 'actDate', value: actDate, datepickerOptions: {changeYear: true, dateFormat: dateformat, dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz}, attr: {title: msg('openCal')}")
+  data-bind="ko_datepicker_handler: 'actDate', value: actDate, datepickerOptions: {changeYear: true, dateFormat: dateformat, dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz}, attr: {title: msg('openCal')}" )

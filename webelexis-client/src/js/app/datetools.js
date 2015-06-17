@@ -97,5 +97,14 @@ define({
       return ed.substring(6, 8) + "." + ed.substring(4, 6) + "." + ed.substring(0, 4)
     }
 
+  },
+
+  makeCompactFromLocal: function (lc) {
+    if (lc === undefined || lc === null) {
+      return ""
+    } else {
+      return this.makeCompactFromDateObject(this.makeDateObjectFromLocal(lc))
+    }
   }
+
 })

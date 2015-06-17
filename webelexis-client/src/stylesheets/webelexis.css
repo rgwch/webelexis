@@ -94,3 +94,11 @@ th.labitem, td.labitem {
 .underline {
 	text-decoration : underline;
 }
+
+/* Datepicker widget */
+.datepicker {
+	margin-left: 10px;
+	text-align: center;
+	max-width: 80%;
+	background-color: #d9edf7;
+}
