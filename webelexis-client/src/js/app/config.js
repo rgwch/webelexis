@@ -82,6 +82,12 @@ define(['knockout', 'i18n'], function (ko, R) {
         location: "labview/labview",
         active: true,
         role: "arzt"
+      }, {
+        route: 'alert/:heading/:body',
+        title: R.t("alerts:title"),
+        location: 'alert/module',
+        active: true,
+        role: "guest"
       }
 
     ]
