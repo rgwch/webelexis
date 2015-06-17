@@ -44,7 +44,8 @@ define(['knockout', 'i18n'], function (ko, R) {
         role: "arzt"
       },
       {
-        route: 'findpat',
+        route: 'findpat(/:query)',
+        hash: "#findpat",
         title: R.t('m.patient.title'),
         location: 'patient/find',
         nav: 3,

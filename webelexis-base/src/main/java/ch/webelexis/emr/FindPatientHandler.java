@@ -25,7 +25,7 @@ public class FindPatientHandler implements Handler<Message<JsonObject>> {
     Logger log;
     EventBus eb;
 
-    final static String[] fields = {"Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "geschlecht", "id"};
+    final static String[] fields = {"Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "geschlecht", "id", "patientnr", "Strasse", "plz", "Ort", "telefon1", "telefon2", "natelnr", "email", "bemerkung"};
     final static String sql = "SELECT FIELDS from KONTAKT where Bezeichnung1 like ? OR Bezeichnung2 like ? order by Bezeichnung1, Bezeichnung2";
     public FindPatientHandler(Verticle server) {
         this.server = server;

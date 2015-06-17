@@ -1,4 +1,14 @@
 //- This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
 //- Patient summary widget
+mixin createButton(target,text)
+  .col-xs-6.col-sm-4.col-md-3
+    button.btn.btn-default(data-bind="click: function(){nav('#{target}')}" data-i18n="#{text}")
 section
   .row
+    .col-xs-12
+      h3.h3(data-bind="text: displayName")
+        small Hallo
+  .row
+    +createButton('patdetail','pers.title')
+    +createButton('labview','lab.title')
+

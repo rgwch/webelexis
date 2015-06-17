@@ -4,10 +4,11 @@ section
     .panel.panel-default
       .panel-heading
         form.form.form-horizontal(data-bind="submit: sendQuery")
-          p Bitte geben Sie einen Teil des Vornamens, des Namens oder des Geburtsdatums ein.
-          input.abstand#queryString(type=text style="width: 100%")
-          button.btn.btn-primary(type="submit") Abfragen
+          p(data-i18n="pers.searchfield")
+          input.abstand#queryString(type=text style="width: 80%" data-bind="value: queryInput")
+          button.btn.btn-primary(type="submit" data-i18n="pers.search")
       .panel-body
         .list-group(data-bind="foreach: people")
-          a.list-group-item(data-bind="text: text, css: css, attr: {href: href}")
+          li.list-group-item(data-bind="text: text, css: css, click: $parent.openClose")
+          div(data-bind="visible: opened,summary: {patient: entry}")
       .panel-footer

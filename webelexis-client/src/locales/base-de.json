@@ -10,6 +10,11 @@
     "verlauf": "Verlauf",
     "sparkline": "Verlauf"
   },
+  "pers": {
+    "title": "Personalien",
+    "searchfield": "Bitte geben Sie einen Teil des Namens oder des Vornames ein",
+    "search": "Abfragen"
+  },
   "m": {
     "termine": {
       "title": "Termine"
