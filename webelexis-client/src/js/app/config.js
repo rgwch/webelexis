@@ -74,6 +74,13 @@ define(['knockout', 'i18n'], function (ko, R) {
         nav: false,
         active: true,
         role: "guest"
+      }, {
+        route: 'labview(/:patid)',
+        hash: '#labview',
+        title: (R.t('lab.title')),
+        location: "labview/labview",
+        active: true,
+        role: "arzt"
       }
 
     ]

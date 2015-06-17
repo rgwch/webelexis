@@ -1,0 +1,65 @@
+//- This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
+mixin createGroup(item,range)
+  td
+    span(data-bind="text: $parents[1].displayText(#{item}.min), css: {red: $parents[1].outOfRange(#{range},#{item}.min)}" style="font-size:xx-small")
+    span(data-bind="text: $parents[1].displayText(#{item}.avg), css: {red: $parents[1].outOfRange(#{range},#{item}.avg)}" style="margin-left:0.3em;margin-right:0.3em")
+    span(data-bind="text: $parents[1].displayText(#{item}.max), css: {red: $parents[1].outOfRange(#{range},#{item}.max)}" style="font-size:xx-small")
+
+mixin createHeading(item)
+  th(data-bind="text: $parent.msg('#{item}')")
+
+.row(data-bind="visible: loaded()==false")
+  .col-xs-12
+    img(src="images/ekg.gif" data-bind="attr: {alt: msg('loading')}")
+div(data-bind="visible: loaded, foreach: groups")
+  div.labgroup(data-bind="click: function(){$parent.openGroup($index)}")
+    span.caret
+    span(data-bind="text: $parent.groupname($data)")
+    span.abstand.red(data-bind="text: $parent.noteworthy($data)")
+  div(data-bind="if: $parent.activeGroup()==$index()")
+    div(data-bind="visible: $parent.display()=='chart'" style="width: 100%; height: 100%")
+      div#chartCanvas(style="width: 100%; height: 500px;")
+      button.btn.btn-default(data-bind="click: $parent.closeChart")  OK
+    .table-responsive(data-bind="visible: $parent.display()=='table'")
+      table.table.table-striped.table-hover.table-condensed
+        thead
+          tr
+            th
+              span.glyphicon.glyphicon-plus-sign(data-bind="click: $parent.checkAll")
+            +createHeading('parameter')
+            +createHeading('sparkline')
+            +createHeading('actual')
+            +createHeading('twelvemonths')
+            +createHeading('older')
+        tfoot
+          tr
+            th
+              button.btn.btn-default(data-bind="text: $parent.msg('details'), click: function(){$parent.showdetails()}")
+            th
+              button.btn.btn-default(data-bind="text: $parent.msg('verlauf'), click: function(){$parent.createChart()}")
+        tbody
+          // ko foreach: $parent.itemsInGroup($data) 
+          tr(data-bind="click: function(){$parents[1].toggleItem($data)}")
+            td
+              span.glyphicon.glyphicon-unchecked(data-bind="visible: !$parents[1].isChecked($data)")
+              span.glyphicon.glyphicon-check(data-bind="visible: $parents[1].isChecked($data)")
+            td(data-bind="text: name+' ('+range+') ' ")
+            td
+              span(data-bind: "text: key")
+              span(data-bind="click: function(){$parents[1].createChart($data)}, attr: {id: key}")
+            +createGroup('act','range')
+            +createGroup('med','range')
+            +createGroup('old','range')
+          // /ko     
+
+    .table-responsive(data-bind="visible: $parent.display()==='detail'")
+      table.table.table-striped.table-condensed
+        thead
+          tr#detailheader(data-bind="foreach: $parent.detailDates")
+            th.labitem(data-bind="text: $data")
+        tfoot
+          tr
+            th
+              button.btn.btn-default(data-bind="click: function(){$parent.display('table')}") OK
+        tbody#detailtable
+        
