@@ -11,7 +11,7 @@ Release notes
 
 #### 12.6.2015
 
-convert to [Durandal](http://durandaljs.com) app
+convert client subproject to [Durandal](http://durandaljs.com) app
 
 #### 10.6.2015 - 0.5.0
 
