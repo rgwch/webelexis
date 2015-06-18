@@ -5,6 +5,13 @@
 
 define(['knockout', 'datetools', 'i18n', 'plugins/router'], function (ko, dt, R, router) {
 
+    var addIf = function (pref, check) {
+      if (check !== undefined && check !== null && check.length > 3) {
+        return pref + check
+      } else {
+        return ""
+      }
+    };
     var PatientSummary = function () {
       var self = this;
       self.patient = ko.observable();
@@ -42,6 +49,35 @@ define(['knockout', 'datetools', 'i18n', 'plugins/router'], function (ko, dt, R,
         }
       });
 
+      self.address = ko.computed(function () {
+        var p = self.patient();
+        if (p) {
+          var ret = addIf("", p.Strasse) + addIf(", ", p.plz) + addIf(" ", p.Ort);
+          ret += addIf("; ", p.telefon1) + addIf("; ", p.telefon2) + addIf("; ", p.natelnr) + addIf("; " + p.email);
+          return ret;
+
+        }
+        return ""
+      });
+
+      self.getTel1 = function () {
+        if (self.patient().telefon1 !== undefined) {
+          return "tel:" + self.patient().telefon1
+        } else {
+          return ""
+        }
+
+      };
+
+      self.remark = ko.computed(function () {
+        var p = self.patient();
+        if (p) {
+          if (p.bemerkung && p.bemerkung.length > 1) {
+            return p.bemerkung
+          }
+        }
+        return ""
+      });
       self.activate = function (settings) {
         self.patient(settings.patient)
       };
