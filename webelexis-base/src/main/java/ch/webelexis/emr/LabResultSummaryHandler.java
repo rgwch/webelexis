@@ -80,7 +80,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
             // We consider lab results as identical, if date, itemID and value are the same
             while (it.hasNext()) {
                 JsonArray row = (JsonArray) it.next();
-                String key = row.get(0) + row.get(1) + row.get(3);
+                String key = (String)row.get(0) + (String)row.get(1) + (String)row.get(3);
                 if (!check.containsKey(key)) {
                     check.put(key, true);
                     uniq.add(row);
