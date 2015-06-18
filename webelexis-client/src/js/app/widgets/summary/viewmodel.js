@@ -53,21 +53,26 @@ define(['knockout', 'datetools', 'i18n', 'plugins/router'], function (ko, dt, R,
         var p = self.patient();
         if (p) {
           var ret = addIf("", p.Strasse) + addIf(", ", p.plz) + addIf(" ", p.Ort);
-          ret += addIf("; ", p.telefon1) + addIf("; ", p.telefon2) + addIf("; ", p.natelnr) + addIf("; " + p.email);
           return ret;
 
         }
         return ""
       });
 
-      self.getTel1 = function () {
-        if (self.patient().telefon1 !== undefined) {
-          return "tel:" + self.patient().telefon1
-        } else {
-          return ""
-        }
+      self.doShow = function (value) {
+        if (value === undefined) {
+          return false
+        } else if (value === null) {
+          return false
 
-      };
+        } else if (value.length < 3) {
+          return false
+
+        } else {
+          return true
+        }
+      }
+
 
       self.remark = ko.computed(function () {
         var p = self.patient();
@@ -91,6 +96,16 @@ define(['knockout', 'datetools', 'i18n', 'plugins/router'], function (ko, dt, R,
           }
         });
         $buttons.each(function () {
+          $(this).width(max)
+        })
+        var $links = $parent.find("#phonelinks a")
+        var max = 0
+        $links.each(function () {
+          if ($(this).width() > max) {
+            max = $(this).width()
+          }
+        })
+        $links.each(function(){
           $(this).width(max)
         })
       }

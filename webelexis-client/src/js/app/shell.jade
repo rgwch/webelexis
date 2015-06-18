@@ -1,15 +1,15 @@
 //- This file is part of Webelexis, Copyright (c) 2015 by G. Weirich
 
-.navbar.navbar-default
+.navbar.navbar-default(style="z-index:10")
   .navbar-header
     button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#webelexis-main-collapsed")
       span.sr-only Menu erweitern
       span.fa.fa-ellipsis-v
     a.navbar-brand(href="http://www.webelexis.ch")
       div(data-bind="visible: connected")
-        img.img(alt="webelexis" src="images/elexis_logo.png" style="height: 32px; width=32px;" data-toogle="tooltip" data-bind="attr: {title: locale('connected')}")
+        img.img(alt="webelexis" src="images/elexis_logo.png" style="height: 24px; width=24px;" data-toogle="tooltip" data-bind="attr: {title: locale('connected')}")
       div(data-bind="visible: connected()===false")
-        img.img(alt="webelexis" src="images/elexis_logo_bw.png" style="height: 32px; width=32px;" data-toggle="tooltip" data-bind="attr: {title: locale('notconnected')}")
+        img.img(alt="webelexis" src="images/elexis_logo_bw.png" style="height: 24px; width=24px;" data-toggle="tooltip" data-bind="attr: {title: locale('notconnected')}")
   .collapse.navbar-collapse#webelexis-main-collapsed
     ul.nav.navbar-nav#mainmenu(data-bind="foreach: router.navigationModel")
       li(data-bind="css: { active: isActive }")
@@ -29,4 +29,4 @@
           li
             a(href="#" data-bind="click: changePwd,text: locale('chpwd')").navbar-text
 
-.container-fluid.page-host(style="z-index: -1" data-bind="router: { transition:'entrance' }")
+.container.page-host(style="z-index: 0; padding-top:10px;" data-bind="router: { transition:null }")

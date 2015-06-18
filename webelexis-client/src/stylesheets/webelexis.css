@@ -47,6 +47,7 @@ label.error {
 
 /* entries in "detailagenda" */
 div.agendabox {
+  padding-left: 10px;
 	border-bottom-style: solid;
 	border-width     : 1px;
 	border-color     : black;
@@ -56,6 +57,8 @@ div.agendabox {
 /* Styles for ch-webelexis-labview */
 
 div.labgroup {
+  padding-left:5px;
+  padding-right: 5px;
 	width      : 100%;
 	min-height : 2em;
 	background : #a8ccdb;
