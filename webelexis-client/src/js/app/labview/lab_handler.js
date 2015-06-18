@@ -39,6 +39,31 @@ define(['datetools', 'underscore'], function (dt, _) {
     }
   }
 
+  /*
+   parseFloat, but respect both, "."  and "," as comma separators.
+   return 0 if no valid number was parsed.
+   */
+  function makeFloat(x) {
+    if (isNaN(x)) {
+      var splt = x.split(/[\.,]/);
+      if (splt.length == 1) {
+        return 0
+      } else if (splt.length == 2) {
+        if (isNaN(splt[0]) || isNaN(splt[1])) {
+          return 0
+        } else {
+          var frac = (splt[1] + "000").substr(0, 3);
+          return parseFloat(splt[0]) + (parseFloat(frac) / 1000)
+        }
+
+      } else {
+        return 0
+      }
+    } else {
+      return x
+    }
+  }
+
   return {
     /* create a min/max object from a "min-max" or a ">min" or a "<max" string */
     getRange: function (refvalue) {
@@ -82,6 +107,9 @@ define(['datetools', 'underscore'], function (dt, _) {
 
     },
 
+    /*
+     Convert the sqlresult from LabResultSummaryHandler.java to a JavaScript Object.
+     */
     crunch: function (sqlResult) {
       var self = this;
       if ((sqlResult === undefined) || (sqlResult.status !== 'ok')) {
@@ -99,8 +127,13 @@ define(['datetools', 'underscore'], function (dt, _) {
       /* insert all SQL result rows grouped by Item ID into the cruncher */
       for (var i = 0; i < cruncher.rows.length; i++) {
         var row = cruncher.rows[i];
+
         // skip non-numeric samples
-        if ((row[3] === undefined) || isNaN(row[3]) || (parseFloat(row[3]) === 0)) {
+        if (row[3] === undefined || row[3] === null) {
+          continue
+        }
+        row[3] = makeFloat(row[3]);
+        if (row[3] === 0) {
           continue
         }
         var key = row[1]; // itemId
@@ -136,6 +169,7 @@ define(['datetools', 'underscore'], function (dt, _) {
             item.range = row[9].split("#")[0]
           }
         }
+
         var group = {
           name: row[6],
           items: {}
