@@ -61,6 +61,21 @@ define(['knockout', 'i18n'], function (ko, R) {
         role: "arzt"
       },
       {
+        route: "conslist/:patid",
+        title: R.t('cons:list'),
+        location: 'consultation/conslist',
+        active: true,
+        role: "arzt"
+      },
+      {
+        route: "kons/:consid",
+        title: R.t("cons:detail"),
+        location: "consultation/detail",
+        active: true,
+        role: "arzt"
+      },
+
+      {
         route: 'login',
         title: R.t("global.login"),
         location: 'account/login',
@@ -93,4 +108,5 @@ define(['knockout', 'i18n'], function (ko, R) {
     ]
   }
 
-});
+})
+;

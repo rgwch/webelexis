@@ -1,4 +1,9 @@
 {
+  "cons": {
+    "list": "Konsultationen",
+    "detail": "Konsultation"
+
+  },
   "lab": {
     "title": "Labor",
     "loading": "Lade Daten...",

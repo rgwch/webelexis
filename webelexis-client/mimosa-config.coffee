@@ -6,6 +6,7 @@ exports.config =
     'require'
     'minify-js'
     'minify-css'
+    'minify-html'
     'coffeescript'
     'live-reload'
     'combine'
@@ -31,11 +32,11 @@ exports.config =
   clientJadeStatic:
     outputExtension: 'html',
     extensionRegex: /\.jade$/,
-    prettyOutput: true
+    prettyOutput: false
 
   jade:
     compileOptions:
-      compileDebug: true
+      compileDebug: false
 
   requireBuildTextPluginInclude:
     pluginPath: 'text'

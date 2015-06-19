@@ -6,15 +6,15 @@
 /**
  * custom binding (http://knockoutjs.com/documentation/custom-bindings.html) to embed the CKEditor in a knockout component.
  */
-define(['knockout'], function (ko) {
+define(['knockout', 'cke'], function (ko, ckeditor) {
 
 	var Editor = function (elementID) {
 		var self = this;
-		var myID = elementID
+		var myID = elementID;
 
 		self.getText = function () {
 			return CKEDITOR.instances[myID].getData()
-		}
+		};
 
 		ko.bindingHandlers.ckeditor = {
 			init: function (element, valueAccessor) {
@@ -30,7 +30,7 @@ define(['knockout'], function (ko) {
 					language: "de",
 					contentsLanguage:"de",
 					toolbar: [['Source','-','Bold','Maximize']]
-				})
+				});
 
 				// bind to change events and link it to the observable
 				/*
@@ -54,15 +54,15 @@ define(['knockout'], function (ko) {
 			/* Hook and handle the binding updating so we write
 			 * back to the observable */
 			update: function (element, valueAccessor) {
-				var elementid = $(element).attr("id")
+				var elementid = $(element).attr("id");
 				var newValue = ko.utils.unwrapObservable(valueAccessor());
 				if (CKEDITOR.instances[elementid].getData() != newValue) {
 					CKEDITOR.instances[elementid].setData(newValue);
 				}
 			}
-		}
+		};
 
 		return self
-	}
+	};
 	return Editor;
-})
+});
