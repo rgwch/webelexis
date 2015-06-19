@@ -16,6 +16,7 @@ exports.config =
     'csslint'
     'jshint'
     'copy'
+    'karma'
     'jade'
     'client-jade-static'
   ]
@@ -111,3 +112,6 @@ exports.config =
         pragmas:
           build: true
 
+  karma:
+    configFile: 'karma.conf.js'
+    externalConfig: true

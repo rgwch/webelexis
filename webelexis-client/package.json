@@ -8,5 +8,23 @@
     "toolbar": false,
     "width": 1024,
     "height": 768
-  }
+  },
+  "devDependencies": {
+ 		"chai": "^2.1.2",
+ 		"jade": ">=1.9.0",
+ 		"karma": "^0.12.31",
+ 		"karma-chai-sinon": "^0.1.4",
+ 		"karma-chrome-launcher": "^0.1.7",
+ 		"karma-mocha": "^0.1.10",
+ 		"karma-phantomjs-launcher": "^0.1.4",
+ 		"karma-requirejs": "^0.2.2",
+ 		"mkdirp": "latest",
+ 		"mocha": "^2.2.1",
+ 		"ncp": "latest",
+ 		"onchange": "latest",
+ 		"parallelshell": "latest",
+ 		"rimraf": "latest",
+ 		"sinon": "^1.14.1",
+ 		"sinon-chai": "^2.7.0"
+ 	}
 }

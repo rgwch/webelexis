@@ -66,14 +66,14 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'i18n', 'dura
   //>>excludeEnd("build");
 
   /*
-   Configuration für i18next
+   Configuration for i18next
    */
   var i18NOptions = {
     detectFromHeaders: false,
     lng: window.navigator.userLanguage || window.navigator.language || 'de-CH',
     fallbackLng: 'de',
     ns: {
-      namespaces: ['base', 'datepicker'],
+      namespaces: ['base', 'datepicker', 'alerts'],
       defaultNs: 'base'
     },
     resGetPath: 'locales/__ns__-__lng__.json',
@@ -85,7 +85,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'i18n', 'dura
 
   app.title = 'Webelexis';
 
-  //specify which plugins to install and their configuration
+  //specify which plugins to install and activate widgets
   app.configurePlugins({
     router: true,
     dialog: true,
