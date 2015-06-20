@@ -124,7 +124,7 @@ define(['underscore'], function (_) {
 			var record = xml.createElement("record");
 			var plain = "";
 			var markpos = 0;
-			var markupPattern = /<span class="(bold|italic|underlined|xref)">.+?<\/span>/gm;
+			var markupPattern = /<span class="(bold|italic|underlined|xref)"(\s+data-[a-z]+=\".+\")*>.+?<\/span>/gm;
 
 			var matches = htmlText.match(markupPattern);
 			if (matches !== null) {
