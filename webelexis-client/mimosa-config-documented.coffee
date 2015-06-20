@@ -139,7 +139,7 @@ exports.config = {
                                 # is assumed to already be minified and is ignored by default.
                                 # Paths can be relative to the watch.compiledDir, or absolute. 
                                 # Paths are to compiled files,  so '.css' rather than '.styl'
-    options:                    =# Options for clean-css package, see list of options here
+    options:                    # Options for clean-css package, see list of options here
                                 # https://github.com/GoalSmashers/clean-css#how-to-use-clean-css-programmatically
       processImport: false      # defaults to not processing (stripping) @import statements
   jshint:                  # settings for javascript hinting

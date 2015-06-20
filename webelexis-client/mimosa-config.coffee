@@ -1,6 +1,7 @@
 exports.config =
   minMimosaVersion:'2.0.0'
 
+
   modules: [
     'server'
     'require'
@@ -100,75 +101,38 @@ exports.config =
       extension: 'html.jade'
       path: "src"
 
-
-
-  require:
-    commonConfig: 'js/app/requirejs.config.js'
-    optimize:
-      overrides:
+  require: {
+    optimize: {
+      overrides: {
         name: '../lib/almond-custom'
         inlineText: true
         stubModules: ['text']
         pragmas:
           build: true
+      }
+    }
+  }
 
   testemRequire:
-    executeDuringBuild: false
-    executeDuringWatch: false
-    safeAssets: []
     requireConfig:
-      "paths": {
+      paths:
         "bootstrap": "/lib/bootstrap/bootstrap",
-        "jquery": "../lib/jquery/jquery",
-        "jquery-ui": "../lib/jquery-ui/jquery-ui",
-        "validate": "../lib/jquery-validate/jquery.validate",
-        "knockout": "../lib/knockout/knockout",
-        "sockjs": "../lib/sockjs/sockjs",
-        "text": "../lib/requirejs-text/text",
-        "vertxbus": "../lib/vertxbus/vertxbus",
-        "knockout-jqueryui": "../lib/knockout-jqueryui/knockout-jqueryui",
-        "cookie": "../lib/js-cookie/js.cookie",
-        "durandal": "../lib/durandal",
-        "plugins": "../lib/durandal/plugins",
-        "transitions": "../lib/durandal/transitions",
-        "i18n": "../lib/i18next/i18next.amd.withJQuery",
+        "jquery": "/lib/jquery/jquery",
+        "validate": "/lib/jquery-validate/jquery.validate",
+        "knockout": "/lib/knockout/knockout",
+        "text": "/lib/requirejs-text/text",
+        "cookie": "/lib/js-cookie/js.cookie",
+        "durandal": "/lib/durandal",
+        "plugins": "/lib/durandal/plugins",
+        "transitions": "/lib/durandal/transitions",
+        "i18n": "/lib/i18next/i18next.amd.withJQuery",
         "bus": "eb",
-        "spark": "https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min",
-        "underscore": "../lib/underscore/underscore",
-        "flot": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min",
-        "flot-time": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min",
-        "cke": "../lib/ckeditor/ckeditor",
-        "smooth": "../lib/flot.curvedlines/curvedLines"
-      },
-      "shim": {
-        "bootstrap": {
-          "deps": [
-            "jquery"
-          ]
-        },
-        "knockout": {
-          "deps": [
-            "jquery"
-          ]
-        },
-        "validate": {
-          "deps": [
-            "jquery"
-          ]
-        },
-        "flot-time": {
-          "deps": [
-            "flot"
-          ]
-        },
-        "smooth": {
-          "deps": [
-            "flot"
-          ]
-        },
-        "cke": {
-          "deps": [
-            "jquery"
-          ]
-        }
-      }
+        "underscore": '/lib/underscore/underscore'
+
+    testemConfig:
+      routes:
+        "/js": "dist/js/app"
+        "/lib": "dist/js/lib"
+
+
+
