@@ -96,7 +96,7 @@ define(['underscore'], function (_) {
 								offset += 22 + 6;
 								break;
 							}
-							case "underlined":
+							case "underline":
 							{
 								ret = insert(ret, elem.pos + offset, elem.len, "underline");
 								offset += 22 + 9;
@@ -104,8 +104,14 @@ define(['underscore'], function (_) {
 							}
 							case "xref":
 							{
-								ret = insert(ret, elem.pos + offset, elem.len, "xref");
-								offset += 22 + 4
+                var pos=elem.pos+offset
+                var left = ret.substr(0, pos);
+                var middle = ret.substr(pos, elem.len);
+                var right = ret.substr(parseInt(pos + elem.len));
+                var inset='<span class="xref" data-provider="'+elem.provider+'" data-objectid="'+elem.xid+'">'
+                var len=inset.length+7
+                ret = left + inset + middle + '</span>' + right;
+								offset += len
 							}
 						}
 					});
@@ -124,7 +130,7 @@ define(['underscore'], function (_) {
 			var record = xml.createElement("record");
 			var plain = "";
 			var markpos = 0;
-			var markupPattern = /<span class="(bold|italic|underlined|xref)"(\s+data-[a-z]+=\".+\")*>.+?<\/span>/gm;
+			var markupPattern = /<span class="(bold|italic|underline|xref)"(\s+data-[a-z]+=\".+\")*>.+?<\/span>/gm;
 
 			var matches = htmlText.match(markupPattern);
 			if (matches !== null) {
@@ -140,12 +146,29 @@ define(['underscore'], function (_) {
 					var types = checkPattern.exec(match);
 					var subst = cleanHTML(types[2]);
 					plain += subst;
-					if (types[1] === "xref") {
+					if (types[1].indexOf("xref")>-1) {
+						var prov=/data-provider\s*=\s*\"([a-zA-Z0-9\/\.]+)\"/.exec(match)
+            if(prov!==null){
+              provider=prov[1]
+            }else{
+              provider=undefined
+            }
+            var did=/data-objectid\s*=\s*\"([a-zA-Z0-9-_\.\/]+)\"/.exec(match)
+            if(did!==null){
+              docid=did[1]
+            }else{
+              docid=undefined
+            }
 						var xref = xml.createElement("xref");
 						xref.setAttribute("from", destpos);
-						xref.setAttribute("length", subst.length);
-						xref.setAttribute("provider", "ch.elexis.text.DocXRef");  // todo
-						xref.setAttribute("id", "0");
+            xref.setAttribute("length", subst.length)
+            if(provider!== undefined) {
+              xref.setAttribute("provider", provider)
+            }
+            if(docid!==undefined) {
+              xref.setAttribute("id", docid);
+            }
+
 						record.appendChild(xref)
 					} else {
 						var markup = xml.createElement("markup");
