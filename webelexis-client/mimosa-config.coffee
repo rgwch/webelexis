@@ -16,7 +16,7 @@ exports.config =
     'csslint'
     'jshint'
     'copy'
-    'karma'
+    'testem-require'
     'jade'
     'client-jade-static'
   ]
