@@ -1,5 +1,6 @@
 // jshint -W033
-define(['app/datetools'], function(dt) {
+
+define(['datetools'], function (dt) {
 
   describe('datetools should convert between Date objects and Strings', function() {
     it('should convert a Date() to a string', function() {

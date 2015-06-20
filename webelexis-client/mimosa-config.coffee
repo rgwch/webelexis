@@ -112,6 +112,63 @@ exports.config =
         pragmas:
           build: true
 
-  karma:
-    configFile: 'karma.conf.js'
-    externalConfig: true
+  testemRequire:
+    executeDuringBuild: false
+    executeDuringWatch: false
+    safeAssets: []
+    requireConfig:
+      "paths": {
+        "bootstrap": "/lib/bootstrap/bootstrap",
+        "jquery": "../lib/jquery/jquery",
+        "jquery-ui": "../lib/jquery-ui/jquery-ui",
+        "validate": "../lib/jquery-validate/jquery.validate",
+        "knockout": "../lib/knockout/knockout",
+        "sockjs": "../lib/sockjs/sockjs",
+        "text": "../lib/requirejs-text/text",
+        "vertxbus": "../lib/vertxbus/vertxbus",
+        "knockout-jqueryui": "../lib/knockout-jqueryui/knockout-jqueryui",
+        "cookie": "../lib/js-cookie/js.cookie",
+        "durandal": "../lib/durandal",
+        "plugins": "../lib/durandal/plugins",
+        "transitions": "../lib/durandal/transitions",
+        "i18n": "../lib/i18next/i18next.amd.withJQuery",
+        "bus": "eb",
+        "spark": "https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min",
+        "underscore": "../lib/underscore/underscore",
+        "flot": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min",
+        "flot-time": "https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min",
+        "cke": "../lib/ckeditor/ckeditor",
+        "smooth": "../lib/flot.curvedlines/curvedLines"
+      },
+      "shim": {
+        "bootstrap": {
+          "deps": [
+            "jquery"
+          ]
+        },
+        "knockout": {
+          "deps": [
+            "jquery"
+          ]
+        },
+        "validate": {
+          "deps": [
+            "jquery"
+          ]
+        },
+        "flot-time": {
+          "deps": [
+            "flot"
+          ]
+        },
+        "smooth": {
+          "deps": [
+            "flot"
+          ]
+        },
+        "cke": {
+          "deps": [
+            "jquery"
+          ]
+        }
+      }

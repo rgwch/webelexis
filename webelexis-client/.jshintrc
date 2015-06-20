@@ -12,6 +12,8 @@
     "console": true,
     "CKEDITOR": true,
     "require": true,
-    "system": true
+    "system": true,
+    "describe": true,
+    "it": true
   }
 }
