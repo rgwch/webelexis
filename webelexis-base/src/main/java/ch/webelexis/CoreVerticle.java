@@ -76,6 +76,8 @@ public class CoreVerticle extends BusModBase {
 		} catch (DecodeException ex) {
 			System.out.println("Invalid config json");
 		}
+		File cwd = new File(".");
+		System.out.print("CWD in CoreVerticle: " + cwd.getAbsolutePath());
 	}
 
 	/*

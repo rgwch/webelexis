@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.vertx.java.core.Handler;
@@ -41,7 +42,10 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 	HTTPHandler(JsonObject cfg, EventBus eb) {
 		this.cfg = cfg;
 		this.eb = eb;
+		File cwd = new File(".");
+		Logger.getGlobal().log(Level.FINE, "cwd: " + cwd.getAbsolutePath());
 		basePath = new File(cfg.getString("webroot"));
+		Logger.getGlobal().log(Level.FINER, "HTTPHandler serving from: " + basePath.getAbsolutePath());
 		df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 	}

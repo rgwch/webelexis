@@ -1,5 +1,6 @@
 {
   "main": "ch.webelexis.CoreVerticle",
+  "preserve-cwd": false,
   "worker": false,
   "description": "Core verticles for the Webelexis system",
   "licenses": ["Eclipse Public License"],

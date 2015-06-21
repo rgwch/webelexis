@@ -15,7 +15,33 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
 		self.getText = function () {
 			return CKEDITOR.instances[myID].getData()
 		};
+    // from http://stackoverflow.com/questions/20972431/ckeditor-get-previous-character-of-current-cursor-position
+    function getPrevChar(editor) {
+      var range = editor.getSelection().getRanges()[0],
+        startNode = range.startContainer;
 
+      if (startNode.type == CKEDITOR.NODE_TEXT && range.startOffset)
+      // Range at the non-zero position of a text node.
+        return startNode.getText()[range.startOffset - 1];
+      else {
+        // Expand the range to the beginning of editable.
+        range.collapse(true);
+        range.setStartAt(editor.editable(), CKEDITOR.POSITION_AFTER_START);
+
+        // Let's use the walker to find the closest (previous) text node.
+        var walker = new CKEDITOR.dom.walker(range),
+          node;
+
+        while (( node = walker.previous() )) {
+          // If found, return the last character of the text node.
+          if (node.type == CKEDITOR.NODE_TEXT)
+            return node.getText().slice(-1);
+        }
+      }
+
+      // Selection starts at the 0 index of the text node and/or there's no previous text node in contents.
+      return null;
+    }
 		ko.bindingHandlers.ckeditor = {
 			init: function (element, valueAccessor) {
 
@@ -33,14 +59,25 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
 				});
 
 				// bind to change events and link it to the observable
-				/*
-				editor.on('change', function (e) {
-					var self = this;
-					if (ko.isWriteableObservable(self)) {
-						self($(e.listenerData).val());
-					}
-				}, modelValue, element);
-				 */
+        /*
+         editor.on("change",function(event){
+         var data=editor.getData() // fetch HTML
+         var sel=editor.getSelection() // current position
+         var curpos=sel.getStartElement()
+         debugger
+         var char=getPrevChar(editor)
+         })
+         */
+        editor.addCommand("webelexisShortcut", {
+          exec: function (editor, data) {
+            var actText = editor.getSelection().getRanges()[0].endContainer.$
+            var words = actText.textContent.split(/\s+/)
+            var lastWord = words[words.length - 1]
+            console.log(lastWord)
+          }
+        })
+
+        editor.setKeystroke(CKEDITOR.CTRL + 32, "webelexisShortcut")
 
 				/* Handle disposal if KO removes an editor
 				 * through template binding */
