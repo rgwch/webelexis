@@ -2,13 +2,26 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'editor', 'config', 'bus', 'samdas'], function (ko, ed, cfg, bus, smd) {
+define(['knockout', 'editor', 'config', 'bus', 'samdas', 'durandal/app', 'i18n'], function (ko, ed, cfg, bus, smd, appl, R) {
 
   function ConsDetailModel() {
     var self = this;
 
-    self.contents = ko.observable("loading..");
+    self.contents = ko.observable(R.t("global.loading"));
+    var metaInfos=ko.observableArray([
+      {
+        title: "Diagnosen"
+      },
+      {
+        title: "Labor"
+      },
+      {
+        title: "Verrechnung"
+      }
+      ])
     var edit = ed("edit");
+
+
     self.getText = function () {
       var htmltext = edit.getText();
       console.log(htmltext);
@@ -27,16 +40,16 @@ define(['knockout', 'editor', 'config', 'bus', 'samdas'], function (ko, ed, cfg,
         sessionID: cfg.sessionID
       }, function (result) {
         if (result.status === undefined) {
-          window.alert("no response from server")
+          appl.showMessage(R.t("global.timeout"), R.t("global.connection_error"))
         } else if (result.status === "ok") {
           var cons = result.result;
           if (cons) {
             self.contents(smd.html(cons.entry))
           } else {
-            window.alert("empty result")
+            appl.showMessage(R.t("global.nodadat"), R.t("global.error"))
           }
         } else {
-          window.alert("error " + result.message)
+          appl.showMessage(result.status+" "+result.message, R.t("global.error"))
         }
       })
 

@@ -6,7 +6,6 @@
   },
   "lab": {
     "title": "Labor",
-    "loading": "Lade Daten...",
     "parameter": "Parameter",
     "twelvemonths": "12 Monate",
     "older": "Älter",
@@ -89,6 +88,8 @@
     }
   },
   "global": {
+    "nodata": "Es wurden keine Daten empfangen",
+    "loading": "Lade Daten...",
     "connected": "verbunden",
     "notconnected": "getrennt",
     "login": "Login",
