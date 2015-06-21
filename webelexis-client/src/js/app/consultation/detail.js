@@ -7,10 +7,14 @@ define(['knockout', 'editor', 'config', 'bus', 'samdas', 'durandal/app', 'i18n']
   function ConsDetailModel() {
     var self = this;
 
+    self.getHeaderText=function(elem){
+      return elem.title
+    }
     self.contents = ko.observable(R.t("global.loading"));
     var metaInfos=ko.observableArray([
       {
         title: "Diagnosen"
+
       },
       {
         title: "Labor"
