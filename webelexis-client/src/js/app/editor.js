@@ -8,13 +8,13 @@
  */
 define(['knockout', 'cke'], function (ko, ckeditor) {
 
-	var Editor = function (elementID) {
-		var self = this;
-		var myID = elementID;
+  var Editor = function (elementID) {
+    var self = this;
+    var myID = elementID;
 
-		self.getText = function () {
-			return CKEDITOR.instances[myID].getData()
-		};
+    self.getText = function () {
+      return CKEDITOR.instances[myID].getData()
+    };
     // from http://stackoverflow.com/questions/20972431/ckeditor-get-previous-character-of-current-cursor-position
     function getPrevChar(editor) {
       var range = editor.getSelection().getRanges()[0],
@@ -42,23 +42,24 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
       // Selection starts at the 0 index of the text node and/or there's no previous text node in contents.
       return null;
     }
-		ko.bindingHandlers.ckeditor = {
-			init: function (element, valueAccessor) {
 
-				var modelValue = valueAccessor();
-				var value = ko.utils.unwrapObservable(valueAccessor());
-				var element$ = $(element);
+    ko.bindingHandlers.ckeditor = {
+      init: function (element, valueAccessor) {
 
-				// Set initial value and create the CKEditor
-				element$.html(value);
-				//var editor = element$.ckeditor().editor;
-				var editor = CKEDITOR.replace(element, {
-					language: "de",
-					contentsLanguage:"de",
-					toolbar: [['Source','-','Bold','Maximize']]
-				});
+        var modelValue = valueAccessor();
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        var element$ = $(element);
 
-				// bind to change events and link it to the observable
+        // Set initial value and create the CKEditor
+        element$.html(value);
+        //var editor = element$.ckeditor().editor;
+        var editor = CKEDITOR.replace(element, {
+          language: "de",
+          contentsLanguage: "de",
+          toolbar: [['Source', '-', 'Bold', 'Maximize']]
+        });
+
+        // bind to change events and link it to the observable
         /*
          editor.on("change",function(event){
          var data=editor.getData() // fetch HTML
@@ -68,38 +69,43 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
          var char=getPrevChar(editor)
          })
          */
+        /**
+         * command for macro-processing in webelexis
+         */
         editor.addCommand("webelexisShortcut", {
           exec: function (editor, data) {
-            var actText = editor.getSelection().getRanges()[0].endContainer.$
+            var actText = editor.getSelection().getRanges()[0].startContainer.$
             var words = actText.textContent.split(/\s+/)
             var lastWord = words[words.length - 1]
             console.log(lastWord)
           }
         })
-
+        /**
+         * execute macro-prozessing with ctrl-space
+         */
         editor.setKeystroke(CKEDITOR.CTRL + 32, "webelexisShortcut")
 
-				/* Handle disposal if KO removes an editor
-				 * through template binding */
-				ko.utils.domNodeDisposal.addDisposeCallback(element,
-					function () {
-						editor.updateElement();
-						editor.destroy();
-					});
-			},
+        /* Handle disposal if KO removes an editor
+         * through template binding */
+        ko.utils.domNodeDisposal.addDisposeCallback(element,
+          function () {
+            editor.updateElement();
+            editor.destroy();
+          });
+      },
 
-			/* Hook and handle the binding updating so we write
-			 * back to the observable */
-			update: function (element, valueAccessor) {
-				var elementid = $(element).attr("id");
-				var newValue = ko.utils.unwrapObservable(valueAccessor());
-				if (CKEDITOR.instances[elementid].getData() != newValue) {
-					CKEDITOR.instances[elementid].setData(newValue);
-				}
-			}
-		};
+      /* Hook and handle the binding updating so we write
+       * back to the observable */
+      update: function (element, valueAccessor) {
+        var elementid = $(element).attr("id");
+        var newValue = ko.utils.unwrapObservable(valueAccessor());
+        if (CKEDITOR.instances[elementid].getData() != newValue) {
+          CKEDITOR.instances[elementid].setData(newValue);
+        }
+      }
+    };
 
-		return self
-	};
-	return Editor;
+    return self
+  };
+  return Editor;
 });
