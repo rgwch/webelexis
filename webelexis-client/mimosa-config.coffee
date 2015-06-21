@@ -1,5 +1,5 @@
 exports.config =
-  minMimosaVersion:'2.0.0'
+  minMimosaVersion: '2.0.0'
 
 
   modules: [
@@ -28,7 +28,7 @@ exports.config =
     javascriptDir: 'js/app'
 
   vendor:
-     javascripts: 'js/lib'
+    javascripts: 'js/lib'
 
 
   clientJadeStatic:
@@ -45,7 +45,7 @@ exports.config =
     extensions: ['html']
 
   requireBuildInclude:
-    folder:"js"
+    folder: "js"
     patterns: ['app/**/*.js', 'lib/durandal/**/*.js']
 
   bower:
@@ -70,8 +70,8 @@ exports.config =
     sourceMap: true
     folders: [
       {
-        folder:'stylesheets'
-        output:'stylesheets/styles.css'
+        folder: 'stylesheets'
+        output: 'stylesheets/styles.css'
         order: [
           'vendor/bootstrap/bootstrap.css'
           'vendor/bootstrap/bootstrap-responsive.css'
@@ -114,6 +114,8 @@ exports.config =
   }
 
   testemRequire:
+    executeDuringBuild: true
+    executeDuringWatch: false
     requireConfig:
       paths:
         "bootstrap": "/lib/bootstrap/bootstrap",
@@ -130,9 +132,14 @@ exports.config =
         "underscore": '/lib/underscore/underscore'
 
     testemConfig:
+      launchers:
+        phantom:
+          command: "phantomjs .mimosa/testemRequire/run-tests.js"
+
       routes:
         "/js": "dist/js/app"
         "/lib": "dist/js/lib"
-
+      "launch_in_ci": ["Chrome"]
+      "launch_in_dev": ["Chrome"]
 
 
