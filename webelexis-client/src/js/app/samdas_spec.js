@@ -13,8 +13,6 @@ define(function (require) {
       //var dummy_entry="Quidquid id est, timeo danaos et dona ferentes"
       var samdas_string = smd.samdas(dummy_entry);
       var back_convert = smd.html(samdas_string)
-      console.log(samdas_string)
-      console.log(back_convert)
       dummy_entry.should.equal(back_convert)
 
     })

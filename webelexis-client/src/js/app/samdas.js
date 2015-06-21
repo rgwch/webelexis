@@ -135,7 +135,6 @@ define(['underscore'], function (_) {
 			var matches = htmlText.match(markupPattern);
 			if (matches !== null) {
 				_.each(matches, function (match) {
-					console.log(match);
 					var origPos = htmlText.indexOf(match, markpos);
 					if (origPos > markpos) {
 						plain += cleanHTML(htmlText.substring(markpos, origPos))
