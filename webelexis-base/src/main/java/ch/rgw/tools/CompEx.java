@@ -22,12 +22,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.compress.bzip2.CBZip2InputStream;
-import org.apache.commons.compress.bzip2.CBZip2OutputStream;
-
-import ch.rgw.tools.BinConverter;
-import ch.rgw.tools.StringTool;
-
 /**
  * Compressor/Expander
  */

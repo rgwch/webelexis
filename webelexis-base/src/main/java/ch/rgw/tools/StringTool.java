@@ -25,14 +25,10 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.compress.bzip2.CBZip2InputStream;
-import org.apache.commons.compress.bzip2.CBZip2OutputStream;
 
 
 /**

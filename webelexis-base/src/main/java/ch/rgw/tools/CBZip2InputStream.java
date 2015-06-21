@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.compress.bzip2;
+package ch.rgw.tools;
 
 import java.io.IOException;
 import java.io.InputStream;

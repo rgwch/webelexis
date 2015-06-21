@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.compress.bzip2;
+package ch.rgw.tools;
 
 /*
  * This package is based on the work done by Keiron Liddle, Aftex Software
