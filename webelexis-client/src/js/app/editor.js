@@ -6,7 +6,7 @@
 /**
  * custom binding (http://knockoutjs.com/documentation/custom-bindings.html) to embed the CKEditor in a knockout component.
  */
-define(['knockout', 'cke'], function (ko, ckeditor) {
+define(['knockout', 'cke', 'durandal/app'], function (ko, ckeditor, appl) {
 
   var Editor = function (elementID) {
     var self = this;
@@ -73,17 +73,18 @@ define(['knockout', 'cke'], function (ko, ckeditor) {
          * command for macro-processing in webelexis
          */
         editor.addCommand("webelexisShortcut", {
-          exec: function (editor, data) {
-            var actText = editor.getSelection().getRanges()[0].startContainer.$
-            var words = actText.textContent.split(/\s+/)
-            var lastWord = words[words.length - 1]
-            console.log(lastWord)
+          exec: function (edt, data) {
+            var actText = edt.getSelection().getRanges()[0].startContainer.$;
+            var words = actText.textContent.split(/\s+/);
+            var lastWord = words[words.length - 1];
+            console.log(lastWord);
+            appl.trigger("editor:macro", lastWord)
           }
-        })
+        });
         /**
          * execute macro-prozessing with ctrl-space
          */
-        editor.setKeystroke(CKEDITOR.CTRL + 32, "webelexisShortcut")
+        editor.setKeystroke(CKEDITOR.CTRL + 32, "webelexisShortcut");
 
         /* Handle disposal if KO removes an editor
          * through template binding */
