@@ -4,6 +4,7 @@
 package ch.webelexis;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.AsyncResultHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.eventbus.EventBus;
@@ -120,11 +121,11 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
      *
      * @author gerry
      */
-    class SessionHandler implements Handler<AsyncResult<JsonObject>> {
+    class SessionHandler implements Handler<AsyncResult<Message<JsonObject>>> {
         HttpServerRequest req;
         String rnd;
         MultiMap headers;
-        InetSocketAddress remoteAdress;
+        SocketAddress remoteAdress;
 
         SessionHandler(HttpServerRequest req, String rnd) {
             this.req = req;
@@ -134,7 +135,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
         }
 
         @Override
-        public void handle(AsyncResult<JsonObject> msg) {
+        public void handle(AsyncResult<Message<JsonObject>> msg) {
             File in = new File(cfg.getString("webroot"), "index.html");
             Date lm = new Date(in.lastModified());
             req.response().putHeader("Last-Modified", df.format(lm));
@@ -146,7 +147,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
             try {
                 scanner = new Scanner(in, "UTF-8");
                 String modified = scanner.useDelimiter("\\A").next().replaceAll("GUID",
-                        msg.result().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid).replaceAll(
+                        msg.result().body().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid).replaceAll(
                         "GOOGLE_STATE", rnd);
 
                 req.response().end(modified);

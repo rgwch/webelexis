@@ -4,10 +4,13 @@
 
 package ch.webelexis.agenda;
 
+import ch.ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 import ch.webelexis.account.UserDetailHandler;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.AsyncResultHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
@@ -41,16 +44,16 @@ public class PublicAgendaDeleteHandler implements Handler<Message<JsonObject>> {
                     JsonObject op = new JsonObject()
                             .put("action", "prepared")
                             .put("statement", "UPDATE AGNTERMINE set DELETED=? where PatID=? and Tag=? and Beginn=?")
-                            .put("values", new JsonArray(new String[]{"1", userMsg.getString("patientid"), day, time}));
+                            .put("values", Util.asJsonArray(new String[]{"1", userMsg.getString("patientid"), day, time}));
                     log.finest(op.encodePrettily());
-                    verticle.getVertx().eventBus().send("ch.webelexis.sql", op, new Handler<Message<JsonObject>>() {
+                    verticle.getVertx().eventBus().send("ch.webelexis.sql", op, new AsyncResultHandler<Message<JsonObject>>() {
 
                         @Override
-                        public void handle(Message<JsonObject> sqlAnswer) {
-                            if (sqlAnswer.body().getString("status").equals("ok")) {
+                        public void handle(AsyncResult<Message<JsonObject>> sqlAnswer) {
+                            if (sqlAnswer.result().body().getString("status").equals("ok")) {
                                 cl.replyOk();
                             } else {
-                                log.warning(sqlAnswer.body().encodePrettily());
+                                log.warning(sqlAnswer.result().body().encodePrettily());
                                 cl.replyError("database error SQL");
                             }
                         }

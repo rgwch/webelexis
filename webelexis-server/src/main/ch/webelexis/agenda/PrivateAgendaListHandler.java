@@ -12,6 +12,7 @@ import io.vertx.core.AsyncResultHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
@@ -114,8 +115,8 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
                     }
 
                 } else {
-                    log.info("first level failed " + sqlResult1.body().getString("message"));
-                    System.out.println(Json.encodePrettily(sqlResult1.body()));
+                    log.info("first level failed " + sqlResult1.result().body().getString("message"));
+                    System.out.println(Json.encodePrettily(sqlResult1.result().body()));
                     cle.reply(new JsonObject().put("status", "failure"));
                 }
 
@@ -135,16 +136,16 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
 
         @Override
         public void handle(AsyncResult<Message<JsonObject>> second) {
-            if (second.body().getString("status").equals("ok")) {
+            if (second.result().body().getString("status").equals("ok")) {
                 log.finest("second level okay");
-                JsonObject ores = fillBlanks(appts, second.body().getJsonArray("results"));
+                JsonObject ores = fillBlanks(appts, second.result().body().getJsonArray("results"));
                 ores.put("type", "full");
                 cle.reply(ores);
             } else {
                 log.warning("second level failed");
-                System.out.println(Json.encodePrettily(second.body()));
+                System.out.println(Json.encodePrettily(second.result().body()));
                 cle.reply(new JsonObject().put("status", "failure")
-                        .put("reason", second.body().getString("status")));
+                        .put("reason", second.result().body().getString("status")));
             }
         }
 
@@ -201,7 +202,7 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
                     free[FLD_DURATION] = Integer.toString(startTime - endTime);
                     free[FLD_RESOURCE] = aNext.getString(FLD_RESOURCE);
                     free[FLD_TYPE] = "available";
-                    arr.addJsonArray(new JsonArray(free));
+                    arr.add(Util.asJsonArray(free));
                     endTime += (startTime - endTime);
                     // System.out.println("created "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
                 }
@@ -213,10 +214,10 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
                     free[FLD_RESOURCE] = aNext.getString(FLD_RESOURCE);
                     free[FLD_TYPE] = "occupied";
                     // System.out.println("rest "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
-                    arr.addArray(new JsonArray(free));
+                    arr.add(Util.asJsonArray(free));
                 }
                 endTime = startTime + Integer.parseInt(((String) aNext.getString(FLD_DURATION)).trim());
-                arr.addArray(aNext);
+                arr.add(aNext);
             }
 
             JsonObject ores = new JsonObject().put("status", "ok").put("type", "full")

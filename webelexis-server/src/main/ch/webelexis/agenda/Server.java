@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  *
  */
 public class Server extends AbstractVerticle {
-    static Logger log = Logger.getLogger("AgendaServer")
+    static Logger log = Logger.getLogger("AgendaServer");
 
     @Override
     public void start() {
@@ -59,7 +59,7 @@ public class Server extends AbstractVerticle {
                         }
                     }
                 }));
-        eb.registerHandler("ch.webelexis.privateagenda", new AuthorizingHandler(this, priCfg.getString("role"),
+        eb.consumer("ch.webelexis.privateagenda", new AuthorizingHandler(this, priCfg.getString("role"),
                 new Handler<Message<JsonObject>>() {
 
                     @Override
@@ -71,9 +71,9 @@ public class Server extends AbstractVerticle {
                         } else if (req.equals("insert")) {
                             privateInsertHandler.handle(msg);
                         } else if (req.equals("resources")) {
-                            JsonObject result = new JsonObject().putString("status", "ok").putArray("data",
-                                    priCfg.getArray("resources"));
-                            log.debug("answering: " + result.encodePrettily());
+                            JsonObject result = new JsonObject().put("status", "ok").put("data",
+                                    priCfg.getJsonArray("resources"));
+                            log.finest("answering: " + result.encodePrettily());
                             msg.reply(result);
                         }
 

@@ -3,16 +3,20 @@
  */
 package ch.webelexis.emr;
 
+import ch.ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.Mapper;
 import ch.webelexis.ParametersException;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.EventBus;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.logging.Logger;
-import org.vertx.java.platform.Verticle;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.AsyncResultHandler;
+import io.vertx.core.Handler;
+import io.vertx.core.Verticle;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+
+import java.util.logging.Logger;
 
 public class PatientDetailHandler implements Handler<Message<JsonObject>> {
     private String tid = "7ba4632caba62c5b3a366";
@@ -21,12 +25,11 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
 
     Verticle server;
     EventBus eb;
-    Logger log;
+    Logger log=Logger.getLogger("PatientDetailHandler");
 
     PatientDetailHandler(Verticle s) {
         server = s;
         eb = s.getVertx().eventBus();
-        log = s.getContainer().logger();
     }
 
     @Override
@@ -36,15 +39,15 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
         try {
             String patId = cl.get("patid", Cleaner.NAME, false);
             String sql = mapper.mapToString("SELECT FIELDS from KONTAKT as k where k.id=?", "FIELDS");
-            JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement", sql)
-                    .putArray("values", new JsonArray(new String[]{patId}));
+            JsonObject jo = new JsonObject().put("action", "prepared").put("statement", sql)
+                    .put("values", Util.asJsonArray(new String[]{patId}));
             eb.send("ch.webelexis.sql", jo, new PatDataHandler(externalRequest));
         } catch (ParametersException pex) {
             cl.replyError("parameter error");
         }
     }
 
-    class PatDataHandler implements Handler<Message<JsonObject>> {
+    class PatDataHandler implements AsyncResultHandler<Message<JsonObject>> {
         Message<JsonObject> req;
 
         public PatDataHandler(Message<JsonObject> externalRequest) {
@@ -52,17 +55,17 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
         }
 
         @Override
-        public void handle(Message<JsonObject> patData) {
-            JsonObject j = patData.body();
+        public void handle(AsyncResult<Message<JsonObject>> patData) {
+            JsonObject j = patData.result().body();
             if (j.getString("status").equals("ok")) {
                 int rows = j.getInteger("rows");
-                JsonArray fields = j.getArray("fields");
-                JsonArray results = patData.body().getArray("results").get(0);
+                JsonArray fields = j.getJsonArray("fields");
+                JsonArray results = patData.result().body().getJsonArray("results").getJsonArray(0);
                 JsonObject jPat = ArrayToObject(fields, results);
-                req.reply(new JsonObject().putString("status", "ok").putObject("patient", jPat));
+                req.reply(new JsonObject().put("status", "ok").put("patient", jPat));
             } else {
-                log.error(j.getString("status"));
-                req.reply(new JsonObject().putString("status", "SQL error"));
+                log.warning(j.getString("status"));
+                req.reply(new JsonObject().put("status", "SQL error"));
             }
 
         }
@@ -72,7 +75,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
     JsonObject ArrayToObject(JsonArray fields, JsonArray results) {
         JsonObject ret = new JsonObject();
         for (int i = 0; i < fields.size(); i++) {
-            ret.putString(((String) fields.get(i)).toLowerCase(), (String) results.get(i));
+            ret.put(((String) fields.getString(i)).toLowerCase(), (String) results.getString(i));
         }
         return ret;
     }

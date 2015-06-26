@@ -8,17 +8,20 @@
  */
 package ch.webelexis.agenda;
 
+import ch.ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 import ch.webelexis.account.UserDetailHandler;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.platform.Verticle;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.AsyncResultHandler;
+import io.vertx.core.Handler;
+import io.vertx.core.Verticle;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static ch.webelexis.Cleaner.*;
 
@@ -32,6 +35,7 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 
     JsonObject cfg;
     Verticle verticle;
+    Logger log= Logger.getLogger("Public AgendaInsertHandler");
 
     public PublicAgendaInsertHandler(Verticle v, JsonObject cfg) {
         this.verticle = v;
@@ -62,35 +66,34 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
                     if (patMsg != null) {
                         int time = Integer.parseInt(timeString[0]) * 60 + Integer.parseInt(timeString[1]);
                         JsonObject bridge = new JsonObject()
-                                .putString("action", "prepared")
-                                .putString(
-                                        "statement",
-                                        "INSERT INTO AGNTERMINE (ID,lastupdate,Tag,Bereich,Beginn,Dauer,TerminTyp,TerminStatus,Grund,PatID) VALUES(?,?,?,?,?,?,?,?,?,?)")
-                                .putArray(
+                                .put("action", "prepared")
+                                .put(
+                                  "statement",
+                                  "INSERT INTO AGNTERMINE (ID,lastupdate,Tag,Bereich,Beginn,Dauer,TerminTyp,TerminStatus,Grund,PatID) VALUES(?,?,?,?,?,?,?,?,?,?)")
+                                .put(
                                         "values",
-                                        new JsonArray(new String[]{UUID.randomUUID().toString(),
-                                                Long.toString(new Date().getTime()), day, resource, Integer.toString(time), "30",
-                                                apptType, apptState, ip, patMsg.getString("patientid")}));
+                                  Util.asJsonArray(new String[]{UUID.randomUUID().toString(),
+                                    Long.toString(new Date().getTime()), day, resource, Integer.toString(time), "30",
+                                    apptType, apptState, ip, patMsg.getString("patientid")}));
                         verticle.getVertx().eventBus()
-                                .send("ch.webelexis.sql", bridge, new Handler<Message<JsonObject>>() {
+                                .send("ch.webelexis.sql", bridge, new AsyncResultHandler<Message<JsonObject>>() {
 
                                     @Override
-                                    public void handle(Message<JsonObject> event) {
-                                        externalEvent.reply(event.body());
+                                    public void handle(AsyncResult<Message<JsonObject>> event) {
+                                        externalEvent.reply(event.result().body());
 
                                     }
                                 });
 
                     } else {
                         cl.replyError("not found " + username);
-                        verticle.getContainer().logger()
-                                .warn(username + " not found. ");
+                        log.warning(username + " not found. ");
                     }
                 }
             });
 
         } catch (ParametersException pex) {
-            verticle.getContainer().logger().error(pex.getMessage(), pex);
+            log.severe(pex.getMessage());
             cl.replyError("parameter error");
         }
 

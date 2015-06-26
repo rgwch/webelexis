@@ -4,28 +4,33 @@
 
 package ch.webelexis.emr;
 
+import ch.ch.rgw.vertx.Util;
 import ch.rgw.tools.VersionedResource;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.EventBus;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.logging.Logger;
-import org.vertx.java.platform.Verticle;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.AsyncResultHandler;
+import io.vertx.core.Handler;
+import io.vertx.core.Verticle;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+
+import java.util.logging.Logger;
+
 
 public class ConsultationHandler implements Handler<Message<JsonObject>> {
     Verticle v;
     EventBus eb;
-    Logger log;
+    Logger log=Logger.getLogger("ConsultationHandler");
     String[] fields = new String[]{"k.datum", "k.diagnosen", "k.eintrag"};
     final static String sql = "select k.id, k.datum, k.diagnosen, k.eintrag from BEHANDLUNGEN as k, FAELLE as f, KONTAKT as ko where ko.id=? and f.patientid=ko.id and k.fallid=f.id and k.deleted='0' order by k.datum DESC";
 
     public ConsultationHandler(Verticle server) {
         v = server;
         this.eb = v.getVertx().eventBus();
-        this.log = v.getContainer().logger();
+
     }
 
     @Override
@@ -35,25 +40,25 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
             final String action = cl.get("action", Cleaner.WORD, false);
             if (action.equals("list")) {
                 final String patid = cl.get("patid", Cleaner.UID, false);
-                JsonObject jo = new JsonObject().putString("action", "prepared").putString("statement", sql)
-                        .putArray("values", new JsonArray(new String[]{patid}));
-                log.debug("sending query " + jo.encodePrettily());
+                JsonObject jo = new JsonObject().put("action", "prepared").put("statement", sql)
+                        .put("values", Util.asJsonArray(new String[]{patid}));
+                log.finest("sending query " + jo.encodePrettily());
                 eb.send("ch.webelexis.sql", jo, new GetListResult(cl));
             } else if (action.equals("get")) {
                 final String consid = cl.get("consid", Cleaner.UID, false);
-                JsonObject jo = new JsonObject().putString("action", "prepared")
-                        .putString("statement", "SELECT id,datum,diagnosen,eintrag from BEHANDLUNGEN where id=?")
-                        .putArray("values", new JsonArray(new String[]{consid}));
-                log.debug("sending query: " + jo.encodePrettily());
+                JsonObject jo = new JsonObject().put("action", "prepared")
+                        .put("statement", "SELECT id,datum,diagnosen,eintrag from BEHANDLUNGEN where id=?")
+                        .put("values", Util.asJsonArray(new String[]{consid}));
+                log.finest("sending query: " + jo.encodePrettily());
                 eb.send("ch.webelexis.sql", jo, new GetConsResult(cl));
             }
         } catch (ParametersException pex) {
-            log.error(pex.getStackTrace());
+            log.severe(pex.getMessage());
             cl.replyError(pex.getMessage());
         }
     }
 
-    class GetListResult implements Handler<Message<JsonObject>> {
+    class GetListResult implements AsyncResultHandler<Message<JsonObject>> {
         Cleaner cl;
 
         GetListResult(Cleaner c) {
@@ -61,11 +66,11 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
         }
 
         @Override
-        public void handle(Message<JsonObject> sqlAnswer) {
+        public void handle(AsyncResult<Message<JsonObject>> sqlAnswer) {
             //log.debug("ConsListHandler: Got answer from sql server: " + sqlAnswer.body().encodePrettily());
-            JsonObject result = sqlAnswer.body();
+            JsonObject result = sqlAnswer.result().body();
             if (result.getString("status").equals("ok")) {
-                JsonArray rows = result.getArray("results");
+                JsonArray rows = result.getJsonArray("results");
                 JsonArray ret = new JsonArray();
                 for (Object o : rows) {
                     JsonObject jk = rowToObject((JsonArray) o);
@@ -73,7 +78,7 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
                         ret.add(jk);
                     }
                 }
-                cl.reply(new JsonObject().putString("status", "ok").putArray("results", ret));
+                cl.reply(new JsonObject().put("status", "ok").put("results", ret));
             } else {
                 cl.replyError(result.getString("message"));
             }
@@ -84,14 +89,14 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
     private JsonObject rowToObject(JsonArray row) {
         if (row.size() >= 4) {
             JsonObject jk = new JsonObject();
-            jk.putString("id", (String) row.get(0));
-            jk.putString("date", (String) row.get(1));
-            jk.putString("diags", (String) row.get(2));
-            JsonArray entry = (JsonArray) row.get(3);
+            jk.put("id", (String) row.getString(0));
+            jk.put("date", (String) row.getString(1));
+            jk.put("diags", (String) row.getString(2));
+            JsonArray entry = (JsonArray) row.getJsonArray(3);
             if (entry != null) {
                 byte[] ba = new byte[entry.size()];
                 for (int i = 0; i < entry.size(); i++) {
-                    ba[i] = (byte) entry.get(i);
+                    ba[i] = (byte) entry.getValue(i);
                 }
                 VersionedResource vr;
                 String ke;
@@ -102,14 +107,14 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
                     e.printStackTrace();
                     ke = "error reading VersionedResource";
                 }
-                jk.putString("entry", ke);
+                jk.put("entry", ke);
                 return jk;
             }
         }
         return null;
     }
 
-    class GetConsResult implements Handler<Message<JsonObject>> {
+    class GetConsResult implements AsyncResultHandler<Message<JsonObject>> {
         Cleaner cl;
 
         GetConsResult(Cleaner c) {
@@ -117,15 +122,15 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
         }
 
         @Override
-        public void handle(Message<JsonObject> sqlAnswer) {
+        public void handle(AsyncResult<Message<JsonObject>> sqlAnswer) {
             //log.debug("ConsResultHandler: Got answer from sql server: " + sqlAnswer.body().encodePrettily());
-            JsonObject result = sqlAnswer.body();
+            JsonObject result = sqlAnswer.result().body();
             if (result.getString("status").equals("ok")) {
-                JsonArray rows = (JsonArray) result.getArray("results");
+                JsonArray rows = (JsonArray) result.getJsonArray("results");
                 if (rows.size() > 0) {
-                    JsonObject jk = rowToObject((JsonArray) rows.get(0));
+                    JsonObject jk = rowToObject((JsonArray) rows.getJsonArray(0));
                     if (jk != null) {
-                        cl.reply(new JsonObject().putString("status", "ok").putObject("result", jk));
+                        cl.reply(new JsonObject().put("status", "ok").put("result", jk));
                     } else {
                         cl.replyError("could not decode result");
                     }
