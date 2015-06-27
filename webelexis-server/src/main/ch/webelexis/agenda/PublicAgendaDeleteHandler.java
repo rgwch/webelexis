@@ -4,7 +4,7 @@
 
 package ch.webelexis.agenda;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 import ch.webelexis.account.UserDetailHandler;
@@ -13,7 +13,6 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.AsyncResultHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
 import java.util.logging.Logger;

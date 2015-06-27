@@ -2,7 +2,7 @@
  * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
  */
 
-package ch.ch.rgw.vertx;
+package ch.rgw.vertx;
 
 import io.vertx.core.json.JsonArray;
 

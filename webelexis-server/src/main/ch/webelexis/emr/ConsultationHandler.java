@@ -4,7 +4,7 @@
 
 package ch.webelexis.emr;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.rgw.tools.VersionedResource;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
@@ -89,10 +89,10 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
     private JsonObject rowToObject(JsonArray row) {
         if (row.size() >= 4) {
             JsonObject jk = new JsonObject();
-            jk.put("id", (String) row.getString(0));
-            jk.put("date", (String) row.getString(1));
-            jk.put("diags", (String) row.getString(2));
-            JsonArray entry = (JsonArray) row.getJsonArray(3);
+            jk.put("id", row.getString(0));
+            jk.put("date", row.getString(1));
+            jk.put("diags", row.getString(2));
+            JsonArray entry = row.getJsonArray(3);
             if (entry != null) {
                 byte[] ba = new byte[entry.size()];
                 for (int i = 0; i < entry.size(); i++) {
@@ -126,9 +126,9 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
             //log.debug("ConsResultHandler: Got answer from sql server: " + sqlAnswer.body().encodePrettily());
             JsonObject result = sqlAnswer.result().body();
             if (result.getString("status").equals("ok")) {
-                JsonArray rows = (JsonArray) result.getJsonArray("results");
+                JsonArray rows = result.getJsonArray("results");
                 if (rows.size() > 0) {
-                    JsonObject jk = rowToObject((JsonArray) rows.getJsonArray(0));
+                    JsonObject jk = rowToObject(rows.getJsonArray(0));
                     if (jk != null) {
                         cl.reply(new JsonObject().put("status", "ok").put("result", jk));
                     } else {

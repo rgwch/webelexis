@@ -3,7 +3,7 @@
  */
 package ch.webelexis.emr;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.Mapper;
 import ch.webelexis.ParametersException;
@@ -81,7 +81,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
                 // We consider lab results as identical, if date, itemID and value are the same
                 while (it.hasNext()) {
                     JsonArray row = (JsonArray) it.next();
-                    String key = (String) row.getString(0) + (String) row.getString(1) + (String) row.getString(3);
+                    String key = row.getString(0) + row.getString(1) + row.getString(3);
                     if (!check.containsKey(key)) {
                         check.put(key, true);
                         uniq.add(row);

@@ -52,7 +52,8 @@ public class CoreVerticle extends AbstractVerticle {
             , new V("auth", "ch.rgw.vertx.SessionManager")};
 
     public CoreVerticle() throws IOException {
-        InputStream in = getClass().getResourceAsStream("/config_defaults.json");
+
+        InputStream in = getClass().getResourceAsStream("config_defaults.json");
         if (in == null) {
             System.out.print("config_defaults.json not found. Trying alternative");
             File file = new File("src/main/resources/config_sample.json"); // IDE

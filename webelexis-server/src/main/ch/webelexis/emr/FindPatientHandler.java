@@ -4,7 +4,7 @@
 
 package ch.webelexis.emr;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.Mapper;
 import ch.webelexis.ParametersException;

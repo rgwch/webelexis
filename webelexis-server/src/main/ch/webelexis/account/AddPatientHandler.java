@@ -3,7 +3,7 @@
  */
 package ch.webelexis.account;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 import io.vertx.core.AsyncResult;
@@ -13,7 +13,6 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
 import io.vertx.core.AbstractVerticle;
 
 import java.util.UUID;

@@ -3,7 +3,7 @@
  */
 package ch.webelexis.emr;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.Mapper;
 import ch.webelexis.ParametersException;
@@ -75,7 +75,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
     JsonObject ArrayToObject(JsonArray fields, JsonArray results) {
         JsonObject ret = new JsonObject();
         for (int i = 0; i < fields.size(); i++) {
-            ret.put(((String) fields.getString(i)).toLowerCase(), (String) results.getString(i));
+            ret.put(fields.getString(i).toLowerCase(), results.getString(i));
         }
         return ret;
     }

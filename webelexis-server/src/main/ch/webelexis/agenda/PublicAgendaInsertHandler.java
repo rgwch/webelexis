@@ -8,7 +8,7 @@
  */
 package ch.webelexis.agenda;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 import ch.webelexis.account.UserDetailHandler;

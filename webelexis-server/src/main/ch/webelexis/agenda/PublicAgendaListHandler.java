@@ -9,7 +9,7 @@
 
 package ch.webelexis.agenda;
 
-import ch.ch.rgw.vertx.Util;
+import ch.rgw.vertx.Util;
 import ch.webelexis.Cleaner;
 import ch.webelexis.ParametersException;
 import io.vertx.core.AbstractVerticle;
@@ -106,8 +106,8 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
         String day1 = o1.getString(FLD_DAY);
         String day2 = o2.getString(FLD_DAY);
         if (day1.equals(day2)) {
-          int start1 = Integer.parseInt(((String) o1.getString(FLD_BEGIN)).trim());
-          int start2 = Integer.parseInt(((String) o2.getString(FLD_BEGIN)).trim());
+          int start1 = Integer.parseInt(o1.getString(FLD_BEGIN).trim());
+          int start2 = Integer.parseInt(o2.getString(FLD_BEGIN).trim());
           return start1 - start2;
         }
         return day1.compareTo(day2);
@@ -137,8 +137,8 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
     // Fill in "available" spaces between appointments. Avalailables have
     // the length "slot" as defined in the config
     while (lines.hasNext()) {
-      JsonArray aNext = (JsonArray) lines.next();
-      int startTime = Integer.parseInt(((String) aNext.getString(FLD_BEGIN)).trim());
+      JsonArray aNext = lines.next();
+      int startTime = Integer.parseInt(aNext.getString(FLD_BEGIN).trim());
       while ((startTime - endTime) >= slot) {
         String[] free = new String[aNext.size()];
         free[FLD_DAY] = aNext.getString(FLD_DAY);
@@ -159,7 +159,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
         // System.out.println("rest "+free[FLD_BEGIN]+","+free[FLD_DURATION]);
         arr.add(Util.asJsonArray(shorttime));
       }
-      endTime = startTime + Integer.parseInt(((String) aNext.getString(FLD_DURATION)).trim());
+      endTime = startTime + Integer.parseInt(aNext.getString(FLD_DURATION).trim());
       Object[] line = Util.asObjectArray(aNext);
       if ((line[FLD_PATIENT_ID] != null) && (line[FLD_PATIENT_ID].equals(userid))) {
         line[FLD_PATIENT_ID] = "Ihr Termin: " + user.getString("username");
