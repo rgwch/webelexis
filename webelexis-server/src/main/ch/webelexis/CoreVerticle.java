@@ -38,76 +38,51 @@ import java.util.logging.Logger;
  * @author gerry
  */
 public class CoreVerticle extends AbstractVerticle {
-    final static long TIMEOUT = 60000;
-    public static JsonObject rootConfig;
-    JsonObject cfg_default;
-    public static Logger log = Logger.getLogger("CoreVerticle");
-    ArrayList<String> pending = new ArrayList<String>();
-    Throwable reason = null;
-    long waitingTime;
+  final static long TIMEOUT = 60000;
+  public static JsonObject rootConfig;
+  public static Logger log = Logger.getLogger("CoreVerticle");
+  ArrayList<String> pending = new ArrayList<String>();
+  Throwable reason = null;
+  long waitingTime;
 
-    /**
-     * Enter all verticles to deploy here. Note: Webelexis will deploy
-     * them asynchronously, so there is no guaranteed order for them to be ready.
-     */
+  /**
+   * Enter all verticles to deploy here. Note: Webelexis will deploy
+   * them asynchronously, so there is no guaranteed order for them to be ready.
+   */
 
-    V[] verticles = new V[]{new V("agenda", "ch.webelexis.agenda.Server"),
-            new V("account", "ch.webelexis.account.Server"), new V("emr", "ch.webelexis.emr.Server")
-            , new V("auth", "ch.rgw.vertx.SessionManager")};
+  V[] verticles = new V[]{new V("agenda", "ch.webelexis.agenda.Server"),
+    new V("account", "ch.webelexis.account.Server"), new V("emr", "ch.webelexis.emr.Server")
+    , new V("auth", "ch.rgw.vertx.SessionManager")};
 
-    public CoreVerticle() throws IOException {
-      log.setLevel(Level.FINEST);
-        InputStream in = getClass().getResourceAsStream("/config_defaults.json");
-        if (in == null) {
-            System.out.print("config_defaults.json not found. Trying alternative");
-            File file = new File("src/main/resources/config_defaults.json"); // IDE
-            // mode
-            if (!file.exists()) {
-                System.out.print(file.getAbsolutePath() + " not found. Fatal exit");
-                System.exit(-1);
-            } else {
-                in = new FileInputStream(file);
-            }
-        }
-        try {
-            cfg_default = Cleaner.createFromStream(in);
-        } catch (DecodeException ex) {
-            System.out.println("Invalid config json");
-        }
-        File cwd = new File(".");
-        System.out.print("CWD in CoreVerticle: " + cwd.getAbsolutePath());
+
+  /*
+   * Deploy every verticle defined in  verticles[].
+   * Configuration of each object is the section with the matching
+   * title-property. If a configuration contains a boolean "active", the value
+   * of this boolean declares, if that object will be launched or not.
+   *
+   * @see org.vertx.java.platform.Verticle#start(io.vertx.core.Future)
+   */
+  @Override
+  public void start(final Future<Void> startedResult) {
+    Context ctx = vertx.getOrCreateContext();
+    rootConfig = ctx.config();
+    //String logResult= Json.encode(rootConfig);
+    log.log(Level.FINE, "Starting CoreVerticle");
+    log.finest("CoreVerticle got config: " + rootConfig.encodePrettily());
+
+
+    for (V v : verticles) {
+      log.fine("launching " + v.title);
+      JsonObject moduleConfig = rootConfig.getJsonObject(v.title);
+      if(moduleConfig==null){
+        moduleConfig=new JsonObject();
+      }
+      if (moduleConfig.getBoolean("active", true)) {
+        pending.add(v.title);
+        vertx.deployVerticle(v.fullname, new DeploymentOptions().setConfig(moduleConfig), new DeploymentHandler(v.title));
+      }
     }
-
-    /*
-     * Deploy every verticle defined in  verticles[].
-     * Configuration of each object is the section with the matching
-     * title-property. If a configuration contains a boolean "active", the value
-     * of this boolean declares, if that object will be launched or not.
-     *
-     * @see org.vertx.java.platform.Verticle#start(io.vertx.core.Future)
-     */
-    @Override
-    public void start(final Future<Void> startedResult) {
-      Context ctx=vertx.getOrCreateContext();
-      JsonObject config=ctx.config();
-        if(config!=null) {
-          rootConfig = cfg_default.mergeIn(config());
-        }else{
-          rootConfig=cfg_default;
-        }
-        //String logResult= Json.encode(rootConfig);
-        log.log(Level.FINE,"Starting CoreVerticle");
-        log.finest("CoreVerticle got config: " + rootConfig.encodePrettily());
-
-
-        for (V v : verticles) {
-          log.fine("launching " + v.title);
-            JsonObject moduleConfig = rootConfig.getJsonObject(v.title);
-            if (moduleConfig.getBoolean("active", true)) {
-                pending.add(v.title);
-                vertx.deployVerticle(v.fullname, new DeploymentOptions().setConfig(moduleConfig), new DeploymentHandler(v.title));
-            }
-        }
 
 		/*
          * now we wait for all verticles to launch successfully. Every
@@ -115,73 +90,73 @@ public class CoreVerticle extends AbstractVerticle {
 		 * seems a bit expensive, but since the server will not restart very
 		 * frequently, it's okay.
 		 */
-        waitingTime = System.currentTimeMillis();
-        vertx.setPeriodic(200, new Handler<Long>() {
+    waitingTime = System.currentTimeMillis();
+    vertx.setPeriodic(200, new Handler<Long>() {
 
-            @Override
-            public void handle(Long timerID) {
-                if (pending.isEmpty()) {
-                    vertx.cancelTimer(timerID);
-                    startedResult.complete();
-                } else {
-                    if ((System.currentTimeMillis() - waitingTime) > TIMEOUT) {
-                        vertx.cancelTimer(timerID);
-                        startedResult.fail(new Exception("Timeout waiting for launching modules"));
-                    }
-                }
-                if (reason != null) {
-                    vertx.cancelTimer(timerID);
-                    startedResult.fail(reason);
-                }
-            }
-        });
-        final JsonObject bridgeCfg = rootConfig.getJsonObject("bridge");
-        HttpServerOptions options = new HttpServerOptions().setCompressionSupported(true);
-        if (bridgeCfg.getBoolean("ssl", true)) {
-            String keystorePath = bridgeCfg.getString("keystore", System.getProperty("user.home")
-                    + "/.jkeys/keystore.jks");
-            JksOptions ksopt = new JksOptions().setPath(keystorePath).setPassword(bridgeCfg.getString("keystore-pwd"));
-            options.setSsl(true).setKeyStoreOptions(ksopt);
+      @Override
+      public void handle(Long timerID) {
+        if (pending.isEmpty()) {
+          vertx.cancelTimer(timerID);
+          startedResult.complete();
+        } else {
+          if ((System.currentTimeMillis() - waitingTime) > TIMEOUT) {
+            vertx.cancelTimer(timerID);
+            startedResult.fail(new Exception("Timeout waiting for launching modules"));
+          }
         }
-        HttpServer http = vertx.createHttpServer(options);
+        if (reason != null) {
+          vertx.cancelTimer(timerID);
+          startedResult.fail(reason);
+        }
+      }
+    });
+    final JsonObject bridgeCfg = rootConfig.getJsonObject("bridge");
+    HttpServerOptions options = new HttpServerOptions().setCompressionSupported(true);
+    if (bridgeCfg.getBoolean("ssl", true)) {
+      String keystorePath = bridgeCfg.getString("keystore", System.getProperty("user.home")
+        + "/.jkeys/keystore.jks");
+      JksOptions ksopt = new JksOptions().setPath(keystorePath).setPassword(bridgeCfg.getString("keystore-pwd"));
+      options.setSsl(true).setKeyStoreOptions(ksopt);
+    }
+    HttpServer http = vertx.createHttpServer(options);
 
-        http.requestHandler(new HTTPHandler(bridgeCfg, vertx.eventBus()));
-        SockJSHandler sock = SockJSHandler.create(vertx);
-        BridgeOptions bridgeOptions = new BridgeOptions();
-        //PermittedOptions pop=new PermittedOptions();
-        // bridgeOptions.setInboundPermitted(bridgeCfg.getJsonArray("inOK"));
-        sock.bridge(bridgeOptions);
-        http.listen(bridgeCfg.getInteger("port"));
+    http.requestHandler(new HTTPHandler(bridgeCfg, vertx.eventBus()));
+    SockJSHandler sock = SockJSHandler.create(vertx);
+    BridgeOptions bridgeOptions = new BridgeOptions();
+    //PermittedOptions pop=new PermittedOptions();
+    // bridgeOptions.setInboundPermitted(bridgeCfg.getJsonArray("inOK"));
+    sock.bridge(bridgeOptions);
+    http.listen(bridgeCfg.getInteger("port"));
+  }
+
+  private class DeploymentHandler implements AsyncResultHandler<String> {
+    String t;
+
+    DeploymentHandler(String title) {
+      t = title;
     }
 
-    private class DeploymentHandler implements AsyncResultHandler<String> {
-        String t;
+    @Override
+    public void handle(AsyncResult<String> result) {
+      pending.remove(t);
+      if (result.succeeded()) {
+        log.info("Deployed successfully: " + t);
+      } else {
+        reason = result.cause();
+        log.severe("failed to deploy " + t + ": " + result.result());
 
-        DeploymentHandler(String title) {
-            t = title;
-        }
-
-        @Override
-        public void handle(AsyncResult<String> result) {
-            pending.remove(t);
-            if (result.succeeded()) {
-                log.info("Deployed successfully: " + t);
-            } else {
-                reason = result.cause();
-                log.severe("failed to deploy " + t + ": " + result.result());
-
-            }
-        }
-
+      }
     }
 
-    private class V {
-        V(String t, String f) {
-            title = t;
-            fullname = f;
-        }
+  }
 
-        String title;
-        String fullname;
+  private class V {
+    V(String t, String f) {
+      title = t;
+      fullname = f;
     }
+
+    String title;
+    String fullname;
+  }
 }
