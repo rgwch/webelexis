@@ -36,7 +36,7 @@ public class Runner {
       }
       if (args.length == 0) {
         String enc = cfg.encodePrettily();
-        FileWriter out = new FileWriter("config.json");
+        FileWriter out = new FileWriter("cfglocal.json");
         out.write(enc);
         out.close();
 
@@ -45,7 +45,7 @@ public class Runner {
       }
       vertx.deployVerticle("ch.webelexis.CoreVerticle", new DeploymentOptions().setConfig(cfg));
     } catch (Exception ex) {
-      System.out.print("usage: java -jar webelexis <config>\\n" + ex.getMessage());
+      System.out.print("usage: java -jar webelexis [<config>]\\n" + ex.getMessage());
 
     }
 

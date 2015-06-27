@@ -20,52 +20,50 @@ import java.util.logging.Logger;
 import static ch.webelexis.Cleaner.*;
 
 public class PublicAgendaDeleteHandler implements Handler<Message<JsonObject>> {
-    AbstractVerticle verticle;
-    JsonObject cfg;
-    Logger log = Logger.getLogger("PublicAgendaDeleteHandler");
+  AbstractVerticle verticle;
+  Logger log = Logger.getLogger("PublicAgendaDeleteHandler");
 
-    public PublicAgendaDeleteHandler(AbstractVerticle v, JsonObject cfg) {
-        this.cfg = cfg;
-        verticle = v;
-    }
+  public PublicAgendaDeleteHandler(AbstractVerticle v, JsonObject cfg) {
+    verticle = v;
+  }
 
-    @Override
-    public void handle(Message<JsonObject> externalMsg) {
-        final Cleaner cl = new Cleaner(externalMsg);
-        try {
-            final String username = cl.get("username", MAIL, false);
-            final String day = cl.get("day", ELEXISDATE, false);
-            final String time = cl.get("time", NUMBER, false);
-            new UserDetailHandler(verticle).getUser(username, new Handler<JsonObject>() {
+  @Override
+  public void handle(Message<JsonObject> externalMsg) {
+    final Cleaner cl = new Cleaner(externalMsg);
+    try {
+      final String username = cl.get("username", MAIL, false);
+      final String day = cl.get("day", ELEXISDATE, false);
+      final String time = cl.get("time", NUMBER, false);
+      new UserDetailHandler(verticle).getUser(username, new Handler<JsonObject>() {
 
-                @Override
-                public void handle(JsonObject userMsg) {
-                    JsonObject op = new JsonObject()
-                            .put("action", "prepared")
-                            .put("statement", "UPDATE AGNTERMINE set DELETED=? where PatID=? and Tag=? and Beginn=?")
-                            .put("values", Util.asJsonArray(new String[]{"1", userMsg.getString("patientid"), day, time}));
-                    log.finest(op.encodePrettily());
-                    verticle.getVertx().eventBus().send("ch.webelexis.sql", op, new AsyncResultHandler<Message<JsonObject>>() {
+        @Override
+        public void handle(JsonObject userMsg) {
+          JsonObject op = new JsonObject()
+            .put("action", "prepared")
+            .put("statement", "UPDATE AGNTERMINE set DELETED=? where PatID=? and Tag=? and Beginn=?")
+            .put("values", Util.asJsonArray(new String[]{"1", userMsg.getString("patientid"), day, time}));
+          log.finest(op.encodePrettily());
+          verticle.getVertx().eventBus().send("ch.webelexis.sql", op, new AsyncResultHandler<Message<JsonObject>>() {
 
-                        @Override
-                        public void handle(AsyncResult<Message<JsonObject>> sqlAnswer) {
-                            if (sqlAnswer.result().body().getString("status").equals("ok")) {
-                                cl.replyOk();
-                            } else {
-                                log.warning(sqlAnswer.result().body().encodePrettily());
-                                cl.replyError("database error SQL");
-                            }
-                        }
-                    });
-                }
-
-            });
-        } catch (ParametersException e) {
-            e.printStackTrace();
-            cl.replyError();
+            @Override
+            public void handle(AsyncResult<Message<JsonObject>> sqlAnswer) {
+              if (sqlAnswer.result().body().getString("status").equals("ok")) {
+                cl.replyOk();
+              } else {
+                log.warning(sqlAnswer.result().body().encodePrettily());
+                cl.replyError("database error SQL");
+              }
+            }
+          });
         }
 
-
+      });
+    } catch (ParametersException e) {
+      e.printStackTrace();
+      cl.replyError();
     }
+
+
+  }
 
 }

@@ -215,7 +215,7 @@ public class Cleaner {
     public static JsonObject createFromStream(InputStream is) throws IOException, DecodeException {
         InputStreamReader ir = new InputStreamReader(is);
         StringBuilder sb = new StringBuilder(10000);
-        char[] buffer = new char[1024];
+        char[] buffer = new char[2048];
         int chars = 0;
         do {
             chars = ir.read(buffer);
@@ -223,6 +223,8 @@ public class Cleaner {
         } while (chars == buffer.length);
         ir.close();
         String conf = sb.toString().replaceAll("//\\s+.+\\r?\\n+\\r?", "");
+        conf=conf.replaceAll("[\\n\\r]"," ");
+        conf = conf.replaceAll("\\/\\*.+?\\*\\/","");
         JsonObject ret = new JsonObject(conf);
         return ret;
 

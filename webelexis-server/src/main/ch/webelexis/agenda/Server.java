@@ -29,15 +29,13 @@ public class Server extends AbstractVerticle {
     @Override
     public void start() {
         // load the configuration as given to 'vertx -conf <config-file>'
-        final JsonObject cfg = config();
-        log.finest("Agenda Server - got config: " + cfg.encodePrettily());
         EventBus eb = vertx.eventBus();
         // final JsonObject aCfg=cfg.getObject("agenda");
-        final JsonObject pubCfg = cfg.getJsonObject("public");
-        final JsonObject priCfg = cfg.getJsonObject("private");
+        final JsonObject pubCfg = config().getJsonObject("timeslots");
+        final JsonObject priCfg = config().getJsonObject("agenda");
         final PublicAgendaListHandler publiclistHandler = new PublicAgendaListHandler(this, pubCfg);
         final PublicAgendaInsertHandler publicinsertHandler = new PublicAgendaInsertHandler(this, pubCfg);
-        final PublicAgendaDeleteHandler publicdeletehandler = new PublicAgendaDeleteHandler(this, cfg);
+        final PublicAgendaDeleteHandler publicdeletehandler = new PublicAgendaDeleteHandler(this, pubCfg);
         final PrivateAgendaListHandler privateListHandler = new PrivateAgendaListHandler(eb, priCfg);
         final PrivateAgendaInsertHandler privateInsertHandler = new PrivateAgendaInsertHandler(eb, priCfg);
 

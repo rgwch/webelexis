@@ -50,9 +50,12 @@ public class CoreVerticle extends AbstractVerticle {
    * them asynchronously, so there is no guaranteed order for them to be ready.
    */
 
-  V[] verticles = new V[]{new V("agenda", "ch.webelexis.agenda.Server"),
-    new V("account", "ch.webelexis.account.Server"), new V("emr", "ch.webelexis.emr.Server")
-    , new V("auth", "ch.rgw.vertx.SessionManager")};
+  String[] verticles = new String[]{
+    "ch.webelexis.agenda.Server",
+    "ch.webelexis.account.Server",
+    "ch.webelexis.emr.Server",
+    "ch.rgw.vertx.SessionManager"
+  };
 
 
   /*
@@ -72,16 +75,10 @@ public class CoreVerticle extends AbstractVerticle {
     log.finest("CoreVerticle got config: " + rootConfig.encodePrettily());
 
 
-    for (V v : verticles) {
-      log.fine("launching " + v.title);
-      JsonObject moduleConfig = rootConfig.getJsonObject(v.title);
-      if(moduleConfig==null){
-        moduleConfig=new JsonObject();
-      }
-      if (moduleConfig.getBoolean("active", true)) {
-        pending.add(v.title);
-        vertx.deployVerticle(v.fullname, new DeploymentOptions().setConfig(moduleConfig), new DeploymentHandler(v.title));
-      }
+    for (String v : verticles) {
+      log.fine("launching " + v);
+      pending.add(v);
+      vertx.deployVerticle(v, new DeploymentOptions().setConfig(rootConfig), new DeploymentHandler(v));
     }
 
 		/*
@@ -150,13 +147,4 @@ public class CoreVerticle extends AbstractVerticle {
 
   }
 
-  private class V {
-    V(String t, String f) {
-      title = t;
-      fullname = f;
-    }
-
-    String title;
-    String fullname;
-  }
 }
