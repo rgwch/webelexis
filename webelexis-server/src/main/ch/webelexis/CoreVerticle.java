@@ -7,6 +7,7 @@ import io.vertx.core.*;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.DecodeException;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
@@ -18,7 +19,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -52,11 +56,11 @@ public class CoreVerticle extends AbstractVerticle {
             , new V("auth", "ch.rgw.vertx.SessionManager")};
 
     public CoreVerticle() throws IOException {
-
-        InputStream in = getClass().getResourceAsStream("config_defaults.json");
+      log.setLevel(Level.FINEST);
+        InputStream in = getClass().getResourceAsStream("/config_defaults.json");
         if (in == null) {
             System.out.print("config_defaults.json not found. Trying alternative");
-            File file = new File("src/main/resources/config_sample.json"); // IDE
+            File file = new File("src/main/resources/config_defaults.json"); // IDE
             // mode
             if (!file.exists()) {
                 System.out.print(file.getAbsolutePath() + " not found. Fatal exit");
@@ -84,11 +88,20 @@ public class CoreVerticle extends AbstractVerticle {
      */
     @Override
     public void start(final Future<Void> startedResult) {
-        rootConfig = cfg_default.mergeIn(config());
+      Context ctx=vertx.getOrCreateContext();
+      JsonObject config=ctx.config();
+        if(config!=null) {
+          rootConfig = cfg_default.mergeIn(config());
+        }else{
+          rootConfig=cfg_default;
+        }
+        //String logResult= Json.encode(rootConfig);
+        log.log(Level.FINE,"Starting CoreVerticle");
         log.finest("CoreVerticle got config: " + rootConfig.encodePrettily());
 
 
         for (V v : verticles) {
+          log.fine("launching " + v.title);
             JsonObject moduleConfig = rootConfig.getJsonObject(v.title);
             if (moduleConfig.getBoolean("active", true)) {
                 pending.add(v.title);
