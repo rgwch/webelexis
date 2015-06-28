@@ -59,7 +59,7 @@ public class CoreVerticle extends AbstractVerticle {
     "ch.webelexis.emr.Server",
     "ch.rgw.vertx.SessionManager",
     "ch.rgw.vertx.MongoProxy",
-
+    "ch.rgw.vertx.SqlProxy"
   };
 
 

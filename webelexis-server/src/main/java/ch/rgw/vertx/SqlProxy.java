@@ -27,7 +27,7 @@ public class SqlProxy extends AbstractVerticle {
         SQLConnection conn = cres.result();
         vertx.eventBus().consumer(cfg.getString("address"), msg -> {
           JsonObject query = (JsonObject) msg.body();
-          switch (query.getString("action)")) {
+          switch (query.getString("action")) {
             case "insert":
 
               break;
