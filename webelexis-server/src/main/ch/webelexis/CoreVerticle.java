@@ -26,7 +26,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- * The Webelexis core verticle deploys all needed modules and verticles and sets
+ * The Webelexis core verticle deploys all needed verticles and sets
  * up the http- and sockjs-Servers. Configuration for all objects is taken from
  * a file called "config_defaults.json", that must be situated at the root
  * directory of the module. A second file, cfglocal.json in the same directory
@@ -54,7 +54,9 @@ public class CoreVerticle extends AbstractVerticle {
     "ch.webelexis.agenda.Server",
     "ch.webelexis.account.Server",
     "ch.webelexis.emr.Server",
-    "ch.rgw.vertx.SessionManager"
+    "ch.rgw.vertx.SessionManager",
+    "ch.rgw.vertx.MongoProxy",
+
   };
 
 
