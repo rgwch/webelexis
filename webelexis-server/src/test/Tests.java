@@ -14,18 +14,18 @@ import io.vertx.ext.unit.report.ReportOptions;
  */
 public class Tests {
 
-    public static void main(String[] args) {
-        TestSuite suite = TestSuite.create("Webelexis Server");
-        suite.test("test", context -> {
-            Vertx vertx=Vertx.vertx();
-            JsonObject config=new JsonObject().put("a","b");
-            config.encodePrettily();
-            vertx.deployVerticle("ch.webelexis.CoreVerticle", new DeploymentOptions().setConfig(config));
-            String s = "hallo";
-            context.assertEquals(s, "hallo");
-        });
-        suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
-        System.exit(0);
-    }
+  public static void main(String[] args) {
+    TestSuite suite = TestSuite.create("Webelexis Server");
+    suite.test("test", context -> {
+      Vertx vertx = Vertx.vertx();
+      JsonObject config = new JsonObject().put("a", "b");
+      config.encodePrettily();
+      vertx.deployVerticle("ch.webelexis.CoreVerticle", new DeploymentOptions().setConfig(config));
+      String s = "hallo";
+      context.assertEquals(s, "hallo");
+    });
+    suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
+    System.exit(0);
+  }
 
 }
