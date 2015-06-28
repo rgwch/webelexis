@@ -41,7 +41,8 @@ public class Runner {
         out.close();
 
       } else {
-        cfg = cfg.mergeIn(Cleaner.createFromFile(args[0]));
+        JsonObject cfglocal=Cleaner.createFromFile(args[0]);
+        cfg = cfg.mergeIn(cfglocal);
       }
       vertx.deployVerticle("ch.webelexis.CoreVerticle", new DeploymentOptions().setConfig(cfg));
     } catch (Exception ex) {

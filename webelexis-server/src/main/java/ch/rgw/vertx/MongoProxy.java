@@ -61,4 +61,8 @@ public class MongoProxy extends AbstractVerticle {
       }
     });
   }
+  @Override
+  public void stop(){
+    mongo.close();
+  }
 }

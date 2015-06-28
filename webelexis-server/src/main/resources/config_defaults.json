@@ -30,22 +30,18 @@
 		// optional, "true" recommended
 		"keepAlive": true
 	},
-	// config for mod-mysql-postgresql (https://github.com/vert-x/mod-mysql-postgresql)
+	// config for jdbc (http://vertx.io/docs/vertx-jdbc-client/java/#_configuration)
 	"sql": {
-		"address": "ch.webelexis.sql",
 		// do not change this
-		"connection": "MySQL",
-		// (or "PostgreSQL"),
-		"host": "localhost",
-		// address of the database server
-		"port": 3306,
-		// optional. Port of the database server. 3306 is default for mysql
+		"address": "ch.webelexis.sql",
+		// jdbc connect String for your server and database
+		"url": "jdbc:mysql://localhost:3306/elexis",
+		"driver_class": "com.mysql.jdbc.Driver",
 		"maxPoolSize": 20,
-		// optional. maximum number of open connections; optional
-		"username": "database-user",
+		"user": "database-user",
 		"password": "database-password",
-		"database": "elexis"
-		// or whatever
+		// number of seconds before closing an inactiveconnection
+		"max_idle_time": 300
 	},
 	// config for vertx-mod-sessionmgt (https://github.com/rgwch/vertx-mod-sessionmgr)
 	"auth": {
