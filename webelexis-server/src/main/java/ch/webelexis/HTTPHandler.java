@@ -47,7 +47,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     File cwd = new File(".");
     Logger.getGlobal().log(Level.FINE, "cwd: " + cwd.getAbsolutePath());
     basePath = new File(cfg.getString("webroot"));
-    Logger.getGlobal().log(Level.FINER, "HTTPHandler serving from: " + basePath.getAbsolutePath());
+    Logger.getLogger(HTTPHandler.class.getName()).log(Level.FINER, "HTTPHandler serving from: " + basePath.getAbsolutePath());
     df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
   }
@@ -75,7 +75,11 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     } else {
       File resr = new File(basePath, req.path());
       if (!resr.exists() || !resr.canRead()) {
+        String ans="Not found";
+        req.response().putHeader("Content-Length",Integer.toString(ans.length()));
+        req.response().write(ans);
         req.response().setStatusCode(404); // not found
+        req.response().setStatusMessage("Not found");
         req.response().end();
       } else {
                 /*
@@ -136,32 +140,40 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
 
     @Override
     public void handle(AsyncResult<Message<JsonObject>> msg) {
-      File in = new File(cfg.getString("webroot"), "index.html");
-      Date lm = new Date(in.lastModified());
-      req.response().putHeader("Last-Modified", df.format(lm));
-      String cid = cfg.getString("googleID");
-      if (cid == null) {
-        cid = "x-undefined";
-      }
-      Scanner scanner = null;
-      try {
-        scanner = new Scanner(in, "UTF-8");
-        String modified = scanner.useDelimiter("\\A").next().replaceAll("GUID",
-          msg.result().body().getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid).replaceAll(
-          "GOOGLE_STATE", rnd);
-
-        req.response().end(modified);
-      } catch (FileNotFoundException e) {
-        req.response().setStatusCode(404);
-        req.response().end();
-      } finally {
-        if (scanner != null) {
-          scanner.close();
+      if (msg.succeeded()) {
+        File in = new File(cfg.getString("webroot"), "index.html");
+        Date lm = new Date(in.lastModified());
+        req.response().putHeader("Last-Modified", df.format(lm));
+        String cid = cfg.getString("googleID");
+        if (cid == null) {
+          cid = "x-undefined";
         }
+        Scanner scanner = null;
+        try {
+          scanner = new Scanner(in, "UTF-8");
+          String modified = "";
+          JsonObject body = msg.result().body();
+          modified = scanner.useDelimiter("\\A").next().replaceAll("GUID",
+            body.getString("sessionID")).replaceAll("GOOGLE_CLIENT_ID", cid).replaceAll(
+            "GOOGLE_STATE", rnd);
+          req.response().putHeader("Content-Length", Long.toString(modified.length()));
+          req.response().write(modified);
+        } catch (FileNotFoundException e) {
+          req.response().setStatusCode(404);
+        } finally {
+          if (scanner != null) {
+            scanner.close();
+            req.response().end();
+          }
+        }
+
+      } else {
+        String ans="Internal Server Error";
+        req.response().putHeader("Content-Length",Integer.toString(ans.length()));
+        req.response().write(ans);
+        req.response().setStatusCode(500);
+        req.response().end();
       }
-
     }
-
   }
-
 }

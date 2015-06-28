@@ -16,8 +16,11 @@ import java.util.List;
  */
 public class Util {
   public static JsonArray asJsonArray(String[] source) {
-    ArrayList<String> ret = (ArrayList<String>) Arrays.asList(source);
-    return new JsonArray(ret);
+    JsonArray ret=new JsonArray();
+    for(String s:source){
+      ret.add(s);
+    }
+    return ret;
   }
 
   public static JsonArray asJsonArray(Object[] source) {

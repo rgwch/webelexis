@@ -8,11 +8,14 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
+import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
+import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
 
 
 import java.io.File;
@@ -109,6 +112,7 @@ public class CoreVerticle extends AbstractVerticle {
         }
       }
     });
+
     final JsonObject bridgeCfg = rootConfig.getJsonObject("bridge");
     HttpServerOptions options = new HttpServerOptions().setCompressionSupported(true);
     if (bridgeCfg.getBoolean("ssl", true)) {
@@ -118,14 +122,28 @@ public class CoreVerticle extends AbstractVerticle {
       options.setSsl(true).setKeyStoreOptions(ksopt);
     }
     HttpServer http = vertx.createHttpServer(options);
+    Router router=Router.router(vertx);
 
-    http.requestHandler(new HTTPHandler(bridgeCfg, vertx.eventBus()));
+    //http.requestHandler(new HTTPHandler(bridgeCfg, vertx.eventBus()));
+    //http.listen(bridgeCfg.getInteger("port"));
+
     SockJSHandler sock = SockJSHandler.create(vertx);
+
     BridgeOptions bridgeOptions = new BridgeOptions();
-    //PermittedOptions pop=new PermittedOptions();
-    // bridgeOptions.setInboundPermitted(bridgeCfg.getJsonArray("inOK"));
+    JsonArray inOk=bridgeCfg.getJsonArray("inOK");
+    for(Object jo:inOk){
+      bridgeOptions.addInboundPermitted(new PermittedOptions((JsonObject)jo));
+    }
+    for(Object jo:bridgeCfg.getJsonArray("outOK")){
+      bridgeOptions.addOutboundPermitted(new PermittedOptions((JsonObject) jo));
+    }
     sock.bridge(bridgeOptions);
-    http.listen(bridgeCfg.getInteger("port"));
+    router.route("/eventbus/*").handler(sock);
+    HTTPHandler rootHandler=new HTTPHandler(bridgeCfg,vertx.eventBus());
+    router.route().handler(routingContext ->{
+      rootHandler.handle(routingContext.request());
+    });
+    http.requestHandler(router::accept).listen(bridgeCfg.getInteger("port"));
   }
 
   private class DeploymentHandler implements AsyncResultHandler<String> {

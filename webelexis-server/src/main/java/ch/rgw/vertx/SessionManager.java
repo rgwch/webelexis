@@ -50,7 +50,7 @@ public class SessionManager extends AbstractVerticle {
   Config cfg;
 
   public void start() {
-    cfg = new Config(config());
+    cfg = new Config(config().getJsonObject("auth"));
     basicAddress = cfg.getOptionalString("address", "ch.rgw.sessions");
     persistorAddress = cfg.getOptionalString("persistor_address", "ch.rgw.nosql");
     usersCollection = cfg.getOptionalString("users_collection", "users");

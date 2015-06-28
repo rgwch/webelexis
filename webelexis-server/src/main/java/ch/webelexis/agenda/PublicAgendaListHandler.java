@@ -76,15 +76,20 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 
         @Override
         public void handle(AsyncResult<Message<JsonObject>> returnvalue) {
-          JsonObject res = returnvalue.result().body();
-          if (res.getString("status").equals("ok")) {
+          if (returnvalue.succeeded()) {
+            JsonObject res = returnvalue.result().body();
+            if (res.getString("status").equals("ok")) {
 
-            JsonObject ret = fillBlanks(Util.asObjectArray(res.getJsonArray("results")), externalRequest.body().getJsonObject("authorized_user"));
-            externalRequest.reply(ret);
+              JsonObject ret = fillBlanks(Util.asObjectArray(res.getJsonArray("results")), externalRequest.body().getJsonObject("authorized_user"));
+              externalRequest.reply(ret);
+
+            } else {
+              System.out.println(Json.encodePrettily(res));
+              externalRequest.reply(new JsonObject().put("status", "failure"));
+            }
 
           } else {
-            System.out.println(Json.encodePrettily(res));
-            externalRequest.reply(new JsonObject().put("status", "failure"));
+            externalRequest.reply(new JsonObject().put("status","error").put("message","internal server error"));
           }
         }
       });

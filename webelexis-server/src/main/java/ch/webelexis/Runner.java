@@ -17,7 +17,10 @@ public class Runner {
   public static void main(String[] args) {
     try {
       Logger log = Logger.getGlobal();
-      log.setLevel(Level.FINEST);
+      log.finest("finest");
+      log.info("info");
+      log.warning("warning");
+      log.severe("severe");
       Vertx vertx = Vertx.vertx();
       JsonObject cfg = new JsonObject();
       InputStream in = Runner.class.getResourceAsStream("../../config_defaults.json");
@@ -34,15 +37,17 @@ public class Runner {
 
         }
       }
-      if (args.length == 0) {
+      if ((args.length == 0) || (!new File(args[0]).exists())) {
         String enc = cfg.encodePrettily();
         FileWriter out = new FileWriter("cfglocal.json");
         out.write(enc);
         out.close();
 
       } else {
-        JsonObject cfglocal=Cleaner.createFromFile(args[0]);
+
+        JsonObject cfglocal = Cleaner.createFromFile(args[0]);
         cfg = cfg.mergeIn(cfglocal);
+
       }
       vertx.deployVerticle("ch.webelexis.CoreVerticle", new DeploymentOptions().setConfig(cfg));
     } catch (Exception ex) {
