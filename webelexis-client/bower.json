@@ -13,7 +13,6 @@
     "jqueryui": "1.11.4",
     "jquery-flot": "0.8.3",
     "sockjs": "~0.3.4",
-    "vertxbus": "*",
     "underscore": "~1.8.3",
     "jquery-validate": "~1.13.1",
     "flot.curvedlines": "~1.1.1",

@@ -19,7 +19,7 @@ require.config({
     "knockout": "../lib/knockout/knockout",
     "sockjs": "../lib/sockjs/sockjs",
     "text": "../lib/requirejs-text/text",
-    "vertxbus": "../lib/vertxbus/vertxbus",
+    "vertxbus": "../lib/vertxbus-3.0.0",
     "knockout-jqueryui": "../lib/knockout-jqueryui/knockout-jqueryui",
     "cookie": "../lib/js-cookie/js.cookie",
     "durandal": "../lib/durandal",

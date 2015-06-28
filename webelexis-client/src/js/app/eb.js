@@ -33,7 +33,7 @@ define(['config', 'vertxbus'], function (config) {
 	function openBus() {
 		if (state() === false) {
 			//bus = new vertx.EventBus(config.eventbusUrl)
-			var url = location.origin + "/eventbus";
+			var url = location.origin  + "/eventbus";
 			bus = new vertx.EventBus(url)
 			bus.onopen = function () {
 
