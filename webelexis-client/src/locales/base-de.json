@@ -26,6 +26,7 @@
     "agenda": {
       "title": "Agenda",
       "makeAppnt": "Termin vereinbaren",
+      "pleaseLogin": "Bitte loggen Sie sich ein, um einen Termin zu vereinbaren.",
       "deleteAppnt": "Termin löschen",
       "cancel": "Abbrechen",
       "disclaimer": "Die Verwendung dieser Website geschieht ohne Gewähr. Für fehlerhaft übertragene Termine wird keine Haftung übernommen. In wichtigen Fällen bestätigen Sie Ihren Termin bitte telefonisch.",
