@@ -82,7 +82,10 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
           sessionID: cfg.sessionID,
           request: 'resources'
         }, function (result) {
-          if (result.status === "ok") {
+          if (result === undefined) {
+            appl.showMessage(R.t("global.notConnectedBody"), R.t("global.connection_error"))
+
+          } else if (result.status === "ok") {
             result.data.forEach(function (item) {
               self.resources.push({
                 display: item.title,
@@ -91,6 +94,8 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
             });
             self.resource(self.resources()[0]);
             self.loadAppointments()
+          }else if(result.status==="denied"){
+            appl.showMessage(R.t("global.insuffRightsBody"), R.t("global.insuffRightsHead"))
           }
         })
       };
@@ -112,7 +117,7 @@ define(['knockout', 'durandal/system', 'datetools', 'plugins/router', 'bus', 'co
         }, function (result) {
           // console.log("result: " + JSON.stringify(result));
           if ((result.status === undefined) || result.status !== "ok") {
-            window.alert("Verbindungsfehler: " + result.status === undefined ? "keine Verbindung" : result.status);
+            window.alert(result.status === undefined ? R.t("global.notConnectedBody") : result.status, R.t("global.notConnectedHeader"));
           } else {
             self.appointments.removeAll();
             var appnts = result.appointments;
