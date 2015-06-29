@@ -5,6 +5,7 @@
 package ch.rgw.vertx;
 
 import io.vertx.core.json.JsonArray;
+import org.jruby.RubyProcess;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 public class Util {
   public static JsonArray asJsonArray(String[] source) {
-    JsonArray ret=new JsonArray();
-    for(String s:source){
-      ret.add(s);
+    JsonArray ret = new JsonArray();
+    for (String s : source) {
+      ret.add(s == null ? "" : s);
     }
     return ret;
   }

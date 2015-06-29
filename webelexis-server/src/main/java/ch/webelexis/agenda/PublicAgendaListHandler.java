@@ -40,7 +40,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
   static final int FLD_DURATION = 2;
   static final int FLD_TYPE = 3;
   static final int FLD_PATIENT_ID = 4;
-  Logger log = Logger.getLogger("PublicgendaListHandler");
+  Logger log = Logger.getLogger("PublicAgendaListHandler");
   JsonObject cfg;
 
   public PublicAgendaListHandler(AbstractVerticle v, JsonObject cfg) {
@@ -80,7 +80,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
             JsonObject res = returnvalue.result().body();
             if (res.getString("status").equals("ok")) {
 
-              JsonObject ret = fillBlanks(Util.asObjectArray(res.getJsonArray("results")), externalRequest.body().getJsonObject("authorized_user"));
+              JsonObject ret = fillBlanks(res.getJsonArray("results"), externalRequest.body().getJsonObject("authorized_user"));
               externalRequest.reply(ret);
 
             } else {
@@ -104,7 +104,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
    *
    * @param set
    */
-  private JsonObject fillBlanks(Object[] appointments, JsonObject user) {
+  private JsonObject fillBlanks(JsonArray appointments, JsonObject user) {
     TreeSet<JsonArray> orderedList = new TreeSet<JsonArray>(new Comparator<JsonArray>() {
       @Override
       public int compare(JsonArray o1, JsonArray o2) {
@@ -126,8 +126,8 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
     log.finest("user id:" + userid);
     for (Object li : appointments) {
       @SuppressWarnings("unchecked")
-      List<Object> line = (ArrayList<Object>) li;
-      orderedList.add(new JsonArray(line));
+      JsonArray line = (JsonArray) li;
+      orderedList.add(line);
     }
 
     int endTime = 0;
