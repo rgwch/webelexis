@@ -36,6 +36,7 @@ public class SqlProxy extends AbstractVerticle {
                 if (res.succeeded()) {
                   ResultSet result = res.result();
                   List<String> columnNames = result.getColumnNames();
+                  //List<JsonObject> objs=result.getRows();
                   List<JsonArray> results = result.getResults();
                   msg.reply(new JsonObject().put("status", "ok").put("rows", results.size())
                     .put("fields", new JsonArray(columnNames)).put("results", new JsonArray(results)));

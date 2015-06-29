@@ -20,9 +20,9 @@ public class Server extends AbstractVerticle {
 
   @Override
   public void start() {
-    cfg = config();
+    cfg = config().getJsonObject("emr");
     eb = vertx.eventBus();
-    log.info("EMR Server started. got config " + cfg.encodePrettily());
+    //log.info("EMR Server started. got config " + cfg.encodePrettily());
     eb.consumer("ch.webelexis.patient.detail", new AuthorizingHandler(this, cfg.getString(
       "role", "admin"), new PatientDetailHandler(this)));
     eb.consumer("ch.webelexis.patient.find", new AuthorizingHandler(this, cfg.getString("role", "admin"), new FindPatientHandler(this)));

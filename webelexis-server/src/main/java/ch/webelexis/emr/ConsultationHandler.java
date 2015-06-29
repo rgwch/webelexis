@@ -92,11 +92,11 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
       jk.put("id", row.getString(0));
       jk.put("date", row.getString(1));
       jk.put("diags", row.getString(2));
-      JsonArray entry = row.getJsonArray(3);
+      byte[] entry = row.getBinary(3);
       if (entry != null) {
-        byte[] ba = new byte[entry.size()];
-        for (int i = 0; i < entry.size(); i++) {
-          ba[i] = (byte) entry.getValue(i);
+        byte[] ba = new byte[entry.length];
+        for (int i = 0; i < entry.length; i++) {
+          ba[i] = (byte) entry[i];
         }
         VersionedResource vr;
         String ke;
