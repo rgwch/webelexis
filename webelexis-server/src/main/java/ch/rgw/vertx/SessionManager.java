@@ -47,10 +47,9 @@ public class SessionManager extends AbstractVerticle {
   private long TIMEOUT;
   private Logger log = Logger.getLogger("SessionManager");
   EventBus eb;
-  Config cfg;
 
   public void start() {
-    cfg = new Config(config().getJsonObject("auth"));
+    Config cfg = new Config(config().getJsonObject("auth"));
     basicAddress = cfg.getOptionalString("address", "ch.rgw.sessions");
     persistorAddress = cfg.getOptionalString("persistor_address", "ch.rgw.nosql");
     usersCollection = cfg.getOptionalString("users_collection", "users");
@@ -111,15 +110,15 @@ public class SessionManager extends AbstractVerticle {
             public void handle(AsyncResult<Message<JsonObject>> findResult) {
               log.info("try logging in user " + username);
               JsonObject user = findResult.result().body().getJsonObject("result");
-
-              if (cfg.getMandatoryString("status", findResult.result()).equals("ok")) {
+              Cleaner c2 = new Cleaner(findResult.result());
+              if (Util.getParm("status", findResult).equals("ok")) {
                 if (user == null) {
                   fail("unknown user", session, externalRequest);
                 } else {
                   if (user.getBoolean("verified", true)) {
                     if (mode.equals("local")) {
                       log.info("try to log in local user");
-                      if (checkPwd(user, cfg.getMandatoryString("password", externalRequest))) {
+                      if (checkPwd(user, externalRequest.body().getString("password", ""))) {
                         session.login(user, externalRequest.body().getString("feedback-address"));
                         externalRequest.reply(new JsonObject().put("status", "ok").put(
                           "user", user));
@@ -134,7 +133,7 @@ public class SessionManager extends AbstractVerticle {
 
                     } else {
                       log.severe("unsupported login mode " + mode);
-                      cfg.sendError(externalRequest, "unsupported login mode");
+                      Util.sendError(externalRequest, "unsupported login mode");
                     }
                   } else {
                     log.info("user account not yet verified");
@@ -143,12 +142,12 @@ public class SessionManager extends AbstractVerticle {
                 }
               } else {
                 log.severe(findResult.result().body().encodePrettily());
-                cfg.sendError(externalRequest, "db error 1");
+                Util.sendError(externalRequest, "db error 1");
               }
             }
           });
         } catch (ParametersException pex) {
-          cfg.sendError(externalRequest, "Parameter error");
+          Util.sendError(externalRequest, "Parameter error");
         }
 
       }
@@ -157,7 +156,7 @@ public class SessionManager extends AbstractVerticle {
   };
 
   private void fail(String msg, Session session, Message<JsonObject> req) {
-    cfg.sendStatus(req, msg);
+    Util.sendStatus(req, msg);
     session.loginFailures++;
     session.failTime = System.currentTimeMillis();
 
@@ -169,7 +168,7 @@ public class SessionManager extends AbstractVerticle {
   private void verifyGoogleId(final Message<JsonObject> externalRequest, final Session session,
                               final JsonObject user) {
 
-    String id = cfg.getMandatoryString("id_token", externalRequest);
+    String id = Util.getParm("id_token", externalRequest);
     HttpClientOptions hco = new HttpClientOptions().setSsl(true).setDefaultHost("www.googleapis.com").setDefaultPort(443).setTrustAll(true);
     HttpClient htc = vertx.createHttpClient(hco);
     htc.getNow("/oauth2/v1/tokeninfo?id_token=" + id, new Handler<HttpClientResponse>() {
@@ -224,7 +223,7 @@ public class SessionManager extends AbstractVerticle {
       Session session = checkSession(msg);
       if (session != null) {
         session.logout();
-        cfg.sendOK(msg);
+        Util.sendOK(msg);
       }
     }
   };
@@ -234,12 +233,12 @@ public class SessionManager extends AbstractVerticle {
     public void handle(Message<JsonObject> msg) {
       Session session = checkSession(msg);
       if (session != null) {
-        if (isAuthorized(session, cfg.getMandatoryString("role", msg))) {
+        if (isAuthorized(session, Util.getParm("role", msg))) {
           msg.reply(new JsonObject().put("status", "ok").put("authorized_user",
             session.user));
         } else {
           log.info("authorization denied for role " + msg.body().getString("role"));
-          cfg.sendStatus(msg, "denied");
+          Util.sendStatus(msg, "denied");
         }
       }
 
@@ -253,9 +252,9 @@ public class SessionManager extends AbstractVerticle {
       Session session = checkSession(msg);
       if (session != null) {
         if (!session.getRoles().contains("admin")) {
-          cfg.sendStatus(msg, "denied");
+          Util.sendStatus(msg, "denied");
         } else {
-          String cmd = cfg.getMandatoryString("command", msg);
+          String cmd = Util.getParm("command", msg);
           if (cmd == "adduser") {
             addUser(msg);
           } else if (cmd == "removeuser") {
@@ -274,10 +273,10 @@ public class SessionManager extends AbstractVerticle {
     public void handle(Message<JsonObject> msg) {
       Session session = checkSession(msg);
       if (session != null) {
-        String key = cfg.getMandatoryString("key", msg);
-        JsonObject value = cfg.getMandatoryObject("value", msg);
+        String key = Util.getParm("key", msg);
+        JsonObject value = Util.getObject("value", msg);
         session.store.put(key, value);
-        cfg.sendOK(msg);
+        Util.sendOK(msg);
       }
     }
   };
@@ -288,10 +287,10 @@ public class SessionManager extends AbstractVerticle {
     public void handle(Message<JsonObject> msg) {
       Session session = checkSession(msg);
       if (session != null) {
-        String key = cfg.getMandatoryString("key", msg);
+        String key = Util.getParm("key", msg);
         JsonObject value = session.store.get(key);
         if (value == null) {
-          cfg.sendStatus(msg, "not found");
+          Util.sendStatus(msg, "not found");
         } else {
           msg.reply(new JsonObject().put("status", "ok").put("result", value));
         }
@@ -307,9 +306,9 @@ public class SessionManager extends AbstractVerticle {
    * value) and return it.
    */
   private Session checkSession(Message<JsonObject> msg) {
-    Session session = sessions.get(cfg.getMandatoryString("sessionID", msg));
+    Session session = sessions.get(Util.getParm("sessionID", msg));
     if (session == null) {
-      cfg.sendError(msg, "no session");
+      Util.sendError(msg, "no session");
       log.warning("no session");
       return null;
     }
@@ -351,7 +350,7 @@ public class SessionManager extends AbstractVerticle {
    * And any additional free fields
    */
   private void addUser(final Message<JsonObject> msg) {
-    final JsonObject user = cfg.getMandatoryObject("user", msg);
+    final JsonObject user = Util.getObject("user", msg);
     if (user != null) {
       findUser(user.getString("username"), new AsyncResultHandler<Message<JsonObject>>() {
 
@@ -359,9 +358,9 @@ public class SessionManager extends AbstractVerticle {
         public void handle(AsyncResult<Message<JsonObject>> dbReply) {
           log.finest("mongo result: " + dbReply.result().body().encodePrettily());
 
-          if (cfg.getMandatoryString("status", dbReply.result()).equals("ok")) {
-            if (msg.body().getString("result") != null) {
-              cfg.sendError(msg, "user " + user.getString("username") + " already exists");
+          if (Util.getParm("status", dbReply.result()).equals("ok")) {
+            if (Util.getParm("result",dbReply) != null) {
+              Util.sendError(msg, "user " + user.getString("username") + " already exists");
             } else {
               JsonObject dbUser = makePwd(user);
               if (dbUser != null) {
@@ -380,17 +379,17 @@ public class SessionManager extends AbstractVerticle {
                   }
                 });
               } else {
-                cfg.sendError(msg, "bad request");
+                Util.sendError(msg, "bad request");
               }
 
             }
           } else {
-            cfg.sendError(msg, "database error");
+            Util.sendError(msg, "database error");
           }
         }
       });
     } else {
-      cfg.sendError(msg, "no user supplied");
+      Util.sendError(msg, "no user supplied");
 
     }
 
@@ -399,7 +398,7 @@ public class SessionManager extends AbstractVerticle {
   private void removeUser(final Message<JsonObject> msg) {
     JsonObject op = new JsonObject().put("action", "delete").put("collection",
       usersCollection).put("matcher",
-      new JsonObject().put("username", cfg.getMandatoryString("username", msg)));
+      new JsonObject().put("username", Util.getParm("username", msg)));
     eb.send(persistorAddress, op);
   }
 

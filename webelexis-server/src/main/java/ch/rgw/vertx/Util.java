@@ -4,7 +4,10 @@
 
 package ch.rgw.vertx;
 
+import io.vertx.core.AsyncResult;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import org.jruby.RubyProcess;
 
 import java.util.ArrayList;
@@ -50,4 +53,52 @@ public class Util {
     }
     return ret;
   }
+
+  public static String getParm(String name, AsyncResult<Message<JsonObject>> res) {
+    if (res != null) {
+      if (res.result() != null) {
+        if (res.result().body() != null) {
+          return res.result().body().getString(name);
+        }
+      }
+    }
+    return null;
+  }
+
+  public static String getParm(String name, Message<JsonObject> msg) {
+    if (msg!=null){
+      if(msg.body()!=null){
+        if(msg.body().containsKey(name)){
+          return msg.body().getString(name);
+        }
+      }
+    }
+    msg.reply(new JsonObject().put("status","error").put("message","parameter error: "+name));
+    return "";
+  }
+
+  public static JsonObject getObject(String name, Message<JsonObject> msg){
+    if (msg!=null){
+      if(msg.body()!=null){
+        if(msg.body().containsKey(name)){
+          return msg.body().getJsonObject(name);
+        }
+      }
+    }
+    msg.reply(new JsonObject().put("status","error").put("message","parameter error: "+name));
+    return new JsonObject();
+
+  }
+  public static void sendError(Message<JsonObject> addr, String message) {
+    addr.reply(new JsonObject().put("status", "error").put("message", message));
+  }
+
+  public static void sendStatus(Message<JsonObject> addr, String status) {
+    addr.reply(new JsonObject().put("status", status));
+  }
+
+  public static void sendOK(Message<JsonObject> addr) {
+    addr.reply(new JsonObject().put("status", "ok"));
+  }
+
 }

@@ -52,17 +52,6 @@ public class Config {
     }
   }
 
-  public void sendError(Message<JsonObject> addr, String message) {
-    addr.reply(new JsonObject().put("status", "error").put("message", message));
-  }
-
-  public void sendStatus(Message<JsonObject> addr, String status) {
-    addr.reply(new JsonObject().put("status", status));
-  }
-
-  public void sendOK(Message<JsonObject> addr) {
-    addr.reply(new JsonObject().put("status", "ok"));
-  }
 
 
 }

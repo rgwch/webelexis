@@ -17,10 +17,6 @@ public class Runner {
   public static void main(String[] args) {
     try {
       Logger log = Logger.getGlobal();
-      log.finest("finest");
-      log.info("info");
-      log.warning("warning");
-      log.severe("severe");
       Vertx vertx = Vertx.vertx();
       JsonObject cfg = new JsonObject();
       InputStream in = Runner.class.getResourceAsStream("../../config_defaults.json");
