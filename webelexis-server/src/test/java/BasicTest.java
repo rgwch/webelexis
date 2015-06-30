@@ -13,18 +13,18 @@ import io.vertx.ext.unit.report.ReportOptions;
 /**
  * Created by gerry on 26.06.15.
  */
-public class Tests {
+public class BasicTest {
 
 
   public static void main(String[] args) {
-    new Tests().run();
+    new BasicTest().testRun();
   }
 
   static Vertx vertx;
   static String MOCK="ch.rgw.testing.mock";
 
 
-  void run(){
+  public void testRun(){
     TestSuite suite = TestSuite.create("Webelexis Server");
     suite.before(ctx -> {
       vertx=Vertx.vertx();
@@ -52,7 +52,7 @@ public class Tests {
       context.assertEquals(s, "hallo");
     });
     */
-    suite.test("captcha", new TestCaptcha());
+    suite.test("captcha", new TstCaptcha());
     suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
   }
 

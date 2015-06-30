@@ -11,19 +11,19 @@ import java.io.IOException;
 /**
  * Created by gerry on 30.06.15.
  */
-public class TestCaptcha implements Handler<TestContext> {
+public class TstCaptcha implements Handler<TestContext> {
 
   @Override
   public void handle(TestContext testContext){
     try {
       JsonObject config= Cleaner.createFromFile("TestCaptcha.json");
       Async async=testContext.async();
-      Tests.vertx.deployVerticle("ch.rgw.vertx.CaptchaVerticle",new DeploymentOptions().setConfig(config),run -> {
+      BasicTest.vertx.deployVerticle("ch.rgw.vertx.CaptchaVerticle",new DeploymentOptions().setConfig(config),run -> {
         testContext.assertTrue(run.succeeded());
         final String captchaID=run.result();
         System.out.println("captcha verticle started");
         Async async2=testContext.async();
-        Tests.vertx.undeploy(captchaID, res->{
+        BasicTest.vertx.undeploy(captchaID, res->{
           testContext.assertTrue(res.succeeded());
           async2.complete();
         });
