@@ -1,0 +1,7 @@
+/*
+ Mock Configuration file for TestCaptcha
+ */
+
+{
+  "admin-address": "ch.rgw.mock.captcha"
+}
