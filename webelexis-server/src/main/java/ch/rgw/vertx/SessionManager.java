@@ -37,20 +37,19 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SessionManager extends AbstractVerticle {
+class SessionManager extends AbstractVerticle {
   private static final long DEFAULT_TIMEOUT = 10 * 60 * 1000;
 
-  private String basicAddress;
   private String persistorAddress;
   private String usersCollection;
-  private Map<String, Session> sessions = new HashMap<String, Session>();
+  private final Map<String, Session> sessions = new HashMap<>();
   private long TIMEOUT;
-  private Logger log = Logger.getLogger("SessionManager");
-  EventBus eb;
+  private final Logger log = Logger.getLogger("SessionManager");
+  private EventBus eb;
 
   public void start() {
     Config cfg = new Config(config().getJsonObject("auth"));
-    basicAddress = cfg.getOptionalString("address", "ch.rgw.sessions");
+    String basicAddress = cfg.getOptionalString("address", "ch.rgw.sessions");
     persistorAddress = cfg.getOptionalString("persistor_address", "ch.rgw.nosql");
     usersCollection = cfg.getOptionalString("users_collection", "users");
     TIMEOUT = cfg.getOptionalLong("session_timeout", DEFAULT_TIMEOUT);
@@ -69,90 +68,78 @@ public class SessionManager extends AbstractVerticle {
   /*
    * create a new Session
    */
-  private Handler<Message<JsonObject>> createHandler = new Handler<Message<JsonObject>>() {
-    @Override
-    public void handle(Message<JsonObject> msg) {
-      Session session = new Session();
-      if (msg.body() != null) {
-        session.store.put("params", msg.body());
-      }
-      sessions.put(session.id, session);
-      msg.reply(new JsonObject().put("sessionID", session.id).put("status", "ok"));
-      log.info(new Date().toString() + " - Created session: " + session.id);
+  private final Handler<Message<JsonObject>> createHandler = msg -> {
+    Session session = new Session();
+    if (msg.body() != null) {
+      session.store.put("params", msg.body());
     }
+    sessions.put(session.id, session);
+    msg.reply(new JsonObject().put("sessionID", session.id).put("status", "ok"));
+    log.info(new Date().toString() + " - Created session: " + session.id);
   };
 
-  private Handler<Message<JsonObject>> loginHandler = new Handler<Message<JsonObject>>() {
-
-    @Override
-    public void handle(final Message<JsonObject> externalRequest) {
-      final Session session = checkSession(externalRequest);
-      final Cleaner cl = new Cleaner(externalRequest);
-      log.log(Level.FINEST, "try login " + externalRequest.body().encodePrettily());
-      if (session != null) {
-        if (session.failTime != 0) {
-          long timeSinceLastAttempt = System.currentTimeMillis() - session.failTime;
-          if (timeSinceLastAttempt < (session.loginFailures * 5000)) {
-            Number sec = ((session.loginFailures * 5000) - timeSinceLastAttempt) / 1000;
-            log.info(new Date().toString() + " - SessionMgr denied login. Wait for " + sec
-              + " seconds.");
-            externalRequest.reply(new JsonObject().put("status", "wait").put("seconds",
-              sec));
-            return;
-          }
+  private final Handler<Message<JsonObject>> loginHandler = externalRequest -> {
+    final Session session = checkSession(externalRequest);
+    final Cleaner cl = new Cleaner(externalRequest);
+    log.log(Level.FINEST, "try login " + externalRequest.body().encodePrettily());
+    if (session != null) {
+      if (session.failTime != 0) {
+        long timeSinceLastAttempt = System.currentTimeMillis() - session.failTime;
+        if (timeSinceLastAttempt < (session.loginFailures * 5000)) {
+          Number sec = ((session.loginFailures * 5000) - timeSinceLastAttempt) / 1000;
+          log.info(new Date().toString() + " - SessionMgr denied login. Wait for " + sec
+            + " seconds.");
+          externalRequest.reply(new JsonObject().put("status", "wait").put("seconds",
+            sec));
+          return;
         }
-        try {
-          final String username = cl.get("username", Cleaner.MAIL, false);
-          final String mode = cl.get("mode", "(local|google)", false);
-          findUser(username, new AsyncResultHandler<Message<JsonObject>>() {
-
-            @Override
-            public void handle(AsyncResult<Message<JsonObject>> findResult) {
-              log.info("try logging in user " + username);
-              JsonObject user = findResult.result().body().getJsonObject("result");
-              Cleaner c2 = new Cleaner(findResult.result());
-              if (Util.getParm("status", findResult).equals("ok")) {
-                if (user == null) {
-                  fail("unknown user", session, externalRequest);
-                } else {
-                  if (user.getBoolean("verified", true)) {
-                    if (mode.equals("local")) {
-                      log.info("try to log in local user");
-                      if (checkPwd(user, externalRequest.body().getString("password", ""))) {
-                        session.login(user, externalRequest.body().getString("feedback-address"));
-                        externalRequest.reply(new JsonObject().put("status", "ok").put(
-                          "user", user));
-                      } else {
-                        log.info("login deinied for " + user.getString("username"));
-                        fail("denied", session, externalRequest);
-                      }
-                    } else if (mode.equals("google")) {
-                      // TODO check id_user
-                      log.info("try to log in google user " + username);
-                      verifyGoogleId(externalRequest, session, user);
-
-                    } else {
-                      log.severe("unsupported login mode " + mode);
-                      Util.sendError(externalRequest, "unsupported login mode");
-                    }
+      }
+      try {
+        final String username = cl.get("username", Cleaner.MAIL, false);
+        final String mode = cl.get("mode", "(local|google)", false);
+        findUser(username, findResult -> {
+          log.info("try logging in user " + username);
+          JsonObject user = findResult.result().body().getJsonObject("result");
+          if (Util.getParm("status", findResult).equals("ok")) {
+            if (user == null) {
+              fail("unknown user", session, externalRequest);
+            } else {
+              if (user.getBoolean("verified", true)) {
+                if (mode.equals("local")) {
+                  log.info("try to log in local user");
+                  if (checkPwd(user, externalRequest.body().getString("password", ""))) {
+                    session.login(user, externalRequest.body().getString("feedback-address"));
+                    externalRequest.reply(new JsonObject().put("status", "ok").put(
+                      "user", user));
                   } else {
-                    log.info("user account not yet verified");
-                    fail("not verified", session, externalRequest);
+                    log.info("login deinied for " + user.getString("username"));
+                    fail("denied", session, externalRequest);
                   }
+                } else if (mode.equals("google")) {
+                  // TODO check id_user
+                  log.info("try to log in google user " + username);
+                  verifyGoogleId(externalRequest, session, user);
+
+                } else {
+                  log.severe("unsupported login mode " + mode);
+                  Util.sendError(externalRequest, "unsupported login mode");
                 }
               } else {
-                log.severe(findResult.result().body().encodePrettily());
-                Util.sendError(externalRequest, "db error 1");
+                log.info("user account not yet verified");
+                fail("not verified", session, externalRequest);
               }
             }
-          });
-        } catch (ParametersException pex) {
-          Util.sendError(externalRequest, "Parameter error");
-        }
-
+          } else {
+            log.severe(findResult.result().body().encodePrettily());
+            Util.sendError(externalRequest, "db error 1");
+          }
+        });
+      } catch (ParametersException pex) {
+        Util.sendError(externalRequest, "Parameter error");
       }
 
     }
+
   };
 
   private void fail(String msg, Session session, Message<JsonObject> req) {
@@ -171,132 +158,103 @@ public class SessionManager extends AbstractVerticle {
     String id = Util.getParm("id_token", externalRequest);
     HttpClientOptions hco = new HttpClientOptions().setSsl(true).setDefaultHost("www.googleapis.com").setDefaultPort(443).setTrustAll(true);
     HttpClient htc = vertx.createHttpClient(hco);
-    htc.getNow("/oauth2/v1/tokeninfo?id_token=" + id, new Handler<HttpClientResponse>() {
-
-      @Override
-      public void handle(HttpClientResponse resp) {
-        if (resp.statusCode() == 200) {
-          resp.bodyHandler(new Handler<Buffer>() {
-            @Override
-            public void handle(Buffer buffer) {
-              log.finest(buffer.toString());
-              try {
-                JsonObject jwt = new JsonObject(buffer.toString());
-                JsonObject params = session.store.get("params");
-                String clientID = null;
-                String state = null;
-                if (params != null) {
-                  clientID = params.getString("clientID");
-                  state = params.getString("state");
-                }
-                if ((clientID != null) && (state != null)
-                  && jwt.getString("audience").equals(clientID)
-                  && (jwt.getString("issuer").endsWith("accounts.google.com"))
-                  && jwt.getInteger("expires_in") > 0
-                  && jwt.getString("email").equals(user.getString("username"))) {
-                  session.login(user, externalRequest.body().getString("feedback-address"));
-                  externalRequest.reply(new JsonObject().put("status", "ok").put(
-                    "user", user));
-                } else {
-                  log.severe("bad credentials " + clientID);
-                  fail("denied", session, externalRequest);
-                }
-
-              } catch (Throwable ex) {
-                log.warning("invalid token for user " + user.getString("username"));
-                fail("invalid token", session, externalRequest);
-              }
+    htc.getNow("/oauth2/v1/tokeninfo?id_token=" + id, resp -> {
+      if (resp.statusCode() == 200) {
+        resp.bodyHandler(buffer -> {
+          log.finest(buffer.toString());
+          try {
+            JsonObject jwt = new JsonObject(buffer.toString());
+            JsonObject params = session.store.get("params");
+            String clientID = null;
+            String state = null;
+            if (params != null) {
+              clientID = params.getString("clientID");
+              state = params.getString("state");
             }
-          });
-        } else {
-          externalRequest.reply(new JsonObject().put("status", "google server failure"));
-        }
+            if ((clientID != null) && (state != null)
+              && jwt.getString("audience").equals(clientID)
+              && (jwt.getString("issuer").endsWith("accounts.google.com"))
+              && jwt.getInteger("expires_in") > 0
+              && jwt.getString("email").equals(user.getString("username"))) {
+              session.login(user, externalRequest.body().getString("feedback-address"));
+              externalRequest.reply(new JsonObject().put("status", "ok").put(
+                "user", user));
+            } else {
+              log.severe("bad credentials " + clientID);
+              fail("denied", session, externalRequest);
+            }
 
+          } catch (Throwable ex) {
+            log.warning("invalid token for user " + user.getString("username"));
+            fail("invalid token", session, externalRequest);
+          }
+        });
+      } else {
+        externalRequest.reply(new JsonObject().put("status", "google server failure"));
       }
+
     });
   }
 
-  private Handler<Message<JsonObject>> logoutHandler = new Handler<Message<JsonObject>>() {
-
-    @Override
-    public void handle(Message<JsonObject> msg) {
-      Session session = checkSession(msg);
-      if (session != null) {
-        session.logout();
-        Util.sendOK(msg);
-      }
+  private final Handler<Message<JsonObject>> logoutHandler = msg -> {
+    Session session = checkSession(msg);
+    if (session != null) {
+      session.logout();
+      Util.sendOK(msg);
     }
   };
-  private Handler<Message<JsonObject>> authorizeHandler = new Handler<Message<JsonObject>>() {
-
-    @Override
-    public void handle(Message<JsonObject> msg) {
-      Session session = checkSession(msg);
-      if (session != null) {
-        if (isAuthorized(session, Util.getParm("role", msg))) {
-          msg.reply(new JsonObject().put("status", "ok").put("authorized_user",
-            session.user));
-        } else {
-          log.info("authorization denied for role " + msg.body().getString("role"));
-          Util.sendStatus(msg, "denied");
-        }
+  private final Handler<Message<JsonObject>> authorizeHandler = msg -> {
+    Session session = checkSession(msg);
+    if (session != null) {
+      if (isAuthorized(session, Util.getParm("role", msg))) {
+        msg.reply(new JsonObject().put("status", "ok").put("authorized_user",
+          session.user));
+      } else {
+        log.info("authorization denied for role " + msg.body().getString("role"));
+        Util.sendStatus(msg, "denied");
       }
-
-    }
-  };
-
-  private Handler<Message<JsonObject>> adminHandler = new Handler<Message<JsonObject>>() {
-
-    @Override
-    public void handle(Message<JsonObject> msg) {
-      Session session = checkSession(msg);
-      if (session != null) {
-        if (!session.getRoles().contains("admin")) {
-          Util.sendStatus(msg, "denied");
-        } else {
-          String cmd = Util.getParm("command", msg);
-          if (cmd == "adduser") {
-            addUser(msg);
-          } else if (cmd == "removeuser") {
-            removeUser(msg);
-          }
-        }
-      }
-
     }
 
   };
 
-  private Handler<Message<JsonObject>> putHandler = new Handler<Message<JsonObject>>() {
-
-    @Override
-    public void handle(Message<JsonObject> msg) {
-      Session session = checkSession(msg);
-      if (session != null) {
-        String key = Util.getParm("key", msg);
-        JsonObject value = Util.getObject("value", msg);
-        session.store.put(key, value);
-        Util.sendOK(msg);
-      }
-    }
-  };
-
-  private Handler<Message<JsonObject>> getHandler = new Handler<Message<JsonObject>>() {
-
-    @Override
-    public void handle(Message<JsonObject> msg) {
-      Session session = checkSession(msg);
-      if (session != null) {
-        String key = Util.getParm("key", msg);
-        JsonObject value = session.store.get(key);
-        if (value == null) {
-          Util.sendStatus(msg, "not found");
-        } else {
-          msg.reply(new JsonObject().put("status", "ok").put("result", value));
+  private final Handler<Message<JsonObject>> adminHandler = msg -> {
+    Session session = checkSession(msg);
+    if (session != null) {
+      if (!session.getRoles().contains("admin")) {
+        Util.sendStatus(msg, "denied");
+      } else {
+        String cmd = Util.getParm("command", msg);
+        if (Objects.equals(cmd, "adduser")) {
+          addUser(msg);
+        } else if (cmd.equals("removeuser")) {
+          removeUser(msg);
         }
       }
     }
 
+  };
+
+  private final Handler<Message<JsonObject>> putHandler = msg -> {
+    Session session = checkSession(msg);
+    if (session != null) {
+      String key = Util.getParm("key", msg);
+      JsonObject value = Util.getObject("value", msg);
+      session.store.put(key, value);
+      Util.sendOK(msg);
+    }
+  };
+
+  private final Handler<Message<JsonObject>> getHandler = msg -> {
+    Session session = checkSession(msg);
+    if (session != null) {
+      String key = Util.getParm("key", msg);
+      JsonObject value = session.store.get(key);
+      if (value == null) {
+        Util.sendStatus(msg, "not found");
+      } else {
+        msg.reply(new JsonObject().put("status", "ok").put("result", value));
+      }
+    }
   };
 
   /*
@@ -352,40 +310,36 @@ public class SessionManager extends AbstractVerticle {
   private void addUser(final Message<JsonObject> msg) {
     final JsonObject user = Util.getObject("user", msg);
     if (user != null) {
-      findUser(user.getString("username"), new AsyncResultHandler<Message<JsonObject>>() {
+      findUser(user.getString("username"), dbReply -> {
+        log.finest("mongo result: " + dbReply.result().body().encodePrettily());
 
-        @Override
-        public void handle(AsyncResult<Message<JsonObject>> dbReply) {
-          log.finest("mongo result: " + dbReply.result().body().encodePrettily());
-
-          if (Util.getParm("status", dbReply.result()).equals("ok")) {
-            if (Util.getParm("result",dbReply) != null) {
-              Util.sendError(msg, "user " + user.getString("username") + " already exists");
-            } else {
-              JsonObject dbUser = makePwd(user);
-              if (dbUser != null) {
-                JsonArray roles = user.getJsonArray("roles");
-                if (roles == null) {
-                  roles = Util.asJsonArray("user");
-                }
-                dbUser.put("roles", roles);
-                JsonObject op = new JsonObject().put("action", "save").put(
-                  "collection", usersCollection).put("document", dbUser);
-                eb.send(persistorAddress, op, new AsyncResultHandler<Message<JsonObject>>() {
-
-                  @Override
-                  public void handle(AsyncResult<Message<JsonObject>> reply) {
-                    msg.reply(reply.result());
-                  }
-                });
-              } else {
-                Util.sendError(msg, "bad request");
-              }
-
-            }
+        if (Util.getParm("status", dbReply.result()).equals("ok")) {
+          if (Util.getParm("result", dbReply) != null) {
+            Util.sendError(msg, "user " + user.getString("username") + " already exists");
           } else {
-            Util.sendError(msg, "database error");
+            JsonObject dbUser = makePwd(user);
+            if (dbUser != null) {
+              JsonArray roles = user.getJsonArray("roles");
+              if (roles == null) {
+                roles = Util.asJsonArray("user");
+              }
+              dbUser.put("roles", roles);
+              JsonObject op = new JsonObject().put("action", "save").put(
+                "collection", usersCollection).put("document", dbUser);
+              eb.send(persistorAddress, op, new AsyncResultHandler<Message<JsonObject>>() {
+
+                @Override
+                public void handle(AsyncResult<Message<JsonObject>> reply) {
+                  msg.reply(reply.result());
+                }
+              });
+            } else {
+              Util.sendError(msg, "bad request");
+            }
+
           }
+        } else {
+          Util.sendError(msg, "database error");
         }
       });
     } else {
@@ -496,34 +450,31 @@ public class SessionManager extends AbstractVerticle {
       }
       log.finest("session refresh " + id + ". Setting timeout to " + myTimeout);
 
-      timerID = vertx.setTimer(myTimeout, new Handler<Long>() {
-        @Override
-        public void handle(Long arg0) {
-          log.finest(new Date().toString() + " - Session timed out " + id);
-          if (loggedIn) {
-            log.info("timout session " + id + ", user: " + user.encodePrettily());
-            if (feedbackAddress != null) {
-              log.info("feedBack-Address: " + feedbackAddress);
-              eb.send(feedbackAddress, new JsonObject().put("message", "logged out")
-                .put("reason", "timeout"));
-            }
-            logout();
-          } else {
-            log.finest("user is not logged in");
-                        /* If session is idle for more than an hour -> kill */
-            if ((System.currentTimeMillis() - lastAccess) > 3600000) {
-              log.info(new Date().toString() + " - Session was idle for more than an hour -> kill "
-                + id);
-              sessions.remove(id);
-            }
+      timerID = vertx.setTimer(myTimeout, arg0 -> {
+        log.finest(new Date().toString() + " - Session timed out " + id);
+        if (loggedIn) {
+          log.info("timout session " + id + ", user: " + user.encodePrettily());
+          if (feedbackAddress != null) {
+            log.info("feedBack-Address: " + feedbackAddress);
+            eb.send(feedbackAddress, new JsonObject().put("message", "logged out")
+              .put("reason", "timeout"));
           }
-          refresh();
+          logout();
+        } else {
+          log.finest("user is not logged in");
+                      /* If session is idle for more than an hour -> kill */
+          if ((System.currentTimeMillis() - lastAccess) > 3600000) {
+            log.info(new Date().toString() + " - Session was idle for more than an hour -> kill "
+              + id);
+            sessions.remove(id);
+          }
         }
+        refresh();
       });
       lastAccess = System.currentTimeMillis();
     }
 
-    String id;
+    final String id;
     String feedbackAddress;
     int loginFailures = 0;
     JsonObject user = new JsonObject();
@@ -531,6 +482,6 @@ public class SessionManager extends AbstractVerticle {
     long timerID;
     long failTime = 0;
     long lastAccess = 0;
-    Map<String, JsonObject> store = new HashMap<String, JsonObject>();
+    final Map<String, JsonObject> store = new HashMap<>();
   }
 }

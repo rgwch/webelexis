@@ -18,10 +18,10 @@ import java.util.logging.Logger;
  *
  * @author gerry
  */
-public class VerifyAccountHandler implements Handler<Message<JsonObject>> {
-  Server server;
-  Logger log = Logger.getLogger("VerifyAccountHandler");
-  UserDetailHandler udh;
+class VerifyAccountHandler implements Handler<Message<JsonObject>> {
+  private final Server server;
+  private final Logger log = Logger.getLogger("VerifyAccountHandler");
+  private final UserDetailHandler udh;
 
   public VerifyAccountHandler(Server server) {
     this.server = server;
@@ -34,32 +34,26 @@ public class VerifyAccountHandler implements Handler<Message<JsonObject>> {
     try {
       final String uname = cl.get("username", Cleaner.MAIL, false);
       final String code = cl.get("verify", Cleaner.UID, false);
-      udh.getUser(uname, new Handler<JsonObject>() {
-        @Override
-        public void handle(JsonObject user) {
-          if (user == null) {
-            cl.replyError("user not found");
+      udh.getUser(uname, user -> {
+        if (user == null) {
+          cl.replyError("user not found");
+        } else {
+          String cfid = user.getString("confirmID");
+          if (cfid == null) {
+            cl.replyError("account not waiting for verification");
           } else {
-            String cfid = user.getString("confirmID");
-            if (cfid == null) {
-              cl.replyError("account not waiting for verification");
+            if (user.getString("confirmID").equals(code)) {
+              user.put("verified", true);
+              user.remove("confirmID");
+              udh.putUser(user, result -> {
+                if (result) {
+                  cl.replyOk();
+                } else {
+                  cl.replyError("system error: Could not write user");
+                }
+              });
             } else {
-              if (user.getString("confirmID").equals(code)) {
-                user.put("verified", true);
-                user.remove("confirmID");
-                udh.putUser(user, new Handler<Boolean>() {
-                  @Override
-                  public void handle(Boolean result) {
-                    if (result) {
-                      cl.replyOk();
-                    } else {
-                      cl.replyError("system error: Could not write user");
-                    }
-                  }
-                });
-              } else {
-                cl.replyError("bad verification code");
-              }
+              cl.replyError("bad verification code");
             }
           }
         }

@@ -30,7 +30,7 @@ public class HuffmanOutputStream extends OutputStream {
     'H', 'O', 'S', '0', '4'
   };
   BitOutputStream bos;
-  HuffmanTree tree;
+  final HuffmanTree tree;
   int dyn;
   int counter;
   int[] tbl;

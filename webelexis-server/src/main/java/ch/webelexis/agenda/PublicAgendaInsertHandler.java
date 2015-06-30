@@ -31,11 +31,11 @@ import static ch.webelexis.Cleaner.*;
  *
  * @author gerry
  */
-public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
+class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
 
-  JsonObject cfg;
-  Verticle verticle;
-  Logger log = Logger.getLogger("Public AgendaInsertHandler");
+  private final JsonObject cfg;
+  private final Verticle verticle;
+  private final Logger log = Logger.getLogger("Public AgendaInsertHandler");
 
   public PublicAgendaInsertHandler(Verticle v, JsonObject cfg) {
     this.verticle = v;
@@ -58,37 +58,33 @@ public class PublicAgendaInsertHandler implements Handler<Message<JsonObject>> {
       final String[] timeString = cl.get("time", TIME, false).split(":");
       final String ip = cl.get("ip", IP, true);
 
-      new UserDetailHandler(verticle).getUser(username, new Handler<JsonObject>() {
+      new UserDetailHandler(verticle).getUser(username, patMsg -> {
 
-        @Override
-        public void handle(JsonObject patMsg) {
+        if (patMsg != null) {
+          int time = Integer.parseInt(timeString[0]) * 60 + Integer.parseInt(timeString[1]);
+          JsonObject bridge = new JsonObject()
+            .put("action", "prepared")
+            .put(
+              "statement",
+              "INSERT INTO AGNTERMINE (ID,lastupdate,Tag,Bereich,Beginn,Dauer,TerminTyp,TerminStatus,Grund,PatID) VALUES(?,?,?,?,?,?,?,?,?,?)")
+            .put(
+              "values",
+              Util.asJsonArray(new String[]{UUID.randomUUID().toString(),
+                Long.toString(new Date().getTime()), day, resource, Integer.toString(time), "30",
+                apptType, apptState, ip, patMsg.getString("patientid")}));
+          verticle.getVertx().eventBus()
+            .send("ch.webelexis.sql", bridge, new AsyncResultHandler<Message<JsonObject>>() {
 
-          if (patMsg != null) {
-            int time = Integer.parseInt(timeString[0]) * 60 + Integer.parseInt(timeString[1]);
-            JsonObject bridge = new JsonObject()
-              .put("action", "prepared")
-              .put(
-                "statement",
-                "INSERT INTO AGNTERMINE (ID,lastupdate,Tag,Bereich,Beginn,Dauer,TerminTyp,TerminStatus,Grund,PatID) VALUES(?,?,?,?,?,?,?,?,?,?)")
-              .put(
-                "values",
-                Util.asJsonArray(new String[]{UUID.randomUUID().toString(),
-                  Long.toString(new Date().getTime()), day, resource, Integer.toString(time), "30",
-                  apptType, apptState, ip, patMsg.getString("patientid")}));
-            verticle.getVertx().eventBus()
-              .send("ch.webelexis.sql", bridge, new AsyncResultHandler<Message<JsonObject>>() {
+              @Override
+              public void handle(AsyncResult<Message<JsonObject>> event) {
+                externalEvent.reply(event.result().body());
 
-                @Override
-                public void handle(AsyncResult<Message<JsonObject>> event) {
-                  externalEvent.reply(event.result().body());
+              }
+            });
 
-                }
-              });
-
-          } else {
-            cl.replyError("not found " + username);
-            log.warning(username + " not found. ");
-          }
+        } else {
+          cl.replyError("not found " + username);
+          log.warning(username + " not found. ");
         }
       });
 

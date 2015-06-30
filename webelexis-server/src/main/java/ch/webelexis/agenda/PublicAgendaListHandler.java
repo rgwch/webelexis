@@ -33,15 +33,15 @@ import static ch.webelexis.Cleaner.ELEXISDATE;
  *
  * @author gerry
  */
-public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
-  EventBus eb;
-  static final int FLD_DAY = 0;
-  static final int FLD_BEGIN = 1;
-  static final int FLD_DURATION = 2;
-  static final int FLD_TYPE = 3;
-  static final int FLD_PATIENT_ID = 4;
-  Logger log = Logger.getLogger("PublicAgendaListHandler");
-  JsonObject cfg;
+class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
+  private final EventBus eb;
+  private static final int FLD_DAY = 0;
+  private static final int FLD_BEGIN = 1;
+  private static final int FLD_DURATION = 2;
+  private static final int FLD_TYPE = 3;
+  private static final int FLD_PATIENT_ID = 4;
+  private final Logger log = Logger.getLogger("PublicAgendaListHandler");
+  private final JsonObject cfg;
 
   public PublicAgendaListHandler(AbstractVerticle v, JsonObject cfg) {
     this.eb = v.getVertx().eventBus();
@@ -105,18 +105,15 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
    * @param set
    */
   private JsonObject fillBlanks(JsonArray appointments, JsonObject user) {
-    TreeSet<JsonArray> orderedList = new TreeSet<JsonArray>(new Comparator<JsonArray>() {
-      @Override
-      public int compare(JsonArray o1, JsonArray o2) {
-        String day1 = o1.getString(FLD_DAY);
-        String day2 = o2.getString(FLD_DAY);
-        if (day1.equals(day2)) {
-          int start1 = Integer.parseInt(o1.getString(FLD_BEGIN).trim());
-          int start2 = Integer.parseInt(o2.getString(FLD_BEGIN).trim());
-          return start1 - start2;
-        }
-        return day1.compareTo(day2);
+    TreeSet<JsonArray> orderedList = new TreeSet<>((o1, o2) -> {
+      String day1 = o1.getString(FLD_DAY);
+      String day2 = o2.getString(FLD_DAY);
+      if (day1.equals(day2)) {
+        int start1 = Integer.parseInt(o1.getString(FLD_BEGIN).trim());
+        int start2 = Integer.parseInt(o2.getString(FLD_BEGIN).trim());
+        return start1 - start2;
       }
+      return day1.compareTo(day2);
     });
 
     String userid = "-";
@@ -167,7 +164,7 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
       endTime = startTime + Integer.parseInt(aNext.getString(FLD_DURATION).trim());
       Object[] line = Util.asObjectArray(aNext);
       if ((line[FLD_PATIENT_ID] != null) && (line[FLD_PATIENT_ID].equals(userid))) {
-        line[FLD_PATIENT_ID] = "Ihr Termin: " + user.getString("username");
+        line[FLD_PATIENT_ID] = "Ihr Termin: " + (user != null ? user.getString("username") : "?");
         line[FLD_TYPE] = "user";
       } else {
         line[FLD_PATIENT_ID] = "";
@@ -176,9 +173,8 @@ public class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
       arr.add(Util.asJsonArray(line));
     }
 
-    JsonObject ores = new JsonObject().put("status", "ok").put("type", "basic")
+    return new JsonObject().put("status", "ok").put("type", "basic")
       .put("appointments", arr);
-    return ores;
 
   }
 

@@ -24,12 +24,11 @@ import java.util.Scanner;
 
 public class NetTool {
   static final String Version = "1.0.1";
-  public static final java.util.ArrayList<String> IPs = new java.util.ArrayList<String>();
+  public static final java.util.ArrayList<String> IPs = new java.util.ArrayList<>();
   public static String hostname;
 
   static {
     Enumeration<NetworkInterface> nis = null;
-    ;
     try {
       nis = NetworkInterface.getNetworkInterfaces();
 

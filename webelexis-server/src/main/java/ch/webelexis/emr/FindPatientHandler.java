@@ -23,13 +23,13 @@ import java.util.logging.Logger;
 /**
  * Created by gerry on 14.06.15.
  */
-public class FindPatientHandler implements Handler<Message<JsonObject>> {
-  Verticle server;
-  Logger log = Logger.getLogger("FindPatientHandler");
-  EventBus eb;
+class FindPatientHandler implements Handler<Message<JsonObject>> {
+  private final Verticle server;
+  private final Logger log = Logger.getLogger("FindPatientHandler");
+  private final EventBus eb;
 
-  final static String[] fields = {"Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "geschlecht", "id", "patientnr", "Strasse", "plz", "Ort", "telefon1", "telefon2", "natelnr", "email", "bemerkung"};
-  final static String sql = "SELECT FIELDS from KONTAKT where Bezeichnung1 like ? OR Bezeichnung2 like ? order by Bezeichnung1, Bezeichnung2";
+  private final static String[] fields = {"Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "geschlecht", "id", "patientnr", "Strasse", "plz", "Ort", "telefon1", "telefon2", "natelnr", "email", "bemerkung"};
+  private final static String sql = "SELECT FIELDS from KONTAKT where Bezeichnung1 like ? OR Bezeichnung2 like ? order by Bezeichnung1, Bezeichnung2";
 
   public FindPatientHandler(Verticle server) {
     this.server = server;

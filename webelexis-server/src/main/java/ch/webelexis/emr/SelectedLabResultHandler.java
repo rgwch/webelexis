@@ -10,7 +10,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 
-public class SelectedLabResultHandler implements Handler<Message<JsonObject>> {
+class SelectedLabResultHandler implements Handler<Message<JsonObject>> {
 
   @Override
   public void handle(Message<JsonObject> arg0) {

@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.logging.Logger;
 
-public class Server extends AbstractVerticle {
+class Server extends AbstractVerticle {
 
   @Override
   public void start() {

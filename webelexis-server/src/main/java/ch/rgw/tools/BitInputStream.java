@@ -26,7 +26,7 @@ public class BitInputStream extends InputStream {
 
   private int buffer;
   private int pos;
-  InputStream stream;
+  final InputStream stream;
 
   public BitInputStream(InputStream in) {
     stream = in;

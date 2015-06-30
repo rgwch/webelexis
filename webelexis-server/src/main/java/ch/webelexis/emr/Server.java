@@ -13,10 +13,10 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.logging.Logger;
 
-public class Server extends AbstractVerticle {
-  Logger log = Logger.getLogger("EMR Server");
-  JsonObject cfg;
-  EventBus eb;
+class Server extends AbstractVerticle {
+  private final Logger log = Logger.getLogger("EMR Server");
+  private JsonObject cfg;
+  private EventBus eb;
 
   @Override
   public void start() {
@@ -30,10 +30,7 @@ public class Server extends AbstractVerticle {
     if (cfg.getBoolean("lab", false) == true) {
       final LabResultSummaryHandler labResultHandler = new LabResultSummaryHandler(this);
       eb.consumer("ch.webelexis.patient.labresult", new AuthorizingHandler(this, cfg
-        .getString("role", "admin"), new Handler<Message<JsonObject>>() {
-
-        @Override
-        public void handle(Message<JsonObject> request) {
+        .getString("role", "admin"), request -> {
           log.finest("EMR server; got request: " + request.body().encode());
           String mode = request.body().getString("mode");
           if (mode == null || mode.equals("latest")) {
@@ -42,7 +39,6 @@ public class Server extends AbstractVerticle {
             // probably later
           }
 
-        }
       }));
     }
     if (cfg.getBoolean("consultations", false) == true) {

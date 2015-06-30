@@ -8,10 +8,8 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import org.jruby.RubyProcess;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,8 +34,7 @@ public class Util {
   }
 
   public static JsonArray asJsonArray(String source) {
-    JsonArray ret = new JsonArray().add(source);
-    return ret;
+    return new JsonArray().add(source);
   }
 
   public static Object[] asObjectArray(JsonArray source) {
@@ -45,7 +42,7 @@ public class Util {
   }
 
   public static List<?> asList(JsonArray source) {
-    ArrayList<Object> ret = new ArrayList<Object>(source.size());
+    ArrayList<Object> ret = new ArrayList<>(source.size());
     Iterator it = source.iterator();
     while (it.hasNext()) {
       Object o = it.next();
@@ -73,6 +70,7 @@ public class Util {
         }
       }
     }
+    assert msg != null;
     msg.reply(new JsonObject().put("status","error").put("message","parameter error: "+name));
     return "";
   }
@@ -85,6 +83,7 @@ public class Util {
         }
       }
     }
+    assert msg != null;
     msg.reply(new JsonObject().put("status","error").put("message","parameter error: "+name));
     return new JsonObject();
 
@@ -102,7 +101,7 @@ public class Util {
   }
 
   public static void sendOK(Message<JsonObject> addr, JsonObject result){
-    addr.reply(new JsonObject().put("status","ok").put("result",result));
+    addr.reply(new JsonObject().put("status", "ok").put("result", result));
   }
 
 }

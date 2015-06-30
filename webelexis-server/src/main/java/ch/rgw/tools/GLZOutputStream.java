@@ -24,8 +24,8 @@ import java.io.OutputStream;
  */
 public class GLZOutputStream extends OutputStream {
 
-  private ByteArrayOutputStream intermediate;
-  private OutputStream dest;
+  private final ByteArrayOutputStream intermediate;
+  private final OutputStream dest;
 
   public GLZOutputStream(OutputStream oo, int sizeHint) {
     intermediate = new ByteArrayOutputStream(sizeHint);

@@ -12,9 +12,9 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.logging.Logger;
 
-public class PrivateAgendaInsertHandler implements Handler<Message<JsonObject>> {
-  EventBus eb;
-  JsonObject cfg;
+class PrivateAgendaInsertHandler implements Handler<Message<JsonObject>> {
+  final EventBus eb;
+  final JsonObject cfg;
   Logger log = Logger.getLogger("PrivateAgendaInsertHandler");
 
   public PrivateAgendaInsertHandler(EventBus eb, JsonObject cfg) {

@@ -26,12 +26,12 @@ import static ch.webelexis.Cleaner.*;
  * @author gerry
  */
 public class AddPatientHandler implements Handler<Message<JsonObject>> {
-  AbstractVerticle server;
-  JsonObject cfg;
-  java.util.logging.Logger log = java.util.logging.Logger.getLogger("AddPatientHandler");
-  EventBus eb;
-  UserDetailHandler udh;
-  private String[] fields = {"id", "Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "Strasse",
+  final AbstractVerticle server;
+  final JsonObject cfg;
+  final java.util.logging.Logger log = java.util.logging.Logger.getLogger("AddPatientHandler");
+  final EventBus eb;
+  final UserDetailHandler udh;
+  private final String[] fields = {"id", "Bezeichnung1", "Bezeichnung2", "Geburtsdatum", "Strasse",
     "Plz", "Ort", "Telefon1", "NatelNr", "Email", "Bemerkung", "istPatient"};
 
   public AddPatientHandler(AbstractVerticle server, JsonObject cfg) {
@@ -48,30 +48,26 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 
     try {
       // check if username exists in webelexis users
-      udh.getUser(c.get("username", MAIL, false), new Handler<JsonObject>() {
-
-        public void handle(JsonObject user) {
-          if (user != null) {
-            log.warning("user exists " + externalRequest.body().getString("username"));
-                        /* user exists: error */
-            c.replyError("user exists");
-          } else {
-            try {
-                            /* user does not exist; check if patient exists */
-              String sql = "select id from KONTAKT where Bezeichnung1=? and Bezeichnung2=? and Geburtsdatum=? and deleted='0'";
-              JsonObject jo = new JsonObject().put("action", "prepared").put(
-                "statement", sql)
-                .put(
-                  "values", Util.asJsonArray(new String[]{c.get("name", NAME, false),
-                    c.get("vorname", NAME, false),
-                    c.get("geburtsdatum", ELEXISDATE, false)}));
-              eb.send("ch.webelexis.sql", jo, new QueryResultHandler(c));
-            } catch (ParametersException pex) {
-              log.log(Level.SEVERE, pex.getMessage(), pex);
-              c.replyError("parameter error");
-            }
+      udh.getUser(c.get("username", MAIL, false), user -> {
+        if (user != null) {
+          log.warning("user exists " + externalRequest.body().getString("username"));
+                      /* user exists: error */
+          c.replyError("user exists");
+        } else {
+          try {
+                          /* user does not exist; check if patient exists */
+            String sql = "select id from KONTAKT where Bezeichnung1=? and Bezeichnung2=? and Geburtsdatum=? and deleted='0'";
+            JsonObject jo = new JsonObject().put("action", "prepared").put(
+              "statement", sql)
+              .put(
+                "values", Util.asJsonArray(new String[]{c.get("name", NAME, false),
+                  c.get("vorname", NAME, false),
+                  c.get("geburtsdatum", ELEXISDATE, false)}));
+            eb.send("ch.webelexis.sql", jo, new QueryResultHandler(c));
+          } catch (ParametersException pex) {
+            log.log(Level.SEVERE, pex.getMessage(), pex);
+            c.replyError("parameter error");
           }
-
         }
 
       });
@@ -86,7 +82,7 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
    */
   class QueryResultHandler implements AsyncResultHandler<Message<JsonObject>> {
 
-    Cleaner c;
+    final Cleaner c;
 
     QueryResultHandler(Cleaner externalRequestCleaner) {
       c = externalRequestCleaner;
@@ -136,8 +132,8 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
 
   /* called after created new patient */
   class SqlResultHandler implements AsyncResultHandler<Message<JsonObject>> {
-    Cleaner c;
-    String pid;
+    final Cleaner c;
+    final String pid;
 
     SqlResultHandler(Cleaner externalRequestCleaner, String pid) {
       c = externalRequestCleaner;
@@ -177,46 +173,43 @@ public class AddPatientHandler implements Handler<Message<JsonObject>> {
       } else {
         user.put("verified", true);
       }
-      udh.putUser(user, new Handler<Boolean>() {
-        @Override
-        public void handle(Boolean insertOK) {
-          if (insertOK) {
-            if (cfg.getBoolean("confirm-mail", false)) {
-              final JsonObject mailCfg = cfg.getJsonObject("mails");
-              String bcc = mailCfg.getString("bcc");
-              final JsonObject mail = new JsonObject().put("from", mailCfg.getString("from"))
-                .put("to", user.getString("username")).put(
-                  "body",
-                  mailCfg.getString("activation_body").replaceFirst("%activationcode%",
-                    confirmURL + user.getString("confirmID"))).put("subject",
-                  mailCfg.getString("activation_subject"));
-              if (bcc != null) {
-                mail.put("bcc", bcc);
-              }
-              eb.send("ch.webelexis.mailer", mail, new AsyncResultHandler<Message<JsonObject>>() {
+      udh.putUser(user, insertOK -> {
+        if (insertOK) {
+          if (cfg.getBoolean("confirm-mail", false)) {
+            final JsonObject mailCfg = cfg.getJsonObject("mails");
+            String bcc = mailCfg.getString("bcc");
+            final JsonObject mail = new JsonObject().put("from", mailCfg.getString("from"))
+              .put("to", user.getString("username")).put(
+                "body",
+                mailCfg.getString("activation_body").replaceFirst("%activationcode%",
+                  confirmURL + user.getString("confirmID"))).put("subject",
+                mailCfg.getString("activation_subject"));
+            if (bcc != null) {
+              mail.put("bcc", bcc);
+            }
+            eb.send("ch.webelexis.mailer", mail, new AsyncResultHandler<Message<JsonObject>>() {
 
-                @Override
-                public void handle(AsyncResult<Message<JsonObject>> mailerReply) {
-                  if (mailerReply.succeeded()) {
-                    if (mailerReply.result().body().getString("status").equals("ok")) {
-                      cle.replyOk();
-                    } else {
-                      log.log(Level.SEVERE, "mailer error: " + mailerReply.result().body().encodePrettily());
-                      cle.replyError("mail error.");
-                    }
+              @Override
+              public void handle(AsyncResult<Message<JsonObject>> mailerReply) {
+                if (mailerReply.succeeded()) {
+                  if (mailerReply.result().body().getString("status").equals("ok")) {
+                    cle.replyOk();
+                  } else {
+                    log.log(Level.SEVERE, "mailer error: " + mailerReply.result().body().encodePrettily());
+                    cle.replyError("mail error.");
                   }
                 }
-              });
+              }
+            });
 
-            } else { // no confirmation mail; we're done
-              cle.replyOk();
-            }
-
-          } else {
-            // inserOK was false
-            cle.replyError("could not create user in nosql");
-
+          } else { // no confirmation mail; we're done
+            cle.replyOk();
           }
+
+        } else {
+          // inserOK was false
+          cle.replyError("could not create user in nosql");
+
         }
       });
 

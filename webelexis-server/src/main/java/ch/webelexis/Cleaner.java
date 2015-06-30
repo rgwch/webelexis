@@ -39,7 +39,7 @@ public class Cleaner {
   public static final String UID = "[a-zA-Z0-9][a-fA-F0-9-]{8,}";
   public static final String NUMBER = "[0-9]+";
 
-  Message<JsonObject> jo;
+  final Message<JsonObject> jo;
 
   public Cleaner(Message<JsonObject> raw) {
     jo = raw;
@@ -87,7 +87,7 @@ public class Cleaner {
         throw new ParametersException("field " + field + " was not set.");
       }
     }
-    if ((raw != null) && raw.matches(pattern)) {
+    if (raw.matches(pattern)) {
       return raw;
     } else {
       jo.reply(new JsonObject().put("status", "bad or missing field value for " + field));
@@ -208,8 +208,7 @@ public class Cleaner {
     fr.read(buffer);
     fr.close();
     String conf = new String(buffer).replaceAll("//\\s+.+\\r?\\n+\\r?", "");
-    JsonObject ret = new JsonObject(conf);
-    return ret;
+    return new JsonObject(conf);
   }
 
   public static JsonObject createFromStream(InputStream is) throws IOException, DecodeException {

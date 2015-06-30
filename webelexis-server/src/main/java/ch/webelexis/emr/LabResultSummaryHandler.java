@@ -26,11 +26,11 @@ import java.util.logging.Logger;
  *
  * @author gerry
  */
-public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
-  AbstractVerticle v;
-  EventBus eb;
-  Logger log = java.util.logging.Logger.getLogger("LabResultSummaryHAndler");
-  String[] fields = new String[]{"v.Datum", "v.ItemID", "li.titel", "v.Resultat", "v.Kommentar", "li.kuerzel",
+class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
+  private final AbstractVerticle v;
+  private final EventBus eb;
+  private final Logger log = java.util.logging.Logger.getLogger("LabResultSummaryHAndler");
+  private final String[] fields = new String[]{"v.Datum", "v.ItemID", "li.titel", "v.Resultat", "v.Kommentar", "li.kuerzel",
     "li.Gruppe", "li.prio", "li.RefMann", "li.RefFrauOrTx", "k.Geschlecht"};
 
   public LabResultSummaryHandler(AbstractVerticle server) {
@@ -61,7 +61,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
   }
 
   class SqlResult implements AsyncResultHandler<Message<JsonObject>> {
-    Cleaner cl;
+    final Cleaner cl;
 
     SqlResult(Cleaner c) {
       this.cl = c;
@@ -77,7 +77,7 @@ public class LabResultSummaryHandler implements Handler<Message<JsonObject>> {
         log.finest(vals.size() + " elements in list");
         JsonArray uniq = new JsonArray();
         Iterator it = vals.iterator();
-        HashMap<String, Boolean> check = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> check = new HashMap<>();
         // We consider lab results as identical, if date, itemID and value are the same
         while (it.hasNext()) {
           JsonArray row = (JsonArray) it.next();

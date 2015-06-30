@@ -24,16 +24,16 @@ import java.util.logging.Logger;
 import static ch.webelexis.Cleaner.ELEXISDATE;
 import static ch.webelexis.Cleaner.NAME;
 
-public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
-  static final int FLD_DAY = 0;
-  static final int FLD_BEGIN = 1;
-  static final int FLD_DURATION = 2;
-  static final int FLD_RESOURCE = 3;
-  static final int FLD_TYPE = 4;
-  static final int FLD_TERMIN_ID = 5;
-  EventBus eb;
-  JsonObject cfg;
-  Logger log = Logger.getLogger("PrivateAgendaListHandler");
+class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
+  private static final int FLD_DAY = 0;
+  private static final int FLD_BEGIN = 1;
+  private static final int FLD_DURATION = 2;
+  private static final int FLD_RESOURCE = 3;
+  private static final int FLD_TYPE = 4;
+  private static final int FLD_TERMIN_ID = 5;
+  private final EventBus eb;
+  private final JsonObject cfg;
+  private final Logger log = Logger.getLogger("PrivateAgendaListHandler");
 
   public PrivateAgendaListHandler(EventBus eb, JsonObject cfg) {
     this.eb = eb;
@@ -83,7 +83,7 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
   }
 
   class firstLevel implements AsyncResultHandler<Message<JsonObject>> {
-    Cleaner cle;
+    final Cleaner cle;
 
     firstLevel(Cleaner cle) {
       this.cle = cle;
@@ -126,8 +126,8 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
   }
 
   class secondLevel implements AsyncResultHandler<Message<JsonObject>> {
-    Cleaner cle;
-    JsonArray appts;
+    final Cleaner cle;
+    final JsonArray appts;
 
     secondLevel(Cleaner externalRequest, JsonArray appts) {
       this.cle = externalRequest;
@@ -150,24 +150,21 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
     }
 
     private JsonObject fillBlanks(JsonArray a1, JsonArray a2) {
-      TreeSet<JsonArray> orderedList = new TreeSet<JsonArray>(new Comparator<JsonArray>() {
-        @Override
-        public int compare(JsonArray o1, JsonArray o2) {
-          String id1 = o1.getString(FLD_TERMIN_ID);
-          String id2 = o2.getString(FLD_TERMIN_ID);
-          if (id1.equals(id2)) {
-            return 0;
-          } else {
-            String day1 = o1.getString(FLD_DAY);
-            String day2 = o2.getString(FLD_DAY);
-            if (day1.equals(day2)) {
-              int start1 = Integer.parseInt(o1.getString(FLD_BEGIN).trim());
-              int start2 = Integer.parseInt(o2.getString(FLD_BEGIN).trim());
-              return start1 - start2;
-            }
-
-            return day1.compareTo(day2);
+      TreeSet<JsonArray> orderedList = new TreeSet<>((o1, o2) -> {
+        String id1 = o1.getString(FLD_TERMIN_ID);
+        String id2 = o2.getString(FLD_TERMIN_ID);
+        if (id1.equals(id2)) {
+          return 0;
+        } else {
+          String day1 = o1.getString(FLD_DAY);
+          String day2 = o2.getString(FLD_DAY);
+          if (day1.equals(day2)) {
+            int start1 = Integer.parseInt(o1.getString(FLD_BEGIN).trim());
+            int start2 = Integer.parseInt(o2.getString(FLD_BEGIN).trim());
+            return start1 - start2;
           }
+
+          return day1.compareTo(day2);
         }
       });
 
@@ -220,9 +217,8 @@ public class PrivateAgendaListHandler implements Handler<Message<JsonObject>> {
         arr.add(aNext);
       }
 
-      JsonObject ores = new JsonObject().put("status", "ok").put("type", "full")
+      return new JsonObject().put("status", "ok").put("type", "full")
         .put("appointments", arr);
-      return ores;
 
     }
 

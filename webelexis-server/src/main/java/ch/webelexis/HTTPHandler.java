@@ -4,7 +4,6 @@
 package ch.webelexis;
 
 import io.vertx.core.AsyncResult;
-import io.vertx.core.AsyncResultHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.eventbus.EventBus;
@@ -15,7 +14,6 @@ import io.vertx.core.net.SocketAddress;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.InetSocketAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,11 +33,11 @@ import java.util.logging.Logger;
  */
 
 public class HTTPHandler implements Handler<HttpServerRequest> {
-  File basePath;
-  JsonObject cfg;
-  EventBus eb;
+  final File basePath;
+  final JsonObject cfg;
+  final EventBus eb;
   // Date: Mon, 27 Apr 2015 16:51:46 GMT
-  SimpleDateFormat df = new SimpleDateFormat("E, dd MM yyyy HH:mm:ss z");
+  final SimpleDateFormat df = new SimpleDateFormat("E, dd MM yyyy HH:mm:ss z");
 
   HTTPHandler(JsonObject cfg, EventBus eb) {
     this.cfg = cfg;
@@ -126,10 +124,10 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
    * @author gerry
    */
   class SessionHandler implements Handler<AsyncResult<Message<JsonObject>>> {
-    HttpServerRequest req;
-    String rnd;
-    MultiMap headers;
-    SocketAddress remoteAdress;
+    final HttpServerRequest req;
+    final String rnd;
+    final MultiMap headers;
+    final SocketAddress remoteAdress;
 
     SessionHandler(HttpServerRequest req, String rnd) {
       this.req = req;

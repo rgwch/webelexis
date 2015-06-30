@@ -6,8 +6,6 @@ package ch.webelexis;
 import io.vertx.core.*;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.json.DecodeException;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
@@ -15,17 +13,10 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
-import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -43,8 +34,8 @@ import java.util.logging.Logger;
 public class CoreVerticle extends AbstractVerticle {
   final static long TIMEOUT = 60000;
   public static JsonObject rootConfig;
-  public static Logger log = Logger.getLogger("CoreVerticle");
-  ArrayList<String> pending = new ArrayList<String>();
+  public static final Logger log = Logger.getLogger("CoreVerticle");
+  final ArrayList<String> pending = new ArrayList<>();
   Throwable reason = null;
   long waitingTime;
 
@@ -53,7 +44,7 @@ public class CoreVerticle extends AbstractVerticle {
    * them asynchronously, so there is no guaranteed order for them to be ready.
    */
 
-  String[] verticles = new String[]{
+  final String[] verticles = new String[]{
     "ch.webelexis.agenda.Server",
     "ch.webelexis.account.Server",
     "ch.webelexis.emr.Server",
@@ -93,23 +84,19 @@ public class CoreVerticle extends AbstractVerticle {
 		 * frequently, it's okay.
 		 */
     waitingTime = System.currentTimeMillis();
-    vertx.setPeriodic(200, new Handler<Long>() {
-
-      @Override
-      public void handle(Long timerID) {
-        if (pending.isEmpty()) {
+    vertx.setPeriodic(200, timerID -> {
+      if (pending.isEmpty()) {
+        vertx.cancelTimer(timerID);
+        startedResult.complete();
+      } else {
+        if ((System.currentTimeMillis() - waitingTime) > TIMEOUT) {
           vertx.cancelTimer(timerID);
-          startedResult.complete();
-        } else {
-          if ((System.currentTimeMillis() - waitingTime) > TIMEOUT) {
-            vertx.cancelTimer(timerID);
-            startedResult.fail(new Exception("Timeout waiting for launching modules"));
-          }
+          startedResult.fail(new Exception("Timeout waiting for launching modules"));
         }
-        if (reason != null) {
-          vertx.cancelTimer(timerID);
-          startedResult.fail(reason);
-        }
+      }
+      if (reason != null) {
+        vertx.cancelTimer(timerID);
+        startedResult.fail(reason);
       }
     });
 
@@ -147,7 +134,7 @@ public class CoreVerticle extends AbstractVerticle {
   }
 
   private class DeploymentHandler implements AsyncResultHandler<String> {
-    String t;
+    final String t;
 
     DeploymentHandler(String title) {
       t = title;

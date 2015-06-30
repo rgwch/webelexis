@@ -82,20 +82,19 @@ public class StringTool {
 
   @SuppressWarnings("unchecked")
   public static Vector splitV(final String m, final String delim) {
-    String mi = m;
-    if (mi.equals("")) {
+    if (m.equals("")) {
       return null;
     }
     Vector v = new Vector(30, 30);
 
     int i = 0, j = 0;
     while (true) {
-      j = mi.indexOf(delim, i);
+      j = m.indexOf(delim, i);
       if (j == -1) {
-        v.add(mi.substring(i));
+        v.add(m.substring(i));
         break;
       }
-      String l = mi.substring(i, j).trim();
+      String l = m.substring(i, j).trim();
       if (!l.equals("")) {
         v.add(l);
       }
@@ -255,9 +254,7 @@ public class StringTool {
 
     oos = new ObjectOutputStream(os);
     oos.writeObject(hash);
-    if (os != null) {
-      os.close();
-    }
+    os.close();
     baos.close();
     return baos.toByteArray();
   }
@@ -324,10 +321,10 @@ public class StringTool {
 
   static private String ObjectToString(final Object o) throws Exception {
     if (o instanceof String) {
-      return "A" + (String) o;
+      return "A" + o;
     }
     if (o instanceof Integer) {
-      return "B" + ((Integer) o).toString();
+      return "B" + o.toString();
     }
     if (o instanceof Serializable) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -638,7 +635,7 @@ public class StringTool {
     long idx = sequence % salties.length;
     char start = salties[(int) idx];
     return new StringBuilder().append(start).append(Long.toHexString(t4))
-      .append(Long.toHexString((long) Math.random() * 1000)).append(sequence).toString();
+      .append(Long.toHexString((int) (Math.random() * 1000))).append(sequence).toString();
   }
 
   /**

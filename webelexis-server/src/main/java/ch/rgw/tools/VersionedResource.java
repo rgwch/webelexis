@@ -36,7 +36,7 @@ public class VersionedResource {
   @SuppressWarnings("unchecked")
   private VersionedResource(byte[] in) throws Exception {
     if ((in == null) || (in.length == 0)) {
-      items = new ArrayList<ResourceItem>();
+      items = new ArrayList<>();
     } else {
       ByteArrayInputStream bais = new ByteArrayInputStream(in);
       ObjectInputStream ois = new ObjectInputStream(bais);
@@ -130,10 +130,10 @@ public class VersionedResource {
     private static final long serialVersionUID = -7214215925169803335L;
     static final int REPLACE = 0;
     static final int DIFF1 = 1;
-    int mode;
-    public long timestamp;
-    public String remark;
-    public String data;
+    final int mode;
+    public final long timestamp;
+    public final String remark;
+    public final String data;
 
     ResourceItem(int mode, String data, String remark) {
       this.mode = mode;
@@ -143,11 +143,9 @@ public class VersionedResource {
     }
 
     public String getLabel() {
-      StringBuilder sb = new StringBuilder();
       SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
       Date date = new Date();
-      sb.append(df.format(date)).append(" - ").append(remark);
-      return sb.toString();
+      return df.format(date) + " - " + remark;
     }
   }
 

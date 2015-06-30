@@ -39,22 +39,22 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
   private static final int NO_RAND_PART_B_STATE = 6;
   private static final int NO_RAND_PART_C_STATE = 7;
 
-  private CRC m_crc = new CRC();
-  private boolean[] m_inUse = new boolean[256];
-  private char[] m_seqToUnseq = new char[256];
-  private char[] m_unseqToSeq = new char[256];
-  private char[] m_selector = new char[MAX_SELECTORS];
-  private char[] m_selectorMtf = new char[MAX_SELECTORS];
+  private final CRC m_crc = new CRC();
+  private final boolean[] m_inUse = new boolean[256];
+  private final char[] m_seqToUnseq = new char[256];
+  private final char[] m_unseqToSeq = new char[256];
+  private final char[] m_selector = new char[MAX_SELECTORS];
+  private final char[] m_selectorMtf = new char[MAX_SELECTORS];
 
   /*
    * freq table collected to save a pass over the data during decompression.
    */
-  private int[] m_unzftab = new int[256];
+  private final int[] m_unzftab = new int[256];
 
-  private int[][] m_limit = new int[N_GROUPS][MAX_ALPHA_SIZE];
-  private int[][] m_base = new int[N_GROUPS][MAX_ALPHA_SIZE];
-  private int[][] m_perm = new int[N_GROUPS][MAX_ALPHA_SIZE];
-  private int[] m_minLens = new int[N_GROUPS];
+  private final int[][] m_limit = new int[N_GROUPS][MAX_ALPHA_SIZE];
+  private final int[][] m_base = new int[N_GROUPS][MAX_ALPHA_SIZE];
+  private final int[][] m_perm = new int[N_GROUPS][MAX_ALPHA_SIZE];
+  private final int[] m_minLens = new int[N_GROUPS];
 
   private boolean m_streamEnd;
   private int m_currentChar = -1;

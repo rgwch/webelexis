@@ -11,7 +11,7 @@ import io.vertx.core.json.JsonObject;
  * Created by gerry on 25.06.15.
  */
 public class Config {
-  JsonObject cfg;
+  final JsonObject cfg;
 
   public Config(JsonObject cfg) {
     this.cfg = cfg;

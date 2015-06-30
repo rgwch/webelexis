@@ -11,7 +11,7 @@ package ch.webelexis;
 import io.vertx.core.json.JsonObject;
 
 public class Mapper {
-  String[] fields;
+  final String[] fields;
 
   public Mapper(String[] fields) {
     this.fields = fields;

@@ -19,10 +19,10 @@ import java.util.logging.Logger;
  * @author gerry
  */
 public class AuthorizingHandler implements Handler<Message<JsonObject>> {
-  Handler<Message<JsonObject>> realHandler;
-  String roleToCheck;
-  AbstractVerticle bm;
-  Logger log = Logger.getLogger(getClass().getName());
+  final Handler<Message<JsonObject>> realHandler;
+  final String roleToCheck;
+  final AbstractVerticle bm;
+  final Logger log = Logger.getLogger(getClass().getName());
 
   public AuthorizingHandler(AbstractVerticle server, String roleToCheck,
                             Handler<Message<JsonObject>> originalHandler) {

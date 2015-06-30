@@ -15,5 +15,14 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="vertx-300" level="application" />
     <orderEntry type="library" name="mysql:mysql-connector-java:5.1.35" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/dev/contrib/pixels-core-2.1.3-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

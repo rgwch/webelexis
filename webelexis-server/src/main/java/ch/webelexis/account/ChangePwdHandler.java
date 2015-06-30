@@ -21,10 +21,10 @@ import java.util.logging.Logger;
  * @author gerry
  */
 public class ChangePwdHandler implements Handler<Message<JsonObject>> {
-  AbstractVerticle server;
-  Logger log = Logger.getLogger("ChangePwdHandler");
-  JsonObject cfg;
-  UserDetailHandler udh;
+  final AbstractVerticle server;
+  final Logger log = Logger.getLogger("ChangePwdHandler");
+  final JsonObject cfg;
+  final UserDetailHandler udh;
 
   public ChangePwdHandler(AbstractVerticle server, JsonObject cfg) {
     this.server = server;
@@ -39,40 +39,36 @@ public class ChangePwdHandler implements Handler<Message<JsonObject>> {
       final String username = cl.get("username", Cleaner.TEXT, false);
       final String oldPwd = cl.get("old-pwd", Cleaner.NOTEMPTY, false);
       final String newPwd = cl.get("new-pwd", Cleaner.NOTEMPTY, false);
-      udh.getUser(username, new Handler<JsonObject>() {
-
-        @Override
-        public void handle(JsonObject user) {
-          if (user == null) {
-            cl.replyError("user not found");
-          } else {
-            byte[] checkBytes = UserDetailHandler.makeHash(username, oldPwd);
-            byte[] userBytes = user.getBinary("pwhash");
-            if (userBytes == null) {
-              userBytes = UserDetailHandler.makeHash(username, user.getString("password"));
-              user.remove("password");
-            }
-            if (Arrays.equals(userBytes, checkBytes)) {
-              user.put("pwhash", UserDetailHandler.makeHash(username, newPwd));
-              udh.putUser(user, new Handler<Boolean>() {
-
-                @Override
-                public void handle(Boolean result) {
-                  if (result) {
-                    cl.replyOk();
-                  } else {
-                    log.log(Level.SEVERE, "could not update password");
-                    cl.replyError("system error: Could not update password");
-                  }
-
-                }
-              });
-            } else {
-              cl.replyError("bad password");
-            }
+      udh.getUser(username, user -> {
+        if (user == null) {
+          cl.replyError("user not found");
+        } else {
+          byte[] checkBytes = UserDetailHandler.makeHash(username, oldPwd);
+          byte[] userBytes = user.getBinary("pwhash");
+          if (userBytes == null) {
+            userBytes = UserDetailHandler.makeHash(username, user.getString("password"));
+            user.remove("password");
           }
+          if (Arrays.equals(userBytes, checkBytes)) {
+            user.put("pwhash", UserDetailHandler.makeHash(username, newPwd));
+            udh.putUser(user, new Handler<Boolean>() {
 
+              @Override
+              public void handle(Boolean result) {
+                if (result) {
+                  cl.replyOk();
+                } else {
+                  log.log(Level.SEVERE, "could not update password");
+                  cl.replyError("system error: Could not update password");
+                }
+
+              }
+            });
+          } else {
+            cl.replyError("bad password");
+          }
         }
+
       });
 
     } catch (ParametersException pex) {

@@ -22,8 +22,8 @@ import java.util.logging.Logger;
  *
  * @author gerry
  */
-public class Server extends AbstractVerticle {
-  static Logger log = Logger.getLogger("AgendaServer");
+class Server extends AbstractVerticle {
+  private static final Logger log = Logger.getLogger("AgendaServer");
 
   @Override
   public void start() {
@@ -41,39 +41,30 @@ public class Server extends AbstractVerticle {
 
     // Register handlers with the eventBus
     eb.consumer("ch.webelexis.publicagenda", new AuthorizingHandler(this, pubCfg.getString("role"),
-      new Handler<Message<JsonObject>>() {
-
-        @Override
-        public void handle(Message<JsonObject> msg) {
-          String req = msg.body().getString("request");
-          log.info("Agenda public Server: received : " + req);
-          if (req.equals("list")) {
-            publiclistHandler.handle(msg);
-          } else if (req.equals("insert")) {
-            publicinsertHandler.handle(msg);
-          } else if (req.equals("delete")) {
-            publicdeletehandler.handle(msg);
-          }
+      msg -> {
+        String req = msg.body().getString("request");
+        log.info("Agenda public Server: received : " + req);
+        if (req.equals("list")) {
+          publiclistHandler.handle(msg);
+        } else if (req.equals("insert")) {
+          publicinsertHandler.handle(msg);
+        } else if (req.equals("delete")) {
+          publicdeletehandler.handle(msg);
         }
       }));
     eb.consumer("ch.webelexis.privateagenda", new AuthorizingHandler(this, priCfg.getString("role"),
-      new Handler<Message<JsonObject>>() {
-
-        @Override
-        public void handle(Message<JsonObject> msg) {
-          String req = msg.body().getString("request");
-          log.info("Agenda private Server: received : " + req);
-          if (req.equals("list")) {
-            privateListHandler.handle(msg);
-          } else if (req.equals("insert")) {
-            privateInsertHandler.handle(msg);
-          } else if (req.equals("resources")) {
-            JsonObject result = new JsonObject().put("status", "ok").put("data",
-              priCfg.getJsonArray("resources"));
-            log.finest("answering: " + result.encodePrettily());
-            msg.reply(result);
-          }
-
+      msg -> {
+        String req = msg.body().getString("request");
+        log.info("Agenda private Server: received : " + req);
+        if (req.equals("list")) {
+          privateListHandler.handle(msg);
+        } else if (req.equals("insert")) {
+          privateInsertHandler.handle(msg);
+        } else if (req.equals("resources")) {
+          JsonObject result = new JsonObject().put("status", "ok").put("data",
+            priCfg.getJsonArray("resources"));
+          log.finest("answering: " + result.encodePrettily());
+          msg.reply(result);
         }
 
       }));

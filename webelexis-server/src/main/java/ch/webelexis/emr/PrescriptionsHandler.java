@@ -18,13 +18,13 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.logging.Logger;
 
-public class PrescriptionsHandler implements Handler<Message<JsonObject>> {
-  Verticle v;
-  EventBus eb;
-  Logger log = Logger.getLogger("PrescriptionsHandler");
+class PrescriptionsHandler implements Handler<Message<JsonObject>> {
+  private final Verticle v;
+  private final EventBus eb;
+  private final Logger log = Logger.getLogger("PrescriptionsHandler");
   static final String J_TABLE = "PATIENT_ARTIKEL_JOINT";
   static final String ART_TABLE = "ARTIKEL";
-  String[] fields = new String[]{"j.PatientID, j.Artikel, j. RezeptID, j.DateFrom, j.DateUntil, j.Dosis, j.Anzahl, j.Bemerkung, j.ExtInfo"};
+  private final String[] fields = new String[]{"j.PatientID, j.Artikel, j. RezeptID, j.DateFrom, j.DateUntil, j.Dosis, j.Anzahl, j.Bemerkung, j.ExtInfo"};
 
   public PrescriptionsHandler(Verticle server) {
     v = server;
@@ -55,7 +55,7 @@ public class PrescriptionsHandler implements Handler<Message<JsonObject>> {
   }
 
   class SqlResult implements AsyncResultHandler<Message<JsonObject>> {
-    Cleaner cl;
+    final Cleaner cl;
 
     SqlResult(Cleaner c) {
       this.cl = c;

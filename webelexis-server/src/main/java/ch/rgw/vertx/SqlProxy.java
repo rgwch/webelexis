@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 /**
  * Created by gerry on 27.06.15.
  */
-public class SqlProxy extends AbstractVerticle {
+class SqlProxy extends AbstractVerticle {
 
-  JDBCClient client;
-  Logger log = Logger.getLogger("SqlProxy");
+  private JDBCClient client;
+  private final Logger log = Logger.getLogger("SqlProxy");
 
   @Override
   public void start() {

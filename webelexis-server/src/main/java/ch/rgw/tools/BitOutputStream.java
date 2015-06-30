@@ -26,7 +26,7 @@ public class BitOutputStream extends OutputStream {
 
   private int buffer;
   private int pos;
-  private OutputStream stream;
+  private final OutputStream stream;
 
   public BitOutputStream(OutputStream out) {
     stream = out;

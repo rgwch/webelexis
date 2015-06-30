@@ -167,6 +167,7 @@ public class IntTool {
     String s0 = to_prt(num);
     byte[] s1;
     try {
+      assert s0 != null;
       s1 = s0.getBytes("UTF-8");
     } catch (UnsupportedEncodingException e) {
 
@@ -180,7 +181,7 @@ public class IntTool {
         chk -= 255;
     }
     String s2 = to_prt(chk);
-    String cmb = s0 + s2.substring(1);
+    String cmb = s0 + (s2 != null ? s2.substring(1) : null);
     cmb = cmb.replaceAll("(-?[^-]{4})", "$1-");
     cmb = cmb.replaceFirst("-$", "");
     cmb = cmb.toLowerCase();
@@ -198,6 +199,7 @@ public class IntTool {
     String in = env.toUpperCase().replaceAll("-", "");
     long res = IntTool.from_prt(in);
     String cmp = envelope(res);
+    assert cmp != null;
     if (cmp.equals(env)) {
       return res;
     }

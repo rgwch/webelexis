@@ -21,9 +21,9 @@ import java.util.logging.Logger;
 
 
 public class ConsultationHandler implements Handler<Message<JsonObject>> {
-  Verticle v;
-  EventBus eb;
-  Logger log = Logger.getLogger("ConsultationHandler");
+  final Verticle v;
+  final EventBus eb;
+  final Logger log = Logger.getLogger("ConsultationHandler");
   String[] fields = new String[]{"k.datum", "k.diagnosen", "k.eintrag"};
   final static String sql = "select k.id, k.datum, k.diagnosen, k.eintrag from BEHANDLUNGEN as k, FAELLE as f, KONTAKT as ko where ko.id=? and f.patientid=ko.id and k.fallid=f.id and k.deleted='0' order by k.datum DESC";
 
@@ -59,7 +59,7 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
   }
 
   class GetListResult implements AsyncResultHandler<Message<JsonObject>> {
-    Cleaner cl;
+    final Cleaner cl;
 
     GetListResult(Cleaner c) {
       this.cl = c;
@@ -96,7 +96,7 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
       if (entry != null) {
         byte[] ba = new byte[entry.length];
         for (int i = 0; i < entry.length; i++) {
-          ba[i] = (byte) entry[i];
+          ba[i] = entry[i];
         }
         VersionedResource vr;
         String ke;
@@ -115,7 +115,7 @@ public class ConsultationHandler implements Handler<Message<JsonObject>> {
   }
 
   class GetConsResult implements AsyncResultHandler<Message<JsonObject>> {
-    Cleaner cl;
+    final Cleaner cl;
 
     GetConsResult(Cleaner c) {
       this.cl = c;

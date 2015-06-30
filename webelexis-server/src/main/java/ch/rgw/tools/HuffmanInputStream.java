@@ -25,9 +25,9 @@ public class HuffmanInputStream extends InputStream {
     return "0.5.4";
   }
 
-  InputStream in;
+  final InputStream in;
   BitInputStream bis;
-  HuffmanTree tree = new HuffmanTree();
+  final HuffmanTree tree = new HuffmanTree();
   int dyn;
   int[] tbl;
   int counter;

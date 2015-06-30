@@ -9,7 +9,6 @@ import io.vertx.core.Verticle;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.AbstractVerticle;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -18,9 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserDetailHandler {
-  Verticle verticle;
-  EventBus eb;
-  Logger log = Logger.getLogger("UserDetailHandler");
+  private final Verticle verticle;
+  private final EventBus eb;
+  private final Logger log = Logger.getLogger("UserDetailHandler");
 
   public UserDetailHandler(Verticle v) {
     verticle = v;

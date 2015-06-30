@@ -7,7 +7,6 @@ import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

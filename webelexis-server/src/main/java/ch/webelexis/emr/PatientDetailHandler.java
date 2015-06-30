@@ -18,14 +18,14 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.logging.Logger;
 
-public class PatientDetailHandler implements Handler<Message<JsonObject>> {
+class PatientDetailHandler implements Handler<Message<JsonObject>> {
   private String tid = "7ba4632caba62c5b3a366";
-  private String[] fields = {"k.patientnr", "k.Bezeichnung1", "k.Bezeichnung2", "k.geschlecht", "k.geburtsdatum",
+  private final String[] fields = {"k.patientnr", "k.Bezeichnung1", "k.Bezeichnung2", "k.geschlecht", "k.geburtsdatum",
     "k.Strasse", "k.plz", "k.Ort", "k.telefon1", "k.telefon2", "k.natelnr", "k.email", "k.gruppe", "k.bemerkung"};
 
-  Verticle server;
-  EventBus eb;
-  Logger log = Logger.getLogger("PatientDetailHandler");
+  private final Verticle server;
+  private final EventBus eb;
+  private final Logger log = Logger.getLogger("PatientDetailHandler");
 
   PatientDetailHandler(Verticle s) {
     server = s;
@@ -48,7 +48,7 @@ public class PatientDetailHandler implements Handler<Message<JsonObject>> {
   }
 
   class PatDataHandler implements AsyncResultHandler<Message<JsonObject>> {
-    Message<JsonObject> req;
+    final Message<JsonObject> req;
 
     public PatDataHandler(Message<JsonObject> externalRequest) {
       req = externalRequest;

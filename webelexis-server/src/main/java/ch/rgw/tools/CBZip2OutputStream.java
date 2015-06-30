@@ -47,17 +47,17 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
    */
   private static final int QSORT_STACK_SIZE = 1000;
 
-  private CRC m_crc = new CRC();
+  private final CRC m_crc = new CRC();
 
-  private boolean[] m_inUse = new boolean[256];
+  private final boolean[] m_inUse = new boolean[256];
 
-  private char[] m_seqToUnseq = new char[256];
-  private char[] m_unseqToSeq = new char[256];
+  private final char[] m_seqToUnseq = new char[256];
+  private final char[] m_unseqToSeq = new char[256];
 
-  private char[] m_selector = new char[MAX_SELECTORS];
-  private char[] m_selectorMtf = new char[MAX_SELECTORS];
+  private final char[] m_selector = new char[MAX_SELECTORS];
+  private final char[] m_selectorMtf = new char[MAX_SELECTORS];
 
-  private int[] m_mtfFreq = new int[MAX_ALPHA_SIZE];
+  private final int[] m_mtfFreq = new int[MAX_ALPHA_SIZE];
 
   private int m_currentChar = -1;
   private int m_runLength;
@@ -68,7 +68,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
    * Knuth's increments seem to work better than Incerpi-Sedgewick here. Possibly because the
    * number of elems to sort is usually small, typically <= 20.
    */
-  private int[] m_incs = new int[]{
+  private final int[] m_incs = new int[]{
     1, 4, 13, 40, 121, 364, 1093, 3280, 9841, 29524, 88573, 265720, 797161, 2391484
   };
 
@@ -77,7 +77,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
   /*
    * always: in the range 0 .. 9. The current block size is 100000 * this number.
    */
-  private int m_blockSize100k;
+  private final int m_blockSize100k;
   private int m_bsBuff;
   private int m_bsLive;
 
@@ -112,7 +112,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
    * Used when sorting. If too many long comparisons happen, we stop sorting, randomise the block
    * slightly, and try again.
    */
-  private int m_workFactor;
+  private final int m_workFactor;
   private int m_workLimit;
   private int[] m_zptr;
 

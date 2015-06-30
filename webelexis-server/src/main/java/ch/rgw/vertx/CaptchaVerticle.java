@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.AsyncResultHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
@@ -23,9 +22,9 @@ import io.vertx.core.json.JsonObject;
 
 public class CaptchaVerticle extends AbstractVerticle {
   EventBus eb;
-  Logger log = Logger.getLogger("CaptchaVerticle");
+  final Logger log = Logger.getLogger("CaptchaVerticle");
   Config cfg;
-  Map<String, JsonArray> captchas = new HashMap<String, JsonArray>();
+  final Map<String, JsonArray> captchas = new HashMap<>();
   String mongo;
   String collection;
   long timeout;
@@ -38,7 +37,7 @@ public class CaptchaVerticle extends AbstractVerticle {
       log.severe("no admin address provided.");
     }
     cfg = new Config(conf);
-    String address = conf.getString("address");
+    String address = conf != null ? conf.getString("address") : null;
     mongo = conf.getString("persistor_address");
     timeout = cfg.getOptionalLong("timeout", 120000);
     collection = cfg.getOptionalString("collection", "captchas");
@@ -47,7 +46,7 @@ public class CaptchaVerticle extends AbstractVerticle {
     eb.consumer(address + ".add", addCaptchaHandler);
   }
 
-  private Handler<Message<JsonObject>> captchaCreateHandler = new Handler<Message<JsonObject>>() {
+  private final Handler<Message<JsonObject>> captchaCreateHandler = new Handler<Message<JsonObject>>() {
 
     @Override
     public void handle(final Message<JsonObject> externalRequest) {
@@ -83,28 +82,23 @@ public class CaptchaVerticle extends AbstractVerticle {
       });
     }
   };
-  private Handler<Message<JsonObject>> captchaVerifyHandler = new Handler<Message<JsonObject>>() {
-
-    @Override
-    public void handle(Message<JsonObject> externalRequest) {
-      String token = Util.getParm("token", externalRequest);
-      JsonArray answers = captchas.get(token);
-      if (answers == null) {
-        Util.sendStatus(externalRequest, "failure");
+  private final Handler<Message<JsonObject>> captchaVerifyHandler = externalRequest -> {
+    String token = Util.getParm("token", externalRequest);
+    JsonArray answers = captchas.get(token);
+    if (answers == null) {
+      Util.sendStatus(externalRequest, "failure");
+    } else {
+      String answer = Util.getParm("answer", externalRequest);
+      if (answers.contains(answer)) {
+        Util.sendOK(externalRequest);
       } else {
-        String answer = Util.getParm("answer", externalRequest);
-        if (answers.contains(answer)) {
-          Util.sendOK(externalRequest);
-        } else {
-          Util.sendStatus(externalRequest, "failure");
-        }
+        Util.sendStatus(externalRequest, "failure");
       }
-
     }
 
   };
 
-  private Handler<Message<JsonObject>> addCaptchaHandler = new Handler<Message<JsonObject>>() {
+  private final Handler<Message<JsonObject>> addCaptchaHandler = new Handler<Message<JsonObject>>() {
 
     @Override
     public void handle(final Message<JsonObject> externalRequest) {
@@ -137,13 +131,9 @@ public class CaptchaVerticle extends AbstractVerticle {
     JsonObject result = ((JsonObject) m2.result().body()).getJsonArray("results").getJsonObject(0);
     JsonArray answers = result.getJsonArray("a");
     captchas.put(token, answers);
-    vertx.setTimer(timeout, new Handler<Long>() {
-
-      @Override
-      public void handle(Long arg0) {
-          /* The captcha was not solved within timeout milliseconds -> delete it */
-        captchas.remove(token);
-      }
+    vertx.setTimer(timeout, arg0 -> {
+        /* The captcha was not solved within timeout milliseconds -> delete it */
+      captchas.remove(token);
     });
     JsonObject answer = new JsonObject().put("q", result.getString("q")).put("token", token);
                   /* should we generate a captcha? */

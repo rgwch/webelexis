@@ -75,7 +75,7 @@ public class HuffmanTree {
     if (freq[Huff.eof] == 0)
       freq[Huff.eof] = 1;
 
-    List<Node> nodes = new ArrayList<Node>(freq.length);
+    List<Node> nodes = new ArrayList<>(freq.length);
     for (int i = 0; i < freq.length; i++) {
       if (freq[i] == 0)
         continue;
@@ -87,12 +87,8 @@ public class HuffmanTree {
       Node b = (Node) nodes.remove(0);
       int al = a.ch.length;
       byte[] bn = new byte[al + b.ch.length];
-      for (int i = 0; i < al; i++) {
-        bn[i] = a.ch[i];
-      }
-      for (int i = 0; i < b.ch.length; i++) {
-        bn[i + al] = b.ch[i];
-      }
+      System.arraycopy(a.ch, 0, bn, 0, al);
+      System.arraycopy(b.ch, 0, bn, 0 + al, b.ch.length);
       Arrays.sort(bn);
       Node n = new Node(bn, a.lfreq + b.lfreq);
       n.left = a;
@@ -317,8 +313,8 @@ public class HuffmanTree {
 
   class Node implements Comparable {
     Node left, right;
-    byte[] ch;
-    int lfreq;
+    final byte[] ch;
+    final int lfreq;
 
     Node(byte x, int f) {
       ch = new byte[]{
@@ -359,7 +355,7 @@ public class HuffmanTree {
   /**
    * Standard table for German text
    */
-  public static byte[] TextDeutsch = new byte[]{
+  public static final byte[] TextDeutsch = new byte[]{
     7, 7, 36, 0, 61, 7, 3, 0, 9, 3, 7, 10, 0, -12, 2, 7, 50, 0, 1, 7, 23, 0, -23, 36, 0, 0, 5,
     7, 3, 0, -18, 7, 3, 0, 1, 7, 7, 0, 35, 7, 3, 0, 43, 7, 3, 0, 12, 7, 3, 0, -123, 7, 3, 0,
     -119, 7, 11, 0, 51, 2, 0, 0, -2, 7, 3, 0, 71, 3, 0, 0, -8, 7, 3, 0, 48, 1, 0, 0, -82, 7, 3,

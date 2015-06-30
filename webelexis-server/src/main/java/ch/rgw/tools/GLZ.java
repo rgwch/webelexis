@@ -30,7 +30,9 @@ public class GLZ {
 
   private static final int LZBUFFSIZE = 0x8cf2;
   private static final short ofb = 4;
-  private int[] buff1, buff2, buff3;
+  private final int[] buff1;
+  private final int[] buff2;
+  private final int[] buff3;
   int LZCode, MaxCode, bitcount;
 
   public GLZ() {
