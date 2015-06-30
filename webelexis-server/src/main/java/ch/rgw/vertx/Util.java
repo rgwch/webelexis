@@ -101,4 +101,8 @@ public class Util {
     addr.reply(new JsonObject().put("status", "ok"));
   }
 
+  public static void sendOK(Message<JsonObject> addr, JsonObject result){
+    addr.reply(new JsonObject().put("status","ok").put("result",result));
+  }
+
 }
