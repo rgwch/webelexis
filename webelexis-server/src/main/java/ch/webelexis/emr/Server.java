@@ -13,7 +13,7 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.logging.Logger;
 
-class Server extends AbstractVerticle {
+public class Server extends AbstractVerticle {
   private final Logger log = Logger.getLogger("EMR Server");
   private JsonObject cfg;
   private EventBus eb;

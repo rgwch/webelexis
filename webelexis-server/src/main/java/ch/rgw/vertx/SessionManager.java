@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class SessionManager extends AbstractVerticle {
+public class SessionManager extends AbstractVerticle {
   private static final long DEFAULT_TIMEOUT = 10 * 60 * 1000;
 
   private String persistorAddress;

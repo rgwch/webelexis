@@ -7,7 +7,7 @@ import io.vertx.ext.mongo.MongoClient;
 /**
  * Created by gerry on 27.06.15.
  */
-class MongoProxy extends AbstractVerticle {
+public class MongoProxy extends AbstractVerticle {
 
   private MongoClient mongo;
   private JsonObject cfg;

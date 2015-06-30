@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author gerry
  */
-class Server extends AbstractVerticle {
+public class Server extends AbstractVerticle {
   private static final Logger log = Logger.getLogger("AgendaServer");
 
   @Override
