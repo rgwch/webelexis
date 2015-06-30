@@ -16,6 +16,7 @@ public class Tests {
 
   public static void main(String[] args) {
     TestSuite suite = TestSuite.create("Webelexis Server");
+    /*
     suite.test("test", context -> {
       Vertx vertx = Vertx.vertx();
       JsonObject config = new JsonObject().put("a", "b");
@@ -24,6 +25,8 @@ public class Tests {
       String s = "hallo";
       context.assertEquals(s, "hallo");
     });
+    */
+    suite.test("captcha", new TestCaptcha());
     suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
     System.exit(0);
   }
