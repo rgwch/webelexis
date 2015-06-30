@@ -5,6 +5,7 @@
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestOptions;
 import io.vertx.ext.unit.TestSuite;
 import io.vertx.ext.unit.report.ReportOptions;
@@ -14,8 +15,33 @@ import io.vertx.ext.unit.report.ReportOptions;
  */
 public class Tests {
 
+
   public static void main(String[] args) {
+    new Tests().run();
+  }
+
+  static Vertx vertx;
+  static String MOCK="ch.rgw.testing.mock";
+
+
+  void run(){
     TestSuite suite = TestSuite.create("Webelexis Server");
+    suite.before(ctx -> {
+      vertx=Vertx.vertx();
+      DeploymentOptions dop=new DeploymentOptions().setConfig(new JsonObject().put("admin-address",MOCK));
+      Async async=ctx.async();
+      vertx.deployVerticle("MockVerticle",dop,res -> {
+        ctx.assertTrue(res.succeeded());
+        ctx.put("mockID",res.result());
+        async.complete();
+      });
+    });
+
+    suite.after(ctx -> {
+      vertx.undeploy(ctx.get("mockID"),res-> {
+        ctx.assertTrue(res.succeeded());
+      });
+    });
     /*
     suite.test("test", context -> {
       Vertx vertx = Vertx.vertx();
@@ -28,7 +54,6 @@ public class Tests {
     */
     suite.test("captcha", new TestCaptcha());
     suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
-    System.exit(0);
   }
 
 }

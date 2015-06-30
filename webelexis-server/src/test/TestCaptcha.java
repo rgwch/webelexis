@@ -3,6 +3,7 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 
 import java.io.IOException;
@@ -16,9 +17,17 @@ public class TestCaptcha implements Handler<TestContext> {
   public void handle(TestContext testContext){
     try {
       JsonObject config= Cleaner.createFromFile("TestCaptcha.json");
-      Vertx vertx= Vertx.vertx();
-      vertx.deployVerticle("MockVerticle",new DeploymentOptions().setConfig(config),run -> {
+      Async async=testContext.async();
+      Tests.vertx.deployVerticle("ch.rgw.vertx.CaptchaVerticle",new DeploymentOptions().setConfig(config),run -> {
         testContext.assertTrue(run.succeeded());
+        final String captchaID=run.result();
+        System.out.println("captcha verticle started");
+        Async async2=testContext.async();
+        Tests.vertx.undeploy(captchaID, res->{
+          testContext.assertTrue(res.succeeded());
+          async2.complete();
+        });
+        async.complete();
       });
     } catch (IOException e) {
       e.printStackTrace();
