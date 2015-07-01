@@ -6,6 +6,7 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
+import io.vertx.ext.unit.TestCompletion;
 import io.vertx.ext.unit.TestOptions;
 import io.vertx.ext.unit.TestSuite;
 import io.vertx.ext.unit.report.ReportOptions;
@@ -38,22 +39,16 @@ public class BasicTest {
     });
 
     suite.after(ctx -> {
+      Async async=ctx.async();
       vertx.undeploy(ctx.get("mockID"),res-> {
         ctx.assertTrue(res.succeeded());
+        async.complete();
       });
     });
-    /*
-    suite.test("test", context -> {
-      Vertx vertx = Vertx.vertx();
-      JsonObject config = new JsonObject().put("a", "b");
-      config.encodePrettily();
-      vertx.deployVerticle("ch.webelexis.CoreVerticle", new DeploymentOptions().setConfig(config));
-      String s = "hallo";
-      context.assertEquals(s, "hallo");
-    });
-    */
     suite.test("captcha", new TstCaptcha());
-    suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
+
+    TestCompletion completion=suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
+    completion.awaitSuccess(5000l);
   }
 
 }

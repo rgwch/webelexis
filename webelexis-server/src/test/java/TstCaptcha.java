@@ -16,7 +16,7 @@ public class TstCaptcha implements Handler<TestContext> {
   @Override
   public void handle(TestContext testContext){
     try {
-      JsonObject config= Cleaner.createFromFile("TestCaptcha.json");
+      JsonObject config= Cleaner.createFromFile("target/test-classes/TestCaptcha.json");
       Async async=testContext.async();
       BasicTest.vertx.deployVerticle("ch.rgw.vertx.CaptchaVerticle",new DeploymentOptions().setConfig(config),run -> {
         testContext.assertTrue(run.succeeded());
