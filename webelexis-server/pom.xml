@@ -7,7 +7,7 @@
     <groupId>rgwch</groupId>
     <artifactId>webelexis-server</artifactId>
     <version>0.8.0</version>
-    <name>Webelexis</name>
+    <name>Webelexis Server</name>
     <description>Taking Elexis to the web</description>
     <url>http://www.github.com/rgwch/webelexis</url>
     <inceptionYear>2015</inceptionYear>
@@ -52,7 +52,11 @@
             <artifactId>filters</artifactId>
             <version>2.0.235-1</version>
         </dependency>
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.35</version>
+        </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
@@ -88,32 +92,44 @@
                         </compilerArgs>
                     </configuration>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-shade-plugin</artifactId>
-                    <version>2.4</version>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>shade</goal>
-                            </goals>
-                            <configuration>
-                                <minimizeJar>false</minimizeJar>
-                                <artifactSet>
-                                    <includes>
-                                        <include>io.vertx</include>
-                                        <include>com.jhlabs</include>
-                                        <include>com.hazelcast.hazelcast</include>
-                                    </includes>
-                                </artifactSet>
-                            </configuration>
-                        </execution>
-                    </executions>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <archive>
+                            <addMavenDescriptor>true</addMavenDescriptor>
+                            <compress>true</compress>
+                            <index>true</index>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <mainClass>ch.webelexis.Runner</mainClass>
+                            </manifest>
+                            <manifestEntries>
+                                <mode>production</mode>
+                                <url>${project.url}</url>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
-
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 
