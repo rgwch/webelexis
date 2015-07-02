@@ -157,7 +157,7 @@
 	// config for the EventBus-Websocket bridge and the html server
 	"bridge": {
 		// Base path. Optional, this is the default
-		"webroot": "../../webelexis-client/dist",
+		"webroot": "web",
 		// Optoonal. default port for webelexis
 		"port": 2015,
 		"inOK": [
