@@ -16,7 +16,7 @@ If you want only to run webelexis, just download webelexis-server-x.y.z.jar and 
 
 #### 2. Install Build prerequisites and download Webelexis sources
 
-* Install Maven3
+* Install Maven (3.x)
 * Install npm
  
 Then build the .jar
