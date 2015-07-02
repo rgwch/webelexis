@@ -18,7 +18,8 @@ If you want only to run webelexis, just download webelexis-server-x.y.z.jar and 
 
 * Install Maven3
 * Install npm
-
+ 
+Then build the .jar
 
      git clone https://github.com/rgwch/webelexis
      sudo npm install -g mimosa
