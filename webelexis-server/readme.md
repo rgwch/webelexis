@@ -20,15 +20,15 @@ If you want only to run webelexis, just download webelexis-server-x.y.z.jar and 
 * Install npm
 
 
-    git clone https://github.com/rgwch/webelexis
-    sudo npm install -g mimosa
-    cd webelexis/webelexis-server
-    mvn package
+     git clone https://github.com/rgwch/webelexis
+     sudo npm install -g mimosa
+     cd webelexis/webelexis-server
+     mvn package
     
 #### 3. Run Webelexis-Server first time
 
-    cd target
-    java -jar webelexis-server-x.y.z.jar
+     cd target
+     java -jar webelexis-server-x.y.z.jar
     
 On first run, webelexis will write a file called cfglocal.json for you and terminate with an error message.
 
