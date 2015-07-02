@@ -73,14 +73,14 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     } else {
       File resr = new File(basePath, req.path());
       if (!resr.exists() || !resr.canRead()) {
-        String ans="Not found";
-        req.response().putHeader("Content-Length",Integer.toString(ans.length()));
+        String ans = "Not found";
+        req.response().putHeader("Content-Length", Integer.toString(ans.length()));
         req.response().write(ans);
         req.response().setStatusCode(404); // not found
         req.response().setStatusMessage("Not found");
         req.response().end();
       } else {
-                /*
+        /*
          * If the client asks for an existing file: define cache control: (arbitrarily). let
 				 * css and js be valid for 12 hours, image files for 10 days. But both can
 				 * live longer, if the client knows and uses the "if-modified-since"-
@@ -166,8 +166,8 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
         }
 
       } else {
-        String ans="Internal Server Error";
-        req.response().putHeader("Content-Length",Integer.toString(ans.length()));
+        String ans = "Internal Server Error";
+        req.response().putHeader("Content-Length", Integer.toString(ans.length()));
         req.response().write(ans);
         req.response().setStatusCode(500);
         req.response().end();

@@ -61,7 +61,7 @@ public class AuthorizingHandler implements Handler<Message<JsonObject>> {
                   originalMsg.reply(new JsonObject().put("status", "denied")
                     .put("message",
                       " insufficient rights for resource. Required " + roleToCheck));
-                  log.log(Level.INFO,"Access denied for "+roleToCheck);
+                  log.log(Level.INFO, "Access denied for " + roleToCheck);
                 }
               } else {
                 cl.replyError("Message Bus error " + ar.toString());

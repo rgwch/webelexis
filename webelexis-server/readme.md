@@ -9,17 +9,13 @@ debug and to run in different environments. The main class is ch.webelexis.Runne
 
 ### Setup
 
-#### 1. Install Java 8
+#### 1. Install Build prerequisites
 
-Webelexis 1.x depends on Java 8 language features. I you want to develop, you'll need the JDK, For Run-Only, the JRE is enough.
-If you want only to run webelexis, just download webelexis-server-x.y.z.jar and continue with step 3.
+* Java 8
+* Maven v 3.x
+* nodejs/npm
 
-#### 2. Install Build prerequisites and download Webelexis sources
-
-* Install Maven (3.x)
-* Install npm
- 
-Then build the .jar
+#### 2. Build
 
      git clone https://github.com/rgwch/webelexis
      sudo npm install -g mimosa
@@ -38,7 +34,7 @@ Edit cfglocal.json with your favourite text editor to match your setup.
 
 #### 4. Normal run
 
-If you run `java -jar webelexis-server-x.y.z.jar` without parameters, it will look for cfgloca.json in the current directory. If found, 
+If you run `java -jar webelexis-server-x.y.z.jar` without parameters, it will look for cfglocal.json in the current directory. If found, 
 it will use this configuration file. If not found, it will write a file with default values and exit.
 
 You can still provide a different file as command line parameter: `java -jar webelexis-server-x.y.z.jar otherconfig.json` 
