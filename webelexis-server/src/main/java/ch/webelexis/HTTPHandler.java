@@ -208,7 +208,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     String className = getClass().getSimpleName() + ".class";
     String classPath = getClass().getResource(className).toString();
     String timestamp = null;
-    log.warning(classPath);
+    log.finest(classPath);
     try {
       if (!classPath.startsWith("jar")) {
         // Class not from JAR
@@ -218,7 +218,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
       }
       String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +
         "/META-INF/MANIFEST.MF";
-      log.warning(manifestPath);
+      log.finest(manifestPath);
       Manifest manifest = new Manifest(new URL(manifestPath).openStream());
       Attributes attr = manifest.getMainAttributes();
       timestamp = attr.getValue("timestamp");
@@ -227,11 +227,11 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
       return new RscObject(null, false, 0L);
     }
     Date dat = df.parse(timestamp);
-    log.warning(dat.toString());
+    log.fine(dat.toString());
     String resource = "/" + r + name;
-    log.warning(resource);
+    log.finest(resource);
     URL rsr = getClass().getResource(resource);
-    log.warning(rsr == null ? "resource is null" : rsr.toString());
+    log.finest(rsr == null ? "resource is null" : rsr.toString());
     return new RscObject(getClass().getResourceAsStream(resource), true, dat.getTime());
   }
 
