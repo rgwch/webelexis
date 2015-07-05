@@ -46,4 +46,9 @@ If you provide a config file on the command line, webelexis will ignore any othe
 
 If everything is okay, you should be able to see webelexis if you navigate your browser to `localhost:2015`.
     
-    
+### 5. Customize debugging output
+
+Edit the file webelexis-server/logging.properties according to your needs and launch webelexis as shown here
+
+    java -jar -Djava.util.logging.config.file=../logging.properties webelexis-server-0.0.jar ../cfglocal.json 
+
