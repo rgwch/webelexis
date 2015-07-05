@@ -44,5 +44,6 @@ Then you can launch webelexis from the target dir with: `java -jar webelexis-ser
 If you provide a config file on the command line, webelexis will ignore any other configuration. Any options not set in the config will have the same default values as shown in the automatically created cfglocal.json above.
 
 
+If everything is okay, you should be able to see webelexis if you navigate your browser to `localhost:2015`.
     
     
