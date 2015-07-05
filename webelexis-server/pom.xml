@@ -6,7 +6,7 @@
 
     <groupId>rgwch</groupId>
     <artifactId>webelexis-server</artifactId>
-    <version>0.9.0</version>
+    <version>1.0.0</version>
     <name>Webelexis Server</name>
     <description>Taking Elexis to the web</description>
     <url>http://www.github.com/rgwch/webelexis</url>
@@ -156,7 +156,7 @@
             <plugin>
                 <groupId>rgwch</groupId>
                 <artifactId>mimosa-maven-plugin</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
                 <configuration>
                     <source>../webelexis-client</source>
                     <intermediate>../webelexis-client/dist</intermediate>
