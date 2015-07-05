@@ -9,6 +9,10 @@ See [wiki](http://github.com/rgwch/webelexis/wiki) for more informations on this
 Release notes
 =============
 
+#### 5.7.2015
+
+Merge vert.x branch to master. Webelexis is a vert.x 3.0 Application now.
+
 #### 27.6.2015
 
 Discontinue webelexis-base, start webelexis-server, switch from vert.x 2.1.5 to 3.0.0
