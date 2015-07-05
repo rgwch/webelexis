@@ -1,3 +1,10 @@
+# End of life
+
+This subproject is discontinued. The code has been split to the subprojects webelexis-server and webelexis-client
+
+-----------
+
+
 # Webelexis-base
 
 ## General Informations
