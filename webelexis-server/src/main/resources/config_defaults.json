@@ -9,191 +9,193 @@
 
 // config for the MongoDB Access (http://vertx.io/docs/vertx-mongo-client/java/#_configuring_the_client)
 {
-	"mongo": {
-		/* Do not change this */
-		"address": "ch.webelexis.nosql",
-		// Optional. Address of your mongo server. defaults to 'localhost'
-		"host": "localhost",
-		// optional. Port of the mongo.Server. Defaults to 27017
-		"port": 27017,
-		// optional. Defaults to empty. Use only, if server is configured for access control
-		"username": "mongodb-user",
-		// optional. Defaults to empty
-		"password": "mongodb-password",
-		// do not change
-		"db_name": "webelexis",
-		// optional
-		"maxPoolSize": 50,
-		// optional
-		"minPoolSize": 20,
-		// optional
-		"socketTimeoutMS": 60000,
-		// optional, "true" recommended
-		"keepAlive": true
-	},
-	// config for jdbc (http://vertx.io/docs/vertx-jdbc-client/java/#_configuration)
-	"sql": {
-		// do not change this
-		"address": "ch.webelexis.sql",
-		// jdbc connect String for your server and database
-		"url": "jdbc:mysql://localhost:3306/elexis",
-    // jdbc driver class of the connector
-		"driver_class": "com.mysql.jdbc.Driver",
-    // optional
-		"maxPoolSize": 20,
-    // optional, defaults to empty
-		"user": "database-user",
+  "mongo": {
+    /* Do not change this */
+    "address": "ch.webelexis.nosql",
+    // Optional. Address of your mongo server. defaults to 'localhost'
+    "host": "localhost",
+    // optional. Port of the mongo.Server. Defaults to 27017
+    "port": 27017,
+    // optional. Defaults to empty. Use only, if server is configured for access control
+    "username": "mongodb-user",
     // optional. Defaults to empty
-		"password": "database-password",
-		// number of seconds before closing an inactiveconnection
-		"max_idle_time": 300
-	},
-	// config for vertx-mod-sessionmgt (https://github.com/rgwch/vertx-mod-sessionmgr)
-	"auth": {
+    "password": "mongodb-password",
+    // do not change
+    "db_name": "webelexis",
+    // optional
+    "maxPoolSize": 50,
+    // optional
+    "minPoolSize": 20,
+    // optional
+    "socketTimeoutMS": 60000,
+    // optional, "true" recommended
+    "keepAlive": true
+  },
+  // config for jdbc (http://vertx.io/docs/vertx-jdbc-client/java/#_configuration)
+  "sql": {
     // do not change this
-		"address": "ch.webelexis.session",
-		// do not change this
-		"users_collection": "users",
-		// do not change this
-		"persistor_address": "ch.webelexis.nosql",
-		// optional. Here: 5 Minutes
-		"session_timeout": 300000
-	},
-	// timeslot viewer.
-	"timeslots": {
-		// which calendar resource should be used
-		"resource": "gerry",
-		// how long should an appointment be
-		"timeSlot": 30,
-		// maximum Number of appnts. per day via this app
-		"maxPerDay": 4,
-		// "TerminTyp" for our appointments
-		"apptType": "Normal",
-		// "TerminStatus" for our appointments
-		"apptState": "Via Internet",
-		"role": "guest"
-	},
-	// agenda with patient details
-	"agenda": {
-				// which calendar resources should be offered to chose
-		"resources": [
-			{
-				// internal name of the resource
-				"resource": "gerry",
-				// Name of the resource as to display in the frontemd
-				"title": "G. Weirich"
-			},
-			{
-				"resource": "labor",
-				"title": "Labor"
-			}
-		],
-		// role needed to access this agenda
-		"role": "mpa"
-	},
-	"account": {
-		"allow-creation": true,
-		// role needed to create an account
-		"role": "guest",
-		// role, a newly created account will have
-		"defaultRole": "patient",
-		// true to send confirmation mail on account creation
-		"confirm-mail": false,
-			// only needed if confirm-mail is true
-		"mails": {
-			"from": "me@mail.example.com",
-			// sender of the confirmation mail
-			"bcc": "archive@mail.example.com",
-			"activation_subject": "Confirm Webelexis account",
-			"activation_body": "To activate your account, please use this activation code: %activationcode%",
-			"lostpwd_subject": "Your new password",
-			"lostpwd_body": "Your new password is: %password%"
-		}
-	},
-	"mailer": {
-		// if false: Do not load mail module, do not send mails.
-		"active": false,
-		// do not change this
-		"address": "ch.webelexis.mailer",
-		// URL of your mail provider
-		"host": "smpt.example.com",
-		// optional
-		"port": 25,
-		// optional, defaults to false
-		"ssl": false,
-		// optional, defaults to false
-		"auth": true,
-		// username for auth
-		"username": "user",
-		// password for auth
-		"password": "password",
-		// optional. Or text/html to send html mails
-		"content-type": "text/plain"
-	},
-		// config for the electronic medical record access
-	"emr": {
-		// load problem list (Plugin ICPC is installed)
-		"icpc-problems": true,
-		// load sticky notes (Plugin "haftnotizen" is installed)
-		"stickynotes": true,
-		// load stickers
-		"stickers": true,
-		// load prescriptions
+    "address": "ch.webelexis.sql",
+    // jdbc connect String for your server and database
+    "url": "jdbc:mysql://localhost:3306/elexis",
+    // jdbc driver class of the connector
+    "driver_class": "com.mysql.jdbc.Driver",
+    // optional
+    "maxPoolSize": 20,
+    // optional, defaults to empty
+    "user": "database-user",
+    // optional. Defaults to empty
+    "password": "database-password",
+    // number of seconds before closing an inactiveconnection
+    "max_idle_time": 300
+  },
+  // config for vertx-mod-sessionmgt (https://github.com/rgwch/vertx-mod-sessionmgr)
+  "auth": {
+    // do not change this
+    "address": "ch.webelexis.session",
+    // do not change this
+    "users_collection": "users",
+    // do not change this
+    "persistor_address": "ch.webelexis.nosql",
+    // optional. Here: 5 Minutes
+    "session_timeout": 300000
+  },
+  // timeslot viewer.
+  "timeslots": {
+    // which calendar resource should be used
+    "resource": "gerry",
+    // how long should an appointment be
+    "timeSlot": 30,
+    // maximum Number of appnts. per day via this app
+    "maxPerDay": 4,
+    // "TerminTyp" for our appointments
+    "apptType": "Normal",
+    // "TerminStatus" for our appointments
+    "apptState": "Via Internet",
+    "role": "guest"
+  },
+  // agenda with patient details
+  "agenda": {
+    // which calendar resources should be offered to chose
+    "resources": [
+      {
+        // internal name of the resource
+        "resource": "gerry",
+        // Name of the resource as to display in the frontemd
+        "title": "G. Weirich"
+      },
+      {
+        "resource": "labor",
+        "title": "Labor"
+      }
+    ],
+    // role needed to access this agenda
+    "role": "mpa"
+  },
+  "account": {
+    "allow-creation": true,
+    // role needed to create an account
+    "role": "guest",
+    // role, a newly created account will have
+    "defaultRole": "patient",
+    // true to send confirmation mail on account creation
+    "confirm-mail": false,
+    // only needed if confirm-mail is true
+    "mails": {
+      "from": "me@mail.example.com",
+      // sender of the confirmation mail
+      "bcc": "archive@mail.example.com",
+      "activation_subject": "Confirm Webelexis account",
+      "activation_body": "To activate your account, please use this activation code: %activationcode%",
+      "lostpwd_subject": "Your new password",
+      "lostpwd_body": "Your new password is: %password%"
+    }
+  },
+  "mailer": {
+    // if false: Do not load mail module, do not send mails.
+    "active": false,
+    // do not change this
+    "address": "ch.webelexis.mailer",
+    // URL of your mail provider
+    "host": "smpt.example.com",
+    // optional
+    "port": 25,
+    // optional, defaults to false
+    "ssl": false,
+    // optional, defaults to false
+    "auth": true,
+    // username for auth
+    "username": "user",
+    // password for auth
+    "password": "password",
+    // optional. Or text/html to send html mails
+    "content-type": "text/plain"
+  },
+  // config for the electronic medical record access
+  "emr": {
+    // load problem list (Plugin ICPC is installed)
+    "icpc-problems": true,
+    // load sticky notes (Plugin "haftnotizen" is installed)
+    "stickynotes": true,
+    // load stickers
+    "stickers": true,
+    // load prescriptions
     "prescriptions": true,
-		// load lab values
-		"lab": true,
+    // load lab values
+    "lab": true,
     // load consultation entries
-		"consultations": true,
-		// role needed to read emr details
-		"role": "arzt"
-	},
+    "consultations": true,
+    // role needed to read emr details
+    "role": "arzt"
+  },
   // config for the captcha generator
-  "captcha":{
-     // do not change this
+  "captcha": {
+    // do not change this
     "address": "ch.rgw.util.captcha",
     "persistor_address": "ch.webelexis.nosql",
     "collection": "captchas"
   },
-	// config for the EventBus-Websocket bridge and the html server
-	"bridge": {
-		// Base path. Optional, this is the default
-		"webroot": "web",
-		// Optoonal. default port for webelexis
-		"port": 2015,
-		"inOK": [
-			// allowed inbound messages (all other will be blocked)
-			{
-				"address": "ch.webelexis.session.login"
-			},
-			{
-				"address": "ch.webelexis.session.logout"
-			},
-			{
-				"address": "ch.webelexis.publicagenda"
-			},
-			{
-				"address": "ch.webelexis.privateagenda"
-			},
-			{
-				"address_re": "ch\\.webelexis\\.patient\\.\\w+"
-			}
-		],
-		// allowed outbound messages
-		"outOK": [
-			{
-				"address_re": "ch\\.webelexis\\.feedback\\.[a-f0-9-]+"
-			}
-		],
-		// remove the following property, if you don't want "Sign in with google"
-		// Google client ID if Google SignIn is used.
-		"googleID": "3aa2352634636aasf.apps.googleusercontent.com",
-		// use tls/ssl/https. Strongly recommended
-		"ssl": false,
-		// filepath of the keystore. Defaults to $HOME/.jkeys/keystore.jks
-		"keystore": "/some/where/ks.jks",
-		// password of the jks keystore and the server certificate/key
-		"keystore-pwd": "something"
-	},
-	// Global identification primarly for debugging purposes to see, which config is active.
-	"id": "this is an identification for this config"
+  // config for the EventBus-Websocket bridge and the html server
+  "bridge": {
+    // Base path. Optional, this is the default
+    "webroot": "web",
+    // Path for custom files
+    "customRoot": "web",
+    // Optional. default port for webelexis
+    "port": 2015,
+    "inOK": [
+      // allowed inbound messages (all other will be blocked)
+      {
+        "address": "ch.webelexis.session.login"
+      },
+      {
+        "address": "ch.webelexis.session.logout"
+      },
+      {
+        "address": "ch.webelexis.publicagenda"
+      },
+      {
+        "address": "ch.webelexis.privateagenda"
+      },
+      {
+        "address_re": "ch\\.webelexis\\.patient\\.\\w+"
+      }
+    ],
+    // allowed outbound messages
+    "outOK": [
+      {
+        "address_re": "ch\\.webelexis\\.feedback\\.[a-f0-9-]+"
+      }
+    ],
+    // remove the following property, if you don't want "Sign in with google"
+    // Google client ID if Google SignIn is used.
+    "googleID": "3aa2352634636aasf.apps.googleusercontent.com",
+    // use tls/ssl/https. Strongly recommended
+    "ssl": false,
+    // filepath of the keystore. Defaults to $HOME/.jkeys/keystore.jks
+    "keystore": "/some/where/ks.jks",
+    // password of the jks keystore and the server certificate/key
+    "keystore-pwd": "something"
+  },
+  // Global identification primarly for debugging purposes to see, which config is active.
+  "id": "this is an identification for this config"
 }

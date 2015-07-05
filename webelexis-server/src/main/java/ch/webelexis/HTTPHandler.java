@@ -42,7 +42,6 @@ import java.util.logging.Logger;
  */
 
 public class HTTPHandler implements Handler<HttpServerRequest> {
-  //final File basePath;
   final JsonObject cfg;
   final EventBus eb;
   Logger log = Logger.getLogger("HTTPHandler");
@@ -54,8 +53,6 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     this.eb = eb;
     File cwd = new File(".");
     log.log(Level.FINE, "cwd: " + cwd.getAbsolutePath());
-    //basePath = new File(cfg.getString("webroot"));
-    //Logger.getLogger(HTTPHandler.class.getName()).log(Level.FINER, "HTTPHandler serving from: " + basePath.getAbsolutePath());
     df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
   }
@@ -82,64 +79,84 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
       req.response().end();
     } else {
       // any other resource
-      try {
-        RscObject rsc = getResource(req.path());
-        if (rsc.stream == null) {
-          String ans = "Not found";
-          req.response().putHeader("Content-Length", Integer.toString(ans.length()));
-          req.response().write(ans);
-          req.response().setStatusCode(404); // not found
-          req.response().setStatusMessage("Not found");
-          req.response().end();
-        } else {
-        /*
-         * If the client asks for an existing file: define cache control: (arbitrarily). let
-				 * css and js be valid for 24 hours, image files for 10 days. But both can
-				 * live longer, if the client knows and uses the "if-modified-since"-
-				 * Header on expired files.
-				 */
+      anyOtherResource(req);
+    }
+  }
 
-          Date lm = rsc.lastModified;
-          String reqDat = req.headers().get("if-modified-since");
-          boolean noSend = false;
-          if (reqDat != null) {
-            try {
-              Date reqDate = df.parse(reqDat);
-              if (!reqDate.before(lm)) { // after or equal
-                noSend = true;
-              }
-            } catch (ParseException e) {
-              log.warning("could not parse reqDat " + reqDat);
+  /**
+   * Load a resource as requested in the HTTPServerRequest.
+   * If the resource path starts with "/custom/" search in the customRoot first. If not found, search in
+   * webroot.
+   * If the path starts with any other prefix, search directly from webroot
+   * @param req The HttpServerRequest
+   */
+  private void anyOtherResource(HttpServerRequest req) {
+    try {
+      RscObject rsc;
+      String addrPath = req.path();
+      if (addrPath.startsWith("/custom/")) {
+        rsc = getResource(cfg.getString("customRoot", ""), addrPath.substring(8));
+        if (rsc.stream == null) {
+          rsc = getResource(cfg.getString("webroot"), req.path());
+        }
+      } else {
+        rsc = getResource(cfg.getString("webroot"), req.path());
+      }
+      if (rsc.stream == null) {
+        String ans = "Not found";
+        req.response().putHeader("Content-Length", Integer.toString(ans.length()));
+        req.response().write(ans);
+        req.response().setStatusCode(404); // not found
+        req.response().setStatusMessage("Not found");
+        req.response().end();
+      } else {
+      /*
+       * If the client asks for an existing file: define cache control: (arbitrarily). let
+       * css and js be valid for 24 hours, image files for 10 days. But both can
+       * live longer, if the client knows and uses the "if-modified-since"-
+       * Header on expired files.
+       */
+
+        Date lm = rsc.lastModified;
+        String reqDat = req.headers().get("if-modified-since");
+        boolean noSend = false;
+        if (reqDat != null) {
+          try {
+            Date reqDate = df.parse(reqDat);
+            if (!reqDate.before(lm)) { // after or equal
+              noSend = true;
             }
-          }
-          req.response().putHeader("Last-Modified", df.format(lm));
-          if (req.path().endsWith(".css")) {
-            req.response().putHeader("Cache-Control", "max-age=864000");
-            req.response().putHeader("content-type", "text/css; charset=UTF-8");
-          } else if (req.path().endsWith(".js")) {
-            req.response().putHeader("Content-Type", "application/javascript; charset=utf-8");
-            req.response().putHeader("Cache-Control", "max-age=864000");
-          } else if (req.path().endsWith(".png") || req.path().endsWith(".jpg")) {
-            req.response().putHeader("Cache-Control", "public, max-age=864000");
-          }
-          if (noSend) {
-            req.response().setStatusCode(304);
-            // req.response().setStatusMessage("not modified");
-            req.response().end();
-          } else {
-            req.response().setChunked(true);
-            BufferedInputStream bis = new BufferedInputStream(rsc.stream);
-            byte[] buffer = new byte[4 * 4096];
-            int i;
-            while ((i = bis.read(buffer)) == buffer.length) {
-              req.response().write(Buffer.buffer(buffer));
-            }
-            req.response().end(Buffer.buffer(buffer).slice(0, i));
+          } catch (ParseException e) {
+            log.warning("could not parse reqDat " + reqDat);
           }
         }
-      } catch (Exception ex) {
-        req.response().setStatusCode(500);
+        req.response().putHeader("Last-Modified", df.format(lm));
+        if (req.path().endsWith(".css")) {
+          req.response().putHeader("Cache-Control", "max-age=864000");
+          req.response().putHeader("content-type", "text/css; charset=UTF-8");
+        } else if (req.path().endsWith(".js")) {
+          req.response().putHeader("Content-Type", "application/javascript; charset=utf-8");
+          req.response().putHeader("Cache-Control", "max-age=864000");
+        } else if (req.path().endsWith(".png") || req.path().endsWith(".jpg")) {
+          req.response().putHeader("Cache-Control", "public, max-age=864000");
+        }
+        if (noSend) {
+          req.response().setStatusCode(304);
+          // req.response().setStatusMessage("not modified");
+          req.response().end();
+        } else {
+          req.response().setChunked(true);
+          BufferedInputStream bis = new BufferedInputStream(rsc.stream);
+          byte[] buffer = new byte[4 * 4096];
+          int i;
+          while ((i = bis.read(buffer)) == buffer.length) {
+            req.response().write(Buffer.buffer(buffer));
+          }
+          req.response().end(Buffer.buffer(buffer).slice(0, i));
+        }
       }
+    } catch (Exception ex) {
+      req.response().setStatusCode(500);
     }
   }
 
@@ -168,7 +185,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
         try {
           //File in = new File(cfg.getString("webroot"), "index.html");
           //Date lm = new Date(in.lastModified());
-          RscObject index = getResource("/index.html");
+          RscObject index = getResource(cfg.getString("webroot"), "/index.html");
           Date lm = index.lastModified;
           req.response().putHeader("Last-Modified", df.format(lm));
           String cid = cfg.getString("googleID");
@@ -203,8 +220,15 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     }
   }
 
-  RscObject getResource(String name) throws ParseException {
-    String r = cfg.getString("webroot");
+  /**
+   * Find and load a file either from the file system, or from the .jar of the application
+   *
+   * @param root parent directory for the search
+   * @param name pathname relative to root
+   * @return an Object containing a Stream and some informations on the file
+   * @throws ParseException
+   */
+  RscObject getResource(String root, String name) throws ParseException {
     String className = getClass().getSimpleName() + ".class";
     String classPath = getClass().getResource(className).toString();
     String timestamp = null;
@@ -212,7 +236,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     try {
       if (!classPath.startsWith("jar")) {
         // Class not from JAR
-        File file = new File(r, name);
+        File file = new File(root, name);
         InputStream is = new FileInputStream(file);
         return new RscObject(is, false, file.lastModified());
       }
@@ -228,7 +252,7 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     }
     Date dat = df.parse(timestamp);
     log.fine(dat.toString());
-    String resource = "/" + r + name;
+    String resource = "/" + root + name;
     log.finest(resource);
     URL rsr = getClass().getResource(resource);
     log.finest(rsr == null ? "resource is null" : rsr.toString());
