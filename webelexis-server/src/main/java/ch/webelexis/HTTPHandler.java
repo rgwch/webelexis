@@ -94,8 +94,9 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
     try {
       RscObject rsc;
       String addrPath = req.path();
-      if (addrPath.startsWith("/custom/")) {
-        rsc = getResource(cfg.getString("customRoot", ""), addrPath.substring(8));
+      int cOff=addrPath.indexOf("/custom/");
+      if (cOff!=-1) {
+        rsc = getResource(cfg.getString("customRoot", ""), addrPath.substring(cOff+8));
         if (rsc.stream == null) {
           rsc = getResource(cfg.getString("webroot"), req.path());
         }

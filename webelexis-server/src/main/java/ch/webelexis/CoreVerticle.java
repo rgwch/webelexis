@@ -110,10 +110,6 @@ public class CoreVerticle extends AbstractVerticle {
     }
     HttpServer http = vertx.createHttpServer(options);
     Router router=Router.router(vertx);
-
-    //http.requestHandler(new HTTPHandler(bridgeCfg, vertx.eventBus()));
-    //http.listen(bridgeCfg.getInteger("port"));
-
     SockJSHandler sock = SockJSHandler.create(vertx);
 
     BridgeOptions bridgeOptions = new BridgeOptions();
@@ -133,6 +129,9 @@ public class CoreVerticle extends AbstractVerticle {
     http.requestHandler(router::accept).listen(bridgeCfg.getInteger("port"));
   }
 
+  /**
+   * The deployment handler adjusts the list of starting verticles and outputs messages on success ad failure
+   */
   private class DeploymentHandler implements AsyncResultHandler<String> {
     final String t;
 

@@ -2,7 +2,7 @@
  ** This file is part of Webelexis
  ** (c) 2015 by G. Weirich
  */
-define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'plugins/router', 'text!../../../txt/termin-howto.html', 'durandal/events'],
+define(['knockout', 'bus', 'config', 'datetools', 'i18n', 'durandal/app', 'plugins/router', 'text!../../../custom/termin-howto.html', 'durandal/events'],
   function (ko, bus, cfg, dt, R, appl, router, how) {
 
 
