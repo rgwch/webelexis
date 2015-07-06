@@ -14,6 +14,10 @@ define(['knockout', 'bus', 'config', 'durandal/system', 'i18n', 'datetools', 'un
 
       self.people = ko.observableArray();
       self.queryInput = ko.observable();
+      self.newPatOpen = ko.observable(false);
+      self.newPatName=ko.observable()
+      self.newPatFirstName=ko.observable()
+      self.newPatDob=ko.observable()
 
       self.displayClass = function (g) {
         if (g === undefined || g === null) {
@@ -29,6 +33,9 @@ define(['knockout', 'bus', 'config', 'durandal/system', 'i18n', 'datetools', 'un
 
       };
 
+      self.newPatOpenClose = function () {
+        self.newPatOpen(!self.newPatOpen())
+      }
       self.openClose = function (item) {
         item.opened(!item.opened())
       };
@@ -57,6 +64,9 @@ define(['knockout', 'bus', 'config', 'durandal/system', 'i18n', 'datetools', 'un
           }
         })
       };
+      self.addPatient = function () {
+
+      }
       self.activate = function (query) {
         if (query) {
           self.queryInput(query);

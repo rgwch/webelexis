@@ -12,4 +12,16 @@ section
           li.list-group-item(data-bind="text: text, css: css, click: $parent.openClose")
           div(data-bind="if: opened")
             div(data-bind="summary: {patient: entry}")
+        button.btn.btn-default(data-i18n="pers.newpat" data-bind="click: newPatOpenClose")
+        form.form(data-bind="submit: addPatient, if: newPatOpen")
+          .form-group-sm
+            label(for="name" data-i18n="m.add.lastname")
+            input.form-control(type="text" id="name" data-bind="value: newPatName")
+          .form-group
+            label(for="firstname" data-i18n="m.add.firstname")
+            input.form-control(type="text" id="firstname" data-bind="value: newPatFirstName")
+          .form-group
+            label(for="dob" data-i18n="m.add.dob")
+            input.form-control(type="text" id="dob" data-bind="value: newPatDob")
+          button.btn.btn-primary(type="submit" data-i18n="global.send")
       .panel-footer

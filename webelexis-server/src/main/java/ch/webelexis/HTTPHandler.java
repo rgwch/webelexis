@@ -202,8 +202,8 @@ public class HTTPHandler implements Handler<HttpServerRequest> {
             "GOOGLE_STATE", rnd);
           req.response().putHeader("Content-Length", Long.toString(modified.length()));
           req.response().write(modified);
-        } catch (ParseException e) {
-          req.response().setStatusCode(500);
+        } catch (Throwable e) {
+          req.response().setStatusCode(500).end("internal Server error");
         } finally {
           if (scanner != null) {
             scanner.close();

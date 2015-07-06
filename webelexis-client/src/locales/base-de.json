@@ -17,7 +17,8 @@
   "pers": {
     "title": "Personalien",
     "searchfield": "Bitte geben Sie einen Teil des Namens oder des Vornames ein",
-    "search": "Abfragen"
+    "search": "Abfragen",
+    "newpat": "Neuer Patient"
   },
   "m": {
     "termine": {
