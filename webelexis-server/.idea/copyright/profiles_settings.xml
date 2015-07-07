@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="webelexis">
+    <module2copyright>
+      <element module="All" copyright="webelexis" />
+    </module2copyright>
+  </settings>
 </component>

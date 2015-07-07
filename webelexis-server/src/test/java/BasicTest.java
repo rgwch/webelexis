@@ -1,5 +1,5 @@
 /*
- * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
+ * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich.
  */
 
 import io.vertx.core.DeploymentOptions;
@@ -39,12 +39,14 @@ public class BasicTest {
     });
 
     suite.after(ctx -> {
-      Async async=ctx.async();
-      vertx.undeploy(ctx.get("mockID"),res-> {
+      Async async = ctx.async();
+      vertx.undeploy(ctx.get("mockID"), res -> {
         ctx.assertTrue(res.succeeded());
         async.complete();
       });
     });
+    suite.test("config", new TstConfig());
+    suite.test("VersionedResource", new TstVersionedResource());
     suite.test("captcha", new TstCaptcha());
 
     TestCompletion completion=suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));

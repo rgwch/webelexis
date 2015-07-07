@@ -1,7 +1,10 @@
+/*
+ * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich.
+ */
+
 import ch.webelexis.Cleaner;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Handler;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
