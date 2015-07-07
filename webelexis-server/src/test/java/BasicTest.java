@@ -51,6 +51,7 @@ public class BasicTest {
 
     TestCompletion completion=suite.run(new TestOptions().addReporter(new ReportOptions().setTo("console")));
     completion.awaitSuccess(5000l);
+    System.exit(0);
   }
 
 }

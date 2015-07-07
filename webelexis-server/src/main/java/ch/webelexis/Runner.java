@@ -1,3 +1,7 @@
+/*
+ * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich.
+ */
+
 package ch.webelexis;
 
 import io.vertx.core.DeploymentOptions;
