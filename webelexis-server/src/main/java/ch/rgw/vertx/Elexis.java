@@ -6,7 +6,6 @@ package ch.rgw.vertx;
 
 import ch.rgw.tools.StringTool;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
@@ -69,10 +68,6 @@ public class Elexis extends AbstractVerticle {
           }
         });
       }
-    });
-
-    conn.updateWithParams("INSERT INTO KONTAKT", new JsonArray(), res -> {
-
     });
   }
 
