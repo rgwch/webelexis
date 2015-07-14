@@ -39,5 +39,8 @@
     <orderEntry type="library" name="Maven: com.hazelcast:hazelcast:3.4" level="project" />
     <orderEntry type="library" name="Maven: com.eclipsesource.minimal-json:minimal-json:0.9.1" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-unit:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:0.12.613" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-runtime:0.12.613" level="project" />
+    <orderEntry type="library" name="Maven: ch.rgw:utility:3.0.0" level="project" />
   </component>
 </module>
