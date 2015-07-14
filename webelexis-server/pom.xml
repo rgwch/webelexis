@@ -23,7 +23,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>E, dd MM yyyy HH:mm:ss z</maven.build.timestamp.format>
     </properties>
-
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-rgwch-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/rgwch/maven</url>
+        </repository>
+    </repositories>
     <pluginRepositories>
         <pluginRepository>
             <snapshots>
@@ -112,6 +121,7 @@
             <groupId>ch.rgw</groupId>
             <artifactId>utility</artifactId>
             <version>3.0.0</version>
+            <type>jar</type>
         </dependency>
 
     </dependencies>
