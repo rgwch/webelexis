@@ -2,9 +2,10 @@
  * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich.
  */
 
-package ch.rgw.vertx;
+package ch.rgw.elexis;
 
 import ch.rgw.tools.StringTool;
+import ch.rgw.vertx.Util;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
@@ -16,10 +17,10 @@ import java.io.IOException;
  * Created by gerry on 07.07.15.
  */
 public class Elexis extends AbstractVerticle {
-  JsonObject cfg;
-  JDBCClient client;
-  SQLConnection conn;
-  boolean bConnected;
+  private JsonObject cfg;
+  private JDBCClient client;
+  private SQLConnection conn;
+  private boolean bConnected;
   private Elexis theInstance;
 
   private Elexis() {
