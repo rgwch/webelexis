@@ -1,5 +1,5 @@
 /*
- * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
+ * This file is part of Webelexis. Copyright (c) 2015 by G. Weirich.
  */
 package ch.webelexis;
 
@@ -9,6 +9,7 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
+import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
@@ -122,6 +123,9 @@ public class CoreVerticle extends AbstractVerticle {
     }
     sock.bridge(bridgeOptions);
     router.route("/eventbus/*").handler(sock);
+    //router.routeWithRegex("\\/eventbus\\/.*").handler(sock);
+    //Route eb=router.route().pathRegex(".*eventbus.*");
+    // eb.handler(sock);
     HTTPHandler rootHandler=new HTTPHandler(bridgeCfg,vertx.eventBus());
     router.route().handler(routingContext ->{
       rootHandler.handle(routingContext.request());
