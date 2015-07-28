@@ -85,7 +85,7 @@ class PublicAgendaListHandler implements Handler<Message<JsonObject>> {
 
             } else {
               System.out.println(Json.encodePrettily(res));
-              externalRequest.reply(new JsonObject().put("status", "failure"));
+              externalRequest.reply(new JsonObject().put("status", "failure "+res.getString("result")));
             }
 
           } else {
