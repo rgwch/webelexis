@@ -48,6 +48,7 @@ public class SqlProxy extends AbstractVerticle {
             default:
               msg.reply(new JsonObject().put("status", "error").put("message", "ollegal opcode " + query.encode()));
           }
+          conn.close();
         }else {
           log.severe("Could not connect to SQL source");
         }
