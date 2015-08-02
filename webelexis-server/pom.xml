@@ -10,7 +10,7 @@
 
     <groupId>rgwch</groupId>
     <artifactId>webelexis-server</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>Webelexis Server</name>
     <description>Taking Elexis to the web</description>
     <url>http://www.github.com/rgwch/webelexis</url>
