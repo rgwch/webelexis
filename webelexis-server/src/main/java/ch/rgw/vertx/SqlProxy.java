@@ -22,11 +22,11 @@ public class SqlProxy extends AbstractVerticle {
   public void start() {
     JsonObject cfg = config().getJsonObject("sql");
     client = JDBCClient.createShared(vertx, cfg);
-    client.getConnection(cres -> {
-      if (cres.succeeded()) {
-        SQLConnection conn = cres.result();
-        vertx.eventBus().consumer(cfg.getString("address"), msg -> {
-          JsonObject query = (JsonObject) msg.body();
+    vertx.eventBus().consumer(cfg.getString("address"), msg -> {
+      JsonObject query = (JsonObject) msg.body();
+      client.getConnection(cres -> {
+        if(cres.succeeded()) {
+          SQLConnection conn = cres.result();
           switch (query.getString("action")) {
             case "insert":
 
@@ -48,13 +48,13 @@ public class SqlProxy extends AbstractVerticle {
             default:
               msg.reply(new JsonObject().put("status", "error").put("message", "ollegal opcode " + query.encode()));
           }
-        });
-      } else {
-        log.severe("Could not connect to SQL source");
-      }
+        }else {
+          log.severe("Could not connect to SQL source");
+        }
+      });
     });
 
-  }
+ }
 
   @Override
   public void stop() {
