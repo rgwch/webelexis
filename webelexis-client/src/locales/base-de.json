@@ -1,8 +1,10 @@
 {
   "cons": {
     "list": "Konsultationen",
-    "detail": "Konsultation"
-
+    "detail": "Konsultation",
+    "save": "Speichern und zurück",
+    "cancel": "Zurück ohne Speichern"
+    
   },
   "lab": {
     "title": "Labor",

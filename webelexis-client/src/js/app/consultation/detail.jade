@@ -3,8 +3,8 @@ h3 Konsultation
 .row
   .col-xs-12.col-sm-6.col-md-8
     #edit(data-bind="ckeditor: contents, valueUpdate: 'afterkeydown'")
-    button.btn.btn-primary(data-bind="click: getText" style="margin: 2px") Speichern und zurück
-    button.btn.btn-default(data-bind="click: cancel" style="margin: 2px") Zurück ohne Speichern
+    button.btn.btn-primary(data-bind="click: getText" style="margin: 2px" data-il8n="cons.save")
+    button.btn.btn-default(data-bind="click: cancel" style="margin: 2px" data-il8n="cons.cancel")
   .col-xs-12.col-sm-6.col-md-4
     h2 Test
     #meta(data-bind="expander: {items: metaInfos, headerProperty: 'title'}")

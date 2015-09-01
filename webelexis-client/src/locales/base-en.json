@@ -1,4 +1,12 @@
 {
+  "cons": {
+    "list": "Consultations",
+    "detail": "Consultation",
+    "save": "Save and go back",
+    "cancel": "Go Back without saving"
+
+  },
+
   "lab": {
     "title": "Lab findings",
     "loading": "Loading...",
