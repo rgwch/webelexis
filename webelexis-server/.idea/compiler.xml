@@ -21,6 +21,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <option name="codetrans.output" value="$PROJECT_DIR$/src/main" />
         <processorPath useClasspath="true" />
         <module name="webelexis-server" />
       </profile>

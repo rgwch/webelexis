@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../blog/blog.iml" filepath="$PROJECT_DIR$/../../blog/blog.iml" />
       <module fileurl="file://$PROJECT_DIR$/../webelexis-client/webelexis-client.iml" filepath="$PROJECT_DIR$/../webelexis-client/webelexis-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../webelexis-node/webelexis-node.iml" filepath="$PROJECT_DIR$/../webelexis-node/webelexis-node.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/webelexis-server.iml" filepath="$PROJECT_DIR$/.idea/webelexis-server.iml" />
     </modules>
   </component>
