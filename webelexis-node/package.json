@@ -12,7 +12,10 @@
     "express": "~4.13.1",
     "jade": "~1.11.0",
     "less-middleware": "1.0.x",
+    "moment": "^2.10.6",
     "morgan": "~1.6.1",
+    "mysql": "^2.10.0",
+    "nconf": "^0.8.2",
     "serve-favicon": "~2.3.0"
   }
 }
