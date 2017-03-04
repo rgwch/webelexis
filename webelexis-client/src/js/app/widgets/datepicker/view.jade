@@ -1,9 +1,0 @@
-//- This file is part of Webelexis. Copyright (c) 2015 by G. Weirich
-//- datepicker widget
-.form-inline
-  button.btn.fa.fa-chevron-left(data-bind="click: function(){backwards(1)}, attr: {title: msg('yesterday')}" data-toggle="tooltip")
-  button.btn.fa.fa-crosshairs(data-bind="click: today, attr: {title: msg('today')}" data-toggle="tooltip")
-  button.btn.fa.fa-chevron-right(data-bind="click: function(){forward(1)}, attr: {title: msg('tomorrow')}" data-toggle="tooltip")
-  input.datepicker(type="text"
-  data-toggle="tooltip"
-  data-bind="ko_datepicker_handler: 'actDate', value: actDate, datepickerOptions: {changeYear: true, dateFormat: dateformat, dayNamesMin: tage, monthNames: monate, monthNamesShort: monateKurz}, attr: {title: msg('openCal')}" )

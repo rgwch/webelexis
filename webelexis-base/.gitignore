@@ -1,9 +1,0 @@
-dist
-/bin/
-node_modules
-.DS_Store
-cfglocal.json
-/mods/
-/.settings/
-/npm-debug.log
-/config.codekit
