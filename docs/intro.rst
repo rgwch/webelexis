@@ -1,6 +1,9 @@
 Einleitung
 ==========
 
+Was Webelexis ist
+-----------------
+
 Webelexis_ ist eine fhir_ kompatible [#]_ alternative Oberfläche für Elexis_ [#]_, welche in einem Web-Browser wie Chrome, Firefox, Internet-Explorer, Safari oder Edge,
 sowie deren mobilen Varianten läuft. Dies hat folgende Vorteile:
 

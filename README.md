@@ -12,3 +12,7 @@ Webelexis consists of two parts:
 * Node.js Version 7.5.0 or higher (several ECMA ES6 features needed)
 * NPM
 * A modern browser
+
+## Setup and first steps
+
+[Read the docs](http://webelexis.readthedocs.io/de/latest/firststeps.html)
