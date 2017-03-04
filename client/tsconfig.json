@@ -23,7 +23,8 @@
     "./src/**/*.ts",
     "./typings/index.d.ts",
     "./custom_typings/**/*.d.ts",
-    "./jspm_packages/**/*.d.ts"
+    "./jspm_packages/**/*.d.ts",
+    "./test/**/*.ts"
   ],
   "exclude": [
     "node_modules",

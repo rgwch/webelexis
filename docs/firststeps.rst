@@ -147,7 +147,7 @@ Sie können sie dann mit einem Texteditor betrachten, und sollten etwas Ähnlich
 Installation Client
 -------------------
 
-Wenn der Server soweit funktioniert, wird als nächstes der Aurelia-Client aufgebaut:
+Wenn der Server soweit funktioniert, können Sie ihn mit CTRL-C wieder stoppen. Dann wird als nächstes der Aurelia-Client aufgebaut:
 
 .. code-block:: shell
 
@@ -158,12 +158,14 @@ Wenn der Server soweit funktioniert, wird als nächstes der Aurelia-Client aufge
   jspm install -y
   gulp test
 
-Wenn auch diese Tests erfolgreich durchlaufen, kann das Komplettsystem erstellt werden:
+Wenn auch diese Tests erfolgreich durchlaufen (allfällige Warnungen während der npm und jspm-phasen können Sie ignorieren),
+kann das Komplettsystem erstellt werden:
 
   ``gulp export``
 
-Dies kompiliert alle Dateien, erstellt optimierte Javascript-Bundles und kopiert diese nach Janus/public/webapp. Danach können Sie die
-Webelexis-App im Browser mit ``http://localhost:3000/webapp`` starten.
+Dies kompiliert alle Dateien, erstellt optimierte Javascript-Bundles und kopiert diese nach Janus/public/webapp. Danach können Sie den
+Janus-Server wie oben gezeigt starten, und dann die Webelexis-App im Browser mit ``http://localhost:3000/webapp`` laden.
+Als Username und Passwort können Sie in der aktuellen Version irgendetwas Beliebiges eingeben.
 
 
 Dokumentation

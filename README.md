@@ -15,4 +15,4 @@ Webelexis consists of two parts:
 
 ## Setup and first steps
 
-[Read the docs](https://github.com/rgwch/webelexis/blob/develop/docs/firststeps.rst)
+[Read the docs](http://webelexis.readthedocs.io/de/latest/firststeps.html)
