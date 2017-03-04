@@ -3,6 +3,8 @@ Erste Schritte
 
 .. CAUTION:: Webelexis ist derzeit noch kein Enduser-Produkt.
 
+.. index:: Einstieg
+
 Systemvoraussetzungen
 ---------------------
 
@@ -21,6 +23,8 @@ Um diese Dokumentation hier aus den Quellen zu erstellen, benötigen Sie Sphinx_
 Die Webelexis Webapp benötigt eine Elexis-Datenbank vom Typ Elexis_Ungrad_. Andere Elexis-Versionen ab 3.0 können
 gehen, es kann aber zu Problemen kommen.
 
+
+.. index:: Server
 
 Installation Server
 -------------------
@@ -48,6 +52,8 @@ Hier exemplarisch die Installation in einem frisch aufgesetzten Ubuntu 16.10. Zu
 Wenn alle Tests fehlerfrei durchlaufen, kann die Verbindung zur Elexis Datenbank und dem Mongo-Server hergestellt werden:
 Kopieren Sie Janus/config-sample.json nach Janus/config.json und passen Sie die Einträge an:
 
+.. index:: config.json
+
 .. code-block:: json
 
   {
@@ -60,14 +66,15 @@ Kopieren Sie Janus/config-sample.json nach Janus/config.json und passen Sie die 
    "mongodb": {
     "url": "localhost/webelexis"
    }
- }
+  }
+
+
+(Sie müssen nur den mysqldb-Teil zwingend anpassen; der mongodb-Teil sollte genau so bereits funktionieren, wenn Sie mongodb wie oben gezeigt mt apt-get installiert haben).
 
 .. CAUTION:: Es wird strikt davon abgeraten, Webelexis an Ihrer produktiven Elexis-Datenbank zu testen. Verwenden Sie eine Kopie!
 
 
-Starten Sie dann den Server in Janus: ``tsc && npm start``, und richten Sie Ihren Web Browser auf ``http://localhost:3000/fhir``. Wenn die Meldung "Webelexis FHIR Server" erscheint,
-dann funktioniert Ihr Setup so weit korrekt. Um die Verbindung mit dem Elexis-Server zu testen, geben Sie im Browser eine URL wie die folgende ein:
-``http://localhost:3000/fhir/Patient?name=testperson`` (Verwenden Sie für testperson einen Namen oder Vornamen, von dem Sie wissen, dass er in Ihrer Elexis-Datenbank existiert).
+Starten Sie dann den Server in Janus: ``tsc && npm start``, und richten Sie Ihren Web Browser auf ``http://localhost:3000/fhir``. Wenn die Meldung "Webelexis FHIR Server" erscheint, dann funktioniert Ihr Setup so weit korrekt. Um die Verbindung mit dem Elexis-Server zu testen, geben Sie im Browser eine URL wie die folgende ein: ``http://localhost:3000/fhir/Patient?name=testperson`` (Verwenden Sie für testperson einen Namen oder Vornamen, von dem Sie wissen, dass er in Ihrer Elexis-Datenbank existiert).
 
 Die Antwort des Servers wird eine JSON-Datei sein. Je nach Konfiguration des Browsers wird diese nicht angezeigt, sondern heruntergeladen.
 Sie können sie dann mit einem Texteditor betrachten, und sollten etwas Ähnliches wie das Folgende sehen, nämlich ein FHIR-Bundle_
@@ -143,6 +150,9 @@ Sie können sie dann mit einem Texteditor betrachten, und sollten etwas Ähnlich
 		}
 	}]
   }
+
+
+.. index:: Client
 
 Installation Client
 -------------------
