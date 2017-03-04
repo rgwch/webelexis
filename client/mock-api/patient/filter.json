@@ -1,0 +1,383 @@
+{
+  "resourceType": "Bundle",
+  "id": "56a408fc-a8d4-4ee1-9c64-29887942def8",
+  "meta": {
+    "lastUpdated": "2017-01-18T12:56:07.079+01:00"
+  },
+  "type": "searchset",
+  "total": 7,
+  "link": [
+    {
+      "relation": "self",
+      "url": "http://192.168.0.1:8380/fhir//Patient?_format=json&name=test"
+    }
+  ],
+  "entry": [
+    {
+      "fullUrl": "http://192.168.0.1:8380/fhir/Patient/d4950c31272755a428f7",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "d4950c31272755a428f7",
+        "identifier": [
+          {
+            "system": "www.elexis.ch/xid",
+            "value": "d4950c31272755a428f7"
+          },
+          {
+            "system": "www.elexis.info/objid",
+            "value": "d4950c31272755a428f7"
+          },
+          {
+            "system": "www.elexis.info/patnr",
+            "value": "7"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Meier (Test)"
+            ],
+            "given": [
+              "Oskar"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-123455",
+            "use": "home"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1950-02-14",
+        "address": [
+          {
+            "line": [
+              "Diese Strasse 17"
+            ],
+            "city": "Schaffhausen",
+            "postalCode": "8200"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://192.168.0.1:8380/fhir/Patient/f545f4a171b7f3093c6285",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "f545f4a171b7f3093c6285",
+        "identifier": [
+          {
+            "system": "www.elexis.ch/xid",
+            "value": "f545f4a171b7f3093c6285"
+          },
+          {
+            "system": "www.elexis.info/objid",
+            "value": "f545f4a171b7f3093c6285"
+          },
+          {
+            "system": "www.elexis.info/patnr",
+            "value": "334"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Tester"
+            ],
+            "given": [
+              "Antonia"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-55-55",
+            "use": "home"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1968-11-02",
+        "address": [
+          {
+            "line": [
+              "Hinterdorf 2"
+            ],
+            "city": "Krankenhausen",
+            "postalCode": "9998"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://192.168.0.1:8380/fhir/Patient/7ba4632caba62c5b3a366",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "7ba4632caba62c5b3a366",
+        "identifier": [
+          {
+            "system": "www.ahv.ch/xid",
+            "value": "123.45.678"
+          },
+          {
+            "system": "www.elexis.ch/xid",
+            "value": "7ba4632caba62c5b3a366"
+          },
+          {
+            "system": "www.elexis.info/objid",
+            "value": "7ba4632caba62c5b3a366"
+          },
+          {
+            "system": "www.elexis.info/patnr",
+            "value": "312"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Testperson"
+            ],
+            "given": [
+              "Armeswesen"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-122 34 56",
+            "use": "home"
+          },
+          {
+            "system": "phone",
+            "value": "055 555 55 55 test",
+            "use": "home"
+          },
+          {
+            "system": "email",
+            "value": "testperson@elexis.ch"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1950-02-01",
+        "address": [
+          {
+            "line": [
+              "asdfsdaf"
+            ],
+            "city": "sdasdf",
+            "postalCode": "sdfasd"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://192.168.0.1:8380/fhir/Patient/cbff83d286ad1c0416011",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "cbff83d286ad1c0416011",
+        "identifier": [
+          {
+            "system": "www.elexis.ch/xid",
+            "value": "cbff83d286ad1c0416011"
+          },
+          {
+            "system": "www.elexis.info/objid",
+            "value": "cbff83d286ad1c0416011"
+          },
+          {
+            "system": "www.elexis.info/patnr",
+            "value": "712"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Tester"
+            ],
+            "given": [
+              "Testperson"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "099-5551213",
+            "use": "home"
+          },
+          {
+            "system": "email",
+            "value": "Test@alfred.ch"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2001-01-31",
+        "address": [
+          {
+            "line": [
+              "Im Gräfler 9"
+            ],
+            "city": "Schaffhausen",
+            "postalCode": "8207"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://192.168.0.1:8380/fhir/Patient/cdb663143740447c3122936",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "cdb663143740447c3122936",
+        "identifier": [
+          {
+            "system": "www.elexis.ch/xid",
+            "value": "cdb663143740447c3122936"
+          },
+          {
+            "system": "www.elexis.info/objid",
+            "value": "cdb663143740447c3122936"
+          },
+          {
+            "system": "www.elexis.info/patnr",
+            "value": "1234"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Testpatient"
+            ],
+            "given": [
+              "Garfield"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "052 264 57 69",
+            "use": "home"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1912-12-12",
+        "address": [
+          {
+            "line": [
+              "Brunngasse 6"
+            ],
+            "city": "Winterthur",
+            "postalCode": "8401"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://192.168.0.1:8380/fhir/Patient/ef833e7a94bf3dea2dd2920",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "ef833e7a94bf3dea2dd2920",
+        "identifier": [
+          {
+            "system": "www.xid.ch/id/ean",
+            "value": "2000000000123"
+          },
+          {
+            "system": "www.elexis.ch/xid",
+            "value": "ef833e7a94bf3dea2dd2920"
+          },
+          {
+            "system": "www.elexis.info/objid",
+            "value": "ef833e7a94bf3dea2dd2920"
+          },
+          {
+            "system": "www.elexis.info/patnr",
+            "value": "1293"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Testmeier"
+            ],
+            "given": [
+              "Alfred"
+            ],
+            "prefix": [
+              "Prof. Dr. med. "
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "email",
+            "value": "dr_test@doctors.ch"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1920-03-24",
+        "address": [
+          {
+            "line": [
+              "hier"
+            ],
+            "city": "da",
+            "postalCode": "1000"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://192.168.0.1:8380/fhir/Patient/25871d04a9a94e3731e783",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "25871d04a9a94e3731e783",
+        "identifier": [
+          {
+            "system": "www.elexis.ch/xid",
+            "value": "25871d04a9a94e3731e783"
+          },
+          {
+            "system": "www.elexis.info/objid",
+            "value": "25871d04a9a94e3731e783"
+          },
+          {
+            "system": "www.elexis.info/patnr",
+            "value": "1682"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Testa"
+            ],
+            "given": [
+              "Rossa"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1960-02-01",
+        "address": [
+          {
+            "line": [
+              "Via Modena"
+            ],
+            "city": "Ristorante",
+            "postalCode": "1000"
+          }
+        ]
+      }
+    }
+  ]
+}

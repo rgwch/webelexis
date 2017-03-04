@@ -1,0 +1,23 @@
+{
+  "write_a_message": "escribe un mensaje",
+  "you_wrote": "tu escribiste {{text}}",
+  "search": "buscar",
+  "nav": {
+    "toggle_sidenav": "Alternar menú"
+  },
+  "login": {
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "login": "Iniciar sesión"
+  },
+  "routes": {
+    "dashboard": "Tablero",
+    "patients": "Pacientes",
+    "appointments": "Equipo",
+    "patients_details": "Patients Details",
+    "appointments_details": "Appointments Details"
+  },
+  "adapters":{
+      "date_format": "M/D/YYYY, hh:mm a"
+    }
+}

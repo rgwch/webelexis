@@ -1,0 +1,11 @@
+{
+  "userId": 10,
+  "username": "chuck_norris",
+  "role": 1,
+  "firstName": "Chuck",
+  "lastName": "Norris",
+  "dateOfBirth": "07/23/1980",
+  "email": "chuck@norris.com",
+  "phone": "867-5309",
+  "token": "ABC123"
+}

@@ -1,0 +1,36 @@
+{
+  "resourceType": "Encounter",
+  "id": "1",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2017-01-04T20:42:32Z"
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"> Admitted to Orthopedics Service,&#10;                        Middlemore Hospital between Jan 20 and Feb ist 2013 </div>"
+  },
+  "identifier": [
+    {
+      "value": "S100"
+    }
+  ],
+  "status": "finished",
+  "class": "inpatient",
+  "type": [
+    {
+      "text": "Orthopedic Admission"
+    }
+  ],
+  "patient": {
+    "reference": "Patient/1"
+  },
+  "period": {
+    "start": "2013-01-20T12:30:02Z",
+    "end": "2013-02-01T12:30:02Z"
+  },
+  "hospitalization": {
+    "dischargeDisposition": {
+      "text": "Discharged to care of GP"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "cancel": "cancel",
+  "none": "none",
+  "more":"more...",
+  "enter_name": "enter (part of) a name",
+  "write_a_message": "write a message",
+  "you_wrote": "You wrote {{text}}",
+  "nav": {
+    "toggle_sidenav": "Toggle Nav"
+  },
+  "search": {
+    "label": "search",
+    "start": "search"
+  },
+  "login": {
+    "username": "Username",
+    "email": "enter your email"
+    "password": "Password",
+    "login": "Login"
+  },
+  "routes": {
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "appointments": "Appointments",
+    "patients_details": "Patients Details",
+    "appointments_details": "Appointments Details"
+  },
+  "adapters": {
+    "datetime_format": "M/D/YYYY, h:mm a",
+    "date_format": "M/D/YYYY",
+    "time_format": "h:mm a"
+  },
+  "patient": {
+    "select": "Select patient"
+  },
+  "appointment": {
+    "date": "Date",
+    "time": "Time",
+    "start": "from",
+    "end": "until",
+    "status": "status",
+    "priority": "priotity",
+    "state": {
+      "proposed": "proposed",
+      "pending": "pending",
+      "booked": "booked",
+      "arrived": "arrived",
+      "fulfilled": "fulfilled",
+      "cancelled": "cancelled",
+      "noshow": "noshow"
+    }
+  },
+  "dashboard": {
+    "basic": "Personal data",
+    "cons": "Encounters",
+    "appointments": "Appointments",
+    "diags": "Diagnoses",
+    "documents": "Documents",
+    "labor": "Lab values",
+    "prescriptions": "Medication",
+    "bills": "Billing",
+    "remarks": "Remarks",
+    "nocons": "No encounters found",
+    "noappnt": "No appointments found",
+    "nodiags": "No diagnoses found",
+    "nopresc": "No prescriptions"
+  },
+  "personalDetails": {
+    "firstname": "first name",
+    "lastname": "last name",
+    "birthdate": "birth date",
+    "street": "street",
+    "place": "place",
+    "phone": "phone"
+  }
+}

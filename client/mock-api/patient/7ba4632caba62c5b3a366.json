@@ -1,0 +1,70 @@
+{
+  "resourceType": "Patient",
+  "id": "7ba4632caba62c5b3a366",
+  "identifier": [
+    {
+      "system": "www.ahv.ch/xid",
+      "value": "123.45.678"
+    },
+    {
+      "system": "www.elexis.ch/xid",
+      "value": "7ba4632caba62c5b3a366"
+    },
+    {
+      "system": "www.elexis.info/objid",
+      "value": "7ba4632caba62c5b3a366"
+    },
+    {
+      "system": "www.elexis.info/patnr",
+      "value": "312"
+    }
+  ],
+  "name": [
+    {
+      "use": "official",
+      "family": [
+        "Testperson"
+      ],
+      "given": [
+        "Armeswesen"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "555-122 34 56",
+      "use": "home"
+    },
+    {
+      "system": "phone",
+      "value": "055 555 55 55",
+      "use": "work"
+    },
+    {
+      "system": "email",
+      "value": "testperson@elexis.ch",
+      "use":"all"
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1950-02-01",
+  "address": [
+    {
+      "use":"home",
+      "type":"both",
+      "line": [
+        "Hintere Gasse 287"
+      ],
+      "city": "Webelexikon",
+      "postalCode": "8999"
+    },
+    {
+      "use":"work",
+      "type":"postal",
+      "line":["Postfach","Alte Grube 2"],
+      "postaöCode":"9999",
+      "city":"Elexikon"
+    }
+  ]
+}

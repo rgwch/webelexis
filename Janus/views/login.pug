@@ -1,0 +1,14 @@
+extends layout.pug
+
+block content
+  form.row(action="/dologin" method="POST")
+    .form-group
+      label(for="username") Username
+      input.form-control(placeholder="Name" id="username" type="text")
+    .form-group
+      label(for="password") Passwort
+      input.form-control(id="password" type="password")
+    button.btn.btn-default(type="submit") Log In
+
+
+

@@ -1,0 +1,60 @@
+{
+  "cancel": "Abbrechen",
+  "none": "rien",
+  "more":"plus...",
+  "write_a_message": "écrivez quelque chose",
+  "you_wrote": "Vous avez ecrit: {{text}}",
+  "search": "recherche",
+  "nav": {
+    "toggle_sidenav": "cacher le menu"
+  },
+  "login": {
+    "username": "Nom",
+    "email": "Tapez votre E-Mail",
+    "password": "Tapez votre mot de passe",
+    "login": "connectez"
+  },
+  "routes": {
+    "dashboard": "page principale",
+    "patients": "Patients",
+    "appointments": "appointements",
+    "patients_details": "Détails du patient",
+    "appointments_details": "Détails du rendez-vous"
+  },
+  "adapters": {
+    "datetime_format": "DD.MM.YYYY, HH:mm",
+    "date_format": "DD.MM.YYYY",
+    "time_format": "HH:mm"
+  },
+  "appointment":{
+    "date": "Date",
+    "time": "Le",
+    "start": "de",
+    "end":"jusq'à",
+    "type":"type",
+    "status": "état",
+    "priority": "priorité"
+  },
+  "dashboard": {
+    "basic": "Dates personelles",
+    "cons": "Rencontres",
+    "appointments": "rendez-vous",
+    "diags": "Diagnostics",
+    "documents": "Documents",
+    "labor": "Resultats e labo",
+    "prescriptions": "Medication",
+    "bills": "Envois",
+    "nocons": "pas de rencontres",
+    "noappnt": "pas de rendez-vouz",
+    "nodiags": "pas de diagnostics",
+    "nopresc": "pas de medicaments"
+  },
+  "personalDetails": {
+    "firstname": "prénom",
+    "lastname": "nom",
+    "birthdate": "date de naissance",
+    "street": "rue",
+    "place": "lieu",
+    "phone": "téléphone"
+  }
+}

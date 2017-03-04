@@ -1,0 +1,43 @@
+mixin createChip(chipname)
+  .col.s12.m4.l3(click.delegate="toggle('" + chipname + "')" )
+    div(class.bind="classes['" + chipname + "']" md-waves)
+      img(src="assets/" + chipname + ".png")
+      span.badges(if.bind="counts['"+chipname+"']>0") ${counts['#{chipname}']}
+      span(t='dashboard.'+chipname)
+
+
+template
+  require(from="components/floater.html")
+  require(from="resources/fhir-resource-value-converter")
+  .container
+    h4.accent-text.center-align ${patient.fullName}
+    floater(pos="right: 10px; top: 10px;")
+    .row
+      +createChip('basic')
+      +createChip('cons')
+      +createChip('appointments')
+      +createChip('diags')
+      +createChip('documents')
+      +createChip('labor')
+      +createChip('prescriptions')
+      +createChip('remarks')
+    .row
+      .col.s12
+        .chipcontents(if.bind="expanded['basic']")
+          include fragment_basic.pug
+        .chipcontents(if.bind="expanded['cons']")
+          include fragment_cons.pug
+        .chipcontents(if.bind="expanded['appointments']")
+          include fragment_appnt.pug
+        .chipcontents(if.bind="expanded['diags']")
+          h4(t="dashboard.diags")
+          include fragment_conditions.pug
+        .chipcontents(if.bind="expanded['documents']")
+          h4(t="dashboard.documents")
+        .chipcontents(if.bind="expanded['labor']")
+          h4(t="dashboard.labor")
+        .chipcontents(if.bind="expanded['prescriptions']")
+          h4(t="dashboard.prescriptions")
+          include fragment_prescriptions.pug
+        .chipcontents(show.bind="expanded['remarks']")
+          include fragment_remarks.pug

@@ -1,0 +1,32 @@
+
+mixin createField(label,field)
+    lockable-input(label='personalDetails.'+label value.bind=field locked.bind="isLocked")
+
+require(from="../../components/lockable-input")
+require(from="../../components/address-box")
+require(from="../../components/comm-box")
+.row(style="position:relative")
+  .col.s12
+    h4(t="dashboard.basic") test
+    .fixed-action-btn.horizontal(style="position:absolute;display:inline-block;right:5px;top:5px;")
+      a.red(md-button="floating: true" md-waves="color:light; circle:true;")
+        i.material-icons menu
+      ul
+        li
+          .blue(md-button="floating:true;" if.bind="!isLocked" click.delegate="newPatient()")
+            i.fa.fa-plus
+        li
+          .black(md-button="floating:true;" click.delegate="lockToggle()")
+            i.fa.fa-lock(if.bind="isLocked")
+            i.fa.fa-unlock(if.bind="!isLocked")
+
+  .col.s6.m5
+     +createField("firstname", "patient.getField('name[0].given')")
+  .col.s6.m5
+     +createField("lastname","patient.getField('name[0].family')")
+  .col.s6.m2
+     +createField("birthdate","patient.getDateField('birthDate')")
+  .col.s12.m6
+      address-box(patient.bind="patient.fhir")
+  .col.s12.m6
+      comm-box(patient.bind="patient.fhir")

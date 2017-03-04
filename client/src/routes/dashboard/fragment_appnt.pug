@@ -1,0 +1,25 @@
+//- Display Appointments
+
+.row(if.bind="counts['appointments']>0")
+  require(from="../../resources/fhir-resource-value-converter")
+  require(from="../../resources/date-format-value-converter")
+  require(from="components/appointment-view")
+  .col.s12(style="position:relative")
+    h4(t="dashboard.appointments") Test
+    .fixed-action-btn.horizontal(style="position:absolute;display:inline-block;right:5px;top:5px")
+      a.red(md-button="floating: true" md-waves="color:light; circle:true;")
+        i.material-icons menu
+      ul
+        li
+          .black(md-button="floating:true;" click.delegate="lockToggle()")
+            i.fa.fa-lock(if.bind="isLocked")
+            i.fa.fa-unlock(if.bind="!isLocked")
+        li
+          .blue(md-button="floating:true;" if.bind="!isLocked")
+            i.fa.fa-plus
+
+  .col.s12.m6.l4(repeat.for="appnt of appointments.values")
+    appointment-view(obj.bind="appnt" large.bind="false")
+.row(if.bind="counts['appointments']==0")
+  .col.s12
+    p(t="dashboard.noappnt") noappnt

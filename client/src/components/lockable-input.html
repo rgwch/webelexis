@@ -1,0 +1,10 @@
+<template>
+    <div if.bind="locked" style="padding:5px;margin-bottom:10px;">
+        <div t="${label}" class="text-label">${label}</div>
+        <div>${value}</div>
+    </div>
+    <div if.bind="!locked">
+        <md-input md-label=label md-value.bind="value"
+                  t="[md-label]${label}"></md-input>
+    </div>
+</template>

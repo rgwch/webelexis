@@ -1,0 +1,15 @@
+<template>
+    <md-slider md-interval="60000" class="text-paper-accent" view-model.ref="slider" md-height="150rem">
+        <li repeat.for="adr of patient.address" class="text-paper">
+            <p class="text-label">
+                <span t="personalDetails.${adr.type}"></span><span>&nbsp;</span>
+                <span t="personalDetails.${adr.use}"></span>:
+            </p>
+            <div>
+                ${adr.line}<br />
+                <span>${adr.postalCode} ${adr.city}</span>
+            </div>
+        </li>
+
+    </md-slider>
+</template>

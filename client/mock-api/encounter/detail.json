@@ -1,0 +1,17 @@
+{
+	"resourceType": "Encounter",
+	"id": "example",
+	"meta": {
+		"versionId": "1",
+		"lastUpdated": "2017-01-04T20:46:05Z"
+	},
+	"text": {
+		"status": "generated",
+		"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Encounter with patient @example</div>"
+	},
+	"status": "in-progress",
+	"class": "inpatient",
+	"patient": {
+		"reference": "Patient/example"
+	}
+}

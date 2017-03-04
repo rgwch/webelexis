@@ -1,0 +1,24 @@
+<template>
+    <require from="./left-nav.css"></require>
+    <require from="./components/user-dropdown"></require>
+    <require from="./resources/route-filter-value-converter"></require>
+    <a md-sidenav-collapse="ref.bind: sideNav;" md-button md-waves t.bind="nav.toggle_sidenav">Toggle Nav</a>
+    <md-sidenav view-model.ref="sideNav" md-fixed.bind="showNav" md-edge="left">
+        <ul id="nav-mobile" class="side-nav fixed">
+            <li md-waves class="no-padding" if.bind="session.currentUser">
+                <user-dropdown></user-dropdown>
+            </li>
+
+
+
+            <template repeat.for="route of router.navigation | routeFilter:session.currentUser">
+                <li md-waves class="bold">
+                    <a href.bind="route.href" class="waves-effect waves-teal collapsible-header">
+                        <span t.bind="route.headerTextKey">${route.title}</span>
+                    </a>
+                </li>
+            </template>
+        </ul>
+    </md-sidenav>
+
+</template>

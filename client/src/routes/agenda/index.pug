@@ -1,0 +1,9 @@
+template
+  require(from="components/slot-view")
+  .container
+    .row
+      .col.s12
+        span ${dateDisplay}
+    .row
+      .col.s12(repeat.for="slot of slots.values")
+        slot-view(slot.bind="slot")

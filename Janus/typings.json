@@ -1,0 +1,15 @@
+{
+  "name": "Janus",
+  "dependencies": {
+    "chai": "registry:npm/chai#3.5.0+20160723033700",
+    "mongodb": "registry:npm/mongodb#2.1.0+20170211100415",
+    "monk": "registry:npm/monk#3.1.2+20160830164330",
+    "mysql": "registry:npm/mysql#2.11.1+20161114232222",
+    "nconf": "registry:dt/nconf#0.0.0+20161212190028",
+    "sha1": "registry:dt/sha1#1.1.0+20170110191826",
+    "winston": "registry:dt/winston#2.2.0+20170106144044"
+  },
+  "globalDependencies": {
+    "jszip": "registry:dt/jszip#0.0.0+20170110193107"
+  }
+}

@@ -1,0 +1,102 @@
+{
+	"cancel": "Abbrechen",
+	"none": "Keine",
+	"more":"weiter...",
+	"enter_name": "Name oder Namensteil eingeben",
+	"write_a_message": "Text eingeben",
+	"you_wrote": "Sie schrieben {{text}}",
+	"nav": {
+		"toggle_sidenav": "Menu umschalten"
+	},
+	"search": {
+		"label": "Bitte geben Sie einen Namen oder Namensteil ein",
+		"start": "Suchen"
+	},
+	"login": {
+		"username": "Name",
+		"email": "Geben Sie hier Ihre E-Mail ein",
+		"password": "Geben Sie hier Ihr Passwort ein",
+		"login": "Anmelden"
+	},
+	"routes": {
+		"dashboard": "Hauptseite",
+		"patients": "Patienten",
+		"appointments": "Termine",
+		"patients_details": "Patient Details",
+		"appointments_details": "Termin Details"
+	},
+	"adapters": {
+		"datetime_format": "DD.MM.YYYY, HH:mm",
+		"date_format": "DD.MM.YYYY",
+		"time_format": "HH:mm"
+	},
+	"patient": {
+		"select": "Patient auswählen"
+	},
+	"appointment": {
+		"date": "Datum",
+		"time": "Zeit",
+		"start": "von",
+		"end": "bis",
+		"type": "Typ",
+		"status": "Status",
+		"priority": "Priorität",
+		"state": {
+			"proposed": "vorgeschlagen",
+			"pending": "offen",
+			"booked": "geplant",
+			"arrived": "eingetroffen",
+			"fulfilled": "fertig",
+			"cancelled": "abgesagt",
+			"noshow": "verpasst"
+		}
+	},
+	"dashboard": {
+		"basic": "Stammdaten",
+		"cons": "Konsultationen",
+		"appointments": "Termine",
+		"diags": "Problemliste",
+		"documents": "Dokumente",
+		"labor": "Laborwerte",
+		"prescriptions": "Medikation",
+		"bills": "Abrechnungen",
+		"remarks": "Anmerkungen",
+		"nocons": "Keine Konsultationen gefunden",
+		"noappnt": "Keine Termine gefunden",
+		"nodiags": "Problemliste ist leer",
+		"nopresc": "Keine Medikationen"
+	},
+	"personalDetails": {
+		"firstname": "Vorname",
+		"lastname": "Nachname",
+		"birthdate": "Geburtsdatum",
+		"street": "Strasse",
+		"zip": "Plz",
+		"place": "Ort",
+		"comm": "Kommunikation",
+		"phone": "Tel.",
+		"create": "Erfassen",
+		"zipplace": "Plz/Ort",
+		"fax": "Fax",
+		"email": "E-Mail",
+		"pager": "Pager",
+		"other": "Andere",
+		"home": "privat",
+		"work": "Arbeit",
+		"temp": "temporär",
+		"old": "alt",
+		"mobile": "Mobil",
+		"postal": "Postadresse",
+		"physical": "physische Adresse",
+		"both": "Post und physische Adresse",
+		"all": "allgemein"
+	},
+	"flag": {
+		"flag": "Bemerkung",
+		"category": "Kategorie",
+		"heading": "Titel",
+		"text": "Beschreibung",
+		"code": "Code",
+		"codesystem": "Codesystem"
+	}
+}

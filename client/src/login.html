@@ -1,0 +1,50 @@
+<template>
+  <div class="container">
+    <div class="z-depth-1 grey lighten-4 row">
+      <form class="col s12 m6§" method="post">
+        <div class="row">
+          <div class="col s12">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input
+              id="email"
+              value.bind="email"
+              name="email"
+              type="text" />
+            <label for="email" t="login.email">Enter your email</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input
+              id="password"
+              value.bind="password"
+              name="password"
+              type="password" />
+            <label for="password" t="login.password">Enter your password</label>
+          </div>
+
+          <label>
+            <a class="pink-text" href="#!"><b>Forgot Password?</b></a>
+          </label>
+        </div>
+
+        <center>
+          <div class="row">
+            <button type="submit"
+              click.trigger="login()"
+              class="col s12 btn btn-large waves-effect indigo"
+              i18n="login.login"
+              disabled.bind="!canLogin">
+              Login
+            </button>
+          </div>
+        </center>
+      </form>
+    </div>
+  </div>
+</template>

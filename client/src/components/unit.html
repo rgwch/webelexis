@@ -1,0 +1,14 @@
+<template>
+    <div class="unit-header">
+        <md-chip md-close="false" click.delegate="toggleExpanded()">
+            <img src.bind="image">
+            ${caption}
+        </md-chip>
+    </div>
+    <p>${expandableStyle()}</p>
+    <div show.bind="expanded">${expanded} is expanded
+        <p innerhtml.bind="inner"></p>
+    </div>
+
+
+</template>

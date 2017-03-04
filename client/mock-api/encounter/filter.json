@@ -1,0 +1,825 @@
+{
+	"resourceType": "Bundle",
+	"id": "a6c5c8a9-71ac-49a5-920b-9d6a716959",
+	"meta": {
+		"lastUpdated": "2017-01-29T09:18:11Z"
+	},
+	"type": "searchset",
+	"total": 11,
+	"link": [
+		{
+			"relation": "self",
+			"url": "http://fhir2.healthintersections.com.au/open/Encounter?_format=application/json+fhir&search-id=4a921e83-2dc2-4fc7-8b52-f986b34060"
+		}
+	],
+	"entry": [
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/1",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "1",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:42:32Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"> Admitted to Orthopedics Service,&#10;                        Middlemore Hospital between Jan 20 and Feb ist 2013 </div>"
+				},
+				"identifier": [
+					{
+						"value": "S100"
+					}
+				],
+				"status": "finished",
+				"class": "inpatient",
+				"type": [
+					{
+						"text": "Orthopedic Admission"
+					}
+				],
+				"patient": {
+					"reference": "Patient/1"
+				},
+				"period": {
+					"start": "2013-01-20T12:30:02Z",
+					"end": "2013-02-01T12:30:02Z"
+				},
+				"hospitalization": {
+					"dischargeDisposition": {
+						"text": "Discharged to care of GP"
+					}
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/encounter-example",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "encounter-example",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Encounter with patient @qicore</div>"
+				},
+				"extension": [
+					{
+						"extension": [
+							{
+								"url": "condition",
+								"valueReference": {
+									"reference": "Condition/qicore"
+								}
+							},
+							{
+								"url": "role",
+								"valueCodeableConcept": {
+									"coding": [
+										{
+											"system": "http://snomed.info/sct",
+											"code": "8319008",
+											"display": "Principal diagnosis"
+										}
+									]
+								}
+							}
+						],
+						"url": "http://hl7.org/fhir/StructureDefinition/encounter-relatedCondition"
+					}
+				],
+				"status": "finished",
+				"class": "inpatient",
+				"patient": {
+					"reference": "patient-example"
+				},
+				"period": {
+					"start": "2015-02-09T00:00:00Z",
+					"end": "2015-02-20T00:00:00Z"
+				},
+				"hospitalization": {
+					"dischargeDisposition": {
+						"coding": [
+							{
+								"system": "http://hl7.org/fhir/discharge-disposition",
+								"code": "home",
+								"display": "Home"
+							}
+						]
+					}
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/example",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "example",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Encounter with patient @example</div>"
+				},
+				"status": "in-progress",
+				"class": "inpatient",
+				"patient": {
+					"reference": "Patient/example"
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/f001",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "f001",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f001</p><p><b>identifier</b>: v1451 (OFFICIAL)</p><p><b>status</b>: finished</p><p><b>class</b>: outpatient</p><p><b>type</b>: Patient-initiated encounter <span>(Details : {SNOMED CT code &#39;270427003&#39; = &#39;270427003&#39;, given as &#39;Patient-initiated encounter&#39;})</span></p><p><b>priority</b>: Non-urgent cardiological admission <span>(Details : {SNOMED CT code &#39;310361003&#39; = &#39;310361003&#39;, given as &#39;Non-urgent cardiological admission&#39;})</span></p><p><b>patient</b>: <a>P. van de Heuvel</a></p><h3>Participants</h3><table><tr><td>-</td><td><b>Individual</b></td></tr><tr><td>*</td><td><a>P. Voigt</a></td></tr></table><p><b>length</b>: 140 min<span> (Details: http://unitsofmeasure.org code min = &#39;??&#39;)</span></p><p><b>reason</b>: Heart valve replacement <span>(Details : {SNOMED CT code &#39;34068001&#39; = &#39;34068001&#39;, given as &#39;Heart valve replacement&#39;})</span></p><h3>Hospitalizations</h3><table><tr><td>-</td><td><b>PreAdmissionIdentifier</b></td><td><b>AdmitSource</b></td><td><b>DischargeDisposition</b></td></tr><tr><td>*</td><td>93042 (OFFICIAL)</td><td>Referral by physician <span>(Details : {SNOMED CT code &#39;305956004&#39; = &#39;305956004&#39;, given as &#39;Referral by physician&#39;})</span></td><td>Discharge to home <span>(Details : {SNOMED CT code &#39;306689006&#39; = &#39;306689006&#39;, given as &#39;Discharge to home&#39;})</span></td></tr></table><p><b>serviceProvider</b>: <a>Burgers University Medical Center</a></p></div>"
+				},
+				"identifier": [
+					{
+						"use": "official",
+						"system": "http://www.amc.nl/zorgportal/identifiers/visits",
+						"value": "v1451"
+					}
+				],
+				"status": "finished",
+				"class": "outpatient",
+				"type": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "270427003",
+								"display": "Patient-initiated encounter"
+							}
+						]
+					}
+				],
+				"priority": {
+					"coding": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "310361003",
+							"display": "Non-urgent cardiological admission"
+						}
+					]
+				},
+				"patient": {
+					"reference": "Patient/f001",
+					"display": "P. van de Heuvel"
+				},
+				"participant": [
+					{
+						"individual": {
+							"reference": "Practitioner/f002",
+							"display": "P. Voigt"
+						}
+					}
+				],
+				"length": {
+					"value": 140,
+					"unit": "min",
+					"system": "http://unitsofmeasure.org",
+					"code": "min"
+				},
+				"reason": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "34068001",
+								"display": "Heart valve replacement"
+							}
+						]
+					}
+				],
+				"hospitalization": {
+					"preAdmissionIdentifier": {
+						"use": "official",
+						"system": "http://www.amc.nl/zorgportal/identifiers/pre-admissions",
+						"value": "93042"
+					},
+					"admitSource": {
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "305956004",
+								"display": "Referral by physician"
+							}
+						]
+					},
+					"dischargeDisposition": {
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "306689006",
+								"display": "Discharge to home"
+							}
+						]
+					}
+				},
+				"serviceProvider": {
+					"reference": "Organization/f001",
+					"display": "Burgers University Medical Center"
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/f002",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "f002",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f002</p><p><b>identifier</b>: v3251 (OFFICIAL)</p><p><b>status</b>: finished</p><p><b>class</b>: outpatient</p><p><b>type</b>: Patient-initiated encounter <span>(Details : {SNOMED CT code &#39;270427003&#39; = &#39;270427003&#39;, given as &#39;Patient-initiated encounter&#39;})</span></p><p><b>priority</b>: Urgent <span>(Details : {SNOMED CT code &#39;103391001&#39; = &#39;103391001&#39;, given as &#39;Urgent&#39;})</span></p><p><b>patient</b>: <a>P. van de Heuvel</a></p><h3>Participants</h3><table><tr><td>-</td><td><b>Individual</b></td></tr><tr><td>*</td><td><a>M.I.M Versteegh</a></td></tr></table><p><b>length</b>: 140 min<span> (Details: http://unitsofmeasure.org code min = &#39;??&#39;)</span></p><p><b>reason</b>: Partial lobectomy of lung <span>(Details : {SNOMED CT code &#39;34068001&#39; = &#39;34068001&#39;, given as &#39;Partial lobectomy of lung&#39;})</span></p><h3>Hospitalizations</h3><table><tr><td>-</td><td><b>PreAdmissionIdentifier</b></td><td><b>AdmitSource</b></td><td><b>DischargeDisposition</b></td></tr><tr><td>*</td><td>98682 (OFFICIAL)</td><td>Referral by radiologist <span>(Details : {SNOMED CT code &#39;305997006&#39; = &#39;305997006&#39;, given as &#39;Referral by radiologist&#39;})</span></td><td>Discharge to home <span>(Details : {SNOMED CT code &#39;306689006&#39; = &#39;306689006&#39;, given as &#39;Discharge to home&#39;})</span></td></tr></table><p><b>serviceProvider</b>: <a>BMC</a></p></div>"
+				},
+				"identifier": [
+					{
+						"use": "official",
+						"system": "http://www.bmc.nl/zorgportal/identifiers/encounters",
+						"value": "v3251"
+					}
+				],
+				"status": "finished",
+				"class": "outpatient",
+				"type": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "270427003",
+								"display": "Patient-initiated encounter"
+							}
+						]
+					}
+				],
+				"priority": {
+					"coding": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "103391001",
+							"display": "Urgent"
+						}
+					]
+				},
+				"patient": {
+					"reference": "Patient/f001",
+					"display": "P. van de Heuvel"
+				},
+				"participant": [
+					{
+						"individual": {
+							"reference": "Practitioner/f003",
+							"display": "M.I.M Versteegh"
+						}
+					}
+				],
+				"length": {
+					"value": 140,
+					"unit": "min",
+					"system": "http://unitsofmeasure.org",
+					"code": "min"
+				},
+				"reason": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "34068001",
+								"display": "Partial lobectomy of lung"
+							}
+						]
+					}
+				],
+				"hospitalization": {
+					"preAdmissionIdentifier": {
+						"use": "official",
+						"system": "http://www.bmc.nl/zorgportal/identifiers/pre-admissions",
+						"value": "98682"
+					},
+					"admitSource": {
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "305997006",
+								"display": "Referral by radiologist"
+							}
+						]
+					},
+					"dischargeDisposition": {
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "306689006",
+								"display": "Discharge to home"
+							}
+						]
+					}
+				},
+				"serviceProvider": {
+					"reference": "Organization/f001",
+					"display": "BMC"
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/f003",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "f003",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f003</p><p><b>identifier</b>: v6751 (OFFICIAL)</p><p><b>status</b>: finished</p><p><b>class</b>: outpatient</p><p><b>type</b>: Patient-initiated encounter <span>(Details : {SNOMED CT code &#39;270427003&#39; = &#39;270427003&#39;, given as &#39;Patient-initiated encounter&#39;})</span></p><p><b>priority</b>: Non-urgent ear, nose and throat admission <span>(Details : {SNOMED CT code &#39;103391001&#39; = &#39;103391001&#39;, given as &#39;Non-urgent ear, nose and throat admission&#39;})</span></p><p><b>patient</b>: <a>P. van de Heuvel</a></p><h3>Participants</h3><table><tr><td>-</td><td><b>Individual</b></td></tr><tr><td>*</td><td><a>E.M. van den Broek</a></td></tr></table><p><b>length</b>: 90 min<span> (Details: http://unitsofmeasure.org code min = &#39;??&#39;)</span></p><p><b>reason</b>: Retropharyngeal abscess <span>(Details : {SNOMED CT code &#39;18099001&#39; = &#39;18099001&#39;, given as &#39;Retropharyngeal abscess&#39;})</span></p><h3>Hospitalizations</h3><table><tr><td>-</td><td><b>PreAdmissionIdentifier</b></td><td><b>AdmitSource</b></td><td><b>DischargeDisposition</b></td></tr><tr><td>*</td><td>93042 (OFFICIAL)</td><td>Referral by physician <span>(Details : {SNOMED CT code &#39;305956004&#39; = &#39;305956004&#39;, given as &#39;Referral by physician&#39;})</span></td><td>Discharge to home <span>(Details : {SNOMED CT code &#39;306689006&#39; = &#39;306689006&#39;, given as &#39;Discharge to home&#39;})</span></td></tr></table><p><b>serviceProvider</b>: <a>Organization/f001</a></p></div>"
+				},
+				"identifier": [
+					{
+						"use": "official",
+						"system": "http://www.bmc.nl/zorgportal/identifiers/encounters",
+						"value": "v6751"
+					}
+				],
+				"status": "finished",
+				"class": "outpatient",
+				"type": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "270427003",
+								"display": "Patient-initiated encounter"
+							}
+						]
+					}
+				],
+				"priority": {
+					"coding": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "103391001",
+							"display": "Non-urgent ear, nose and throat admission"
+						}
+					]
+				},
+				"patient": {
+					"reference": "Patient/f001",
+					"display": "P. van de Heuvel"
+				},
+				"participant": [
+					{
+						"individual": {
+							"reference": "Practitioner/f001",
+							"display": "E.M. van den Broek"
+						}
+					}
+				],
+				"length": {
+					"value": 90,
+					"unit": "min",
+					"system": "http://unitsofmeasure.org",
+					"code": "min"
+				},
+				"reason": [
+					{
+						"extension": [
+							{
+								"url": "http://hl7.org/fhir/StructureDefinition/encounter-primaryDiagnosis",
+								"valuePositiveInt": 1
+							}
+						],
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "18099001",
+								"display": "Retropharyngeal abscess"
+							}
+						]
+					}
+				],
+				"hospitalization": {
+					"preAdmissionIdentifier": {
+						"use": "official",
+						"system": "http://www.bmc.nl/zorgportal/identifiers/pre-admissions",
+						"value": "93042"
+					},
+					"admitSource": {
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "305956004",
+								"display": "Referral by physician"
+							}
+						]
+					},
+					"dischargeDisposition": {
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "306689006",
+								"display": "Discharge to home"
+							}
+						]
+					}
+				},
+				"serviceProvider": {
+					"reference": "Organization/f001"
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/f201",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "f201",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f201</p><p><b>identifier</b>: Encounter_Roel_20130404 (TEMP)</p><p><b>status</b>: finished</p><p><b>class</b>: outpatient</p><p><b>type</b>: Consultation <span>(Details : {SNOMED CT code &#39;11429006&#39; = &#39;11429006&#39;, given as &#39;Consultation&#39;})</span></p><p><b>priority</b>: Normal <span>(Details : {SNOMED CT code &#39;17621005&#39; = &#39;17621005&#39;, given as &#39;Normal&#39;})</span></p><p><b>patient</b>: <a>Roel</a></p><h3>Participants</h3><table><tr><td>-</td><td><b>Individual</b></td></tr><tr><td>*</td><td><a>Practitioner/f201</a></td></tr></table><p><b>reason</b>: The patient had fever peaks over the last couple of days. He is worried about these peaks. <span>(Details )</span></p><p><b>serviceProvider</b>: <a>Organization/f201</a></p></div>"
+				},
+				"identifier": [
+					{
+						"use": "temp",
+						"value": "Encounter_Roel_20130404"
+					}
+				],
+				"status": "finished",
+				"class": "outpatient",
+				"type": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "11429006",
+								"display": "Consultation"
+							}
+						]
+					}
+				],
+				"priority": {
+					"coding": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "17621005",
+							"display": "Normal"
+						}
+					]
+				},
+				"patient": {
+					"reference": "Patient/f201",
+					"display": "Roel"
+				},
+				"participant": [
+					{
+						"individual": {
+							"reference": "Practitioner/f201"
+						}
+					}
+				],
+				"reason": [
+					{
+						"text": "The patient had fever peaks over the last couple of days. He is worried about these peaks."
+					}
+				],
+				"serviceProvider": {
+					"reference": "Organization/f201"
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/f202",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "f202",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f202</p><p><b>identifier</b>: Encounter_Roel_20130128 (TEMP)</p><p><b>status</b>: finished</p><p><b>class</b>: outpatient</p><p><b>type</b>: Chemotherapy <span>(Details : {SNOMED CT code &#39;367336001&#39; = &#39;367336001&#39;, given as &#39;Chemotherapy&#39;})</span></p><p><b>priority</b>: Urgent <span>(Details : {SNOMED CT code &#39;103391001&#39; = &#39;103391001&#39;, given as &#39;Urgent&#39;})</span></p><p><b>patient</b>: <a>Roel</a></p><h3>Participants</h3><table><tr><td>-</td><td><b>Individual</b></td></tr><tr><td>*</td><td><a>Practitioner/f201</a></td></tr></table><p><b>length</b>: 56 minutes<span> (Details: SNOMED CT code 258701004 = &#39;258701004&#39;)</span></p><p><b>reason</b>: The patient is treated for a tumor. <span>(Details )</span></p><p><b>indication</b>: <a>Roel&#39;s TPF chemotherapy on January 28th, 2013</a></p><p><b>serviceProvider</b>: <a>Organization/f201</a></p></div>"
+				},
+				"identifier": [
+					{
+						"use": "temp",
+						"value": "Encounter_Roel_20130128"
+					}
+				],
+				"status": "finished",
+				"class": "outpatient",
+				"type": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "367336001",
+								"display": "Chemotherapy"
+							}
+						]
+					}
+				],
+				"priority": {
+					"coding": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "103391001",
+							"display": "Urgent"
+						}
+					]
+				},
+				"patient": {
+					"reference": "Patient/f201",
+					"display": "Roel"
+				},
+				"participant": [
+					{
+						"individual": {
+							"reference": "Practitioner/f201"
+						}
+					}
+				],
+				"length": {
+					"value": 56,
+					"unit": "minutes",
+					"system": "http://snomed.info/sct",
+					"code": "258701004"
+				},
+				"reason": [
+					{
+						"extension": [
+							{
+								"url": "http://hl7.org/fhir/StructureDefinition/encounter-primaryDiagnosis",
+								"valuePositiveInt": 2
+							}
+						],
+						"text": "The patient is treated for a tumor."
+					}
+				],
+				"indication": [
+					{
+						"extension": [
+							{
+								"url": "http://hl7.org/fhir/StructureDefinition/encounter-primaryDiagnosis",
+								"valuePositiveInt": 1
+							}
+						],
+						"reference": "Procedure/f201",
+						"display": "Roel's TPF chemotherapy on January 28th, 2013"
+					}
+				],
+				"serviceProvider": {
+					"reference": "Organization/f201"
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/f203",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "f203",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f203</p><p><b>identifier</b>: Encounter_Roel_20130311 (TEMP)</p><p><b>status</b>: finished</p><p><b>class</b>: inpatient</p><p><b>type</b>: Inpatient stay for nine days <span>(Details : {SNOMED CT code &#39;183807002&#39; = &#39;183807002&#39;, given as &#39;Inpatient stay for nine days&#39;})</span></p><p><b>priority</b>: High priority <span>(Details : {SNOMED CT code &#39;394849002&#39; = &#39;394849002&#39;, given as &#39;High priority&#39;})</span></p><p><b>patient</b>: <a>Roel</a></p><h3>Participants</h3><table><tr><td>-</td><td><b>Individual</b></td></tr><tr><td>*</td><td><a>Practitioner/f201</a></td></tr></table><p><b>period</b>: 11/03/2013 --&gt; 20/03/2013</p><p><b>reason</b>: The patient seems to suffer from bilateral pneumonia and renal insufficiency, most likely due to chemotherapy. <span>(Details )</span></p><h3>Hospitalizations</h3><table><tr><td>-</td><td><b>AdmitSource</b></td><td><b>ReAdmission</b></td><td><b>DietPreference</b></td></tr><tr><td>*</td><td>Clinical Oncology Department <span>(Details : {SNOMED CT code &#39;309902002&#39; = &#39;309902002&#39;, given as &#39;Clinical Oncology Department&#39;})</span></td><td>readmitted <span>(Details : {[not stated] code &#39;null&#39; = &#39;??&#39;, given as &#39;readmitted&#39;})</span></td><td>Fluid balance regulation <span>(Details : {SNOMED CT code &#39;276026009&#39; = &#39;276026009&#39;, given as &#39;Fluid balance regulation&#39;})</span></td></tr></table><p><b>serviceProvider</b>: <a>Organization/f201</a></p></div>"
+				},
+				"identifier": [
+					{
+						"use": "temp",
+						"value": "Encounter_Roel_20130311"
+					}
+				],
+				"status": "finished",
+				"class": "inpatient",
+				"type": [
+					{
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "183807002",
+								"display": "Inpatient stay for nine days"
+							}
+						]
+					}
+				],
+				"priority": {
+					"coding": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "394849002",
+							"display": "High priority"
+						}
+					]
+				},
+				"patient": {
+					"reference": "Patient/f201",
+					"display": "Roel"
+				},
+				"participant": [
+					{
+						"individual": {
+							"reference": "Practitioner/f201"
+						}
+					}
+				],
+				"period": {
+					"start": "2013-03-11",
+					"end": "2013-03-20"
+				},
+				"reason": [
+					{
+						"text": "The patient seems to suffer from bilateral pneumonia and renal insufficiency, most likely due to chemotherapy."
+					}
+				],
+				"hospitalization": {
+					"admitSource": {
+						"coding": [
+							{
+								"system": "http://snomed.info/sct",
+								"code": "309902002",
+								"display": "Clinical Oncology Department"
+							}
+						]
+					},
+					"reAdmission": {
+						"coding": [
+							{
+								"display": "readmitted"
+							}
+						]
+					},
+					"dietPreference": [
+						{
+							"coding": [
+								{
+									"system": "http://snomed.info/sct",
+									"code": "276026009",
+									"display": "Fluid balance regulation"
+								}
+							]
+						}
+					]
+				},
+				"serviceProvider": {
+					"reference": "Organization/f201"
+				}
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/home",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "home",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Encounter with patient @example who is at home</div>"
+				},
+				"contained": [
+					{
+						"resourceType": "Location",
+						"id": "home",
+						"description": "Client's home",
+						"mode": "kind"
+					}
+				],
+				"status": "finished",
+				"class": "virtual",
+				"patient": {
+					"reference": "Patient/example"
+				},
+				"participant": [
+					{
+						"period": {
+							"start": "2015-01-17T16:00:00+10:00",
+							"end": "2015-01-17T16:30:00+10:00"
+						},
+						"individual": {
+							"reference": "Practitioner/example",
+							"display": "Dr Adam Careful"
+						}
+					}
+				],
+				"period": {
+					"start": "2015-01-17T16:00:00+10:00",
+					"end": "2015-01-17T16:30:00+10:00"
+				},
+				"location": [
+					{
+						"location": {
+							"reference": "#home",
+							"display": "Client's home"
+						},
+						"status": "completed",
+						"period": {
+							"start": "2015-01-17T16:00:00+10:00",
+							"end": "2015-01-17T16:30:00+10:00"
+						}
+					}
+				]
+			},
+			"search": {
+				"mode": "match"
+			}
+		},
+		{
+			"fullUrl": "http://fhir2.healthintersections.com.au/open/Encounter/xcda",
+			"resource": {
+				"resourceType": "Encounter",
+				"id": "xcda",
+				"meta": {
+					"versionId": "1",
+					"lastUpdated": "2017-01-04T20:46:05Z"
+				},
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: xcda</p><p><b>identifier</b>: 1234213.52345873 (OFFICIAL)</p><p><b>status</b>: finished</p><p><b>class</b>: outpatient</p><p><b>patient</b>: <a>Patient/xcda</a></p><h3>Participants</h3><table><tr><td>-</td><td><b>Individual</b></td></tr><tr><td>*</td><td><a>Practitioner/xcda1</a></td></tr></table><p><b>reason</b>: Arm <span>(Details : {http://ihe.net/xds/connectathon/eventCodes code &#39;T-D8200&#39; = &#39;??&#39;, given as &#39;Arm&#39;})</span></p></div>"
+				},
+				"identifier": [
+					{
+						"use": "official",
+						"system": "http://healthcare.example.org/identifiers/enocunter",
+						"value": "1234213.52345873"
+					}
+				],
+				"status": "finished",
+				"class": "outpatient",
+				"patient": {
+					"reference": "Patient/xcda"
+				},
+				"participant": [
+					{
+						"individual": {
+							"reference": "Practitioner/xcda1"
+						}
+					}
+				],
+				"reason": [
+					{
+						"coding": [
+							{
+								"system": "http://ihe.net/xds/connectathon/eventCodes",
+								"code": "T-D8200",
+								"display": "Arm"
+							}
+						]
+					}
+				]
+			},
+			"search": {
+				"mode": "match"
+			}
+		}
+	]
+}

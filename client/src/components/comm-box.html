@@ -1,0 +1,19 @@
+<!--
+  ~ This file is part of Webelexis(tm)
+  ~ Copyright (c) 2017 by G. Weirich
+  -->
+
+<template>
+    <md-slider md-interval="60000" class="text-paper-accent" view-model.ref="slider" md-height="150rem">
+        <li repeat.for="comm of patient.telecom" class="text-paper">
+            <p class="text-label">
+                <span t="personalDetails.${comm.system}"></span><span>&nbsp;</span>
+                <span t="personalDetails.${comm.use}"></span>:
+            </p>
+            ${comm.value}
+
+        </li>
+
+    </md-slider>
+
+</template>
