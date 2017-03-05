@@ -36,8 +36,8 @@ Hier exemplarisch die Installation in einem frisch aufgesetzten Ubuntu 16.10. Zu
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
   nvm install 7.5.0
   sudo apt-get install git openjdk-8-jdk mongodb
-  git clone https://github.com/rgwch/webelexis-aurelia
-  cd webelexis-aurelia/Janus
+  git clone https://github.com/rgwch/webelexis
+  cd webelexis/Janus
   mkdir lib
   cd lib
   wget https://bintray.com/rgwch/maven/download_file?file_path=rgwch%2Frgw-toolbox%2F4.2.3%2Frgw-toolbox-4.2.3.jar -O rgw-toolbox-4.2.3.jar
