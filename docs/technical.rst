@@ -1,7 +1,7 @@
 Technische Informationen
 ========================
 
-Webelexis besteht aus zwei Komponenten: Einem client, der einen FHIR-Kompatiblen Server erwartet, und einer Serverkomponente, *Janus*,
+Webelexis besteht aus zwei Komponenten: Einem client, der einen FHIR_-Kompatiblen Server erwartet, und einer Serverkomponente, *Janus*,
 welche auf eine Elexis-Datenbank zugreift und deren Inhalte als FHIR Objekte bereitstellt, resp. FHIR-Objekte in einer für Elexis gebräuchlichen
 Form abspeichert.
 
@@ -22,3 +22,5 @@ neueren Version vorliegt. In /services finden sich die Klassen, die Datenbankzug
 die üblichen Express_ -konformen Route-Definitionen für die REST Endpoints.
    
 
+.. _Express: http://expressjs.com
+.. _FHIR: https://www.hl7.org/fhir/
