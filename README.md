@@ -2,9 +2,9 @@
 
 Webelexis consists of two parts:
 
-* The Webelexis-Janus server turns an [Elexis](http://www.elexis.ch/ungrad) Database into a [FHIR](https://www.hl7.org/fhir/) server.
+* _Janus_ (based on NodeJS/Express) turns an [Elexis](http://www.elexis.ch/ungrad) Database into a [FHIR](https://www.hl7.org/fhir/) server.
 
-* The Webelexis-Aurelia client is a FHIR-Client, which can, among others, use the Webelexis-Janus server as its data source.
+* _client_ (based on Aurelia/Materialize) is a FHIR-Client, which can, among others, use the Webelexis-Janus server as its data source.
 
 
 ## Prerequisites
@@ -16,3 +16,13 @@ Webelexis consists of two parts:
 ## Setup and first steps
 
 [Read the docs](http://webelexis.readthedocs.io/de/latest/firststeps.html)
+
+## Repository design
+
+* _master_ contains always a state which is ready to compile and run.
+* _develop_ is the working branch.
+* all feature branches go from and merge to _develop_.
+
+Recommended tool: [git flow](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/)
+
+
