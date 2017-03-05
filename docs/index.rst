@@ -1,32 +1,31 @@
-.. Webelexis documentation master file, created by
-   sphinx-quickstart on Sun Jan 22 07:25:34 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
+#######################
 Webelexis-Dokumentation
-=======================
+#######################
+
+**********************
+Anwender-Informationen
+**********************
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Inhalt:
+   :maxdepth: 3
 
    intro
    firststeps
    docker
-   fhirmapping
 
-Diverse
-=======
+************************
+Technische Informationen
+************************
 
 .. toctree::
-   :maxdepth: 2
-   :caption: div
+   :maxdepth: 3
 
+   technical
    claim-encounter
 
-Indices and tables
-==================
+*****************
+Suchen und finden
+*****************
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
