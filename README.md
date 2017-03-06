@@ -1,3 +1,4 @@
+<img align="right" src="docs/webelexis_small.png">
 # Webelexis
 
 Webelexis consists of two parts:
