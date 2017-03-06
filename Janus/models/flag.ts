@@ -5,8 +5,8 @@
  ***************************************/
 
 import {Refiner} from "./fhirsync";
-import {FHIR_CodeableConcept, FHIR_Flag, FHIR_Resource} from "../../common/models/fhir";
-import * as xid from "../../common/xid";
+import {FHIR_CodeableConcept, FHIR_Flag, FHIR_Resource} from "../common/models/fhir";
+import * as xid from "../common/xid";
 import {FhirObject} from "./fhirobject";
 import {SQL} from "../services/mysql";
 import * as moment from 'moment'

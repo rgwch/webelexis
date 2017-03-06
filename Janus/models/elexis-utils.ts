@@ -144,9 +144,9 @@ export class ElexisUtils {
   // Create a Date object from a YYYYMMDD String
   public makeDateObjectFromCompact(datestring) {
     if (datestring !== undefined && datestring.length === 8) {
-      var year = datestring.substring(0, 4)
-      var month = datestring.substring(4, 6) - 1
-      var day = datestring.substring(6, 8)
+      let year:number = parseInt(datestring.substring(0, 4))
+      let month:number = parseInt(datestring.substring(4, 6) - 1)
+      let day:number = parseInt(datestring.substring(6, 8))
       return new Date(year, month, day)
     } else {
       return ""

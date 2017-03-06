@@ -4,7 +4,7 @@
  */
 
 import {Refiner} from "./fhirsync";
-import {FHIR_Resource,FHIR_Encounter,FHIR_Narrative} from '../../common/models/fhir'
+import {FHIR_Resource,FHIR_Encounter,FHIR_Narrative} from '../common/models/fhir'
 import {SQL} from '../services/mysql'
 import * as moment from 'moment'
 import {FhirObject} from '../models/fhirobject'

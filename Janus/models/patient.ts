@@ -48,12 +48,12 @@
  */
 
 import {Refiner} from "./fhirsync";
-import {FHIR_Address, FHIR_ContactPoint, FHIR_Identifier, FHIR_Patient, FHIR_Resource} from "../../common/models/fhir";
+import {FHIR_Address, FHIR_ContactPoint, FHIR_Identifier, FHIR_Patient, FHIR_Resource} from "../common/models/fhir";
 import {Janus} from "../services/janus";
 import {SQL} from "../services/mysql";
 import * as moment from "moment";
 import {FhirObject} from "../models/fhirobject";
-import * as xid from "../../common/xid";
+import * as xid from "../common/xid";
 import {NoSQL} from "../services/mongo";
 
 

@@ -5,7 +5,7 @@
 
 import {Refiner} from "../models/fhirsync";
 import {NoSQL} from "./mongo";
-import {FhirBundle,FHIR_Resource,FHIR_ResourceEntry} from "../../common/models/fhir";
+import {FhirBundle,FHIR_Resource,FHIR_ResourceEntry} from "../common/models/fhir";
 import * as moment from "moment";
 import * as sha1 from 'sha1'
 import {FhirObject} from "../models/fhirobject";
@@ -33,12 +33,12 @@ export class Janus {
   public async getAsync(id: string, refiner: Refiner): Promise<any> {
     let mnosql = await this.nosql.getAsync(refiner.dataType, {id: id})
     let msql = await refiner.fetchSQL({id: id})
-    return Promise.all([mnosql, msql]).then((values) => {
+    return Promise.all([mnosql, msql]).then((values:Array<Array<FHIR_Resource>>) => {
       let sqlObj
       if (values[1].length > 0) {
         sqlObj = values[1][0]
       }
-      let noSqlObj = values[0]
+      let noSqlObj:FHIR_Resource = values[0][0]
       if (noSqlObj) {
         if (sqlObj) {
           return this._checkItems(noSqlObj, sqlObj, refiner)
@@ -95,7 +95,7 @@ export class Janus {
       let msql = refiner.fetchSQL(params)
       let mnosql = refiner.fetchNoSQL(params)
 
-      return Promise.all([msql, mnosql]).then((values) => {
+      return Promise.all([msql, mnosql]).then((values:Array<Array>) => {
         var resulting = []
         var checked = {}
         values[0].forEach(function (entry: FHIR_Resource) {

@@ -5,9 +5,9 @@
 
 import {FhirObject} from "./fhirobject";
 import {Refiner} from "./fhirsync";
-import {FHIR_Resource,FHIR_Schedule} from '../../common/models/fhir'
+import {FHIR_Resource,FHIR_Schedule} from '../common/models/fhir'
 import * as nconf from 'nconf'
-import * as xid from '../../common/xid'
+import * as xid from '../common/xid'
 import moment = require("moment");
 import {SQL} from "../services/mysql";
 import {NoSQL} from "../services/mongo";

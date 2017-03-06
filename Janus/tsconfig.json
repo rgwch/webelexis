@@ -11,7 +11,9 @@
   },
   "include": [
     "models/*.ts",
-    "test/*.ts"
+    "test/*.ts",
+    "common/**/*.ts",
+    "services/*.ts"
   ],
   "exclude": [
     "node_modules"

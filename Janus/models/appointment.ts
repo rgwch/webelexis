@@ -5,11 +5,11 @@
  ***************************************/
 
 import {Refiner} from "./fhirsync";
-import {FHIR_Resource, FHIR_Flag, FHIR_CodeableConcept, FHIR_Coding, FHIR_Appointment} from '../../common/models/fhir'
+import {FHIR_Resource, FHIR_Flag, FHIR_CodeableConcept, FHIR_Coding, FHIR_Appointment} from '../common/models/fhir'
 import {Janus} from '../services/janus'
 import {MySql} from '../services/mysql'
 import * as moment from 'moment'
-import * as xid from '../../common/xid'
+import * as xid from '../common/xid'
 import {SQL} from '../services/mysql'
 import {FhirObject} from "./fhirobject";
 import {NoSQL} from "../services/mongo";

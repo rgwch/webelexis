@@ -4,12 +4,12 @@
  * All rights reserved.
  ***************************************/
 import * as moment from 'moment'
-import {FHIR_Resource,FHIR_Period} from '../../common/models/fhir'
+import {FHIR_Resource,FHIR_Period} from '../common/models/fhir'
 import {SQL} from '../services/mysql'
 import {NoSQL} from '../services/mongo'
 import * as log from 'winston'
 import * as config from 'nconf'
-import * as XID from '../../common/xid'
+import * as XID from '../common/xid'
 
 export class FhirObject {
   protected logger=log

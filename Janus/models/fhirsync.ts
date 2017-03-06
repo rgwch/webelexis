@@ -4,7 +4,7 @@
  * All rights reserved.
  ***************************************/
 
-import {FHIR_Resource} from '../../common/models/fhir'
+import {FHIR_Resource} from '../common/models/fhir'
 
 export interface Refiner {
   dataType:string

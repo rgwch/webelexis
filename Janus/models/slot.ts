@@ -6,7 +6,7 @@
 
 import {FhirObject} from "./fhirobject";
 import {Refiner} from "./fhirsync";
-import {FHIR_Resource,FHIR_Slot} from '../../common/models/fhir'
+import {FHIR_Resource,FHIR_Slot} from '../common/models/fhir'
 import moment = require("moment");
 
 
@@ -50,10 +50,10 @@ export class Slot extends FhirObject implements Refiner {
 
         let before = moment(sorted[0].Tag)
         sorted.forEach(appnt => {
-          let begin = moment(appnt.Tag)
-          begin.add(parseInt(appnt.Beginn), "minutes")
+          let begin = moment(appnt['Tag'])
+          begin.add(parseInt(appnt['Beginn']), "minutes")
           let end = moment(begin)
-          end.add(parseInt(appnt.Dauer), "minutes")
+          end.add(parseInt(appnt['Dauer']), "minutes")
           slots.push({
             resourceType: "Slot",
             id          : super.createUUID(),
@@ -70,7 +70,7 @@ export class Slot extends FhirObject implements Refiner {
             start       : begin,
             end         : end,
             overbooked  : false,
-            remark      : appnt.Grund,
+            remark      : appnt['Grund'],
             meta:{
               tag: [{
                 system: super.xid.elexis_appointment,
@@ -85,7 +85,7 @@ export class Slot extends FhirObject implements Refiner {
         // no appnts
         let slots=super.cfg.agenda.slots.default
         slots.forEach(slot=>{
-          let time=slot.timespan.split("-")
+          let time=slot['timespan'].split("-")
           let act=moment(time[0],"hh:mm")
         })
         return []
