@@ -20,7 +20,7 @@ Applikation setzt einen einigermassen modernen Browser voraus (Chrome, Chromium 
 Um diese Dokumentation hier aus den Quellen zu erstellen, benötigen Sie Sphinx_.
 
 
-Die Webelexis Webapp benötigt eine Elexis-Datenbank vom Typ Elexis_Ungrad_. Andere Elexis-Versionen ab 3.0 können
+Janus benötigt eine Elexis-Datenbank vom Typ Elexis_Ungrad_. Andere Elexis-Versionen ab 2.x können
 gehen, es kann aber zu Problemen kommen.
 
 
