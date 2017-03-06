@@ -8,7 +8,7 @@ import {FHIR_Resource,FHIR_Encounter,FHIR_Narrative} from '../common/models/fhir
 import {SQL} from '../services/mysql'
 import * as moment from 'moment'
 import {FhirObject} from '../models/fhirobject'
-import * as xid from '../../common/xid'
+import * as xid from '../common/xid'
 import {NoSQL} from "../services/mongo";
 
 export class Condition extends FhirObject implements Refiner{

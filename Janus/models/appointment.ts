@@ -99,12 +99,12 @@ export class Appointment extends FhirObject implements Refiner {
     }
     let raw = await this.sql.queryAsync(sql + " ORDER by Tag DESC", vals)
     let result = raw.map(termin => {
-      return this._makeAppntFhir(termin)
+      return Appointment._makeAppntFhir(termin)
     })
     return result
   }
 
-  private _makeAppntFhir(raw) {
+  static _makeAppntFhir(raw) {
     let begin = moment(raw.Tag, "YYYYMMDD")
     begin.add(parseInt(raw.Beginn), "minutes")
     let duration = parseInt(raw.Dauer)

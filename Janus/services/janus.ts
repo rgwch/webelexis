@@ -33,7 +33,7 @@ export class Janus {
   public async getAsync(id: string, refiner: Refiner): Promise<any> {
     let mnosql = await this.nosql.getAsync(refiner.dataType, {id: id})
     let msql = await refiner.fetchSQL({id: id})
-    return Promise.all([mnosql, msql]).then((values:Array<Array<FHIR_Resource>>) => {
+    return Promise.all([mnosql, msql]).then((values) => {
       let sqlObj
       if (values[1].length > 0) {
         sqlObj = values[1][0]
@@ -95,7 +95,9 @@ export class Janus {
       let msql = refiner.fetchSQL(params)
       let mnosql = refiner.fetchNoSQL(params)
 
-      return Promise.all([msql, mnosql]).then((values:Array<Array>) => {
+      return Promise.all([msql, mnosql]).catch(err=>{
+        console.log(err)
+      }).then((values) => {
         var resulting = []
         var checked = {}
         values[0].forEach(function (entry: FHIR_Resource) {

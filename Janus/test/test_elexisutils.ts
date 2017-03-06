@@ -8,7 +8,7 @@ import { suite, test, slow, timeout, skip, only } from "mocha-typescript";
 import {expect} from 'chai'
 import {Patient} from '../models/patient'
 import {DummySql} from "./dummy_sql";
-import {FHIR_Resource} from '../../common/models/fhir'
+import {FHIR_Resource} from '../common/models/fhir'
 import {FhirObject} from "../models/fhirobject";
 import {ElexisUtils} from "../models/elexis-utils";
 

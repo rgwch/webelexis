@@ -551,7 +551,7 @@ export interface FHIR_Schedule extends FHIR_Resource{
 }
 export interface FHIR_Slot extends FHIR_Resource{
   type?: FHIR_CodeableConcept
-  schedule: FHIR_Reference
+  schedule?: FHIR_Reference
   freeBusyType: "busy"|"free"|"busy-unavailable"|"busy-tentative"
   start: instant
   end: instant

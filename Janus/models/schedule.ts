@@ -23,8 +23,8 @@ export class Schedule extends FhirObject implements Refiner{
   }
 
   private createSchedule(dateParam:string, actorParam:string):FHIR_Resource{
-    let cfg=nconf.get('agenda')
-    let scheduleType=cfg.get('scheduleType')
+    let cfg=nconf.get("agenda")
+    let scheduleType=cfg['scheduleType']
     if(scheduleType == undefined){
       scheduleType={
         type:{
@@ -34,7 +34,7 @@ export class Schedule extends FhirObject implements Refiner{
         text: "Konsultation"
       }
     }
-    let actor=cfg.get("actors")[0]
+    let actor=cfg["actors"][0]
     if(actorParam){
       actor=actorParam
     }

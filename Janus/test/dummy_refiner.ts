@@ -5,7 +5,7 @@
  ***************************************/
 
 import {Refiner} from "./../models/fhirsync";
-import {FHIR_Resource} from '../../client/src/models/fhir'
+import {FHIR_Resource} from '../common/models/fhir'
 
 export class DummyRefiner implements Refiner {
   dataType:string = "DummyObject"

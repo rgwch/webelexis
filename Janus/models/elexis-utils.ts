@@ -145,7 +145,7 @@ export class ElexisUtils {
   public makeDateObjectFromCompact(datestring) {
     if (datestring !== undefined && datestring.length === 8) {
       let year:number = parseInt(datestring.substring(0, 4))
-      let month:number = parseInt(datestring.substring(4, 6) - 1)
+      let month:number = parseInt(datestring.substring(4, 6)) - 1
       let day:number = parseInt(datestring.substring(6, 8))
       return new Date(year, month, day)
     } else {
