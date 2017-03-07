@@ -6,8 +6,12 @@ import {inject} from 'aurelia-framework'
 export class SearchBox {
   public searchexpr: string = '';
   public patients: Array<Patient>
+  private patientFactory
+  private patientService;
 
-  constructor(private patientFactory: PatientFactory, private patientService: FhirService) {
+  constructor(patientFactory: PatientFactory, patientService: FhirService) {
+    this.patientFactory=patientFactory
+    this.patientService=patientService
   }
 
   doSearch = function () {

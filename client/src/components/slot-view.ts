@@ -13,10 +13,34 @@ export class SlotView {
   @bindable obj:FHIRobject
   @bindable large:Boolean
   private cfg
+  private _state
+  private _slotType
 
   constructor() {
     this.cfg = Container.instance.get(Config)
+
   }
+
+  state(){
+    if(!this._state){
+      this._state=this.cfg.getAgendaState(this.obj.getField("contained.status"))
+    }
+    return this._state
+  }
+
+  type(){
+    if(!this._slotType){
+      let freebusy = this.obj.getField('freeBusyType')
+      if(freebusy=="free") {
+        this._slotType = this.cfg.getAgendaType("free")
+      } else{
+        this._slotType= this.cfg.getAgendaType(this.obj.getField("contained.type.text"))
+      }
+
+    }
+    return this._slotType
+  }
+
 
   getLabel() {
     if (this.large) {
@@ -28,20 +52,38 @@ export class SlotView {
     }
   }
 
-  getTypeStyle() :string{
-    let freebusy = this.obj.getField('freeBusyType')
-    let type={}
-    if(freebusy=="free") {
-      type = this.cfg.getAgendaType("free")
-    }else{
-      type= this.cfg.getAgendaType(this.obj.getField("contained.type.text"))
+  getStateLabel():string{
+    let ret=this.state()['label']
+    if(!ret){
+      ret=this.state()['name']
     }
+    return ret;
+  }
+
+  getTypeLabel():string{
+    let ret=this.type()['label']
+    if(!ret){
+      ret=this.type()['name']
+    }
+    return ret
+  }
+  getStateStyle():string{
     let ret
-    if(type["bg"]){
-      ret="background-color:"+type['bg']+";"
+    if(this.state()['bg']){
+      ret="background-color:"+this.state()['bg']+";"
     }
-    if(type["fg"]){
-      ret+="color:"+type["fg"]+";"
+    if(this.state()['fg']){
+      ret+="color:"+this.state()['fg']+";"
+    }
+    return ret
+  }
+  getTypeStyle() :string{
+    let ret
+    if(this.type()["bg"]){
+      ret="background-color:"+this.type()['bg']+";"
+    }
+    if(this.type()["fg"]){
+      ret+="color:"+this.type()["fg"]+";"
     }
     return ret;
   }

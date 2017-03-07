@@ -12,7 +12,7 @@ import {inject} from "aurelia-framework";
 @inject(HttpWrapper)
 export class Config {
 
-  constructor(private http: HttpWrapper) {
+  constructor(private http:HttpWrapper) {
     http.get("configuration").then(result => {
       if (result) {
         if (result.agenda) {
@@ -46,55 +46,86 @@ export class Config {
     }
   ]
 
-  public getAgendaType(name:string){
-    let type=this.agenda.types.find(tp=>{return (tp.name==name || tp.label==name)})
-    if(type){
+  public getAgendaType(name:string) {
+    let cmp = name.toLocaleLowerCase()
+    let type = this.agenda.types.find(tp=> {
+      if (tp['name'] && tp['name'].toLocaleLowerCase() === cmp) {
+        return true;
+      }
+      if (tp['label'] && tp['label'].toLocaleLowerCase() === cmp) {
+        return true
+      }
+    })
+    if (type) {
       return type
-    }else{
+    } else {
       return {
-        "name":name,
-        "fg":"black",
-        "bg":"white",
-        "duration":15
+        "name": name,
+        "fg": "black",
+        "bg": "white",
+        "duration": 15
       }
     }
   }
+
+  public getAgendaState(name:string) {
+    let cmp = name.toLocaleLowerCase()
+    let state = this.agenda.states.find(tp=> {
+      if (tp['name'] && tp['name'].toLocaleLowerCase() === cmp) {
+        return true;
+      }
+      if (tp['label'] && tp['label'].toLocaleLowerCase() === cmp) {
+        return true
+      }
+    })
+    if (state) {
+      return state
+    } else {
+      return {
+        "name": name,
+        "label": name,
+        "fg": "black",
+        "bg": "white",
+      }
+    }
+  }
+
   public agenda = {
     "types": [
       {
-        "name":"free",
-        "label":"frei",
+        "name": "free",
+        "label": "frei",
         "fg": "green",
         "bg": "green",
         "duration": 30
       },
       {
-        "name":"unassignable",
-        "label":"reserviert",
-        "fg":"black",
-        "bg":"black",
-        "duration":30
+        "name": "unassignable",
+        "label": "reserviert",
+        "fg": "black",
+        "bg": "black",
+        "duration": 30
       },
       {
-        "label": "normal",
+        "name": "normal",
         "fg": "black",
         "bg": "#f4c542",
         "duration": 30
       },
       {
-        "label": "Extra",
+        "name": "Extra",
         "fg": "white",
         "bg": "#f44242",
         "duration": 15
       },
       {
-        "label": "Check-Up",
+        "name": "Check-Up",
         "fg": "black",
         "bg": "#42f4dc",
         "duration": 45
       },
       {
-        "label": "Besprechung",
+        "name": "Besprechung",
         "fg": "black",
         "bg": "#42d7f4",
         duration: 30

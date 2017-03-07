@@ -187,7 +187,7 @@ export class Slot extends FhirObject implements Refiner {
   }
 
   private _findPresetsForDay(day:string):Array <SlotPreset> {
-    let conf = this.cfg.get("agenda")
+    let conf = this.cfg.get("client")['agenda']
     return conf.slots.default.map((slot:SlotPreset)=> {
       let fullStart = moment(`${day} ${slot.begin}`, "YYYYMMDD HH:mm").format()
       let fullEnd = moment(`${day} ${slot.end}`, "YYYYMMDD HH:mm").format()
@@ -205,7 +205,7 @@ export class Slot extends FhirObject implements Refiner {
         return presets[i]
       }
     }
-    let dfltSlot = this.cfg.get('agenda').slots.default[0]
+    let dfltSlot = this.cfg.get('client')['agenda'].slots.default[0]
     return {
       begin: moment(`${day} ${dfltSlot.begin}`, "YYYYMMDD HH:mm").format(),
       end: moment(`${day} ${dfltSlot.end}`, "YYYYMMDD HH:mm").format(),

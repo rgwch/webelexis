@@ -4,7 +4,5 @@ template
     .row
       .col.s12
         span ${dateDisplay}
-    .row
-      p ${slots.values.length}
-      .col.s12(repeat.for="val of slots.values")
+    .row(repeat.for="val of slots.values" style="margin:0;padding:0")
         slot-view(obj.bind="val" large.bind="true")

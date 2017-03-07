@@ -4,8 +4,11 @@
   -->
 
 <template>
-    <div class="agenda" style.bind="getTypeStyle()">
-        <p>${getLabel()}</p>
-
+    <div class="col s3" style.bind="getStateStyle()">
+        ${obj.getTimeField('start')}-${obj.getTimeField('end')}
+        ${getStateLabel()}
+    </div>
+    <div class="col s9" style.bind="getTypeStyle()">
+        ${getTypeLabel()}
     </div>
 </template>

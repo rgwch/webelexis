@@ -32,10 +32,7 @@ export class AppointmentView {
 
   get selectedStatus(){
     let statusname=this.obj.getField("status")
-    let stat = this.config.agenda.states.find(function(st){return st.name==statusname})
-    if(typeof stat == 'undefined'){
-      stat=this.config.agenda.states[0]
-    }
+    let stat = this.config.getAgendaState(statusname)
     this.statusStyle = `background-color:${stat.bg}; color:${stat.fg}`
     return stat
   }
@@ -47,11 +44,7 @@ export class AppointmentView {
 
   get selectedType():any {
     let typename=this.obj.getField('type.coding[0].display')
-    let type = this.config.agenda.types.find(function(elem){return elem.label===typename})
-    if(typeof type === 'undefined'){
-      type=this.config.agenda.types[0]
-    }
-
+    let type=this.config.getAgendaType(typename)
     this.typeStyle = `background-color:${type.bg}; color:${type.fg}`
 
     return type
