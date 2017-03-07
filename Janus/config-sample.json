@@ -17,6 +17,12 @@
   "agenda": {
     "types": [
       {
+        "label":"reserviert",
+        "fg":"black",
+        "bg":"black",
+        "duration":30
+      },
+      {
         "label": "normal",
         "fg": "black",
         "bg": "#f4c542",

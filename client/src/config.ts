@@ -46,8 +46,35 @@ export class Config {
     }
   ]
 
+  public getAgendaType(name:string){
+    let type=this.agenda.types.find(tp=>{return (tp.name==name || tp.label==name)})
+    if(type){
+      return type
+    }else{
+      return {
+        "name":name,
+        "fg":"black",
+        "bg":"white",
+        "duration":15
+      }
+    }
+  }
   public agenda = {
     "types": [
+      {
+        "name":"free",
+        "label":"frei",
+        "fg": "green",
+        "bg": "green",
+        "duration": 30
+      },
+      {
+        "name":"unassignable",
+        "label":"reserviert",
+        "fg":"black",
+        "bg":"black",
+        "duration":30
+      },
       {
         "label": "normal",
         "fg": "black",

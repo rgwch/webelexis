@@ -95,6 +95,16 @@ export class FHIRobject {
     this.setField(fieldname, FHIRobject.dateToStandard(value))
   }
 
+  public getTimeField(fieldname:string) {
+    let tm = FHIRobject.converter.toView("", fieldname, this.fhir)
+    if (tm) {
+      return moment(tm).format("HH:mm")
+    } else {
+      return "??:??"
+    }
+
+  }
+
   /**
    * * Fetch the contents of a property, interpret it as a dateTime and return its localized form.
    * @param fieldname path/name of a field that contains a date in FHIR format e.g. some.where.datetime

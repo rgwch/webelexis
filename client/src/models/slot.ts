@@ -21,4 +21,5 @@ export class Slot extends FHIRobject{
   constructor(fhir:FHIR_Resource){
     super(fhir,"Slot")
   }
+
 }

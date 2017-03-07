@@ -4,6 +4,8 @@
   -->
 
 <template>
-    <p>slot</p>
-    <p>${freeBusyType}</p>
+    <div class="agenda" style.bind="getTypeStyle()">
+        <p>${getLabel()}</p>
+
+    </div>
 </template>

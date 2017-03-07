@@ -15,6 +15,9 @@ export class AgendaRoute{
   slots:BundleResult
   dateDisplay: string
 
+  attached(){
+    this.setDay(new Date("2016-11-23"))
+  }
   constructor(private appointmentFactory:AppointmentFactory,private slotFactory:SlotFactory,private scheduleFactory:ScheduleFactory,
   private fhirService:FhirService){}
 
@@ -29,5 +32,9 @@ export class AgendaRoute{
         })
       }
     })
+  }
+
+  dumpSlot(slot){
+    return JSON.stringify(slot)
   }
 }
