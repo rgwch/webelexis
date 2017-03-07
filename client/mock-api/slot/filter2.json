@@ -1,27 +1,15 @@
 {
   "resourceType": "Bundle",
-  "id": "abba5c3f-7512-4252-8e6a-12c74b242111",
+  "id": "4ee556ea-aa4e-4b90-9381-b317a9114148",
   "meta": {
-    "lastUpdated": "2017-03-06T22:29:27+01:00"
+    "lastUpdated": "2017-03-07T10:12:55+01:00"
   },
   "type": "searchset",
-  "total": 68,
+  "total": 16,
   "link": [
     {
       "relation": "self",
-      "url": "/batch/56c2d02a84f4b729493e0267053744e01392e5cb/0/50"
-    },
-    {
-      "relation": "first",
-      "url": "/batch/56c2d02a84f4b729493e0267053744e01392e5cb/0/50"
-    },
-    {
-      "relation": "next",
-      "url": "/batch/56c2d02a84f4b729493e0267053744e01392e5cb/50/50"
-    },
-    {
-      "relation": "last",
-      "url": "/batch/56c2d02a84f4b729493e0267053744e01392e5cb/18/50"
+      "url": "/Slot?schedule=20161123::gerry"
     }
   ],
   "entry": [
@@ -84,81 +72,29 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10e6"
+        "_id": "58be799722b49b599018bbdf"
       }
     },
     {
-      "fullUrl": "/Slot/null",
+      "fullUrl": "/Slot/7914e497-b66f-4677-b4a4-05ddc7cdc0e3",
       "resource": {
-        "_id": "58bdce59246e655355d5dd2f",
         "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T13:00:00+01:00",
-        "end": "2016-11-23T23:59:00+01:00",
-        "overbooked": false,
-        "remark": null,
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "J36633026e70f607c0193",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "J36633026e70f607c0193"
-            }
-          ],
-          "status": "-   ",
-          "type": {
-            "text": "Reserviert"
-          },
-          "reason": {
-            "text": null
-          },
-          "priority": null,
-          "description": null,
-          "start": "2016-11-23T13:00:00+01:00",
-          "minutesDuration": 659,
-          "end": "2016-11-23T23:59:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/null",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
+        "id": "7914e497-b66f-4677-b4a4-05ddc7cdc0e3",
+        "freeBusyType": "free",
+        "start": "2016-11-23T08:00:00+01:00",
+        "end": "2016-11-23T08:15:00+01:00",
+        "_id": "58be799722b49b599018bbe0"
       }
     },
     {
-      "fullUrl": "/Slot/0470d93a-3934-4614-a613-ece0dac25e97",
+      "fullUrl": "/Slot/4d4fb10f-e004-48ec-9753-bdaef11dd5e2",
       "resource": {
         "resourceType": "Slot",
-        "id": "0470d93a-3934-4614-a613-ece0dac25e97",
+        "id": "4d4fb10f-e004-48ec-9753-bdaef11dd5e2",
         "freeBusyType": "free",
         "start": "2016-11-23T08:15:00+01:00",
         "end": "2016-11-23T08:30:00+01:00",
-        "_id": "58bdd4b7a861c354233b10e8"
+        "_id": "58be799722b49b599018bbe1"
       }
     },
     {
@@ -220,7 +156,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10e9"
+        "_id": "58be799722b49b599018bbe2"
       }
     },
     {
@@ -282,7 +218,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10ea"
+        "_id": "58be799722b49b599018bbe3"
       }
     },
     {
@@ -344,7 +280,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10eb"
+        "_id": "58be799722b49b599018bbe4"
       }
     },
     {
@@ -406,7 +342,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10ec"
+        "_id": "58be799722b49b599018bbe5"
       }
     },
     {
@@ -468,7 +404,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10ed"
+        "_id": "58be799722b49b599018bbe6"
       }
     },
     {
@@ -530,7 +466,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10ee"
+        "_id": "58be799722b49b599018bbe7"
       }
     },
     {
@@ -592,51 +528,51 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10ef"
+        "_id": "58be799722b49b599018bbe8"
       }
     },
     {
-      "fullUrl": "/Slot/ba00680e-68e6-4e49-be62-7764c881d316",
+      "fullUrl": "/Slot/84b0a584-eb35-4422-815c-2c722d890d86",
       "resource": {
         "resourceType": "Slot",
-        "id": "ba00680e-68e6-4e49-be62-7764c881d316",
+        "id": "84b0a584-eb35-4422-815c-2c722d890d86",
+        "freeBusyType": "free",
+        "start": "2016-11-23T11:30:00+01:00",
+        "end": "2016-11-23T11:45:00+01:00",
+        "_id": "58be799722b49b599018bbe9"
+      }
+    },
+    {
+      "fullUrl": "/Slot/efcbefb9-dcc8-4f15-a332-1a5b91f43702",
+      "resource": {
+        "resourceType": "Slot",
+        "id": "efcbefb9-dcc8-4f15-a332-1a5b91f43702",
         "freeBusyType": "free",
         "start": "2016-11-23T11:45:00+01:00",
-        "end": "2016-11-23T11:45:00+01:00",
-        "_id": "58bdd4b7a861c354233b10f0"
+        "end": "2016-11-23T12:00:00+01:00",
+        "_id": "58be799722b49b599018bbea"
       }
     },
     {
-      "fullUrl": "/Slot/af7037e4-f64a-4c62-914e-ca1223bf3718",
+      "fullUrl": "/Slot/2439e34f-696d-48b5-964a-be0b1df25abb",
       "resource": {
         "resourceType": "Slot",
-        "id": "af7037e4-f64a-4c62-914e-ca1223bf3718",
+        "id": "2439e34f-696d-48b5-964a-be0b1df25abb",
         "freeBusyType": "free",
         "start": "2016-11-23T12:00:00+01:00",
-        "end": "2016-11-23T12:00:00+01:00",
-        "_id": "58bdd4b7a861c354233b10f1"
-      }
-    },
-    {
-      "fullUrl": "/Slot/21de68f9-25be-48e9-ae90-c74b66b7c9b2",
-      "resource": {
-        "resourceType": "Slot",
-        "id": "21de68f9-25be-48e9-ae90-c74b66b7c9b2",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:15:00+01:00",
         "end": "2016-11-23T12:15:00+01:00",
-        "_id": "58bdd4b7a861c354233b10f2"
+        "_id": "58be799722b49b599018bbeb"
       }
     },
     {
-      "fullUrl": "/Slot/014fbc4b-cc7b-4979-b2bb-8be795171cc8",
+      "fullUrl": "/Slot/f0b10204-ce70-431e-8aa5-d1d7aa1d7747",
       "resource": {
         "resourceType": "Slot",
-        "id": "014fbc4b-cc7b-4979-b2bb-8be795171cc8",
+        "id": "f0b10204-ce70-431e-8aa5-d1d7aa1d7747",
         "freeBusyType": "free",
         "start": "2016-11-23T12:15:00+01:00",
         "end": "2016-11-23T12:30:00+01:00",
-        "_id": "58bdd4b7a861c354233b10f3"
+        "_id": "58be799722b49b599018bbec"
       }
     },
     {
@@ -698,7 +634,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10f4"
+        "_id": "58be799722b49b599018bbed"
       }
     },
     {
@@ -760,1265 +696,7 @@
             }
           ]
         },
-        "_id": "58bdd4b7a861c354233b10f5"
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc71c",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T00:00:00+01:00",
-        "end": "2016-11-23T08:00:00+01:00",
-        "overbooked": false,
-        "remark": null,
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "U66501a38aeb4547b0192",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "U66501a38aeb4547b0192"
-            }
-          ],
-          "status": "-   ",
-          "type": {
-            "text": "Reserviert"
-          },
-          "reason": {
-            "text": null
-          },
-          "priority": null,
-          "description": null,
-          "start": "2016-11-23T00:00:00+01:00",
-          "minutesDuration": 480,
-          "end": "2016-11-23T08:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/null",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/5089f816-9c68-4b3d-8257-1ac538b0b9d8",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc71d",
-        "resourceType": "Slot",
-        "id": "5089f816-9c68-4b3d-8257-1ac538b0b9d8",
-        "freeBusyType": "free",
-        "start": "2016-11-23T08:15:00+01:00",
-        "end": "2016-11-23T08:15:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/7e53f8bc-f9db-4cee-a6fa-81032f3fb0b9",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc71e",
-        "resourceType": "Slot",
-        "id": "7e53f8bc-f9db-4cee-a6fa-81032f3fb0b9",
-        "freeBusyType": "free",
-        "start": "2016-11-23T08:30:00+01:00",
-        "end": "2016-11-23T08:30:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/51f358e0-f01c-4a70-9570-6c7b6251e221",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc71f",
-        "resourceType": "Slot",
-        "id": "51f358e0-f01c-4a70-9570-6c7b6251e221",
-        "freeBusyType": "free",
-        "start": "2016-11-23T08:30:00+01:00",
-        "end": "2016-11-23T08:30:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc720",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T08:30:00+01:00",
-        "end": "2016-11-23T09:00:00+01:00",
-        "overbooked": false,
-        "remark": "Atmung",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "s5a8619c9571aea3d0561",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "s5a8619c9571aea3d0561"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": "Atmung"
-          },
-          "priority": null,
-          "description": "Atmung",
-          "start": "2016-11-23T08:30:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T09:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/sba994b51ec734ccc09661",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc721",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T09:00:00+01:00",
-        "end": "2016-11-23T09:30:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "Ff6a2a431bffd2c6207634",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "Ff6a2a431bffd2c6207634"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T09:00:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T09:30:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/xdfc19b88265832a40920",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc722",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T09:30:00+01:00",
-        "end": "2016-11-23T10:00:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "L92e1a4030e0a36e002698",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "L92e1a4030e0a36e002698"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T09:30:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T10:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/d61192c86d82b30c10f81",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc723",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T10:00:00+01:00",
-        "end": "2016-11-23T10:15:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "G53e192b8a9d3d1c301287",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "G53e192b8a9d3d1c301287"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T10:00:00+01:00",
-          "minutesDuration": 15,
-          "end": "2016-11-23T10:15:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/117a71b40571a4f980347",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc724",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T10:15:00+01:00",
-        "end": "2016-11-23T10:30:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "U41699f29620e50d501592",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "U41699f29620e50d501592"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Extra"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T10:15:00+01:00",
-          "minutesDuration": 15,
-          "end": "2016-11-23T10:30:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/A6e1faa7bf000f533347477",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc725",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T10:30:00+01:00",
-        "end": "2016-11-23T11:00:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "m29d011043143f036011175",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "m29d011043143f036011175"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T10:30:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T11:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/Ncb340b3d6f1d213e04441",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc726",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T11:00:00+01:00",
-        "end": "2016-11-23T11:30:00+01:00",
-        "overbooked": false,
-        "remark": "Besprechung Schulrhessklinik",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "q9f8bfe1f64363a3902800",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "q9f8bfe1f64363a3902800"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": "Besprechung Schulrhessklinik"
-          },
-          "priority": null,
-          "description": "Besprechung Schulrhessklinik",
-          "start": "2016-11-23T11:00:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T11:30:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/3de2a59e0604db222b97",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/518efb56-8417-489e-bdaa-6bb3f232cac2",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc727",
-        "resourceType": "Slot",
-        "id": "518efb56-8417-489e-bdaa-6bb3f232cac2",
-        "freeBusyType": "free",
-        "start": "2016-11-23T11:45:00+01:00",
-        "end": "2016-11-23T11:45:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/d96cda92-fe11-42cf-9bfe-6998a2496bc3",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc728",
-        "resourceType": "Slot",
-        "id": "d96cda92-fe11-42cf-9bfe-6998a2496bc3",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:00:00+01:00",
-        "end": "2016-11-23T12:00:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/c5638bbb-81dd-450a-8c47-3f848861efcf",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc729",
-        "resourceType": "Slot",
-        "id": "c5638bbb-81dd-450a-8c47-3f848861efcf",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:15:00+01:00",
-        "end": "2016-11-23T12:15:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/353ff952-a365-46a1-a1ea-9337bc9a5999",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc72a",
-        "resourceType": "Slot",
-        "id": "353ff952-a365-46a1-a1ea-9337bc9a5999",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:30:00+01:00",
-        "end": "2016-11-23T12:30:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/55a2cea7-2d2c-48b4-9ceb-6b38218dfe67",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc72b",
-        "resourceType": "Slot",
-        "id": "55a2cea7-2d2c-48b4-9ceb-6b38218dfe67",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:30:00+01:00",
-        "end": "2016-11-23T12:30:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc72c",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T12:30:00+01:00",
-        "end": "2016-11-23T13:00:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "ac019be618691bd7502560",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "ac019be618691bd7502560"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T12:30:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T13:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/fa6628da896922fc802863",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcc2c0fe8ed530afbc72d",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T13:00:00+01:00",
-        "end": "2016-11-23T23:59:00+01:00",
-        "overbooked": false,
-        "remark": null,
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "J36633026e70f607c0193",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "J36633026e70f607c0193"
-            }
-          ],
-          "status": "-   ",
-          "type": {
-            "text": "Reserviert"
-          },
-          "reason": {
-            "text": null
-          },
-          "priority": null,
-          "description": null,
-          "start": "2016-11-23T13:00:00+01:00",
-          "minutesDuration": 659,
-          "end": "2016-11-23T23:59:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/null",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/548cb99d-3269-46b4-9fee-4fb88bd3af99",
-      "resource": {
-        "resourceType": "Slot",
-        "id": "548cb99d-3269-46b4-9fee-4fb88bd3af99",
-        "freeBusyType": "free",
-        "start": "2016-11-23T08:15:00+01:00",
-        "end": "2016-11-23T08:15:00+01:00",
-        "_id": "58bdd4b7a861c354233b10e7"
-      }
-    },
-    {
-      "fullUrl": "/Slot/525f04c0-d003-48a1-b401-cf35fe07758b",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40f7",
-        "resourceType": "Slot",
-        "id": "525f04c0-d003-48a1-b401-cf35fe07758b",
-        "freeBusyType": "free",
-        "start": "2016-11-23T08:15:00+01:00",
-        "end": "2016-11-23T08:15:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/c14987f4-e4cf-4e19-9689-3b9e5809e92e",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40f8",
-        "resourceType": "Slot",
-        "id": "c14987f4-e4cf-4e19-9689-3b9e5809e92e",
-        "freeBusyType": "free",
-        "start": "2016-11-23T08:30:00+01:00",
-        "end": "2016-11-23T08:30:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40fa",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T08:30:00+01:00",
-        "end": "2016-11-23T09:00:00+01:00",
-        "overbooked": false,
-        "remark": "Atmung",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "s5a8619c9571aea3d0561",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "s5a8619c9571aea3d0561"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": "Atmung"
-          },
-          "priority": null,
-          "description": "Atmung",
-          "start": "2016-11-23T08:30:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T09:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/sba994b51ec734ccc09661",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/3e2d8b7f-9595-44c7-8467-dbf742e388ff",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40f9",
-        "resourceType": "Slot",
-        "id": "3e2d8b7f-9595-44c7-8467-dbf742e388ff",
-        "freeBusyType": "free",
-        "start": "2016-11-23T08:30:00+01:00",
-        "end": "2016-11-23T08:30:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40fb",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T09:00:00+01:00",
-        "end": "2016-11-23T09:30:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "Ff6a2a431bffd2c6207634",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "Ff6a2a431bffd2c6207634"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T09:00:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T09:30:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/xdfc19b88265832a40920",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40fd",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T10:00:00+01:00",
-        "end": "2016-11-23T10:15:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "G53e192b8a9d3d1c301287",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "G53e192b8a9d3d1c301287"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T10:00:00+01:00",
-          "minutesDuration": 15,
-          "end": "2016-11-23T10:15:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/117a71b40571a4f980347",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40fc",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T09:30:00+01:00",
-        "end": "2016-11-23T10:00:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "L92e1a4030e0a36e002698",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "L92e1a4030e0a36e002698"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T09:30:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T10:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/d61192c86d82b30c10f81",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40fe",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T10:15:00+01:00",
-        "end": "2016-11-23T10:30:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "U41699f29620e50d501592",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "U41699f29620e50d501592"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Extra"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T10:15:00+01:00",
-          "minutesDuration": 15,
-          "end": "2016-11-23T10:30:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/A6e1faa7bf000f533347477",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf40ff",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T10:30:00+01:00",
-        "end": "2016-11-23T11:00:00+01:00",
-        "overbooked": false,
-        "remark": "",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "m29d011043143f036011175",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "m29d011043143f036011175"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": ""
-          },
-          "priority": null,
-          "description": "",
-          "start": "2016-11-23T10:30:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T11:00:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/Ncb340b3d6f1d213e04441",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/null",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf4100",
-        "resourceType": "Slot",
-        "id": null,
-        "identifier": {
-          "use": "usual",
-          "system": "www.xid.ch/elexis/uuid",
-          "value": null,
-          "assigner": null
-        },
-        "freeBusyType": "busy",
-        "start": "2016-11-23T11:00:00+01:00",
-        "end": "2016-11-23T11:30:00+01:00",
-        "overbooked": false,
-        "remark": "Besprechung Schulrhessklinik",
-        "contained": {
-          "resourceType": "Appointment",
-          "id": "q9f8bfe1f64363a3902800",
-          "meta": {
-            "lastUpdated": "Invalid date"
-          },
-          "identifier": [
-            {
-              "use": "usual",
-              "system": "www.xid.ch/elexis/appointment",
-              "value": "q9f8bfe1f64363a3902800"
-            }
-          ],
-          "status": "fertig",
-          "type": {
-            "text": "Normal"
-          },
-          "reason": {
-            "text": "Besprechung Schulrhessklinik"
-          },
-          "priority": null,
-          "description": "Besprechung Schulrhessklinik",
-          "start": "2016-11-23T11:00:00+01:00",
-          "minutesDuration": 30,
-          "end": "2016-11-23T11:30:00+01:00",
-          "participant": [
-            {
-              "actor": "Patient/3de2a59e0604db222b97",
-              "required": "required"
-            },
-            {
-              "actor": "Practitioner/Gerry",
-              "required": "required"
-            }
-          ]
-        },
-        "meta": {
-          "tag": [
-            {
-              "system": "www.xid.ch/elexis/appointment",
-              "code": null
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fullUrl": "/Slot/27b1350e-9774-46c5-b7a0-609b5876ad4d",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf4101",
-        "resourceType": "Slot",
-        "id": "27b1350e-9774-46c5-b7a0-609b5876ad4d",
-        "freeBusyType": "free",
-        "start": "2016-11-23T11:45:00+01:00",
-        "end": "2016-11-23T11:45:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/a1a41b31-5a52-4859-b7c0-70b7a28fa3a0",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf4102",
-        "resourceType": "Slot",
-        "id": "a1a41b31-5a52-4859-b7c0-70b7a28fa3a0",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:00:00+01:00",
-        "end": "2016-11-23T12:00:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/587cb2a4-cdd7-4c28-ad89-44f383b09fae",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf4103",
-        "resourceType": "Slot",
-        "id": "587cb2a4-cdd7-4c28-ad89-44f383b09fae",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:15:00+01:00",
-        "end": "2016-11-23T12:15:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/1938235f-4245-4da5-9729-16359e4473f9",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf4104",
-        "resourceType": "Slot",
-        "id": "1938235f-4245-4da5-9729-16359e4473f9",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:30:00+01:00",
-        "end": "2016-11-23T12:30:00+01:00"
-      }
-    },
-    {
-      "fullUrl": "/Slot/c5a98623-06f7-45a1-a106-a18179a97d47",
-      "resource": {
-        "_id": "58bdcdbf8eed785347bf4105",
-        "resourceType": "Slot",
-        "id": "c5a98623-06f7-45a1-a106-a18179a97d47",
-        "freeBusyType": "free",
-        "start": "2016-11-23T12:30:00+01:00",
-        "end": "2016-11-23T12:30:00+01:00"
+        "_id": "58be799722b49b599018bbee"
       }
     }
   ]

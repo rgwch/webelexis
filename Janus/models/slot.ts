@@ -7,7 +7,7 @@
 import {FhirObject} from "./fhirobject";
 import {Refiner} from "./fhirsync";
 import {FHIR_Resource,FHIR_Slot} from '../common/models/fhir'
-import moment = require("moment");
+import * as moment from "moment";
 import {Appointment} from "./appointment";
 import * as config from 'nconf'
 
@@ -22,10 +22,10 @@ import * as config from 'nconf'
  *
  * So, this sequence is cheap: A Schedule does not require a database access, since it is
  * created on the fly. The Slots require a database access to fetch Elexis-Appointments. Empty
- * slots are created on the fly. So, behind the scene, it's a one-step process.
+ * slots are created on the fly. So, behind the scenes, it's a one-step process.
  */
 
-export interface SlotPreset{
+export interface SlotPreset {
   begin: string,
   end: string,
   slotLength: number
@@ -47,44 +47,55 @@ export class Slot extends FhirObject implements Refiner {
   }
 
   compare(a:FHIR_Resource, b:FHIR_Resource):number {
-    return undefined;
+    let ma=moment(a['start']);
+    let mb=moment(b['start']);
+    if(ma.isBefore(mb)){
+      return -1
+    }else if(ma.isAfter(mb)){
+      return 1
+    }else{
+      return 0
+    }
   }
 
 
+  private _makeSlot(begin:string, end:string) {
+    return {
+
+      resourceType: "Slot",
+      id: this.createUUID(),
+      freeBusyType: "free",
+      start: begin,
+      end: end
+    }
+  }
+
+  /**
+   * Fetch Termine from "agntermine" and create a series of free/busy slots from them
+   * @param params an object containign at least the parameter "schedule", which is the schedule, the requested
+   * slots shpuld belong to
+   * @returns A Promise resolving to an Array of Slots
+   */
   async fetchSQL(params):Promise<Array<FHIR_Resource>> {
     if (params.schedule) {
+
       let slots = []
       let schedule = params.schedule.split("::")
-      let appnts = await this.sql.queryAsync("SELECT * FROM agntermine WHERE deleted='0' AND Tag=? AND Bereich=?", [schedule[0], schedule[1]])
+      let appnts = await
+        this.sql.queryAsync("SELECT * FROM agntermine WHERE deleted='0' AND Tag=? AND Bereich=?", [schedule[0], schedule[1]])
       let presets = this._findPresetsForDay(schedule[0])
 
       if (appnts && appnts.length) {
         let sorted = appnts.sort((a, b)=> {
-          let ma = moment(a.start)
-          let mb = moment(b.start)
-          if (ma.isBefore(mb)) {
-            return -1
-          }
-          if (ma.isAfter(mb)) {
-            return 1
-          }
-          return 0
+          return parseInt(a['Beginn'])-parseInt(b['Beginn'])
         })
-
-        let before = moment(sorted[0]['Tag'],"YYYYMMDD")
-        console.log(before.format("DD.MM.YYYY HH:mm"))
+        let before = moment(sorted[0]['Tag'], "YYYYMMDD")
         sorted.forEach(appnt => {
-          let begin = moment(appnt['Tag'],"YYYYMMDD")
+          let begin = moment(appnt['Tag'], "YYYYMMDD")
           begin.add(parseInt(appnt['Beginn']), "minutes")
           let end = moment(begin)
           end.add(parseInt(appnt['Dauer']), "minutes")
-          slots.push({
-            resourceType: "Slot",
-            id: this.createUUID(),
-            freeBusyType: "free",
-            start: before.format(),
-            end: begin.format()
-          })
+          slots.push(this._makeSlot(before.format(), begin.format()))
 
           slots.push({
             resourceType: "Slot",
@@ -105,18 +116,18 @@ export class Slot extends FhirObject implements Refiner {
           })
           before = end
         })
-        return this.reduceSlots(slots,presets,schedule[0])
+        return this.reduceSlots(slots, presets, schedule[0])
       } else {
         // no appnts, create free slots.
-        let ret=[]
+        let ret = []
         presets.forEach(preset=> {
           let begin = preset.begin
           let from = moment(preset.begin, "HH:mm")
-          let until= moment(preset.end,"HH:mm")
-          let act=from.clone()
-          while(act.isBefore(until)){
-            let slotStart=act.format("HH:mm")
-            act.add(preset.slotLength,"minutes")
+          let until = moment(preset.end, "HH:mm")
+          let act = from.clone()
+          while (act.isBefore(until)) {
+            let slotStart = act.format("HH:mm")
+            act.add(preset.slotLength, "minutes")
             ret.push({
               resourceType: "Slot",
               id: super.createUUID(),
@@ -129,7 +140,9 @@ export class Slot extends FhirObject implements Refiner {
         })
         return ret
       }
-    } else {
+    }
+
+    else { // !params.schedule
       return []
     }
   }
@@ -139,31 +152,29 @@ export class Slot extends FhirObject implements Refiner {
    * @param slots an ordered Array of slots
    * @returns {Array} an ordered Array of slots, wich are either busy or longer than a minute.
    */
-  reduceSlots(slots:Array<FHIR_Slot>, presets:Array<SlotPreset>, day:string):Array<FHIR_Slot> {
-    let ret:Array<FHIR_Slot> = []
+  reduceSlots(slots:Array < FHIR_Slot >, presets:Array < SlotPreset >, day:string):Array <FHIR_Slot> {
+    let ret = []
     slots.forEach(slot=> {
       if (slot.freeBusyType === 'free') {
         let ms = moment(slot.start)
         let me = moment(slot.end)
-        let diff = (me.unix() - ms.unix())/60
+        let diff = (me.unix() - ms.unix()) / 60
         if (diff > 5) {
-          let preset=this._findMatchingPreset(slot.start,presets,day)
-          while(diff>preset.slotLength) {
-            let newEnd=ms.add(preset.slotLength,"minutes")
-            ret.push({
-              resourceType: "Slot",
-              id: super.createUUID(),
-              freeBusyType: "free",
-              start: ms.format(),
-              end: newEnd.format()
-            })
-            ms=newEnd.clone()
-            slot.start=newEnd.format()
-            diff=(me.unix()-newEnd.unix())/60
+          // free slot of more than 5 minutes lengths -> check what's the default length for
+          // this time of the day. If the slot is longer than that, split in several slots.
+          let preset = this._findMatchingPreset(slot.start, presets, day)
+          while (diff > preset.slotLength) {
+            let newEnd = ms.clone().add(preset.slotLength, "minutes")
+            ret.push(this._makeSlot(ms.format(), newEnd.format()))
+            ms = newEnd.clone()
+            slot['start'] = newEnd.format()
+            diff = (me.unix() - newEnd.unix()) / 60
           }
-          ret.push(slot)
+          if (diff > 5) {
+            ret.push(slot)
+          }
         }
-      } else {
+      } else { // Slot is busy -> keep anyway
         ret.push(slot)
       }
     })
@@ -171,16 +182,15 @@ export class Slot extends FhirObject implements Refiner {
   }
 
 
-
-  pushSQL(fhir:FHIR_Resource):Promise<void> {
+  pushSQL(fhir:FHIR_Resource):Promise < void > {
     return undefined;
   }
 
-  private _findPresetsForDay(day:string):Array<SlotPreset> {
-    let conf= this.cfg.get("agenda")
-    return conf.slots.default.map(slot=>{
-      let fullStart=moment(`${day} ${slot.begin}`,"YYYYMMDD HH:mm").format()
-      let fullEnd=moment(`${day} ${slot.end}`, "YYYYMMDD HH:mm").format()
+  private _findPresetsForDay(day:string):Array <SlotPreset> {
+    let conf = this.cfg.get("agenda")
+    return conf.slots.default.map((slot:SlotPreset)=> {
+      let fullStart = moment(`${day} ${slot.begin}`, "YYYYMMDD HH:mm").format()
+      let fullEnd = moment(`${day} ${slot.end}`, "YYYYMMDD HH:mm").format()
       return {
         begin: fullStart,
         end: fullEnd,
@@ -189,15 +199,15 @@ export class Slot extends FhirObject implements Refiner {
     })
   }
 
-  private _findMatchingPreset(time:string,presets:Array<SlotPreset>, day:string):SlotPreset{
-    for(let i=0;i<presets.length;i++){
-        if(moment(time).isBetween(presets[i].begin,presets[i].end)){
-          return presets[i]
-        }
+  private _findMatchingPreset(time:string, presets:Array < SlotPreset >, day:string):SlotPreset {
+    for (let i = 0; i < presets.length; i++) {
+      if (moment(time).isBetween(presets[i].begin, presets[i].end)) {
+        return presets[i]
+      }
     }
-    let dfltSlot=this.cfg.get('agenda').slots.default[0]
+    let dfltSlot = this.cfg.get('agenda').slots.default[0]
     return {
-      begin: moment(`${day} ${dfltSlot.begin}`,"YYYYMMDD HH:mm").format(),
+      begin: moment(`${day} ${dfltSlot.begin}`, "YYYYMMDD HH:mm").format(),
       end: moment(`${day} ${dfltSlot.end}`, "YYYYMMDD HH:mm").format(),
       slotLength: dfltSlot.slotLength
     }
