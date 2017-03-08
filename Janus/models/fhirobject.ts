@@ -71,7 +71,7 @@ export class FhirObject {
       use: "usual",
       system: this.xid.elexis_uuid,
       value: id,
-      assigner: this.cfg.get("general").practise
+      assigner: this.cfg.get("client")["general"].officeName
     }
   }
 

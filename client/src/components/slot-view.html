@@ -5,10 +5,11 @@
 
 <template>
     <div class="col s3" style.bind="getStateStyle()">
-        ${obj.getTimeField('start')}-${obj.getTimeField('end')}
+        ${obj.getTimeField('start')}-${obj.getTimeField('end')}<br />
         ${getStateLabel()}
     </div>
     <div class="col s9" style.bind="getTypeStyle()">
+        <span>${patLabel}</span><br />
         ${getTypeLabel()}
     </div>
 </template>

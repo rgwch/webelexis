@@ -8,6 +8,9 @@ import {bindable,Container} from "aurelia-framework";
 import {Slot} from "../models/slot";
 import {FHIRobject} from "../models/fhirobj";
 import {Config} from '../config'
+import {FhirService} from '../services/fhirservice'
+import {FHIR_Resource} from "../models/fhir";
+import {Patient} from "../models/patient";
 
 export class SlotView {
   @bindable obj:FHIRobject
@@ -15,10 +18,21 @@ export class SlotView {
   private cfg
   private _state
   private _slotType
+  private fhirService:FhirService
+  private patLabel:string=""
 
   constructor() {
     this.cfg = Container.instance.get(Config)
+    this.fhirService=Container.instance.get(FhirService)
+  }
 
+  attached(){
+    let patient=this.getPatient().then(pat=>{
+      if(pat) {
+        let patObj = new Patient(pat)
+        this.patLabel = patObj.fullName
+      }
+    })
   }
 
   state(){
@@ -86,6 +100,25 @@ export class SlotView {
       ret+="color:"+this.type()["fg"]+";"
     }
     return ret;
+  }
+  getPatient():Promise<FHIR_Resource>{
+    let busy= this.obj.getField('freeBusyType')
+    if(busy==="busy" || busy==="busy-tentative"){
+      let appnt=this.obj.fhir['contained']
+      if(appnt){
+        let participants=appnt['participant']
+        if(Array.isArray(participants)){
+          for(let i=0;i<participants.length;i++){
+            if(participants[i].actor.startsWith("Patient/")){
+              return this.fhirService.getByUri(participants[i].actor)
+            }
+          }
+        }
+      }
+    }
+    return new Promise(resolve=>{
+      resolve()
+    })
   }
 
 }

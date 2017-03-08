@@ -32,7 +32,7 @@ export class MySql implements SQL{
   }
   public queryAsync(query, values):Promise<any> {
     return new Promise<any>((resolve, reject)=> {
-      this._pool.query(query, values, function (err, result, fields) {
+      this._pool.query(query, values, function (err, result) {
         if (err) {
           console.log(err.code)
           reject(err)

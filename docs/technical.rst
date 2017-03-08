@@ -15,10 +15,10 @@ Janus
 
 Die Aufgabe besteht darin, Elexis-Datenbankstrukturen in FHIR-Objekte umzuwandeln. Das ist nicht immer ganz trivial, weil die FHIR- und Elexis- Philosophien
 teilweise nicht kompatibel sind. FHIR hat den Anspruch, universell für jede Art von Gesundheitsinstitution geeignet zu sein, während Elexis klar ein Programm
-für Arztpraxen ist. FHIR hat beispielsweise kein Konzept für Abrechung, während Elexis kein Konzept für Fhir *Schedules* und *Slots* hat, sondern Termine
+für Arztpraxen ist. FHIR hat beispielsweise kein brauchbares Konzept für Abrechnung, während Elexis kein Konzept für Fhir *Schedules* und *Slots* hat, sondern Termine
 allein in der Agenda-Tabelle verwaltet, welche wiederum vom FHIR *Appointment* unzureichend abgedeckt ist.
 
-Eine Konsultation ist in Elexis eine Synthese aus Text,Befunden, Abrechnugnsdaten und Dokumenten wie Rezepten, Zeugnissen und Briefen, während ein *Encounter* in Fhir eigentlich nur eine
+Eine Konsultation ist in Elexis eine Synthese aus Text, Befunden, Abrechnungsdaten und Dokumenten wie Rezepten, Zeugnissen und Briefen, während ein *Encounter* in Fhir eigentlich nur eine
 Zeitspanne ist, in der mehrere *Participants* zusammentreffen. Befunde und Dokumente können, müssen aber nicht in Relation zu *Encounters* stehen.
 
 **Janus** übernimmt den Job, die beiden Welten miteinander zu verknüpfen. Zu diesem Zweck wird in /models zu jedem unterstützten FHIR Typ ein *Refiner* definiert, der die nötigen Datenbankzugriffe für die jeweilige FHIR Resource übernimmt. Am Ende steht ein JSON-Objekt, welches eine 1:1 Abbildung der FHIR-Resource ist, und welches in einer

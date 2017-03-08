@@ -58,13 +58,7 @@ export class FhirService {
     })
   }
   public getByUri(uri: string): Promise<FHIR_Resource> {
-    return this.http.get(uri).then(result => {
-      if (result) {
-        return result
-      } else {
-        return undefined
-      }
-    })
+    return this.http.get(uri)
   }
 
   public getById(subtype: string, id: string): Promise<FHIR_Resource> {

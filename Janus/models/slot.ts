@@ -70,6 +70,10 @@ export class Slot extends FhirObject implements Refiner {
     }
   }
 
+  private _isUnassignable(appnt):Boolean{
+    return (appnt['TerminTyp'].toLocaleLowerCase()==="reserviert")
+  }
+
   /**
    * Fetch Termine from "agntermine" and create a series of free/busy slots from them
    * @param params an object containign at least the parameter "schedule", which is the schedule, the requested
@@ -81,8 +85,7 @@ export class Slot extends FhirObject implements Refiner {
 
       let slots = []
       let schedule = params.schedule.split("::")
-      let appnts = await
-        this.sql.queryAsync("SELECT * FROM agntermine WHERE deleted='0' AND Tag=? AND Bereich=?", [schedule[0], schedule[1]])
+      let appnts = await this.sql.queryAsync("SELECT * FROM agntermine WHERE deleted='0' AND Tag=? AND Bereich=?", [schedule[0], schedule[1]])
       let presets = this._findPresetsForDay(schedule[0])
 
       if (appnts && appnts.length) {
@@ -101,7 +104,7 @@ export class Slot extends FhirObject implements Refiner {
             resourceType: "Slot",
             id: appnt['ID'],
             identifier: this.makeIdentifier(appnt['ID']),
-            freeBusyType: "busy",
+            freeBusyType: this._isUnassignable(appnt) ? "busy-unavailable":"busy",
             start: begin.format(),
             end: end.format(),
             overbooked: false,
@@ -122,18 +125,18 @@ export class Slot extends FhirObject implements Refiner {
         let ret = []
         presets.forEach(preset=> {
           let begin = preset.begin
-          let from = moment(preset.begin, "HH:mm")
-          let until = moment(preset.end, "HH:mm")
+          let from = moment(begin)
+          let until = moment(preset.end)
           let act = from.clone()
           while (act.isBefore(until)) {
-            let slotStart = act.format("HH:mm")
+            let slotStart = act.format()
             act.add(preset.slotLength, "minutes")
             ret.push({
               resourceType: "Slot",
               id: super.createUUID(),
               freeBusyType: "free",
               start: slotStart,
-              end: act.format("HH:mm")
+              end: act.format()
             })
 
           }
