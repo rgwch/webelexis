@@ -6,7 +6,8 @@ template
   .row
     .col.s12.m6
       md-card(md-title="Agenda")
-        input(md-datepicker="container: body; value.two-way: selectedDate;" type="date" placeholder="pick a date")
+        form(role="form" submit.delegate="goToAgenda()")
+          input(md-datepicker="container: body; value.two-way: selectedDate; options.bind:agendaD" type="date" placeholder="pick a date")
 
     .col.s12.m6
       md-card(md-title="Patient")
