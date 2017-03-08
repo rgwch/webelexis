@@ -12,4 +12,5 @@ export interface Refiner {
   fetchSQL(params:{}):Promise<Array<FHIR_Resource>>
   fetchNoSQL(params):Promise<Array<FHIR_Resource>>
   pushSQL(fhir:FHIR_Resource):Promise<void>
+  pushNoSql(fhir:FHIR_Resource):Promise<void>
 }

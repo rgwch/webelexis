@@ -11,30 +11,30 @@ import {FhirObject} from '../models/fhirobject'
 import * as xid from '../common/xid'
 import {NoSQL} from "../services/mongo";
 
-export class Condition extends FhirObject implements Refiner{
-  dataType: string;
+export class Condition extends FhirObject implements Refiner {
+  dataType:string;
 
-  constructor(sql:SQL,nosql:NoSQL){
-    super(sql,nosql)
+  constructor(sql:SQL, nosql:NoSQL) {
+    super(sql, nosql)
   }
 
-  makeMongoQuery(parm: any): any {
+  makeMongoQuery(parm:any):any {
     return undefined;
   }
 
-  compare(a: FHIR_Resource, b: FHIR_Resource): number {
+  compare(a:FHIR_Resource, b:FHIR_Resource):number {
     return 0;
   }
 
-  async fetchSQL(params: {}): Promise<Array<FHIR_Resource>> {
+  async fetchSQL(params:{}):Promise<Array<FHIR_Resource>> {
     return [];
   }
 
-  async fetchNoSQL(params: any): Promise<Array<FHIR_Resource>> {
+  async fetchNoSQL(params:any):Promise<Array<FHIR_Resource>> {
     return [];
   }
 
-  pushSQL(fhir: FHIR_Resource): Promise<void> {
+  pushSQL(fhir:FHIR_Resource):Promise<void> {
     return undefined;
   }
 

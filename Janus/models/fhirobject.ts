@@ -153,6 +153,10 @@ export class FhirObject {
     })
   }
 
+  pushNoSql(fhir:FHIR_Resource):Promise<void> {
+    return undefined;
+  }
+
 }
 
 

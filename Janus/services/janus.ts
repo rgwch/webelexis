@@ -31,14 +31,17 @@ export class Janus {
    * @returns a Promise with the requested object or undefined, if no such object exists
    */
   public async getAsync(id: string, refiner: Refiner): Promise<any> {
-    let mnosql = await this.nosql.getAsync(refiner.dataType, {id: id})
+    let mnosql = await refiner.fetchNoSQL({id: id})
     let msql = await refiner.fetchSQL({id: id})
     return Promise.all([mnosql, msql]).then((values) => {
       let sqlObj
       if (values[1].length > 0) {
         sqlObj = values[1][0]
       }
-      let noSqlObj:FHIR_Resource = values[0][0]
+      let noSqlObj:FHIR_Resource
+      if(values[0].length>0) {
+        noSqlObj = values[0][0]
+      }
       if (noSqlObj) {
         if (sqlObj) {
           return this._checkItems(noSqlObj, sqlObj, refiner)

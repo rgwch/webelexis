@@ -147,7 +147,7 @@ export class Appointment extends FhirObject implements Refiner {
     if (PatId) {
       fhir.participant.push(
         {
-          "actor": PatId,
+          "actor": `Patient/${PatId}`,
           "required": "required"
         }
       )
@@ -159,5 +159,6 @@ export class Appointment extends FhirObject implements Refiner {
   pushSQL(fhir:FHIR_Resource):Promise<void> {
     return undefined;
   }
+
 
 }

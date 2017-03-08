@@ -58,7 +58,15 @@ export class FhirService {
     })
   }
   public getByUri(uri: string): Promise<FHIR_Resource> {
-    return this.http.get(uri)
+    let parts=uri.split(/\//)
+    if(parts.length==2){
+        return this.getById(parts[0],parts[1])
+    }else{
+      return new Promise((resolve,reject)=>{
+        reject(new Error("malformed url"))
+      })
+    }
+
   }
 
   public getById(subtype: string, id: string): Promise<FHIR_Resource> {

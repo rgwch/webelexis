@@ -57,4 +57,10 @@ export class DummyRefiner implements Refiner {
       success()
     })
   }
+  pushNoSql(fhir:FHIR_Resource):Promise<void> {
+    return new Promise<void>(resolve=>{
+      resolve()
+    });
+  }
+
 }

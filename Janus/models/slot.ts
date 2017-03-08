@@ -215,4 +215,17 @@ export class Slot extends FhirObject implements Refiner {
       slotLength: dfltSlot.slotLength
     }
   }
+
+  /**
+   * Empty push
+   * @param fhir
+   * @returns {Promise<T>}
+   */
+
+  pushNoSql(fhir:FHIR_Resource):Promise<void> {
+    return new Promise<void>(resolve=>{
+      resolve()
+    });
+  }
+
 }
