@@ -21,6 +21,9 @@ export class Config {
         if (result.actors) {
           this.actors = result.actors
         }
+        if(result.general){
+          this.general=result.general
+        }
       }
     }).catch(err => {
       console.log(err)
@@ -88,6 +91,10 @@ export class Config {
         "bg": "white",
       }
     }
+  }
+
+  public general={
+    officeName: "Webelexis"
   }
 
   public agenda = {

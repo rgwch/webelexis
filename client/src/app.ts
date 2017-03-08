@@ -53,11 +53,11 @@ export class App {
         nav: true,
         settings: { headerTextKey: 'routes.appointments', authRoleId: "mpa" }
       }, {
-        route: 'appointments-details/:id?',
-        name: 'appointments-details',
-        moduleId: 'routes/appointments/details',
-        title: 'Appointments Details',
-        settings: { headerTextKey: 'routes.appointments-details', authRoleId: "arzt" }
+        route: 'intro',
+        name: 'intro',
+        moduleId: 'routes/intro/index',
+        title: 'Willkommen bei Webelexis',
+        settings: { headerTextKey: 'routes.appointments-details', authRoleId: "mpa" }
       }, {
         route: 'showcase',
         name: 'showcase',
