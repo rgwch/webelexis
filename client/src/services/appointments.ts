@@ -18,7 +18,7 @@ export class AppointmentsService{
   constructor(private fhirService:FhirService,private scheduleFactory:ScheduleFactory,private appointmentFactory:AppointmentFactory){}
 
   filterSchedules(resource:string, forDate:string):Promise<BundleResult> {
-    return this.fhirService.filterBy(this.scheduleFactory,resource,forDate)
+    return this.fhirService.filterBy(this.scheduleFactory,[{entity:resource,value:forDate}])
   }
 
   /**
@@ -29,21 +29,8 @@ export class AppointmentsService{
    */
 
   filterAppointmentsBy(entity:string,searchterm:string) : Promise<BundleResult>{
-    return this.fhirService.filterBy(this.appointmentFactory,entity,searchterm)
+    return this.fhirService.filterBy(this.appointmentFactory,[{entity:entity,value:searchterm}])
 
   }
 
-  /*
-  getAppointmentById(appointmentId:string):Promise<Appointment> {
-    return this.fhirService.http.get('appointments/get/' + appointmentId).then(data => {
-      return new Appointment(data);
-    });
-  }
-
-  saveAppointment(appointment:Appointment):Promise<number> {
-    return this.http.post('appointments/saveAppointment', appointment).then(data => {
-      return data.statusCode;
-    });
-  }
-  */
 }

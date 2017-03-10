@@ -15,6 +15,8 @@ export class Intro {
   private patientFactory
   private patientService;
   private officeName = "Webelexis"
+  private actors=[]
+  private selectedActor={}
 
   private agendaD = {
     monthsFull: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
@@ -36,12 +38,14 @@ export class Intro {
     this.patientFactory = patientFactory
     this.patientService = patientService
     this.officeName = cfg.general.officeName
+    this.actors=cfg.general.actors
     this.observerLocator.getObserver(this,'selectedDate').subscribe((newValue,oldValue)=>{
       console.log(newValue)
       let d=moment(newValue)
-      this.router.navigate('/agenda?date='+ d.format("YYYY-MM-DD"))
+      this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
 
     })
+    
   }
 
   doSearch = function () {
@@ -53,5 +57,6 @@ export class Intro {
       }
     })
   }
+  
 
 }

@@ -14,12 +14,16 @@ import {FhirBundle} from "../models/fhir";
 import {FhirObjectFactory} from "../models/fhirobj";
 
 export interface BundleResult {
-  status: "ok"|"error"
-  message?:string
-  values?:Array<FHIRobject>
-  count:number
+  status: "ok" | "error"
+  message?: string
+  values?: Array<FHIRobject>
+  count: number
   links?: Array<any>
 
+}
+export interface SearchTerm {
+  entity: string,
+  value: string
 }
 
 @inject(HttpWrapper, DataStore)
@@ -28,41 +32,47 @@ export class FhirService {
   constructor(protected http: HttpWrapper, private cache: DataStore) {
   }
 
-  public extractBundle(bundle:FhirBundle):Array<FHIR_Resource>{
-    return bundle.entry.map(be=>{
+  public extractBundle(bundle: FhirBundle): Array<FHIR_Resource> {
+    return bundle.entry.map(be => {
       return be.resource
     })
   }
 
 //  filterBy(subtype: string, entity: string, searchterm: string, entities: Array<String>): Promise<FhirBundle> {
-  filterBy(factory:FhirObjectFactory, entity:string, searchterm:string):Promise<BundleResult> {
-    if (!factory.entities.find(cand => {
-        return (cand == entity)
-      })) {
-      throw new Error(`Bad entity ${entity} for filter in subtype ${factory.subtype}`)
-    }
-    return this.http.get(`${factory.subtype}?_format=json&${entity}=${searchterm}`).then(data => {
+  filterBy(factory: FhirObjectFactory, terms: Array<SearchTerm>): Promise<BundleResult> {
+    let modi="_format=json"
+    terms.forEach(term => {
+      if (!factory.entities.find(cand => {
+          return (cand == term.entity)
+        })) {
+        throw new Error(`Bad entity ${term.entity} for filter in subtype ${factory.subtype}`)
+      }
+      modi+=`&${term.entity}=${term.value}`
+    })
+
+    return this.http.get(`${factory.subtype}?${modi}`).then(data => {
       if (!data) {
         return undefined
       }
       let checked = Validator.checkFHIRBundle(data, factory)
       return checked
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err)
     })
   }
 
-  public getBatch(url:string, factory:FhirObjectFactory): Promise<BundleResult>{
-    return this.http.get(url).then(result=>{
-      return Validator.checkFHIRBundle(result,factory)
+  public getBatch(url: string, factory: FhirObjectFactory): Promise<BundleResult> {
+    return this.http.get(url).then(result => {
+      return Validator.checkFHIRBundle(result, factory)
     })
   }
+
   public getByUri(uri: string): Promise<FHIR_Resource> {
-    let parts=uri.split(/\//)
-    if(parts.length==2){
-        return this.getById(parts[0],parts[1])
-    }else{
-      return new Promise((resolve,reject)=>{
+    let parts = uri.split(/\//)
+    if (parts.length == 2) {
+      return this.getById(parts[0], parts[1])
+    } else {
+      return new Promise((resolve, reject) => {
         reject(new Error("malformed url"))
       })
     }

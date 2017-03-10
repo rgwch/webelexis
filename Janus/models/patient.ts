@@ -76,10 +76,10 @@ export class Patient extends FhirObject implements Refiner {
   makeMongoQuery(params: any) {
     var query = {}
     if (params.address) {
-      query = Janus.addMongoTerms(["address.line", "address.city", "address.postalCode", "address.country"], params.address)
+      query = super.addMongoTerms(["address.line", "address.city", "address.postalCode", "address.country"], params.address)
     }
     if (params.name) {
-      query = Janus.addMongoTerms(["name.given", "name.family"], params.name)
+      query = super.addMongoTerms(["name.given", "name.family"], params.name)
     }
     if (params.id) {
       query = {id: params.id}

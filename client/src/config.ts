@@ -18,9 +18,6 @@ export class Config {
         if (result.agenda) {
           this.agenda = result.agenda
         }
-        if (result.actors) {
-          this.actors = result.actors
-        }
         if(result.general){
           this.general=result.general
         }
@@ -36,18 +33,7 @@ export class Config {
 
   }
 
-  public actors = [
-    {
-      label: "joe",
-      display: "Dr. med. Johann Jodler",
-      id: "Practitioner/12345"
-    },
-    {
-      label: "fred",
-      display: "Prof. Dr. Friedrich Friedensreich",
-      id: "Practitioner/6789"
-    }
-  ]
+
 
   public getAgendaType(name:string) {
     let cmp = name.toLocaleLowerCase()
@@ -94,7 +80,19 @@ export class Config {
   }
 
   public general={
-    officeName: "Webelexis"
+    officeName: "Webelexis",
+    actors :[
+      {
+        shortLabel: "joe",
+        fullname: "Dr. med. Johann Jodler",
+        id: "Practitioner/12345"
+      },
+      {
+        shortLabel: "fred",
+        fullname: "Prof. Dr. Friedrich Friedensreich",
+        id: "Practitioner/6789"
+      }
+    ]
   }
 
   public agenda = {

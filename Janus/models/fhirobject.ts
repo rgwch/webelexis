@@ -154,7 +154,18 @@ export class FhirObject {
   }
 
   pushNoSql(fhir:FHIR_Resource):Promise<void> {
-    return undefined;
+    return new Promise<void>(resolve=>{resolve()});
+  }
+
+  protected addMongoTerms = function (fields, val) {
+    var arr = []
+    var valm = new RegExp("^" + val, "i")
+    fields.forEach(function (field) {
+      var elem = {}
+      elem[field] = valm
+      arr.push(elem)
+    })
+    return {$or: arr}
   }
 
 }

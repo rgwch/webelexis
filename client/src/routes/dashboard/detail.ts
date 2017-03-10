@@ -81,29 +81,30 @@ export class Details {
       this.patientId = pat.id
       var raw = this.patient.fhir["birthDate"]
       this.localizedDate = raw ? moment(raw).format(this.tr.tr('adapters.date_format')) : "?"
+      let searchTerm=[{entity:"patient", value:this.patientId}]
 
-      this.fhirService.filterBy(this.encounterFactory, "patient", this.patientId).then(result => {
+      this.fhirService.filterBy(this.encounterFactory, searchTerm).then(result => {
         this.encounters = result
         this.counts["cons"] = result.count
       })
 
 
-      this.fhirService.filterBy(this.flagFactory, "patient", this.patientId).then(result => {
+      this.fhirService.filterBy(this.flagFactory, searchTerm).then(result => {
         this.remarks = result
         this.counts["remarks"] = result.count
       })
 
-      this.fhirService.filterBy(this.appointmentFactory, "patient",this.patientId).then(result => {
+      this.fhirService.filterBy(this.appointmentFactory, searchTerm).then(result => {
         this.appointments = result
         this.counts["appointments"] = result.count
       })
 
 
-      this.fhirService.filterBy(this.conditionFactory, "patient", this.patientId).then(result => {
+      this.fhirService.filterBy(this.conditionFactory, searchTerm).then(result => {
         this.conditions = result
         this.counts["diags"] = result.values
       })
-      this.fhirService.filterBy(this.medicationOrderFactory, "patient", this.patientId).then(result => {
+      this.fhirService.filterBy(this.medicationOrderFactory, searchTerm).then(result => {
         this.prescriptions = result
         this.counts['prescriptions'] = result.values
       })

@@ -20,7 +20,7 @@ const batchSize = 50
 export class Janus {
   private queryCache: QueryCache
 
-  constructor(private nosql:NoSQL) {
+  constructor() {
     this.queryCache = new QueryCache(300)
   }
 
@@ -50,7 +50,7 @@ export class Janus {
           return noSqlObj
         }
       } else {
-        this.nosql.putAsync(sqlObj)
+        refiner.pushNoSql(sqlObj)
         return sqlObj
       }
     })
@@ -112,7 +112,7 @@ export class Janus {
             resulting.push(_self._checkItems(mongoElem, entry, refiner))
             checked[mongoElem.id] = true
           } else {
-            _self.nosql.putAsync(entry).catch(err => {
+            refiner.pushNoSql(entry).catch(err => {
               console.log("error pushing to nosql " + err)
               throw("internal error")
             })
@@ -171,7 +171,7 @@ export class Janus {
         let m1 = moment(t1)
         let m2 = moment(t2)
         if (m1.isBefore(m2)) {
-          this.nosql.putAsync(itemB)
+          refiner.pushNoSql(itemB)
           return itemB
         } else if (m1.isAfter(m2)) {
           refiner.pushSQL(itemA)
@@ -185,7 +185,7 @@ export class Janus {
       }
     }
     else if (t2) {
-      this.nosql.putAsync(itemB)
+      refiner.pushNoSql(itemB)
       return itemB
     }
     return itemA // equal
@@ -260,16 +260,8 @@ export class Janus {
     return fhir
   }
 
-  static addMongoTerms = function (fields, val) {
-    var arr = []
-    var valm = new RegExp("^" + val, "i")
-    fields.forEach(function (field) {
-      var elem = {}
-      elem[field] = valm
-      arr.push(elem)
-    })
-    return {$or: arr}
-  }
+  /*
+
 
   static extendMongoQuery = function (fieldnames, param) {
     var ret = {}
@@ -278,6 +270,6 @@ export class Janus {
     })
     return ret
   }
-
+*/
 }
 

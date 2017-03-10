@@ -9,6 +9,7 @@ import {Appointment,AppointmentFactory} from '../../models/appointment'
 import {Schedule,ScheduleFactory} from '../../models/schedule'
 import {Slot,SlotFactory} from '../../models/slot'
 import {autoinject} from 'aurelia-framework'
+import {Config} from '../../config'
 
 @autoinject
 export class AgendaRoute {
@@ -17,16 +18,19 @@ export class AgendaRoute {
 
 
   constructor(private appointmentFactory:AppointmentFactory, private slotFactory:SlotFactory, private scheduleFactory:ScheduleFactory,
-              private fhirService:FhirService) {
+              private fhirService:FhirService, private cfg:Config) {
   }
 
-  setDay(date:Date) {
+  setDay(date:Date, actor:string) {
     let day = moment(date)
     this.dateDisplay = day.format("dd, DD.MM.YYYY")
-    this.fhirService.filterBy(this.scheduleFactory, "date", day.format("YYYY-MM-DD")).then(schedules=> {
+    this.fhirService.filterBy(this.scheduleFactory, [
+      {entity:"date",value:day.format("YYYY-MM-DD")},
+      {entity:"actor",value:actor}
+    ]).then(schedules=> {
       if (schedules.status == "ok" && schedules.count > 0) {
         let schedule:Schedule = schedules.values[0]
-        this.fhirService.filterBy(this.slotFactory, "schedule", schedule.id).then(slots=> {
+        this.fhirService.filterBy(this.slotFactory, [{entity:"schedule", value:schedule.id}]).then(slots=> {
           this.slots = slots
         })
       }
@@ -34,11 +38,9 @@ export class AgendaRoute {
   }
 
   activate(params, routeConfig, instruction) {
-    if (params.date) {
-      this.setDay(params.date)
-    } else {
-      this.setDay(new Date())
-    }
+    let date=params.date ? params.date : new Date()
+    let actor=params.actor ? params.actor : this.cfg.general.actors[0].shortLabel
+    this.setDay(date,actor)
   }
 
   dumpSlot(slot) {

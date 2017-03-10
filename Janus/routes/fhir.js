@@ -15,7 +15,7 @@ var API = "0.1";
 
 var mysql = new my.MySql()
 var mongo = new mongoService.MongoDB()
-var Janus = new janus.Janus(mongo)
+var Janus = new janus.Janus()
 
 const resultType = "application/json+fhir; charset=UTF-8"
 

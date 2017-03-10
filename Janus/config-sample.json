@@ -13,7 +13,19 @@
   },
   "client": {
     "general": {
-      "office-name": "Only GP in Town"
+      "office-name": "Only GP in Town",
+      "actors": [
+        {
+          "shortLabel": "joe",
+          "fullname": "Dr. med. Johann Jodler",
+          "id": "Practitioner/12345"
+        },
+        {
+          "shortLabel": "fred",
+          "fullname": "Prof. Dr. Friedrich Friedensreich",
+          "id": "Practitioner/6789"
+        }
+      ]
     },
     "agenda": {
       "types": [
@@ -110,11 +122,6 @@
         ],
         "text": "Allgemeinmedizinische Konsultation"
       },
-      "actors": [
-        "doc",
-        "lab",
-        "xray"
-      ],
       "slots": {
         "default": [
           {
