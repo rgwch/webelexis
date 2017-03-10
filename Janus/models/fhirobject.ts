@@ -157,7 +157,7 @@ export class FhirObject {
     return new Promise<void>(resolve=>{resolve()});
   }
 
-  protected addMongoTerms = function (fields, val) {
+  protected addMongoTerms(fields, val) {
     var arr = []
     var valm = new RegExp("^" + val, "i")
     fields.forEach(function (field) {

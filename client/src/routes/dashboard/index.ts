@@ -15,7 +15,7 @@ export class SearchBox {
   }
 
   doSearch = function () {
-    this.patientService.filterBy(this.patientFactory, "name", this.searchexpr).then(result => {
+    this.patientService.filterBy(this.patientFactory, [{entity:"name", value:this.searchexpr}]).then(result => {
       if (result) {
         this.patients = result.values
       } else {
