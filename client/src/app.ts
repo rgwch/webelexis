@@ -57,7 +57,7 @@ export class App {
         name: 'intro',
         moduleId: 'routes/intro/index',
         title: 'Willkommen bei Webelexis',
-        settings: { headerTextKey: 'routes.appointments-details', authRoleId: "mpa" }
+        settings: { headerTextKey: 'routes.appointments', authRoleId: "mpa" }
       }, {
         route: 'showcase',
         name: 'showcase',

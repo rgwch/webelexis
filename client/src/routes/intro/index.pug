@@ -5,12 +5,11 @@ template
   h4.accent-text.center-align ${officeName}
   .row
     .col.s12.m6
-      md-card(md-title="Agenda")
-        form(role="form" submit.delegate="goToAgenda()")
-          input(md-datepicker="container: body; value.two-way: selectedDate; options.bind:agendaD" type="date" placeholder="pick a date")
+      md-card(md-title="Agenda" style="height:15rem")
+        input(md-datepicker="container: body; value.two-way: selectedDate; options.bind:agendaD;" type="date" placeholder="Wählen Sie ein Datum")
 
     .col.s12.m6
-      md-card(md-title="Patient")
+      md-card(md-title="Patient" style="height:5rem;")
         form(role="form" submit.delegate="doSearch()")
           searchfield(value.two-way="searchexpr")
         md-collection
