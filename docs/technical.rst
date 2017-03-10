@@ -31,6 +31,17 @@ Der Client ist eine Web-App, die in jedem Browser läuft, der die wesentlichsten
 
 Nach dem Start und login landet man in client/src/routes/dashboard/index, wo man einen Patientennamen eingeben kann. Nach Auswahl eines Patienten gelangt man zu client/src/routes/dashboard/detail. Eine View besteht in Aurelia immer aus einer gleichnamigen .ts und .html (bzw. .pug) Datei.
 
+Programmiermodell
+-----------------
+
+Sowohl Janus als auch client sind vorwiegend in Typescript_ geschrieben. Das ist eine JavaScript-Variante, die optional stärkere Typisierung erlaubt und damit viele Programmierfehler abfangen kann. Für Java-Programmierer ist sie auch leichter zu verstehen, als reines JavaScript. Zur Ausführung wird der Code vom Typescript-Compiler (tsc) in reines JavaScript compiliert.
+
+Da Webelexis über eine potentiell langsame Netzwerkverbindung arbeitet, sind alle Kontakte zwischen Server und client asynchron ausgeführt. Ein gewisses Verständnis des asynchronen Programmiermodells ist darum notwendig. Hier ist ein Primer_.
+
+Zum Verständnis des clients empfiehlt sich ein kurzes Einlesen in Aurelia_.
+
+
+
 .. [#] Wenn Sie nur für den nächsten Start einen bestimmten Port vorgeben wollen, können Sie das zumindest unter Linux und MacOS auch einfach so tun: ``env PORT=2015 npm start`` (Wenn Sie für Port eine Nummer unter 1024 eingeben, müssen Sie allerdings "root" sein.)
 
 .. _Express: http://expressjs.com
@@ -38,3 +49,5 @@ Nach dem Start und login landet man in client/src/routes/dashboard/index, wo man
 .. _Aurelia: http://aurelia.io
 .. _Atom: http:/www.atom.io
 .. _Idea: http://www.jetbrains.com/idea
+.. _Typescript: https://www.typescriptlang.org
+.. _Primer: http://rgwch.github.io/2017/03/async
