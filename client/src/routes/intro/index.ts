@@ -1,53 +1,50 @@
 import {FhirService} from '../../services/fhirservice';
 import {Patient, PatientFactory} from "../../models/patient";
-import {inject} from 'aurelia-framework'
+import {autoinject} from 'aurelia-framework'
 import {Config} from '../../config'
 import {Router} from 'aurelia-router';
-import {ObserverLocator} from 'aurelia-framework'
+import {EventAggregator} from 'aurelia-event-aggregator'
 import * as moment from 'moment'
 
 
-@inject(PatientFactory, FhirService, Config, Router, ObserverLocator)
+@autoinject
 export class Intro {
-  selectedDate:Date
-  public searchexpr:string = '';
-  public patients:Array<Patient>
+  selectedDate: Date
+  public searchexpr: string = '';
+  public patients: Array<Patient>
   private patientFactory
   private patientService;
   private officeName = "Webelexis"
-  private actors=[]
-  private selectedActor={}
+  private actors = []
+  private selectedActor = {}
+  private subscriber
 
-  private agendaD = {
-    monthsFull: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-    monthsShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-    weekdaysFull: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-    weekdaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-    today: 'Heute',
-    clear: 'Löschen',
-    close: 'Schließen',
-    firstDay: 1,
-    format: 'dddd, dd. mmmm yyyy',
-    formatSubmit: 'yyyy/mm/dd',
-    closeOnSelect:true,
-    closeOnClear:true
-  }
 
-  constructor(patientFactory:PatientFactory, patientService:FhirService, private cfg:Config,
-              private router:Router, private observerLocator:ObserverLocator) {
+  constructor(patientFactory: PatientFactory, patientService: FhirService, private cfg: Config,
+              private router: Router, private ea: EventAggregator) {
     this.patientFactory = patientFactory
     this.patientService = patientService
     this.officeName = cfg.general.officeName
-    this.actors=cfg.general.actors
-    this.observerLocator.getObserver(this,'selectedDate').subscribe((newValue,oldValue)=>{
-      console.log(newValue)
-      let d=moment(newValue)
+    this.actors = cfg.general.actors
+    this.subscriber = this.ea.subscribe("datepicker", dateEvent => {
+      console.log(dateEvent.newDate)
+      let d = moment(dateEvent.newDate)
+      //window.location.assign(`/#/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
       this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
-
     })
-    
+
   }
 
+  attached() {
+
+  }
+
+  /*
+   detached(){
+   console.log("detached")
+   // this.subscriber.dispose()
+   }
+   */
   doSearch = function () {
     this.patientService.filterBy(this.patientFactory, "name", this.searchexpr).then(result => {
       if (result) {
@@ -57,6 +54,6 @@ export class Intro {
       }
     })
   }
-  
+
 
 }

@@ -1,11 +1,11 @@
 template
   require(from="../../components/slot-view")
   require(from="components/floater.html")
+  require(from="components/datepicker")
   .container
     .row
       .col.s12
-        span ${dateDisplay}
         floater(pos="right: 10px; top: 10px;")
-
+        Datepicker(selectedDate="dateStandard")
     .row(repeat.for="val of slots.values" style="margin:0;padding:0")
         slot-view(obj.bind="val" large.bind="true")

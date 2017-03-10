@@ -1,5 +1,6 @@
 template
   <require from="components/searchfield"></require>
+  <require from="components/datepicker"></require>
   <require from="resources/fhir-resource-value-converter"></require>
 
   h4.accent-text.center-align ${officeName}
@@ -9,9 +10,7 @@ template
         select(md-select="" value.bind="selectedActor")
           option(model.bind="actor" repeat.for="actor of actors") ${actor.shortLabel}
 
-
-        input(md-datepicker="container: body; value.two-way: selectedDate; options.bind:agendaD;" type="date" placeholder="Wählen Sie ein Datum")
-
+      datepicker
     .col.s12.m6
       md-card(md-title="Patient" style="height:5rem;")
         form(role="form" submit.delegate="doSearch()")

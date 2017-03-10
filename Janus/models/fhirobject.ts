@@ -123,7 +123,7 @@ export class FhirObject {
   /**
    * failsafe retrieve an attribute from a FHIR_Resource. Returns the empty string if an element in the property chain is undefined
    * @param fhir
-   * @param property Can be an expression like 'foo.baar[2].baz'
+   * @param property Can be an expression like 'foo.bar[2].baz'
    * @returns {string} the attribute or "" if no such attribute exists
    */
   public static getAttribute(fhir, property:string) {

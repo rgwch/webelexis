@@ -9,21 +9,30 @@ import {Appointment,AppointmentFactory} from '../../models/appointment'
 import {Schedule,ScheduleFactory} from '../../models/schedule'
 import {Slot,SlotFactory} from '../../models/slot'
 import {autoinject} from 'aurelia-framework'
+import {EventAggregator} from 'aurelia-event-aggregator'
 import {Config} from '../../config'
 
 @autoinject
 export class AgendaRoute {
   slots:BundleResult
   dateDisplay:string
+  dateStandard:string="2017-02-02"
+  selectedActor:string
+  private subscriber
 
 
   constructor(private appointmentFactory:AppointmentFactory, private slotFactory:SlotFactory, private scheduleFactory:ScheduleFactory,
-              private fhirService:FhirService, private cfg:Config) {
+              private fhirService:FhirService, private cfg:Config, private ea:EventAggregator) {
+    this.subscriber=this.ea.subscribe("datepicker",event=>{
+      this.setDay(new Date(event.newDate),this.selectedActor)
+    })
   }
 
   setDay(date:Date, actor:string) {
     let day = moment(date)
     this.dateDisplay = day.format("dd, DD.MM.YYYY")
+    this.dateStandard=day.format("YYYY-MM-DD")
+    this.selectedActor=actor
     this.fhirService.filterBy(this.scheduleFactory, [
       {entity:"date",value:day.format("YYYY-MM-DD")},
       {entity:"actor",value:actor}
