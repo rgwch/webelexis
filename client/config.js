@@ -35,10 +35,14 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "materialize": "github:Dogfalo/materialize@0.97.8",
     "moment": "npm:moment@2.17.1",
+    "pikaday": "github:dbushell/Pikaday@1.5.1",
     "text": "github:systemjs/plugin-text@0.0.8",
     "github:Dogfalo/materialize@0.97.8": {
-      "css": "github:systemjs/plugin-css@0.1.32",
+      "css": "github:systemjs/plugin-css@0.1.33",
       "jquery": "npm:jquery@2.2.4"
+    },
+    "github:dbushell/Pikaday@1.5.1": {
+      "css": "github:systemjs/plugin-css@0.1.33"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -242,7 +246,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:font-awesome@4.6.3": {
-      "css": "github:systemjs/plugin-css@0.1.32"
+      "css": "github:systemjs/plugin-css@0.1.33"
     },
     "npm:i18next@3.5.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"

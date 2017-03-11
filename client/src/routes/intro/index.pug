@@ -1,12 +1,14 @@
 template
-  <require from="components/searchfield"></require>
-  <require from="components/datepicker"></require>
-  <require from="resources/fhir-resource-value-converter"></require>
+  require(from="components/searchfield")
+  require(from="components/datepicker")
+  require(from="resources/fhir-resource-value-converter")
+  require(from="../../components/pickdate")
 
   h4.accent-text.center-align ${officeName}
   .row
     .col.s12.m6
       md-card(md-title="Agenda" style="height:15rem")
+        pickdate
         select(md-select="" value.bind="selectedActor")
           option(model.bind="actor" repeat.for="actor of actors") ${actor.shortLabel}
         datepicker
