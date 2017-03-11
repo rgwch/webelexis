@@ -1,7 +1,7 @@
 {
   "cancel": "cancel",
   "none": "none",
-  "more":"more...",
+  "more": "more...",
   "enter_name": "enter (part of) a name",
   "write_a_message": "write a message",
   "you_wrote": "You wrote {{text}}",
@@ -66,11 +66,72 @@
     "nopresc": "No prescriptions"
   },
   "personalDetails": {
-    "firstname": "first name",
-    "lastname": "last name",
-    "birthdate": "birth date",
-    "street": "street",
-    "place": "place",
-    "phone": "phone"
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "birthdate": "Birthdate",
+    "street": "Street",
+    "zip": "zip",
+    "place": "Place",
+    "comm": "Communication",
+    "phone": "Phone",
+    "create": "Edit",
+    "zipplace": "zip/èlace",
+    "fax": "Fax",
+    "email": "E-Mail",
+    "pager": "Pager",
+    "other": "Other",
+    "home": "private",
+    "work": "work",
+    "temp": "temp",
+    "old": "old",
+    "mobile": "mobile",
+    "postal": "Postal address",
+    "physical": "physical address",
+    "both": "Postal and physical address",
+    "all": "general"
+  },
+  "flag": {
+    "flag": "Remark",
+    "category": "Category",
+    "heading": "Title",
+    "text": "Description",
+    "code": "Code",
+    "codesystem": "Codesystem"
+  },
+  "calendar": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "weekdays": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "weekdaysShort": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "previousMonth": "previous month",
+    "nextMonth": "next month"
   }
 }

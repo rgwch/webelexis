@@ -1,5 +1,14 @@
 <template>
-    <p>PickDate</p>
-    <input ref="pikhome">
-    <p>Pickdate</p>
+    <div class="row">
+        <div class="col s1">
+            <i class="fa fa-chevron-circle-left fa-2x" click.trigger="back()"></i>
+        </div>
+        <div class="col s3">
+            <input ref="pikhome">
+        </div>
+        <div class="col s1">
+            <i class="fa fa-chevron-circle-right fa-2x" click.trigger="forward()"></i>
+        </div>
+
+    </div>
 </template>

@@ -20,10 +20,12 @@ export class SlotView {
   private _slotType
   private fhirService:FhirService
   private patLabel:string=""
+  private possibleStates:Array<string>=[]
 
   constructor() {
     this.cfg = Container.instance.get(Config)
     this.fhirService=Container.instance.get(FhirService)
+    this.possibleStates=this.cfg.agenda.states
   }
 
   attached(){
@@ -55,6 +57,10 @@ export class SlotView {
     return this._slotType
   }
 
+  setState(state){
+    this._state=state
+    this.obj.setField('contained.status',state.name)
+  }
 
   getLabel() {
     if (this.large) {
@@ -64,6 +70,10 @@ export class SlotView {
       let fhir = this.obj.fhir
       return `${fhir.id} - ${this.obj.getTimeField('start')} - ${this.obj.getTimeField('end')}; ${fhir['freeBusyType']}`
     }
+  }
+
+  hasStateLabel():boolean{
+    return this.getStateLabel().length>0
   }
 
   getStateLabel():string{

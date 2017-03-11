@@ -8,10 +8,10 @@ template
   .row
     .col.s12.m6
       md-card(md-title="Agenda" style="height:15rem")
-        pickdate
-        select(md-select="" value.bind="selectedActor")
-          option(model.bind="actor" repeat.for="actor of actors") ${actor.shortLabel}
-        datepicker
+        div
+          select(md-select="" value.bind="selectedActor")
+            option(model.bind="actor" repeat.for="actor of actors") ${actor.shortLabel}
+          pickdate
     .col.s12.m6
       md-card(md-title="Patient" style="height:5rem;")
         form(role="form" submit.delegate="doSearch()")
