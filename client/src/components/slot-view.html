@@ -6,7 +6,7 @@
 <template>
     <div class="col s2" style.bind="getStateStyle()">
         ${obj.getTimeField('start')}-${obj.getTimeField('end')}<br/>
-        <div if.bind="hasStateLabel()" css.bind="getStateStyle()">
+        <div if.bind="hasStateLabel()">
             <a md-dropdown="activates: dropdown1" css.bind="getStateStyle()">${getStateLabel()}<i class="material-icons right">arrow_drop_down</i></a>
             <ul id="dropdown1" class="dropdown-content">
                 <li repeat.for="state of possibleStates"><a click.trigger="setState(state)">${state.label}</a></li>

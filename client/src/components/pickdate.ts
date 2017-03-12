@@ -1,3 +1,8 @@
+/*
+ * This file is part of Webelexis(tm)
+ * Copyright (c) 2017 by G. Weirich
+ */
+
 import {customElement} from 'aurelia-framework'
 import {EventAggregator} from 'aurelia-event-aggregator'
 import * as moment from 'moment'
@@ -6,13 +11,17 @@ import Pikaday = require("pikaday");
 import {inject} from 'aurelia-framework'
 import {I18N} from 'aurelia-i18n'
 
-
+/**
+ * Turn pikdate (https://github.com/dbushell/Pikaday) in an Aurelia Component.
+ * Publishes a 'datepicker' event on the Aurelia EventAggregator on date changes.
+ */
 @customElement('pickdate')
 @inject(EventAggregator, Element, I18N)
 export class PickDate {
   pikhome:HTMLInputElement
   element:any
   private pa:Pikaday
+  actDate:string="1"
   private calendarNames = {
     previousMonth: this.tr.tr('calendar.previousMonth'),
     nextMonth: this.tr.tr('calendar.nextMonth')
@@ -36,6 +45,7 @@ export class PickDate {
     }
     this.calendarNames['weekdays'] = weekdays
     this.calendarNames['weekdaysShort'] = weekdaysShort
+    this.actDate="2016-10-03"
   }
 
   attached() {
@@ -51,14 +61,21 @@ export class PickDate {
         ea.publish('datepicker', {oldDate: new Date(), newDate: this.getDate()})
       }
     })
+    //this.pa.setDate(moment().format("DD.MM.YYYY"))
   }
 
+  /**
+   * Set the date one day forward
+   */
   forward() {
     let act = moment(this.pa.getDate())
     act.add(1, "days")
     this.pa.setDate(act.format())
   }
 
+  /**
+   * set the date one day backward
+   */
   back() {
     let act = moment(this.pa.getDate())
     act.add(-1, "days")

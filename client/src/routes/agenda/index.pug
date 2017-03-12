@@ -3,9 +3,9 @@ template
   require(from="components/floater.html")
   require(from="components/pickdate")
   .container
+    floater(pos="right: 10px; top: 10px;")
     .row
-      .col.s12
-        floater(pos="right: 10px; top: 10px;")
+      .col.s8.push-s2
         pickdate
     .row(repeat.for="val of slots.values" style="margin:0;padding:0")
         slot-view(obj.bind="val" large.bind="true")

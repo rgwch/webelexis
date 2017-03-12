@@ -1,10 +1,15 @@
+<!--
+  ~ This file is part of Webelexis(tm)
+  ~ Copyright (c) 2017 by G. Weirich
+  -->
+
 <template>
     <div class="row">
         <div class="col s1">
             <i class="fa fa-chevron-circle-left fa-2x" click.trigger="back()"></i>
         </div>
         <div class="col s3">
-            <input ref="pikhome">
+            <input ref="pikhome" value.bind="actDate">
         </div>
         <div class="col s1">
             <i class="fa fa-chevron-circle-right fa-2x" click.trigger="forward()"></i>
