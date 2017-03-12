@@ -8,7 +8,7 @@ import {EventAggregator} from 'aurelia-event-aggregator'
 import * as moment from 'moment'
 import 'moment/locale/de'
 import Pikaday = require("pikaday");
-import {inject} from 'aurelia-framework'
+import {inject,bindable} from 'aurelia-framework'
 import {I18N} from 'aurelia-i18n'
 
 /**
@@ -21,14 +21,16 @@ export class PickDate {
   pikhome:HTMLInputElement
   element:any
   private pa:Pikaday
-  actDate:string="1"
+  actDate:string
+  @bindable pickerdate:string
   private calendarNames = {
     previousMonth: this.tr.tr('calendar.previousMonth'),
     nextMonth: this.tr.tr('calendar.nextMonth')
   }
 
 
-  constructor(private ea:EventAggregator, element, private tr:I18N) {
+  constructor(private ea:EventAggregator, element:Element, private tr:I18N) {
+    let _self=this
     this.element = element;
     let months = []
     for (let i = 0; i < 12; i++) {
@@ -45,25 +47,28 @@ export class PickDate {
     }
     this.calendarNames['weekdays'] = weekdays
     this.calendarNames['weekdaysShort'] = weekdaysShort
-    this.actDate="2016-10-03"
-  }
-
-  attached() {
-    let i18 = this.calendarNames
-    let ea = this.ea
+    this.pickerdate=moment().format("DD.MM.YYYY")
     this.pa = new Pikaday({
-      field: this.pikhome,
-      i18n: i18,
+      //field: this.pikhome,
+      i18n: _self.calendarNames,
       position: "bottom right",
-      format: "DD.MM.YYYY",
       onSelect: function () {
         console.log("selected " + this.getDate())
-        ea.publish('datepicker', {oldDate: new Date(), newDate: this.getDate()})
+        _self.actDate=moment(this.getDate()).format("dd, DD.MM.YYYY")
+        _self.ea.publish('datepicker', {oldDate: new Date(), newDate: this.getDate()})
+        this.hide()
       }
     })
-    //this.pa.setDate(moment().format("DD.MM.YYYY"))
+    this.element.parentNode.insertBefore(this.pa.el,this.element.nextSibling)
+
   }
 
+  attached(){
+    this.pa.setDate(moment(this.pickerdate,["DD.MM.YYYY","YYYYMMDD","YYYY-MM-DD"]).format())
+  }
+  show(){
+    this.pa.show()
+  }
   /**
    * Set the date one day forward
    */
