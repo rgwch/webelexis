@@ -4,7 +4,7 @@
  */
 
 
-import {bindable,Container} from "aurelia-framework";
+import {bindable,Container,computedFrom} from "aurelia-framework";
 import {Slot} from "../models/slot";
 import {FHIRobject} from "../models/fhirobj";
 import {Config} from '../config'
@@ -14,52 +14,64 @@ import {Patient} from "../models/patient";
 
 export class SlotView {
   @bindable obj:FHIRobject
-  @bindable large:Boolean
+  private large = false
   private cfg
   private _state
   private _slotType
   private fhirService:FhirService
-  private patLabel:string=""
-  private possibleStates:Array<string>=[]
+  private patLabel:string = ""
+  private possibleStates:Array<string> = []
 
   constructor() {
     this.cfg = Container.instance.get(Config)
-    this.fhirService=Container.instance.get(FhirService)
-    this.possibleStates=this.cfg.agenda.states
+    this.fhirService = Container.instance.get(FhirService)
+    this.possibleStates = this.cfg.agenda.states
   }
 
-  attached(){
-    let patient=this.getPatient().then(pat=>{
-      if(pat) {
+  attached() {
+    let patient = this.getPatient().then(pat=> {
+      if (pat) {
         let patObj = new Patient(pat)
         this.patLabel = patObj.fullName
       }
     })
   }
 
-  state(){
-    if(!this._state){
-      this._state=this.cfg.getAgendaState(this.obj.getField("contained.status"))
+  state() {
+    if (!this._state) {
+      this._state = this.cfg.getAgendaState(this.obj.getField("contained.status"))
     }
     return this._state
   }
 
-  type(){
-    if(!this._slotType){
+  type() {
+    if (!this._slotType) {
       let freebusy = this.obj.getField('freeBusyType')
-      if(freebusy=="free") {
+      if (freebusy == "free") {
         this._slotType = this.cfg.getAgendaType("free")
-      } else{
-        this._slotType= this.cfg.getAgendaType(this.obj.getField("contained.type.text"))
+      } else {
+        this._slotType = this.cfg.getAgendaType(this.obj.getField("contained.type.text"))
       }
 
     }
     return this._slotType
   }
 
-  setState(state){
-    this._state=state
-    this.obj.setField('contained.status',state.name)
+  setState(state) {
+    this._state = state
+    this.obj.setField('contained.status', state.name)
+  }
+
+  advState() {
+    let oldState = this._state
+    let idx = this.possibleStates.findIndex(elem=> {
+      return elem['name'] == oldState.name
+    })
+    idx += 1;
+    if (idx >= this.possibleStates.length) {
+      idx = 0
+    }
+    this.setState(this.possibleStates[idx])
   }
 
   getLabel() {
@@ -72,63 +84,89 @@ export class SlotView {
     }
   }
 
-  hasStateLabel():boolean{
-    return this.getStateLabel().length>0
+  hasStateLabel():boolean {
+    return this.stateLabel.length > 0
   }
 
-  getStateLabel():string{
-    let ret=this.state()['label']
-    if(!ret){
-      ret=this.state()['name']
+  @computedFrom('_state')
+  get stateLabel():string {
+    let ret = this.state()['label']
+    if (!ret) {
+      ret = this.state()['name']
     }
     return ret;
   }
 
-  getTypeLabel():string{
-    let ret=this.type()['label']
-    if(!ret){
-      ret=this.type()['name']
+  getTypeLabel():string {
+    let ret = this.type()['label']
+    if (!ret) {
+      ret = this.type()['name']
     }
     return ret
   }
-  getStateStyle():string{
+
+  getReason():string {
+    let ret = this.obj.getField("contained.reason.text")
+    return ret.length > 0 ? ret : undefined
+  }
+
+  @computedFrom('_state','large')
+  get stateStyle():string {
     let ret
-    if(this.state()['bg']){
-      ret="background-color:"+this.state()['bg']+";"
+    if (this.state()['bg']) {
+      ret = "background-color:" + this.state()['bg'] + ";"
     }
-    if(this.state()['fg']){
-      ret+="color:"+this.state()['fg']+";"
+    if (this.state()['fg']) {
+      ret += "color:" + this.state()['fg'] + ";"
     }
     return ret
   }
-  getTypeStyle() :string{
+
+  @computedFrom('large')
+  get popout(){
     let ret
-    if(this.type()["bg"]){
-      ret="background-color:"+this.type()['bg']+";"
+    if(this.large){
+      ret="margin:5px;padding:5px;border:1px solid black;"
     }
-    if(this.type()["fg"]){
-      ret+="color:"+this.type()["fg"]+";"
+    return ret
+  }
+  getTypeStyle():string {
+    let ret
+    if (this.type()["bg"]) {
+      ret = "background-color:" + this.type()['bg'] + ";"
+    }
+    if (this.type()["fg"]) {
+      ret += "color:" + this.type()["fg"] + ";"
     }
     return ret;
   }
-  getPatient():Promise<FHIR_Resource>{
-    let busy= this.obj.getField('freeBusyType')
-    if(busy==="busy" || busy==="busy-tentative"){
-      let appnt=this.obj.fhir['contained']
-      if(appnt){
-        let participants=appnt['participant']
-        if(Array.isArray(participants)){
-          for(let i=0;i<participants.length;i++){
-            if(participants[i].actor.startsWith("Patient/")){
+
+  getPatient():Promise<FHIR_Resource> {
+    let busy = this.obj.getField('freeBusyType')
+    if (busy === "busy" || busy === "busy-tentative") {
+      let appnt = this.obj.fhir['contained']
+      if (appnt) {
+        let participants = appnt['participant']
+        if (Array.isArray(participants)) {
+          for (let i = 0; i < participants.length; i++) {
+            if (participants[i].actor.startsWith("Patient/")) {
               return this.fhirService.getByUri(participants[i].actor)
             }
           }
         }
       }
     }
-    return new Promise(resolve=>{
+    return new Promise(resolve=> {
       resolve()
     })
+  }
+
+  details() {
+    alert(this.getLabel())
+  }
+
+  largeToggle() {
+    this.large = !this.large
   }
 
 }

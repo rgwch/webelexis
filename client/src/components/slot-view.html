@@ -4,17 +4,19 @@
   -->
 
 <template>
-    <div class="col s2" style.bind="getStateStyle()">
-        ${obj.getTimeField('start')}-${obj.getTimeField('end')}<br/>
-        <div if.bind="hasStateLabel()">
-            <a md-dropdown="activates: dropdown1" css.bind="getStateStyle()">${getStateLabel()}<i class="material-icons right">arrow_drop_down</i></a>
-            <ul id="dropdown1" class="dropdown-content">
-                <li repeat.for="state of possibleStates"><a click.trigger="setState(state)">${state.label}</a></li>
-            </ul>
+    <div css.bind="popout">
+        <div class="col s2" css.bind="stateStyle">
+            ${obj.getTimeField('start')}-${obj.getTimeField('end')}<br/>
+            <div if.bind="stateLabel">
+                <span text.bind="stateLabel" click.trigger="advState()">${stateLabel}</span>
+            </div>
         </div>
-    </div>
-    <div class="col s10" style.bind="getTypeStyle()">
-        <span>${patLabel}</span><br/>
-        ${getTypeLabel()}
+        <div class="col s10" css.bind="getTypeStyle()" click.trigger="largeToggle()">
+            <span>${patLabel}</span><br/>
+            ${getTypeLabel()} <span if.bind="getReason()"> - (${getReason()})</span>
+            <div if.bind="large">
+                more
+            </div>
+        </div>
     </div>
 </template>

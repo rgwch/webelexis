@@ -25,7 +25,10 @@ export class PickDate {
   @bindable pickerdate:string
   private calendarNames = {
     previousMonth: this.tr.tr('calendar.previousMonth'),
-    nextMonth: this.tr.tr('calendar.nextMonth')
+    nextMonth: this.tr.tr('calendar.nextMonth'),
+    months:[],    // make typescript compiler happy
+    weekdays:[],
+    weekdaysShort:[]
   }
 
 
