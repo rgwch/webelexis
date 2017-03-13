@@ -4,7 +4,7 @@
  */
 
 
-import {bindable,Container,computedFrom} from "aurelia-framework";
+import {bindable, Container, computedFrom} from "aurelia-framework";
 import {Slot} from "../models/slot";
 import {FHIRobject} from "../models/fhirobj";
 import {Config} from '../config'
@@ -13,14 +13,14 @@ import {FHIR_Resource} from "../models/fhir";
 import {Patient} from "../models/patient";
 
 export class SlotView {
-  @bindable obj:FHIRobject
+  @bindable obj: FHIRobject
   private large = false
   private cfg
   private _state
   private _slotType
-  private fhirService:FhirService
-  private patLabel:string = ""
-  private possibleStates:Array<string> = []
+  private fhirService: FhirService
+  private patLabel: string = ""
+  private possibleStates: Array<string> = []
 
   constructor() {
     this.cfg = Container.instance.get(Config)
@@ -29,7 +29,7 @@ export class SlotView {
   }
 
   attached() {
-    let patient = this.getPatient().then(pat=> {
+    let patient = this.getPatient().then(pat => {
       if (pat) {
         let patObj = new Patient(pat)
         this.patLabel = patObj.fullName
@@ -64,7 +64,7 @@ export class SlotView {
 
   advState() {
     let oldState = this._state
-    let idx = this.possibleStates.findIndex(elem=> {
+    let idx = this.possibleStates.findIndex(elem => {
       return elem['name'] == oldState.name
     })
     idx += 1;
@@ -84,12 +84,12 @@ export class SlotView {
     }
   }
 
-  hasStateLabel():boolean {
+  hasStateLabel(): boolean {
     return this.stateLabel.length > 0
   }
 
   @computedFrom('_state')
-  get stateLabel():string {
+  get stateLabel(): string {
     let ret = this.state()['label']
     if (!ret) {
       ret = this.state()['name']
@@ -97,7 +97,7 @@ export class SlotView {
     return ret;
   }
 
-  getTypeLabel():string {
+  getTypeLabel(): string {
     let ret = this.type()['label']
     if (!ret) {
       ret = this.type()['name']
@@ -105,13 +105,16 @@ export class SlotView {
     return ret
   }
 
-  getReason():string {
+  get reason(): string {
     let ret = this.obj.getField("contained.reason.text")
     return ret.length > 0 ? ret : undefined
   }
 
-  @computedFrom('_state','large')
-  get stateStyle():string {
+  set reason(value:string){
+    console.log(value)
+  }
+  @computedFrom('_state', 'large')
+  get stateStyle(): string {
     let ret
     if (this.state()['bg']) {
       ret = "background-color:" + this.state()['bg'] + ";"
@@ -123,14 +126,17 @@ export class SlotView {
   }
 
   @computedFrom('large')
-  get popout(){
+  get popout() {
     let ret
-    if(this.large){
-      ret="margin:5px;padding:5px;border:1px solid black;"
+    if (this.large) {
+      ret = "margin:5px;padding:5px;border:1px solid blue;"
+    } else {
+      ret = "margin:1px;"
     }
     return ret
   }
-  getTypeStyle():string {
+
+  getTypeStyle(): string {
     let ret
     if (this.type()["bg"]) {
       ret = "background-color:" + this.type()['bg'] + ";"
@@ -141,7 +147,7 @@ export class SlotView {
     return ret;
   }
 
-  getPatient():Promise<FHIR_Resource> {
+  getPatient(): Promise<FHIR_Resource> {
     let busy = this.obj.getField('freeBusyType')
     if (busy === "busy" || busy === "busy-tentative") {
       let appnt = this.obj.fhir['contained']
@@ -156,7 +162,7 @@ export class SlotView {
         }
       }
     }
-    return new Promise(resolve=> {
+    return new Promise(resolve => {
       resolve()
     })
   }

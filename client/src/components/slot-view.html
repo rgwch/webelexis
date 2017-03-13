@@ -4,18 +4,35 @@
   -->
 
 <template>
-    <div css.bind="popout">
-        <div class="col s2" css.bind="stateStyle">
-            ${obj.getTimeField('start')}-${obj.getTimeField('end')}<br/>
-            <div if.bind="stateLabel">
-                <span text.bind="stateLabel" click.trigger="advState()">${stateLabel}</span>
+    <require from="./ck-editor"></require>
+    <div class="col s12">
+        <div class="row" css.bind="popout">
+            <div class="col s3 m2" css.bind="stateStyle">
+                ${obj.getTimeField('start')}-${obj.getTimeField('end')}<br/>
+                <div if.bind="stateLabel">
+                    <span text.bind="stateLabel" click.trigger="advState()">${stateLabel}</span>
+                </div>
             </div>
-        </div>
-        <div class="col s10" css.bind="getTypeStyle()" click.trigger="largeToggle()">
-            <span>${patLabel}</span><br/>
-            ${getTypeLabel()} <span if.bind="getReason()"> - (${getReason()})</span>
-            <div if.bind="large">
-                more
+            <div class="col s9 m10" css.bind="getTypeStyle()" >
+                <span click.trigger="largeToggle()">${patLabel}</span><br/>
+                <div if.bind="!large">
+                    ${getTypeLabel()} <span if.bind="reason"> - (${reason})</span>
+                </div>
+                <div if.bind="large" class="row" style="font-size: small;">
+                    <div class="col s6">
+                        <select md-select="" value.bind="_slotType">
+                            <option model.bind="typ" repeat.for="typ of cfg.agenda.types">${typ.label}</option>
+                        </select>
+                    </div>
+                    <div class="col s6">
+                        <select md-select="" value.bind="_state">
+                            <option model.bind="status" repeat.for="status of possibleStates">${status.label}</option>
+                        </select>
+                    </div>
+                    <div class="col s12">
+                        <ck-editor value.two-way="reason"></ck-editor>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
