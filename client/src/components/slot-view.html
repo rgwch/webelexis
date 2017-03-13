@@ -8,13 +8,15 @@
     <div class="col s12">
         <div class="row" css.bind="popout">
             <div class="col s3 m2" css.bind="stateStyle">
-                ${obj.getTimeField('start')}-${obj.getTimeField('end')}<br/>
+                <b>${obj.getTimeField('start')}-${obj.getTimeField('end')}</b><br/>
                 <div if.bind="stateLabel">
                     <span text.bind="stateLabel" click.trigger="advState()">${stateLabel}</span>
                 </div>
             </div>
             <div class="col s9 m10" css.bind="getTypeStyle()" >
-                <span click.trigger="largeToggle()">${patLabel}</span><br/>
+                <i class="fa fa-toggle-down" style="float: right"></i>
+                <i class="fa fa-toggle-up" style="float: right"></i>
+                <span click.trigger="largeToggle()"><b>${patLabel}</b></span><br/>
                 <div if.bind="!large">
                     ${getTypeLabel()} <span if.bind="reason"> - (${reason})</span>
                 </div>

@@ -145,6 +145,7 @@ export class SlotView {
     if (this.type()["fg"]) {
       ret += "color:" + this.type()["fg"] + ";"
     }
+    ret+="padding-top:2px"
     return ret;
   }
 
@@ -178,5 +179,12 @@ export class SlotView {
 
   save() {
     console.log("store: "+this.reason)
+  }
+  shorten(){
+    let end=moment(this.obj.getDateTimeField('end'))
+    let start=moment(this.obj.getDateTimeField('start'))
+    let diff=(end.unix()-start.unix())/2
+    let newEnd=start.add(diff,'seconds')
+    this.obj.setDateTimeField('end',newEnd.format())
   }
 }
