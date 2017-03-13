@@ -110,10 +110,11 @@ export class SlotView {
     return ret.length > 0 ? ret : undefined
   }
 
-  set reason(value:string){
-    console.log(value)
+  set reason(value: string) {
+    this.obj.setField("contained.reason.text", value)
   }
-  @computedFrom('_state', 'large')
+
+  @computedFrom('_state')
   get stateStyle(): string {
     let ret
     if (this.state()['bg']) {
@@ -175,4 +176,7 @@ export class SlotView {
     this.large = !this.large
   }
 
+  save() {
+    console.log("store: "+this.reason)
+  }
 }
