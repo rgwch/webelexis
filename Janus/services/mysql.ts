@@ -45,7 +45,7 @@ export class MySql implements SQL{
 
   public insertAsync(sql, values):Promise<void> {
     return new Promise<any>((resolve, reject)=> {
-      /*
+
       this._pool.query(sql, values, function (err, result, fields) {
         if (err) {
           console.log(err.code)
@@ -54,7 +54,7 @@ export class MySql implements SQL{
           resolve()
         }
       })
-      */
+
       resolve()
     })
   }

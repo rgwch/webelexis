@@ -156,6 +156,9 @@ export class Appointment extends FhirObject implements Refiner {
 
   }
 
+  static fhirToSql(fhir:FHIR_Appointment){
+
+  }
   pushSQL(fhir:FHIR_Resource):Promise<void> {
     return undefined;
   }

@@ -185,8 +185,11 @@ export class Slot extends FhirObject implements Refiner {
   }
 
 
-  pushSQL(fhir:FHIR_Resource):Promise < void > {
-    return undefined;
+  async pushSQL(fhir:FHIR_Slot):Promise <void> {
+    if(fhir['contained']){
+
+    }
+
   }
 
   private _findPresetsForDay(day:string):Array <SlotPreset> {

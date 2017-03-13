@@ -4,27 +4,32 @@
  */
 
 
-import {bindable, Container, computedFrom} from "aurelia-framework";
+import {bindable, Container, computedFrom, autoinject} from "aurelia-framework";
 import {Slot} from "../models/slot";
 import {FHIRobject} from "../models/fhirobj";
 import {Config} from '../config'
 import {FhirService} from '../services/fhirservice'
 import {FHIR_Resource} from "../models/fhir";
 import {Patient} from "../models/patient";
+import * as moment from 'moment'
+import {EventAggregator} from 'aurelia-event-aggregator'
 
+@autoinject()
 export class SlotView {
-  @bindable obj: FHIRobject
+  @bindable obj:FHIRobject
   private large = false
-  private cfg
+  //private cfg
   private _state
   private _slotType
-  private fhirService: FhirService
-  private patLabel: string = ""
-  private possibleStates: Array<string> = []
+  //private fhirService:FhirService
+  private patLabel:string = ""
+  private possibleStates:Array<string> = []
+  //private ea:EventAggregator
 
-  constructor() {
-    this.cfg = Container.instance.get(Config)
-    this.fhirService = Container.instance.get(FhirService)
+  constructor(private cfg:Config, private ea:EventAggregator, private fhirService:FhirService) {
+    // this.cfg = Container.instance.get(Config)
+    // this.ea = Container.instance.get(EventAggregator)
+    // this.fhirService = Container.instance.get(FhirService)
     this.possibleStates = this.cfg.agenda.states
   }
 
@@ -84,12 +89,12 @@ export class SlotView {
     }
   }
 
-  hasStateLabel(): boolean {
+  hasStateLabel():boolean {
     return this.stateLabel.length > 0
   }
 
   @computedFrom('_state')
-  get stateLabel(): string {
+  get stateLabel():string {
     let ret = this.state()['label']
     if (!ret) {
       ret = this.state()['name']
@@ -97,7 +102,7 @@ export class SlotView {
     return ret;
   }
 
-  getTypeLabel(): string {
+  getTypeLabel():string {
     let ret = this.type()['label']
     if (!ret) {
       ret = this.type()['name']
@@ -105,17 +110,17 @@ export class SlotView {
     return ret
   }
 
-  get reason(): string {
+  get reason():string {
     let ret = this.obj.getField("contained.reason.text")
     return ret.length > 0 ? ret : undefined
   }
 
-  set reason(value: string) {
+  set reason(value:string) {
     this.obj.setField("contained.reason.text", value)
   }
 
   @computedFrom('_state')
-  get stateStyle(): string {
+  get stateStyle():string {
     let ret
     if (this.state()['bg']) {
       ret = "background-color:" + this.state()['bg'] + ";"
@@ -137,7 +142,7 @@ export class SlotView {
     return ret
   }
 
-  getTypeStyle(): string {
+  getTypeStyle():string {
     let ret
     if (this.type()["bg"]) {
       ret = "background-color:" + this.type()['bg'] + ";"
@@ -145,11 +150,11 @@ export class SlotView {
     if (this.type()["fg"]) {
       ret += "color:" + this.type()["fg"] + ";"
     }
-    ret+="padding-top:2px"
+    ret += "padding-top:2px"
     return ret;
   }
 
-  getPatient(): Promise<FHIR_Resource> {
+  getPatient():Promise<FHIR_Resource> {
     let busy = this.obj.getField('freeBusyType')
     if (busy === "busy" || busy === "busy-tentative") {
       let appnt = this.obj.fhir['contained']
@@ -178,13 +183,20 @@ export class SlotView {
   }
 
   save() {
-    console.log("store: "+this.reason)
+    return this.fhirService.update(this.obj.fhir)
   }
-  shorten(){
-    let end=moment(this.obj.getDateTimeField('end'))
-    let start=moment(this.obj.getDateTimeField('start'))
-    let diff=(end.unix()-start.unix())/2
-    let newEnd=start.add(diff,'seconds')
-    this.obj.setDateTimeField('end',newEnd.format())
+
+  shorten() {
+    let end = moment(this.obj.getField('end'))
+    let start = moment(this.obj.getField('start'))
+    let diff = (end.unix() - start.unix()) / 2
+    let newEnd = start.add(diff, 'seconds')
+    this.obj.setField('end', newEnd.format())
+    this.obj.setField('contained.end',newEnd.format())
+    this.save().then(result=>{
+      this.ea.publish('agenda_reload')
+    }).catch(err=>{
+      alert("error "+err)
+    })
   }
 }

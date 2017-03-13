@@ -75,6 +75,20 @@ router.get("/batch/:id/:start/:number", function (req, resp) {
   })
 })
 
+router.put("/:datatype/:id",function(req,resp){
+  let fhir=req.body
+  var type = req.params.datatype
+  if (type && mapper[type]) {
+    Janus.putAsync(fhir, mapper[type]).then(result=> {
+      resp.end()
+    }).catch(err=> {
+      sendError(resp, error)
+    })
+  }else{
+    sendError(resp,"illegal argument")
+  }
+})
+
 function sendError(handler, error) {
   handler.json({
     "status": "error",

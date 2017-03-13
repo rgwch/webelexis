@@ -26,6 +26,9 @@ export class AgendaRoute {
     this.subscriber=this.ea.subscribe("datepicker",event=>{
       this.setDay(new Date(event.newDate),this.selectedActor)
     })
+    this.ea.subscribe('agenda_reload', event=>{
+      this.setDay(new Date(this.dateStandard),this.selectedActor)
+    })
   }
 
   setDay(date:Date, actor:string) {

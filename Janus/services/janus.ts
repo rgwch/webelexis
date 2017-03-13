@@ -148,6 +148,10 @@ export class Janus {
     }
   }
 
+  public putAsync(fhir:FHIR_Resource, refiner:Refiner){
+    return Promise.all([refiner.pushNoSql(fhir),refiner.pushSQL(fhir)])
+  }
+
   /**
    * compare two FHIR_Resources and return the newer one.
    * If both have standard time stamps, the time stamps are compared. If one has
@@ -260,16 +264,5 @@ export class Janus {
     return fhir
   }
 
-  /*
-
-
-  static extendMongoQuery = function (fieldnames, param) {
-    var ret = {}
-    fieldnames.forEach(function (fieldname) {
-      ret[fieldname] = param[fieldname]
-    })
-    return ret
-  }
-*/
 }
 
