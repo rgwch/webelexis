@@ -30,10 +30,7 @@ export class SlotView {
   //private ea:EventAggregator
 
   constructor(private cfg: Config, private ea: EventAggregator, private fhirService: FhirService) {
-    // this.cfg = Container.instance.get(Config)
-    // this.ea = Container.instance.get(EventAggregator)
-    // this.fhirService = Container.instance.get(FhirService)
-    this.possibleStates = this.cfg.agenda.states
+    this.possibleStates = this.cfg.agenda.states.map(state=>state.label)
   }
 
   attached() {

@@ -4,25 +4,25 @@
  * All rights reserved.
  ***************************************/
 import * as moment from 'moment'
-import {FHIR_Resource,FHIR_Period} from '../common/models/fhir'
+import {FHIR_Resource, FHIR_Period, FHIR_Identifier} from '../common/models/fhir'
 import {SQL} from '../services/mysql'
 import {NoSQL} from '../services/mongo'
-import * as log from 'winston'
-import * as config from 'nconf'
+let log = require('winston')
+let config = require('nconf')
 import * as XID from '../common/xid'
 import {FHIR_Meta} from "../common/models/fhir";
 
 export class FhirObject {
-  protected logger=log
-  protected cfg=config
-  protected xid=XID.domains
+  protected logger = log
+  protected cfg = config
+  protected xid = XID.domains
 
-  constructor(protected sql:SQL, protected nosql:NoSQL) {
-    let loglevel=this.cfg.get("loglevel")
-    if(!loglevel){
-      loglevel="debug"
+  constructor(protected sql: SQL, protected nosql: NoSQL) {
+    let loglevel = this.cfg.get("loglevel")
+    if (!loglevel) {
+      loglevel = "debug"
     }
-    this.logger.level=loglevel
+    this.logger.level = loglevel
   }
 
   /**
@@ -31,7 +31,7 @@ export class FhirObject {
    * @param sep
    * @returns {any}
    */
-  join(arr:Array<any>, sep:string = " ") {
+  join(arr: Array<any>, sep: string = " ") {
     if (arr) {
       return arr.join(sep)
     } else {
@@ -59,19 +59,19 @@ export class FhirObject {
    * @param end
    * @returns {{start: string, end: string}}
    */
-  makePeriod(begin:string,end:string):FHIR_Period{
+  makePeriod(begin: string, end: string): FHIR_Period {
 
-      return {
-        start: moment(begin,"YYYYMMDD").format(),
-        end:moment(end,"YYYYMMDD").format()
-      }
+    return {
+      start: moment(begin, "YYYYMMDD").format(),
+      end  : moment(end, "YYYYMMDD").format()
+    }
   }
 
-  makeIdentifier(id:string){
+  makeIdentifier(id: string):FHIR_Identifier {
     return {
-      use: "usual",
-      system: this.xid.elexis_uuid,
-      value: id,
+      use     : "usual",
+      system  : this.xid.elexis_uuid,
+      value   : id,
       assigner: this.cfg.get("client")["general"].officeName
     }
   }
@@ -81,7 +81,7 @@ export class FhirObject {
    * @param fh
    * @returns {Date} the timestamp as Date or now()
    */
-  readTimestamp(fh:FHIR_Resource) {
+  readTimestamp(fh: FHIR_Resource) {
     let meta = this.prop(fh, "meta")
     let lastupdate = new Date()
     if (meta && meta.lastUpdated) {
@@ -90,12 +90,13 @@ export class FhirObject {
     return lastupdate
   }
 
-  createTimestampMeta(fh:FHIR_Resource): FHIR_Meta{
-    let meta=fh['meta']
-    if(!meta){
-      meta={}
+  createTimestampMeta(fh: FHIR_Resource): FHIR_Meta {
+    let meta = fh['meta']
+    if (!meta) {
+      meta = {}
     }
-    meta['lastUpdated']=new Date().getDate()
+    let act=new Date().getTime()
+    meta['lastUpdated'] = act.toString()
     return meta
   }
 
@@ -105,7 +106,7 @@ export class FhirObject {
    * @param fields
    * @returns {string}
    */
-  public static makeSQLString(table:string, fields:Array<string>):string {
+  public static makeSQLString(table: string, fields: Array<string>): string {
     let qms = "?,".repeat(fields.length)
     let sql = `INSERT INTO ${table} (${fields.join(",")}) VALUES (${qms.substring(0, qms.length - 1)}) ` +
       "ON DUPLICATE KEY UPDATE "
@@ -131,12 +132,13 @@ export class FhirObject {
   }
 
   /**
-   * failsafe retrieve an attribute from a FHIR_Resource. Returns the empty string if an element in the property chain is undefined
+   * failsafe retrieve an attribute from a FHIR_Resource. Returns the empty string if an element in the property chain
+   * is undefined
    * @param fhir
    * @param property Can be an expression like 'foo.bar[2].baz'
    * @returns {string} the attribute or "" if no such attribute exists
    */
-  public static getAttribute(fhir, property:string) {
+  public static getAttribute(fhir, property: string) {
     var spl = property.split(/\./)
     var ret = ""
     var obj = fhir
@@ -156,15 +158,15 @@ export class FhirObject {
 
   }
 
-  public createUUID():string {
+  public createUUID(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     })
   }
 
-  pushNoSql(fhir:FHIR_Resource):Promise<void> {
-    return new Promise<void>(resolve=>{resolve()});
+  pushNoSql(fhir: FHIR_Resource): Promise<void> {
+    return new Promise<void>(resolve => {resolve()});
   }
 
   protected addMongoTerms(fields, val) {

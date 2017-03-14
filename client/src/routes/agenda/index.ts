@@ -42,8 +42,20 @@ export class AgendaRoute {
     ]).then(schedules => {
       if (schedules.status == "ok" && schedules.count > 0) {
         let schedule: Schedule = schedules.values[0]
-        this.fhirService.filterBy(this.slotFactory, [{entity: "schedule", value: schedule.id}]).then(slots => {
-          this.slots = slots
+        this.fhirService.filterBy(this.slotFactory, [{entity: "schedule", value: schedule.id}]).then(appnts => {
+          let slots=[]
+          let lastEnd="2000-01-01T00:00"
+          appnts.values.forEach(appnt=>{
+            let prev=moment(lastEnd).unix()
+            let start=moment(appnt['start']).unix()
+            if(prev<start){
+              slots.push(this._makeFreeSlot(lastEnd,appnt['start']))
+            }
+            slots.push(appnt)
+            lastEnd=appnt['end']
+          })
+          appnts.values=slots
+          this.slots = appnts
         })
       }
     })
@@ -55,6 +67,16 @@ export class AgendaRoute {
     this.setDay(date, actor)
   }
 
+  private _makeFreeSlot(begin: string, end: string) {
+    return new Slot({
+
+      resourceType: "Slot",
+      id          : this.fhirService.createUUID(),
+      freeBusyType: "free",
+      start       : begin,
+      end         : end
+    })
+  }
   dumpSlot(slot) {
     return JSON.stringify(slot)
   }

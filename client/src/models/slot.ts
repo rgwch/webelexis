@@ -5,12 +5,13 @@
 
 import {FHIR_Resource} from './fhir'
 import {FHIRobject, FhirObjectFactory} from "../models/fhirobj";
+import {FHIR_Slot} from "../models/fhir";
 
 export class SlotFactory implements FhirObjectFactory {
   entities: Array<string> = ["fb-type", "schedule", "slot-type", "start"]
   subtype: string = "Slot"
 
-  createObject(fhir: FHIR_Resource): FHIRobject {
+  createObject(fhir: FHIR_Slot): FHIRobject {
     return new Slot(fhir);
   }
 
@@ -18,7 +19,7 @@ export class SlotFactory implements FhirObjectFactory {
 
 export class Slot extends FHIRobject {
 
-  constructor(fhir: FHIR_Resource) {
+  constructor(fhir: FHIR_Slot) {
     super(fhir, "Slot")
   }
 

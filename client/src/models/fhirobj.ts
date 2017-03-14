@@ -14,7 +14,7 @@ import {FHIR_Narrative} from "./fhir";
 export interface FhirObjectFactory {
   entities: Array<string>
   subtype: string
-  createObject(fhir: FHIR_Resource): FHIRobject
+  createObject(fhir): FHIRobject
 
 }
 
@@ -27,7 +27,7 @@ export class FHIRobject {
   private static converter = Container.instance.get(FhirResourceValueConverter)
   protected static i18 = Container.instance.get(I18N)
 
-  constructor(data: FHIR_Resource, expectedType: string) {
+  constructor(data, expectedType: string) {
     if (data.resourceType !== expectedType) {
       throw "Bad resource type"
     }

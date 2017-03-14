@@ -6,8 +6,6 @@
 
 import {Refiner} from "./fhirsync";
 import {FHIR_Resource, FHIR_Flag, FHIR_CodeableConcept, FHIR_Coding, FHIR_Appointment} from '../common/models/fhir'
-import {Janus} from '../services/janus'
-import {MySql} from '../services/mysql'
 import * as moment from 'moment'
 import * as xid from '../common/xid'
 import {SQL} from '../services/mysql'
@@ -118,7 +116,7 @@ export class Appointment extends FhirObject implements Refiner {
       resourceType: "Appointment",
       id: raw.ID,
       meta: {
-        lastUpdated: moment(new Date(raw.LASTUPDATE)).format()
+        lastUpdated: moment(new Date(raw.LASTUPDATE as number)).format()
       },
       identifier: [
         {
@@ -168,12 +166,12 @@ export class Appointment extends FhirObject implements Refiner {
     let values = []
     values.push(fhir.id)
     let pat = fhir.participant.find(part=> {
-      return part.actor.startsWith("Patient")
-    })
+      return (part.actor.toString()).startsWith("Patient")
+    }).toString()
     if (!pat) {
       throw new Error("No Patient given")
     }
-    let patid = pat.substring(pat.findIndex("/"))
+    let patid = pat.substring(pat.indexOf("/"))
     values.push(patid)
     let start = moment(fhir.start)
     let end = moment(fhir.end)
