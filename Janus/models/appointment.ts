@@ -13,6 +13,7 @@ import * as xid from '../common/xid'
 import {SQL} from '../services/mysql'
 import {FhirObject} from "./fhirobject";
 import {NoSQL} from "../services/mongo";
+import {ElexisUtils} from "./elexis-utils"
 
 /*
  mysql> show columns from agntermine;
@@ -47,6 +48,7 @@ import {NoSQL} from "../services/mongo";
 
 export class Appointment extends FhirObject implements Refiner {
   dataType:string = "Appointment"
+  static util:ElexisUtils = new ElexisUtils()
 
   static concerned_fields = ["PatID", "Bereich", "Tag", "Beginn", "Dauer", "Grund", "TerminTyp", "TerminStatus",
     "ErstelltVon", "angelegt", "lastedit", "deleted", "lastupdate", "StatusHistory", "priority"]
@@ -156,11 +158,47 @@ export class Appointment extends FhirObject implements Refiner {
 
   }
 
-  static fhirToSql(fhir:FHIR_Appointment){
+  static fhirToSql(fhir:FHIR_Appointment) {
+    if (fhir.resourceType != 'Appointment') {
+      throw new Error("bad parameter type for Appointmenr:pushSQL")
+    }
 
+    let sqlQuery = this.makeSQLString("agntermine", ["ID", "PatID", "Tag", "Beginn", "Dauer", "Grund", "TerminTyp", "TerminStatus",
+      "lastedit", "lastupdate", "caseType", "insuranceType", "treatmentReason"])
+    let values = []
+    values.push(fhir.id)
+    let pat = fhir.participant.find(part=> {
+      return part.actor.startsWith("Patient")
+    })
+    if (!pat) {
+      throw new Error("No Patient given")
+    }
+    let patid = pat.substring(pat.findIndex("/"))
+    values.push(patid)
+    let start = moment(fhir.start)
+    let end = moment(fhir.end)
+    let duration = (end.unix() - start.unix()) / 60
+    values.push(Appointment.util.makeCompactFromDateObject(start.toDate()))
+    let begin=start.hours()*60+start.minutes()
+    values.push(begin.toString())
+    values.push(duration.toString())
+    values.push(fhir.description)
+    values.push(fhir.type.text)
+    values.push(fhir.status)
+    values.push(this.util.elexisTimeStamp(new Date()))
+    values.push(moment().valueOf())
+    values.push("")
+    values.push("")
+    values.push("")
+    return{
+      query:sqlQuery,
+      values:values
+    }
   }
+
   pushSQL(fhir:FHIR_Resource):Promise<void> {
-    return undefined;
+    let query = Appointment.fhirToSql(fhir as FHIR_Appointment)
+    return this.sql.insertAsync(query.query,query.values)
   }
 
 

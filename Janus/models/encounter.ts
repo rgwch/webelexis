@@ -173,7 +173,7 @@ export class Encounter extends FhirObject implements Refiner {
       moment(enc.period.start).format("YYYYMMDD"),
       entry,
       "0",
-      super.makeTimestamp(enc)
+      super.readTimestamp(enc)
     ]
     return fields
   }

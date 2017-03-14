@@ -10,6 +10,7 @@ import {NoSQL} from '../services/mongo'
 import * as log from 'winston'
 import * as config from 'nconf'
 import * as XID from '../common/xid'
+import {FHIR_Meta} from "../common/models/fhir";
 
 export class FhirObject {
   protected logger=log
@@ -76,17 +77,26 @@ export class FhirObject {
   }
 
   /**
-   * creta a FHIR compliant Meta-Element with timestamp
+   * get a timestamp a FHIR compliant Meta-Element
    * @param fh
-   * @returns {Date}
+   * @returns {Date} the timestamp as Date or now()
    */
-  makeTimestamp(fh:FHIR_Resource) {
+  readTimestamp(fh:FHIR_Resource) {
     let meta = this.prop(fh, "meta")
     let lastupdate = new Date()
     if (meta && meta.lastUpdated) {
       lastupdate = moment(meta.lastUpdated).toDate()
     }
     return lastupdate
+  }
+
+  createTimestampMeta(fh:FHIR_Resource): FHIR_Meta{
+    let meta=fh['meta']
+    if(!meta){
+      meta={}
+    }
+    meta['lastUpdated']=new Date().getDate()
+    return meta
   }
 
   /**

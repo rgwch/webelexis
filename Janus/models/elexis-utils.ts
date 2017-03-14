@@ -214,7 +214,7 @@ export class ElexisUtils {
 
   }
 
-  public makeCompactFromLoca(lc) {
+  public makeCompactFromLocal(lc) {
     if (lc === undefined || lc === null) {
       return ""
     } else {
@@ -222,4 +222,7 @@ export class ElexisUtils {
     }
   }
 
+  public elexisTimeStamp(date:Date){
+    return (date.getDate()/60000).toString()
+  }
 }

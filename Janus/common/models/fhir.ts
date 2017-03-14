@@ -152,6 +152,7 @@ export interface FHIR_Resource {
   implicitRules?: uri
   language?: code
   identifier?: Array<FHIR_Identifier>
+  contained?:FHIR_Resource
 }
 export interface FHIR_SampledData{
   origin: FHIR_Quantity

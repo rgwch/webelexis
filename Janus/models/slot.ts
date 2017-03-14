@@ -47,13 +47,13 @@ export class Slot extends FhirObject implements Refiner {
   }
 
   compare(a:FHIR_Resource, b:FHIR_Resource):number {
-    let ma=moment(a['start']);
-    let mb=moment(b['start']);
-    if(ma.isBefore(mb)){
+    let ma = moment(a['start']);
+    let mb = moment(b['start']);
+    if (ma.isBefore(mb)) {
       return -1
-    }else if(ma.isAfter(mb)){
+    } else if (ma.isAfter(mb)) {
       return 1
-    }else{
+    } else {
       return 0
     }
   }
@@ -70,8 +70,8 @@ export class Slot extends FhirObject implements Refiner {
     }
   }
 
-  private _isUnassignable(appnt):Boolean{
-    return (appnt['TerminTyp'].toLocaleLowerCase()==="reserviert")
+  private _isUnassignable(appnt):Boolean {
+    return (appnt['TerminTyp'].toLocaleLowerCase() === "reserviert")
   }
 
   /**
@@ -90,7 +90,7 @@ export class Slot extends FhirObject implements Refiner {
 
       if (appnts && appnts.length) {
         let sorted = appnts.sort((a, b)=> {
-          return parseInt(a['Beginn'])-parseInt(b['Beginn'])
+          return parseInt(a['Beginn']) - parseInt(b['Beginn'])
         })
         let before = moment(sorted[0]['Tag'], "YYYYMMDD")
         sorted.forEach(appnt => {
@@ -104,7 +104,7 @@ export class Slot extends FhirObject implements Refiner {
             resourceType: "Slot",
             id: appnt['ID'],
             identifier: this.makeIdentifier(appnt['ID']),
-            freeBusyType: this._isUnassignable(appnt) ? "busy-unavailable":"busy",
+            freeBusyType: this._isUnassignable(appnt) ? "busy-unavailable" : "busy",
             start: begin.format(),
             end: end.format(),
             overbooked: false,
@@ -186,8 +186,9 @@ export class Slot extends FhirObject implements Refiner {
 
 
   async pushSQL(fhir:FHIR_Slot):Promise <void> {
-    if(fhir['contained']){
-
+    if (fhir['contained']) {
+      let query = Appointment.fhirToSql(fhir['contained'])
+      this.sql.insertAsync(query.query, query.values)
     }
 
   }
@@ -226,9 +227,16 @@ export class Slot extends FhirObject implements Refiner {
    */
 
   pushNoSql(fhir:FHIR_Resource):Promise<void> {
-    return new Promise<void>(resolve=>{
-      resolve()
-    });
+    let appnt = fhir['contained']
+    if (appnt) {
+      let lastupdate = this.createTimestampMeta(appnt)
+      appnt['meta'] = lastupdate
+      return this.pushNoSql(appnt)
+    } else {
+      return new Promise<void>(resolve=> {
+        resolve()
+      });
+    }
   }
 
 }
