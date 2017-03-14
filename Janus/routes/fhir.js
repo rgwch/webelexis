@@ -80,9 +80,9 @@ router.put("/:datatype/:id",function(req,resp){
   var type = req.params.datatype
   if (type && mapper[type]) {
     Janus.putAsync(fhir, mapper[type]).then(result=> {
-      resp.end()
+      resp.json(fhir)
     }).catch(err=> {
-      sendError(resp, error)
+      sendError(resp, err)
     })
   }else{
     sendError(resp,"illegal argument")

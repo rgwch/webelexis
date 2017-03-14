@@ -26,11 +26,11 @@ export class SlotView {
   private _slotType
   //private fhirService:FhirService
   private patLabel: string = ""
-  private possibleStates: Array<string> = []
+  private possibleStates: Array<any> = []
   //private ea:EventAggregator
 
   constructor(private cfg: Config, private ea: EventAggregator, private fhirService: FhirService) {
-    this.possibleStates = this.cfg.agenda.states.map(state=>state.label)
+    this.possibleStates = this.cfg.agenda.states
   }
 
   attached() {

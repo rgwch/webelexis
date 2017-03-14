@@ -11,6 +11,7 @@ import {Slot, SlotFactory} from '../../models/slot'
 import {autoinject} from 'aurelia-framework'
 import {EventAggregator} from 'aurelia-event-aggregator'
 import {Config} from '../../config'
+import {FHIR_Slot} from "../../models/fhir";
 
 @autoinject
 export class AgendaRoute {
@@ -44,17 +45,18 @@ export class AgendaRoute {
         let schedule: Schedule = schedules.values[0]
         this.fhirService.filterBy(this.slotFactory, [{entity: "schedule", value: schedule.id}]).then(appnts => {
           let slots=[]
-          let lastEnd="2000-01-01T00:00"
+          let lastEnd=day.format("YYYY-MM-DD")+"T00:00:00"
           appnts.values.forEach(appnt=>{
+            let start=appnt.fhir['start']
             let prev=moment(lastEnd).unix()
-            let start=moment(appnt['start']).unix()
-            if(prev<start){
-              slots.push(this._makeFreeSlot(lastEnd,appnt['start']))
+            let act=moment(start).unix()
+            if(act-prev>300){
+              slots.push(this._makeFreeSlot(lastEnd,start))
             }
             slots.push(appnt)
-            lastEnd=appnt['end']
+            lastEnd=appnt.fhir['end']
           })
-          appnts.values=slots
+          appnts['values']=slots
           this.slots = appnts
         })
       }
@@ -68,8 +70,7 @@ export class AgendaRoute {
   }
 
   private _makeFreeSlot(begin: string, end: string) {
-    return new Slot({
-
+    return new Slot(<FHIR_Slot>{
       resourceType: "Slot",
       id          : this.fhirService.createUUID(),
       freeBusyType: "free",

@@ -149,7 +149,9 @@ export class Janus {
   }
 
   public putAsync(fhir:FHIR_Resource, refiner:Refiner){
-    return Promise.all([refiner.pushNoSql(fhir),refiner.pushSQL(fhir)])
+    return Promise.all([refiner.pushNoSql(fhir),refiner.pushSQL(fhir)]).then(result=>{
+      return fhir
+    })
   }
 
   /**

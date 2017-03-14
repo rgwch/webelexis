@@ -71,9 +71,9 @@ export class Slot extends FhirObject implements Refiner {
         },
         "participant.actor": "Practitioner/" + actor
       }
-      let appnts = await this.nosql.queryAsync("Appointment", qbe) as Array<FHIR_Appointment>
+      let appnts = await this.nosql.queryAsync("Appointment", qbe)
       //let presets = this._findPresetsForDay(schedule[0])
-      return appnts.map(appnt=>{
+      return (appnts as Array<FHIR_Appointment>).map(appnt=>{
         return<FHIR_Slot>{
           resourceType: "Slot",
           id: appnt.id,

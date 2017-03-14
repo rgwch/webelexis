@@ -223,6 +223,6 @@ export class ElexisUtils {
   }
 
   public elexisTimeStamp(date:Date){
-    return (date.getDate()/60000).toString()
+    return (Math.round(date.getTime()/60000)).toString()
   }
 }

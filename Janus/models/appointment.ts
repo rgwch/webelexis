@@ -165,14 +165,16 @@ export class Appointment extends FhirObject implements Refiner {
       "lastedit", "lastupdate", "caseType", "insuranceType", "treatmentReason"])
     let values = []
     values.push(fhir.id)
-    let pat = fhir.participant.find(part=> {
+    let patobj = fhir.participant.find(part=> {
       return (part.actor.toString()).startsWith("Patient")
-    }).toString()
-    if (!pat) {
-      throw new Error("No Patient given")
+    })
+    if (patobj) {
+      let pat=patobj.actor.toString()
+      let patid = pat.substring(pat.indexOf("/")+1)
+      values.push(patid)
+    }else{
+      values.push("")
     }
-    let patid = pat.substring(pat.indexOf("/"))
-    values.push(patid)
     let start = moment(fhir.start)
     let end = moment(fhir.end)
     let duration = (end.unix() - start.unix()) / 60

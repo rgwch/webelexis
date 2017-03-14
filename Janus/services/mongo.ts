@@ -42,7 +42,9 @@ export class MongoDB implements NoSQL {
 
   public putAsync(fhir: FHIR_Resource): Promise<void> {
     let collection = this.db.collection(fhir.resourceType)
-    return collection.insertOne(fhir)
+    delete fhir["_id"]
+    return collection.updateOne({id:fhir.id},fhir,{upsert:true})
+    // return collection.insertOne(fhir)
   }
 
 }
