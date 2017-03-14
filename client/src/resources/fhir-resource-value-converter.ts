@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {FHIR_Resource} from "../models/fhir";
 
 export class FhirResourceValueConverter {
@@ -9,7 +14,7 @@ export class FhirResourceValueConverter {
    * @param fhir
    * @param property
    */
-  public toView(value, property:string = "", fhir:FHIR_Resource) {
+  public toView(value, property: string = "", fhir: FHIR_Resource) {
     var spl = property.split(/\./)
     var ret = ""
     var obj = fhir
@@ -33,15 +38,15 @@ export class FhirResourceValueConverter {
    *  @param value The value to set (only alphanumeric characters and the dash are allowed)
    *
    */
-  public fromView(value, property:string = "", fhir:FHIR_Resource) {
-    if(fhir) {
+  public fromView(value, property: string = "", fhir: FHIR_Resource) {
+    if (fhir) {
       if (property.length > 1) {
         if (value.match(/[\w0-9\s\-]*/)) {
           eval("fhir." + property + "=value")
         }
       }
     }
-    return  value
+    return value
   }
 
   private dive(obj, prop) {

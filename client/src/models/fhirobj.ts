@@ -12,9 +12,9 @@ import {Container} from "aurelia-framework";
 import {FHIR_Narrative} from "./fhir";
 
 export interface FhirObjectFactory {
-  entities:Array<string>
-  subtype:string
-  createObject(fhir:FHIR_Resource):FHIRobject
+  entities: Array<string>
+  subtype: string
+  createObject(fhir: FHIR_Resource): FHIRobject
 
 }
 
@@ -22,12 +22,12 @@ export interface FhirObjectFactory {
  * Base class to manipulate FHIR (http://hl7.org/fhir) resources.
  */
 export class FHIRobject {
-  public fhir:FHIR_Resource
-  public stored:number = 0
+  public fhir: FHIR_Resource
+  public stored: number = 0
   private static converter = Container.instance.get(FhirResourceValueConverter)
   protected static i18 = Container.instance.get(I18N)
 
-  constructor(data:FHIR_Resource, expectedType:string) {
+  constructor(data: FHIR_Resource, expectedType: string) {
     if (data.resourceType !== expectedType) {
       throw "Bad resource type"
     }
@@ -46,7 +46,7 @@ export class FHIRobject {
    * @param date FHIR conformant date string (union of xs:date, xs:gYearMonth, xs:gYear)
    * @returns {string} a date string for the current locale. e.g. "22.3.2016"
    */
-  public static dateToLocal(date:string) {
+  public static dateToLocal(date: string) {
     return date ? moment(date).format(FHIRobject.i18.tr('adapters.date_format')) : "?"
   }
 
@@ -55,7 +55,7 @@ export class FHIRobject {
    * @param localdate a date, such as 22.3.2016
    * @returns {string} the FHIR-conformant representation
    */
-  public static dateToStandard(localdate:string) {
+  public static dateToStandard(localdate: string) {
     return localdate ? moment(localdate).format() : moment(new Date()).format()
   }
 
@@ -64,7 +64,7 @@ export class FHIRobject {
    * @param datetime a FHIR conformant dateTime (union of xs:dateTime, xs:date, xs:gYearMonth, xs:gYear)
    * @returns {string} a datetime string for tge current locale (e,g, "22.3.2016, 10:15"
    */
-  public static dateTimeToLocal(datetime:string) {
+  public static dateTimeToLocal(datetime: string) {
     return datetime ? moment(datetime).format(FHIRobject.i18.tr('adapters.datetime_format')) : "?"
   }
 
@@ -73,7 +73,7 @@ export class FHIRobject {
    * @param localdatetime a local date/time
    * @returns {string} a FHIR dateTime
    */
-  public static dateTimeToStandard(localdatetime:string) {
+  public static dateTimeToStandard(localdatetime: string) {
     return localdatetime ? moment(localdatetime).format() : moment(new Date()).format()
   }
 
@@ -82,7 +82,7 @@ export class FHIRobject {
    * @param fieldname path/name of a field that contains a date in FHIR format e.g. some.where.date
    * @returns {string} the contents of the field as a localized date string
    */
-  public getDateField(fieldname:string) {
+  public getDateField(fieldname: string) {
     return FHIRobject.dateToLocal(this.getField(fieldname))
   }
 
@@ -91,11 +91,11 @@ export class FHIRobject {
    * @param fieldname, e.g. some.where.date
    * @param value a local date string, such as "22.3.2016"
    */
-  public setDateField(fieldname:string, value:string) {
+  public setDateField(fieldname: string, value: string) {
     this.setField(fieldname, FHIRobject.dateToStandard(value))
   }
 
-  public getTimeField(fieldname:string) {
+  public getTimeField(fieldname: string) {
     let tm = FHIRobject.converter.toView("", fieldname, this.fhir)
     if (tm) {
       return moment(tm).format("HH:mm")
@@ -110,7 +110,7 @@ export class FHIRobject {
    * @param fieldname path/name of a field that contains a date in FHIR format e.g. some.where.datetime
    * @returns {string} the contents of the field as a localized date/time string
    */
-  public getDateTimeField(fieldname:string) {
+  public getDateTimeField(fieldname: string) {
     return FHIRobject.dateTimeToLocal(this.getField(fieldname))
   }
 
@@ -119,7 +119,7 @@ export class FHIRobject {
    * @param fieldname, e.g. some.where.date
    * @param value a local date string, such as "22.3.2016, 10:15"
    */
-  public setDateTimeField(fieldname:string, value:string) {
+  public setDateTimeField(fieldname: string, value: string) {
     this.setField(fieldname, FHIRobject.dateTimeToStandard(value))
   }
 
@@ -128,7 +128,7 @@ export class FHIRobject {
    * @param field path and name of the field, e.g. some.subentry[2].to.look
    * @returns {*|string}
    */
-  public getField(field:string):string {
+  public getField(field: string): string {
     return FHIRobject.converter.toView("", field, this.fhir)
   }
 
@@ -137,7 +137,7 @@ export class FHIRobject {
    * @param field field path and name e,g, some.subentry[2].to.look
    * @param value the value to set
    */
-  public setField(field:string, value:string) {
+  public setField(field: string, value: string) {
     FHIRobject.converter.fromView(value, field, this.fhir)
   }
 
@@ -145,10 +145,10 @@ export class FHIRobject {
    * Add a narrative. Almost every FHIR_Resource can contain a narrative (human readable form of the contents)
    * @param text The contents of the narrative. Can be plain text or simle HTML
    */
-  public addNarrative(text:string) {
-    let narrative:FHIR_Narrative = <FHIR_Narrative>{
+  public addNarrative(text: string) {
+    let narrative: FHIR_Narrative = <FHIR_Narrative>{
       status: "additional",
-      div: text
+      div   : text
     }
     this.fhir.text = narrative
   }

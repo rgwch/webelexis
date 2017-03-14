@@ -2,8 +2,8 @@ mixin createChip(chipname)
   .col.s12.m4.l3(click.delegate="toggle('" + chipname + "')" )
     div(class.bind="classes['" + chipname + "']" md-waves)
       img(src="assets/" + chipname + ".png")
-      span.badges(if.bind="counts['"+chipname+"']>0") ${counts['#{chipname}']}
-      span(t='dashboard.'+chipname)
+      span.badges(if.bind="counts['" + chipname + "']>0") ${counts['#{chipname}']}
+      span(t='dashboard.' + chipname)
 
 
 template

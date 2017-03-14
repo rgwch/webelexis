@@ -13,6 +13,7 @@ export class App {
 
   private session: Session;
   private static inject = [Session];
+
   constructor(session: Session) {
     this.session = session;
   }
@@ -21,50 +22,50 @@ export class App {
     config.title = 'Webelexis';
     config.map([
       {
-        route: ['', 'login'],
-        name: 'login',
+        route   : ['', 'login'],
+        name    : 'login',
         moduleId: 'login',
-        title: 'Login'
+        title   : 'Login'
       }, {
-        route: 'dashboard',
-        name: 'dashboard',
+        route   : 'dashboard',
+        name    : 'dashboard',
         moduleId: 'routes/dashboard/index',
-        title: 'Dashboard',
-        nav: true,
-        settings: { headerTextKey: 'routes.dashboard' }
+        title   : 'Dashboard',
+        nav     : true,
+        settings: {headerTextKey: 'routes.dashboard'}
       }, {
-        route: 'patients',
-        name: 'patients',
+        route   : 'patients',
+        name    : 'patients',
         moduleId: 'routes/dashboard/index',
-        title: 'Patienten',
-        nav: true,
-        settings: { headerTextKey: 'routes.patients', authRoleId: "mpa" }
+        title   : 'Patienten',
+        nav     : true,
+        settings: {headerTextKey: 'routes.patients', authRoleId: "mpa"}
       }, {
-        route: 'patient/:id?',
-        name: 'searchbox-details',
+        route   : 'patient/:id?',
+        name    : 'searchbox-details',
         moduleId: 'routes/dashboard/detail',
-        title: 'Patient Details',
-        settings: { headerTextKey: 'routes.patients-details', authRoleId: "mpa" }
+        title   : 'Patient Details',
+        settings: {headerTextKey: 'routes.patients-details', authRoleId: "mpa"}
       }, {
-        route: 'agenda',
-        name: 'agenda',
+        route   : 'agenda',
+        name    : 'agenda',
         moduleId: 'routes/agenda/index',
-        title: 'Agenda',
-        nav: true,
-        settings: { headerTextKey: 'routes.appointments', authRoleId: "mpa" }
+        title   : 'Agenda',
+        nav     : true,
+        settings: {headerTextKey: 'routes.appointments', authRoleId: "mpa"}
       }, {
-        route: 'intro',
-        name: 'intro',
+        route   : 'intro',
+        name    : 'intro',
         moduleId: 'routes/intro/index',
-        title: 'Willkommen bei Webelexis',
-        settings: { headerTextKey: 'routes.appointments', authRoleId: "mpa" }
+        title   : 'Willkommen bei Webelexis',
+        settings: {headerTextKey: 'routes.appointments', authRoleId: "mpa"}
       }, {
-        route: 'showcase',
-        name: 'showcase',
+        route   : 'showcase',
+        name    : 'showcase',
         moduleId: 'routes/showcase/index',
-        title: 'Showcase',
-        nav: true,
-        settings: { headerTextKey: 'routes.admin', authRoleId: "all" }
+        title   : 'Showcase',
+        nav     : true,
+        settings: {headerTextKey: 'routes.admin', authRoleId: "all"}
       }
     ]);
 
@@ -79,10 +80,10 @@ export class App {
 class AuthorizeStep {
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
     let session: Session = Container.instance.get(Session);
-    let roleId:string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
+    let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
 
     if (!!roleId) {
-      if(roleId!="all") {
+      if (roleId != "all") {
         if (!session.currentUser) {
           return next.cancel(new Redirect('login'));
         }

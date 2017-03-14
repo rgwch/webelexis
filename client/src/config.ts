@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of Webelexis(tm)
  * Copyright (c) 2017 by G. Weirich
  */
@@ -12,14 +12,14 @@ import {inject} from "aurelia-framework";
 @inject(HttpWrapper)
 export class Config {
 
-  constructor(private http:HttpWrapper) {
+  constructor(private http: HttpWrapper) {
     http.get("configuration").then(result => {
       if (result) {
         if (result.agenda) {
           this.agenda = result.agenda
         }
-        if(result.general){
-          this.general=result.general
+        if (result.general) {
+          this.general = result.general
         }
       }
     }).catch(err => {
@@ -34,10 +34,9 @@ export class Config {
   }
 
 
-
-  public getAgendaType(name:string) {
+  public getAgendaType(name: string) {
     let cmp = name.toLocaleLowerCase()
-    let type = this.agenda.types.find(tp=> {
+    let type = this.agenda.types.find(tp => {
       if (tp['name'] && tp['name'].toLocaleLowerCase() === cmp) {
         return true;
       }
@@ -49,17 +48,17 @@ export class Config {
       return type
     } else {
       return {
-        "name": name,
-        "fg": "black",
-        "bg": "white",
+        "name"    : name,
+        "fg"      : "black",
+        "bg"      : "white",
         "duration": 15
       }
     }
   }
 
-  public getAgendaState(name:string) {
+  public getAgendaState(name: string) {
     let cmp = name.toLocaleLowerCase()
-    let state = this.agenda.states.find(tp=> {
+    let state = this.agenda.states.find(tp => {
       if (tp['name'] && tp['name'].toLocaleLowerCase() === cmp) {
         return true;
       }
@@ -71,113 +70,113 @@ export class Config {
       return state
     } else {
       return {
-        "name": name,
+        "name" : name,
         "label": name,
-        "fg": "black",
-        "bg": "white",
+        "fg"   : "black",
+        "bg"   : "white",
       }
     }
   }
 
-  public general={
+  public general = {
     officeName: "Webelexis",
-    actors :[
+    actors    : [
       {
         shortLabel: "joe",
-        fullname: "Dr. med. Johann Jodler",
-        id: "Practitioner/12345"
+        fullname  : "Dr. med. Johann Jodler",
+        id        : "Practitioner/12345"
       },
       {
         shortLabel: "fred",
-        fullname: "Prof. Dr. Friedrich Friedensreich",
-        id: "Practitioner/6789"
+        fullname  : "Prof. Dr. Friedrich Friedensreich",
+        id        : "Practitioner/6789"
       }
     ]
   }
 
   public agenda = {
-    "types": [
+    "types" : [
       {
-        "name": "free",
-        "label": "frei",
-        "fg": "green",
-        "bg": "green",
+        "name"    : "free",
+        "label"   : "frei",
+        "fg"      : "green",
+        "bg"      : "green",
         "duration": 30
       },
       {
-        "name": "unassignable",
-        "label": "reserviert",
-        "fg": "black",
-        "bg": "black",
+        "name"    : "unassignable",
+        "label"   : "reserviert",
+        "fg"      : "black",
+        "bg"      : "black",
         "duration": 30
       },
       {
-        "name": "normal",
-        "fg": "black",
-        "bg": "#f4c542",
+        "name"    : "normal",
+        "fg"      : "black",
+        "bg"      : "#f4c542",
         "duration": 30
       },
       {
-        "name": "Extra",
-        "fg": "white",
-        "bg": "#f44242",
+        "name"    : "Extra",
+        "fg"      : "white",
+        "bg"      : "#f44242",
         "duration": 15
       },
       {
-        "name": "Check-Up",
-        "fg": "black",
-        "bg": "#42f4dc",
+        "name"    : "Check-Up",
+        "fg"      : "black",
+        "bg"      : "#42f4dc",
         "duration": 45
       },
       {
-        "name": "Besprechung",
-        "fg": "black",
-        "bg": "#42d7f4",
+        "name"  : "Besprechung",
+        "fg"    : "black",
+        "bg"    : "#42d7f4",
         duration: 30
       }
     ],
     "states": [
       {
-        name: "proposed",
+        name : "proposed",
         label: "vorschlag",
-        fg: "black",
-        bg: "#d7f442"
+        fg   : "black",
+        bg   : "#d7f442"
       },
       {
-        name: "pending",
+        name : "pending",
         label: "hängig",
-        fg: "black",
-        bg: "#f4dc42"
+        fg   : "black",
+        bg   : "#f4dc42"
       },
       {
-        name: "booked",
+        name : "booked",
         label: "geplant",
-        fg: "black",
-        bg: "#f4a142"
+        fg   : "black",
+        bg   : "#f4a142"
       },
       {
-        name: "arrived",
+        name : "arrived",
         label: "eingetroffen",
-        fg: "black",
-        bg: "#ff6e5b"
+        fg   : "black",
+        bg   : "#ff6e5b"
       },
       {
-        name: "fulfilled",
+        name : "fulfilled",
         label: "fertig",
-        fg: "black",
-        bg: "#4c91db"
+        fg   : "black",
+        bg   : "#4c91db"
       },
       {
-        name: "cancelled",
+        name : "cancelled",
         label: "abgesagt",
-        fg: "black",
-        bg: "#bcc4b6"
+        fg   : "black",
+        bg   : "#bcc4b6"
       },
       {
-        name: "noshow",
+        name : "noshow",
         label: "verpasst",
-        fg: "black",
-        bg: "#f9ccf4"
+        fg   : "black",
+        bg   : "#f9ccf4"
       }
 
     ]

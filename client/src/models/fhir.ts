@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 // see https://www.hl7.org/fhir/
 
 /* some formal definitions

@@ -10,12 +10,12 @@ export class SearchBox {
   private patientService;
 
   constructor(patientFactory: PatientFactory, patientService: FhirService) {
-    this.patientFactory=patientFactory
-    this.patientService=patientService
+    this.patientFactory = patientFactory
+    this.patientService = patientService
   }
 
   doSearch = function () {
-    this.patientService.filterBy(this.patientFactory, [{entity:"name", value:this.searchexpr}]).then(result => {
+    this.patientService.filterBy(this.patientFactory, [{entity: "name", value: this.searchexpr}]).then(result => {
       if (result) {
         this.patients = result.values
       } else {

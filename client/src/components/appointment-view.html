@@ -4,37 +4,37 @@
     Display an appointment
  ********************************** -->
 <template>
-    <require from="../resources/fhir-resource-value-converter"></require>
-    <require from="../resources/date-format-value-converter"></require>
-    <div class="col s12 tableau z-depth-2" blur.trigger="save()">
-        <!-- div >
-            <i class="fa fa-expand fa-lg" if.bind="!large" click.delegate="largeToggle()"></i>
-            <i class="fa fa-compress fa-lg" if.bind="large" click.delegate="largeToggle()"></i>
-        </div -->
-        <div class="header" click.delegate="largeToggle()">
-            ${obj.getDayDate()}
-        </div>
-
-        <div class="col s12">
-            <p class="center-align" if.bind="!large">${obj.getField("description")}</p>
-            <md-input if.bind="large"
-                      md-value.bind="obj.fhir.description | fhirResource:'description':obj.fhir"></md-input>
-            <p if.bind="large">(${obj.getField('comment')})</p>
-        </div>
-        <span md-badge="isNew:true" style.bind="statusStyle" if.bind="!large" click.delegate="advanceStatus()">${selectedStatus.label}</span>
-        <span md-badge="isNew:true" style.bind="typeStyle" if.bind="!large">${selectedType.label}</span>
-
-        <div class="col s12" if.bind="large">
-            <select md-select="" value.bind="selectedType">
-                <option model.bind="typ" repeat.for="typ of config.agenda.types">${typ.label}</option>
-            </select>
-            <select md-select="" value.bind="selectedStatus">
-                <option model.bind="status" repeat.for="status of config.agenda.states">${status.label}</option>
-            </select>
-        </div>
-
-        <div class="col s12" if.bind="large">
-            <p innerhtml.bind="obj.getField('text.div')">test</p>
-        </div>
+  <require from="../resources/fhir-resource-value-converter"></require>
+  <require from="../resources/date-format-value-converter"></require>
+  <div class="col s12 tableau z-depth-2" blur.trigger="save()">
+    <!-- div >
+        <i class="fa fa-expand fa-lg" if.bind="!large" click.delegate="largeToggle()"></i>
+        <i class="fa fa-compress fa-lg" if.bind="large" click.delegate="largeToggle()"></i>
+    </div -->
+    <div class="header" click.delegate="largeToggle()">
+      ${obj.getDayDate()}
     </div>
+
+    <div class="col s12">
+      <p class="center-align" if.bind="!large">${obj.getField("description")}</p>
+      <md-input if.bind="large"
+                md-value.bind="obj.fhir.description | fhirResource:'description':obj.fhir"></md-input>
+      <p if.bind="large">(${obj.getField('comment')})</p>
+    </div>
+    <span md-badge="isNew:true" style.bind="statusStyle" if.bind="!large" click.delegate="advanceStatus()">${selectedStatus.label}</span>
+    <span md-badge="isNew:true" style.bind="typeStyle" if.bind="!large">${selectedType.label}</span>
+
+    <div class="col s12" if.bind="large">
+      <select md-select="" value.bind="selectedType">
+        <option model.bind="typ" repeat.for="typ of config.agenda.types">${typ.label}</option>
+      </select>
+      <select md-select="" value.bind="selectedStatus">
+        <option model.bind="status" repeat.for="status of config.agenda.states">${status.label}</option>
+      </select>
+    </div>
+
+    <div class="col s12" if.bind="large">
+      <p innerhtml.bind="obj.getField('text.div')">test</p>
+    </div>
+  </div>
 </template>

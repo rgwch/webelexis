@@ -1,24 +1,26 @@
 <!--
   ~ This file is part of Webelexis(tm)
   ~ Copyright (c) 2017 by G. Weirich
+
+  Display a floating round button with the main menu
   -->
 
 <template bindable="pos">
-    <div class="fixed-action-btn horizontal click-to-toggle" style=${pos}>
-        <a md-button="floating: true; large:true" md-waves="color: light; circle:true;">
-            <i class="large material-icons">menu</i>
+  <div class="fixed-action-btn horizontal click-to-toggle" style=${pos}>
+    <a md-button="floating: true; large:true" md-waves="color: light; circle:true;">
+      <i class="large material-icons">menu</i>
+    </a>
+    <ul>
+      <li>
+        <a class="red" md-button="floating: true">
+          <i class="fa fa-calendar"></i>
         </a>
-        <ul>
-            <li>
-                <a class="red" md-button="floating: true">
-                    <i class="fa fa-calendar"></i>
-                </a>
-            </li>
-            <li>
-                <a class="yellow" md-button="floating: true" route-href="route: intro">
-                    <i class="fa fa-home"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
+      </li>
+      <li>
+        <a class="yellow" md-button="floating: true" route-href="route: intro">
+          <i class="fa fa-home"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
 </template>

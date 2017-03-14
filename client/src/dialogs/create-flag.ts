@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {DialogController} from 'aurelia-dialog'
 import {autoinject} from "aurelia-framework";
 import {FHIR_Flag} from "../models/fhir";

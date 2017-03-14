@@ -40,14 +40,14 @@ export class FhirService {
 
 //  filterBy(subtype: string, entity: string, searchterm: string, entities: Array<String>): Promise<FhirBundle> {
   filterBy(factory: FhirObjectFactory, terms: Array<SearchTerm>): Promise<BundleResult> {
-    let modi="_format=json"
+    let modi = "_format=json"
     terms.forEach(term => {
       if (!factory.entities.find(cand => {
           return (cand == term.entity)
         })) {
         throw new Error(`Bad entity ${term.entity} for filter in subtype ${factory.subtype}`)
       }
-      modi+=`&${term.entity}=${term.value}`
+      modi += `&${term.entity}=${term.value}`
     })
 
     return this.http.get(`${factory.subtype}?${modi}`).then(data => {

@@ -1,25 +1,30 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {computedFrom} from 'aurelia-framework';
 import {Container} from 'aurelia-framework'
 import {I18N} from 'aurelia-i18n'
 import * as moment from 'moment'
-import {FHIR_Patient,FHIR_Resource,FHIR_Address} from "./fhir";
+import {FHIR_Patient, FHIR_Resource, FHIR_Address} from "./fhir";
 import {Validator} from "../services/validator";
 import {AddressList} from "./address-list"
 import {CommunicationList} from "./communications-list";
 import {FHIRobject, FhirObjectFactory} from './fhirobj'
 
 export class PatientFactory implements FhirObjectFactory {
-  entities:Array<string> = ["name"]
-  subtype:string = "Patient"
+  entities: Array<string> = ["name"]
+  subtype: string = "Patient"
 
-  createObject(fhir:FHIR_Resource):FHIRobject {
+  createObject(fhir: FHIR_Resource): FHIRobject {
     return new Patient(fhir);
   }
 
 }
 export class Patient extends FHIRobject {
 
-  constructor(data:FHIR_Resource) {
+  constructor(data: FHIR_Resource) {
     super(data, "Patient")
   }
 
@@ -48,8 +53,8 @@ export class Patient extends FHIRobject {
   }
 
   @computedFrom('fhir')
-  get gender():string {
-    let g:string = (this.fhir as FHIR_Patient).gender
+  get gender(): string {
+    let g: string = (this.fhir as FHIR_Patient).gender
     if (g) {
       return g.substring(0, 1)
     } else {

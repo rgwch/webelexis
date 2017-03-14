@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {FhirService} from '../../services/fhirservice';
 import {Patient, PatientFactory} from "../../models/patient";
 import {autoinject} from 'aurelia-framework'
@@ -46,7 +51,7 @@ export class Intro {
    }
    */
   doSearch = function () {
-    this.patientService.filterBy(this.patientFactory, [{entity:"name", value:this.searchexpr}]).then(result => {
+    this.patientService.filterBy(this.patientFactory, [{entity: "name", value: this.searchexpr}]).then(result => {
       if (result) {
         this.patients = result.values
       } else {
