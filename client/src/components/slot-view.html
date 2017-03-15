@@ -14,8 +14,8 @@
         </div>
       </div>
       <div class="col s9 m10" css.bind="getTypeStyle()">
-        <i class="fa fa-toggle-down" style="float: right"></i>
-        <i class="fa fa-toggle-up" style="float: right" click.trigger="shorten()"></i>
+        <i class="fa fa-toggle-down fa-lg" style="float: right;color:blue;"></i>
+        <i class="fa fa-toggle-up fa-lg" style="float: right;color:blue;" click.trigger="shorten()"></i>
         <span click.trigger="largeToggle()"><b>${patLabel}</b></span><br/>
         <div if.bind="!large">
           ${getTypeLabel()} <span if.bind="reason"> - (${reason})</span>
