@@ -99,6 +99,7 @@
     }
   },
   "dependencies": {
-    "aurelia-event-aggregator": "^1.0.1"
+    "aurelia-event-aggregator": "^1.0.1",
+    "pikaday": "^1.5.1"
   }
 }
