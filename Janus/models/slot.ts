@@ -67,7 +67,7 @@ export class Slot extends FhirObject implements Refiner {
       let qbe = {
         "start"            : {
           "$gte": lower.format(),
-          "$lte": upper.format()
+          "$lt": upper.format()
         },
         "participant.actor": "Practitioner/" + actor
       }

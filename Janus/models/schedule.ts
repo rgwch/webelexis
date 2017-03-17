@@ -42,14 +42,12 @@ export class Schedule extends FhirObject implements Refiner{
     if(dateParam){
       date = moment(dateParam)
     }
-    let begin = date.subtract(1, 'day')
-    let end = date.add(1, 'day')
     return <FHIR_Resource>{
       id: date.format("YYYYMMDD")+"::"+actor,
       resourceType: "Schedule",
       type: scheduleType,
       actor: actor,
-      planningHorizon: super.makePeriod(begin.format(), end.format())
+      planningHorizon: super.makePeriod(date.format(), date.format())
     }
   }
 

@@ -12,6 +12,7 @@ import {autoinject} from 'aurelia-framework'
 import {EventAggregator} from 'aurelia-event-aggregator'
 import {Config} from '../../config'
 import {FHIR_Slot} from "../../models/fhir";
+import {SlotView} from "../../components/slot-view";
 
 @autoinject
 export class AgendaRoute {
@@ -20,6 +21,7 @@ export class AgendaRoute {
   dateStandard: string = "2017-02-02"
   selectedActor: string
   private subscriber
+  private host=this
 
 
   constructor(private appointmentFactory: AppointmentFactory, private slotFactory: SlotFactory, private scheduleFactory: ScheduleFactory,
@@ -77,6 +79,40 @@ export class AgendaRoute {
       start       : begin,
       end         : end
     })
+  }
+
+  shorten(slot:Slot) {
+    let end = moment(slot.getField('end'))
+    let start = moment(slot.getField('start'))
+    let diff = (end.unix() - start.unix()) / 2
+    let newEnd = start.add(diff, 'seconds')
+    slot.setField('end', newEnd.format())
+    slot.setField('contained.end', newEnd.format())
+    this.fhirService.update(slot.fhir).then(result => {
+      this.setDay(new Date(this.dateStandard), this.selectedActor)
+    }).catch(err => {
+      alert("error " + err)
+    })
+  }
+
+  lengthen(slot:Slot){
+    let arr=this.slots.values
+    for(let i=0;i<arr.length;i++){
+      if(arr[i].fhir.id==slot.fhir.id){
+        if(i<arr.length-1){
+          if(arr[i+1].getField('freeBusyType')=='free'){
+            arr[i].setField('end',arr[i+1].getField('end'))
+            arr[i].setField("contained.end",arr[i+1].getField('end'))
+            this.fhirService.update(slot.fhir).then(result => {
+              // arr.splice(i+1,1)
+              this.setDay(new Date(this.dateStandard), this.selectedActor)
+            }).catch(err => {
+              alert("error " + err)
+            })
+          }
+        }
+      }
+    }
   }
   dumpSlot(slot) {
     return JSON.stringify(slot)

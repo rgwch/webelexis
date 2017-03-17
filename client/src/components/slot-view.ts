@@ -13,6 +13,7 @@ import {FHIR_Resource} from "../models/fhir";
 import {Patient} from "../models/patient";
 import * as moment from 'moment'
 import {EventAggregator} from 'aurelia-event-aggregator'
+import {AgendaRoute} from "../routes/agenda/index";
 
 /**
  * Display a FHIR_Slot
@@ -20,6 +21,7 @@ import {EventAggregator} from 'aurelia-event-aggregator'
 @autoinject()
 export class SlotView {
   @bindable obj: FHIRobject
+  @bindable parent: AgendaRoute
   private large = false
   //private cfg
   private _state
@@ -189,19 +191,6 @@ export class SlotView {
     return this.fhirService.update(this.obj.fhir)
   }
 
-  shorten() {
-    let end = moment(this.obj.getField('end'))
-    let start = moment(this.obj.getField('start'))
-    let diff = (end.unix() - start.unix()) / 2
-    let newEnd = start.add(diff, 'seconds')
-    this.obj.setField('end', newEnd.format())
-    this.obj.setField('contained.end', newEnd.format())
-    this.save().then(result => {
-      this.ea.publish('agenda_reload')
-    }).catch(err => {
-      alert("error " + err)
-    })
-  }
 
   extend(){
 
