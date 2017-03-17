@@ -199,4 +199,8 @@ export class SlotView {
       alert("error " + err)
     })
   }
+
+  extend(){
+
+  }
 }
