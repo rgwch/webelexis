@@ -53,7 +53,7 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-systemjs": "^0.15.0",
     "object.assign": "^4.0.4",
-    "phantomjs": "^2.1.7",
+    "phantomjs-prebuilt": "^2.1.7",
     "protractor": "^4.0.10",
     "require-dir": "^0.3.1",
     "run-sequence": "^1.2.2",
@@ -99,6 +99,7 @@
     }
   },
   "dependencies": {
-    "aurelia-event-aggregator": "^1.0.1"
+    "aurelia-event-aggregator": "^1.0.1",
+    "pikaday": "^1.5.1"
   }
 }

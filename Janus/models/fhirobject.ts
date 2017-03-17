@@ -95,8 +95,7 @@ export class FhirObject {
     if (!meta) {
       meta = {}
     }
-    let act=new Date().getTime()
-    meta['lastUpdated'] = act.toString()
+    meta['lastUpdated'] = moment().format()
     return meta
   }
 

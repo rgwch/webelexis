@@ -111,12 +111,15 @@ export class SlotView {
   }
 
   get reason(): string {
-    let ret = this.obj.getField("contained.reason.text")
+    let ret = this.obj.getField("contained.description")
+    if(!ret){
+      ret=this.obj.getField("contained.reason.text")
+    }
     return ret.length > 0 ? ret : undefined
   }
 
   set reason(value: string) {
-    this.obj.setField("contained.reason.text", value)
+    this.obj.setField("contained.description", value)
   }
 
   @computedFrom('_state')
