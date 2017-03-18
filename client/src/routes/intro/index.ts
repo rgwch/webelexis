@@ -31,25 +31,32 @@ export class Intro {
     this.patientService = patientService
     this.officeName = cfg.general.officeName
     this.actors = cfg.general.actors
+
+
+  }
+
+  goAgenda(){
+    let d=moment(this.selectedDate)
+    this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
+  }
+  attached() {
+
     this.subscriber = this.ea.subscribe("datepicker", dateEvent => {
       console.log(dateEvent.newDate)
       let d = moment(dateEvent.newDate)
       //window.location.assign(`/#/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
-      this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
+      //this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
+      this.selectedDate=d.toDate()
     })
 
   }
 
-  attached() {
 
-  }
-
-  /*
    detached(){
    console.log("detached")
    // this.subscriber.dispose()
    }
-   */
+
   doSearch = function () {
     this.patientService.filterBy(this.patientFactory, [{entity: "name", value: this.searchexpr}]).then(result => {
       if (result) {

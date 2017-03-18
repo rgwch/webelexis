@@ -11,6 +11,7 @@ Anwender-Informationen
 
    intro
    firststeps
+   config
    docker
 
 ************************

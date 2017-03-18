@@ -4,15 +4,18 @@ template
   require(from="../../components/pickdate")
 
   h4.accent-text.center-align ${officeName}
-  .row
-    .col.s12.m6
-      md-card(md-title="Agenda" style="height:15rem")
-        div
-          select(md-select="" value.bind="selectedActor")
+  .container
+    .row
+      .col.s12.tableau
+        h2.h2 Agendabereich und Tag auswählen
+        .row
+          select.col.s5(md-select="" value.bind="selectedActor")
             option(model.bind="actor" repeat.for="actor of actors") ${actor.shortLabel}
-          pickdate
-    .col.s12.m6
-      md-card(md-title="Patient" style="height:5rem;")
+          pickdate.col.s6
+          button.col.s6.offset-s3(md-button="disabled.bind: selectedDate==null;" click.trigger="goAgenda()") Agenda
+
+      .col.s12.tableau
+        h2.h2 Oder Patient auswählen
         form(role="form" submit.delegate="doSearch()")
           searchfield(value.two-way="searchexpr")
         md-collection
