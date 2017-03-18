@@ -37,10 +37,13 @@ export class FHIRobject {
   }
 
   @computedFrom('fhir')
-  get id() {
+  get id(){
     return this.fhir.id
   }
 
+  getUnique(prefix:string){
+    return prefix+this.fhir.id
+  }
   /**
    * Convert a FHIR date  to a local date string
    * @param date FHIR conformant date string (union of xs:date, xs:gYearMonth, xs:gYear)

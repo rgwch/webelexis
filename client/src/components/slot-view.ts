@@ -14,25 +14,31 @@ import {Patient} from "../models/patient";
 import * as moment from 'moment'
 import {EventAggregator} from 'aurelia-event-aggregator'
 import {AgendaRoute} from "../routes/agenda/index";
+import {FHIR_Slot} from "../models/fhir";
 
 /**
  * Display a FHIR_Slot
  */
-@autoinject()
+@autoinject
 export class SlotView {
-  @bindable obj: FHIRobject
+  @bindable obj: Slot
   @bindable parent: AgendaRoute
   private large = false
-  //private cfg
   private _state
   private _slotType
-  //private fhirService:FhirService
   private patLabel: string = ""
   private possibleStates: Array<any> = []
-  //private ea:EventAggregator
 
   constructor(private cfg: Config, private ea: EventAggregator, private fhirService: FhirService) {
     this.possibleStates = this.cfg.agenda.states
+  }
+
+  get unique(){
+    return this.obj.getUnique('menu')
+  }
+
+  normalMenu(){
+    return (this.obj.getField('freeBusyType')==='busy')
   }
 
   attached() {
@@ -191,8 +197,4 @@ export class SlotView {
     return this.fhirService.update(this.obj.fhir)
   }
 
-
-  extend(){
-
-  }
 }

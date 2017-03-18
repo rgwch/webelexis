@@ -41,6 +41,8 @@
     "type": "Typ",
     "status": "Status",
     "priority": "Priorität",
+    "lengthen": "verlängern",
+    "shorten": "kürzen",
     "state": {
       "proposed": "vorgeschlagen",
       "pending": "offen",
