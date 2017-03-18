@@ -36,7 +36,7 @@ client:
 
 * general:
 
-  - office-name: anzuzeigender Name der Praxis bzw, der Institution
+  - officeName: anzuzeigender Name der Praxis bzw, der Institution
   - actors: Definition aller Beteiligten.
 
     + shortLabel: Eine kurzze Identifikation

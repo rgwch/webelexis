@@ -6,19 +6,24 @@
   -->
 
 <template bindable="pos">
-  <div class="fixed-action-btn horizontal click-to-toggle" style=${pos}>
+  <div class="fixed-action-btn horizontal click-to-toggle" css.bind="pos">
     <a md-button="floating: true; large:true" md-waves="color: light; circle:true;">
       <i class="large material-icons">menu</i>
     </a>
     <ul>
       <li>
-        <a class="red" md-button="floating: true">
+        <a class="accent-1" md-button="floating: true" route-href="route: agenda">
           <i class="fa fa-calendar"></i>
         </a>
       </li>
       <li>
-        <a class="yellow" md-button="floating: true" route-href="route: intro">
+        <a class="accent-2" md-button="floating: true" route-href="route: intro">
           <i class="fa fa-home"></i>
+        </a>
+      </li>
+      <li>
+        <a class="accent-3" md-button="floating:true" route-href="route: patients">
+          <i class="fa fa-user"></i>
         </a>
       </li>
     </ul>

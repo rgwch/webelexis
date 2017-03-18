@@ -20,20 +20,30 @@ export class AgendaRoute {
   dateDisplay: string
   dateStandard: string = "2017-02-02"
   selectedActor: string
-  private subscriber
+  private dateSubscriber
+  private resourceSubscriber
   private host=this
 
 
   constructor(private appointmentFactory: AppointmentFactory, private slotFactory: SlotFactory, private scheduleFactory: ScheduleFactory,
               private fhirService: FhirService, private cfg: Config, private ea: EventAggregator) {
-    this.subscriber = this.ea.subscribe("datepicker", event => {
+
+  }
+
+  attached(){
+    this.dateSubscriber = this.ea.subscribe("datepicker", event => {
       this.setDay(new Date(event.newDate), this.selectedActor)
     })
-    this.ea.subscribe('agenda_reload', event => {
-      this.setDay(new Date(this.dateStandard), this.selectedActor)
+    this.resourceSubscriber=this.ea.subscribe("pickresource",resource=>{
+      this.selectedActor=resource['shortLabel']
+      this.setDay(new Date(this.dateStandard),this.selectedActor)
     })
   }
 
+  detached(){
+    this.dateSubscriber.dispose()
+    this.resourceSubscriber.dispose()
+  }
   setDay(date: Date, actor: string) {
     let day = moment(date)
     this.dateDisplay = day.format("dd, DD.MM.YYYY")

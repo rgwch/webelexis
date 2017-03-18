@@ -3,18 +3,19 @@
  * Copyright (c) 2017 by G. Weirich
  **********************************/
 
-import {FhirService} from '../../services/fhirservice';
+import {FhirService} from "../../services/fhirservice";
 import {Patient, PatientFactory} from "../../models/patient";
-import {autoinject} from 'aurelia-framework'
-import {Config} from '../../config'
-import {Router} from 'aurelia-router';
-import {EventAggregator} from 'aurelia-event-aggregator'
-import * as moment from 'moment'
+import {autoinject} from "aurelia-framework";
+import {Config} from "../../config";
+import {Router} from "aurelia-router";
+import {EventAggregator} from "aurelia-event-aggregator";
+import * as moment from "moment";
 
 
 @autoinject
 export class Intro {
   selectedDate: Date
+  selectedResource: string
   public searchexpr: string = '';
   public patients: Array<Patient>
   private patientFactory
@@ -22,40 +23,44 @@ export class Intro {
   private officeName = "Webelexis"
   private actors = []
   private selectedActor = {}
-  private subscriber
+  private dateSubscriber
+  private resourceSubscriber
 
 
   constructor(patientFactory: PatientFactory, patientService: FhirService, private cfg: Config,
               private router: Router, private ea: EventAggregator) {
     this.patientFactory = patientFactory
-    this.patientService = patientService
     this.officeName = cfg.general.officeName
-    this.actors = cfg.general.actors
 
 
   }
 
-  goAgenda(){
-    let d=moment(this.selectedDate)
-    this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
+  goAgenda() {
+    let d = moment(this.selectedDate)
+    this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedResource['shortLabel']}`)
   }
+
   attached() {
 
-    this.subscriber = this.ea.subscribe("datepicker", dateEvent => {
+    this.dateSubscriber = this.ea.subscribe("datepicker", dateEvent => {
       console.log(dateEvent.newDate)
       let d = moment(dateEvent.newDate)
       //window.location.assign(`/#/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
       //this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedActor['shortLabel']}`)
-      this.selectedDate=d.toDate()
+      this.selectedDate = d.toDate()
+    })
+    this.resourceSubscriber = this.ea.subscribe("pickresource", resource => {
+      this.selectedResource = resource
     })
 
   }
 
 
-   detached(){
-   console.log("detached")
-   // this.subscriber.dispose()
-   }
+  detached() {
+    console.log("detached")
+    this.dateSubscriber.dispose()
+    this.resourceSubscriber.dispose()
+  }
 
   doSearch = function () {
     this.patientService.filterBy(this.patientFactory, [{entity: "name", value: this.searchexpr}]).then(result => {

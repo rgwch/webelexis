@@ -2,15 +2,16 @@ template
   require(from="components/searchfield")
   require(from="resources/fhir-resource-value-converter")
   require(from="../../components/pickdate")
+  require(from="../../components/pickresource")
 
   h4.accent-text.center-align ${officeName}
   .container
+    floater(pos="right: 10px; top: 10px;")
     .row
       .col.s12.tableau
         h2.h2 Agendabereich und Tag auswählen
         .row
-          select.col.s5(md-select="" value.bind="selectedActor")
-            option(model.bind="actor" repeat.for="actor of actors") ${actor.shortLabel}
+          pickresource.col.s6
           pickdate.col.s6
           button.col.s6.offset-s3(md-button="disabled.bind: selectedDate==null;" click.trigger="goAgenda()") Agenda
 

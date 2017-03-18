@@ -13,7 +13,7 @@
   },
   "client": {
     "general": {
-      "office-name": "Only GP in Town",
+      "officeName": "Only GP in Town",
       "actors": [
         {
           "shortLabel": "joe",
@@ -45,24 +45,28 @@
         },
         {
           "name": "normal",
+          "label": "normal",
           "fg": "black",
           "bg": "#f4c542",
           "duration": 30
         },
         {
           "name": "Extra",
+          "label":"Extra",
           "fg": "white",
           "bg": "#f44242",
           "duration": 15
         },
         {
           "name": "Check-Up",
+          "label":"Check-Up",
           "fg": "black",
           "bg": "#42f4dc",
           "duration": 45
         },
         {
           "name": "Besprechung",
+          "label": "Besprechung",
           "fg": "black",
           "bg": "#42d7f4",
           "duration": 30

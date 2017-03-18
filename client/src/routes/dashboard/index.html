@@ -1,9 +1,10 @@
 <template>
   <require from="components/searchfield"></require>
   <require from="resources/fhir-resource-value-converter"></require>
-
+  <require from="components/floater.html"></require>
 
   <div class="container">
+    <floater pos="right: 10px; top: 10px;"></floater>
     <h3 t="patient.select">Select patient</h3>
     <form role="form" submit.delegate="doSearch()">
       <searchfield value.two-way="searchexpr"></searchfield>
