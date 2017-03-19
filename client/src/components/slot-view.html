@@ -4,7 +4,6 @@
   -->
 
 <template>
-    <require from="./slotmenu"></require>
     <require from="./radio-inputs"></require>
     <div class="col s12">
         <div class="row" css.bind="popout">
@@ -30,12 +29,12 @@
                 </div>
                 <div if.bind="large" class="row" style="font-size: small;">
                     <div class="col s6">
-                        <select md-select="" value.bind="_slotType">
+                        <select md-select="" value.bind="_slotType" change.trigger="storeAndReload()()">
                             <option model.bind="typ" repeat.for="typ of cfg.agenda.types">${typ.label}</option>
                         </select>
                     </div>
                     <div class="col s6">
-                        <select md-select="" value.bind="_state">
+                        <select md-select="" value.bind="_state" change.trigger="storeAndReload()">
                             <option model.bind="status" repeat.for="status of possibleStates">${status.label}</option>
                         </select>
                     </div>

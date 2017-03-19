@@ -4,17 +4,14 @@
  */
 
 
-import {bindable, Container, computedFrom, autoinject} from "aurelia-framework";
+import {autoinject, bindable, computedFrom} from "aurelia-framework";
 import {Slot} from "../models/slot";
-import {FHIRobject} from "../models/fhirobj";
-import {Config} from '../config'
-import {FhirService} from '../services/fhirservice'
+import {Config} from "../config";
+import {FhirService} from "../services/fhirservice";
 import {FHIR_Resource} from "../models/fhir";
 import {Patient} from "../models/patient";
-import * as moment from 'moment'
-import {EventAggregator} from 'aurelia-event-aggregator'
+import {EventAggregator} from "aurelia-event-aggregator";
 import {AgendaRoute} from "../routes/agenda/index";
-import {FHIR_Slot} from "../models/fhir";
 
 /**
  * Display a FHIR_Slot
@@ -33,12 +30,12 @@ export class SlotView {
     this.possibleStates = this.cfg.agenda.states
   }
 
-  get unique(){
+  get unique() {
     return this.obj.getUnique('menu')
   }
 
-  normalMenu(){
-    return (this.obj.getField('freeBusyType')==='busy')
+  normalMenu() {
+    return (this.obj.getField('freeBusyType') === 'busy')
   }
 
   attached() {
@@ -70,6 +67,17 @@ export class SlotView {
     return this._slotType
   }
 
+  setType(type = null) {
+    if (!type) {
+      type = this._slotType
+    }
+    if (type == this.cfg.getAgendaType('free')) {
+      this.obj.setField('freeBusyType', "free")
+    } else {
+      this.obj.setField('contained.type.text', type.name)
+    }
+  }
+
   setState(state) {
     this._state = state
     this.obj.setField('contained.status', state.name)
@@ -85,6 +93,7 @@ export class SlotView {
       idx = 0
     }
     this.setState(this.possibleStates[idx])
+    this.storeAndReload()
   }
 
   getLabel() {
@@ -120,8 +129,8 @@ export class SlotView {
 
   get reason(): string {
     let ret = this.obj.getField("contained.description")
-    if(!ret){
-      ret=this.obj.getField("contained.reason.text")
+    if (!ret) {
+      ret = this.obj.getField("contained.reason.text")
     }
     return ret.length > 0 ? ret : undefined
   }
@@ -193,7 +202,14 @@ export class SlotView {
     this.large = !this.large
   }
 
+  storeAndReload(){
+    this.save().then(result=>{
+      this.parent.reload()
+    })
+  }
   save() {
+    this.setType()
+    this.obj.setField('contained.status', this._state.name)
     return this.fhirService.update(this.obj.fhir)
   }
 

@@ -15,7 +15,7 @@ import * as moment from "moment";
 @autoinject
 export class Intro {
   selectedDate: Date
-  selectedResource: string
+  selectedResource
   public searchexpr: string = '';
   public patients: Array<Patient>
   private patientFactory
@@ -37,6 +37,9 @@ export class Intro {
 
   goAgenda() {
     let d = moment(this.selectedDate)
+    if(!this.selectedResource){
+      this.selectedResource=this.cfg.general.actors[0]
+    }
     this.router.navigate(`/agenda?date=${d.format("YYYY-MM-DD")}&actor=${this.selectedResource['shortLabel']}`)
   }
 

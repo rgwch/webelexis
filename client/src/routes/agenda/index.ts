@@ -75,6 +75,10 @@ export class AgendaRoute {
     })
   }
 
+  reload(){
+    this.setDay(new Date(this.dateStandard),this.selectedActor)
+  }
+
   activate(params, routeConfig, instruction) {
     let date = params.date ? params.date : new Date()
     let actor = params.actor ? params.actor : this.cfg.general.actors[0].shortLabel
