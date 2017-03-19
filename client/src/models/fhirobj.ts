@@ -10,6 +10,7 @@ import * as moment from 'moment'
 import {FhirResourceValueConverter} from '../resources/fhir-resource-value-converter'
 import {Container} from "aurelia-framework";
 import {FHIR_Narrative} from "./fhir";
+import {FhirService} from "../services/fhirservice"
 
 export interface FhirObjectFactory {
   entities: Array<string>
@@ -26,6 +27,7 @@ export class FHIRobject {
   public stored: number = 0
   private static converter = Container.instance.get(FhirResourceValueConverter)
   protected static i18 = Container.instance.get(I18N)
+  protected fhirService=Container.instance.get(FhirService)
 
   constructor(data, expectedType: string) {
     if (data.resourceType !== expectedType) {

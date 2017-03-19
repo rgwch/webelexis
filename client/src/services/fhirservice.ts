@@ -127,10 +127,8 @@ export class FhirService {
 
   }
 
-  public deleteObject(fo:FHIRobject):Promise<any> {
-    return this.http.delete(`${fo.fhir.resourceType}/${fo.id}`).then(result => {
-
-    })
+  public async deleteObject(fo:FHIR_Resource):Promise<any> {
+    return this.http.delete(`${fo.resourceType}/${fo.id}`)
   }
 
   public createUUID():string {

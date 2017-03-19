@@ -38,4 +38,7 @@ export class Condition extends FhirObject implements Refiner {
     return undefined;
   }
 
+  async deleteObject(id:string){
+    return false
+  }
 }

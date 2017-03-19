@@ -71,4 +71,7 @@ export class Schedule extends FhirObject implements Refiner{
 
   }
 
+  async deleteObject(id:string){
+    return true
+  }
 }

@@ -89,6 +89,17 @@ router.put("/:datatype/:id",function(req,resp){
   }
 })
 
+router.delete("/:datatype/:id",function(req,resp){
+  var type = req.params.datatype
+  if (type && mapper[type]) {
+    mapper[type].deleteObject(req.params.id).then(result => {
+      resp.json(fhir)
+    }).catch(err => {
+      sendError(resp, err)
+    })
+  }
+})
+
 function sendError(handler, error) {
   handler.json({
     "status": "error",

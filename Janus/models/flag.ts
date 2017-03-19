@@ -163,5 +163,8 @@ export class Flag extends FhirObject implements Refiner {
 
   }
 
+  async deleteObject(id:string){
+    return false
+  }
 
 }

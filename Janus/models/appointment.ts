@@ -73,6 +73,9 @@ export class Appointment extends FhirObject implements Refiner {
     return this.nosql.queryAsync(this.dataType, qbe)
   }
 
+  async deleteObject(id:string){
+    return this._deleteObject("agntermine",this.dataType,id)
+  }
 
   compare(a:FHIR_Appointment, b:FHIR_Appointment) {
     return moment(b.start).unix() - moment(a.start).unix()

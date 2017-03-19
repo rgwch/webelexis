@@ -178,4 +178,7 @@ export class Encounter extends FhirObject implements Refiner {
     return fields
   }
 
+  async deleteObject(id:string){
+    return this._deleteObject("behandlungen",this.dataType,id)
+  }
 }

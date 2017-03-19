@@ -13,6 +13,7 @@ export interface NoSQL {
   getAsync(datatype: string, query: any): Promise<FHIR_Resource>
   queryAsync(datatype: string, query: any): Promise<Array<FHIR_Resource>>
   putAsync(fhir: FHIR_Resource): Promise<void>
+  deleteAsync(datatype:string,id:string)
 }
 export class MongoDB implements NoSQL {
   private url: string
@@ -47,4 +48,8 @@ export class MongoDB implements NoSQL {
     // return collection.insertOne(fhir)
   }
 
+  public async deleteAsync(datatype:string, id:string) {
+    let collection = this.db.collection(datatype)
+    return collection.deleteOne({id:id})
+  }
 }

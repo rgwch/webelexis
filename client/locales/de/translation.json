@@ -2,6 +2,7 @@
   "cancel": "Abbrechen",
   "none": "Keine",
   "more": "weiter...",
+  "delete": "löschen",
   "enter_name": "Name oder Namensteil eingeben",
   "write_a_message": "Text eingeben",
   "you_wrote": "Sie schrieben {{text}}",

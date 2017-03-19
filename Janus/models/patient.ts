@@ -363,4 +363,8 @@ export class Patient extends FhirObject implements Refiner {
     }
 
   }
+
+  async deleteObject(id:string){
+    this._deleteObject("kontakt",this.dataType,id)
+  }
 }

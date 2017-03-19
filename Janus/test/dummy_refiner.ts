@@ -63,4 +63,7 @@ export class DummyRefiner implements Refiner {
     });
   }
 
+  async deleteObject(id:string){
+    return true
+  }
 }

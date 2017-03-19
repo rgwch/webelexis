@@ -43,7 +43,7 @@ export abstract class HttpWrapper {
     })
   }
 
-  delete(url: string) {
+  delete(url: string) : Promise<any>{
     url = this.formatUrl(url)
     return this.httpClient.delete(url).then(result => {
       return this.handleResponse(result)

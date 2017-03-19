@@ -13,4 +13,5 @@ export interface Refiner {
   fetchNoSQL(params):Promise<Array<FHIR_Resource>>
   pushSQL(fhir:FHIR_Resource):Promise<void>
   pushNoSql(fhir:FHIR_Resource):Promise<void>
+  deleteObject(id:string)
 }

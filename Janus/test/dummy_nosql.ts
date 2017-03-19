@@ -44,4 +44,7 @@ export class DummyDB implements NoSQL {
     })
   }
 
+  async deleteAsync(type:string,id:string){
+    return true
+  }
 }

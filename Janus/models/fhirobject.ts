@@ -3,14 +3,13 @@
  * Copyright (c) 2017 by G. Weirich.
  * All rights reserved.
  ***************************************/
-import * as moment from 'moment'
-import {FHIR_Resource, FHIR_Period, FHIR_Identifier} from '../common/models/fhir'
-import {SQL} from '../services/mysql'
-import {NoSQL} from '../services/mongo'
+import * as moment from "moment";
+import {FHIR_Identifier, FHIR_Meta, FHIR_Period, FHIR_Resource} from "../common/models/fhir";
+import {SQL} from "../services/mysql";
+import {NoSQL} from "../services/mongo";
+import * as XID from "../common/xid";
 let log = require('winston')
 let config = require('nconf')
-import * as XID from '../common/xid'
-import {FHIR_Meta} from "../common/models/fhir";
 
 export class FhirObject {
   protected logger = log
@@ -63,15 +62,15 @@ export class FhirObject {
 
     return {
       start: moment(begin, "YYYYMMDD").format(),
-      end  : moment(end, "YYYYMMDD").format()
+      end: moment(end, "YYYYMMDD").format()
     }
   }
 
-  makeIdentifier(id: string):FHIR_Identifier {
+  makeIdentifier(id: string): FHIR_Identifier {
     return {
-      use     : "usual",
-      system  : this.xid.elexis_uuid,
-      value   : id,
+      use: "usual",
+      system: this.xid.elexis_uuid,
+      value: id,
       assigner: this.cfg.get("client")["general"].officeName
     }
   }
@@ -97,6 +96,14 @@ export class FhirObject {
     }
     meta['lastUpdated'] = moment().format()
     return meta
+  }
+
+
+  async _deleteObject(table: string, datatype:string, id:string) {
+    let sql = `UPDATE ${table} set deleted='1' where ID=?`
+    let sqlPromise = this.sql.queryAsync(sql, [id])
+    let nosqlPromise = this.nosql.deleteAsync(datatype,id)
+    return Promise.all([sqlPromise, nosqlPromise])
   }
 
   /**
@@ -165,7 +172,9 @@ export class FhirObject {
   }
 
   pushNoSql(fhir: FHIR_Resource): Promise<void> {
-    return new Promise<void>(resolve => {resolve()});
+    return new Promise<void>(resolve => {
+      resolve()
+    });
   }
 
   protected addMongoTerms(fields, val) {

@@ -6,7 +6,7 @@
 
 import {FhirObject} from "./fhirobject";
 import {Refiner} from "./fhirsync";
-import {FHIR_Appointment, FHIR_Resource, FHIR_Slot} from '../common/models/fhir'
+import {FHIR_Appointment, FHIR_Resource, FHIR_Slot} from "../common/models/fhir";
 import * as moment from "moment";
 import {Appointment} from "./appointment";
 // import * as config from 'nconf'
@@ -65,7 +65,7 @@ export class Slot extends FhirObject implements Refiner {
       upper.add(1, 'days')
       let actor = schedule[1]
       let qbe = {
-        "start"            : {
+        "start": {
           "$gte": lower.format(),
           "$lt": upper.format()
         },
@@ -73,21 +73,21 @@ export class Slot extends FhirObject implements Refiner {
       }
       let appnts = await this.nosql.queryAsync("Appointment", qbe)
       //let presets = this._findPresetsForDay(schedule[0])
-      return (appnts as Array<FHIR_Appointment>).map(appnt=>{
-        return<FHIR_Slot>{
+      return (appnts as Array<FHIR_Appointment>).map(appnt => {
+        return <FHIR_Slot>{
           resourceType: "Slot",
           id: appnt.id,
           identifier: [this.makeIdentifier(appnt.id)],
-          freeBusyType: appnt.type.text==='reserviert' ? "busy-unavailable" : "busy",
-          start:appnt.start,
-          end:appnt.end,
-          overbooked:false,
-          remark:appnt.description,
-          contained:appnt,
-          meta        : {
+          freeBusyType: appnt.type.text === 'reserviert' ? "busy-unavailable" : "busy",
+          start: appnt.start,
+          end: appnt.end,
+          overbooked: false,
+          remark: appnt.description,
+          contained: appnt,
+          meta: {
             tag: [{
               system: this.xid.elexis_appointment,
-              code  : appnt.id
+              code: appnt.id
             }],
             "lastUpdated": appnt.meta.lastUpdated
           }
@@ -117,18 +117,18 @@ export class Slot extends FhirObject implements Refiner {
         end.add(parseInt(appnt['Dauer']), "minutes")
         return {
           resourceType: "Slot",
-          id          : appnt['ID'],
-          identifier  : [this.makeIdentifier(appnt['ID'])],
+          id: appnt['ID'],
+          identifier: [this.makeIdentifier(appnt['ID'])],
           freeBusyType: this._isUnassignable(appnt) ? "busy-unavailable" : "busy",
-          start       : begin.format(),
-          end         : end.format(),
-          overbooked  : false,
-          remark      : appnt['Grund'],
-          contained   : Appointment._makeAppntFhir(appnt),
-          meta        : {
+          start: begin.format(),
+          end: end.format(),
+          overbooked: false,
+          remark: appnt['Grund'],
+          contained: Appointment._makeAppntFhir(appnt),
+          meta: {
             tag: [{
               system: this.xid.elexis_appointment,
-              code  : appnt['ID']
+              code: appnt['ID']
             }],
             "lastUpdated": moment(appnt['lastupdate'] as number).format()
           }
@@ -219,10 +219,10 @@ export class Slot extends FhirObject implements Refiner {
         act.add(preset.slotLength, "minutes")
         ret.push({
           resourceType: "Slot",
-          id          : super.createUUID(),
+          id: super.createUUID(),
           freeBusyType: "free",
-          start       : slotStart,
-          end         : act.format()
+          start: slotStart,
+          end: act.format()
         })
 
       }
@@ -268,10 +268,10 @@ export class Slot extends FhirObject implements Refiner {
     return {
 
       resourceType: "Slot",
-      id          : this.createUUID(),
+      id: this.createUUID(),
       freeBusyType: "free",
-      start       : begin,
-      end         : end
+      start: begin,
+      end: end
     }
   }
 
@@ -286,8 +286,8 @@ export class Slot extends FhirObject implements Refiner {
       let fullStart = moment(`${day} ${slot.begin}`, "YYYYMMDD HH:mm").format()
       let fullEnd = moment(`${day} ${slot.end}`, "YYYYMMDD HH:mm").format()
       return {
-        begin     : fullStart,
-        end       : fullEnd,
+        begin: fullStart,
+        end: fullEnd,
         slotLength: slot.slotLength
       }
     })
@@ -301,11 +301,13 @@ export class Slot extends FhirObject implements Refiner {
     }
     let dfltSlot = this.cfg.get('client')['agenda'].slots.default[0]
     return {
-      begin     : moment(`${day} ${dfltSlot.begin}`, "YYYYMMDD HH:mm").format(),
-      end       : moment(`${day} ${dfltSlot.end}`, "YYYYMMDD HH:mm").format(),
+      begin: moment(`${day} ${dfltSlot.begin}`, "YYYYMMDD HH:mm").format(),
+      end: moment(`${day} ${dfltSlot.end}`, "YYYYMMDD HH:mm").format(),
       slotLength: dfltSlot.slotLength
     }
   }
 
-
+  deleteObject(id: string) {
+    return this._deleteObject("agntermine", "Appointment", id)
+  }
 }

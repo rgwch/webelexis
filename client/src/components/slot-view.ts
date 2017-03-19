@@ -39,7 +39,7 @@ export class SlotView {
   }
 
   attached() {
-    let patient = this.getPatient().then(pat => {
+    let patient = this.obj.getPatient().then(pat => {
       if (pat) {
         let patObj = new Patient(pat)
         this.patLabel = patObj.fullName
@@ -174,25 +174,7 @@ export class SlotView {
     return ret;
   }
 
-  getPatient(): Promise<FHIR_Resource> {
-    let busy = this.obj.getField('freeBusyType')
-    if (busy === "busy" || busy === "busy-tentative") {
-      let appnt = this.obj.fhir['contained']
-      if (appnt) {
-        let participants = appnt['participant']
-        if (Array.isArray(participants)) {
-          for (let i = 0; i < participants.length; i++) {
-            if (participants[i].actor.startsWith("Patient/")) {
-              return this.fhirService.getByUri(participants[i].actor)
-            }
-          }
-        }
-      }
-    }
-    return new Promise(resolve => {
-      resolve()
-    })
-  }
+
 
   details() {
     alert(this.getLabel())
