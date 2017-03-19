@@ -1,17 +1,26 @@
 import {FhirService} from '../../services/fhirservice';
 import {Patient, PatientFactory} from "../../models/patient";
-import {inject} from 'aurelia-framework'
+import {autoinject} from 'aurelia-framework'
+import {Config} from '../../config'
+import {Router} from 'aurelia-router'
 
-@inject(PatientFactory, FhirService)
+
+@autoinject
 export class SearchBox {
   public searchexpr: string = '';
   public patients: Array<Patient>
   private patientFactory
   private patientService;
 
-  constructor(patientFactory: PatientFactory, patientService: FhirService) {
+  constructor(patientFactory: PatientFactory, patientService: FhirService, private cfg:Config, private router:Router) {
     this.patientFactory = patientFactory
     this.patientService = patientService
+  }
+
+  activate(){
+    if(this.cfg.systemState['selectedPatient'] instanceof Patient){
+     this.router.navigateToRoute("searchbox-details",{"id":this.cfg.systemState['selectedPatient'].id})
+    }
   }
 
   doSearch = function () {

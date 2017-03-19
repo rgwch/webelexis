@@ -2,6 +2,7 @@
   "cancel": "Abbrechen",
   "none": "rien",
   "more": "plus...",
+  "delete": "effaçer",
   "write_a_message": "écrivez quelque chose",
   "you_wrote": "Vous avez ecrit: {{text}}",
   "search": "recherche",
@@ -33,7 +34,18 @@
     "end": "jusq'à",
     "type": "type",
     "status": "état",
-    "priority": "priorité"
+    "priority": "priorité",
+    "lengthen": "étendre",
+    "shorten": "raccourcir",
+    "state":{
+      "proposed": "proposé",
+      "pending": "en attendant",
+      "booked": "réservé",
+      "arrived": "arrivé",
+      "fullfilled": "terminé",
+      "cancelled": "annulé",
+      "noshow": "perdu"
+    }
   },
   "dashboard": {
     "basic": "Dates personelles",
@@ -115,7 +127,7 @@
       "Ven",
       "Sam"
     ],
-    "previousMonth": "mois dernier",
+    "previousMonth": "mois précédent",
     "nextMonth": "mois prochain"
   }
 }

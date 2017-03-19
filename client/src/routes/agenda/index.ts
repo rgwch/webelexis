@@ -16,17 +16,17 @@ import {DialogService} from "aurelia-dialog";
 
 @autoinject
 export class AgendaRoute {
-  slots: BundleResult
-  dateDisplay: string
-  dateStandard: string = "2017-02-02"
-  selectedActor: string
+  slots:BundleResult
+  dateDisplay:string
+  dateStandard:string = "2017-02-02"
+  selectedActor:string
   private dateSubscriber
   private resourceSubscriber
   private host = this
 
 
-  constructor(private appointmentFactory: AppointmentFactory, private slotFactory: SlotFactory, private scheduleFactory: ScheduleFactory,
-              private fhirService: FhirService, private cfg: Config, private ea: EventAggregator, private dialog: DialogService) {
+  constructor(private appointmentFactory:AppointmentFactory, private slotFactory:SlotFactory, private scheduleFactory:ScheduleFactory,
+              private fhirService:FhirService, private cfg:Config, private ea:EventAggregator, private dialog:DialogService) {
 
   }
 
@@ -45,8 +45,10 @@ export class AgendaRoute {
     this.resourceSubscriber.dispose()
   }
 
-  setDay(date: Date, actor: string) {
+  setDay(date:Date, actor:string) {
     let day = moment(date)
+    this.cfg.systemState.selectedDate = date
+    this.cfg.systemState.selectedActor = actor
     this.dateDisplay = day.format("dd, DD.MM.YYYY")
     this.dateStandard = day.format("YYYY-MM-DD")
     this.selectedActor = actor
@@ -54,26 +56,32 @@ export class AgendaRoute {
       {entity: "date", value: day.format("YYYY-MM-DD")},
       {entity: "actor", value: actor}
     ]).then(schedules => {
-      if (schedules.status == "ok" && schedules.count > 0) {
-        let schedule: Schedule = schedules.values[0]
-        this.fhirService.filterBy(this.slotFactory, [{entity: "schedule", value: schedule.id}]).then(appnts => {
-          let slots = []
-          let lastEnd = day.format("YYYY-MM-DD") + "T00:00:00"
-          appnts.values.forEach(appnt => {
-            let start = appnt.fhir['start']
-            let prev = moment(lastEnd).unix()
-            let act = moment(start).unix()
-            if (act - prev > 300) {
-              slots.push(this._makeFreeSlot(lastEnd, start))
+        if (schedules.status == "ok" && schedules.count > 0) {
+          let schedule:Schedule = schedules.values[0]
+          this.fhirService.filterBy(this.slotFactory, [{entity: "schedule", value: schedule.id}]).then(appnts => {
+            if (appnts.status == 'error') {
+              alert("Verbindungsfehler")
+            } else {
+              let slots = []
+              let lastEnd = day.format("YYYY-MM-DD") + "T00:00:00"
+              appnts.values.forEach(appnt => {
+                let start = appnt.fhir['start']
+                let prev = moment(lastEnd).unix()
+                let act = moment(start).unix()
+                if (act - prev > 300) {
+                  slots.push(this._makeFreeSlot(lastEnd, start))
+                }
+                slots.push(appnt)
+                lastEnd = appnt.fhir['end']
+              })
+              appnts['values'] = slots
+              this.slots = appnts
             }
-            slots.push(appnt)
-            lastEnd = appnt.fhir['end']
           })
-          appnts['values'] = slots
-          this.slots = appnts
-        })
+
+        }
       }
-    })
+    )
   }
 
   reload() {
@@ -81,12 +89,13 @@ export class AgendaRoute {
   }
 
   activate(params, routeConfig, instruction) {
-    let date = params.date ? params.date : new Date()
-    let actor = params.actor ? params.actor : this.cfg.general.actors[0].shortLabel
+    let date=params.date ? params.date : this.cfg.systemState.selectedDate
+    let actor=params.actor ? params.actor : this.cfg.systemState.selectedActor
     this.setDay(date, actor)
   }
 
-  private _makeFreeSlot(begin: string, end: string) {
+  private
+  _makeFreeSlot(begin:string, end:string) {
     return new Slot(<FHIR_Slot>{
       resourceType: "Slot",
       id: this.fhirService.createUUID(),
@@ -96,7 +105,7 @@ export class AgendaRoute {
     })
   }
 
-  shorten(slot: Slot) {
+  shorten(slot:Slot) {
     let end = moment(slot.getField('end'))
     let start = moment(slot.getField('start'))
     let diff = (end.unix() - start.unix()) / 2
@@ -110,7 +119,7 @@ export class AgendaRoute {
     })
   }
 
-  lengthen(slot: Slot) {
+  lengthen(slot:Slot) {
     let arr = this.slots.values
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].fhir.id == slot.fhir.id) {
@@ -130,7 +139,7 @@ export class AgendaRoute {
     }
   }
 
-  deleteSlot(slot: Slot, patLabel: string) {
+  deleteSlot(slot:Slot, patLabel:string) {
     let contents = {
       title: "Bitte Löschvorgang bestätigen",
       body: "Wollen Sie wirklich den Termin " + slot.getDateTimeField("contained.start") +

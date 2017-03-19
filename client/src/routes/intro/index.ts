@@ -18,8 +18,6 @@ export class Intro {
   selectedResource
   public searchexpr: string = '';
   public patients: Array<Patient>
-  private patientFactory
-  private patientService;
   private officeName = "Webelexis"
   private actors = []
   private selectedActor = {}
@@ -27,9 +25,8 @@ export class Intro {
   private resourceSubscriber
 
 
-  constructor(patientFactory: PatientFactory, patientService: FhirService, private cfg: Config,
+  constructor(private patientFactory: PatientFactory, private patientService: FhirService, private cfg: Config,
               private router: Router, private ea: EventAggregator) {
-    this.patientFactory = patientFactory
     this.officeName = cfg.general.officeName
 
 

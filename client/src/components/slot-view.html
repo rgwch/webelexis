@@ -5,7 +5,7 @@
 
 <template>
     <require from="./radio-inputs"></require>
-    <div class="col s12">
+    <div class="col s12" click.trigger="select()">
         <div class="row" css.bind="popout">
             <div class="col s3 m2" css.bind="stateStyle">
                 <b>${obj.getTimeField('start')}-${obj.getTimeField('end')}</b><br/>

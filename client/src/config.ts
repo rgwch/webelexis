@@ -5,6 +5,7 @@
 
 import {HttpWrapper} from "./services/http-wrapper";
 import {inject} from "aurelia-framework";
+import {Patient} from "./models/patient";
 
 /**
  * The client tries do load configuration from the elexis server. If this fails, this file contains fallbacks.
@@ -25,6 +26,12 @@ export class Config {
     }).catch(err => {
       console.log(err)
     })
+  }
+
+  public systemState={
+    selectedPatient:null,
+    selectedDate:null,
+    selectedActor:""
   }
 
   public resources = {

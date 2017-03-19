@@ -23,6 +23,7 @@ export class SlotView {
   private large = false
   private _state
   private _slotType
+  private patient: Patient
   private patLabel: string = ""
   private possibleStates: Array<any> = []
 
@@ -39,10 +40,10 @@ export class SlotView {
   }
 
   attached() {
-    let patient = this.obj.getPatient().then(pat => {
+    this.obj.getPatient().then(pat => {
       if (pat) {
-        let patObj = new Patient(pat)
-        this.patLabel = patObj.fullName
+        this.patient = new Patient(pat)
+        this.patLabel = this.patient.fullName
       }
     })
   }
@@ -193,6 +194,10 @@ export class SlotView {
     this.setType()
     this.obj.setField('contained.status', this._state.name)
     return this.fhirService.update(this.obj.fhir)
+  }
+
+  select(){
+    this.cfg.systemState["selectedPatient"]=this.patient
   }
 
 }

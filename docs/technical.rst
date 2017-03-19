@@ -1,6 +1,3 @@
-Technische Informationen
-========================
-
 Webelexis besteht aus zwei Komponenten: Einem client, der einen FHIR_-Kompatiblen Server erwartet, und einer Serverkomponente, *Janus*,
 welche auf eine Elexis-Datenbank zugreift und deren Inhalte als FHIR Objekte bereitstellt, resp. FHIR-Objekte in einer für Elexis gebräuchlichen Form abspeichert.
 
@@ -40,6 +37,21 @@ Da Webelexis über eine potentiell langsame Netzwerkverbindung arbeitet, sind al
 
 Zum Verständnis des clients empfiehlt sich ein kurzes Einlesen in Aurelia_.
 
+Übersetzung, Lokalisierung
+--------------------------
+
+Die meisten Texte sind in e,d,f vorhanden. Welche Sprache angezeigt wird, hängt von den Browser-Einstellungen ab. Im Allgemeinen ist die Sprache des Betriebssystems voreingestellt. Man kann die bevorzugten Sprachen aber in den meisten Browsern auch anders einstellen, dann wird
+Webelexis ebenfalls die gewählte Sprache anzeigen. Wenn eine Sprache gewünscht wird, für die keine Übersetzung vorhanden ist, wird deutsch
+angezeigt (fallback).
+
+Weitere Sprachen hinzufügen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Die Übersetzungen sind einfach json-Dateien im Verzeichnis client/locales. Um zum Beispiel eine italienische Sprachvariante beizufügen, gehen Sie so vor:
+
+* Ein neues Verzeichnis **it** unterhalb von **locales** erstellen.
+* **translation.json** aus einem der anderen Verzeichnisse dort hin kopieren
+* Italienische Begriffe einsetzen.
 
 
 .. [#] Wenn Sie nur für den nächsten Start einen bestimmten Port vorgeben wollen, können Sie das zumindest unter Linux und MacOS auch einfach so tun: ``env PORT=2015 npm start`` (Wenn Sie für Port eine Nummer unter 1024 eingeben, müssen Sie allerdings "root" sein.)

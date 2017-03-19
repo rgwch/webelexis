@@ -2,6 +2,7 @@
   "cancel": "cancel",
   "none": "none",
   "more": "more...",
+  "delete": "delete",
   "enter_name": "enter (part of) a name",
   "write_a_message": "write a message",
   "you_wrote": "You wrote {{text}}",
@@ -40,6 +41,8 @@
     "end": "until",
     "status": "status",
     "priority": "priotity",
+    "lengthen": "extend",
+    "shorten": "shorten",
     "state": {
       "proposed": "proposed",
       "pending": "pending",
