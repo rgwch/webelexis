@@ -1,7 +1,10 @@
+Einstieg in die Entwicklung
+---------------------------
+
 Webelexis besteht aus zwei Komponenten: Einem client, der einen FHIR_-Kompatiblen Server erwartet, und einer Serverkomponente, *Janus*,
 welche auf eine Elexis-Datenbank zugreift und deren Inhalte als FHIR Objekte bereitstellt, resp. FHIR-Objekte in einer für Elexis gebräuchlichen Form abspeichert.
 
-Programmieren können Sie an sich mit jedem Texteditor; empfehlenswert ist einer, der Syntaxunterstützung für JavaScript und TypeScript bietet. Ein guter kostenloser Editor ist Atom_, Wenn Sie Geld ausgeben wollen, sei Ihnen Idea_ ans Herz gelegt. (Viele Programmierer schwören auf VisualStudio, aber das kenne ich selber nicht).
+Programmieren können Sie an sich mit jedem Texteditor; empfehlenswert ist einer, der Syntaxunterstützung für JavaScript und TypeScript bietet. Ein guter kostenloser Editor ist Atom_, Wenn Sie Geld ausgeben wollen, sei Ihnen Idea_ bzw. Webstorm [#]_ ans Herz gelegt. (Viele Programmierer schwören auf VisualStudio, aber das kenne ich selber nicht).
 
 Auch bezüglich Betriebssystem sind Sie nicht festgelegt. Ich wechsle problemlos zwischen MacOS, Ubuntu Linux und Arch Linux, aber Windows sollte ebenfalls gehen, da es alle verwendeten Tools auch für Windows gibt.
 
@@ -54,7 +57,17 @@ Die Übersetzungen sind einfach json-Dateien im Verzeichnis client/locales. Um z
 * Italienische Begriffe einsetzen.
 
 
+Starten und Testen
+------------------
+
+Während der Entwicklung macht es natürlich keinen Sinn, jedesmal **gulp export**  zu starten, um zu testen. Stattdessen geben Sie im client-Verzeichnis ein: **gulp watch** und im Janus-Verzeichnis (bzw. in der IDE) **npm start**, und richten den Browser auf localhost:9000.
+
+Debuggen des Clients erfolgt im Browser (z.B. alt-ctrl-i bei Chrome), Debuggen des Servers in der IDE.
+
+.. [#] Webstorm ist im Prinzip Idea, beschränkt auf die Web-Entwicklungs-Komponenten. Idea hat Unterstützung für sehr viel mehr Sprachen.
+
 .. [#] Wenn Sie nur für den nächsten Start einen bestimmten Port vorgeben wollen, können Sie das zumindest unter Linux und MacOS auch einfach so tun: ``env PORT=2015 npm start`` (Wenn Sie für Port eine Nummer unter 1024 eingeben, müssen Sie allerdings "root" sein.)
+
 
 .. _Express: http://expressjs.com
 .. _FHIR: https://www.hl7.org/fhir/

@@ -12,7 +12,7 @@ Für die Erstellung der Server- und Client Komponenten benötigen Sie NodeJS_ Ve
 ``nvm install 7.5.0``. Nvm erleichtert das Hantieren mit verschiedenen Node-Versionen und installiert ausserdem alles im userspace, so dass man kein "sudo" benötigt.
 (Wenn Sie auf einem Linux System Node global installieren, müssen Sie globale Anwendungen jeweils mit sudo laden: z.B. ``sudo npm install -g mocha``).
 
-Der Server benötigt ausserdem Zugriff auf ein Java-jdk, am Besten Version 8, und auf einige Tools zum Konvertieren von Java-Datentypen. Diese sind in rgw-toolbox_ enthalten, s.unten.
+Der Server benötigt ausserdem Zugriff auf ein Java-8-jdk und auf einige Tools zum Konvertieren von Java-Datentypen. Diese sind in rgw-toolbox_ enthalten, s.unten.
 Ausserdem wird ein Mongo_ Datenbankserver benötigt.
 
 Die Webelexis
@@ -23,6 +23,8 @@ Um diese Dokumentation hier aus den Quellen zu erstellen, benötigen Sie Sphinx_
 Janus benötigt eine Elexis-Datenbank vom Typ Elexis_Ungrad_. Andere Elexis-Versionen ab 2.x können
 gehen, es kann aber zu Problemen kommen.
 
+Im Folgenden wird davon ausgegangen, dass sowohl der MySQL [#]_-Server mit der Elexis-Datenbabk, als auch der Mongo- Server
+gestartet und erreichbar sind.
 
 .. index:: Server
 
@@ -198,3 +200,5 @@ Sphinx ermöglicht die verschiedensten Ausgabeformate. Mit ``make epub`` könnte
 .. _rgw-toolbox: https://bintray.com/rgwch/maven/rgw-toolbox
 .. _Mongo: https://www.mongodb.com/
 .. _FHIR-Bundle: https://www.hl7.org/fhir/bundle.html
+
+.. [#] Ein MariaDB-Server kann ohne Weiteres anstelle des MySQL-Servers verwendet werden. Für PostgreSQL müssen kleine Änderungen an Janus vorgenommen werden (NodeJS Treiber für Postgresql installieren etc.)
