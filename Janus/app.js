@@ -6,15 +6,15 @@
 
 const VERSION="0.2.0"
 
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var nconf=require('nconf');
-var cors = require('express-cors')
-var compression = require('compression')
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const nconf=require('nconf');
+const cors = require('express-cors')
+const compression = require('compression')
 nconf.env().argv().file('config.json')
 
 console.log("\n" +

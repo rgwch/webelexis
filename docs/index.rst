@@ -22,6 +22,14 @@ Technische Informationen
    :maxdepth: 3
 
    technical
+
+********************
+Formale Definitionen
+********************
+
+.. toctree::
+   :maxdepth: 2
+
    claim-encounter
 
 *****************
