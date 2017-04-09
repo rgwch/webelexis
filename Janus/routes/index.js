@@ -33,6 +33,20 @@ router.get('/configuration', function (req, res, next) {
     next(err)
   }
 })
+
+router.post('/addContent/:type', function(req,res){
+  let parms=req.body
+  let user=parms['user']
+  let pwd=parms['pwd']
+  let payload=parms['payload']
+  switch (req.params['type']){
+    case "image":
+      res.json({"status":"ok"})
+      break;
+    default:
+      res.json({status:"error",message:"unknown datatype"})
+  }
+})
 /*
 router.get('/test',function(rq,res){
   res.send(Test.hello())
