@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const nconf = require('nconf')
 const fs = require('fs')
+const moment= require('moment')
 
 /*
  var  x = require('../models/test');
@@ -40,13 +41,23 @@ router.post('/addContent/:type', function (req, res) {
   let user = parms['user']
   let pwd = parms['pwd']
   let payload = parms['payload']
+  let conf=nconf.get('server')
+  let dir=conf['documentStore']
+  if(!dir){
+    dir="."
+  }
   switch (req.params['type']) {
     case "image":
-      let buffer = Buffer.from(payload, 'base64')
-      let fd = fs.openSync("/home/gerry/testimage.jpg", "w")
-      fs.writeSync(fd, buffer)
-      fs.closeSync(fd)
-      res.json({"status": "ok"})
+      try {
+        let buffer = Buffer.from(payload, 'base64')
+        let filename="ImageImport-"+moment().format("YYYY-DD-MM")+".jpg"
+        let fd = fs.openSync(dir+"/"+filename, "w")
+        fs.writeSync(fd, buffer)
+        fs.closeSync(fd)
+        res.json({"status": "ok"})
+      }catch(err){
+        res.json({"status":"error","message":err.message})
+      }
       break;
     default:
       res.json({status: "error", message: "unknown datatype"})
