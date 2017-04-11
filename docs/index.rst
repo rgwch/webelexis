@@ -12,7 +12,9 @@ Anwender-Informationen
    intro
    firststeps
    config
-   docker
+   #docker
+   addons
+
 
 ************************
 Technische Informationen
@@ -22,6 +24,7 @@ Technische Informationen
    :maxdepth: 3
 
    technical
+
 
 ********************
 Formale Definitionen

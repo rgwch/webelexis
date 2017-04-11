@@ -41,16 +41,25 @@ router.post('/addContent/:type', function (req, res) {
   let user = parms['user']
   let pwd = parms['pwd']
   let payload = parms['payload']
+  let patient=parms['patient']
   let conf=nconf.get('server')
   let dir=conf['documentStore']
   if(!dir){
     dir="."
   }
+  if(patient){
+    var ps=patient.split(/[ ,]+/)
+    var subdir=ps[0]+"_"+ps[1]+"_"+ps[2]
+    dir=dir+"/"+subdir
+    if(!fs.existsSync(dir)){
+      fs.mkdirSync(dir)
+    }
+  }
   switch (req.params['type']) {
     case "image":
       try {
         let buffer = Buffer.from(payload, 'base64')
-        let filename="ImageImport-"+moment().format("YYYY-DD-MM")+".jpg"
+        let filename="ImageImport-"+moment().format("YYYY-DD-MM_HHmmss")+".jpg"
         let fd = fs.openSync(dir+"/"+filename, "w")
         fs.writeSync(fd, buffer)
         fs.closeSync(fd)

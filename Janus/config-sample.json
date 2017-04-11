@@ -11,6 +11,9 @@
     "password": "someone",
     "url": "somewhere:27017/somedb"
   },
+  "server":{
+    "documentStore": "/some/data/directory"
+  },
   "client": {
     "general": {
       "officeName": "Only GP in Town",
