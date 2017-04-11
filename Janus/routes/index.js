@@ -4,11 +4,6 @@ const nconf = require('nconf')
 const fs = require('fs')
 const moment= require('moment')
 
-/*
- var  x = require('../models/test');
-
- var Test=new x.Test()
- */
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.redirect('login');
@@ -46,6 +41,10 @@ router.post('/addContent/:type', function (req, res) {
   let dir=conf['documentStore']
   if(!dir){
     dir="."
+  }else{
+    if(!fs.existsSync(dir)){
+      fs.mkdirSync(dir)
+    }
   }
   if(patient){
     var ps=patient.split(/[ ,]+/)
@@ -72,9 +71,4 @@ router.post('/addContent/:type', function (req, res) {
       res.json({status: "error", message: "unknown datatype"})
   }
 })
-/*
- router.get('/test',function(rq,res){
- res.send(Test.hello())
- })
- */
 module.exports = router;

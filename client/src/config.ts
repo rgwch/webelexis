@@ -13,6 +13,8 @@ import {Patient} from "./models/patient";
 @inject(HttpWrapper)
 export class Config {
 
+  public runMode="debug"
+
   constructor(private http: HttpWrapper) {
     http.get("configuration").then(result => {
       if (result) {
