@@ -20,7 +20,8 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 RUN npm install
+RUN npm install java && npm rebuild node-sass && chmod +x dockerstart.sh
 #  RUN apt-get remove -y build-essential && apt-get -y autoremove && apt-get -y clean
-RUN service mongodb start
+
 EXPOSE 3000
-CMD ["npm","start"]
+CMD ["./dockerstart.sh"]

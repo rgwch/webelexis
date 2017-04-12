@@ -12,7 +12,7 @@ Anwender-Informationen
    intro
    firststeps
    config
-   #docker
+   docker
    addons
 
 

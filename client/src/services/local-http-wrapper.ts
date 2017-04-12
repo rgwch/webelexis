@@ -9,10 +9,11 @@ import {Container} from "aurelia-framework";
 
 export class LocalHttpWrapper extends HttpWrapper {
 
-  cfg = Container.instance.get(Config)
+  private runMode="release"
 
   formatUrl(url: string) {
-    if (this.cfg.runMode == "debug") {
+
+    if (this.runMode == "debug") {
 
       if (url === 'dologin' || url === "configuration") {
         return `http://localhost:3000/${url}`
