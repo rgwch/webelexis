@@ -1,8 +1,16 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {bindable} from "aurelia-framework";
 import {FHIR_Resource} from "../models/fhir";
 import {FHIR_Condition} from "../models/fhir";
 import {Condition} from "../models/condition";
 
+/**
+ * Display a FHIR_Condition
+ */
 export class ConditionView{
   @bindable obj:Condition
   @bindable large:boolean=false

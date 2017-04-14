@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {Aurelia} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import * as Backend from 'i18next-xhr-backend';
@@ -21,25 +26,25 @@ export function configure(aurelia: Aurelia) {
       .plugin('aurelia-i18n', (instance) => {
         instance.i18next.use(Backend);
         return instance.setup({
-          backend: {
+          backend    : {
             loadPath: 'locales/{{lng}}/{{ns}}.json',
           },
-          lng : selectedLanguage,
-          attributes : ['t','i18n'],
-          fallbackLng : 'de',
-          debug : true
+          lng        : selectedLanguage,
+          attributes : ['t', 'i18n'],
+          fallbackLng: 'de',
+          debug      : true
         });
       })
       .plugin('aurelia-dialog')
 
       .plugin('aurelia-materialize-bridge', bridge => bridge.useAll())
 
-      let httpWrapper = aurelia.container.get(LocalHttpWrapper);
-      //let httpWrapper = aurelia.container.get(DevHttpWrapper);
-      aurelia.container.registerInstance(HttpWrapper, httpWrapper);
-      let config=aurelia.container.get(Config)
-      aurelia.container.registerInstance(Config,config)
+    let httpWrapper = aurelia.container.get(LocalHttpWrapper);
+    //let httpWrapper = aurelia.container.get(DevHttpWrapper);
+    aurelia.container.registerInstance(HttpWrapper, httpWrapper);
+    let config = aurelia.container.get(Config)
+    aurelia.container.registerInstance(Config, config)
 
-      aurelia.start().then(() => aurelia.setRoot());
+    aurelia.start().then(() => aurelia.setRoot());
   });
 }

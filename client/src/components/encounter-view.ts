@@ -1,7 +1,15 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {bindable, bindingMode, customElement} from 'aurelia-framework';
 import {Encounter} from "../models/encounter";
 import {FHIR_Resource} from "../models/fhir";
 
+/**
+ * Display a FHIR_Encounter
+ */
 export class EncounterView {
   @bindable obj: Encounter
   @bindable large: boolean = false

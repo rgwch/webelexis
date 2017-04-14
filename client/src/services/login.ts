@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {HttpWrapper} from './http-wrapper';
 import {User} from '../models/user';
 import {inject} from 'aurelia-framework';
@@ -10,8 +15,8 @@ export class LoginService {
     this.http = http;
   }
 
-  public login(username:string,password:string):Promise<User> {
-    let promise = this.http.post("dologin",{username:username,password:password}).then(result => {
+  public login(username: string, password: string): Promise<User> {
+    let promise = this.http.post("dologin", {username: username, password: password}).then(result => {
       return new User(result);
     });
     return promise;

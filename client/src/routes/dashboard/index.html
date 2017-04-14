@@ -1,22 +1,23 @@
 <template>
-    <require from="components/searchfield"></require>
-    <require from="resources/fhir-resource-value-converter"></require>
+  <require from="components/searchfield"></require>
+  <require from="resources/fhir-resource-value-converter"></require>
+  <require from="components/floater.html"></require>
 
-
-    <div class="container">
-        <h3 t="patient.select">Select patient</h3>
-        <form role="form" submit.delegate="doSearch()">
-            <searchfield value.two-way="searchexpr"></searchfield>
-        </form>
-        <md-collection>
-            <md-collection-item repeat.for="patient of patients">
-                <a route-href="route: searchbox-details; params.bind: {id: patient.id}">
-                    ${patient.fhir.name[0].given | fhirResource:'name[0].given':patient.fhir}
-                    ${patient.fhir.name[0].family | fhirResource: 'name[0].family':patient.fhir}
-                    (${patient.gender}),
-                    ${patient.birthDate}
-                </a>
-            </md-collection-item>
-        </md-collection>
-    </div>
+  <div class="container">
+    <floater pos="right: 10px; top: 10px;"></floater>
+    <h3 t="patient.select">Select patient</h3>
+    <form role="form" submit.delegate="doSearch()">
+      <searchfield value.two-way="searchexpr"></searchfield>
+    </form>
+    <md-collection>
+      <md-collection-item repeat.for="patient of patients">
+        <a route-href="route: searchbox-details; params.bind: {id: patient.id}">
+          ${patient.fhir.name[0].given | fhirResource:'name[0].given':patient.fhir}
+          ${patient.fhir.name[0].family | fhirResource: 'name[0].family':patient.fhir}
+          (${patient.gender}),
+          ${patient.birthDate}
+        </a>
+      </md-collection-item>
+    </md-collection>
+  </div>
 </template>

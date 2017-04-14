@@ -5,9 +5,9 @@
 
 import {FhirObject} from "./fhirobject";
 import {Refiner} from "./fhirsync";
-import {FHIR_Resource,FHIR_Schedule} from '../../common/models/fhir'
+import {FHIR_Resource,FHIR_Schedule} from '../common/models/fhir'
 import * as nconf from 'nconf'
-import * as xid from '../../common/xid'
+import * as xid from '../common/xid'
 import moment = require("moment");
 import {SQL} from "../services/mysql";
 import {NoSQL} from "../services/mongo";
@@ -23,8 +23,8 @@ export class Schedule extends FhirObject implements Refiner{
   }
 
   private createSchedule(dateParam:string, actorParam:string):FHIR_Resource{
-    let cfg=nconf.get('agenda')
-    let scheduleType=cfg.get('scheduleType')
+    let cfg=nconf.get("client")
+    let scheduleType=cfg['agenda'].scheduleType
     if(scheduleType == undefined){
       scheduleType={
         type:{
@@ -34,7 +34,7 @@ export class Schedule extends FhirObject implements Refiner{
         text: "Konsultation"
       }
     }
-    let actor=cfg.get("actors")[0]
+    let actor=cfg['general'].actors[0].shortLabel
     if(actorParam){
       actor=actorParam
     }
@@ -42,14 +42,12 @@ export class Schedule extends FhirObject implements Refiner{
     if(dateParam){
       date = moment(dateParam)
     }
-    let begin = date.subtract(1, 'day')
-    let end = date.add(1, 'day')
     return <FHIR_Resource>{
       id: date.format("YYYYMMDD")+"::"+actor,
       resourceType: "Schedule",
       type: scheduleType,
       actor: actor,
-      planningHorizon: super.makePeriod(begin.format(), end.format())
+      planningHorizon: super.makePeriod(date.format(), date.format())
     }
   }
 
@@ -73,4 +71,7 @@ export class Schedule extends FhirObject implements Refiner{
 
   }
 
+  async deleteObject(id:string){
+    return true
+  }
 }

@@ -5,14 +5,13 @@
  ***************************************/
 
 import {Refiner} from "./fhirsync";
-import {FHIR_Resource, FHIR_Flag, FHIR_CodeableConcept, FHIR_Coding, FHIR_Appointment} from '../../common/models/fhir'
-import {Janus} from '../services/janus'
-import {MySql} from '../services/mysql'
+import {FHIR_Resource, FHIR_Flag, FHIR_CodeableConcept, FHIR_Coding, FHIR_Appointment} from '../common/models/fhir'
 import * as moment from 'moment'
-import * as xid from '../../common/xid'
+import * as xid from '../common/xid'
 import {SQL} from '../services/mysql'
 import {FhirObject} from "./fhirobject";
 import {NoSQL} from "../services/mongo";
+import {ElexisUtils} from "./elexis-utils"
 
 /*
  mysql> show columns from agntermine;
@@ -46,16 +45,17 @@ import {NoSQL} from "../services/mongo";
  */
 
 export class Appointment extends FhirObject implements Refiner {
-  dataType: string = "Appointment"
+  dataType:string = "Appointment"
+  static util:ElexisUtils = new ElexisUtils()
 
   static concerned_fields = ["PatID", "Bereich", "Tag", "Beginn", "Dauer", "Grund", "TerminTyp", "TerminStatus",
     "ErstelltVon", "angelegt", "lastedit", "deleted", "lastupdate", "StatusHistory", "priority"]
 
-  constructor(sql: SQL, nosql: NoSQL) {
+  constructor(sql:SQL, nosql:NoSQL) {
     super(sql, nosql)
   }
 
-  fetchNoSQL(parm): Promise<Array<FHIR_Resource>> {
+  fetchNoSQL(parm):Promise<Array<FHIR_Resource>> {
     let qbe = {}
     if (parm.patient) {
       qbe["participant.actor"] = "Patient/" + parm.patient
@@ -73,12 +73,15 @@ export class Appointment extends FhirObject implements Refiner {
     return this.nosql.queryAsync(this.dataType, qbe)
   }
 
+  async deleteObject(id:string){
+    return this._deleteObject("agntermine",this.dataType,id)
+  }
 
-  compare(a: FHIR_Appointment, b: FHIR_Appointment) {
+  compare(a:FHIR_Appointment, b:FHIR_Appointment) {
     return moment(b.start).unix() - moment(a.start).unix()
   }
 
-  async fetchSQL(params): Promise<Array<FHIR_Resource>> {
+  async fetchSQL(params):Promise<Array<FHIR_Resource>> {
     let sql = "SELECT * from agntermine where deleted=?"
     let vals = ["0"]
     if (params.patient) {
@@ -99,57 +102,107 @@ export class Appointment extends FhirObject implements Refiner {
     }
     let raw = await this.sql.queryAsync(sql + " ORDER by Tag DESC", vals)
     let result = raw.map(termin => {
-      return this._makeAppntFhir(termin)
+      return Appointment._makeAppntFhir(termin)
     })
     return result
   }
 
-  private _makeAppntFhir(raw) {
+  static _makeAppntFhir(raw) {
     let begin = moment(raw.Tag, "YYYYMMDD")
     begin.add(parseInt(raw.Beginn), "minutes")
     let duration = parseInt(raw.Dauer)
-
+    let PatId
+    if (raw.PatID && raw.PatID.length > 8) {
+      PatId = raw.PatID
+    }
     let fhir = {
-      resourceType   : "Appointment",
-      id             : raw.ID,
-      meta           : {
-        lastUpdated: moment(new Date(raw.LASTUPDATE)).format()
+      resourceType: "Appointment",
+      id: raw.ID,
+      meta: {
+        lastUpdated: moment(new Date(raw.LASTUPDATE as number)).format()
       },
-      identifier     : [
+      identifier: [
         {
-          use   : "usual",
+          use: "usual",
           system: xid.domains.elexis_appointment,
-          value : raw.ID
+          value: raw.ID
         }
       ],
-      status         : raw.TerminStatus,
-      type           : {
+      status: raw.TerminStatus,
+      type: {
         text: raw.TerminTyp
       },
-      reason         : {
+      reason: {
         text: raw.Grund
       },
-      priority       : raw.priority,
-      description    : raw.Grund,
-      start          : begin.format(),
+      priority: raw.priority,
+      description: raw.Grund,
+      start: begin.format(),
       minutesDuration: duration,
-      end            : begin.add(duration, "minutes").format(),
-      participant    : [
+      end: begin.add(duration, "minutes").format(),
+      participant: [
         {
-          actor   : `Patient/${raw.PatID}`,
-          required: "required"
-        }, {
-          actor   : `Practitioner/${raw.Bereich}`,
+          actor: `Practitioner/${raw.Bereich}`,
           required: "required"
         }
       ]
+    }
+    if (PatId) {
+      fhir.participant.push(
+        {
+          "actor": `Patient/${PatId}`,
+          "required": "required"
+        }
+      )
     }
     return fhir
 
   }
 
-  pushSQL(fhir: FHIR_Resource): Promise<void> {
-    return undefined;
+  static fhirToSql(fhir:FHIR_Appointment) {
+    if (fhir.resourceType != 'Appointment') {
+      throw new Error("bad parameter type for Appointmenr:pushSQL")
+    }
+
+    let sqlQuery = this.makeSQLString("agntermine", ["ID", "PatID", "Tag", "Beginn", "Dauer", "Grund", "TerminTyp", "TerminStatus",
+      "lastedit", "lastupdate", "caseType", "insuranceType", "treatmentReason"])
+    let values = []
+    values.push(fhir.id)
+    let patobj = fhir.participant.find(part=> {
+      return (part.actor.toString()).startsWith("Patient")
+    })
+    if (patobj) {
+      let pat=patobj.actor.toString()
+      let patid = pat.substring(pat.indexOf("/")+1)
+      values.push(patid)
+    }else{
+      values.push("")
+    }
+    let start = moment(fhir.start)
+    let end = moment(fhir.end)
+    let duration = (end.unix() - start.unix()) / 60
+    values.push(Appointment.util.makeCompactFromDateObject(start.toDate()))
+    let begin=start.hours()*60+start.minutes()
+    values.push(begin.toString())
+    values.push(duration.toString())
+    values.push(fhir.description)
+    values.push(fhir.type.text)
+    values.push(fhir.status)
+    values.push(this.util.elexisTimeStamp(new Date()))
+    values.push(moment().valueOf())
+    values.push("")
+    values.push("")
+    values.push("")
+    return{
+      query:sqlQuery,
+      values:values
+    }
   }
+
+  pushSQL(fhir:FHIR_Resource):Promise<void> {
+    let query = Appointment.fhirToSql(fhir as FHIR_Appointment)
+    return this.sql.insertAsync(query.query,query.values)
+  }
+
 
 }

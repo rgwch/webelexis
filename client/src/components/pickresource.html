@@ -1,0 +1,7 @@
+<template>
+  <select md-select="" value.bind="selectedActor" change.trigger="selectionChanged()">
+    <option model.bind="actor" repeat.for="actor of actors">
+      ${actor.shortLabel}
+    </option>
+  </select>
+</template>

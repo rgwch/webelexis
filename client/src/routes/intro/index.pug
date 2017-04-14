@@ -1,0 +1,27 @@
+template
+  require(from="components/searchfield")
+  require(from="resources/fhir-resource-value-converter")
+  require(from="../../components/pickdate")
+  require(from="../../components/pickresource")
+
+  h4.accent-text.center-align ${officeName}
+  .container
+    floater(pos="right: 10px; top: 10px;")
+    .row
+      .col.s12.tableau
+        h2.h2 Agendabereich und Tag auswählen
+        .row
+          pickresource.col.s6
+          pickdate.col.s6
+          button.col.s6.offset-s3(md-button="disabled.bind: selectedDate==null;" click.trigger="goAgenda()") Agenda
+
+      .col.s12.tableau
+        h2.h2 Oder Patient auswählen
+        form(role="form" submit.delegate="doSearch()")
+          searchfield(value.two-way="searchexpr")
+        md-collection
+          md-collection-item(repeat.for="patient of patients")
+            a(route-href="route: searchbox-details; params.bind: {id: patient.id}")
+              | ${patient.fhir.name[0].given | fhirResource:'name[0].given':patient.fhir}
+              | ${patient.fhir.name[0].family | fhirResource: 'name[0].family':patient.fhir} (${patient.gender}), ${patient.birthDate}
+

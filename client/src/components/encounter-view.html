@@ -1,11 +1,11 @@
 <template>
-    <require from="./ck-editor"></require>
-    <div class="tableau" z-depth-1>
-        <div class="header" click.delegate="largeToggle()">
-            ${obj.getConsLabel()}
-        </div>
-        <p innerhtml.bind="obj.getField('text.div')" show.bind="!large">test</p>
-        <ck-editor value.two-way="editor" show.bind="large"></ck-editor>
+  <require from="./ck-editor"></require>
+  <div class="tableau" z-depth-1>
+    <div class="header" click.delegate="largeToggle()">
+      ${obj.getConsLabel()}
     </div>
+    <p innerhtml.bind="obj.getField('text.div')" show.bind="!large">test</p>
+    <ck-editor value.two-way="editor" show.bind="large"></ck-editor>
+  </div>
 
 </template>

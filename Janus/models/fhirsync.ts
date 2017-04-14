@@ -4,7 +4,7 @@
  * All rights reserved.
  ***************************************/
 
-import {FHIR_Resource} from '../../common/models/fhir'
+import {FHIR_Resource} from '../common/models/fhir'
 
 export interface Refiner {
   dataType:string
@@ -12,4 +12,6 @@ export interface Refiner {
   fetchSQL(params:{}):Promise<Array<FHIR_Resource>>
   fetchNoSQL(params):Promise<Array<FHIR_Resource>>
   pushSQL(fhir:FHIR_Resource):Promise<void>
+  pushNoSql(fhir:FHIR_Resource):Promise<void>
+  deleteObject(id:string)
 }

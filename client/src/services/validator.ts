@@ -1,14 +1,18 @@
-import {FhirBundle,FHIR_Resource,FHIR_Patient,FHIR_ResourceEntry} from "../models/fhir";
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
+import {FhirBundle, FHIR_Resource, FHIR_Patient, FHIR_ResourceEntry} from "../models/fhir";
 import {FHIRobject, FhirObjectFactory} from "../models/fhirobj";
 import {BundleResult} from "./fhirservice";
-
 
 
 export class Validator {
 
 
-  static checkFHIRBundle(check:string|FhirBundle, factory:FhirObjectFactory):BundleResult {
-    var ans:FhirBundle
+  static checkFHIRBundle(check: string | FhirBundle, factory: FhirObjectFactory): BundleResult {
+    var ans: FhirBundle
     if (typeof check == "string") {
       try {
         ans = JSON.parse(check as string)
@@ -21,9 +25,9 @@ export class Validator {
     }
     if (ans["resourceType"] !== "Bundle") {
       return <BundleResult>{
-        "status": "error",
+        "status" : "error",
         "message": "Bad or missing resourceType " + JSON.stringify(ans),
-        count: 0
+        count    : 0
       }
     }
     if (ans["type"] !== "searchset") {
@@ -31,14 +35,14 @@ export class Validator {
     }
     return <BundleResult>{
       "status": "ok",
-      values: ans.entry.map(obj=>factory.createObject(obj.resource)),
-      count: ans.total,
-      links: ans.link
+      values  : ans.entry.map(obj => factory.createObject(obj.resource)),
+      count   : ans.total,
+      links   : ans.link
     }
   }
 
 
-  static getArray(fhir:any, name:string):Array<any> {
+  static getArray(fhir: any, name: string): Array<any> {
     if (fhir == undefined || name == undefined || fhir == null || name == null) {
       return []
     } else {
@@ -47,7 +51,7 @@ export class Validator {
     }
   }
 
-  static getSubobject(fhir:any, name:string) {
+  static getSubobject(fhir: any, name: string) {
     if (fhir == undefined || name == undefined || fhir == null || name == null) {
       return {}
     } else {
@@ -56,7 +60,7 @@ export class Validator {
     }
   }
 
-  static getString(fhir:any, name:string):String {
+  static getString(fhir: any, name: string): String {
     if (fhir == undefined || name == undefined || fhir == null || name == null) {
       return ""
     } else {
@@ -65,7 +69,7 @@ export class Validator {
     }
   }
 
-  static getNumber(fhir:any, name:string):Number {
+  static getNumber(fhir: any, name: string): Number {
     if (fhir == undefined || name == undefined || fhir == null || name == null) {
       return 0
     } else {

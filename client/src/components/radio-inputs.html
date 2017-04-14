@@ -1,9 +1,9 @@
 <template>
   <md-radio
-    repeat.for="item of items"
-    md-name="uniqueName"
-    md-model.bind="item"
-    md-checked.bind="selectedValue">
-      ${displayProp ? item[displayProp] : item}
+      repeat.for="item of items"
+      md-name="uniqueName"
+      md-model.bind="item"
+      md-checked.bind="selectedValue">
+    ${displayProp ? item[displayProp] : item}
   </md-radio>
 </template>

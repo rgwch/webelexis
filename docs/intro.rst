@@ -9,7 +9,7 @@ sowie deren mobilen Varianten läuft. Dies hat folgende Vorteile:
 
 * Moderne, schnelle Oberfläche
 * Passt sich an unterschiedliche Geräte an. Man kann Webelexis auf einem 4K-Monitor bedienen, aber auch auf einem Tablet-Computer oder einem Smartphone.
-* Lässt sich auch aus dem Interner bedienen: Ausreichende Sicherheitsmassnahmen vorausgesetzt (starke Verschlüsselung, Zugriffsschutz), können Sie Webelexis
+* Lässt sich auch aus dem Internet bedienen: Ausreichende Sicherheitsmassnahmen vorausgesetzt (starke Verschlüsselung, Zugriffsschutz), können Sie Webelexis
   von überall her bedienen, wo Sie Internetzugriff haben. In den meisten Fällen werden Sie keinen wesentlichen Geschwindigkeitsunterschied zur Arbeit
   direkt in der Praxis bemerken.
 

@@ -1,8 +1,8 @@
 <template>
   <p repeat.for="item of items ">
     <md-checkbox
-      md-model.bind="item"
-      md-checked.bind="selectedValues">
+        md-model.bind="item"
+        md-checked.bind="selectedValues">
       ${displayProp ? item[displayProp] : item}
     </md-checkbox>
   </p>

@@ -1,8 +1,13 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {FHIR_Address} from './fhir';
 import {Validator} from '../services/validator';
 export class AddressList {
 
-  constructor(private fhir:Array<FHIR_Address>) {}
+  constructor(private fhir: Array<FHIR_Address>) {}
 
   homeAddress() {
     this.fhir.forEach(address => {
@@ -30,7 +35,7 @@ export class AddressList {
     }
   }
 
-  allAddresses():Array<any> {
+  allAddresses(): Array<any> {
     if (this.fhir == null || this.fhir.length == 0) {
       return []
     } else {

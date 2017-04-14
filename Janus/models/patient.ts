@@ -48,12 +48,12 @@
  */
 
 import {Refiner} from "./fhirsync";
-import {FHIR_Address, FHIR_ContactPoint, FHIR_Identifier, FHIR_Patient, FHIR_Resource} from "../../common/models/fhir";
+import {FHIR_Address, FHIR_ContactPoint, FHIR_Identifier, FHIR_Patient, FHIR_Resource} from "../common/models/fhir";
 import {Janus} from "../services/janus";
 import {SQL} from "../services/mysql";
 import * as moment from "moment";
 import {FhirObject} from "../models/fhirobject";
-import * as xid from "../../common/xid";
+import * as xid from "../common/xid";
 import {NoSQL} from "../services/mongo";
 
 
@@ -76,10 +76,10 @@ export class Patient extends FhirObject implements Refiner {
   makeMongoQuery(params: any) {
     var query = {}
     if (params.address) {
-      query = Janus.addMongoTerms(["address.line", "address.city", "address.postalCode", "address.country"], params.address)
+      query = super.addMongoTerms(["address.line", "address.city", "address.postalCode", "address.country"], params.address)
     }
     if (params.name) {
-      query = Janus.addMongoTerms(["name.given", "name.family"], params.name)
+      query = super.addMongoTerms(["name.given", "name.family"], params.name)
     }
     if (params.id) {
       query = {id: params.id}
@@ -362,5 +362,9 @@ export class Patient extends FhirObject implements Refiner {
       }
     }
 
+  }
+
+  async deleteObject(id:string){
+    this._deleteObject("kontakt",this.dataType,id)
   }
 }

@@ -45,12 +45,12 @@
 
 import {Refiner} from "./fhirsync";
 import {ElexisUtils} from './elexis-utils'
-import {FHIR_Resource,FHIR_Encounter,FHIR_Narrative} from '../../common/models/fhir'
+import {FHIR_Resource,FHIR_Encounter,FHIR_Narrative} from '../common/models/fhir'
 import {Janus} from '../services/janus'
 import {SQL} from '../services/mysql'
 import * as moment from 'moment'
 import {FhirObject} from '../models/fhirobject'
-import * as xid from '../../common/xid'
+import * as xid from '../common/xid'
 import {NoSQL} from "../services/mongo";
 
 
@@ -173,9 +173,12 @@ export class Encounter extends FhirObject implements Refiner {
       moment(enc.period.start).format("YYYYMMDD"),
       entry,
       "0",
-      super.makeTimestamp(enc)
+      super.readTimestamp(enc)
     ]
     return fields
   }
 
+  async deleteObject(id:string){
+    return this._deleteObject("behandlungen",this.dataType,id)
+  }
 }
