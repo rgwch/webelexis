@@ -27,4 +27,6 @@ Webelexis consists of two parts:
 
 Recommended tool: [git flow](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/)
 
+## Always go for the general solution!
 
+[![](https://imgs.xkcd.com/comics/the_general_problem.png)](https://xkcd.com/974/)

@@ -4,6 +4,8 @@ Deployment
 Dockerfile
 ----------
 
+.. index:: Docker
+
 Das Projekt enthält ein Dockerfile, mit dem man recht einfach einen Docker-Container mit einem kompletten
 Webelexis-System erstellen kann. Sie müssen dazu zunächst Docker_ für Ihr Betriebssystem installieren. Dann genügt ein
 einziger Befehl:
@@ -19,6 +21,8 @@ starten, und den Browser auf ``http://localhost:2016/fhir`` richten, um den Serv
 
 Standalone-App
 --------------
+
+.. index:: Electron, Standalone
 
 Wenn Sie die Anwendung nicht im Browser, sondern als eigenständiges Programm starten wollen, können Sie dazu Electron_ verwenden. Eine
 Electron Anwendung läuft gleichermassen auf Windows, Linux und MacOS. Für einen kurzen Einblick genügt:
@@ -37,6 +41,8 @@ Um die Anwendung fixfertig vertriebsgerecht zu erstellen, müssen Sie den electr
 
 Sicherheitsüberlegungen
 -----------------------
+
+.. index:: Sicherheit, absichern, Firewall
 
 Grundsatz
 ^^^^^^^^^
