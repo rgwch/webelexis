@@ -15,12 +15,18 @@ var bodyParser = require('body-parser');
 var nconf=require('nconf');
 var cors = require('express-cors')
 var compression = require('compression')
-nconf.env().argv().file('config.json')
+var args=process.argv.slice(2)
+if(args.length>0) {
+  nconf.file(args[0])
+}else{
+  nconf.file('config.json')
+}
 
 console.log("\n" +
   "--------------------------------" +
   "\n Webelexis Janus Server v"+VERSION+"\nCopyright (c) 2017 by G. Weirich\n"+
   "--------------------------------\n\n")
+console.log("using "+nconf.get("title"))
 
 var routes = require('./routes/index');
 var fhir = require('./routes/fhir');

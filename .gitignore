@@ -85,6 +85,7 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 /Janus/config.json
+/Janus/config-px.json
 /.idea/runConfigurations/
 /Janus/lib/
 /Janus/public/webapp/
