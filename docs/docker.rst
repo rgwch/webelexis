@@ -27,7 +27,7 @@ Wenn etwas schief geht, kann man den Container mit ``docker ps`` suchen. Wenn do
 möglicherweise wegen eines Fehlers abgestürzt ist. In diesem Fall kann man ihn mit ``docker ps -a`` finden. So oder so kann man sich
 mit ``docker logs webelexis`` die Konsolenausgaben anschauen.
 
-Wenn man genauer prüfen will, was schief ging, kann man den COntainer auch interaktiv starten:
+Wenn man genauer prüfen will, was schief ging, kann man den Container auch interaktiv starten:
 
 ``docker run -it -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:2.0.3 /bin/bash``
 

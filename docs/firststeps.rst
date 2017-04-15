@@ -201,4 +201,11 @@ Sphinx ermöglicht die verschiedensten Ausgabeformate. Mit ``make epub`` könnte
 .. _Mongo: https://www.mongodb.com/
 .. _FHIR-Bundle: https://www.hl7.org/fhir/bundle.html
 
+Komplett-Make
+-------------
+
+Mit ./make im Janus-Verzeichnis können Sie alles mit einem einzigen Befehl erstellen (Server, Client, Dokumentation, Docker-Container).
+Da dabei einiges schief gehen kann, empfiehlt es sich, ./make erst dann zu verwenden, wenn man alles mindestens einmal auch separat
+erstellen konnte.
+
 .. [#] Ein MariaDB-Server kann ohne Weiteres anstelle des MySQL-Servers verwendet werden. Für PostgreSQL müssen kleine Änderungen an Janus vorgenommen werden (NodeJS Treiber für Postgresql installieren etc.)
