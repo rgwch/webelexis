@@ -10,14 +10,28 @@ Das Projekt enthält ein Dockerfile, mit dem man recht einfach einen Docker-Cont
 Webelexis-System erstellen kann. Sie müssen dazu zunächst Docker_ für Ihr Betriebssystem installieren. Dann genügt ein
 einziger Befehl:
 
-``docker build -t rgwch/webelexis:1.0``
+``docker build -t rgwch/webelexis:2.0.3 .``
 
 erstellt alles nötige. Danach kann man den Container mit
 
-``docker run -d -p 2016:3000 -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:1.0``
+``docker run -d -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:2.0.3``
 
-starten, und den Browser auf ``http://localhost:2016/fhir`` richten, um den Server zu sehen, resp auf
-``http://localhost:2016/webapp`` um die Webelexis-Webapp zu starten.
+starten, dem System etwa eine Minute Zeit zim Initialisieren geben, und dann den Browser auf ``http://localhost:2016/fhir`` richten,
+um den Server zu sehen, resp auf ``http://localhost:2016/webapp`` um die Webelexis-Webapp zu starten.
+
+Voraussetzung ist, dass eine korrekte config.json existiert, welche einen elexis-server referenziert, der für den Docker-Container (welcher
+idR in einem anderen Adressraum liegt, als  der Host) erreichbar ist. Der Mongo-Server ist im Containter enthalten und braucht nicht
+separat installiert zu werden (kann aber, wenn gewünscht).
+
+Wenn etwas schief geht, kann man den Container mit ``docker ps`` suchen. Wenn dort nichts angezeigt wird, dann läuft er nicht, weil er
+möglicherweise wegen eines Fehlers abgestürzt ist. In diesem Fall kann man ihn mit ``docker ps -a`` finden. So oder so kann man sich
+mit ``docker logs webelexis`` die Konsolenausgaben anschauen.
+
+Wenn man genauer prüfen will, was schief ging, kann man den COntainer auch interaktiv starten:
+
+``docker run -it -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:2.0.3 /bin/bash``
+
+Dies führt Sie in eine Bash-Shell in einem frisch erstellten Container. Dort kann man Webelexis mit ./dockerstart.sh starten und schauen. was passiert.
 
 Standalone-App
 --------------
