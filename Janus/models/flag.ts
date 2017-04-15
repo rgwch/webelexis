@@ -5,8 +5,8 @@
  ***************************************/
 
 import {Refiner} from "./fhirsync";
-import {FHIR_CodeableConcept, FHIR_Flag, FHIR_Resource} from "../../common/models/fhir";
-import * as xid from "../../common/xid";
+import {FHIR_CodeableConcept, FHIR_Flag, FHIR_Resource} from "../common/models/fhir";
+import * as xid from "../common/xid";
 import {FhirObject} from "./fhirobject";
 import {SQL} from "../services/mysql";
 import * as moment from 'moment'
@@ -107,23 +107,23 @@ export class Flag extends FhirObject implements Refiner {
     let fh: FHIR_Flag = <FHIR_Flag>fhir
     let sql = FhirObject.makeSQLString("etiketten", Flag.concerned_fields)
 
-    let promiseEti = super.sql.insertAsync(sql, this.makeFields(fh))
+    let promiseEti = this.sql.insertAsync(sql, this.makeFields(fh))
     let sqlPat = FhirObject.makeSQLString("etiketten_object_link", ["obj", "etikette", "LASTUPDATE"])
-    let promisePat = super.sql.insertAsync(sqlPat, [fh.id, fh.subject.reference.substring(8), super.makeTimestamp((fh))])
+    let promisePat = this.sql.insertAsync(sqlPat, [fh.id, fh.subject.reference.substring(8), this.readTimestamp((fh))])
     Promise.all([promiseEti, promisePat]).then(values => {
       return true
     })
   }
 
   public makeFields(fh: FHIR_Flag) {
-    let [image, fg, bg] = super.prop(fh, "subject.display").split(/::/)
+    let [image, fg, bg] = this.prop(fh, "subject.display").split(/::/)
     let fields = [
       fh.id,
       image,
       "0",
-      super.makeTimestamp(fh),
+      this.readTimestamp(fh),
       "importance",
-      super.prop(fh, "code.text"),
+      this.prop(fh, "code.text"),
       fg,
       bg,
       "classes"
@@ -163,5 +163,8 @@ export class Flag extends FhirObject implements Refiner {
 
   }
 
+  async deleteObject(id:string){
+    return false
+  }
 
 }

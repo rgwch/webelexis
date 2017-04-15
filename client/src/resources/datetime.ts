@@ -1,14 +1,19 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {I18N} from 'aurelia-i18n'
 import {inject} from 'aurelia-framework'
 import * as moment from 'moment'
 
 @inject(I18N)
-export class DateTime{
+export class DateTime {
 
-    constructor(private i18){
-    }
+  constructor(private i18) {
+  }
 
-    public toDate(mom:string){
-        return moment(mom).format(this.i18.tr('adapters.date_format'))
-    }
+  public toDate(mom: string) {
+    return moment(mom).format(this.i18.tr('adapters.date_format'))
+  }
 }

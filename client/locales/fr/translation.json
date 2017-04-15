@@ -1,7 +1,8 @@
 {
   "cancel": "Abbrechen",
   "none": "rien",
-  "more":"plus...",
+  "more": "plus...",
+  "delete": "effaçer",
   "write_a_message": "écrivez quelque chose",
   "you_wrote": "Vous avez ecrit: {{text}}",
   "search": "recherche",
@@ -26,14 +27,25 @@
     "date_format": "DD.MM.YYYY",
     "time_format": "HH:mm"
   },
-  "appointment":{
+  "appointment": {
     "date": "Date",
     "time": "Le",
     "start": "de",
-    "end":"jusq'à",
-    "type":"type",
+    "end": "jusq'à",
+    "type": "type",
     "status": "état",
-    "priority": "priorité"
+    "priority": "priorité",
+    "lengthen": "étendre",
+    "shorten": "raccourcir",
+    "state":{
+      "proposed": "proposé",
+      "pending": "en attendant",
+      "booked": "réservé",
+      "arrived": "arrivé",
+      "fullfilled": "terminé",
+      "cancelled": "annulé",
+      "noshow": "perdu"
+    }
   },
   "dashboard": {
     "basic": "Dates personelles",
@@ -54,7 +66,68 @@
     "lastname": "nom",
     "birthdate": "date de naissance",
     "street": "rue",
+    "zip": "zip",
     "place": "lieu",
-    "phone": "téléphone"
+    "comm": "Communication",
+    "phone": "téléphone",
+    "create": "Edit",
+    "zipplace": "zip/èlace",
+    "fax": "Fax",
+    "email": "E-Mail",
+    "pager": "Pager",
+    "other": "Other",
+    "home": "private",
+    "work": "work",
+    "temp": "temp",
+    "old": "old",
+    "mobile": "mobile",
+    "postal": "Postal address",
+    "physical": "physical address",
+    "both": "Postal and physical address",
+    "all": "general"
+  },
+  "flag": {
+    "flag": "Remark",
+    "category": "Category",
+    "heading": "Title",
+    "text": "Description",
+    "code": "Code",
+    "codesystem": "Codesystem"
+  },
+  "calendar": {
+    "months": [
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "May",
+      "Juin",
+      "Juillet",
+      "Août",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre"
+    ],
+    "weekdays": [
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi"
+    ],
+    "weekdaysShort": [
+      "Dim",
+      "Lun",
+      "Mar",
+      "Mer",
+      "Jeu",
+      "Ven",
+      "Sam"
+    ],
+    "previousMonth": "mois précédent",
+    "nextMonth": "mois prochain"
   }
 }

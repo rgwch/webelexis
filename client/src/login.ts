@@ -27,7 +27,7 @@ export class Login {
     this.loginService.login(this.email,this.password).then(loggedInUser => {
       this.session.setCurrentUser(loggedInUser);
       if (loggedInUser) {
-        this.router.navigate('patients');
+        this.router.navigate('intro');
       }
     });
   }

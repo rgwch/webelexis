@@ -36,7 +36,8 @@ module.exports = {
         "font-awesome",
         "materialize",
         "moment",
-        "moment/locale/de"
+        "moment/locale/de",
+        "pikaday"
       ],
       "options": {
         "inject": true,

@@ -5,6 +5,10 @@ body {
   margin: 0;
 }
 
+h2.h2{
+  font-size: 1.5rem;
+  color: $accent-color
+}
 .chips{
   padding: 0px;
   margin: 0px;
@@ -44,6 +48,7 @@ body {
 .text-paper{
   background-color: lighten($primary-color, 20%);
   border: 1px solid darken($primary-color,10%);
+  color: black;
   padding: 0.5rem;
 }
 
@@ -62,6 +67,11 @@ body {
   top:5px
 }
 
+.agenda{
+  padding: 0px;
+  margin: 0px;
+  border: solid 1px blue;
+}
 .tableau{
   padding: 0px;
   margin: 5px;
@@ -157,4 +167,3 @@ section {
   .square { list-style-type: square }
   .nolist { list-style-type: none }
 }
-

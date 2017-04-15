@@ -15,7 +15,7 @@ var API = "0.1";
 
 var mysql = new my.MySql()
 var mongo = new mongoService.MongoDB()
-var Janus = new janus.Janus(mongo)
+var Janus = new janus.Janus()
 
 const resultType = "application/json+fhir; charset=UTF-8"
 
@@ -73,6 +73,31 @@ router.get("/batch/:id/:start/:number", function (req, resp) {
   }).catch(error => {
     sendError(resp, error)
   })
+})
+
+router.put("/:datatype/:id",function(req,resp){
+  let fhir=req.body
+  var type = req.params.datatype
+  if (type && mapper[type]) {
+    Janus.putAsync(fhir, mapper[type]).then(result=> {
+      resp.json(fhir)
+    }).catch(err=> {
+      sendError(resp, err)
+    })
+  }else{
+    sendError(resp,"illegal argument")
+  }
+})
+
+router.delete("/:datatype/:id",function(req,resp){
+  var type = req.params.datatype
+  if (type && mapper[type]) {
+    mapper[type].deleteObject(req.params.id).then(result => {
+      resp.json(fhir)
+    }).catch(err => {
+      sendError(resp, err)
+    })
+  }
 })
 
 function sendError(handler, error) {

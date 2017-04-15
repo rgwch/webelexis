@@ -163,7 +163,7 @@ class JanusTest {
   private _get(obj_for_nosql, obj_for_sql, callback:Function) {
     let mongo = new DummyDB(obj_for_nosql, [])
     let refiner = new DummyRefiner(obj_for_sql, [], obj_for_nosql)
-    let janus = new Janus(mongo)
+    let janus = new Janus()
     janus.getAsync("1", refiner).then(function (result) {
         callback(result)
       }, function (error) {
@@ -175,7 +175,7 @@ class JanusTest {
   }
 
   private _query(mongo:NoSQL, refiner:Refiner, callback:Function) {
-    let janus = new Janus(mongo)
+    let janus = new Janus()
     janus.queryAsync({}, refiner,"testquery").then(function (result) {
       callback(result)
     }).catch(error => {

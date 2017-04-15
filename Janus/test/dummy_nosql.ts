@@ -4,7 +4,7 @@
  * All rights reserved.
  ***************************************/
 
-import {FHIR_Resource,FhirBundle} from '../../common/models/fhir'
+import {FHIR_Resource,FhirBundle} from '../common/models/fhir'
 import {NoSQL} from "../services/mongo";
 
 export class DummyDB implements NoSQL {
@@ -44,4 +44,7 @@ export class DummyDB implements NoSQL {
     })
   }
 
+  async deleteAsync(type:string,id:string){
+    return true
+  }
 }

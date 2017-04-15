@@ -5,7 +5,7 @@
  ***************************************/
 
 import {Refiner} from "./../models/fhirsync";
-import {FHIR_Resource} from '../../client/src/models/fhir'
+import {FHIR_Resource} from '../common/models/fhir'
 
 export class DummyRefiner implements Refiner {
   dataType:string = "DummyObject"
@@ -56,5 +56,14 @@ export class DummyRefiner implements Refiner {
     return new Promise<void>((success, reject) => {
       success()
     })
+  }
+  pushNoSql(fhir:FHIR_Resource):Promise<void> {
+    return new Promise<void>(resolve=>{
+      resolve()
+    });
+  }
+
+  async deleteObject(id:string){
+    return true
   }
 }

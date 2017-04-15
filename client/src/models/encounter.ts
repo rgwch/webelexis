@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {FHIRobject, FhirObjectFactory} from "./fhirobj";
 import {FHIR_Resource} from "./fhir";
 import {computedFrom} from "aurelia-framework";

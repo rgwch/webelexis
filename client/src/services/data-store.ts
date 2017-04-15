@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {FHIRobject} from '../models/fhirobj';
 import {Appointment} from '../models/appointment';
 import {HttpWrapper} from './http-wrapper';
@@ -12,10 +17,10 @@ export class DataStore {
 
   private objects = {}
   private num = 0
-  private _maxnum:number = DEFAULT_MAX
-  private _maxtime:number = DEFAULT_EXPIRY
+  private _maxnum: number = DEFAULT_MAX
+  private _maxtime: number = DEFAULT_EXPIRY
 
-  public push(fhir:FHIR_Resource) {
+  public push(fhir: FHIR_Resource) {
     let key = fhir.resourceType + fhir.id
     fhir[CACHETIME] = new Date().getDate()
     this.objects[key] = fhir
@@ -26,7 +31,7 @@ export class DataStore {
   }
 
 
-  public fetch(id:string, subtype:string) {
+  public fetch(id: string, subtype: string) {
     let key = subtype + id
     let test = this.objects[key]
     if (test) {

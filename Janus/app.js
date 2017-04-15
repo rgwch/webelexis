@@ -4,7 +4,7 @@
  * All rights reserved.
  ***************************************/
 
-const VERSION="0.2.0"
+const VERSION="0.3.0"
 
 var express = require('express');
 var path = require('path');
@@ -15,12 +15,18 @@ var bodyParser = require('body-parser');
 var nconf=require('nconf');
 var cors = require('express-cors')
 var compression = require('compression')
-nconf.env().argv().file('config.json')
+var args=process.argv.slice(2)
+if(args.length>0) {
+  nconf.file(args[0])
+}else{
+  nconf.file('config.json')
+}
 
 console.log("\n" +
   "--------------------------------" +
   "\n Webelexis Janus Server v"+VERSION+"\nCopyright (c) 2017 by G. Weirich\n"+
   "--------------------------------\n\n")
+console.log("using "+nconf.get("title"))
 
 var routes = require('./routes/index');
 var fhir = require('./routes/fhir');
@@ -34,11 +40,10 @@ app.use(compression())
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({ extended: false, limit:'10mb' }));
 app.use(cookieParser());
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),

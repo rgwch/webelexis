@@ -1,0 +1,13 @@
+<template>
+  <ai-dialog>
+    <ai-dialog-header>
+      <h2 class="h2">${parms.title}</h2>
+    </ai-dialog-header>
+    <ai-dialog-body>
+      <p>${parms.body}</p>
+    </ai-dialog-body>
+    <ai-dialog-footer>
+      <button md-button="flat" repeat.for="button of buttons" click.trigger="controller.ok(button.name)">${button.label}</button>
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>

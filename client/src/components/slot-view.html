@@ -4,6 +4,44 @@
   -->
 
 <template>
-    <p>slot</p>
-    <p>${freeBusyType}</p>
+    <require from="./radio-inputs"></require>
+    <div class="col s12" click.trigger="select()">
+        <div class="row" css.bind="popout">
+            <div class="col s3 m2" css.bind="stateStyle">
+                <b>${obj.getTimeField('start')}-${obj.getTimeField('end')}</b><br/>
+                <div if.bind="stateLabel">
+                    <span text.bind="stateLabel" click.trigger="advState()">${stateLabel}</span>
+                </div>
+            </div>
+            <div class="col s9 m10" css.bind="getTypeStyle()">
+                <div if.bind="normalMenu()">
+                    <a md-dropdown="activates.bind: obj.getUnique('menu')" style="float:right" class="fa fa-bars fa-lg"></a>
+                    <ul id.bind="obj.getUnique('menu')">
+                        <li click.trigger="parent.shorten(obj)"><span class="fa fa-caret-up fa-fw" t="&nbsp;$t(appointment.shorten)">shorter</span></li>
+                        <li click.trigger="parent.lengthen(obj)"><span class="fa fa-caret-down fa-fw" t="&nbsp;$t(appointment.lengthen)">longer</span></li>
+                        <li click.trigger="parent.deleteSlot(obj,patLabel)"><span class="fa fa-remove fa-fw" t="&nbsp;$t(delete)">delete</span></li>
+                    </ul>
+                </div>
+                <span click.trigger="largeToggle()"><b>${patLabel}</b></span><br/>
+                <div if.bind="!large">
+                    ${getTypeLabel()} <span if.bind="reason"> - (${reason})</span>
+                </div>
+                <div if.bind="large" class="row" style="font-size: small;">
+                    <div class="col s6">
+                        <select md-select="" value.bind="_slotType" change.trigger="storeAndReload()()">
+                            <option model.bind="typ" repeat.for="typ of cfg.agenda.types">${typ.label}</option>
+                        </select>
+                    </div>
+                    <div class="col s6">
+                        <select md-select="" value.bind="_state" change.trigger="storeAndReload()">
+                            <option model.bind="status" repeat.for="status of possibleStates">${status.label}</option>
+                        </select>
+                    </div>
+                    <div class="col s12">
+                        <textarea class="text-paper" value.bind="reason" blur.trigger="save()"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

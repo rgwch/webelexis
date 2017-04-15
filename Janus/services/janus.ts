@@ -5,7 +5,7 @@
 
 import {Refiner} from "../models/fhirsync";
 import {NoSQL} from "./mongo";
-import {FhirBundle,FHIR_Resource,FHIR_ResourceEntry} from "../../common/models/fhir";
+import {FhirBundle,FHIR_Resource,FHIR_ResourceEntry} from "../common/models/fhir";
 import * as moment from "moment";
 import * as sha1 from 'sha1'
 import {FhirObject} from "../models/fhirobject";
@@ -20,7 +20,7 @@ const batchSize = 50
 export class Janus {
   private queryCache: QueryCache
 
-  constructor(private nosql:NoSQL) {
+  constructor() {
     this.queryCache = new QueryCache(300)
   }
 
@@ -31,14 +31,17 @@ export class Janus {
    * @returns a Promise with the requested object or undefined, if no such object exists
    */
   public async getAsync(id: string, refiner: Refiner): Promise<any> {
-    let mnosql = await this.nosql.getAsync(refiner.dataType, {id: id})
+    let mnosql = await refiner.fetchNoSQL({id: id})
     let msql = await refiner.fetchSQL({id: id})
     return Promise.all([mnosql, msql]).then((values) => {
       let sqlObj
       if (values[1].length > 0) {
         sqlObj = values[1][0]
       }
-      let noSqlObj = values[0]
+      let noSqlObj:FHIR_Resource
+      if(values[0].length>0) {
+        noSqlObj = values[0][0]
+      }
       if (noSqlObj) {
         if (sqlObj) {
           return this._checkItems(noSqlObj, sqlObj, refiner)
@@ -47,7 +50,7 @@ export class Janus {
           return noSqlObj
         }
       } else {
-        this.nosql.putAsync(sqlObj)
+        refiner.pushNoSql(sqlObj)
         return sqlObj
       }
     })
@@ -95,7 +98,9 @@ export class Janus {
       let msql = refiner.fetchSQL(params)
       let mnosql = refiner.fetchNoSQL(params)
 
-      return Promise.all([msql, mnosql]).then((values) => {
+      return Promise.all([msql, mnosql]).catch(err=>{
+        console.log(err)
+      }).then((values) => {
         var resulting = []
         var checked = {}
         values[0].forEach(function (entry: FHIR_Resource) {
@@ -107,7 +112,7 @@ export class Janus {
             resulting.push(_self._checkItems(mongoElem, entry, refiner))
             checked[mongoElem.id] = true
           } else {
-            _self.nosql.putAsync(entry).catch(err => {
+            refiner.pushNoSql(entry).catch(err => {
               console.log("error pushing to nosql " + err)
               throw("internal error")
             })
@@ -143,6 +148,12 @@ export class Janus {
     }
   }
 
+  public putAsync(fhir:FHIR_Resource, refiner:Refiner){
+    return Promise.all([refiner.pushNoSql(fhir),refiner.pushSQL(fhir)]).then(result=>{
+      return fhir
+    })
+  }
+
   /**
    * compare two FHIR_Resources and return the newer one.
    * If both have standard time stamps, the time stamps are compared. If one has
@@ -166,7 +177,7 @@ export class Janus {
         let m1 = moment(t1)
         let m2 = moment(t2)
         if (m1.isBefore(m2)) {
-          this.nosql.putAsync(itemB)
+          refiner.pushNoSql(itemB)
           return itemB
         } else if (m1.isAfter(m2)) {
           refiner.pushSQL(itemA)
@@ -180,7 +191,7 @@ export class Janus {
       }
     }
     else if (t2) {
-      this.nosql.putAsync(itemB)
+      refiner.pushNoSql(itemB)
       return itemB
     }
     return itemA // equal
@@ -253,25 +264,6 @@ export class Janus {
       entry       : arr
     }
     return fhir
-  }
-
-  static addMongoTerms = function (fields, val) {
-    var arr = []
-    var valm = new RegExp("^" + val, "i")
-    fields.forEach(function (field) {
-      var elem = {}
-      elem[field] = valm
-      arr.push(elem)
-    })
-    return {$or: arr}
-  }
-
-  static extendMongoQuery = function (fieldnames, param) {
-    var ret = {}
-    fieldnames.forEach(function (fieldname) {
-      ret[fieldname] = param[fieldname]
-    })
-    return ret
   }
 
 }

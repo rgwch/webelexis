@@ -1,6 +1,6 @@
 <template>
-    <md-card md-title.bind="medication.getField('code.coding[0].display')">
+  <md-card md-title.bind="medication.getField('code.coding[0].display')">
 
-        <p innerhtml.bind="obj.getField('dosageInstruction[0].route.coding[0].display')">div</p>
-    </md-card>
+    <p innerhtml.bind="obj.getField('dosageInstruction[0].route.coding[0].display')">div</p>
+  </md-card>
 </template>

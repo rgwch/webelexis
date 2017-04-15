@@ -1,11 +1,19 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import {FHIRobject} from "../models/fhirobj";
 import {bindable} from "aurelia-framework";
-export class FlagView{
-  @bindable flag:FHIRobject
-  @bindable large:boolean=false
+/**
+ * Display a FHIR_Flag
+ */
+export class FlagView {
+  @bindable flag: FHIRobject
+  @bindable large: boolean = false
 
-  largeToggle(){
-    this.large=!this.large
+  largeToggle() {
+    this.large = !this.large
 
   }
 }

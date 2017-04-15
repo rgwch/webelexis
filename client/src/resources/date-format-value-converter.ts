@@ -1,3 +1,8 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 import * as moment from 'moment';
 import {I18N} from 'aurelia-i18n';
 import {inject} from 'aurelia-framework';

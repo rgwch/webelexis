@@ -6,109 +6,142 @@
     "host": "somewhere",
     "database": "somedb"
   },
-  "mongodb":{
-    "user":"someone",
-    "password":"someone",
-    "url":"somewhere:27017/somedb"
+  "mongodb": {
+    "user": "someone",
+    "password": "someone",
+    "url": "somewhere:27017/somedb"
   },
-  "general":{
-    "office-name": "Only GP in Town"
+  "server":{
+    "documentStore": "/some/data/directory"
   },
-  "agenda": {
-    "types": [
-      {
-        "label": "normal",
-        "fg": "black",
-        "bg": "#f4c542",
-        "duration": 30
-      },
-      {
-        "label": "Extra",
-        "fg": "white",
-        "bg": "#f44242",
-        "duration": 15
-      },
-      {
-        "label": "Check-Up",
-        "fg": "black",
-        "bg": "#42f4dc",
-        "duration": 45
-      },
-      {
-        "label": "Besprechung",
-        "fg": "black",
-        "bg": "#42d7f4",
-        "duration": 30
-      }
-    ],
-    "states": [
-      {
-        "name": "proposed",
-        "label": "vorschlag",
-        "fg": "black",
-        "bg": "#d7f442"
-      },
-      {
-        "name": "pending",
-        "label": "hängig",
-        "fg": "black",
-        "bg": "#f4dc42"
-      },
-      {
-        "name": "booked",
-        "label": "geplant",
-        "fg": "black",
-        "bg": "#f4a142"
-      },
-      {
-        "name": "arrived",
-        "label": "eingetroffen",
-        "fg": "black",
-        "bg": "#ff6e5b"
-      },
-      {
-        "name": "fulfilled",
-        "label": "fertig",
-        "fg": "black",
-        "bg": "#4c91db"
-      },
-      {
-        "name": "cancelled",
-        "label": "abgesagt",
-        "fg": "black",
-        "bg": "#bcc4b6"
-      },
-      {
-        "name": "noshow",
-        "label": "verpasst",
-        "fg": "black",
-        "bg": "#f9ccf4"
-      }
-    ],
-    "scheduleType":{
-      "coding":[
+  "client": {
+    "general": {
+      "officeName": "Only GP in Town",
+      "actors": [
         {
-          "system": "http://hl7.org/fhir/ValueSet/c80-practice-codes",
-          "code": "408443003",
-          "display": "General medical practice"
+          "shortLabel": "joe",
+          "fullname": "Dr. med. Johann Jodler",
+          "id": "Practitioner/12345"
+        },
+        {
+          "shortLabel": "fred",
+          "fullname": "Prof. Dr. Friedrich Friedensreich",
+          "id": "Practitioner/6789"
         }
-      ],
-      "text":"Allgemeinmedizinische Konsultation"
+      ]
     },
-    "actors":["doc","lab","xray"],
-    "slots":{
-      "default": [
+    "agenda": {
+      "types": [
         {
-          "timespan": "08:00-12:00",
-          "length": 15
-        },{
-          "timespan": "13:00-18:00",
-          "length": 30
+          "name": "free",
+          "label": "frei",
+          "fg": "green",
+          "bg": "green",
+          "duration": 30
+        },
+        {
+          "name": "unassignable",
+          "label": "reserviert",
+          "fg": "black",
+          "bg": "black",
+          "duration": 30
+        },
+        {
+          "name": "normal",
+          "label": "normal",
+          "fg": "black",
+          "bg": "#f4c542",
+          "duration": 30
+        },
+        {
+          "name": "Extra",
+          "label":"Extra",
+          "fg": "white",
+          "bg": "#f44242",
+          "duration": 15
+        },
+        {
+          "name": "Check-Up",
+          "label":"Check-Up",
+          "fg": "black",
+          "bg": "#42f4dc",
+          "duration": 45
+        },
+        {
+          "name": "Besprechung",
+          "label": "Besprechung",
+          "fg": "black",
+          "bg": "#42d7f4",
+          "duration": 30
         }
       ],
-      "sun":[]
-
+      "states": [
+        {
+          "name": "proposed",
+          "label": "vorschlag",
+          "fg": "black",
+          "bg": "#d7f442"
+        },
+        {
+          "name": "pending",
+          "label": "hängig",
+          "fg": "black",
+          "bg": "#f4dc42"
+        },
+        {
+          "name": "booked",
+          "label": "geplant",
+          "fg": "black",
+          "bg": "#f4a142"
+        },
+        {
+          "name": "arrived",
+          "label": "eingetroffen",
+          "fg": "black",
+          "bg": "#ff6e5b"
+        },
+        {
+          "name": "fulfilled",
+          "label": "fertig",
+          "fg": "black",
+          "bg": "#4c91db"
+        },
+        {
+          "name": "cancelled",
+          "label": "abgesagt",
+          "fg": "black",
+          "bg": "#bcc4b6"
+        },
+        {
+          "name": "noshow",
+          "label": "verpasst",
+          "fg": "black",
+          "bg": "#f9ccf4"
+        }
+      ],
+      "scheduleType": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/ValueSet/c80-practice-codes",
+            "code": "408443003",
+            "display": "General medical practice"
+          }
+        ],
+        "text": "Allgemeinmedizinische Konsultation"
+      },
+      "slots": {
+        "default": [
+          {
+            "timespan": "08:00-12:00",
+            "length": 15
+          },
+          {
+            "timespan": "13:00-18:00",
+            "length": 30
+          }
+        ],
+        "sun": []
+      }
     }
   }
-
 }
