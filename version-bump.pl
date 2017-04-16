@@ -12,6 +12,7 @@ bumpfile("Janus/package.json","\"version\":.+","\"version\": \"$VERSION\",");
 bumpfile("Janus/app.js","VERSION=\".+\"","VERSION=\"$VERSION\"");
 bumpfile("docs/conf.py","release = u.+","release = u\'$VERSION\'");
 bumpfile("client/package.json", "\"version\":.+", "\"version\": \"$VERSION\",");
+bumpfile("run-docker.sh","rgwch/webelexis:.+","rgwch/webelexis:$VERSION");
 
 sub bumpfile{
     open(FILE, "<$_[0]") || die "cant open $_[0], $!";

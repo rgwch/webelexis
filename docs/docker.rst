@@ -1,6 +1,15 @@
 Deployment
 ==========
 
+Standard Build
+--------------
+
+Wenn alles korrekt installiert und konfiguriert ist, dann erstellt `./make` das gesamte Produkt inklusive Dokumentation. Es genügt dann,
+das Verzeichnis "Janus" auf einen Webserver zu kopieren. Die Webelexis-App befinbdet sich bereits im Pfad http://server:port/webapp.
+
+Die Datei **VERSION** enthält die aktuell zu erstellende Versionsnummer. Das make-Script kopiert diese Nummer vor dem Build in alle
+relevanten Dateien.
+
 Dockerfile
 ----------
 
@@ -10,14 +19,15 @@ Das Projekt enthält ein Dockerfile, mit dem man recht einfach einen Docker-Cont
 Webelexis-System erstellen kann. Sie müssen dazu zunächst Docker_ für Ihr Betriebssystem installieren. Dann genügt ein
 einziger Befehl:
 
-``docker build -t rgwch/webelexis:2.0.3 .``
+``docker build -t rgwch/webelexis:`cat VERSION` .``
 
 erstellt alles nötige. Danach kann man den Container mit
 
-``docker run -d -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:2.0.3``
+``./run-docker.sh`` [#]_
 
 starten, dem System etwa eine Minute Zeit zim Initialisieren geben, und dann den Browser auf ``http://localhost:2016/fhir`` richten,
 um den Server zu sehen, resp auf ``http://localhost:2016/webapp`` um die Webelexis-Webapp zu starten.
+
 
 Voraussetzung ist, dass eine korrekte config.json existiert, welche einen elexis-server referenziert, der für den Docker-Container (welcher
 idR in einem anderen Adressraum liegt, als  der Host) erreichbar ist. Der Mongo-Server ist im Containter enthalten und braucht nicht
@@ -29,9 +39,10 @@ mit ``docker logs webelexis`` die Konsolenausgaben anschauen.
 
 Wenn man genauer prüfen will, was schief ging, kann man den Container auch interaktiv starten:
 
-``docker run -it -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:2.0.3 /bin/bash``
+``docker run -it -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:`cat VERSION` /bin/bash``
 
 Dies führt Sie in eine Bash-Shell in einem frisch erstellten Container. Dort kann man Webelexis mit ./dockerstart.sh starten und schauen. was passiert.
+
 
 Standalone-App
 --------------
@@ -86,7 +97,7 @@ mehr Aufwand betreiben:
 * Sie benötigen ein anerkanntes Zertifikat_, damit Ihre Besucher nicht eine Sicherheitswarnung des Browsers bekommen.
 
 
-
+.. [#] entspricht docker run -d -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:`cat VERSION`
 .. [#] Es ist ohnehin am besten, die Firewall sämtliche Ports blockieren zu lassen, und bei Bedarf nur die freizugeben, die man wirklich benötigt.
 .. [#] Zum Beispiel, um Patienten zu ermöglichen, selber einen Termin zu vereinbaren.
 .. [#] Machen Sie aber nicht den Fehler, im Umkehrschluss zu denken, dass die Anwendung nicht gefunden werden kann, und dass darum keine Absicherungsmassnahmen nötig seien, wenn Sie keine Nameserver-Publikation machen! Ihr Server ist immer über seine IP erreichbar, die von Schadprogrammen herausgefunden werden kann.
