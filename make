@@ -1,5 +1,6 @@
 #! /bin/sh
 
+./version-bump.pl VERSION
 rm -rf Janus/public/webapp
 cd client
 gulp export

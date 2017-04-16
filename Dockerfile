@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 LABEL maintainer "weirich@elexis.ch"
-LABEL version "2.0.3"
+LABEL version="2.0.4"
 
 ENV NODE_VERSION=7.5.0
 ENV NVM_DIR=/usr/local/nvm

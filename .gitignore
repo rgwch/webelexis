@@ -90,3 +90,4 @@ jspm_packages
 /Janus/lib/
 /Janus/public/webapp/
 docker
+*.bak
