@@ -9,5 +9,5 @@ tsc
 cd ../docs
 make html
 cd ..
-docker build -t rgwch/webelexis:2.0.3 .
+docker build -t rgwch/webelexis:`cat VERSION` .
 

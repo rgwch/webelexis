@@ -5,7 +5,7 @@ Standard Build
 --------------
 
 Wenn alles korrekt installiert und konfiguriert ist, dann erstellt `./make` das gesamte Produkt inklusive Dokumentation. Es genügt dann,
-das Verzeichnis "Janus" auf einen Webserver zu kopieren. Die Webelexis-App befinbdet sich bereits im Pfad http://server:port/webapp.
+das Verzeichnis "Janus" auf einen Webserver zu kopieren. Die Webelexis-App befindet sich bereits im Pfad http://server:port/webapp.
 
 Die Datei **VERSION** enthält die aktuell zu erstellende Versionsnummer. Das make-Script kopiert diese Nummer vor dem Build in alle
 relevanten Dateien.
@@ -25,12 +25,12 @@ erstellt alles nötige. Danach kann man den Container mit
 
 ``./run-docker.sh`` [#]_
 
-starten, dem System etwa eine Minute Zeit zim Initialisieren geben, und dann den Browser auf ``http://localhost:2016/fhir`` richten,
+starten, dem System etwa eine Minute Zeit zum Initialisieren geben, und dann den Browser auf ``http://localhost:2016/fhir`` richten,
 um den Server zu sehen, resp auf ``http://localhost:2016/webapp`` um die Webelexis-Webapp zu starten.
 
 
 Voraussetzung ist, dass eine korrekte config.json existiert, welche einen elexis-server referenziert, der für den Docker-Container (welcher
-idR in einem anderen Adressraum liegt, als  der Host) erreichbar ist. Der Mongo-Server ist im Containter enthalten und braucht nicht
+idR in einem anderen Adressraum liegt, als  der Host) erreichbar ist. Der Mongo-Server ist im Container enthalten und braucht nicht
 separat installiert zu werden (kann aber, wenn gewünscht).
 
 Wenn etwas schief geht, kann man den Container mit ``docker ps`` suchen. Wenn dort nichts angezeigt wird, dann läuft er nicht, weil er
