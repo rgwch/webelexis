@@ -18,7 +18,7 @@ export class User{
 
   public static loggedIn={}
 
-  public static isLoggedIn(guid:string):boolean{
+  public static isLoggedIn(guid:string):User{
     let usr=User.loggedIn[guid]
     if(usr){
       let now=new Date().getTime()
@@ -26,17 +26,18 @@ export class User{
       let diff=(now-li)/60000
       if(diff<10){
         usr.lastAccess=now
-        return true
+        return usr
       }else{
         delete User.loggedIn[guid]
       }
     }
-    return false;
+    return null;
   }
 
   public static hasRole(guid:string,role:string):boolean{
-    if(User.isLoggedIn(guid)){
-      return(User.loggedIn[guid].roles.some(r=>r===role))
+    let user=User.isLoggedIn(guid)
+    if(user){
+      return(user.roles.some(r=>r===role))
     }
     return false
   }

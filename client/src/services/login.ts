@@ -28,6 +28,11 @@ export class LoginService {
     return this.http.formatUrl(url)
   }
 
+  public getUser(guid:string){
+    return this.http.get("/auth/user/"+guid).then(result=>{
+
+    })
+  }
   public googleSignIn(){
     return this.http.get("auth/google").then(result =>{
       console.log(JSON.stringify(result))

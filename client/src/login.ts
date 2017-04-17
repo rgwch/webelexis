@@ -19,7 +19,20 @@ export class Login {
   }
 
   public canActivate(params, routConfig, navInstruct){
-    console.log(params)
+    let id=params['id']
+    if(id){
+      if(!this.session.currentUser){
+        this.loginService.getUser(id).then(result=>{
+          if(result.uid){
+            this.session.currentUser=result
+            this.router.navigate('intro')
+          }
+        })
+      }else{
+        this.router.navigate('intro')
+      }
+
+    }
   }
   private static inject = [Router, LoginService, Session];
   constructor(router: Router, loginService: LoginService, session: Session) {
