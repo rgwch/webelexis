@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 LABEL maintainer "weirich@elexis.ch"
-LABEL version="2.0.4"
+LABEL version="2.0.5"
 
 ENV NODE_VERSION=7.5.0
 ENV NVM_DIR=/usr/local/nvm
@@ -24,7 +24,7 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 RUN npm install
 RUN npm install java && npm rebuild node-sass && chmod +x dockerstart.sh
-#  RUN apt-get remove -y build-essential && apt-get -y autoremove && apt-get -y clean
+RUN apt-get remove -y build-essential && apt-get -y autoremove && apt-get -y clean
 
 EXPOSE 3000
 CMD ["./dockerstart.sh"]

@@ -5,6 +5,7 @@ use warnings;
 
 my @VER=<>;
 my $VERSION=$VER[0];
+$VERSION =~ s/^\s+|\s+$//g;
 
 
 bumpfile("Dockerfile","version=.+","version=\"$VERSION\"");
