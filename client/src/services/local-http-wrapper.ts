@@ -9,7 +9,7 @@ import {Container} from "aurelia-framework";
 
 export class LocalHttpWrapper extends HttpWrapper {
 
-  private runMode="release"
+  private runMode="debug"
 
   formatUrl(url: string) {
 
