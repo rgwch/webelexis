@@ -6,6 +6,7 @@
 
 import {FHIR_Resource, FhirBundle} from '../common/models/fhir'
 import {MongoClient} from 'mongodb'
+import {User} from "../models/user";
 let nconf = require('nconf')
 
 
@@ -17,6 +18,7 @@ export interface NoSQL {
 }
 export class MongoDB implements NoSQL {
   private url: string
+  private static dbInstance
   private db
 
   constructor() {
@@ -25,10 +27,26 @@ export class MongoDB implements NoSQL {
       if (err) {
         throw(err)
       }
-      this.db = db
+      MongoDB.dbInstance = this
+      this.db=db
     })
   }
 
+  public static getInstance(){
+    return MongoDB.dbInstance
+  }
+
+  public getUser(uid:string): Promise<User>{
+    let collection=this.db.collection("webelexis-users")
+    return collection.findOne({uid:uid}).then(result=>{
+      return new User(result)
+    })
+  }
+
+  public writeUser(user:User):Promise<void>{
+    let collection=this.db.collection("webelexis-users")
+    return collection.updateOne({uid:user.uid},user,{upsert:true})
+  }
   public getAsync(datatype: string, query): Promise<FHIR_Resource> {
     let collection = this.db.collection(datatype)
     return collection.findOne(query)

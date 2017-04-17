@@ -10,9 +10,11 @@ import {inject} from 'aurelia-framework';
 @inject(HttpWrapper)
 export class LoginService {
   private http: HttpWrapper;
+  public baseURL
 
   constructor(http: HttpWrapper) {
     this.http = http;
+    this.baseURL=this.http.formatUrl("/")
   }
 
   public login(username: string, password: string): Promise<User> {
@@ -20,5 +22,15 @@ export class LoginService {
       return new User(result);
     });
     return promise;
+  }
+
+  public formattedURL(url:string){
+    return this.http.formatUrl(url)
+  }
+
+  public googleSignIn(){
+    return this.http.get("auth/google").then(result =>{
+      console.log(JSON.stringify(result))
+    })
   }
 }

@@ -11,6 +11,7 @@ export class Login {
   private email:string=""
   private password:string=""
 
+
   @computedFrom('email', 'password')
   public get canLogin () {
     let result = this.email.length>0 && this.password.length>0;
@@ -30,5 +31,13 @@ export class Login {
         this.router.navigate('intro');
       }
     });
+  }
+
+  public google(){
+    this.loginService.googleSignIn()
+  }
+
+  private address(suffix:string){
+    return this.loginService.formattedURL(suffix)
   }
 }

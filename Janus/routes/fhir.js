@@ -3,19 +3,19 @@
  * Copyright (c) 2017 by G. Weirich
  */
 
-var express = require('express');
-var router = express.Router();
-var janus = require('../services/janus')
-var patientservice = require('../models/patient')
-var encounterService = require('../models/encounter')
-var url = require('url')
-var my = require('../services/mysql')
-var mongoService = require('../services/mongo')
-var API = "0.1";
+const express = require('express');
+const router = express.Router();
+const janus = require('../services/janus')
+const patientservice = require('../models/patient')
+const encounterService = require('../models/encounter')
+const url = require('url')
+const my = require('../services/mysql')
+const mongoService = require('../services/mongo')
+const API = "0.1";
 
-var mysql = new my.MySql()
-var mongo = new mongoService.MongoDB()
-var Janus = new janus.Janus()
+const mysql = new my.MySql()
+const mongo = new mongoService.MongoDB()
+const Janus = new janus.Janus()
 
 const resultType = "application/json+fhir; charset=UTF-8"
 

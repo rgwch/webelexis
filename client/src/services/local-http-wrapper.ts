@@ -7,19 +7,19 @@ import {HttpWrapper} from "./http-wrapper";
 
 export class LocalHttpWrapper extends HttpWrapper {
 
-  private runMode="release"
+  private runMode="debug"
 
   formatUrl(url: string) {
 
     if (this.runMode == "debug") {
 
-      if (url === 'dologin' || url === "configuration") {
-        return `http://localhost:3000/${url}`
+      if (url === 'dologin' || url === "configuration" || url.startsWith("auth")) {
+        return `http://localhost:2017/${url}`
       } else {
-        return `http://localhost:3000/fhir/${url}`
+        return `http://localhost:2017/fhir/${url}`
       }
     } else {
-      if (url === 'dologin' || url === "configuration") {
+      if (url === 'dologin' || url === "configuration" || url.startsWith("auth")) {
         return "/" + url
       } else {
         return "/fhir/" + url

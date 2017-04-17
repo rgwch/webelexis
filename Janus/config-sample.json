@@ -12,6 +12,8 @@
     "url": "somewhere:27017/somedb"
   },
   "server":{
+    "googleClientID":"74398237560923596-43664565467.apps.googleusercontent.com",
+    "googleClientSecret":"09431frvnqg2nfdd3",
     "documentStore": "/some/data/directory"
   },
   "client": {

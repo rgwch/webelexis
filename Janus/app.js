@@ -60,7 +60,8 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
   allowedOrigins: [
-    'localhost:9000'
+    'localhost:9000',
+    'accounts.google.com'
   ]
 }))
 const serverConf = nconf.get("server")
@@ -76,7 +77,7 @@ passport.use(new GoogleStrategy({
     return done(err, user)
   })
   */
-  return done(null, {name:"gerry"})
+  return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
 }))
 
 app.use('/', routes);
