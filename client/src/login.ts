@@ -18,6 +18,9 @@ export class Login {
     return result;
   }
 
+  public canActivate(params, routConfig, navInstruct){
+    console.log(params)
+  }
   private static inject = [Router, LoginService, Session];
   constructor(router: Router, loginService: LoginService, session: Session) {
     this.router = router;

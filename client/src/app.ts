@@ -22,7 +22,7 @@ export class App {
     config.title = 'Webelexis';
     config.map([
       {
-        route   : ['', 'login'],
+        route   : ['', 'login/:id?'],
         name    : 'login',
         moduleId: 'login',
         title   : 'Login'
@@ -82,7 +82,7 @@ class AuthorizeStep {
     let session: Session = Container.instance.get(Session);
     let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
 
-    if (!!roleId) {
+    if (roleId) {
       if (roleId != "all") {
         if (!session.currentUser) {
           return next.cancel(new Redirect('login'));
