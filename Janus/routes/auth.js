@@ -6,7 +6,7 @@ router.get("/google", passport.authenticate('google', {scope: ['https://www.goog
 
 router.get("/google/callback", passport.authenticate('google', {failureRedirect: '/login', session:false}),
   function (req, res) {
-    res.render("success")
+    res.json({status:"ok","user":req.user})
   })
 
 

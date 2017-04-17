@@ -1,0 +1,14 @@
+template
+  .container
+    md-colors(md-primary-color="#64b5f6" md-accent-color="#2979ff")
+    .row
+      .tableau.col.s5
+        .header Logindaten eingeben
+        input(id="email" value.bind="email" name="email" type="text" placeholder="e-mail")
+        //label(for="email" t="login.email") Enter email
+        input(id="password" value.bind="password" name="password" type="password" placeholder="password")
+        //label(for="password" t="login.password") Enter Password
+        button.btn.waves-effect(click.trigger="login()") Login
+      .tableau.col.s5
+        .header Oder mit social media account anmelden
+        a.btn.waves-effect(href.bind="address('auth/google')") Google

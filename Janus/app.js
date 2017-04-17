@@ -60,7 +60,8 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
   allowedOrigins: [
-    'localhost:9000'
+    'localhost:9000',
+    'accounts.google.com'
   ]
 }))
 var serverConf = nconf.get("server")
