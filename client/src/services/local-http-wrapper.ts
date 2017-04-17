@@ -4,12 +4,10 @@
  **********************************/
 
 import {HttpWrapper} from "./http-wrapper";
-import {Config} from "../config";
-import {Container} from "aurelia-framework";
 
 export class LocalHttpWrapper extends HttpWrapper {
 
-  private runMode="debug"
+  private runMode="release"
 
   formatUrl(url: string) {
 
