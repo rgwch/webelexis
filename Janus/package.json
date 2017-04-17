@@ -21,12 +21,15 @@
     "mysql": "^2.13.0",
     "nconf": "^0.8.4",
     "node-sass-middleware": "0.8.0",
+    "passport": "^0.3.2",
+    "passport-google-oauth": "^1.0.0",
     "pug": "^2.0.0-beta11",
     "serve-favicon": "~2.3.0",
     "sha1": "^1.1.1",
     "winston": "^2.3.1"
   },
-  "devDependencies": {"chai": "^3.5.0",
+  "devDependencies": {
+    "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "mocha-typescript": "^1.0.21",
     "sinon": "^1.17.7",

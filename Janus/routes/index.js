@@ -3,6 +3,7 @@ const router = express.Router();
 const nconf = require('nconf')
 const fs = require('fs')
 const moment= require('moment')
+const passport=require('passport')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -12,6 +13,7 @@ router.get('/', function (req, res, next) {
 router.get('/login', function (req, res) {
   res.render('login', {})
 })
+
 
 router.post('/dologin', function (req, res) {
   "use strict";
