@@ -63,7 +63,7 @@ app.use(cors({
     'localhost:9000'
   ]
 }))
-var serverConf = nconf.get("server")
+const serverConf = nconf.get("server")
 app.use(passport.initialize())
 
 passport.use(new GoogleStrategy({
