@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Set timezone - quite a dirty hack. But since litererally all users are situated in Switzerland...
+
+cp /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+
+# Launch the Mongo server detached. This will take several seconds. Write a pid-file when ready.
 mongod  --pidfilepath /var/run/mongodb/mongo.pid --fork --logpath /var/log/mongod.log
 
 # Wait until the mongo server is up and running
