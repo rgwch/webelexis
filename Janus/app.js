@@ -77,7 +77,7 @@ passport.use(new GoogleStrategy({
     return done(err, user)
   })
   */
-  return done(null, {name:"gerry"})
+  return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
 }))
 
 app.use('/', routes);

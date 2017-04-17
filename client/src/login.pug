@@ -8,7 +8,10 @@ template
         //label(for="email" t="login.email") Enter email
         input(id="password" value.bind="password" name="password" type="password" placeholder="password")
         //label(for="password" t="login.password") Enter Password
-        button.btn.waves-effect(click.trigger="login()") Login
+        div(style="text-align:center")
+          button.btn.waves-effect(click.trigger="login()") Login
       .tableau.col.s5
-        .header Oder mit social media account anmelden
-        a.btn.waves-effect(href.bind="address('auth/google')") Google
+        .header Oder mit anderem Konto anmelden
+        a(href.bind="address('auth/google')" style="align: center")
+          div(style="text-align:center;padding-top:10px;padding-bottom:5px;")
+            img(src="/assets/btn_google_signin_light_normal_web.png" alt="Google")
