@@ -86,7 +86,7 @@ class AuthorizeStep {
         if (!session.currentUser) {
           return next.cancel(new Redirect('login'));
         }
-        let hasRole = session.currentUser.roles.find(role => {return (role === roleId)})
+        let hasRole = session.currentUser.roles.find(role => ((role === roleId) || (role === 'admin')))
         if (!hasRole) {
           console.log("login failure")
           return next.cancel(new Redirect('login'));
