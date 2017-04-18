@@ -25,8 +25,8 @@ erstellt alles nötige. Danach kann man den Container mit
 
 ``./run-docker.sh`` [#]_
 
-starten, dem System etwa eine Minute Zeit zum Initialisieren geben, und dann den Browser auf ``http://localhost:2016/fhir`` richten,
-um den Server zu sehen, resp auf ``http://localhost:2016/webapp`` um die Webelexis-Webapp zu starten.
+starten, dem System etwa eine Minute Zeit zum Initialisieren geben, und dann den Browser auf ``http://localhost:2017/fhir`` richten,
+um den Server zu sehen, resp auf ``http://localhost:2017/webapp`` um die Webelexis-Webapp zu starten.
 
 
 Voraussetzung ist, dass eine korrekte config.json existiert, welche einen elexis-server referenziert, der für den Docker-Container (welcher
@@ -39,10 +39,13 @@ mit ``docker logs webelexis`` die Konsolenausgaben anschauen.
 
 Wenn man genauer prüfen will, was schief ging, kann man den Container auch interaktiv starten:
 
-``docker run -it -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:`cat VERSION` /bin/bash``
+``docker run -it -p 2017:2017 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:`cat VERSION` /bin/bash``
 
 Dies führt Sie in eine Bash-Shell in einem frisch erstellten Container. Dort kann man Webelexis mit ./dockerstart.sh starten und schauen. was passiert.
 
+Wenn Sie den Docker-Container nicht selbst herstellen möchten, können Sie ihn auch aus dem Repository_ holen:
+
+``docker pull rgwch/webelexis:2.0.5``
 
 Standalone-App
 --------------
@@ -97,7 +100,7 @@ mehr Aufwand betreiben:
 * Sie benötigen ein anerkanntes Zertifikat_, damit Ihre Besucher nicht eine Sicherheitswarnung des Browsers bekommen.
 
 
-.. [#] entspricht docker run -d -p 2016:3000 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:`cat VERSION`
+.. [#] entspricht docker run -d -p 2017:2017 --name webelexis -v /pfad/zum/config.json:/usr/src/app/Janus/config.json rgwch/webelexis:`cat VERSION`
 .. [#] Es ist ohnehin am besten, die Firewall sämtliche Ports blockieren zu lassen, und bei Bedarf nur die freizugeben, die man wirklich benötigt.
 .. [#] Zum Beispiel, um Patienten zu ermöglichen, selber einen Termin zu vereinbaren.
 .. [#] Machen Sie aber nicht den Fehler, im Umkehrschluss zu denken, dass die Anwendung nicht gefunden werden kann, und dass darum keine Absicherungsmassnahmen nötig seien, wenn Sie keine Nameserver-Publikation machen! Ihr Server ist immer über seine IP erreichbar, die von Schadprogrammen herausgefunden werden kann.
@@ -106,3 +109,4 @@ mehr Aufwand betreiben:
 .. _Zertifikat: https://de.wikipedia.org/wiki/Digitales_Zertifikat
 .. _Electron: https://electron.atom.io/
 .. _Docker: https://www.docker.com
+.. _Repository: https://hub.docker.com/r/rgwch/webelexis/tags/

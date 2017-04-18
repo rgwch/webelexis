@@ -22,7 +22,7 @@ export class App {
     config.title = 'Webelexis';
     config.map([
       {
-        route   : ['', 'login'],
+        route   : ['', 'login/:id?'],
         name    : 'login',
         moduleId: 'login',
         title   : 'Login'
@@ -81,13 +81,12 @@ class AuthorizeStep {
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
     let session: Session = Container.instance.get(Session);
     let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
-
-    if (!!roleId) {
+    if (roleId) {
       if (roleId != "all") {
         if (!session.currentUser) {
           return next.cancel(new Redirect('login'));
         }
-        let hasRole = session.currentUser.roles.find(role => {return (role === roleId)})
+        let hasRole = session.currentUser.roles.find(role => ((role === roleId) || (role === 'admin')))
         if (!hasRole) {
           console.log("login failure")
           return next.cancel(new Redirect('login'));

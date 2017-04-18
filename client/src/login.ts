@@ -18,6 +18,22 @@ export class Login {
     return result;
   }
 
+  public activate(params, routConfig, navInstruct){
+    let id=params['id']
+    if(id){
+      if(!this.session.currentUser){
+        this.loginService.getUser(id).then(result=>{
+          if(result.uid){
+            this.session.currentUser=result
+            this.router.navigate('intro')
+          }
+        })
+      }else{
+        this.router.navigate('intro')
+      }
+
+    }
+  }
   private static inject = [Router, LoginService, Session];
   constructor(router: Router, loginService: LoginService, session: Session) {
     this.router = router;
@@ -33,10 +49,11 @@ export class Login {
     });
   }
 
+  /*
   public google(){
     this.loginService.googleSignIn()
   }
-
+*/
   private address(suffix:string){
     return this.loginService.formattedURL(suffix)
   }

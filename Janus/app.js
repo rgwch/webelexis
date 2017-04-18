@@ -64,21 +64,22 @@ app.use(cors({
     'accounts.google.com'
   ]
 }))
-var serverConf = nconf.get("server")
+const serverConf = nconf.get("server")
 app.use(passport.initialize())
-
-passport.use(new GoogleStrategy({
-  clientID: serverConf['googleClientID'],
-  clientSecret: serverConf['googleClientSecret'],
-  callbackURL: "http://localhost:2017/auth/google/callback"
-}, function (accesstoken, refreshToken, profile, done) {
-  /*
-  User.findOrCreate({googleId: profile, id}, function (err, user) {
-    return done(err, user)
-  })
-  */
-  return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
-}))
+if(serverConf['googleClientID']) {
+  passport.use(new GoogleStrategy({
+    clientID: serverConf['googleClientID'],
+    clientSecret: serverConf['googleClientSecret'],
+    callbackURL: "http://localhost:2017/auth/google/callback"
+  }, function (accesstoken, refreshToken, profile, done) {
+    /*
+     User.findOrCreate({googleId: profile, id}, function (err, user) {
+     return done(err, user)
+     })
+     */
+    return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
+  }))
+}
 
 app.use('/', routes);
 app.use('/fhir', fhir);
