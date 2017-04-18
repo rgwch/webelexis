@@ -5,7 +5,7 @@ const User = require('../models/user').User
 
 
 router.get("/user/:guid", function (req, res) {
-  let user = User.isLoggedIn(req.param(guid))
+  let user = User.isLoggedIn(req.param('guid'))
   if (user) {
     res.json(user)
   }else{

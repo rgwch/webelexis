@@ -44,6 +44,7 @@ export class User{
 
   public logIn():string{
     var guid=uuid()
+    this.lastAccess=new Date().getTime()
     User.loggedIn[guid]=this
     return guid
   }

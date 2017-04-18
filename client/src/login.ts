@@ -18,7 +18,7 @@ export class Login {
     return result;
   }
 
-  public canActivate(params, routConfig, navInstruct){
+  public activate(params, routConfig, navInstruct){
     let id=params['id']
     if(id){
       if(!this.session.currentUser){
@@ -49,10 +49,11 @@ export class Login {
     });
   }
 
+  /*
   public google(){
     this.loginService.googleSignIn()
   }
-
+*/
   private address(suffix:string){
     return this.loginService.formattedURL(suffix)
   }
