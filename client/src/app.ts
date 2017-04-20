@@ -77,6 +77,13 @@ export class App {
   }
 }
 
+/**
+ * Check if the requested route is available for the current user
+ * - if there is no roleID associated to a route, or if the roleId is "all", then allow
+ * - if there is a roleID and no user is logged in -> redirect to LogIn
+ * - if there is a roleID and a user is loggedin, check if they have the requested role. If not, redirect to LogIn
+ * - if the current user has the role "admin" the allow always.
+ */
 class AuthorizeStep {
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
     let session: Session = Container.instance.get(Session);
