@@ -36,6 +36,7 @@ export class MongoDB implements NoSQL {
     return MongoDB.dbInstance
   }
 
+  
   public getUser(uid:string): Promise<User>{
     let collection=this.db.collection("webelexis-users")
     return collection.findOne({uid:uid}).then(result=>{

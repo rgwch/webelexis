@@ -43,7 +43,7 @@ app.use(compression())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view-cache',true);
+app.set('view-cache', true);
 app.set('view engine', 'pug');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -66,24 +66,27 @@ app.use(cors({
 }))
 const serverConf = nconf.get("server")
 app.use(passport.initialize())
-if(serverConf['googleClientID']) {
+if (serverConf['googleClientID']) {
   passport.use(new GoogleStrategy({
     clientID: serverConf['googleClientID'],
     clientSecret: serverConf['googleClientSecret'],
     callbackURL: "http://localhost:2017/auth/google/callback"
   }, function (accesstoken, refreshToken, profile, done) {
-    /*
-     User.findOrCreate({googleId: profile, id}, function (err, user) {
-     return done(err, user)
-     })
-     */
-    return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
+
+    User.findOrCreate(profile, function (err, user) {
+      if (user) {
+        user.token = accessToken
+      }
+      return done(err, user)
+    })
+
+    // return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
   }))
 }
 
 app.use('/', routes);
 app.use('/fhir', fhir);
-app.use('/auth',auth);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

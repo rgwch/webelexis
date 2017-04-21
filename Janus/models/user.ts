@@ -1,4 +1,5 @@
 const uuid=require('uuid/v4')
+const mongoDB=require('../services/mongo').MongoDB
 
 export class User{
   public token:string
@@ -42,6 +43,18 @@ export class User{
     return false
   }
 
+  public static findOrCreate(data) : Promise<User>{
+    let mongo=mongoDB.getInstance()
+    return mongo.getUser(data.id).then(result=>{
+      if(result){
+        return result
+      }else{
+        let user=new User(data)
+        user.roles=['visitor']
+        return user
+      }
+    })
+  }
   public logIn():string{
     var guid=uuid()
     this.lastAccess=new Date().getTime()
