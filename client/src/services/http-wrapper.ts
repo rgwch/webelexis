@@ -67,8 +67,8 @@ export abstract class HttpWrapper {
     this.httpClient.configure(x => {
       x.withInterceptor({
         request(message: RequestMessage) {
-          if (self.session.currentUser) {
-            self.currentToken = self.session.currentUser.token;
+          if (self.session.getUser()) {
+            self.currentToken = self.session.getUser().guid;
           }
           return message;
         },

@@ -27,21 +27,24 @@ export class Login {
    * @param navInstruct
    */
   public activate(params, routConfig, navInstruct){
-    let id=params['id']
-    if(id){
-      if(!this.session.currentUser){
-        this.loginService.getUser(id).then(result=>{
-          if(result && result.uid){
-            this.session.currentUser=result
+    let guid=params['id']
+    if(guid){
+      if(!this.session.getUser()){
+        this.loginService.getUser(guid).then(result=>{
+          if(result && result.id){
+            result.guid=guid
+            this.session.login(result)
             this.router.navigate('intro')
           }
         })
-      }else if(this.session.currentUser.token === id){
+      }else if(this.session.getUser().guid === guid){
         this.router.navigate('intro')
+      }else{
+        this.session.logout()
       }
 
     }
-    // if no user is logged in or no matching token is given, just display the login page.
+    // if no user is logged in or no matching guid is given, just display the login page.
   }
   private static inject = [Router, LoginService, Session];
   constructor(router: Router, loginService: LoginService, session: Session) {
@@ -51,18 +54,18 @@ export class Login {
   }
   public login() {
     this.loginService.login(this.email,this.password).then(loggedInUser => {
-      this.session.setCurrentUser(loggedInUser);
+      this.session.login(loggedInUser);
       if (loggedInUser) {
         this.router.navigate('intro');
       }
     });
   }
 
-  /*
+
   public google(){
     this.loginService.googleSignIn()
   }
-*/
+
   private address(suffix:string){
     return this.loginService.formattedURL(suffix)
   }

@@ -90,12 +90,12 @@ class AuthorizeStep {
     let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
     if (roleId) {
       if (roleId != "all") {
-        if (!session.currentUser) {
+        if (!session.getUser()) {
           return next.cancel(new Redirect('login'));
         }
-        let hasRole = session.currentUser.roles.find(role => ((role === roleId) || (role === 'admin')))
+        let hasRole = session.getUser().roles.find(role => ((role === roleId) || (role === 'admin')))
         if (!hasRole) {
-          console.log("login failure")
+          console.log("login failure - no matching role for "+roleId)
           return next.cancel(new Redirect('login'));
         }
       }

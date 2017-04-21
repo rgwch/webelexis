@@ -1,18 +1,30 @@
 import {User} from '../models/user';
 
 export class Session {
-  public currentUser: User;
+  private currentUser: User;
   constructor() {
     this.checkPersistedCurrentUser();
   }
-  public setCurrentUser(user) {
+
+  public getUser(){
+    if(!this.currentUser){
+      this.checkPersistedCurrentUser()
+    }
+    return this.currentUser
+  }
+  public login(user:User){
+    this.setCurrentUser(user)
+  }
+
+  private setCurrentUser(user) {
     this.currentUser = user;
     this.persistCurrentUser();
   }
-  public persistCurrentUser() {
+
+  private persistCurrentUser() {
     window.sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
   }
-  public checkPersistedCurrentUser() {
+  private checkPersistedCurrentUser() {
     let json = window.sessionStorage.getItem('currentUser');
     this.currentUser = JSON.parse(json);
   }

@@ -6,7 +6,8 @@ export class User {
   public dateOfBirth = '';
   public email = '';
   public phone = '';
-  public token = '';
+  public guid = '';
+
 
   constructor(data) {
     Object.assign(this, data);

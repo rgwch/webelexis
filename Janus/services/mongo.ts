@@ -37,17 +37,17 @@ export class MongoDB implements NoSQL {
   }
 
   
-  public getUser(uid:string): Promise<User>{
+  public async getUser(id:string){
     let collection=this.db.collection("webelexis-users")
-    return collection.findOne({uid:uid}).then(result=>{
-      return new User(result)
-    })
+    let result= await  collection.findOne({id:id})
+    return result ? new User(result) : null
   }
 
   public writeUser(user:User):Promise<void>{
     let collection=this.db.collection("webelexis-users")
     return collection.updateOne({uid:user.uid},user,{upsert:true})
   }
+
   public getAsync(datatype: string, query): Promise<FHIR_Resource> {
     let collection = this.db.collection(datatype)
     return collection.findOne(query)

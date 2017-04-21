@@ -16,7 +16,6 @@ const nconf = require('nconf');
 const cors = require('express-cors')
 const compression = require('compression')
 const passport = require('passport')
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const args = process.argv.slice(2)
 if (args.length > 0) {
   nconf.file(args[0])
@@ -64,25 +63,8 @@ app.use(cors({
     'accounts.google.com'
   ]
 }))
-const serverConf = nconf.get("server")
+
 app.use(passport.initialize())
-if (serverConf['googleClientID']) {
-  passport.use(new GoogleStrategy({
-    clientID: serverConf['googleClientID'],
-    clientSecret: serverConf['googleClientSecret'],
-    callbackURL: "http://localhost:2017/auth/google/callback"
-  }, function (accesstoken, refreshToken, profile, done) {
-
-    User.findOrCreate(profile, function (err, user) {
-      if (user) {
-        user.token = accessToken
-      }
-      return done(err, user)
-    })
-
-    // return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
-  }))
-}
 
 app.use('/', routes);
 app.use('/fhir', fhir);
