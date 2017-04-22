@@ -96,6 +96,7 @@ class AuthorizeStep {
         let hasRole = session.getUser().roles.find(role => ((role === roleId) || (role === 'admin')))
         if (!hasRole) {
           console.log("login failure - no matching role for "+roleId)
+          alert("Sie haben keine Berechtigung für diese Seite.")
           return next.cancel(new Redirect('login'));
         }
       }

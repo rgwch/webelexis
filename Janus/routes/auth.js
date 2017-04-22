@@ -14,13 +14,13 @@ if (serverConf['googleClientID']) {
   }, function (accesstoken, refreshToken, profile, done) {
 
     User.findOrCreate(profile).then(function (user) {
-
       if (user) {
         user.token = accesstoken
       }
-
-      return done(null, {token: accesstoken, refresh: refreshToken, user:user})
-    }).catch(err => {return done(err,null)})
+      return done(null, {token: accesstoken, refresh: refreshToken, user: user})
+    }).catch(err => {
+      return done(err, null)
+    })
 
     // return done(null, {token: accesstoken, refresh: refreshToken, user: profile})
   }))
@@ -35,14 +35,18 @@ router.get("/user/:guid", function (req, res) {
     res.json({status: "error", "message": "not logged in."})
   }
 })
-router.get("/google", passport.authenticate('google', {scope: ['profile', 'email']}))
+router.get("/google", function (req, res, next) {
+  let cb=req.query.callback
+  res.cookie("webapp",cb, {signed: true})
+  next()
+}, passport.authenticate('google', {scope: ['profile', 'email']}))
 
 router.get("/google/callback", passport.authenticate('google', {failureRedirect: '/login', session: false}),
   function (req, res) {
     let user = req.user.user
     let guid = user.logIn()
-    let referer = req.get("referer")
-    res.redirect(referer + "#/login/" + guid)
+    let webapp=req.signedCookies.webapp
+    res.redirect(webapp + "/#/login/" + guid)
   })
 
 

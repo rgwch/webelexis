@@ -12,7 +12,7 @@ template
           button.btn.waves-effect(click.trigger="login()") Login
       .tableau.col.s5
         .header Oder mit anderem Konto anmelden
-        a(href.bind="address('auth/google')" style="align: center")
+        a(href.bind="address('auth/google?callback=http://localhost:9000')" style="align: center")
           div(style="text-align:center;padding-top:10px;padding-bottom:5px;")
             img(src="/assets/btn_google_signin_light_normal_web.png" alt="Google")
         button.btn(click.trigger="google()") Google

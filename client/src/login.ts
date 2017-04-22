@@ -40,6 +40,7 @@ export class Login {
       }else if(this.session.getUser().guid === guid){
         this.router.navigate('intro')
       }else{
+        alert("ungültige Session ID")
         this.session.logout()
       }
 
