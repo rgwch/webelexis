@@ -2,17 +2,16 @@ template
   .container
     md-colors(md-primary-color="#64b5f6" md-accent-color="#2979ff")
     .row
-      .tableau.col.s5
-        .header Logindaten eingeben
-        input(id="email" value.bind="email" name="email" type="text" placeholder="e-mail")
-        //label(for="email" t="login.email") Enter email
-        input(id="password" value.bind="password" name="password" type="password" placeholder="password")
-        //label(for="password" t="login.password") Enter Password
-        div(style="text-align:center")
-          button.btn.waves-effect(click.trigger="login()") Login
-      .tableau.col.s5
-        .header Oder mit anderem Konto anmelden
-        a(href.bind="address('auth/google?callback=http://localhost:9000')" style="align: center")
-          div(style="text-align:center;padding-top:10px;padding-bottom:5px;")
-            img(src="/assets/btn_google_signin_light_normal_web.png" alt="Google")
-        button.btn(click.trigger="google()") Google
+      md-card(md-title="Logindaten eingeben")
+        div
+          input(id="email" value.bind="email" name="email" type="text" placeholder="e-mail")
+          //label(for="email" t="login.email") Enter email
+          input(id="password" value.bind="password" name="password" type="password" placeholder="password")
+          //label(for="password" t="login.password") Enter Password
+          div(style="text-align:center")
+            button.primary.btn.waves-effect(click.trigger="login()") Login
+      md-card(md-title="Oder mit anderem Konto anmelden")
+        div
+          a(href.bind="address('auth/google?callback=http://localhost:9000')" style="align: center")
+            div(style="text-align:center;padding-top:10px;padding-bottom:5px;")
+              img(src="/assets/btn_google_signin_light_normal_web.png" alt="Google")

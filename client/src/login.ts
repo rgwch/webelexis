@@ -20,48 +20,15 @@ export class Login {
 
   /**
    * We arrive here either by direct navigation to /login or redirected from the Router's authorize step (see app.ts).
-   * If we were called by direct navigation, there's probably a token from the server, issued on succesful google-,
-   * facebook and so on- login. If so, we check the token for validity and log-in the associated user automatically.
-   * @param params 'id' contains possibly a token from a social media login.
-   * @param routConfig
-   * @param navInstruct
+   * If there's already a valid user, we go directly to 'intro' and skip login.
+   * Note: no need for extensive security checks, since user permissions are checked on the server side anyway.
+   *
    */
   public activate(params, routConfig, navInstruct){
     if(this.session.getUser()){
       this.router.navigate(('intro'))
     }
-    /*
-    let guid=params['id']
-    let actUser=this.session.getUser()
-    if(guid){
-      if(!actUser){
-        this.loginService.getUser(guid).then(result=>{
-          if(result && result.id){
-            result.guid=guid
-            this.session.login(result)
-            this.router.navigate('intro')
-          }
-        })
-      }else if(actUser.guid === guid){
-        this.router.navigate('intro')
-      }else{
-        alert("ungültige Session ID")
-        this.session.logout()
-      }
-
-    }else{
-
-      if(actUser){
-        this.loginService.isLoggedIn(actUser.id).then(result=>{
-          if(result.guid){
-            actUser.guid=result.guid
-          }
-        })
-      }
-    }
-    */
-    // if no user is logged in or no matching guid is given, just display the login page.
-  }
+   }
 
   private static inject = [Router, LoginService, Session];
   constructor(router: Router, loginService: LoginService, session: Session) {
