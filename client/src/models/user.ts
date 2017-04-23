@@ -7,7 +7,7 @@ export class User {
   public email = '';
   public phone = '';
   public guid = '';
-
+  public id=''
 
   constructor(data) {
     Object.assign(this, data);

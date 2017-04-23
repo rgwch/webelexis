@@ -27,9 +27,14 @@ export class Login {
    * @param navInstruct
    */
   public activate(params, routConfig, navInstruct){
+    if(this.session.getUser()){
+      this.router.navigate(('intro'))
+    }
+    /*
     let guid=params['id']
+    let actUser=this.session.getUser()
     if(guid){
-      if(!this.session.getUser()){
+      if(!actUser){
         this.loginService.getUser(guid).then(result=>{
           if(result && result.id){
             result.guid=guid
@@ -37,16 +42,27 @@ export class Login {
             this.router.navigate('intro')
           }
         })
-      }else if(this.session.getUser().guid === guid){
+      }else if(actUser.guid === guid){
         this.router.navigate('intro')
       }else{
         alert("ungültige Session ID")
         this.session.logout()
       }
 
+    }else{
+
+      if(actUser){
+        this.loginService.isLoggedIn(actUser.id).then(result=>{
+          if(result.guid){
+            actUser.guid=result.guid
+          }
+        })
+      }
     }
+    */
     // if no user is logged in or no matching guid is given, just display the login page.
   }
+
   private static inject = [Router, LoginService, Session];
   constructor(router: Router, loginService: LoginService, session: Session) {
     this.router = router;

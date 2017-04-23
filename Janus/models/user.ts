@@ -2,7 +2,7 @@ const uuid = require('uuid/v4')
 
 export class User {
   public token: string
-  public uid: string
+  public id: string
   public displayName: string
   public familyNames: Array<string>
   public givenNames: Array<string>
@@ -34,6 +34,14 @@ export class User {
     return null;
   }
 
+  public static findLoggedInById(id:string){
+    for(let key in User.loggedIn){
+      if(User.loggedIn[key].id===id){
+          return key
+      }
+    }
+    return undefined
+  }
   public static hasRole(guid: string, role: string): boolean {
     let user = User.isLoggedIn(guid)
     if (user) {

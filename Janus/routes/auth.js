@@ -26,6 +26,10 @@ if (serverConf['googleClientID']) {
   }))
 }
 
+router.get("/isLoggedIn/:id",function(req,res){
+  let guid=User.isLoggedIn()
+  res.json(guid ? {guid:guid} : {})
+})
 
 router.get("/user/:guid", function (req, res) {
   let user = User.isLoggedIn(req.param('guid'))
