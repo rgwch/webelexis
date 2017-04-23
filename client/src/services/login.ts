@@ -29,6 +29,11 @@ export class LoginService {
     }
   }
 
+  /**
+   * Check if a user is logged in with the server
+   * @param id User-Id
+   * @returns {Promise<any>}
+   */
   public async isLoggedIn(id:string){
     return await this.http.get(`auth/isLoggedIn/${id}`)
   }
@@ -36,8 +41,13 @@ export class LoginService {
     return this.http.formatUrl(url)
   }
 
-  public getUser(guid:string){
-    return this.http.get("auth/user/"+guid)
+  /**
+   * Get a user from the session id
+   * @param guid
+   * @returns {Promise<any>}
+   */
+  public getUser(sid:string){
+    return this.http.get("auth/user/"+sid)
   }
 
   public googleSignIn(){

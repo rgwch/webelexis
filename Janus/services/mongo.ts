@@ -37,9 +37,15 @@ export class MongoDB implements NoSQL {
   }
 
   
-  public async getUser(id:string){
+  public async getUserById(id:string){
     let collection=this.db.collection("webelexis-users")
     let result= await  collection.findOne({id:id})
+    return result ? new User(result) : null
+  }
+
+  public async getUserByMail(mail:string){
+    let collection=this.db.collection("webelexis-users")
+    let result=await collection.findOne({"emails.value": mail.toLocaleLowerCase()})
     return result ? new User(result) : null
   }
 

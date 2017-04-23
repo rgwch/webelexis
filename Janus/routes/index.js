@@ -19,8 +19,8 @@ router.get('/login', function (req, res) {
 router.post('/dologin', function (req, res) {
   "use strict";
   let mongo = require('../services/mongo').MongoDB.getInstance()
-  let uid = req.param('mail')
-  let id = mongo.getUser(uid).then(result => {
+  let uid = req.param('username')
+  let id = mongo.getUserByMail(uid).then(result => {
     let user = result
     if (user) {
       if (sha(req.param('password')) === user['password']) {

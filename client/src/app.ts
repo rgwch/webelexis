@@ -22,7 +22,7 @@ export class App {
     config.title = 'Webelexis';
     config.map([
       {
-        route: ['', 'login/:id?'],
+        route: ['', 'login/:sid?'],
         name: 'login',
         moduleId: 'login',
         title: 'Login'
@@ -33,6 +33,12 @@ export class App {
         title: 'Dashboard',
         nav: true,
         settings: {headerTextKey: 'routes.dashboard'}
+      }, {
+        route: 'profile',
+        name: 'profile',
+        moduleId: 'routes/profile/index',
+        title: 'Profile',
+        nav: true
       }, {
         route: 'patients',
         name: 'patients',
@@ -86,7 +92,6 @@ export class App {
  */
 class AuthorizeStep {
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
-    let session: Session = Container.instance.get(Session);
     return this.checkUser(navInstruction).then(actUser => {
       let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
       if (roleId && roleId != "all") {
@@ -116,35 +121,43 @@ class AuthorizeStep {
    * @param nav
    * @returns {Promise<any>}
    */
+
+
   async checkUser(nav: NavigationInstruction) {
     let session: Session = Container.instance.get(Session);
     let loginService = Container.instance.get(LoginService);
     let actUser = session.getUser()
-    let guid = nav.params['id']
+    let sid = nav.params['sid']
     if (actUser) {
-      if (actUser.guid) {
-        if (guid === actUser.guid) {
+      if (sid && actUser.guid != sid) {
+        let loggedIn = await loginService.isLoggedIn(actUser.id)
+        if (loggedIn.guid) {
+          actUser.guid = loggedIn.guid
           return actUser
-        }
-      }
-      let loggedInUser = await
-        loginService.isLoggedIn(actUser.id)
-      if (loggedInUser.guid) {
-        actUser.guid = loggedInUser.guid
-        return actUser
-      }
-      session.logout()
-    } else {
-      if (guid) {
-        let result = await loginService.getUser(guid)
-        if (result && result.id) {
-          result.guid = guid
-          session.login(result)
-          return result
+        } else { // !loggedIn
+          session.logout()
+          return undefined
         }
 
+      } else { // !guid
+        return actUser
+      }
+    } else {  // !actUser
+      if (sid) {
+        let result = await loginService.getUser(sid)
+        if (result && result.id) {
+          result.guid = sid
+          session.login(result)
+          return result
+        } else {
+          return undefined
+        }
+
+      } else { // ! guid
+        return undefined
       }
     }
-    return actUser
   }
+
+
 }

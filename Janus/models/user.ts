@@ -18,8 +18,13 @@ export class User {
 
   public static loggedIn = {}
 
-  public static isLoggedIn(guid: string): User {
-    let usr = User.loggedIn[guid]
+  /**
+   * Check if a session id belongs to a valid user
+   * @param sid the session id
+   * @returns The User if they are logged in. Null if there is no such session or if the session is expired
+   */
+  public static isLoggedIn(sid: string): User {
+    let usr = User.loggedIn[sid]
     if (usr) {
       let now = new Date().getTime()
       let li = usr.lastAccess
@@ -28,16 +33,21 @@ export class User {
         usr.lastAccess = now
         return usr
       } else {
-        delete User.loggedIn[guid]
+        delete User.loggedIn[sid]
       }
     }
     return null;
   }
 
+  /**
+   * check if a User is currently logged in
+   * @param id the user's id
+   * @returns {any}
+   */
   public static findLoggedInById(id:string){
     for(let key in User.loggedIn){
       if(User.loggedIn[key].id===id){
-          return key
+          return User.isLoggedIn(key)
       }
     }
     return undefined
@@ -53,7 +63,7 @@ export class User {
   public static async findOrCreate(data){
     let mongo = require('../services/mongo').MongoDB.getInstance()
 
-    let result = await mongo.getUser(data.id)
+    let result = await mongo.getUserById(data.id)
     if (result) {
       return result
     } else {
