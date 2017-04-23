@@ -5,14 +5,11 @@ template
     .row
       .tableau.col.s12.m6.push-m3
         form
-          label(for="email") E-Mail
-          input(id="email" type="email" value="username")
-          label(for="oldpwd") Bisheriges Passwort
-          input(id="oldpwd" type="password" value="oldpwd")
-          label(for="newpwd") Neues Passwort
-          input(id="newpwd" type="password" value="newpwd")
-          label(for="repeatpwd") Neues Passwort (Wiederholung)
-          input(id="repeatpwd" type="password" value="repeatpwd")
-          button.btn.primary.waves-red.waves-effect(type="submit") Passwort ändern
+          input(id="email" type="email" placeholder="E-Mail" value.bind="getUsername()")
+          input(id="oldpwd" type="password" placeholder="Bisheriges Passwort" value.bind="oldpwd")
+          input(id="newpwd" type="password" placeholder="Neues Passwort" value.bind="newpwd")
+          input(id="repeatpwd" type="password" placeholder="neues Passwort (wdh)" value.bind="repeatpwd")
+
+          button.btn.primary.waves-red.waves-effect(type="submit" disabled.bind="!canChangePwd") Passwort ändern
           button.btn.primary.waves-effect(click.trigger="logout()") Abmelden
 
