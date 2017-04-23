@@ -4,6 +4,8 @@ const passport = require('passport')
 const User = require('../models/user').User
 const nconf = require('nconf');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+const sha = require('crypto-js/sha256')
+
 
 const serverConf = nconf.get("server")
 if (serverConf['googleClientID']) {
@@ -39,6 +41,29 @@ router.get("/user/:guid", function (req, res) {
     res.json({status: "error", "message": "not logged in."})
   }
 })
+
+router.post("/chpwd", function (req, res) {
+  let oldpwd = req.param('oldpwd')
+  let newpwd = req.param('newpwd')
+  let id = req.param('id')
+
+  User.findById(id).then(user => {
+    if (user) {
+      if(sha(oldpwd) === user['password']){
+        user['password']=sha(newpwd)
+        user.update()
+        res.json({status:"ok"})
+      }else{
+        res.json({"status":"error","message":"Bad username or password"})
+      }
+    }else{
+      res.json({status:"error",message:"Bad username or password"})
+    }
+  })
+
+})
+
+
 router.get("/google", function (req, res, next) {
   let cb=req.query.callback
   res.cookie("webapp",cb, {signed: true})

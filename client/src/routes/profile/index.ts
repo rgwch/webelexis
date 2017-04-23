@@ -2,6 +2,7 @@ import {autoinject} from 'aurelia-framework'
 import {Session} from '../../services/session'
 import {computedFrom} from "aurelia-framework";
 import {Router} from 'aurelia-router'
+import {HttpWrapper} from '../../services/http-wrapper'
 
 @autoinject()
 export class Profile{
@@ -10,7 +11,7 @@ export class Profile{
   private newpwd:string=""
   private repeatpwd:string=""
 
-  constructor(private session:Session, private router:Router){
+  constructor(private session:Session, private router:Router, private http:HttpWrapper){
     this.user=this.session.getUser()
   }
 
@@ -20,6 +21,16 @@ export class Profile{
     }else{
       return this.user['emails']
     }
+  }
+
+  chpwd(){
+    this.http.post("auth/chpwd",{id: this.user['id'], oldpwd: this.oldpwd, newpwd:this.newpwd}).then(result=>{
+      if(result && result.status == 'ok'){
+        alert("ok")
+      }else{
+        alert(result.message)
+      }
+    })
   }
 
   @computedFrom('oldpwd','newpwd','repeatpwd')

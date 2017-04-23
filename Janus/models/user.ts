@@ -52,6 +52,12 @@ export class User {
     }
     return undefined
   }
+
+  public static async findById(id:string){
+    let mongo = require('../services/mongo').MongoDB.getInstance()
+    let result = await mongo.getUserById(id)
+    return result
+  }
   public static hasRole(guid: string, role: string): boolean {
     let user = User.isLoggedIn(guid)
     if (user) {
@@ -79,5 +85,10 @@ export class User {
     this.lastAccess = new Date().getTime()
     User.loggedIn[guid] = this
     return guid
+  }
+
+  public update(){
+    let mongo = require('../services/mongo').MongoDB.getInstance()
+    mongo.writeUser(this)
   }
 }

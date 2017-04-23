@@ -20,7 +20,7 @@ router.post('/dologin', function (req, res) {
   "use strict";
   let mongo = require('../services/mongo').MongoDB.getInstance()
   let uid = req.param('username')
-  let id = mongo.getUserByMail(uid).then(result => {
+  mongo.getUserByMail(uid).then(result => {
     let user = result
     if (user) {
       if (sha(req.param('password')) === user['password']) {
@@ -28,7 +28,7 @@ router.post('/dologin', function (req, res) {
       }
     }
   })
-  res.json({"status":"error","message":"login failed"})
+  res.json({"status": "error", "message": "login failed"})
 })
 
 router.get('/configuration', function (req, res, next) {
