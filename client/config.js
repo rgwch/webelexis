@@ -30,7 +30,7 @@ System.config({
     "aurelia-testing": "npm:aurelia-testing@1.0.0-beta.2.0.1",
     "aurelia-validation": "npm:aurelia-validation@1.0.0-beta.1.0.1",
     "bluebird": "npm:bluebird@3.4.1",
-    "font-awesome": "npm:font-awesome@4.6.3",
+    "font-awesome": "npm:font-awesome@4.7.0",
     "i18next-xhr-backend": "npm:i18next-xhr-backend@1.3.0",
     "jquery": "npm:jquery@2.2.4",
     "materialize": "github:Dogfalo/materialize@0.97.8",
@@ -245,7 +245,7 @@ System.config({
       "isarray": "npm:isarray@1.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:font-awesome@4.6.3": {
+    "npm:font-awesome@4.7.0": {
       "css": "github:systemjs/plugin-css@0.1.33"
     },
     "npm:i18next@3.5.2": {

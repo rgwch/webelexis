@@ -1,15 +1,18 @@
 template
+  require(from="../../components/floater.html")
   container
+    floater(pos="right: 10px; top: 10px;")
     .row
-      form.col.s6
-        label(for="email") E-Mail
-        input(id="email" type="email" value="username")
-        label(for="oldpwd") Bisheriges Passwort
-        input(id="oldpwd" type="password" value="oldpwd")
-        label(for="newpwd") Neues Passwort
-        input(id="newpwd" type="password" value="newpwd")
-        label(for="repeatpwd") Neues Passwort (Wiederholung)
-        input(id="repeatpwd" type="password" value="repeatpwd")
-        button.btn.primary.waves-red.waves-effect(type="submit") Passwort ändern
-        button.btn.primary.waves-effect(click.trigger="logout()") Abmelden
+      .tableau.col.s12.m6.push-m3
+        form
+          label(for="email") E-Mail
+          input(id="email" type="email" value="username")
+          label(for="oldpwd") Bisheriges Passwort
+          input(id="oldpwd" type="password" value="oldpwd")
+          label(for="newpwd") Neues Passwort
+          input(id="newpwd" type="password" value="newpwd")
+          label(for="repeatpwd") Neues Passwort (Wiederholung)
+          input(id="repeatpwd" type="password" value="repeatpwd")
+          button.btn.primary.waves-red.waves-effect(type="submit") Passwort ändern
+          button.btn.primary.waves-effect(click.trigger="logout()") Abmelden
 
