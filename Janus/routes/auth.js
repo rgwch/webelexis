@@ -1,14 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport')
-const User = require('../models/user').User
+const User = require('../models/user').InternalUser
 const nconf = require('nconf');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const TwitterStrategy = require('passport-twitter').Strategy
-const sha = require('crypto-js/sha256')
+const LocalStrategy = require('passport-local').Strategy
 
 
 const serverConf = nconf.get("server")
+
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+},function (email, password, done) {
+  User.findByMail(email).then(user => {
+    if (user) {
+      if (user.checkPassword(password)) {
+        done(null, user)
+      } else {
+        done(null, false, {message: "Email oder Passwort falsch"})
+      }
+    } else {
+      done(null, false, {message: "Email oder Passwort falsch"})
+    }
+  }).catch(err => {
+    return done(err)
+  })
+}))
 if (serverConf['googleClientID']) {
   passport.use(new GoogleStrategy({
     clientID: serverConf['googleClientID'],
@@ -20,7 +39,7 @@ if (serverConf['googleClientID']) {
       if (user) {
         user.token = accesstoken
       }
-      return done(null, {token: accesstoken, refresh: refreshToken, user: user})
+      return done(null, user)
     }).catch(err => {
       return done(err, null)
     })
@@ -31,30 +50,40 @@ if (serverConf['googleClientID']) {
 
 if (serverConf['twitterApiKey']) {
   passport.use(new TwitterStrategy({
-        consumerKey: serverConf['twitterApiKey'],
-        consumerSecret: serverConf['twitterApiSecret'],
-        callbackURL: "http://localhost:2017/auth/twitter/callback"
-      }, function (token, tokenSecret, profile, cb) {
-        User.findOrCreate(profile).then(function (user) {
-          if (user) {
-            user.token = accesstoken
-          }
-          return cb(null, user)
-        }).catch(err)
-        {
-          return cb(err, null)
+      consumerKey: serverConf['twitterApiKey'],
+      consumerSecret: serverConf['twitterApiSecret'],
+      callbackURL: "http://localhost:2017/auth/twitter/callback"
+    }, function (token, tokenSecret, profile, cb) {
+      User.findOrCreate(profile).then(function (user) {
+        /*
+        if (user) {
+          user.token = accesstoken
         }
+        */
+        return cb(null, user)
+      }).catch(err)
+      {
+        return cb(err, null)
       }
+    }
   ))
 }
 
-router.get("/isLoggedIn/:id", function (req, res) {
-  let guid = User.findLoggedInById(req.param('id'))
-  res.json(guid ? {guid: guid} : {})
+passport.serializeUser(function(user,done){
+  done(null,user.logIn())
 })
 
-router.get("/user/:guid", function (req, res) {
-  let user = User.isLoggedIn(req.param('guid'))
+passport.deserializeUser(function(sid,done){
+  return User.isLoggedIn(sid)
+})
+
+router.get("/isLoggedIn/:id", function (req, res) {
+  let sid = User.findLoggedInById(req.param('id'))
+  res.json(sid ? {sid: sid} : {})
+})
+
+router.get("/user/:sid", function (req, res) {
+  let user = User.isLoggedIn(req.param('sid'))
   if (user) {
     res.json(user)
   } else {
@@ -69,9 +98,8 @@ router.post("/chpwd", function (req, res) {
 
   User.findById(id).then(user => {
     if (user) {
-      if (sha(oldpwd) === user['password']) {
-        user['password'] = sha(newpwd)
-        user.update()
+      if (user.checkPassword(oldpwd)) {
+        user.setPassword(newpwd)
         res.json({status: "ok"})
       } else {
         res.json({"status": "error", "message": "Bad username or password"})
@@ -83,37 +111,38 @@ router.post("/chpwd", function (req, res) {
 
 })
 
+router.post("/local",passport.authenticate('local'),function(req,res){
+  console.log(req)
+  res.json({status:"error"})
+})
 
 router.get("/google", function (req, res, next) {
   let cb = req.query.callback
-  res.cookie("webapp", cb, {signed: true})
+  req.session.webapp=cb
   next()
 }, passport.authenticate('google', {scope: ['profile', 'email']}))
 
-router.get("/google/callback", passport.authenticate('google', {failureRedirect: '/login', session: false}),
-    function (req, res) {
-      let user = req.user.user
-      let guid = user.logIn()
-      let webapp = req.signedCookies.webapp
-      res.redirect(webapp + "/#/login/" + guid)
-    })
+router.get("/google/callback", passport.authenticate('google'),
+  function (req, res) {
+    let guid = req.user.logIn()
+    let webapp = req.session.webapp
+    res.redirect(webapp + "/#/login/" + guid)
+  })
 
 router.get("/twitter", function (req, res, next) {
   let cb = req.query.callback
-  res.cookie("webapp", cb, {signed: true})
+  req.session.webapp=cb
   next()
 }, passport.authenticate('twitter'))
 
 
-router.get("/twitter/callback", passport.authenticate('twitter', {
-      failureRedirect: '/login', session: false
-    }),
-    function (req, res) {
-      let user = req.user.user
-      let guid = user.logIn()
-      let webapp = req.signedCookies.webapp
-      res.redirect(webapp + "/#/login/" + guid)
-    }
+router.get("/twitter/callback", passport.authenticate('twitter'),
+  function (req, res) {
+    let user = req.user.user
+    let guid = user.logIn()
+    let webapp = req.session.webapp
+    res.redirect(webapp + "/#/login/" + guid)
+  }
 )
 
 

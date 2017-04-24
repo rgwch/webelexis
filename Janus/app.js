@@ -10,12 +10,14 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const nconf = require('nconf');
 const cors = require('express-cors')
 const compression = require('compression')
+const session=require('express-session')
 const passport = require('passport')
+const uuid = require('uuid/v4')
 const args = process.argv.slice(2)
 if (args.length > 0) {
   nconf.file(args[0])
@@ -49,8 +51,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({extended: false, limit: '10mb'}));
-var signature=Math.random().toString()
-app.use(cookieParser(signature));
+
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -65,7 +66,12 @@ app.use(cors({
   ]
 }))
 
+//var signature=Math.random().toString()
+//app.use(cookieParser(signature));
+
+app.use(session({secret: uuid(), resave: false, saveUninitialized: true}))
 app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', routes);
 app.use('/fhir', fhir);

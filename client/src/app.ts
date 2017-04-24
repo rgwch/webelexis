@@ -129,17 +129,17 @@ class AuthorizeStep {
     let actUser = session.getUser()
     let sid = nav.params['sid']
     if (actUser) {
-      if (sid && actUser.guid != sid) {
+      if (sid && actUser.sid != sid) {
         let loggedIn = await loginService.isLoggedIn(actUser.id)
-        if (loggedIn.guid) {
-          actUser.guid = loggedIn.guid
+        if (loggedIn.sid) {
+          actUser.sid = loggedIn.sid
           return actUser
         } else { // !loggedIn
           session.logout()
           return undefined
         }
 
-      } else { // !guid
+      } else { // !sid
         return actUser
       }
     } else {  // !actUser

@@ -6,7 +6,7 @@ export class User {
   public dateOfBirth = '';
   public email = '';
   public phone = '';
-  public guid = '';
+  public sid = '';
   public id=''
 
   constructor(data) {

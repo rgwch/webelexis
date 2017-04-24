@@ -68,7 +68,7 @@ export abstract class HttpWrapper {
       x.withInterceptor({
         request(message: RequestMessage) {
           if (self.session.getUser()) {
-            self.currentToken = self.session.getUser().guid;
+            self.currentToken = self.session.getUser().sid;
           }
           return message;
         },

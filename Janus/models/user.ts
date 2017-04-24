@@ -1,13 +1,19 @@
 const uuid = require('uuid/v4')
+const hash = require('crypto-js/sha256')
 
-export class User {
-  public token: string
+
+export class InternalUser {
+  // public token: string
   public id: string
+  public sid: string
+  public googleId:string
+  public twitterId:string
+  private password:any
   public displayName: string
   public familyNames: Array<string>
   public givenNames: Array<string>
   public gender: "male" | "female" | "other"
-  public email: string
+  public emails: Array<string>
   public roles: Array<string> = []
   public photos: Array<any>
   public lastAccess: number
@@ -21,10 +27,12 @@ export class User {
   /**
    * Check if a session id belongs to a valid user
    * @param sid the session id
-   * @returns The User if they are logged in. Null if there is no such session or if the session is expired
+   * @returns The InternalUser if they are logged in. Null if there is no such session or if the session is expired
    */
-  public static isLoggedIn(sid: string): User {
-    let usr = User.loggedIn[sid]
+  public static isLoggedIn(sid: string): InternalUser {
+    return InternalUser.loggedIn[sid]
+    /*
+    let usr = InternalUser.loggedIn[sid]
     if (usr) {
       let now = new Date().getTime()
       let li = usr.lastAccess
@@ -33,21 +41,22 @@ export class User {
         usr.lastAccess = now
         return usr
       } else {
-        delete User.loggedIn[sid]
+        delete InternalUser.loggedIn[sid]
       }
     }
     return null;
+    */
   }
 
   /**
-   * check if a User is currently logged in
+   * check if a InternalUser is currently logged in
    * @param id the user's id
    * @returns {any}
    */
   public static findLoggedInById(id:string){
-    for(let key in User.loggedIn){
-      if(User.loggedIn[key].id===id){
-          return User.isLoggedIn(key)
+    for(let key in InternalUser.loggedIn){
+      if(InternalUser.loggedIn[key].id===id){
+          return InternalUser.isLoggedIn(key)
       }
     }
     return undefined
@@ -59,11 +68,16 @@ export class User {
     return result
   }
   public static hasRole(guid: string, role: string): boolean {
-    let user = User.isLoggedIn(guid)
+    let user = InternalUser.isLoggedIn(guid)
     if (user) {
       return (user.roles.some(r => r === role))
     }
     return false
+  }
+
+  public static findByMail(mail:string){
+    let mongo = require('../services/mongo').MongoDB.getInstance()
+    return  mongo.getUserByMail(mail)
   }
 
   public static async findOrCreate(data){
@@ -73,7 +87,7 @@ export class User {
     if (result) {
       return result
     } else {
-      let user = new User(data)
+      let user = new InternalUser(data)
       user.roles = ['visitor']
       mongo.writeUser(user)
       return user
@@ -81,14 +95,24 @@ export class User {
   }
 
   public logIn(): string {
-    var guid = uuid()
+    var sid = uuid()
     this.lastAccess = new Date().getTime()
-    User.loggedIn[guid] = this
-    return guid
+    InternalUser.loggedIn[sid] = this
+    this.sid=sid
+    return sid
   }
 
   public update(){
     let mongo = require('../services/mongo').MongoDB.getInstance()
     mongo.writeUser(this)
+  }
+
+  public checkPassword(pwd:string){
+    return (hash(pwd) === this.password)
+  }
+
+  public setPassword(pwd:string){
+    this.password=hash(pwd)
+    this.update()
   }
 }

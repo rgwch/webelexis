@@ -18,24 +18,28 @@ export class LoginService {
   }
 
   public async login(username: string, password: string, showError:boolean=true){
-    let result = await this.http.post("dologin", {username: username, password: password})
-    if(result.status==="error"){
-      if(showError) {
-        alert(result.message)
+    let result = await this.http.post("auth/local", {email: username, password: password})
+    if(result) {
+      if (result.status === "error") {
+        if (showError) {
+          alert(result.message)
+        }
+        return null
+      } else {
+        return new User(result);
       }
+    }else{
       return null
-    }else {
-      return new User(result);
     }
   }
 
   /**
    * Check if a user is logged in with the server
-   * @param id User-Id
+   * @param id InternalUser-Id
    * @returns {Promise<any>}
    */
-  public async isLoggedIn(id:string){
-    return await this.http.get(`auth/isLoggedIn/${id}`)
+  public async isLoggedIn(sid:string){
+    return await this.http.get(`auth/isLoggedIn/${sid}`)
   }
   public formattedURL(url:string){
     return this.http.formatUrl(url)
