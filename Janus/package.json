@@ -24,6 +24,7 @@
     "node-sass-middleware": "0.8.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
+    "passport-twitter": "^1.0.4",
     "pug": "^2.0.0-beta11",
     "serve-favicon": "~2.3.0",
     "sha1": "^1.1.1",

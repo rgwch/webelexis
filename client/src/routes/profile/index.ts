@@ -41,6 +41,10 @@ export class Profile{
     return result
   }
 
+  @computedFrom('newpwd','repeatpwd')
+  get pwdDifferent():boolean{
+    return this.newpwd != this.repeatpwd
+  }
   logout(){
     this.session.logout()
     this.router.navigate("/")

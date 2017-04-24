@@ -27,6 +27,11 @@ h2.h2{
   }
 }
 
+.red{
+  color: red;
+  background-color:blue;
+}
+
 .badges{
   position:absolute;
   bottom:0px;
@@ -58,6 +63,9 @@ h2.h2{
 }
 .text-paper-accent{
   background-color: lighten($primary-color,10%);
+  border: 1px solid darken($primary-color,10%);
+  color: black;
+  padding: 0.5rem;
 }
 
 .chipmenu{

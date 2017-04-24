@@ -4,6 +4,7 @@ const passport = require('passport')
 const User = require('../models/user').User
 const nconf = require('nconf');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+const TwitterStrategy = require('passport-twitter').Strategy
 const sha = require('crypto-js/sha256')
 
 
@@ -28,9 +29,28 @@ if (serverConf['googleClientID']) {
   }))
 }
 
-router.get("/isLoggedIn/:id",function(req,res){
-  let guid=User.findLoggedInById(req.param('id'))
-  res.json(guid ? {guid:guid} : {})
+if (serverConf['twitterApiKey']) {
+  passport.use(new TwitterStrategy({
+        consumerKey: serverConf['twitterApiKey'],
+        consumerSecret: serverConf['twitterApiSecret'],
+        callbackURL: "http://localhost:2017/auth/twitter/callback"
+      }, function (token, tokenSecret, profile, cb) {
+        User.findOrCreate(profile).then(function (user) {
+          if (user) {
+            user.token = accesstoken
+          }
+          return cb(null, user)
+        }).catch(err)
+        {
+          return cb(err, null)
+        }
+      }
+  ))
+}
+
+router.get("/isLoggedIn/:id", function (req, res) {
+  let guid = User.findLoggedInById(req.param('id'))
+  res.json(guid ? {guid: guid} : {})
 })
 
 router.get("/user/:guid", function (req, res) {
@@ -49,15 +69,15 @@ router.post("/chpwd", function (req, res) {
 
   User.findById(id).then(user => {
     if (user) {
-      if(sha(oldpwd) === user['password']){
-        user['password']=sha(newpwd)
+      if (sha(oldpwd) === user['password']) {
+        user['password'] = sha(newpwd)
         user.update()
-        res.json({status:"ok"})
-      }else{
-        res.json({"status":"error","message":"Bad username or password"})
+        res.json({status: "ok"})
+      } else {
+        res.json({"status": "error", "message": "Bad username or password"})
       }
-    }else{
-      res.json({status:"error",message:"Bad username or password"})
+    } else {
+      res.json({status: "error", message: "Bad username or password"})
     }
   })
 
@@ -65,18 +85,36 @@ router.post("/chpwd", function (req, res) {
 
 
 router.get("/google", function (req, res, next) {
-  let cb=req.query.callback
-  res.cookie("webapp",cb, {signed: true})
+  let cb = req.query.callback
+  res.cookie("webapp", cb, {signed: true})
   next()
 }, passport.authenticate('google', {scope: ['profile', 'email']}))
 
 router.get("/google/callback", passport.authenticate('google', {failureRedirect: '/login', session: false}),
-  function (req, res) {
-    let user = req.user.user
-    let guid = user.logIn()
-    let webapp=req.signedCookies.webapp
-    res.redirect(webapp + "/#/login/" + guid)
-  })
+    function (req, res) {
+      let user = req.user.user
+      let guid = user.logIn()
+      let webapp = req.signedCookies.webapp
+      res.redirect(webapp + "/#/login/" + guid)
+    })
+
+router.get("/twitter", function (req, res, next) {
+  let cb = req.query.callback
+  res.cookie("webapp", cb, {signed: true})
+  next()
+}, passport.authenticate('twitter'))
+
+
+router.get("/twitter/callback", passport.authenticate('twitter', {
+      failureRedirect: '/login', session: false
+    }),
+    function (req, res) {
+      let user = req.user.user
+      let guid = user.logIn()
+      let webapp = req.signedCookies.webapp
+      res.redirect(webapp + "/#/login/" + guid)
+    }
+)
 
 
 module.exports = router;

@@ -3,13 +3,15 @@ template
   container
     floater(pos="right: 10px; top: 10px;")
     .row
-      .tableau.col.s12.m6.push-m3
-          input(type="hidden" name="id" value.bind="user.id")
-          input(name="email" type="email" placeholder="E-Mail" value.bind="getUsername()")
-          input(name="oldpwd" type="password" placeholder="Bisheriges Passwort" value.bind="oldpwd")
-          input(name="newpwd" type="password" placeholder="Neues Passwort" value.bind="newpwd")
-          input(name="repeatpwd" type="password" placeholder="neues Passwort (wdh)" value.bind="repeatpwd")
+      .col.text-paper.s12.m6.push-m3
+        h2.h2.center-align Konto
+        input(type="hidden" name="id" value.bind="user.id")
+        input(name="email" type="email" placeholder="E-Mail" value.bind="getUsername()")
+        input(name="oldpwd" type="password" placeholder="Bisheriges Passwort" value.bind="oldpwd")
+        input(name="newpwd" type="password" placeholder="Neues Passwort" value.bind="newpwd")
+        input(name="repeatpwd" type="password" placeholder="neues Passwort (wdh)" value.bind="repeatpwd")
+        p(style="color:red;" if.bind="pwdDifferent") Die Passwörter sind verschieden.
 
-          button.btn.primary.waves-red.waves-effect(disabled.bind="!canChangePwd" click.trigger="chpwd()") Passwort ändern
-          button.btn.primary.waves-effect(click.trigger="logout()") Abmelden
+        button.btn.primary.waves-red.waves-effect(disabled.bind="!canChangePwd" click.trigger="chpwd()") Passwort ändern
+        button.btn.primary.waves-effect(click.trigger="logout()") Abmelden
 
