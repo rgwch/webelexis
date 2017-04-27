@@ -13,6 +13,7 @@ const my = require('../services/mysql')
 const mongoService = require('../services/mongo')
 const session = require('express-session')
 const passport = require('passport')
+const User=require("../models/user").InternalUser
 
 const API = "0.1";
 
@@ -36,11 +37,32 @@ var mapper = {
   Condition: new (require('../models/condition')).Condition(mysql,mongo),
   MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql,mongo)
 }
+
+router.options("/",function(req,res,next){
+  res.set("Access-Control-Allow-Headers","X-sid")
+  next()
+})
+
+function checkUser(req,res,next){
+  let sid=req.get("X-sid")
+  if(!sid){
+    res.send(400)
+  }else{
+    let user=User.isLoggedIn(sid)
+    if(!user){
+      res.send(401)
+    }else{
+      req.user=user
+      next()
+    }
+  }
+}
+
 router.get('/', function (req, res, next) {
   res.send('Webelexis FHIR Server v' + require('../app').VERSION + ", API-Level:" + API);
 });
 
-router.get('/:datatype/:id', function (req, res, next){
+router.get('/:datatype/:id', checkUser, function (req, res, next){
   var type = req.params.datatype
   if (mapper[type]) {
     Janus.getAsync(req.params.id, mapper[type]).then(result => {

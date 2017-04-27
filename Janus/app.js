@@ -56,14 +56,22 @@ app.use(require('node-sass-middleware')({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+/*
 app.use(cors({
-  allowedOrigins: [
-    'localhost:9000',
-    'accounts.google.com'
-  ]
-}))
-
-
+    allowedOrigins: [
+      'localhost:9000',
+    ]
+  }
+))
+*/
+app.use(function(req,res,next){
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-sid"
+  })
+  next();
+})
 app.use('/', routes);
 app.use('/fhir', fhir);
 app.use('/auth', auth);

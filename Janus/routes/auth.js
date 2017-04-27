@@ -7,13 +7,6 @@ const nconf = require('nconf');
 const serverConf = nconf.get("server")
 
 
-passport.use(new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password'
-},function (email, password, done) {
-
-}))
-
 router.post("/chpwd", function (req, res) {
   let oldpwd = req.query['oldpwd']
   let newpwd = req.query['newpwd']
@@ -36,10 +29,10 @@ router.post("/chpwd", function (req, res) {
 
 
 router.post("/local",function(req,res){
-  User.findByMail(req.params.email).then(user => {
+  User.findByMail(req.body.email).then(user => {
     if (user) {
-      if (user.checkPassword(req.params.password)) {
-        user.sid=user.login()
+      if (user.checkPassword(req.body.password)) {
+        user.sid=user.logIn()
         res.json({"status":"ok",user:user})
       } else {
         res.json({status:"error", message: "Email oder Passwort falsch"})
@@ -53,15 +46,28 @@ router.post("/local",function(req,res){
   })
 })
 
-router.get("/logout",function(req,res){
-
+router.get("/logout/:sid",function(req,res){
+  let sid=req.params.sid
+  if(sid){
+    let user=User.isLoggedIn(sid)
+    if(user){
+      user.logOut()
+    }
+  }
+  res.json({status:"ok"})
 })
 
 router.get("/checksession",function(req,res){
-  if(req.user){
-    res.json(req.user)
+  let sid=req.get("X-sid")
+  if(sid) {
+    let user=User.isLoggedIn(sid)
+    if(user) {
+      res.json({"status": "ok", user: user})
+    }else{
+      res.json({status:"error",user: null})
+    }
   }else{
-    res.json({})
+    res.send(400)
   }
 })
 

@@ -69,6 +69,7 @@ export class MongoDB implements NoSQL {
 
   public writeUser(user: User): Promise<void> {
     let collection = this.db.collection("webelexis-users")
+    delete user.sid
     return collection.updateOne({id: user.id}, user, {upsert: true})
   }
 

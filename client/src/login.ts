@@ -38,9 +38,11 @@ export class Login {
   }
   public login() {
     this.loginService.login(this.email,this.password).then(loggedInUser => {
-      this.session.login(loggedInUser);
       if (loggedInUser) {
+        this.session.login(loggedInUser);
         this.router.navigate('intro');
+      }else{
+        this.session.logout()
       }
     });
   }

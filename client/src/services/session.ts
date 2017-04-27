@@ -1,18 +1,10 @@
 import {User} from "../models/user";
-import {NavigationInstruction} from "aurelia-router";
 
 export class Session {
   private currentUser: User;
 
   constructor() {
     this.checkPersistedCurrentUser();
-/*
-    this.ls.isLoggedIn(this.currentUser.id).then(loggedIn => {
-      if (!loggedIn) {
-        this.logout()
-      }
-    })
-    */
   }
 
   public getUser() {

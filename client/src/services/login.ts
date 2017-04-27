@@ -30,7 +30,7 @@ export class LoginService {
         }
         return null
       } else {
-        return new User(result);
+        return new User(result.user);
       }
     }else{
       return null
@@ -38,7 +38,7 @@ export class LoginService {
   }
 
   public async logout(sid:string){
-
+    this.http.get("auth/logout/"+sid)
   }
 
   public formattedURL(url:string){

@@ -100,6 +100,10 @@ export class InternalUser {
     return sid
   }
 
+  public logOut(){
+    delete InternalUser.loggedIn[this.sid]
+  }
+
   public update(){
     let mongo = require('../services/mongo').MongoDB.getInstance()
     mongo.writeUser(this)

@@ -92,72 +92,24 @@ export class App {
  */
 class AuthorizeStep {
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
-    return this.checkUser(navInstruction).then(actUser => {
-      let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
-      if (roleId && roleId != "all") {
-        if (actUser) {
-          let hasRole = actUser.roles.find(role => ((role === roleId) || (role === 'admin')))
-          if (!hasRole) {
-            console.log("login failure - no matching role for " + roleId)
-            alert("Sie haben keine Berechtigung für diese Seite.")
-            return next.cancel(new Redirect('login'));
-          }
-        } else {
-          return next.cancel(new Redirect('login'));
-        }
-
-      }
-      return next();
-    })
-  }
-
-  /**
-   * Validate currentUser
-   * - session.currentUser exists
-   * - - id-param exists: check if they match, log out else
-   * - - no id-param: check if user is logged in
-   * - no session.currentUser
-   * - - id-param exists: fetch associated user
-   * @param nav
-   * @returns {Promise<any>}
-   */
-
-
-  async checkUser(nav: NavigationInstruction) {
     let session: Session = Container.instance.get(Session);
     let loginService = Container.instance.get(LoginService);
     let actUser = session.getUser()
-    let sid = nav.params['sid']
-    if (actUser) {
-      if (sid && actUser.sid != sid) {
-        let loggedIn = await loginService.isLoggedIn(actUser.id)
-        if (loggedIn.sid) {
-          actUser.sid = loggedIn.sid
-          return actUser
-        } else { // !loggedIn
-          session.logout()
-          return undefined
+    let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
+    if (roleId && roleId != "all") {
+      if (actUser) {
+        let hasRole = actUser.roles.find(role => ((role === roleId) || (role === 'admin')))
+        if (!hasRole) {
+          console.log("login failure - no matching role for " + roleId)
+          alert("Sie haben keine Berechtigung für diese Seite.")
+          return next.cancel(new Redirect('login'));
         }
-
-      } else { // !sid
-        return actUser
+      } else {
+        return next.cancel(new Redirect('login'));
       }
-    } else {  // !actUser
-      if (sid) {
-        let result = await loginService.getUser(sid)
-        if (result && result.id) {
-          result.guid = sid
-          session.login(result)
-          return result
-        } else {
-          return undefined
-        }
 
-      } else { // ! guid
-        return undefined
-      }
     }
+    return next();
   }
-
 
 }
