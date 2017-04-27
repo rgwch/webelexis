@@ -1,4 +1,4 @@
-import {User} from "../models/user";
+import {PublicUser as User} from "../models/public-user";
 
 export class Session {
   private currentUser: User;

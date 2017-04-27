@@ -4,7 +4,7 @@
  **********************************/
 
 import {HttpWrapper} from './http-wrapper';
-import {User} from '../models/user';
+import {PublicUser as User} from '../models/public-user';
 import {inject} from 'aurelia-framework';
 
 @inject(HttpWrapper)
