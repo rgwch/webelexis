@@ -30,8 +30,6 @@ export class InternalUser {
    * @returns The InternalUser if they are logged in. Null if there is no such session or if the session is expired
    */
   public static isLoggedIn(sid: string): InternalUser {
-    return InternalUser.loggedIn[sid]
-    /*
     let usr = InternalUser.loggedIn[sid]
     if (usr) {
       let now = new Date().getTime()
@@ -45,7 +43,7 @@ export class InternalUser {
       }
     }
     return null;
-    */
+
   }
 
   /**

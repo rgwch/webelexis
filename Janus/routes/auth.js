@@ -15,9 +15,9 @@ passport.use(new LocalStrategy({
 }))
 
 router.post("/chpwd", function (req, res) {
-  let oldpwd = req.param('oldpwd')
-  let newpwd = req.param('newpwd')
-  let id = req.param('id')
+  let oldpwd = req.query['oldpwd']
+  let newpwd = req.query['newpwd']
+  let id = req.query['id']
 
   User.findById(id).then(user => {
     if (user) {
@@ -39,7 +39,8 @@ router.post("/local",function(req,res){
   User.findByMail(req.params.email).then(user => {
     if (user) {
       if (user.checkPassword(req.params.password)) {
-        res.json({"status":"ok",user:user.logIn()})
+        user.sid=user.login()
+        res.json({"status":"ok",user:user})
       } else {
         res.json({status:"error", message: "Email oder Passwort falsch"})
       }
@@ -47,16 +48,13 @@ router.post("/local",function(req,res){
       res.json( {status:"error", message: "Email oder Passwort falsch"})
     }
   }).catch(err => {
-    return
+    console.log(err)
+    res.send(500)
   })
-  res.json(req.user)
 })
 
 router.get("/logout",function(req,res){
-  if(req.logOut) {
-    req.logOut()
-    res.json({"status": "ok", "message": "logged out"})
-  }
+
 })
 
 router.get("/checksession",function(req,res){

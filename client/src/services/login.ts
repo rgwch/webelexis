@@ -37,6 +37,10 @@ export class LoginService {
     }
   }
 
+  public async logout(sid:string){
+
+  }
+
   public formattedURL(url:string){
     return this.http.formatUrl(url)
   }
