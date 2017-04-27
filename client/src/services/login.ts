@@ -17,6 +17,10 @@ export class LoginService {
     this.baseURL=this.http.formatUrl("/")
   }
 
+  public async checkSession(): Promise<User>{
+    return this.http.get("auth/checksession")
+  }
+
   public async login(username: string, password: string, showError:boolean=true){
     let result = await this.http.post("auth/local", {email: username, password: password})
     if(result) {
@@ -33,25 +37,8 @@ export class LoginService {
     }
   }
 
-  /**
-   * Check if a user is logged in with the server
-   * @param id InternalUser-Id
-   * @returns {Promise<any>}
-   */
-  public async isLoggedIn(sid:string){
-    return await this.http.get(`auth/isLoggedIn/${sid}`)
-  }
   public formattedURL(url:string){
     return this.http.formatUrl(url)
-  }
-
-  /**
-   * Get a user from the session id
-   * @param guid
-   * @returns {Promise<any>}
-   */
-  public getUser(sid:string){
-    return this.http.get("auth/user/"+sid)
   }
 
   public googleSignIn(){

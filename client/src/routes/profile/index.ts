@@ -45,8 +45,12 @@ export class Profile{
   get pwdDifferent():boolean{
     return this.newpwd != this.repeatpwd
   }
+
   logout(){
     this.session.logout()
+    this.http.get("/auth/logout").then(result=>{
+      console.log(result)
+    })
     this.router.navigate("/")
   }
 }

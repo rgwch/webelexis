@@ -1,6 +1,6 @@
 const uuid = require('uuid/v4')
 const hash = require('crypto-js/sha256')
-
+const base64=require('crypto-js/enc-base64')
 
 export class InternalUser {
   // public token: string
@@ -108,11 +108,17 @@ export class InternalUser {
   }
 
   public checkPassword(pwd:string){
-    return (hash(pwd) === this.password)
+    if(this.password) {
+      return (hash(pwd).toString(base64) === this.password)
+    }else{
+      this.password=hash(pwd).toString(base64)
+      this.update()
+      return true
+    }
   }
 
   public setPassword(pwd:string){
-    this.password=hash(pwd)
+    this.password=hash(pwd).toString(base64)
     this.update()
   }
 }

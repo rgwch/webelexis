@@ -10,13 +10,10 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-//const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const nconf = require('nconf');
 const cors = require('express-cors')
 const compression = require('compression')
-const session=require('express-session')
-const passport = require('passport')
 const uuid = require('uuid/v4')
 const args = process.argv.slice(2)
 if (args.length > 0) {
@@ -66,12 +63,6 @@ app.use(cors({
   ]
 }))
 
-//var signature=Math.random().toString()
-//app.use(cookieParser(signature));
-
-app.use(session({secret: uuid(), resave: false, saveUninitialized: true}))
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.use('/', routes);
 app.use('/fhir', fhir);

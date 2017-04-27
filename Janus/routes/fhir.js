@@ -11,6 +11,9 @@ const encounterService = require('../models/encounter')
 const url = require('url')
 const my = require('../services/mysql')
 const mongoService = require('../services/mongo')
+const session = require('express-session')
+const passport = require('passport')
+
 const API = "0.1";
 
 const mysql = new my.MySql()
@@ -18,6 +21,10 @@ const mongo = new mongoService.MongoDB()
 const Janus = new janus.Janus()
 
 const resultType = "application/json+fhir; charset=UTF-8"
+
+router.use(session({secret: /*uuid()*/ "something", resave: false, saveUninitialized: true}))
+router.use(passport.initialize())
+router.use(passport.session())
 
 var mapper = {
   Patient: new patientservice.Patient(mysql, mongo),
@@ -29,12 +36,11 @@ var mapper = {
   Condition: new (require('../models/condition')).Condition(mysql,mongo),
   MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql,mongo)
 }
-/* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('Webelexis FHIR Server v' + require('../app').VERSION + ", API-Level:" + API);
 });
 
-router.get('/:datatype/:id', function (req, res, next) {
+router.get('/:datatype/:id', function (req, res, next){
   var type = req.params.datatype
   if (mapper[type]) {
     Janus.getAsync(req.params.id, mapper[type]).then(result => {
