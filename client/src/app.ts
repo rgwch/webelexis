@@ -93,7 +93,6 @@ export class App {
 class AuthorizeStep {
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
     let session: Session = Container.instance.get(Session);
-    let loginService = Container.instance.get(LoginService);
     let actUser = session.getUser()
     let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
     if (roleId && roleId != "all") {

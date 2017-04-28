@@ -55,9 +55,6 @@ export class Intro {
 
   }
 
-  showUser(){
-
-  }
   detached() {
     console.log("detached")
     this.dateSubscriber.dispose()
@@ -65,10 +62,6 @@ export class Intro {
   }
 
   doSearch = function () {
-    this.http.get("auth/checksession").then(user=>{
-      console.log(JSON.stringify(user))
-    })
-
     this.patientService.filterBy(this.patientFactory, [{entity: "name", value: this.searchexpr}]).then(result => {
       if (result) {
         this.patients = result.values

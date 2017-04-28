@@ -20,7 +20,7 @@ const mongo = new mongoService.MongoDB()
 const Janus = new janus.Janus()
 
 const resultType = "application/json+fhir; charset=UTF-8"
-const roles = nconf('roles')
+const roles = nconf.get('roles') || {}
 
 var mapper = {
   Patient: new (require('../models/patient')).Patient(mysql, mongo),
@@ -36,11 +36,11 @@ var mapper = {
 function checkUser(req, res, next) {
   let sid = req.get("X-sid")
   if (!sid) {
-    res.send(400)
+    res.sendStatus(400)
   } else {
     let user = User.isLoggedIn(sid)
     if (!user) {
-      res.send(401)
+      res.sendStatus(401)
     } else {
       req.user = user
       next()
@@ -49,7 +49,7 @@ function checkUser(req, res, next) {
 }
 
 function checkRole(roles, required) {
-  return roles.any(function (role) {
+  return roles.some(function (role) {
     return role === required
   })
 }
@@ -62,7 +62,8 @@ router.get('/:datatype/:id', checkUser, function (req, res, next) {
   let type = req.params.datatype
   if (mapper[type]) {
     let requirement = type.toLowerCase() + "-read"
-    if (checkRole(req.user.roles, requirement)) {
+    let hasRole=checkRole(req.user.roles, requirement)
+    if (hasRole) {
       Janus.getAsync(req.params.id, mapper[type]).then(result => {
         res.type(resultType).json(result)
       }).catch(err => {
@@ -93,7 +94,7 @@ router.get('/:datatype', checkUser, function (req, resp) {
         sendError(resp, error)
       })
     } else {
-      sendError(res, "insufficient rights")
+      sendError(resp, "insufficient rights")
     }
   } else {
     sendError(resp, "illegal argument")

@@ -57,18 +57,18 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 /*
-app.use(cors({
-    allowedOrigins: [
-      'localhost:9000',
-    ]
-  }
-))
-*/
-app.use(function(req,res,next){
+ app.use(cors({
+ allowedOrigins: [
+ 'localhost:9000',
+ ]
+ }
+ ))
+ */
+app.use(function (req, res, next) {
   res.set({
-    "Access-Control-Allow-Origin": "localhost:9000",
+    "Access-Control-Allow-Origin": "http://localhost:9000",
     "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-sid"
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, X-sid"
   })
   next();
 })
