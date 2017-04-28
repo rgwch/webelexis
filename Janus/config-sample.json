@@ -12,10 +12,19 @@
     "url": "somewhere:27017/somedb"
   },
   "server":{
-    "googleClientID":"74398237560923596-43664565467.apps.googleusercontent.com",
-    "googleClientSecret":"09431frvnqg2nfdd3",
+    "twitterApiKey": "qZdfdsftw34p6efggfsdfg",
+    "twitterApiSecret": "jYydsfsgf4554ufdghhhhhhhhhhhhhhhhhhhw9chn",
+    "googleClientID":"7439ddddddddddddd3596-43664565467.apps.googleusercontent.com",
+    "googleClientSecret":"09431fdddddfdd3",
     "documentStore": "/some/data/directory"
   },
+  "roles":{
+    "mpa":["agenda-read","agenda-write","patient-read"],
+    "doctor":["agenda-read","agenda-write","patient-read","patient-write","document-read","document-write"],
+    "visitor":[],
+    "patient":["self-read","appointment-set"]
+  },
+
   "client": {
     "general": {
       "officeName": "Only GP in Town",

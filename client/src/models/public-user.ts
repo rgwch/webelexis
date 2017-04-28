@@ -2,6 +2,10 @@
  * This file is part of Webelexis
  * Copyright (c) 2017 by G. Weirich
  **********************************/
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
 
 /**
  * publicly visible aspect of a user

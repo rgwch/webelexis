@@ -12,7 +12,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const nconf = require('nconf');
-const cors = require('express-cors')
+// const cors = require('express-cors')
 const compression = require('compression')
 const uuid = require('uuid/v4')
 const args = process.argv.slice(2)
@@ -66,7 +66,7 @@ app.use(cors({
 */
 app.use(function(req,res,next){
   res.set({
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "localhost:9000",
     "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-sid"
   })

@@ -1,7 +1,15 @@
+/*********************************
+ * This file is part of Webelexis
+ * Copyright (c) 2017 by G. Weirich
+ **********************************/
+
 const uuid = require('uuid/v4')
 const hash = require('crypto-js/sha256')
 const base64=require('crypto-js/enc-base64')
 
+/*
+  Internal representation of a User
+ */
 export class InternalUser {
   // public token: string
   public id: string
