@@ -3,19 +3,16 @@ const router = express.Router();
 const nconf = require('nconf')
 const fs = require('fs')
 const moment = require('moment')
-const passport = require('passport')
-const sha = require('crypto-js/sha256')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.redirect('login');
+  res.redirect('/webapp');
 });
 
-router.get('/login', function (req, res) {
-  res.render('login', {})
-})
 
-
+/**
+ * Read configuration data for the client
+ */
 router.get('/configuration', function (req, res, next) {
   try {
     let config = nconf.get('client')
