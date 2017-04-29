@@ -14,7 +14,7 @@ export class Authenticator {
 
         "doctor": ["patient-write", "encounter-write", "flag-write",
           "appointment-write", "slot-list", "slot-read", "schedule-list", "schedule-read", "condition-write",
-          "medication-order-write"],
+          "medication-order-write","documentreference-write","observation-write"],
 
         "manager": ["slot-write", "schedule-write"],
 

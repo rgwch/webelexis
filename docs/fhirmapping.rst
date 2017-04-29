@@ -10,6 +10,8 @@ Basis-Datentypen
 * Elexis Dokument -> FHIR DocumentReference
 * Elexis Sticker -> FHIR Flag
 * Elexis Reminders -> FHIR Flag
+* Elexis Dokumente -> DocumentReference
+* Elexis Labor und Befunde -> Observation
 
 Kontakte
 --------

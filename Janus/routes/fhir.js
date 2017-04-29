@@ -31,7 +31,9 @@ var mapper = {
   Slot: new (require('../models/slot')).Slot(mysql, mongo),
   Schedule: new (require('../models/schedule')).Schedule(mysql, mongo),
   Condition: new (require('../models/condition')).Condition(mysql, mongo),
-  MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql, mongo)
+  MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql, mongo),
+  Observation: new (require('../models/observation')).Observation(mysql,mongo),
+  DocumentReference: new(require('../models/document-reference')).DocumentReference(mysql,mongo)
 }
 
 
