@@ -97,7 +97,7 @@ router.put("/:datatype/:id", auth.authenticate, function (req, resp) {
   if (type && mapper[type]) {
     if (auth.checkRole(req.user.roles, type, "write")) {
       Janus.putAsync(fhir, mapper[type]).then(result => {
-        resp.json(fhir)
+        resp.type(resultType).json(fhir)
 
       }).catch(err => {
         resp.sendStatus(500)
@@ -116,7 +116,7 @@ router.delete("/:datatype/:id", auth.authenticate, function (req, resp) {
   if (type && mapper[type]) {
     if (auth.checkRole(req.user.roles, type, "write")) {
       mapper[type].deleteObject(req.params.id).then(result => {
-        resp.json(fhir)
+        resp.type(resultType).json(result)
       }).catch(err => {
         resp.sendStatus(500)
         console.log(err)
