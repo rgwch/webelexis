@@ -12,6 +12,7 @@ const mongoService = require('../services/mongo')
 const passport = require('passport')
 const User = require("../models/user").InternalUser
 const nconf = require('nconf')
+const auth = new (require('../services/auth')).Authenticator()
 
 const API = "0.1";
 
@@ -30,39 +31,20 @@ var mapper = {
   Slot: new (require('../models/slot')).Slot(mysql, mongo),
   Schedule: new (require('../models/schedule')).Schedule(mysql, mongo),
   Condition: new (require('../models/condition')).Condition(mysql, mongo),
-  MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql, mongo)
+  MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql, mongo),
+  Observation: new (require('../models/observation')).Observation(mysql,mongo),
+  DocumentReference: new(require('../models/document-reference')).DocumentReference(mysql,mongo)
 }
 
-function checkUser(req, res, next) {
-  let sid = req.get("X-sid")
-  if (!sid) {
-    res.sendStatus(400)
-  } else {
-    let user = User.isLoggedIn(sid)
-    if (!user) {
-      res.sendStatus(401)
-    } else {
-      req.user = user
-      next()
-    }
-  }
-}
-
-function checkRole(roles, required) {
-  return roles.some(function (role) {
-    return role === required
-  })
-}
 
 router.get('/', function (req, res, next) {
   res.send('Webelexis FHIR Server v' + require('../app').VERSION + ", API-Level:" + API);
 });
 
-router.get('/:datatype/:id', checkUser, function (req, res, next) {
+router.get('/:datatype/:id', auth.authenticate, function (req, res, next) {
   let type = req.params.datatype
   if (mapper[type]) {
-    let requirement = type.toLowerCase() + "-read"
-    let hasRole=checkRole(req.user.roles, requirement)
+    let hasRole = auth.checkRole(req.user.roles, type, "read")
     if (hasRole) {
       Janus.getAsync(req.params.id, mapper[type]).then(result => {
         res.type(resultType).json(result)
@@ -70,14 +52,14 @@ router.get('/:datatype/:id', checkUser, function (req, res, next) {
         sendError(res, err)
       })
     } else {
-      sendError(res, "insufficient rights")
+      res.sendStatus(403)
     }
   } else {
-    sendError("unknown data type")
+    res.sendStatus(422)
   }
 })
 
-router.get('/:datatype', checkUser, function (req, resp) {
+router.get('/:datatype', auth.authenticate, function (req, resp) {
   var get_params = url.parse(req.url, true).query
   delete(get_params._format)
   resp.set({
@@ -85,60 +67,66 @@ router.get('/:datatype', checkUser, function (req, resp) {
   })
   var type = req.params.datatype
   if (type && mapper[type]) {
-    let requirement = type.toLowerCase() + "-list"
-    if (checkRole(req.user.roles, requirement)) {
+    if (auth.checkRole(req.user.roles, type, "list")) {
       Janus.queryAsync(get_params, mapper[type], req.url).then(result => {
         "use strict";
         resp.json(result)
       }).catch(error => {
-        sendError(resp, error)
+        console.log(error)
+        resp.sendStatus(500)
       })
     } else {
-      sendError(resp, "insufficient rights")
+      resp.sendStatus(403)
     }
   } else {
-    sendError(resp, "illegal argument")
+    resp.sendStatus(422)
   }
 
 })
 
-router.get("/batch/:id/:start/:number", checkUser, function (req, resp) {
+router.get("/batch/:id/:start/:number", auth.authenticate, function (req, resp) {
   Janus.getBatch(req.params.id, parseInt(req.params.start), parseInt(req.params.number)).then(result => {
     resp.type(resultType).json(result)
   }).catch(error => {
-    sendError(resp, error)
+    console.log(error)
+    resp.sendStatus(500)
   })
 })
 
-router.put("/:datatype/:id", checkUser, function (req, resp) {
+router.put("/:datatype/:id", auth.authenticate, function (req, resp) {
   let fhir = req.body
   var type = req.params.datatype
   if (type && mapper[type]) {
-    Janus.putAsync(fhir, mapper[type]).then(result => {
-      resp.json(fhir)
-    }).catch(err => {
-      sendError(resp, err)
-    })
+    if (auth.checkRole(req.user.roles, type, "write")) {
+      Janus.putAsync(fhir, mapper[type]).then(result => {
+        resp.type(resultType).json(fhir)
+
+      }).catch(err => {
+        resp.sendStatus(500)
+        console.log(err)
+      })
+    } else {
+      resp.sendStatus(403)
+    }
   } else {
-    sendError(resp, "illegal argument")
+    resp.sendStatus(422)
   }
 })
 
-router.delete("/:datatype/:id", checkUser, function (req, resp) {
+router.delete("/:datatype/:id", auth.authenticate, function (req, resp) {
   var type = req.params.datatype
   if (type && mapper[type]) {
-    mapper[type].deleteObject(req.params.id).then(result => {
-      resp.json(fhir)
-    }).catch(err => {
-      sendError(resp, err)
-    })
+    if (auth.checkRole(req.user.roles, type, "write")) {
+      mapper[type].deleteObject(req.params.id).then(result => {
+        resp.type(resultType).json(result)
+      }).catch(err => {
+        resp.sendStatus(500)
+        console.log(err)
+      })
+    } else {
+      resp.sendStatus(422)
+    }
   }
 })
 
-function sendError(handler, error) {
-  handler.json({
-    "status": "error",
-    "message": error
-  })
-}
 module.exports = router;

@@ -31,6 +31,19 @@ mongodb:
 * user: Benutzername (falls einer gesetzt ist)
 * password: Passwort (falls eines gesetzt ist)
 
+roles:
+^^^^^^
+Rollen und Rechte. Ein User kann eine oder mehrere Rollen haben.
+Jede Rolle kann kein oder beliebig viele Rechte haben. Jedes Recht besteht aus dem Namen einer
+FHIR-Resource und "-read", "-write" oder "-list". Das Recht "-write" impliziert "-list" und "-read".
+
+Ein User mit der Rolle "admin" hat implizit alle Rechte.
+
+Ein User ohne erteilte Rolle (zum Beispiel neu angemeldet), hat automatisch die Rolle "visitor".
+
+Die in config-sample.json vorgegebenen Rollen sind nur Beispiele und können beliebig umbenannt oder geändert werden.
+Allerdings sollten die Rollen im Router des Clients (client/src/app.ts -> authRoleId) gleich lauten.
+
 client:
 ^^^^^^^
 

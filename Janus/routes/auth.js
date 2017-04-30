@@ -16,12 +16,12 @@ router.post("/chpwd", function (req, res) {
     if (user) {
       if (user.checkPassword(oldpwd)) {
         user.setPassword(newpwd)
-        res.json({status: "ok"})
+        res.sendStatus(204)
       } else {
-        res.json({"status": "error", "message": "Bad username or password"})
+        res.sendStatus(401)
       }
     } else {
-      res.json({status: "error", message: "Bad username or password"})
+      res.sendStatus(401)
     }
   })
 
@@ -42,7 +42,7 @@ router.post("/local",function(req,res){
     }
   }).catch(err => {
     console.log(err)
-    res.send(500)
+    res.sendStatus(500)
   })
 })
 
@@ -54,7 +54,7 @@ router.get("/logout/:sid",function(req,res){
       user.logOut()
     }
   }
-  res.json({status:"ok"})
+  res.sendStatus(204)
 })
 
 router.get("/checksession",function(req,res){
