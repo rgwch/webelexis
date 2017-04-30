@@ -10,7 +10,7 @@ $VERSION =~ s/^\s+|\s+$//g;
 
 bumpfile("Dockerfile","version=.+","version=\"$VERSION\"");
 bumpfile("Janus/package.json","\"version\":.+","\"version\": \"$VERSION\",");
-bumpfile("Janus/app.js","VERSION=\".+\"","VERSION=\"$VERSION\"");
+bumpfile("Janus/app.js","VERSION\\s*=\\s*\".+\"","VERSION = \"$VERSION\"");
 bumpfile("docs/conf.py","release = u.+","release = u\'$VERSION\'");
 bumpfile("client/package.json", "\"version\":.+", "\"version\": \"$VERSION\",");
 bumpfile("run-docker.sh","rgwch/webelexis:.+","rgwch/webelexis:$VERSION");
