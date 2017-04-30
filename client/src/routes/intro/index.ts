@@ -10,6 +10,7 @@ import {Config} from "../../config";
 import {Router} from "aurelia-router";
 import {EventAggregator} from "aurelia-event-aggregator";
 import * as moment from "moment";
+import {HttpWrapper} from '../../services/http-wrapper'
 
 
 @autoinject
@@ -26,7 +27,7 @@ export class Intro {
 
 
   constructor(private patientFactory: PatientFactory, private patientService: FhirService, private cfg: Config,
-              private router: Router, private ea: EventAggregator) {
+              private router: Router, private ea: EventAggregator, private http:HttpWrapper) {
     this.officeName = cfg.general.officeName
 
 
@@ -41,7 +42,6 @@ export class Intro {
   }
 
   attached() {
-
     this.dateSubscriber = this.ea.subscribe("datepicker", dateEvent => {
       console.log(dateEvent.newDate)
       let d = moment(dateEvent.newDate)
@@ -54,7 +54,6 @@ export class Intro {
     })
 
   }
-
 
   detached() {
     console.log("detached")

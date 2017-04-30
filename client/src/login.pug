@@ -1,0 +1,20 @@
+template
+  .container
+    .row
+      .chipcontents
+        h2.h2 Logindaten eingeben
+        input(id="email" value.bind="email" name="email" type="text" placeholder="e-mail")
+        //label(for="email" t="login.email") Enter email
+        input(id="password" value.bind="password" name="password" type="password" placeholder="password")
+        //label(for="password" t="login.password") Enter Password
+        div(style="text-align:center")
+          button.primary.btn.waves-effect(click.trigger="login()") Login
+      .chipcontents(style="margin-top:5px")
+        h2.h2 Oder mit anderem Konto anmelden
+        a(href.bind="address('auth/google?callback=http://localhost:9000')" style="align: center")
+          div(style="text-align:center;padding-top:10px;padding-bottom:5px;")
+            img(src="/assets/btn_google_signin_light_normal_web.png" alt="Google")
+        a(href.bind="address('auth/twitter?callback=http://localhost:9000')" style="align: center")
+          div(style="text-align:center;padding-top:10px;padding-bottom:5px;")
+            img(src="/assets/sign-in-with-twitter.png" alt="Twitter")
+

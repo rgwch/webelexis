@@ -3,51 +3,63 @@
  * Copyright (c) 2017 by G. Weirich
  */
 
-var express = require('express');
-var router = express.Router();
-var janus = require('../services/janus')
-var patientservice = require('../models/patient')
-var encounterService = require('../models/encounter')
-var url = require('url')
-var my = require('../services/mysql')
-var mongoService = require('../services/mongo')
-var API = "0.1";
+const express = require('express');
+const router = express.Router();
+const janus = require('../services/janus')
+const url = require('url')
+const my = require('../services/mysql')
+const mongoService = require('../services/mongo')
+const passport = require('passport')
+const User = require("../models/user").InternalUser
+const nconf = require('nconf')
+const auth = new (require('../services/auth')).Authenticator()
 
-var mysql = new my.MySql()
-var mongo = new mongoService.MongoDB()
-var Janus = new janus.Janus()
+const API = "0.1";
+
+const mysql = new my.MySql()
+const mongo = new mongoService.MongoDB()
+const Janus = new janus.Janus()
 
 const resultType = "application/json+fhir; charset=UTF-8"
+const roles = nconf.get('roles') || {}
 
 var mapper = {
-  Patient: new patientservice.Patient(mysql, mongo),
-  Encounter: new encounterService.Encounter(mysql, mongo),
+  Patient: new (require('../models/patient')).Patient(mysql, mongo),
+  Encounter: new (require('../models/encounter')).Encounter(mysql, mongo),
   Flag: new (require('../models/flag')).Flag(mysql, mongo),
   Appointment: new (require('../models/appointment')).Appointment(mysql, mongo),
   Slot: new (require('../models/slot')).Slot(mysql, mongo),
   Schedule: new (require('../models/schedule')).Schedule(mysql, mongo),
-  Condition: new (require('../models/condition')).Condition(mysql,mongo),
-  MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql,mongo)
+  Condition: new (require('../models/condition')).Condition(mysql, mongo),
+  MedicationOrder: new (require('../models/medication-order')).MedicationOrder(mysql, mongo),
+  Observation: new (require('../models/observation')).Observation(mysql,mongo),
+  DocumentReference: new(require('../models/document-reference')).DocumentReference(mysql,mongo)
 }
-/* GET users listing. */
+
+
 router.get('/', function (req, res, next) {
   res.send('Webelexis FHIR Server v' + require('../app').VERSION + ", API-Level:" + API);
 });
 
-router.get('/:datatype/:id', function (req, res, next) {
-  var type = req.params.datatype
+router.get('/:datatype/:id', auth.authenticate, function (req, res, next) {
+  let type = req.params.datatype
   if (mapper[type]) {
-    Janus.getAsync(req.params.id, mapper[type]).then(result => {
-      res.type(resultType).json(result)
-    }).catch(err => {
-      sendError(res, err)
-    })
+    let hasRole = auth.checkRole(req.user.roles, type, "read")
+    if (hasRole) {
+      Janus.getAsync(req.params.id, mapper[type]).then(result => {
+        res.type(resultType).json(result)
+      }).catch(err => {
+        sendError(res, err)
+      })
+    } else {
+      res.sendStatus(403)
+    }
   } else {
-    sendError("unknown data type")
+    res.sendStatus(422)
   }
 })
 
-router.get('/:datatype', function (req, resp) {
+router.get('/:datatype', auth.authenticate, function (req, resp) {
   var get_params = url.parse(req.url, true).query
   delete(get_params._format)
   resp.set({
@@ -55,55 +67,66 @@ router.get('/:datatype', function (req, resp) {
   })
   var type = req.params.datatype
   if (type && mapper[type]) {
-    Janus.queryAsync(get_params, mapper[type], req.url).then(result => {
-      "use strict";
-      resp.json(result)
-    }).catch(error => {
-      sendError(resp, error)
-    })
+    if (auth.checkRole(req.user.roles, type, "list")) {
+      Janus.queryAsync(get_params, mapper[type], req.url).then(result => {
+        "use strict";
+        resp.json(result)
+      }).catch(error => {
+        console.log(error)
+        resp.sendStatus(500)
+      })
+    } else {
+      resp.sendStatus(403)
+    }
   } else {
-    sendError(resp, "illegal argument")
+    resp.sendStatus(422)
   }
 
 })
 
-router.get("/batch/:id/:start/:number", function (req, resp) {
+router.get("/batch/:id/:start/:number", auth.authenticate, function (req, resp) {
   Janus.getBatch(req.params.id, parseInt(req.params.start), parseInt(req.params.number)).then(result => {
     resp.type(resultType).json(result)
   }).catch(error => {
-    sendError(resp, error)
+    console.log(error)
+    resp.sendStatus(500)
   })
 })
 
-router.put("/:datatype/:id",function(req,resp){
-  let fhir=req.body
+router.put("/:datatype/:id", auth.authenticate, function (req, resp) {
+  let fhir = req.body
   var type = req.params.datatype
   if (type && mapper[type]) {
-    Janus.putAsync(fhir, mapper[type]).then(result=> {
-      resp.json(fhir)
-    }).catch(err=> {
-      sendError(resp, err)
-    })
-  }else{
-    sendError(resp,"illegal argument")
+    if (auth.checkRole(req.user.roles, type, "write")) {
+      Janus.putAsync(fhir, mapper[type]).then(result => {
+        resp.type(resultType).json(fhir)
+
+      }).catch(err => {
+        resp.sendStatus(500)
+        console.log(err)
+      })
+    } else {
+      resp.sendStatus(403)
+    }
+  } else {
+    resp.sendStatus(422)
   }
 })
 
-router.delete("/:datatype/:id",function(req,resp){
+router.delete("/:datatype/:id", auth.authenticate, function (req, resp) {
   var type = req.params.datatype
   if (type && mapper[type]) {
-    mapper[type].deleteObject(req.params.id).then(result => {
-      resp.json(fhir)
-    }).catch(err => {
-      sendError(resp, err)
-    })
+    if (auth.checkRole(req.user.roles, type, "write")) {
+      mapper[type].deleteObject(req.params.id).then(result => {
+        resp.type(resultType).json(result)
+      }).catch(err => {
+        resp.sendStatus(500)
+        console.log(err)
+      })
+    } else {
+      resp.sendStatus(422)
+    }
   }
 })
 
-function sendError(handler, error) {
-  handler.json({
-    "status": "error",
-    "message": error
-  })
-}
 module.exports = router;

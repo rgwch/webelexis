@@ -67,9 +67,13 @@ export abstract class HttpWrapper {
     this.httpClient.configure(x => {
       x.withInterceptor({
         request(message: RequestMessage) {
-          if (self.session.currentUser) {
-            self.currentToken = self.session.currentUser.token;
+          if (self.session.getUser()) {
+            message.headers['headers']['X-sid']={
+              key: "X-sid",
+              value: self.session.getUser().sid
+            }
           }
+
           return message;
         },
         response(message: HttpResponseMessage) {
@@ -89,6 +93,7 @@ export abstract class HttpWrapper {
 
   public handleError(error: HttpResponseMessage) {
     console.log('TODO: Handle Error');
+    alert(JSON.stringify(error))
     return null;
   }
 

@@ -11,8 +11,56 @@
     "password": "someone",
     "url": "somewhere:27017/somedb"
   },
-  "server":{
+  "server": {
+    "twitterApiKey": "qZdfdsftw34p6efggfsdfg",
+    "twitterApiSecret": "jYydsfsgf4554ufdghhhhhhhhhhhhhhhhhhhw9chn",
+    "googleClientID": "7439ddddddddddddd3596-43664565467.apps.googleusercontent.com",
+    "googleClientSecret": "09431fdddddfdd3",
     "documentStore": "/some/data/directory"
+  },
+  "roles": {
+    "mpa": [
+      "patient-list",
+      "patient-read",
+      "encounter-list",
+      "encounter-read",
+      "flag-list",
+      "flag-read",
+      "appoinment-list",
+      "appointment-write",
+      "slot-list",
+      "slot-read",
+      "schedule-list",
+      "schedule-read",
+      "condition-read",
+      "condition-list",
+      "medication-order-list",
+      "medicationorder-read"
+    ],
+    "doctor": [
+      "patient-write",
+      "encounter-write",
+      "flag-write",
+      "appointment-write",
+      "slot-list",
+      "slot-read",
+      "schedule-list",
+      "schedule-read",
+      "condition-write",
+      "medication-order-write",
+      "documentreference-write",
+      "observation-write"
+    ],
+    "manager": [
+      "slot-write",
+      "schedule-write"
+    ],
+    "visitor": [],
+    "patient": [
+      "self-read",
+      "appointment-read",
+      "appointment-set"
+    ]
   },
   "client": {
     "general": {
@@ -55,14 +103,14 @@
         },
         {
           "name": "Extra",
-          "label":"Extra",
+          "label": "Extra",
           "fg": "white",
           "bg": "#f44242",
           "duration": 15
         },
         {
           "name": "Check-Up",
-          "label":"Check-Up",
+          "label": "Check-Up",
           "fg": "black",
           "bg": "#42f4dc",
           "duration": 45

@@ -1,14 +1,16 @@
 extends layout.pug
 
 block content
-  form.row(action="/dologin" method="POST")
+  form.row(action="/auth/local" method="POST")
+    p= error
     .form-group
-      label(for="username") Username
-      input.form-control(placeholder="Name" id="username" type="text")
+      label(for="username") E-Mail
+      input.form-control(id="username" name="email" type="text")
     .form-group
       label(for="password") Passwort
-      input.form-control(id="password" type="password")
+      input.form-control(id="password" name="password" type="password")
     button.btn.btn-default(type="submit") Log In
+
 
 
 
