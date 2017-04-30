@@ -93,6 +93,7 @@ export abstract class HttpWrapper {
 
   public handleError(error: HttpResponseMessage) {
     console.log('TODO: Handle Error');
+    alert(error)
     return null;
   }
 
