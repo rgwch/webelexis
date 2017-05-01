@@ -1,3 +1,10 @@
 <template>
-
+  <div class="tableau" z-depth-1>
+    <div class="header" click.delegate="largeToggle()">
+      ${document.getLabel()}
+    </div>
+    <div show.bind="large">
+      <p>${document.getField("description")}</p>
+    </div>
+  </div>
 </template>

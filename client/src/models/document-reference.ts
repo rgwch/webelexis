@@ -16,4 +16,7 @@ export class DocumentReference extends FHIRobject{
     super(data,"DocumentReference")
   }
 
+  getLabel(){
+    return this.getField("created")+", "+this.getField("masterIdentifier")
+  }
 }
