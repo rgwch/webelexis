@@ -5,6 +5,7 @@ const nconf = require('nconf');
 
 
 const serverConf = nconf.get("server")
+const security=nconf.get("security")
 
 
 router.post("/chpwd", function (req, res) {
@@ -29,21 +30,31 @@ router.post("/chpwd", function (req, res) {
 
 
 router.post("/local",function(req,res){
-  User.findByMail(req.body.email).then(user => {
-    if (user) {
-      if (user.checkPassword(req.body.password)) {
-        user.sid=user.logIn()
-        res.json({"status":"ok",user:user})
-      } else {
-        res.json({status:"error", message: "Email oder Passwort falsch"})
+  if(security=='autologin'){
+    res.json({
+      status: "ok",
+      user:{
+        email:"admin@invalid.invalid",
+        roles:["admin"]
       }
-    } else {
-      res.json( {status:"error", message: "Email oder Passwort falsch"})
-    }
-  }).catch(err => {
-    console.log(err)
-    res.sendStatus(500)
-  })
+    })
+  }else {
+    User.findByMail(req.body.email).then(user => {
+      if (user) {
+        if (user.checkPassword(req.body.password)) {
+          user.sid = user.logIn()
+          res.json({"status": "ok", user: user})
+        } else {
+          res.json({status: "error", message: "Email oder Passwort falsch"})
+        }
+      } else {
+        res.json({status: "error", message: "Email oder Passwort falsch"})
+      }
+    }).catch(err => {
+      console.log(err)
+      res.sendStatus(500)
+    })
+  }
 })
 
 router.get("/logout",function(req,res){
@@ -58,16 +69,20 @@ router.get("/logout",function(req,res){
 })
 
 router.get("/checksession",function(req,res){
-  let sid=req.get("X-sid")
-  if(sid) {
-    let user=User.isLoggedIn(sid)
-    if(user) {
-      res.json({"status": "ok"})
-    }else{
-      res.json({status:"error"})
+  if(security=='autologin'){
+    res.json({"status":"ok"})
+  }else {
+    let sid = req.get("X-sid")
+    if (sid) {
+      let user = User.isLoggedIn(sid)
+      if (user) {
+        res.json({"status": "ok"})
+      } else {
+        res.json({status: "error"})
+      }
+    } else {
+      res.json({"status": "error"})
     }
-  }else{
-    res.json({"status": "error"})
   }
 })
 

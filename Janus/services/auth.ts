@@ -1,13 +1,13 @@
 import {InternalUser} from "../models/user";
-
+const nconf=require('nconf')
+let predefinedRoles=nconf.get("roles")
+let security=nconf.get("security")
 
 export class Authenticator {
-  private predefinedRoles
 
   constructor() {
-    let roles = require('nconf').get('roles')
-    if (!roles) {
-      roles = {
+    if (!predefinedRoles) {
+      predefinedRoles = {
         "mpa": ["patient-list", "patient-read", "encounter-list", "encounter-read", "flag-list", "flag-read", "appoinment-list",
           "appointment-write", "slot-list", "slot-read", "schedule-list", "schedule-read",
           "condition-read", "condition-list", "medication-order-list", "medicationorder-read"],
@@ -23,48 +23,58 @@ export class Authenticator {
         "patient": ["self-read", "appointment-read", "appointment-set"]
       }
     }
-    this.predefinedRoles = roles
   }
 
   public authenticate(req, res, next) {
-    let sid = req.get("X-sid")
-    if (!sid) {
-      res.sendStatus(400)
-    } else {
-      let user = InternalUser.isLoggedIn(sid)
-      if (!user) {
-        res.sendStatus(401)
+    if(security=='autologin'){
+      req.user={
+        email:"admin@invalid.invalid",
+        roles:["admin"]
+      }
+      next()
+    }else {
+      let sid = req.get("X-sid")
+      if (!sid) {
+        res.sendStatus(400)
       } else {
-        req.user = user
-        next()
+        let user = InternalUser.isLoggedIn(sid)
+        if (!user) {
+          res.sendStatus(401)
+        } else {
+          req.user = user
+          next()
+        }
       }
     }
   }
 
   public checkRole(roles, type, access) {
-
-    return roles.some(role => {
-      if (role === 'admin') {
-        return true
-      }
-      let privileges = this.predefinedRoles[role]
-      if (privileges) {
-        let privname = type.toLowerCase() + "-"
-        return privileges.some(priv => {
-          if (access === "read") {
-            return priv.startsWith(privname)
-          } else if (access === "write") {
-            return priv === privname + "write"
-          } else if (access === "list") {
-            return priv === privname + "list"
-          } else {
-            return false
-          }
-        })
-      } else {
-        return false
-      }
-    })
+    if (security == "autologin") {
+      return true
+    } else {
+      return roles.some(role => {
+        if (role === 'admin') {
+          return true
+        }
+        let privileges = predefinedRoles[role]
+        if (privileges) {
+          let privname = type.toLowerCase() + "-"
+          return privileges.some(priv => {
+            if (access === "read") {
+              return priv.startsWith(privname)
+            } else if (access === "write") {
+              return priv === privname + "write"
+            } else if (access === "list") {
+              return priv === privname + "list"
+            } else {
+              return false
+            }
+          })
+        } else {
+          return false
+        }
+      })
+    }
   }
 
 }

@@ -87,7 +87,7 @@ export class Details {
       this.localizedDate = raw ? moment(raw).format(this.tr.tr('adapters.date_format')) : "?"
       let searchTerm = [{entity: "patient", value: this.patientId}]
       let fullsearch = [{entity: "firstname",value: pat.firstName[0]},{entity: "lastname", value: pat.lastName[0]},
-        {entity: "birthdare",value: pat.birthDate}]
+        {entity: "birthdate",value: pat.birthDate}]
 
       this.fhirService.filterBy(this.encounterFactory, searchTerm).then(result => {
         this.encounters = result

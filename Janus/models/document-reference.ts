@@ -4,6 +4,7 @@ import {FHIR_Resource} from "../common/models/fhir";
 import {NoSQL} from "../services/mongo";
 import {SQL} from "../services/mysql";
 import {LucindaService} from "../services/lucinda-service";
+const moment=require('moment')
 
 
 export class DocumentReference extends FhirObject implements Refiner {
@@ -44,10 +45,19 @@ export class DocumentReference extends FhirObject implements Refiner {
     } else {
       let searchTerm = ""
       if (params.query) {
-        searchTerm = "+" + params.query
+        searchTerm+= " +" + params.query
       }
       if (params.patient) {
-        searchTerm = "+" + params.patient
+        searchTerm+= " +patient:"+params.patient
+      }
+      if(params.firstname) {
+        searchTerm+=" +firstname:"+params.firstname
+      }
+      if(params.lastname){
+        searchTerm+=" +lastname:"+params.lastname
+      }
+      if(params.birthdate){
+        searchTerm+=" +birthdate:"+moment(params.birthdate,"DD.MM.YYYY").format("YYYYMMDD")
       }
       if (searchTerm.length > 0) {
         try {
