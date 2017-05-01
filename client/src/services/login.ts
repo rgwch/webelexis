@@ -6,19 +6,29 @@
 import {HttpWrapper} from './http-wrapper';
 import {PublicUser as User} from '../models/public-user';
 import {inject} from 'aurelia-framework';
+import {Session} from './session'
 
-@inject(HttpWrapper)
+@inject(HttpWrapper, Session)
 export class LoginService {
   private http: HttpWrapper;
   public baseURL
 
-  constructor(http: HttpWrapper) {
+  constructor(http: HttpWrapper, private session:Session) {
     this.http = http;
     this.baseURL=this.http.formatUrl("/")
   }
 
   public async checkSession(): Promise<User>{
-    return this.http.get("auth/checksession")
+    if(this.session.getUser()) {
+      let status = await this.http.get("auth/checksession")
+      if (status.status === "ok") {
+        return this.session.getUser()
+      } else {
+        return null
+      }
+    }else{
+      return null
+    }
   }
 
   public async login(username: string, password: string, showError:boolean=true){

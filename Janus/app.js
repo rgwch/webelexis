@@ -66,7 +66,7 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 app.use(function (req, res, next) {
   res.set({
-    "Access-Control-Allow-Origin": "http://localhost:9000",
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, X-sid"
   })

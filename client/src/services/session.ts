@@ -33,7 +33,9 @@ export class Session {
   }
 
   public logout() {
+    let sid=this.currentUser.sid
     this.currentUser = null;
     window.sessionStorage.removeItem('currentUser');
+    return sid
   }
 }

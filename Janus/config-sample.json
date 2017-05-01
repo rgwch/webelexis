@@ -78,6 +78,11 @@
         }
       ]
     },
+    "lucinda":{
+      "server":"http://192.168.16.52:2016",
+      "user": "me",
+      "password": "secret"
+    },
     "agenda": {
       "types": [
         {

@@ -47,8 +47,8 @@ export class Profile{
   }
 
   logout(){
-    this.session.logout()
-    this.http.get("/auth/logout").then(result=>{
+    let sid=this.session.logout()
+    this.http.get("auth/logout").then(result=>{
       console.log(result)
     })
     this.router.navigate("/")

@@ -3,33 +3,78 @@ import {Refiner} from "./fhirsync";
 import {FHIR_Resource} from "../common/models/fhir";
 import {NoSQL} from "../services/mongo";
 import {SQL} from "../services/mysql";
+import {LucindaService} from "../services/lucinda-service";
 
 
-export class DocumentReference extends FhirObject implements Refiner{
+export class DocumentReference extends FhirObject implements Refiner {
   dataType: string;
+  lucindaService: LucindaService
 
-  constructor(sql:SQL, nosql:NoSQL){
-    super(sql,nosql)
+  constructor(sql: SQL, nosql: NoSQL) {
+    super(sql, nosql)
+    this.lucindaService = new LucindaService()
   }
 
   compare(a: FHIR_Resource, b: FHIR_Resource): number {
-    return undefined;
+    return 0;
   }
 
-  fetchSQL(params: {}): Promise<Array<FHIR_Resource>> {
-    return undefined;
+  async fetchSQL(params: {}): Promise<Array<FHIR_Resource>> {
+    return [];
   }
 
-  fetchNoSQL(params: any): Promise<Array<FHIR_Resource>> {
-    return undefined;
+  async fetchNoSQL(params: any): Promise<Array<FHIR_Resource>> {
+    if (params.query) {
+      let docs = await this.lucindaService.searchDocuments(params.query)
+      if (docs && docs.result && docs.status == "ok") {
+        return docs.result.map(doc => this.makeFhir(doc))
+      } else {
+        return []
+      }
+    } else if (params.id) {
+      let doc : Buffer= await this.lucindaService.getDocument(params.id)
+      if (doc) {
+        return [{
+          resourceType: "DocumentReference",
+          id: params.id,
+          content:[{
+            attachment: {
+              contentType: "application/pdf",
+              data: doc.toString('base64'),
+              size: doc.length
+            }
+          }]
+        }]
+      }else{
+        return []
+      }
+
+    } else {
+      throw new Error("Bad parameters for DocumetReference.fetch")
+    }
   }
 
-  pushSQL(fhir: FHIR_Resource): Promise<void> {
-    return undefined;
+  private makeFhir(doc) {
+    return {
+      resourceType: "DocumentReference",
+      id: doc._id || doc.id || doc.uuid,
+      masterIdentifier: doc.title,
+      status: "current",
+      content: [
+        {
+          attachment: {
+            contentType: "application/pdf",
+            url: doc.path
+          }
+        }
+      ]
+    }
   }
 
-  deleteObject(id: string): any {
-    return undefined;
+  async pushSQL(fhir: FHIR_Resource): Promise<void> {
+  }
+
+  async deleteObject(id: string) {
   }
 
 }

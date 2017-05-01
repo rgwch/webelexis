@@ -92,23 +92,33 @@ export class App {
  */
 class AuthorizeStep {
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
-    let session: Session = Container.instance.get(Session);
-    let actUser = session.getUser()
-    let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
-    if (roleId && roleId != "all") {
-      if (actUser) {
-        let hasRole = actUser.roles.find(role => ((role === roleId) || (role === 'admin')))
-        if (!hasRole) {
-          console.log("login failure - no matching role for " + roleId)
-          alert("Sie haben keine Berechtigung für diese Seite.")
-          return next.cancel(new Redirect('login'));
-        }
-      } else {
-        return next.cancel(new Redirect('login'));
-      }
-
+    if(navInstruction.config.name=='login'){
+      return next()
     }
-    return next();
+    let session: Session = Container.instance.get(Session);
+    let loginService = Container.instance.get(LoginService);
+    return loginService.checkSession().then(actUser => {
+      if (actUser) {
+        let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
+        if (roleId && roleId != "all") {
+          if (actUser) {
+            let hasRole = actUser.roles.find(role => ((role === roleId) || (role === 'admin')))
+            if (!hasRole) {
+              console.log("login failure - no matching role for " + roleId)
+              alert("Sie haben keine Berechtigung für diese Seite.")
+              return next.cancel(new Redirect('login'));
+            }
+          } else {
+            return next.cancel(new Redirect('login'));
+          }
+
+        }
+        return next();
+
+      } else {
+        return next.cancel(new Redirect('login'))
+      }
+    })
   }
 
 }

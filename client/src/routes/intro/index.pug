@@ -25,4 +25,11 @@ template
             a(route-href="route: searchbox-details; params.bind: {id: patient.id}")
               | ${patient.fhir.name[0].given | fhirResource:'name[0].given':patient.fhir}
               | ${patient.fhir.name[0].family | fhirResource: 'name[0].family':patient.fhir} (${patient.gender}), ${patient.birthDate}
+      .col.s12.tableau
+        h2.h2 Oder global in Dokumenten suchen
+        form(role="form" submit.delegate="documentSearch()")
+          searchfield(value.two-way="docsearch")
+        md-collection
+          md-collection-item(repeat.for="document of documents")
+            a(href="#" click.delegate="fetch(document.getField('id'))") ${document.getField("masterIdentifier")}
 

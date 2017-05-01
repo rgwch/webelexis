@@ -24,6 +24,9 @@ export class Config {
         if (result.general) {
           this.general = result.general
         }
+        if(result.lucinda){
+          this.lucinda=result.lucinda
+        }
       }
     }).catch(err => {
       console.log(err)
@@ -41,6 +44,7 @@ export class Config {
 
 
   }
+
 
 
   public getAgendaType(name: string) {
@@ -102,6 +106,8 @@ export class Config {
       }
     ]
   }
+
+  public lucinda={}
 
   public agenda = {
     "types" : [

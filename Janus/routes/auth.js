@@ -46,8 +46,8 @@ router.post("/local",function(req,res){
   })
 })
 
-router.get("/logout/:sid",function(req,res){
-  let sid=req.params.sid
+router.get("/logout",function(req,res){
+  let sid=req.get("X-sid")
   if(sid){
     let user=User.isLoggedIn(sid)
     if(user){
@@ -62,12 +62,12 @@ router.get("/checksession",function(req,res){
   if(sid) {
     let user=User.isLoggedIn(sid)
     if(user) {
-      res.json({"status": "ok", user: user})
+      res.json({"status": "ok"})
     }else{
-      res.json({status:"error",user: null})
+      res.json({status:"error"})
     }
   }else{
-    res.send(400)
+    res.json({"status": "error"})
   }
 })
 

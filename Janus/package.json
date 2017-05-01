@@ -23,6 +23,7 @@
     "morgan": "~1.6.1",
     "mysql": "^2.13.0",
     "nconf": "^0.8.4",
+    "node-rest-client": "^3.1.0",
     "node-sass-middleware": "0.8.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",

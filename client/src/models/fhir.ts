@@ -268,6 +268,7 @@ export interface FHIR_DocumentReference extends FHIR_Resource {
   }
 
 }
+
 export interface FHIR_Encounter extends FHIR_Resource {
   status: ENCOUNTER_STATUS
   statusHistory: Array<{
