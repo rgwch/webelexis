@@ -93,7 +93,11 @@ export abstract class HttpWrapper {
 
   public handleError(error: HttpResponseMessage) {
     console.log('TODO: Handle Error');
-    alert(JSON.stringify(error))
+    if(error.statusCode) {
+      alert(error.statusCode + ", " + error.statusText)
+    }else{
+      alert(JSON.stringify(error))
+    }
     return null;
   }
 

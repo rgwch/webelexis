@@ -2,7 +2,7 @@ import {FHIRobject, FhirObjectFactory} from "./fhirobj";
 import {FHIR_Resource} from "./fhir";
 
 export class DocumentReferenceFactory implements FhirObjectFactory{
-  entities=["query","title"]
+  entities=["query","title", "patient", "firstname", "lastname", "birthdate"]
   subtype="DocumentReference"
 
   createObject(fhir): FHIRobject {

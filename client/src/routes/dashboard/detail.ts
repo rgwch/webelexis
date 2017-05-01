@@ -3,21 +3,19 @@
  * Copyright (c) 2017 by G. Weirich
  **********************************************/
 
-import {FhirService} from "../../services/fhirservice";
+import {BundleResult, FhirService} from "../../services/fhirservice";
 import {Patient} from "../../models/patient";
-import {Appointment, AppointmentFactory} from "../../models/appointment";
+import {AppointmentFactory} from "../../models/appointment";
 import {autoinject} from "aurelia-framework";
 import {I18N} from "aurelia-i18n";
 import * as moment from "moment";
-import {FHIRobject} from "../../models/fhirobj";
 import {FHIR_Flag} from "../../models/fhir";
-import {Encounter, EncounterFactory} from "../../models/encounter";
-import {MedicationOrder, MedicationOrderFactory} from "../../models/medication-order";
-import {Condition, ConditionFactory} from "../../models/condition";
+import {EncounterFactory} from "../../models/encounter";
+import {MedicationOrderFactory} from "../../models/medication-order";
+import {ConditionFactory} from "../../models/condition";
 import {Flag, FlagFactory} from "../../models/flag";
 import {DialogResult, DialogService} from "aurelia-dialog";
-import {FhirBundle} from "../../models/fhir";
-import {BundleResult} from "../../services/fhirservice";
+import {DocumentReferenceFactory} from "../../models/document-reference";
 
 const selectedClass = "accent z-depth-5 chips"
 const deselectedClass = "primary z-depth-1 chips"
@@ -38,6 +36,7 @@ export class Details {
   private encounters: BundleResult
   private prescriptions: BundleResult
   private remarks: BundleResult
+  private documents: BundleResult
   private localizedDate
   public richEditorValue = "Ha"
   private isLocked: boolean = true
@@ -56,7 +55,8 @@ export class Details {
   constructor(private fhirService: FhirService, private dialogs: DialogService,
               private tr: I18N, private encounterFactory: EncounterFactory,
               private flagFactory: FlagFactory, private appointmentFactory: AppointmentFactory,
-              private conditionFactory: ConditionFactory, private medicationOrderFactory: MedicationOrderFactory) {
+              private conditionFactory: ConditionFactory, private medicationOrderFactory: MedicationOrderFactory,
+              private documentFactory: DocumentReferenceFactory) {
     chips.forEach(chip => {
       this.expanded[chip] = false
       this.classes[chip] = deselectedClass
@@ -65,7 +65,9 @@ export class Details {
   }
 
   loadMore(data, factory) {
-    let next = data.links.find(link => {return link.relation == "next"})
+    let next = data.links.find(link => {
+      return link.relation == "next"
+    })
     if (next) {
       this.fhirService.getBatch(next.url, factory).then(batch => {
         if (batch.status === "ok") {
@@ -84,6 +86,8 @@ export class Details {
       var raw = this.patient.fhir["birthDate"]
       this.localizedDate = raw ? moment(raw).format(this.tr.tr('adapters.date_format')) : "?"
       let searchTerm = [{entity: "patient", value: this.patientId}]
+      let fullsearch = [{entity: "firstname",value: pat.firstName[0]},{entity: "lastname", value: pat.lastName[0]},
+        {entity: "birthdare",value: pat.birthDate}]
 
       this.fhirService.filterBy(this.encounterFactory, searchTerm).then(result => {
         this.encounters = result
@@ -109,6 +113,10 @@ export class Details {
       this.fhirService.filterBy(this.medicationOrderFactory, searchTerm).then(result => {
         this.prescriptions = result
         this.counts['prescriptions'] = result.values
+      })
+      this.fhirService.filterBy(this.documentFactory,fullsearch).then(result =>{
+        this.documents=result
+        this.counts['documents'] = result.values
       })
 
     } else {
@@ -153,26 +161,26 @@ export class Details {
         let heading = response.output.heading
         let flag: FHIR_Flag = <FHIR_Flag>{
           "resourceType": "Flag",
-          "id"          : "a",
-          "status"      : "active",
-          "category"    : {
+          "id": "a",
+          "status": "active",
+          "category": {
             "coding": [{
-              "system" : "xid.ch/flags/categories",
-              "code"   : cat,
+              "system": "xid.ch/flags/categories",
+              "code": cat,
               "display": cat
             }],
-            "text"  : cat
+            "text": cat
           },
-          "code"        : {
+          "code": {
             "coding": [
               {
-                "system" : "xid.ch/flags",
-                "code"   : "user",
+                "system": "xid.ch/flags",
+                "code": "user",
                 "display": heading
 
               }
             ],
-            "text"  : text
+            "text": text
           }
         }
         /*

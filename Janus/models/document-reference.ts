@@ -24,20 +24,13 @@ export class DocumentReference extends FhirObject implements Refiner {
   }
 
   async fetchNoSQL(params: any): Promise<Array<FHIR_Resource>> {
-    if (params.query) {
-      let docs = await this.lucindaService.searchDocuments(params.query)
-      if (docs && docs.result && docs.status == "ok") {
-        return docs.result.map(doc => this.makeFhir(doc))
-      } else {
-        return []
-      }
-    } else if (params.id) {
-      let doc : Buffer= await this.lucindaService.getDocument(params.id)
+    if (params.id) {
+      let doc: Buffer = await this.lucindaService.getDocument(params.id)
       if (doc) {
         return [{
           resourceType: "DocumentReference",
           id: params.id,
-          content:[{
+          content: [{
             attachment: {
               contentType: "application/pdf",
               data: doc.toString('base64'),
@@ -45,12 +38,32 @@ export class DocumentReference extends FhirObject implements Refiner {
             }
           }]
         }]
-      }else{
+      } else {
         return []
       }
-
     } else {
-      throw new Error("Bad parameters for DocumetReference.fetch")
+      let searchTerm = ""
+      if (params.query) {
+        searchTerm = "+" + params.query
+      }
+      if (params.patient) {
+        searchTerm = "+" + params.patient
+      }
+      if (searchTerm.length > 0) {
+        try {
+          let docs = await this.lucindaService.searchDocuments(params.query)
+          if (docs && docs.result && docs.status == "ok") {
+            return docs.result.map(doc => this.makeFhir(doc))
+          } else {
+            return []
+          }
+        }catch(err){
+          console.log(JSON.stringify(err))
+          return []
+        }
+      } else {
+        return []
+      }
     }
   }
 

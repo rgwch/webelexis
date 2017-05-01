@@ -34,6 +34,7 @@ template
           include fragment_conditions.pug
         .chipcontents(if.bind="expanded['documents']")
           h4(t="dashboard.documents")
+          include fragment_documents.pug
         .chipcontents(if.bind="expanded['labor']")
           h4(t="dashboard.labor")
         .chipcontents(if.bind="expanded['prescriptions']")

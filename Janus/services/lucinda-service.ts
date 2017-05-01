@@ -10,6 +10,7 @@ export class LucindaService {
   constructor() {
     this.lucinda = nconf.get('lucinda')
     if (this.lucinda) {
+
       this.restClient = new Client()
     }
   }
@@ -18,12 +19,16 @@ export class LucindaService {
     return new Promise((resolve, reject) => {
       if (this.lucinda) {
         try {
-          this.restClient.get(this.lucinda.server + API + "get/" + id, function (data, response) {
+          let req=this.restClient.get(this.lucinda.server + API + "get/" + id, function (data, response) {
             if (response.statusCode == 200) {
               resolve(data)
             } else {
               reject(new Error(response.statusCode + ", " + response.statusMessage))
             }
+          })
+          req.on('error',function(err){
+            console.log(err)
+            reject(err)
           })
 
         } catch (err) {
@@ -49,7 +54,7 @@ export class LucindaService {
           }
         }
         try {
-          this.restClient.post(this.lucinda.server + API + "query", args, function (data, response) {
+          let req=this.restClient.post(this.lucinda.server + API + "query", args, function (data, response) {
             if (response.statusCode == 200) {
               resolve(data)
             } else if (response.statusCode == 204) {
@@ -57,6 +62,10 @@ export class LucindaService {
             } else {
               reject(new Error(response.statusCode + ", " + response.statusMessage))
             }
+          })
+          req.on('error',function(err){
+            console.log(err)
+            reject(err)
           })
         } catch (err) {
           reject(err)
