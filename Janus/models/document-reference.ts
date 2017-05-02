@@ -63,7 +63,8 @@ export class DocumentReference extends FhirObject implements Refiner {
         try {
           let docs = await this.lucindaService.searchDocuments(searchTerm)
           if (docs && docs.result && docs.status == "ok") {
-            return docs.result.map(doc => this.makeFhir(doc))
+            return docs.result.filter(doc=> doc.lucinda_doctype!="Konsultation")
+                              .map(doc => this.makeFhir(doc))
           } else {
             return []
           }
