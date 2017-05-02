@@ -116,7 +116,7 @@ export class Details {
       })
       this.fhirService.filterBy(this.documentFactory,fullsearch).then(result =>{
         this.documents=result
-        this.counts['documents'] = result.values
+        this.counts['documents'] = result.count
       })
 
     } else {

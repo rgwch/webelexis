@@ -12,7 +12,7 @@ export class DocumentView{
   large:boolean=false
 
   bind(context, overide) {
-    if (this.document.fhir.resourceType !== "Encounter") {
+    if (this.document.fhir.resourceType !== "DocumentReference") {
       throw "bad object assignment"
     }
   }
