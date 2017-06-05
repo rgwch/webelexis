@@ -1,3 +1,9 @@
+/***************************************
+ * This file is part of Webelexis(tm)
+ * Copyright (c) 2017 by G. Weirich.
+ * All rights reserved.
+ ***************************************/
+
 import {FhirObject} from "./fhirobject";
 import {Refiner} from "./fhirsync";
 import {FHIR_Resource} from "../common/models/fhir";
@@ -6,6 +12,9 @@ import {SQL} from "../services/mysql";
 import {LucindaService} from "../services/lucinda-service";
 const moment=require('moment')
 
+/**
+ * Fetch a document from a LucindaService
+ */
 
 export class DocumentReference extends FhirObject implements Refiner {
   dataType: string;
@@ -28,7 +37,7 @@ export class DocumentReference extends FhirObject implements Refiner {
     if (params.id) {
       let doc: Buffer = await this.lucindaService.getDocument(params.id)
       if (doc) {
-        return [{
+        return [<FHIR_Resource>{
           resourceType: "DocumentReference",
           id: params.id,
           content: [{

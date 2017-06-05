@@ -270,417 +270,7 @@ System.config({
       "indexof": "npm:indexof@0.0.1"
     }
   },
-  depCache: {
-    "app.js": [
-      "aurelia-router",
-      "./services/session",
-      "aurelia-dependency-injection",
-      "./services/login"
-    ],
-    "components/address-box.js": [
-      "aurelia-framework"
-    ],
-    "components/appointment-view.js": [
-      "aurelia-framework",
-      "../models/appointment",
-      "aurelia-i18n",
-      "../config",
-      "../services/fhirservice"
-    ],
-    "components/checkbox-inputs.js": [
-      "aurelia-framework"
-    ],
-    "components/ck-editor.js": [
-      "aurelia-framework"
-    ],
-    "components/comm-box.js": [
-      "aurelia-framework"
-    ],
-    "components/condition-view.js": [
-      "aurelia-framework",
-      "../models/condition"
-    ],
-    "components/document-view.js": [
-      "aurelia-framework",
-      "../models/document-reference"
-    ],
-    "components/drop-down.js": [
-      "aurelia-framework"
-    ],
-    "components/encounter-view.js": [
-      "aurelia-framework",
-      "../models/encounter"
-    ],
-    "components/flag-view.js": [
-      "../models/fhirobj",
-      "aurelia-framework"
-    ],
-    "components/item-collection.js": [
-      "aurelia-framework"
-    ],
-    "components/lockable-input.js": [
-      "aurelia-framework"
-    ],
-    "components/medication-order-view.js": [
-      "../models/medication",
-      "aurelia-framework",
-      "../services/fhirservice",
-      "../models/medication-order"
-    ],
-    "components/pickdate.js": [
-      "aurelia-framework",
-      "aurelia-event-aggregator",
-      "moment",
-      "pikaday",
-      "aurelia-i18n",
-      "moment/locale/de"
-    ],
-    "components/pickresource.js": [
-      "../config",
-      "aurelia-event-aggregator",
-      "aurelia-framework"
-    ],
-    "components/radio-inputs.js": [
-      "aurelia-framework"
-    ],
-    "components/searchfield.js": [
-      "aurelia-framework",
-      "aurelia-i18n",
-      "aurelia-dependency-injection"
-    ],
-    "components/select-control.js": [
-      "aurelia-framework"
-    ],
-    "components/slot-view.js": [
-      "aurelia-framework",
-      "../models/slot",
-      "../config",
-      "../services/fhirservice",
-      "../models/patient",
-      "aurelia-event-aggregator",
-      "../routes/agenda/index"
-    ],
-    "components/text-area.js": [
-      "aurelia-framework"
-    ],
-    "components/text-input.js": [
-      "aurelia-framework"
-    ],
-    "components/unit.js": [
-      "aurelia-framework"
-    ],
-    "components/user-dropdown.js": [
-      "../services/session",
-      "aurelia-router"
-    ],
-    "config.js": [
-      "./services/http-wrapper",
-      "aurelia-framework"
-    ],
-    "dialogs/confirm.js": [
-      "aurelia-dialog",
-      "aurelia-framework"
-    ],
-    "dialogs/create-flag.js": [
-      "aurelia-dialog",
-      "aurelia-framework",
-      "aurelia-i18n"
-    ],
-    "dialogs/create-person.js": [
-      "aurelia-dialog",
-      "aurelia-framework",
-      "aurelia-i18n",
-      "moment"
-    ],
-    "left-nav.js": [
-      "./services/session",
-      "aurelia-router"
-    ],
-    "login.js": [
-      "aurelia-router",
-      "./services/login",
-      "./services/session",
-      "aurelia-framework"
-    ],
-    "main.js": [
-      "i18next-xhr-backend",
-      "./services/http-wrapper",
-      "./services/local-http-wrapper",
-      "./config"
-    ],
-    "models/address-list.js": [
-      "../services/validator"
-    ],
-    "models/appointment.js": [
-      "./fhirobj",
-      "aurelia-framework",
-      "moment",
-      "moment/locale/de"
-    ],
-    "models/communications-list.js": [
-      "../services/validator"
-    ],
-    "models/condition.js": [
-      "./fhirobj"
-    ],
-    "models/document-reference.js": [
-      "./fhirobj"
-    ],
-    "models/encounter.js": [
-      "./fhirobj",
-      "aurelia-framework",
-      "./xid"
-    ],
-    "models/fhirobj.js": [
-      "aurelia-framework",
-      "aurelia-i18n",
-      "moment",
-      "../resources/fhir-resource-value-converter",
-      "../services/fhirservice"
-    ],
-    "models/flag.js": [
-      "./fhirobj"
-    ],
-    "models/medication-administration.js": [
-      "./fhirobj"
-    ],
-    "models/medication-order.js": [
-      "./fhirobj"
-    ],
-    "models/medication.js": [
-      "./fhirobj"
-    ],
-    "models/patient.js": [
-      "aurelia-framework",
-      "aurelia-i18n",
-      "moment",
-      "../services/validator",
-      "./address-list",
-      "./communications-list",
-      "./fhirobj"
-    ],
-    "models/schedule.js": [
-      "../models/fhirobj"
-    ],
-    "models/slot.js": [
-      "../models/fhirobj",
-      "../models/patient"
-    ],
-    "resources/date-format-value-converter.js": [
-      "moment",
-      "aurelia-i18n",
-      "aurelia-framework"
-    ],
-    "resources/datetime.js": [
-      "aurelia-i18n",
-      "aurelia-framework",
-      "moment"
-    ],
-    "routes/admin/index.js": [
-      "../../services/session"
-    ],
-    "routes/agenda/index.js": [
-      "moment",
-      "../../services/fhirservice",
-      "../../models/appointment",
-      "../../models/schedule",
-      "../../models/slot",
-      "aurelia-framework",
-      "aurelia-event-aggregator",
-      "../../config",
-      "aurelia-dialog"
-    ],
-    "routes/dashboard/detail.js": [
-      "../../services/fhirservice",
-      "../../models/patient",
-      "../../models/appointment",
-      "aurelia-framework",
-      "aurelia-i18n",
-      "moment",
-      "../../models/encounter",
-      "../../models/medication-order",
-      "../../models/condition",
-      "../../models/flag",
-      "aurelia-dialog",
-      "../../models/document-reference"
-    ],
-    "routes/dashboard/index.js": [
-      "../../services/fhirservice",
-      "../../models/patient",
-      "aurelia-framework",
-      "../../config",
-      "aurelia-router"
-    ],
-    "routes/intro/index.js": [
-      "../../services/fhirservice",
-      "../../models/patient",
-      "aurelia-framework",
-      "../../config",
-      "aurelia-router",
-      "aurelia-event-aggregator",
-      "moment",
-      "../../services/http-wrapper",
-      "../../models/document-reference"
-    ],
-    "routes/profile/index.js": [
-      "aurelia-framework",
-      "../../services/session",
-      "aurelia-router",
-      "../../services/http-wrapper"
-    ],
-    "services/appointments.js": [
-      "../models/appointment",
-      "../models/schedule",
-      "./fhirservice",
-      "aurelia-framework"
-    ],
-    "services/dev-http-wrapper.js": [
-      "./http-wrapper"
-    ],
-    "services/fhirservice.js": [
-      "./http-wrapper",
-      "aurelia-framework",
-      "./validator",
-      "./data-store"
-    ],
-    "services/http-wrapper.js": [
-      "aurelia-http-client",
-      "./session"
-    ],
-    "services/local-http-wrapper.js": [
-      "./http-wrapper"
-    ],
-    "services/login.js": [
-      "./http-wrapper",
-      "../models/public-user",
-      "aurelia-framework",
-      "./session"
-    ]
-  },
   bundles: {
-    "app-build.js": [
-      "app.html!github:systemjs/plugin-text@0.0.8.js",
-      "app.js",
-      "components/address-box.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/address-box.js",
-      "components/appointment-view.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/appointment-view.js",
-      "components/checkbox-inputs.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/checkbox-inputs.js",
-      "components/ck-editor.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/ck-editor.js",
-      "components/comm-box.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/comm-box.js",
-      "components/condition-view.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/condition-view.js",
-      "components/document-view.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/document-view.js",
-      "components/drop-down.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/drop-down.js",
-      "components/encounter-view.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/encounter-view.js",
-      "components/flag-view.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/flag-view.js",
-      "components/floater.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/item-collection.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/item-collection.js",
-      "components/lockable-input.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/lockable-input.js",
-      "components/medication-order-view.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/medication-order-view.js",
-      "components/pickdate.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/pickdate.js",
-      "components/pickresource.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/pickresource.js",
-      "components/radio-inputs.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/radio-inputs.js",
-      "components/searchfield.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/searchfield.js",
-      "components/select-control.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/select-control.js",
-      "components/slot-view.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/slot-view.js",
-      "components/text-area.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/text-area.js",
-      "components/text-input.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/text-input.js",
-      "components/unit.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/unit.js",
-      "components/user-dropdown.css!github:systemjs/plugin-text@0.0.8.js",
-      "components/user-dropdown.html!github:systemjs/plugin-text@0.0.8.js",
-      "components/user-dropdown.js",
-      "config.js",
-      "dialogs/confirm.html!github:systemjs/plugin-text@0.0.8.js",
-      "dialogs/confirm.js",
-      "dialogs/create-flag.html!github:systemjs/plugin-text@0.0.8.js",
-      "dialogs/create-flag.js",
-      "dialogs/create-person.html!github:systemjs/plugin-text@0.0.8.js",
-      "dialogs/create-person.js",
-      "left-nav.css!github:systemjs/plugin-text@0.0.8.js",
-      "left-nav.html!github:systemjs/plugin-text@0.0.8.js",
-      "left-nav.js",
-      "login.html!github:systemjs/plugin-text@0.0.8.js",
-      "login.js",
-      "main.js",
-      "models/address-list.js",
-      "models/appointment.js",
-      "models/codeable-concept.js",
-      "models/communications-list.js",
-      "models/condition.js",
-      "models/document-reference.js",
-      "models/encounter.js",
-      "models/fhir.js",
-      "models/fhirobj.js",
-      "models/flag.js",
-      "models/medication-administration.js",
-      "models/medication-order.js",
-      "models/medication.js",
-      "models/patient.js",
-      "models/public-user.js",
-      "models/schedule.js",
-      "models/slot.js",
-      "models/xid.js",
-      "resources/date-format-value-converter.js",
-      "resources/datetime.js",
-      "resources/fhir-resource-value-converter.js",
-      "resources/role-filter-value-converter.js",
-      "resources/route-filter-value-converter.js",
-      "routes/admin/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/admin/index.js",
-      "routes/agenda/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/agenda/index.js",
-      "routes/basicdata/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/basicdata/index.js",
-      "routes/dashboard/detail.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/detail.js",
-      "routes/dashboard/fragment_appnt.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/fragment_basic.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/fragment_conditions.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/fragment_cons.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/fragment_documents.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/fragment_prescriptions.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/fragment_remarks.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/dashboard/index.js",
-      "routes/intro/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/intro/index.js",
-      "routes/patient/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/patient/index.js",
-      "routes/profile/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/profile/index.js",
-      "routes/showcase/index.html!github:systemjs/plugin-text@0.0.8.js",
-      "routes/showcase/index.js",
-      "services/appointments.js",
-      "services/data-store.js",
-      "services/dev-http-wrapper.js",
-      "services/fhirservice.js",
-      "services/http-wrapper.js",
-      "services/local-http-wrapper.js",
-      "services/login.js",
-      "services/session.js",
-      "services/validator.js",
-      "styles.css!github:systemjs/plugin-text@0.0.8.js"
-    ],
     "materialize-bundle.js": [
       "npm:aurelia-binding@1.2.1.js",
       "npm:aurelia-binding@1.2.1/aurelia-binding.js",
@@ -982,6 +572,416 @@ System.config({
       "npm:moment@2.17.1/moment.js",
       "npm:process@0.11.9.js",
       "npm:process@0.11.9/browser.js"
+    ],
+    "app-build.js": [
+      "app.html!github:systemjs/plugin-text@0.0.8.js",
+      "app.js",
+      "components/address-box.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/address-box.js",
+      "components/appointment-view.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/appointment-view.js",
+      "components/checkbox-inputs.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/checkbox-inputs.js",
+      "components/ck-editor.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/ck-editor.js",
+      "components/comm-box.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/comm-box.js",
+      "components/condition-view.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/condition-view.js",
+      "components/document-view.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/document-view.js",
+      "components/drop-down.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/drop-down.js",
+      "components/encounter-view.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/encounter-view.js",
+      "components/flag-view.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/flag-view.js",
+      "components/floater.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/item-collection.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/item-collection.js",
+      "components/lockable-input.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/lockable-input.js",
+      "components/medication-order-view.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/medication-order-view.js",
+      "components/pickdate.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/pickdate.js",
+      "components/pickresource.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/pickresource.js",
+      "components/radio-inputs.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/radio-inputs.js",
+      "components/searchfield.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/searchfield.js",
+      "components/select-control.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/select-control.js",
+      "components/slot-view.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/slot-view.js",
+      "components/text-area.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/text-area.js",
+      "components/text-input.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/text-input.js",
+      "components/unit.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/unit.js",
+      "components/user-dropdown.css!github:systemjs/plugin-text@0.0.8.js",
+      "components/user-dropdown.html!github:systemjs/plugin-text@0.0.8.js",
+      "components/user-dropdown.js",
+      "config.js",
+      "dialogs/confirm.html!github:systemjs/plugin-text@0.0.8.js",
+      "dialogs/confirm.js",
+      "dialogs/create-flag.html!github:systemjs/plugin-text@0.0.8.js",
+      "dialogs/create-flag.js",
+      "dialogs/create-person.html!github:systemjs/plugin-text@0.0.8.js",
+      "dialogs/create-person.js",
+      "left-nav.css!github:systemjs/plugin-text@0.0.8.js",
+      "left-nav.html!github:systemjs/plugin-text@0.0.8.js",
+      "left-nav.js",
+      "login.html!github:systemjs/plugin-text@0.0.8.js",
+      "login.js",
+      "main.js",
+      "models/address-list.js",
+      "models/appointment.js",
+      "models/codeable-concept.js",
+      "models/communications-list.js",
+      "models/condition.js",
+      "models/document-reference.js",
+      "models/encounter.js",
+      "models/fhir.js",
+      "models/fhirobj.js",
+      "models/flag.js",
+      "models/medication-administration.js",
+      "models/medication-order.js",
+      "models/medication.js",
+      "models/patient.js",
+      "models/public-user.js",
+      "models/schedule.js",
+      "models/slot.js",
+      "models/xid.js",
+      "resources/date-format-value-converter.js",
+      "resources/datetime.js",
+      "resources/fhir-resource-value-converter.js",
+      "resources/role-filter-value-converter.js",
+      "resources/route-filter-value-converter.js",
+      "routes/admin/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/admin/index.js",
+      "routes/agenda/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/agenda/index.js",
+      "routes/basicdata/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/basicdata/index.js",
+      "routes/dashboard/detail.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/detail.js",
+      "routes/dashboard/fragment_appnt.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/fragment_basic.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/fragment_conditions.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/fragment_cons.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/fragment_documents.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/fragment_prescriptions.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/fragment_remarks.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/dashboard/index.js",
+      "routes/intro/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/intro/index.js",
+      "routes/patient/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/patient/index.js",
+      "routes/profile/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/profile/index.js",
+      "routes/showcase/index.html!github:systemjs/plugin-text@0.0.8.js",
+      "routes/showcase/index.js",
+      "services/appointments.js",
+      "services/data-store.js",
+      "services/dev-http-wrapper.js",
+      "services/fhirservice.js",
+      "services/http-wrapper.js",
+      "services/local-http-wrapper.js",
+      "services/login.js",
+      "services/session.js",
+      "services/validator.js",
+      "styles.css!github:systemjs/plugin-text@0.0.8.js"
+    ]
+  },
+  depCache: {
+    "app.js": [
+      "aurelia-router",
+      "./services/session",
+      "aurelia-dependency-injection",
+      "./services/login"
+    ],
+    "components/address-box.js": [
+      "aurelia-framework"
+    ],
+    "components/appointment-view.js": [
+      "aurelia-framework",
+      "../models/appointment",
+      "aurelia-i18n",
+      "../config",
+      "../services/fhirservice"
+    ],
+    "components/checkbox-inputs.js": [
+      "aurelia-framework"
+    ],
+    "components/ck-editor.js": [
+      "aurelia-framework"
+    ],
+    "components/comm-box.js": [
+      "aurelia-framework"
+    ],
+    "components/condition-view.js": [
+      "aurelia-framework",
+      "../models/condition"
+    ],
+    "components/document-view.js": [
+      "aurelia-framework",
+      "../models/document-reference"
+    ],
+    "components/drop-down.js": [
+      "aurelia-framework"
+    ],
+    "components/encounter-view.js": [
+      "aurelia-framework",
+      "../models/encounter"
+    ],
+    "components/flag-view.js": [
+      "../models/fhirobj",
+      "aurelia-framework"
+    ],
+    "components/item-collection.js": [
+      "aurelia-framework"
+    ],
+    "components/lockable-input.js": [
+      "aurelia-framework"
+    ],
+    "components/medication-order-view.js": [
+      "../models/medication",
+      "aurelia-framework",
+      "../services/fhirservice",
+      "../models/medication-order"
+    ],
+    "components/pickdate.js": [
+      "aurelia-framework",
+      "aurelia-event-aggregator",
+      "moment",
+      "pikaday",
+      "aurelia-i18n",
+      "moment/locale/de"
+    ],
+    "components/pickresource.js": [
+      "../config",
+      "aurelia-event-aggregator",
+      "aurelia-framework"
+    ],
+    "components/radio-inputs.js": [
+      "aurelia-framework"
+    ],
+    "components/searchfield.js": [
+      "aurelia-framework",
+      "aurelia-i18n",
+      "aurelia-dependency-injection"
+    ],
+    "components/select-control.js": [
+      "aurelia-framework"
+    ],
+    "components/slot-view.js": [
+      "aurelia-framework",
+      "../models/slot",
+      "../config",
+      "../services/fhirservice",
+      "../models/patient",
+      "aurelia-event-aggregator",
+      "../routes/agenda/index"
+    ],
+    "components/text-area.js": [
+      "aurelia-framework"
+    ],
+    "components/text-input.js": [
+      "aurelia-framework"
+    ],
+    "components/unit.js": [
+      "aurelia-framework"
+    ],
+    "components/user-dropdown.js": [
+      "../services/session",
+      "aurelia-router"
+    ],
+    "config.js": [
+      "./services/http-wrapper",
+      "aurelia-framework"
+    ],
+    "dialogs/confirm.js": [
+      "aurelia-dialog",
+      "aurelia-framework"
+    ],
+    "dialogs/create-flag.js": [
+      "aurelia-dialog",
+      "aurelia-framework",
+      "aurelia-i18n"
+    ],
+    "dialogs/create-person.js": [
+      "aurelia-dialog",
+      "aurelia-framework",
+      "aurelia-i18n",
+      "moment"
+    ],
+    "left-nav.js": [
+      "./services/session",
+      "aurelia-router"
+    ],
+    "login.js": [
+      "aurelia-router",
+      "./services/login",
+      "./services/session",
+      "aurelia-framework"
+    ],
+    "main.js": [
+      "i18next-xhr-backend",
+      "./services/http-wrapper",
+      "./services/local-http-wrapper",
+      "./config"
+    ],
+    "models/address-list.js": [
+      "../services/validator"
+    ],
+    "models/appointment.js": [
+      "./fhirobj",
+      "aurelia-framework",
+      "moment",
+      "moment/locale/de"
+    ],
+    "models/communications-list.js": [
+      "../services/validator"
+    ],
+    "models/condition.js": [
+      "./fhirobj"
+    ],
+    "models/document-reference.js": [
+      "./fhirobj"
+    ],
+    "models/encounter.js": [
+      "./fhirobj",
+      "aurelia-framework",
+      "./xid"
+    ],
+    "models/fhirobj.js": [
+      "aurelia-framework",
+      "aurelia-i18n",
+      "moment",
+      "../resources/fhir-resource-value-converter",
+      "../services/fhirservice"
+    ],
+    "models/flag.js": [
+      "./fhirobj"
+    ],
+    "models/medication-administration.js": [
+      "./fhirobj"
+    ],
+    "models/medication-order.js": [
+      "./fhirobj"
+    ],
+    "models/medication.js": [
+      "./fhirobj"
+    ],
+    "models/patient.js": [
+      "aurelia-framework",
+      "aurelia-i18n",
+      "moment",
+      "../services/validator",
+      "./address-list",
+      "./communications-list",
+      "./fhirobj"
+    ],
+    "models/schedule.js": [
+      "../models/fhirobj"
+    ],
+    "models/slot.js": [
+      "../models/fhirobj",
+      "../models/patient"
+    ],
+    "resources/date-format-value-converter.js": [
+      "moment",
+      "aurelia-i18n",
+      "aurelia-framework"
+    ],
+    "resources/datetime.js": [
+      "aurelia-i18n",
+      "aurelia-framework",
+      "moment"
+    ],
+    "routes/admin/index.js": [
+      "../../services/session"
+    ],
+    "routes/agenda/index.js": [
+      "moment",
+      "../../services/fhirservice",
+      "../../models/appointment",
+      "../../models/schedule",
+      "../../models/slot",
+      "aurelia-framework",
+      "aurelia-event-aggregator",
+      "../../config",
+      "aurelia-dialog"
+    ],
+    "routes/dashboard/detail.js": [
+      "../../services/fhirservice",
+      "../../models/patient",
+      "../../models/appointment",
+      "aurelia-framework",
+      "aurelia-i18n",
+      "moment",
+      "../../models/encounter",
+      "../../models/medication-order",
+      "../../models/condition",
+      "../../models/flag",
+      "aurelia-dialog",
+      "../../models/document-reference"
+    ],
+    "routes/dashboard/index.js": [
+      "../../services/fhirservice",
+      "../../models/patient",
+      "aurelia-framework",
+      "../../config",
+      "aurelia-router"
+    ],
+    "routes/intro/index.js": [
+      "../../services/fhirservice",
+      "../../models/patient",
+      "aurelia-framework",
+      "../../config",
+      "aurelia-router",
+      "aurelia-event-aggregator",
+      "moment",
+      "../../services/http-wrapper",
+      "../../models/document-reference"
+    ],
+    "routes/profile/index.js": [
+      "aurelia-framework",
+      "../../services/session",
+      "aurelia-router",
+      "../../services/http-wrapper"
+    ],
+    "services/appointments.js": [
+      "../models/appointment",
+      "../models/schedule",
+      "./fhirservice",
+      "aurelia-framework"
+    ],
+    "services/dev-http-wrapper.js": [
+      "./http-wrapper"
+    ],
+    "services/fhirservice.js": [
+      "./http-wrapper",
+      "aurelia-framework",
+      "./validator",
+      "./data-store"
+    ],
+    "services/http-wrapper.js": [
+      "aurelia-http-client",
+      "./session"
+    ],
+    "services/local-http-wrapper.js": [
+      "./http-wrapper"
+    ],
+    "services/login.js": [
+      "./http-wrapper",
+      "../models/public-user",
+      "aurelia-framework",
+      "./session"
     ]
   }
 });

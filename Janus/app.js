@@ -4,7 +4,7 @@
  * All rights reserved.
  ***************************************/
 
-const VERSION = "2.0.6"
+const VERSION = "2.0.7"
 
 const express = require('express');
 const path = require('path');

@@ -14,7 +14,9 @@ do
         sleep 3
 done
 
-# then launch Janus
+# then launch lucinda
+java -jar $LUCINDA --config=lucinda.cfg -d &
 
+# then launch Janus
 node ./bin/www
 
