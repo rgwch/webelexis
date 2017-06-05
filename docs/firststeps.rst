@@ -5,6 +5,17 @@ Erste Schritte
 
 .. index:: Einstieg
 
+Achtung
+-------
+
+Beim Update auf Node 8.x wird auch NPM auf 5.x hochgezogen. Danach funktioniert das dependency-modell nicht mehr. Das äussert sich darin,
+dass beim Versuch, 'gulp build' oder 'gulp start' auszuführen, endlose unerfüllte Abhängigkeiten moniert werden.
+Solange das Problem nicht geklärt ist, empfehle ich ausdrücklich, nodejs auf 7.5.x und npm auf 4.6.x zu fixieren, oder, falls schon geschehen,
+wieder auf diese Versionen zurückzugehen. Bei npm geht das am einfachsten mit ``npm install -g npm@4.6.1``. Bei Node hängt das vom
+System ab, und von der Art, wie Node installiert wurde. Bei nvm_ genügt ``nvm install 7.5.0``, bei Mac/Homebrew, wenn die alte Version noch nicht
+gelöscht wurde, tut es: ``brew switch node 7.5.0``.
+
+
 Systemvoraussetzungen
 ---------------------
 
