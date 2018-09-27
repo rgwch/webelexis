@@ -1,14 +1,15 @@
-/*
- * This file is part of Webelexis(tm)
- * Copyright (c) 2017 by G. Weirich
- */
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
 
 import {customElement} from 'aurelia-framework'
 import {EventAggregator} from 'aurelia-event-aggregator'
 import * as moment from 'moment'
 import 'moment/locale/de'
-import Pikaday = require("pikaday");
-import {inject, bindable} from 'aurelia-framework'
+import Pikaday = require('pikaday');
+import {autoinject, bindable} from 'aurelia-framework'
 import {I18N} from 'aurelia-i18n'
 
 /**
@@ -16,7 +17,7 @@ import {I18N} from 'aurelia-i18n'
  * Publishes a 'datepicker' event on the Aurelia EventAggregator on date changes.
  */
 @customElement('pickdate')
-@inject(EventAggregator, Element, I18N)
+@autoinject
 export class PickDate {
   pikhome: HTMLInputElement
   element: any
@@ -56,7 +57,7 @@ export class PickDate {
       i18n    : _self.calendarNames,
       position: "bottom right",
       onSelect: function () {
-        console.log("selected " + this.getDate())
+        // console.log("selected " + this.getDate())
         _self.actDate = moment(this.getDate()).format("dd, DD.MM.YYYY")
         _self.ea.publish('datepicker', {oldDate: new Date(), newDate: this.getDate()})
         this.hide()

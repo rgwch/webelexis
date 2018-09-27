@@ -1,96 +1,109 @@
-/*********************************
- * This file is part of Webelexis
- * Copyright (c) 2017 by G. Weirich
- **********************************/
-
-import {computedFrom} from 'aurelia-framework';
+import { KontaktType } from './kontakt';
+import {FHIR_Patient} from '../models/fhir/fhir'
+import { DateTime } from '../services/datetime';
 import {Container} from 'aurelia-framework'
-import {I18N} from 'aurelia-i18n'
 import * as moment from 'moment'
-import {FHIR_Patient, FHIR_Resource, FHIR_Address} from "./fhir";
-import {Validator} from "../services/validator";
-import {AddressList} from "./address-list"
-import {CommunicationList} from "./communications-list";
-import {FHIRobject, FhirObjectFactory} from './fhirobj'
+import {I18N} from 'aurelia-i18n'
+import {FlexformConfig} from '../components/flexform'
 
-export class PatientFactory implements FhirObjectFactory {
-  entities: Array<string> = ["name"]
-  subtype: string = "Patient"
-
-  createObject(fhir: FHIR_Resource): FHIRobject {
-    return new Patient(fhir);
-  }
+export interface PatientType extends KontaktType{
 
 }
-export class Patient extends FHIRobject {
 
-  constructor(data: FHIR_Resource) {
-    super(data, "Patient")
+export class Patient{
+
+  static dt=Container.instance.get(DateTime)
+  static i18=Container.instance.get(I18N)
+
+  static getLabel(obj:any):string{
+      let ret= obj.Bezeichnung1+" "+obj.Bezeichnung2
+      if(obj.geschlecht){
+          ret+=` (${obj.geschlecht})`
+      }
+      if(obj.geburtsdatum){
+        let bd=moment(obj.geburtsdatum,"YYYYMMDD")
+        let now=moment()
+        let years=now.diff(bd,'years')
+        ret+=`, ${Patient.dt.toDate(obj.geburtsdatum)}`
+          ret+=` (${years})`
+      }
+      if(obj.patientnr){
+        ret+=" ["+obj.patientnr+"]"
+      }
+      return ret
   }
+  static getDefinition():FlexformConfig{
+    return {
+    title: ()=>"", // ()=>Patient.getTitle(),
+    compact:true,
+    attributes:[
+    {
+      attribute: "Bezeichnung1",
+      label: Patient.i18.tr("contact.lastname"),
+      datatype: "string",
+      validation: Patient.char80,
+      validationMessage: Patient.i18.tr("validation.onlyText"),
+      sizehint: 4
+    },{
+      attribute: "Bezeichnung2",
+      label: Patient.i18.tr("contact.firstname"),
+      datatype: "string",
+      validation: Patient.char80,
+      validationMessage: Patient.i18.tr("validation.onlyText"),
+      sizehint: 4,
+    },{
+      attribute: "geburtsdatum",
+      label: Patient.i18.tr("contact.birthdate"),
+      datatype: {
+        toForm: x=>Patient.dateModelToView(x),
+        toData: x=> Patient.viewToDateModel(x)
+      },
+      validation: Patient.checkdate,
+      validationMessage: Patient.i18.tr('validation.invalidDate'),
+      sizehint: 2
+    },{
+      attribute: "geschlecht",
+      label: Patient.i18.tr("contact.gender"),
+      datatype: "string",
+      sizehint: 2
+    },{
+      attribute: "bemerkung",
+      label: Patient.i18.tr("contact.remark"),
+      datatype: "string",
+      sizehint: 12
 
-
-  @computedFrom('fhir')
-  get firstName() {
-    return (this.fhir as FHIR_Patient).name[0].given
-  }
-
-
-  @computedFrom('fhir')
-  get lastName() {
-    return (this.fhir as FHIR_Patient).name[0].family
-  }
-
-  set lastName(name) {
-    (this.fhir as FHIR_Patient).name[0].family = name
-  }
-
-  @computedFrom('fhir')
-  get birthDate() {
-    let i18 = Container.instance.get(I18N)
-    var raw = (this.fhir as FHIR_Patient).birthDate
-    return raw ? moment(raw).format(i18.tr('adapters.date_format')) : "?"
-
-  }
-
-  @computedFrom('fhir')
-  get gender(): string {
-    let g: string = (this.fhir as FHIR_Patient).gender
-    if (g) {
-      return g.substring(0, 1)
-    } else {
-      return "u"
     }
+  ]}
+}
+
+  static char80(val,obj){
+    if(typeof(val)=='string'){
+        if(/^[^;\.+"\*%=§<>|,]{2,80}$/i.test(val)){
+          return true;
+      }
+    }
+    return false;
   }
 
-  @computedFrom('firstName', 'lastName')
-  get fullName() {
-    let ret = ""
-    if (this.firstName) {
-      ret += this.firstName
+  static checkdate(val,obj){
+    const m=moment(val)
+    if(m.isValid()){
+      if(m.isBefore(new Date())){
+        return true;
+      }
     }
-    if (this.lastName) {
-      ret += " " + this.lastName
-    }
-    if (this.gender) {
-      ret += " (" + this.gender.substr(0, 1) + ")"
-    }
-    if (this.birthDate) {
-      ret += " " + this.birthDate
-    }
+    return false
+  }
+  static dateModelToView(val){
+    const m=moment(val)
+    const format=Patient.i18.tr('adapters.date_format')
+    const ret=m.format(format)
     return ret
   }
 
-  getAddresses() {
-    return new AddressList(Validator.getArray(this.fhir, 'address'))
-  }
-
-  getContactMethods() {
-    return new CommunicationList(Validator.getArray(this.fhir, 'telecom'))
-  }
-
-  get salutation() {
-    return ""
-    // should return something like "Sehr geehrter Herr Müller" in german, and
-    // something like "cher Monsieur" in french.
+  static viewToDateModel(val){
+    const m=moment(val,"D.M.YYYY")
+    const ret=m.format("YYYYMMDD")
+    return ret
   }
 }

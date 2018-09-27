@@ -1,9 +1,0 @@
-.row(if.bind="prescriptions.values.length>0")
-    require(from="../../resources/fhir-resource-value-converter")
-    require(from="../../resources/date-format-value-converter")
-    require(from="../../components/medication-order-view")
-    .col.s12.m6.l4(repeat.for="presc of prescriptions.values")
-        medication-order-view(obj.bind="presc")
-.row(if.bind="prescriptions.values.length==0")
-    .col.s12
-        p(t="dashboard.nopresc") nopresc

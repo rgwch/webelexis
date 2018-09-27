@@ -1,26 +1,5 @@
 {
-  "no-console": false,
-  "semicolon": false,
   "rules": {
-    "quotemark": [
-      false,
-      "single",
-      "double"
-    ],
-    "trailing-comma": [
-      true,
-      {
-        "multiline": "never",
-        "singleline": "never"
-      }
-    ],
-    "object-literal-sort-keys": false
-  },
-  "globals": {
-    "expect": true
-  },
-  "env": {
-    "jasmine": true,
-    "karma": true
+
   }
 }

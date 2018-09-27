@@ -1,27 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
     <title>Webelexis</title>
-    <!--The FontAwesome version is locked at 4.7.0 in the package.json file to keep this from breaking.-->
-    <link rel="stylesheet" href="jspm_packages/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="dist/styles.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="GUID" content="CLIENT_UUID">
-</head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-<body aurelia-app="main">
-<div class="splash">
-    <div class="message">Webelexis</div>
-    <img src="assets/webelexis-anim.gif">
-    <p>verbinde...</p>
-</div>
-<script src="//cdn.ckeditor.com/4.6.1/standard/ckeditor.js"></script>
-<script src="jspm_packages/system.js"></script>
-<script src="config.js"></script>
-<script>
-    System.import('aurelia-bootstrapper');
-</script>
-</body>
+  </head>
+
+  <body aurelia-app="main">
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+    <script src="scripts/vendor-bundle.js" data-main="aurelia-bootstrapper"></script>
+  </body>
 </html>

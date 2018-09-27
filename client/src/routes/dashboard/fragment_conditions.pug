@@ -1,9 +1,0 @@
-.row(if.bind="counts['diags']>0")
-    require(from="../../resources/fhir-resource-value-converter")
-    require(from="../../resources/date-format-value-converter")
-    require(from="../../components/condition-view")
-    .col.s12.m6.l4(repeat.for="cond of conditions.values")
-        condition-view(obj.bind="cond" large=false)
-.row(if.bind="counts['diags']==0")
-    .col.s12
-        p(t="dashboard.nodiags") nodiags

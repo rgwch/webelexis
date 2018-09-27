@@ -1,0 +1,16 @@
+<template>
+  <require from="../ck-editor"></require>
+  <div class="card">
+    <div class="card-header bg-light">
+      <span>${datum}</span>
+      <i class="fa fa-lock" click.delegate="toggleEdit()" hide.bind="isEditing"></i>
+      <i class="fa fa-lock-open" click.delegate="toggleEdit()" show.bind="isEditing"></i>
+    </div>
+    <div class="card-body">
+      <p innerhtml.bind="obj.eintrag.html" if.bind="!isEditing"></p>
+      <div if.bind="isEditing">
+          <ck-editor value.two-way="obj.eintrag.html"></ck-editor>
+      </div>
+  </div>
+  </div -->
+</template>

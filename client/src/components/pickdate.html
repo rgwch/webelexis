@@ -4,16 +4,11 @@
   -->
 
 <template>
-  <div class="row" style="padding:0;margin:0;">
-    <div class="col s1">
-      <i class="fa fa-chevron-circle-left fa-2x" click.trigger="back()"></i>
-    </div>
-    <div class="col s8 offset-s1">
-      <input ref="pikhome" value.bind="actDate" click.trigger="show()">
-    </div>
-    <div class="col s1">
-      <i class="fa fa-chevron-circle-right fa-2x" click.trigger="forward()"></i>
-    </div>
+  <require from="pikaday/css/pikaday.css"></require>
 
+  <div class="row">
+    <img class="col-s1 nav" click.trigger="back()" alt="back" src="/assets/chevron-left.svg"></img> 
+    <input class="col-s8" ref="pikhome" value.bind="actDate" click.trigger="show()">
+    <img class="col-s1 nav" click.trigger="forward()" alt="fwd" src="/assets/chevron-right.svg"></img>
   </div>
 </template>

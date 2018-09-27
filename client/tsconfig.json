@@ -1,8 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
     "sourceMap": true,
     "target": "es5",
     "module": "amd",
@@ -11,27 +9,18 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowJs": true,
     "moduleResolution": "node",
-    "lib": ["es2015", "dom"],
-    "baseUrl": "./",
-    "allowSyntheticDefaultImports": true,
-    "paths": {
-      "src/*": ["src/*"]
-    }
+    "lib": ["es2017", "dom"]
   },
-  "filesGlob": [
-    "./src/**/*.ts",
-    "./typings/index.d.ts",
-    "./custom_typings/**/*.d.ts",
-    "./jspm_packages/**/*.d.ts",
-    "./test/**/*.ts"
-  ],
   "exclude": [
     "node_modules",
-    "jspm_packages",
-    "dist",
-    "build",
-    "test"
+    "aurelia_project"
+  ],
+  "filesGlob": [
+    "./src/**/*.ts",
+    "./test/**/*.ts",
+    "./custom_typings/**/*.d.ts"
   ],
   "atom": {
     "rewriteTsconfig": false

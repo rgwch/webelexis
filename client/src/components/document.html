@@ -1,0 +1,57 @@
+<template>
+  <require from="./ck-editor"></require>
+  <span class="detailcaption">${title}</span>
+  <div class="sheet" style="width:100%">
+    <div class="header">
+      <ul class="nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+            aria-haspopup="true" aria-expanded="false">Datei</a>
+          <div class="dropdown-menu">
+            <p class="dropdown-item" click.trigger="doSave()">Speichern</p>
+            <p class="dropdown-item" click.trigger="doSaveTemplate()">Speichern als
+              Vorlage...</p>
+            <div class="dropdown-divider"></div>
+
+            <p class="dropdown-item" click.trigger="doDelete()">Löschen</p>
+            <div class="dropdown-divider"></div>
+            <p class="dropdown-item" click.trigger="doCreatePdf()">Drucken</p>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="#">Vorlage</a>
+          <div class="dropdown-menu">
+            <p class="dropdown-item" repeat.for="tmpl of templates" click.trigger="fromTemplate(tmpl)">${tmpl.subject}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="body">
+      <div id="editor">
+        <ck-editor value.two-way="htmlText"></ck-editor>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Dialog to set the subject od current doc -->
+  <div class="modal" tabindex="-1" role="dialog" ref="setsubject" id="subjectdlg">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Titel des Dokuments</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" value.bind"doc.subject" id="subjectinput">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbruch</button>
+          <button type="button" class="btn btn-primary">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

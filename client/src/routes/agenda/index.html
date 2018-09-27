@@ -1,0 +1,15 @@
+<template>
+  <require from="../../components/workflow/agendaentry"></require>
+  <require from="../../components/pickdate"></require>
+  <span class="detailcaption">Agenda</span>
+  <div class="sheet">
+    <div class="header">
+      <pickdate pickerdate.two-way="dateStandard"></pickdate>
+    </div>
+    <div class="body">
+      <template repeat.for="entry of appointments.data">
+        <agenda-entry class="row termin" entry.bind="entry" index.bind="$index"></agenda-entry>
+      </template>
+    </div>
+  </div>
+</template>>

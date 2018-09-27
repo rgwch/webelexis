@@ -1,0 +1,17 @@
+<template>
+  <div class="row" ref="parent">
+    <div class="btn-group-vertical bordered" style="position:absolute;left:5px;top:20px" ref="buttons">
+      <button class="btn" click.trigger="connect()">
+        <i class="fa fa-exchange-alt" show.bind="!connected"></i>
+        <i class="fa fa-times" show.bind="connected"></i>
+      </button>
+      <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)">
+        <img src.one-time="vi.icon" data-toggle="tooltip" title.one-time="vi.text" width.one-time="tooliconwidth"
+          height.one-time="tooliconheight">
+      </button>
+    </div>
+    <div style="position:absolute;left:85px;width:300px">
+      <compose view-model.bind="active['view']"></compose>
+    </div>
+  </div>
+</template>

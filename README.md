@@ -1,32 +1,9 @@
-<img align="right" src="docs/webelexis_small.png">
+# Webelexis 3
 
-# Webelexis
+Dies ist die dritte Iteration des Webelexis Projekts, komplettes rewrite und redesign. Eckpunkte:
 
-Webelexis consists of two parts:
+* Microservice basiert (feathersjs). Dank bidirektionalem realtime API über socket.io werden clients über Veränderungen der angezeigten Objekte informiert. Polling des serverseitigen Status lokaler Objekte ist nicht mehr nötig.
 
-* _Janus_ (based on NodeJS/Express) turns an [Elexis](http://www.elexis.ch/ungrad) Database into a [FHIR](https://www.hl7.org/fhir/) server.
+* Data Layer im Prinzip auswechselbar. Wenn das FHIR API des Elexis-Servers mit den benötigten Datentypen funktioniert, ist ein Wechsel denkbar.
 
-* _client_ (based on Aurelia/Materialize) is a FHIR-Client, which can, among others, use the Webelexis-Janus server as its data source.
-
-
-## Prerequisites
-
-* Node.js Version 7.5.0 or higher (several ECMA ES6 features needed)
-* NPM
-* A modern browser
-
-## Setup and first steps
-
-[Read the docs](http://webelexis.readthedocs.io/de/latest/firststeps.html)
-
-## Repository design
-
-* _master_ contains always a state which is ready to compile and run.
-* _develop_ is the working branch.
-* all feature branches go from and merge to _develop_.
-
-Recommended tool: [git flow](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/)
-
-## Always go for the general solution!
-
-[![](https://imgs.xkcd.com/comics/the_general_problem.png)](https://xkcd.com/974/)
+* Vorläufige Abkehr vom monolithischen "responsive" UI, stattessen optimiert für mittlere Bildschirmgrössen, andere UIs/Skins einfach einbaubar.

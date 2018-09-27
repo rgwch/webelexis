@@ -1,124 +1,105 @@
-/*
- * This file is part of Webelexis(tm)
- * Copyright (c) 2017 by G. Weirich
- */
+import { Document } from './components/document';
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
 
-import {NavigationInstruction, Next, Redirect, Router, RouterConfiguration} from "aurelia-router";
-import {Session} from "./services/session";
-import {Container} from "aurelia-dependency-injection";
-import {LoginService} from "./services/login";
+import { NavigationInstruction, Next, Redirect, Router, RouterConfiguration } from "aurelia-router";
+import { LogManager } from 'aurelia-framework'
+import 'bootstrap'
+
 
 export class App {
-  public router: Router;
+  public router: Router
+  log = LogManager.getLogger('app.ts')
+  showLeftPane=true
 
-  private session: Session;
-  private static inject = [Session];
-
-  constructor(session: Session) {
-    this.session = session;
+  toggleLeftPane(){
+    this.showLeftPane=!this.showLeftPane
   }
-
-  public configureRouter(config: RouterConfiguration, router: Router) {
-    config.title = 'Webelexis';
-    config.map([
+  public configureRouter(cfg: RouterConfiguration, router: Router) {
+    cfg.title = "Webelexis"
+    cfg.map([
       {
-        route: ['', 'login/:sid?'],
-        name: 'login',
-        moduleId: 'login',
-        title: 'Login'
-      }, {
-        route: 'dashboard',
-        name: 'dashboard',
-        moduleId: 'routes/dashboard/index',
-        title: 'Dashboard',
-        nav: true,
-        settings: {headerTextKey: 'routes.dashboard'}
-      }, {
-        route: 'profile',
-        name: 'profile',
-        moduleId: 'routes/profile/index',
-        title: 'Profile',
+        route: ['',"/dispatch"],
+        name: "dispatch",
+        title: "Hauptseite",
+        viewPorts:{
+          default: {moduleId: 'routes/dispatch/left'},
+          details: {moduleId: 'routes/dispatch/right'}
+        },
+        nav: true
+      },
+      {
+        route: '/test',
+        name: "test",
+        viewPorts: {
+          default: { moduleId: 'routes/patient/index' },
+          details: { moduleId: 'routes/test/detail' }
+        },
+        title: 'test',
+        nav: true
+      },
+      {
+        route: '/agenda',
+        name: "agenda",
+        viewPorts: {
+          default: { moduleId: 'routes/patient/index' },
+          details: { moduleId: 'routes/agenda/index' }
+        },
+        title: 'Agenda',
         nav: true
       }, {
-        route: 'patients',
-        name: 'patients',
-        moduleId: 'routes/dashboard/index',
-        title: 'Patienten',
-        nav: true,
-        settings: {headerTextKey: 'routes.patients', authRoleId: "mpa"}
-      }, {
-        route: 'patient/:id?',
-        name: 'searchbox-details',
-        moduleId: 'routes/dashboard/detail',
-        title: 'Patient Details',
-        settings: {headerTextKey: 'routes.patients-details', authRoleId: "mpa"}
-      }, {
-        route: 'agenda',
-        name: 'agenda',
+        route: "/termin",
+        name: "termin",
+        title: "Termin",
         moduleId: 'routes/agenda/index',
-        title: 'Agenda',
-        nav: true,
-        settings: {headerTextKey: 'routes.appointments', authRoleId: "mpa"}
+        nav: true
       }, {
-        route: 'intro',
-        name: 'intro',
-        moduleId: 'routes/intro/index',
-        title: 'Willkommen bei Webelexis',
-        settings: {headerTextKey: 'routes.appointments', authRoleId: "mpa"}
+        route: "/patient",
+        name: "patient",
+        title: "Patient",
+        viewPorts: {
+          default: { moduleId: 'routes/patient/index' },
+          details: { moduleId: 'routes/patient/detail' }
+        },
+
+        nav: true
       }, {
-        route: 'showcase',
-        name: 'showcase',
-        moduleId: 'routes/showcase/index',
-        title: 'Showcase',
-        nav: true,
-        settings: {headerTextKey: 'routes.admin', authRoleId: "all"}
-      }
-    ]);
-
-    config.addPipelineStep('authorize', AuthorizeStep);
-
-    this.router = router;
-    //return this.dataStore.primeData();
-
-  }
-}
-
-/**
- * Check if the requested route is available for the current user
- * - if there is no roleID associated to a route, or if the roleId is "all", then allow
- * - if there is a roleID and no user is logged in -> redirect to LogIn
- * - if there is a roleID and a user is loggedin, check if they have the requested role. If not, redirect to LogIn
- * - if the current user has the role "admin" the allow always.
- */
-class AuthorizeStep {
-  run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
-    if(navInstruction.config.name=='login'){
-      return next()
-    }
-    let session: Session = Container.instance.get(Session);
-    let loginService = Container.instance.get(LoginService);
-    return loginService.checkSession().then(actUser => {
-      if (actUser) {
-        let roleId: string = navInstruction.config.settings ? navInstruction.config.settings.authRoleId : null;
-        if (roleId && roleId != "all") {
-          if (actUser) {
-            let hasRole = actUser.roles.find(role => ((role === roleId) || (role === 'admin')))
-            if (!hasRole) {
-              console.log("login failure - no matching role for " + roleId)
-              alert("Sie haben keine Berechtigung für diese Seite.")
-              return next.cancel(new Redirect('login'));
-            }
-          } else {
-            return next.cancel(new Redirect('login'));
-          }
-
+        route: "patient/neu",
+        name: "patneu",
+        title: "Neuer Patient",
+        viewPorts: {
+          default: { moduleId: 'routes/patient/index' },
+          details: { moduleId: 'routes/patient/detail' }
         }
-        return next();
-
-      } else {
-        return next.cancel(new Redirect('login'))
+      }, {
+        route: "/konsultation",
+        name: "konsultation",
+        title: "Konsultation",
+        moduleId: 'routes/konsultation/index',
+        nav: true
+      }, {
+        route: "/artikel",
+        name: "artikel",
+        title: "Artikel",
+        viewPorts: {
+          default: { moduleId: 'routes/artikel/index' },
+          details: { moduleId: 'routes/artikel/detail' }
+        },
+        nav: true
+      },{
+        route:"/documents",
+        name:"documents",
+        title:"Dokumente",
+        viewPorts:{
+          default: {moduleId: 'routes/documents/list'},
+          details: {moduleId: 'components/document'}
+        }
       }
-    })
+    ])
+    this.log.info("router configuration ok")
+    this.router = router;
   }
-
 }

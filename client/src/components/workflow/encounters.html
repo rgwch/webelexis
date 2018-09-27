@@ -1,0 +1,13 @@
+<template>
+  <require from="./encounter"></require>
+  <require from="../endless-scroll"></require>
+  <div style="padding: 0; margin: 0;">
+  <endless-scroll reload.delegate="fetchData($event)" limit.bind="65">
+    <ul class="list-group">
+      <li class="list-group-item" repeat.for="enc of encounters.data">
+        <encounter obj.bind="enc"></encounter>
+      </li>
+    </ul>
+  </endless-scroll>
+</div>
+</template>

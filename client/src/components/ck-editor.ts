@@ -1,28 +1,68 @@
-import {bindable, bindingMode, customElement} from 'aurelia-framework';
+import {bindable, bindingMode, customElement, inlineView, observable} from 'aurelia-framework';
+declare var ClassicEditor:any
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+@inlineView(`
+<template>
+  <textarea ref="textArea"></textarea>
+  </template>
+`)
 @customElement('ck-editor')
 export class CKEditor {
-  @bindable({ defaultBindingMode: bindingMode.twoWay }) public value;
+  @bindable value:string;
   @bindable public name;
   public textArea: HTMLTextAreaElement;
+  private editor: any
 
-  private element: any;
-
-  public static = [Element];
-  constructor(element) {
-    this.element = element;
+/*
+  valueChanged(newValue:string,oldValue:string){
+    if(this.editor){
+      this.editor.setData(newValue)
+    }
   }
+*/
 
   public attached() {
-    let editor = CKEDITOR.replace(this.textArea);
-    editor.on('change', (e) => {
-      this.value = e.editor.getData();
-    });
-    editor.setData(this.value)
-  }
+    console.log("ckeditor attached")
+    this.textArea.innerHTML=this.value
+    ClassicEditor.create(this.textArea,{
+      toolbar: ['heading','|','bold','italic','undo','redo','bulletedList'],
+      heading:{
+        options:[
+          {model: 'paragraph', title: "Absatz", class: 'ck-heading_paragraph'},
+          {model: 'heading1', view: 'h1', title: "Überschrift 1", class: "ck-heading_heading1"},
+          {model: 'heading2', view: 'h2', title: "Überschrift 2", class: "ck-heading_heading2"}
+        ]
+      }
+
+    }).then(editor=>{
+      this.editor=editor
+      editor.model.document.on("change:data",this.updateValue)
+      editor.model.document.registerPostFixer(writer=>{
+        const ch=this.editor.model.document.differ.getChanges()
+      })
+      // const a=Array.from( this.editor.ui.componentFactory.names() );
+      //console.log(JSON.stringify(a))
+
+    }).catch(error=>{
+      console.log("couldn't create editor "+error)
+    })
+   }
 
 
-  public updateValue() {
-    this.value = this.textArea.value;
+  public detached(){
+    console.log("ckeditor detached")
+    this.editor.model.document.off("change:data",this.updateValue)
+    this.editor.destroy().then(()=>{
+      delete this.editor
+    }).catch(err=>{
+      console.log("couldn't destroy editor "+err)
+    })
+   }
+
+  updateValue = (event, name, newValue, oldValue)=> {
+    const path=event.path
+    const sel=path[0].selection
+    this.value = this.editor.getData()
   }
 }
