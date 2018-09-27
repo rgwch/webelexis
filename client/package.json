@@ -10,7 +10,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-autosave": "^10.0.0",
     "@ckeditor/ckeditor5-build-classic": "^11.0.1",
-    "@feathersjs/client": "^3.2.0",
+    "@feathersjs/client": "^3.7.3",
     "@fortawesome/fontawesome-free": "^5.2.0",
     "aurelia-animator-css": "^1.0.2",
     "aurelia-bootstrapper": "^2.1.1",
@@ -45,7 +45,7 @@
     "aurelia-cli": "^0.34.0",
     "aurelia-testing": "^1.0.0-beta.3.0.1",
     "aurelia-tools": "^1.0.0",
-    "browser-sync": "^2.24.6",
+    "browser-sync": "^2.24.7",
     "connect-history-api-fallback": "^1.2.0",
     "debounce": "^1.0.2",
     "event-stream": "^3.3.3",
