@@ -35,8 +35,8 @@ export class App {
         route: '/test',
         name: "test",
         viewPorts: {
-          default: { moduleId: 'routes/patient/index' },
-          details: { moduleId: 'routes/test/detail' }
+          default: { moduleId: 'routes/test/index' },
+          details: { moduleId: 'routes/test/editor' }
         },
         title: 'test',
         nav: true

@@ -39,7 +39,13 @@ export class CKEditor {
       this.editor=editor
       editor.model.document.on("change:data",this.updateValue)
       editor.model.document.registerPostFixer(writer=>{
-        const ch=this.editor.model.document.differ.getChanges()
+        const changes=this.editor.model.document.differ.getChanges()
+        for(const change of changes){
+          console.log("Zeile: "+change.position.path[0]+", Spalte: "+change.position.path[1]+", Text "+change.position.textNode._data)
+          const sel=this.editor.model.document.selection
+          const range=sel.getFirstRange()
+          //console.log(range)
+        }
       })
       // const a=Array.from( this.editor.ui.componentFactory.names() );
       //console.log(JSON.stringify(a))
