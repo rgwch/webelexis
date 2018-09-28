@@ -58,7 +58,9 @@ export class CKEditor {
                 const pos = change.position.getShiftedBy(word.length * -1)
                 range.start = pos
                 writer.remove(range)
-                writer.insertText(replacement, pos)
+                for(const repl of this.import(writer,replacement)){
+                  writer.insertElement(repl,pos)
+                }
               }
             }
           }
@@ -87,5 +89,14 @@ export class CKEditor {
     const path = event.path
     const sel = path[0].selection
     this.value = this.editor.getData()
+  }
+
+  import(writer,rt){
+    const ops=[]
+    for(const line of rt.split(/\n/)){
+      ops.push(writer.createText(line))
+      ops.push(writer.createElement('paragraph'))
+    }
+    return ops
   }
 }
