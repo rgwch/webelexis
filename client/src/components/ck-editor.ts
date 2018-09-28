@@ -42,18 +42,24 @@ export class CKEditor {
       editor.model.document.registerPostFixer(writer => {
         const changes = this.editor.model.document.differ.getChanges()
         for (const change of changes) {
-          if (change.type == "insert") {
-            console.log("Zeile: " + change.position.path[0] + ", Spalte: " + change.position.path[1] + ", Text " + change.position.textNode._data)
-            const sel = this.editor.model.document.selection
-            const range = sel.getFirstRange()
-            const char=change.position.textNode._data.charAt(change.position.path[1])
-            if (this.callback && char=='$') {
-              const replacement = this.callback(change.position.textNode._data)
-              const pos = change.position.getShiftedBy(-2)
-              range.start = pos
-              writer.remove(range)
-              writer.insertText(replacement, pos)
-
+          if (change.type == "insert" && change.name == "$text") {
+            // console.log("Zeile: " + change.position.path[0] + ", Spalte: " + change.position.path[1] + ", Text " + change.position.textNode.data)
+            if (change.position.textNode) {
+              const ipos = change.position.path[1]
+              const char = change.position.textNode.data.charAt(ipos)
+              if (this.callback && char == '$') {
+                const sel = this.editor.model.document.selection
+                const range = sel.getFirstRange()
+                const text = change.position.textNode.data
+                const idx = Math.max(text.lastIndexOf(' '), 0)
+                const word = text.substring(idx + 1, ipos)
+                console.log(word)
+                const replacement = this.callback(word)
+                const pos = change.position.getShiftedBy(word.length * -1)
+                range.start = pos
+                writer.remove(range)
+                writer.insertText(replacement, pos)
+              }
             }
           }
         }
