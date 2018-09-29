@@ -3,10 +3,27 @@ const app = require('../../src/app');
 const chai=require('chai')
 const promised=require('chai-as-promised')
 chai.use(promised)
-const should=chai.should()
+chai.should()
 
+const macroset={
+  name: "_unittest",
+  creator: "özelditz",
+  allowed: ["users"],
+  macros: {
+    kons: "*S:*\n*O:*\n*B:*\n*P:*",
+    gw:"Gewicht"
+  }
+}
 
 describe('\'macros\' service', () => {
+  xit("avoids duplicates",()=>{
+    const service=app.service('macros')
+
+    return service.create(macroset).then(result=>{
+      service.create(macroset).should.not.be.rejected
+      service.remove(macroset).should.be.fulfilled
+    })
+  })
   it('registered the service', () => {
     const service = app.service('macros');
 
@@ -14,18 +31,16 @@ describe('\'macros\' service', () => {
   });
   it("creates, fetches, updates and deletes a named macro set",async ()=>{
     const service=app.service('macros')
-    const macroset={
-      name: "_unittest",
-      creator: "özelditz",
-      allowed: ["users"],
-      macros: {
-        kons: "*S:*\n*O:*\n*B:*\n*P:*",
-        gw:"Gewicht"
-      }
-    }
+
     const created=await service.create(macroset)
     created.should.be.ok
-    service.create(macroset).should.not.be.rejected
+    try{
+      const m2= await service.create(macroset)
+      throw(new Error("failure"))
+    }catch(err){
+      console.log("eeee")
+      // do nothing
+    }
     const got=await service.get(macroset.name)
     got.should.be.ok
     //got.creator.should.equal("özelditz")

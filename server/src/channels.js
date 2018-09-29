@@ -1,14 +1,15 @@
+const logger=require('./logger')
 module.exports = function(app) {
   if(typeof app.channel !== 'function') {
     // If no real-time functionality has been configured just return
-    //console.log("no channel")
+    logger.debug("no channel")
     return;
   }
 
   app.on('connection', connection => {
     // On a new real-time connection, add it to the anonymous channel
     app.channel('anonymous').join(connection);
-    //console.log("connection "+JSON.stringify(connection))
+    logger.debug("connection "+JSON.stringify(connection))
   });
 
   app.on('login', (authResult, { connection }) => {
@@ -43,7 +44,7 @@ module.exports = function(app) {
     // Here you can add event publishers to channels set up in `channels.js`
     // To publish only for a specific event use `app.publish(eventname, () => {})`
 
-    console.log('Publishing all events to all authenticated users. See `channels.js` and https://docs.feathersjs.com/api/channels.html for more information.'); // eslint-disable-line
+    logger.debug('Publishing all events to all authenticated users. See `channels.js` and https://docs.feathersjs.com/api/channels.html for more information.'); // eslint-disable-line
 
     // console.log(JSON.stringify(data))
     // console.log(JSON.stringify(hook))

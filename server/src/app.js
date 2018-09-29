@@ -9,7 +9,7 @@ const favicon = require('serve-favicon');
 const compress = require('compression');
 const cors = require('cors');
 const helmet = require('helmet');
-const logger = require('winston');
+const logger = require('./logger');
 const authentication = require('./authentication')
 
 const feathers = require('@feathersjs/feathers');
@@ -78,6 +78,8 @@ docs.get("1").then(doc => {
     "subject": "Brief Demo",
     contents: tmpl.toString()
   }
-  docs.create(doc)
+  docs.create(doc).catch(err=>{
+    console.log(err)
+  })
 })
 module.exports = app;
