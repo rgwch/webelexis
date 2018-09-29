@@ -7,6 +7,11 @@ module.exports = function (app) {
     filename: path.join(dbPath, 'macros.db'),
     autoload: true
   });
+  Model.ensureIndex({ fieldName: "name", unique: true }, function (err) {
+    if (err) {
+      throw (err)
+    }
+  })
 
   return Model;
 };
