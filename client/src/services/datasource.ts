@@ -22,6 +22,7 @@ export interface DataService {
 export interface IDataSource {
   getService(name: string): DataService
   dataType(service: DataService): string
+  authenticate(username:string,password:string): Promise<any>
 }
 
 export class DataSource implements IDataSource {
@@ -31,6 +32,10 @@ export class DataSource implements IDataSource {
 
   dataType(service: DataService): string {
     throw new Error("No DataSource is configured");
+  }
+
+  authenticate(un,pw){
+    return Promise.reject("No DataSource is configured");
   }
 
 }

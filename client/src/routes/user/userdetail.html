@@ -1,7 +1,9 @@
 <template>
   <div class="row">
     <div class="sheet" style.bind="style">
-      <div class="header"></div>
+      <div class="header">
+        <span class="detailcaption">Login</span>
+      </div>
       <div class="body">
         <h1>${name}</h1>
         <ul class="nav">
@@ -9,6 +11,7 @@
             <a class="btn nav-link">test</a>
           </li>
         </ul>
+        <button class="btn" click.trigger="login()">Login</button>
       </div>
     </div>
   </div>

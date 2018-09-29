@@ -1,6 +1,7 @@
+import { User } from './models/user';
 import {ElexisType} from './models/elexistype'
 export interface State{
-  user: string,
+  user: User,
   termin: ElexisType,
   patient: ElexisType,
   document: ElexisType
@@ -8,7 +9,7 @@ export interface State{
 }
 
 export const webelexisState:State={
-  user: "Gerry",
+  user: undefined,
   termin: undefined,
   patient: undefined,
   document: {},

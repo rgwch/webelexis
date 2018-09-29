@@ -171,7 +171,27 @@
             "path": "../node_modules/rxjs/operators",
             "resources": []
           },
-          "numeral"
+          "numeral",
+          {
+            "name": "@feathersjs/authentication-client",
+            "main": "lib/index.js",
+            "path": "../node_modules/@feathersjs/authentication-client",
+            "resources": []
+          },
+          "@feathersjs/errors",
+          {
+            "name": "jwt-decode",
+            "main": "lib/index.js",
+            "path": "../node_modules/jwt-decode",
+            "resources": []
+          },
+          {
+            "name": "debug",
+            "main": "./src/browser",
+            "path": "../node_modules/debug",
+            "resources": []
+          },
+          "ms"
         ]
       }
     ],

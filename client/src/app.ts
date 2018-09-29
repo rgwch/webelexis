@@ -36,7 +36,7 @@ export class App {
         title: "Konto",
         viewPorts: {
           default: {moduleId: "routes/user/usermenu"},
-          details: {moduleId: "routes/user/user"}
+          details: {moduleId: "routes/user/userdetail"}
         }
       },
 {

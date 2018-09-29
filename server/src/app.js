@@ -65,21 +65,5 @@ app.configure(customMethods({
   }
 }))
 
-const docs = app.service('documents')
-docs.get("1").then(doc => {
-  console.log("basic template found")
-}).catch(err => {
-  const fs = require('fs')
-  const path = require('path')
-  const tmpl = fs.readFileSync(path.join(__dirname, "services/documents/example-template.html"))
-  const doc = {
-    id: "1",
-    "template": "1",
-    "subject": "Brief Demo",
-    contents: tmpl.toString()
-  }
-  docs.create(doc).catch(err=>{
-    console.log(err)
-  })
-})
+require('./seeder')(app)
 module.exports = app;
