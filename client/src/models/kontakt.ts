@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import {DateTime} from '../services/datetime'
 import {autoinject} from 'aurelia-framework'
 import {Container} from 'aurelia-framework'
@@ -5,7 +11,9 @@ import {AddressType} from './address'
 import {ElexisType} from './elexistype'
 import {MailType} from './mail'
 
-
+/**
+ * An Elexis "Kontakt"
+ */
 export interface KontaktType extends ElexisType{
     ID:string,
     Bezeichnung1: string,

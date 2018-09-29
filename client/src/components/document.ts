@@ -102,6 +102,9 @@ export class Document {
     this.dispatcher.selectItem(this.obj)
   }
 
+  /**
+   * Display a modal dialog (bootstrap modal) to enter/accept a subject line for the document.
+   */
   doSave() {
     $('#subjectinput').val(this.obj.subject)
     $('#subjectdlg').modal('show')

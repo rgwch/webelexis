@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { KontaktType } from './kontakt';
 import {FHIR_Patient} from '../models/fhir/fhir'
 import { DateTime } from '../services/datetime';
@@ -6,6 +12,9 @@ import * as moment from 'moment'
 import {I18N} from 'aurelia-i18n'
 import {FlexformConfig} from '../components/flexform'
 
+/**
+ * An Elexis "Patient"
+ */
 export interface PatientType extends KontaktType{
 
 }

@@ -1,7 +1,16 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { bindable, bindingMode, customElement, inlineView, observable } from 'aurelia-framework';
 declare var ClassicEditor: any
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+/**
+ * Embed the CKEditor 5
+ */
 @inlineView(`
 <template>
   <textarea ref="textArea"></textarea>

@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { create } from "domain";
 import { publish, subscribeOn } from "rxjs/operators";
 import { emit, on } from "cluster";

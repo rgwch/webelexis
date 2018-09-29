@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import {IDataSource,DataService} from './datasource'
 import * as io from 'socket.io-client';
 import * as feathers from '@feathersjs/client';

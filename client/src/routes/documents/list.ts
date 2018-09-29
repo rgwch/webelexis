@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { Store } from 'aurelia-store';
 import { inlineView, Container } from "aurelia-framework";
 import { ViewerConfiguration } from '../../components/commonviewer'

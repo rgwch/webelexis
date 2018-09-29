@@ -1,3 +1,6 @@
+import { deprecated } from "aurelia-metadata";
+import { deprecate } from "util";
+
 /**
  * This file is part of Webelexis
  * Copyright (c) 2015-2018 by G. Weirich
@@ -37,7 +40,7 @@ const cleanHTML = function (text) {
   return ret.replace(/<.+?>/g, "")
 };
 
-
+@deprecated({error:false,message:"Use Samdastools instead"})
 export class Samdas {
   /** extract plaintext from a Samdas document */
   static toPlaintext(samdasText) {
@@ -55,6 +58,7 @@ export class Samdas {
   }
 
   /** convert a Samdas document to html */
+  @deprecated({error: false,"message": "use Samdastools"})
   static toHtml(samdasText) {
     var xml = parser.parseFromString(samdasText, "text/xml");
     var textElem = xml.getElementsByTagName("text")[0];

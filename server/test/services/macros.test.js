@@ -1,6 +1,10 @@
 const assert = require('assert');
 const app = require('../../src/app');
-const should=require('chai').should()
+const chai=require('chai')
+const promised=require('chai-as-promised')
+chai.use(promised)
+const should=chai.should()
+
 
 describe('\'macros\' service', () => {
   it('registered the service', () => {
@@ -21,7 +25,7 @@ describe('\'macros\' service', () => {
     }
     const created=await service.create(macroset)
     created.should.be.ok
-    service.create(macroset).catch(err=>{})
+    service.create(macroset).should.be.rejected
     const got=await service.get(macroset.name)
     got.should.be.ok
     //got.creator.should.equal("özelditz")
