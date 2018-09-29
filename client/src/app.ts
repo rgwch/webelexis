@@ -30,8 +30,16 @@ export class App {
           details: {moduleId: 'routes/dispatch/right'}
         },
         nav: true
+      },{
+        route: "/user",
+        name: "user",
+        title: "Konto",
+        viewPorts: {
+          default: {moduleId: "routes/user/usermenu"},
+          details: {moduleId: "routes/user/user"}
+        }
       },
-      {
+{
         route: '/test',
         name: "test",
         viewPorts: {
