@@ -25,14 +25,7 @@ describe('\'macros\' service', () => {
     }
     const created=await service.create(macroset)
     created.should.be.ok
-    service.create(macroset).should.be.rejectedWith('foo')
-    try{
-      const m2=await service.create(macroset)
-      console.log("second created: ")
-    }catch(err){
-      console.log("Err "+err)
-    }
-
+    service.create(macroset).should.not.be.rejected
     const got=await service.get(macroset.name)
     got.should.be.ok
     //got.creator.should.equal("özelditz")
