@@ -5,13 +5,14 @@
         <span class="detailcaption">Login</span>
       </div>
       <div class="body">
-        <h1>${name}</h1>
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="btn nav-link">test</a>
-          </li>
-        </ul>
-        <button class="btn" click.trigger="login()">Login</button>
+        <h1>Eingeloggt: ${actUser}</h1>
+        <p>In dieser Demo-Version können Sie sich einfach durch klick auf einen der untenstehenden Buttons mit der
+          betreffenden Identität einloggen. In der echten Version wird es etwas schwieriger sein.
+        </p>
+        <button class="btn" click.trigger="login('admin@webelexis.ch','admin')">Admin</button>
+        <button class="btn" click.trigger="login('user@webelexis.ch','user')">User</button>
+        <button class="btn" click.trigger="login('guest@some.where','gast')">Gast</button>
+
       </div>
     </div>
   </div>
