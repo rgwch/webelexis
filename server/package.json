@@ -30,6 +30,7 @@
     "mocha": "mocha test/ --recursive --exit"
   },
   "dependencies": {
+    "@casl/ability": "^2.4.2",
     "@feathersjs/authentication": "^2.1.1",
     "@feathersjs/authentication-jwt": "^2.0.5",
     "@feathersjs/authentication-local": "^1.0.4",

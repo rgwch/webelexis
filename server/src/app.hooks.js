@@ -10,9 +10,12 @@ const update = require('./hooks/updatecommon')
 const create = require('./hooks/createcommon')
 
 
+const abilities = require('./hooks/abilities');
+
+
 module.exports = {
   before: {
-    all: [ logger() ],
+    all: [logger()],
     find: [],
     get: [],
     create: [create()],

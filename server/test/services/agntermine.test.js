@@ -12,6 +12,7 @@ const app = require('../../src/app');
 describe('\'termin\' service', () => {
   let service
   beforeEach(() => {
+    app.set("testing",true)
     service = app.service('termin')
   })
   it('registered the service', () => {
@@ -70,6 +71,6 @@ describe('\'termin\' service', () => {
   it("fetches status colors for first resource",async ()=>{
     let resources=await service.get("resources")
     let colors=await service.get("statecolors",{query:{"resource":resources[0]}})
-    colors.should.be.ok    
+    colors.should.be.ok
   })
 });

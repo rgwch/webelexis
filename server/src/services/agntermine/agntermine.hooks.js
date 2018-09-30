@@ -3,7 +3,7 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-
+const abilities=require('../../hooks/abilities')
 
 /**
  *
@@ -134,7 +134,7 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
 
 module.exports = {
   before: {
-    all: [],
+    all: [abilities()],
     find: [doSort(), treatDeleted()],
     get: [specialQueries()],
     create: [],

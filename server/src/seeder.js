@@ -53,7 +53,7 @@ module.exports = function (app) {
   macro.remove(null, { query: { dummy: true } }).then(removed => {
     macro.create({
       name: "dummies",
-      creator: "özelditz",
+      creator: "humblebumple",
       allowed: ["users"],
       macros: {
         kons: "*S:*\n*O:*\n*B:*\n*P:*",
