@@ -295,4 +295,108 @@ alter table leistungen
 alter table leistungsblock
   change ID id varchar(40),
   modify mandantid varchar(40);
-  
+
+alter table logs
+  change ID id varchar(40),
+  modify userID varchar(40);
+
+alter table net_medshare_percentile_data
+  change ID id varchar(40),
+  modify PATIENT_ID varchar(40);
+
+alter table net_medshare_percentile_patient
+  change ID id varchar(40),
+  modify PATIENT_ID varchar(40);
+
+alter table net_medshare_percentile_refdata
+  change ID id varchar(40);
+
+alter table output_log
+  change ID id varchar(40),
+  modify ObjectID varchar(40);
+
+alter table patient_artikel_joint
+  modify id varchar(40),
+  modify artikelid varchar(40),
+  modify patientid varchar(40),
+  modify REZEPTID varchar (40),
+  modify prescriptor varchar(40);
+
+alter table percentile
+  change ID id varchar(40),
+  modify PATIENT_ID varchar(40);
+
+alter table percentile_ref_data
+  change ID id varchar(40);
+
+alter table rechnungen
+  modify id varchar(40),
+  modify fallid varchar(40),
+  modify mandantid varchar(40);
+
+alter table reminders
+  modify id varchar(40),
+  modify identid varchar(40),
+  modify RESPONSIBLE varchar(40),
+  modify OriginID varchar(40);
+
+alter table reminders_responsible_link
+  change ID id varchar(40),
+  modify ReminderID varchar(40),
+  modify ResponsibleID varchar(40);
+
+alter table rezepte
+  modify id varchar(40),
+  modify patientid varchar(40),
+  modify mandantid varchar(40),
+  modify BriefID varchar(40);
+
+alter table right_
+  change ID id varchar(40);
+
+alter table role
+  change ID id varchar(40);
+
+alter table role_right_joint
+  change ID id varchar(40),
+  modify ROLE_ID varchar(40);
+
+alter table stock
+  change ID id varchar(40),
+  modify OWNER varchar(40),
+  modify RESPONSIBLE varchar(40);
+
+alter table stock_entry
+  change ID id varchar(40),
+  modify STOCK varchar(40),
+  modify ARTICLE_ID varchar(40),
+  modify PROVIDER varchar(40);
+
+alter table user_
+  change ID id varchar(40),
+  modify KONTAKT_ID varchar(40);
+
+alter table userconfig
+  modify UserID varchar(40);
+
+alter table user_role_joint
+  change ID id varchar(40),
+  modify USER_ID varchar(40);
+
+alter table verrechnetcopy
+  change ID id varchar(40),
+  modify RechnungId varchar(40),
+  modify BehandlungId varchar(40),
+  modify Leistg_code varchar(40),
+  modify userID varchar(40);
+
+alter table vk_preise
+  modify id varchar(40);
+
+alter table xid
+  change ID id varchar(40),
+  modify object varchar(40);
+
+alter table zahlungen
+  modify id varchar(40),
+  modify rechnungsid varchar(40);
