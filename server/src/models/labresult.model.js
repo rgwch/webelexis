@@ -60,4 +60,5 @@
       .catch(e => logger.error(`Error creating ${itemsTable} table`, e));
     }
   })
+  return db;
  }

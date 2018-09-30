@@ -2,31 +2,57 @@
 
 
 class Service {
-  constructor (options) {
+  constructor(app,options) {
     this.options = options || {};
-    this.knex=options.Model
+    this.knex = options.Model
+    this.app=app
+    this.kService=app.service('kontakt')
   }
 
-  async find (params) {
-    if(params.query){
-      const pat=params.query.patientId
-      return this.knex({it: 'laboritems', rs: 'laborwerte'})
-      .select("rs.datum","rs.resultat","it.titel","it.kuerzel")
-      .where({
-        "rs.patientid":pat,
-        "it.id":"rs.itemid"
-      })
+  async find(params) {
+    if (params.query) {
+      const pat = params.query.patientId
+      if (pat) {
+        const found=await Promise.all([this.kService.get(pat,{select: 'id'}),this.knex({ rs: 'laborwerte' }).join('laboritems', 'laboritems.id', '=', 'itemid').where({ 'patientid': pat, 'visible': "1", "rs.deleted": "0" })
+        .orderBy('datum')
+        .select(["rs.datum", "rs.Zeit",
+          "laboritems.kuerzel",
+          "rs.resultat",
+          "rs.refmale", "rs.reffemale",
+          "laboritems.RefMann",
+          "laboritems.RefFrauOrTx",
+          "laboritems.Einheit",
+          "rs.unit",
+          "gruppe", "prio"]) ])
+        const s=found[0].geschlecht.toLowerCase()
+        return found[1].map(r => {
+          if(s==='m'){
+          r.reference = r.refmale ? r.refmale : r.RefMann
+          }else{
+            r.reference = r.reffemale ? r.reffemale : r.RefFrauOrTx
+          }
+          delete r.refmale
+          delete r.reffemale
+          delete r.RefMann
+          delete r.RefFrauOrTx
+          if(!r.unit){
+            r.unit=r.Einheit
+          }
+          delete r.Einheit
+          return r
+        })
+      }
     }
     return [];
   }
 
-  async get (id, params) {
+  async get(id, params) {
     return {
       id, text: `A new message with ID: ${id}!`
     };
   }
 
-  async create (data, params) {
+  async create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
@@ -34,21 +60,21 @@ class Service {
     return data;
   }
 
-  async update (id, data, params) {
+  async update(id, data, params) {
     return data;
   }
 
-  async patch (id, data, params) {
+  async patch(id, data, params) {
     return data;
   }
 
-  async remove (id, params) {
+  async remove(id, params) {
     return { id };
   }
 }
 
-module.exports = function (options) {
-  return new Service(options);
+module.exports = function (app,options) {
+  return new Service(app,options);
 };
 
 module.exports.Service = Service;

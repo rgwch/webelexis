@@ -8,11 +8,12 @@ describe('\'labresults\' service', () => {
     assert.ok(service, 'Registered the service');
   });
 
-  it('retrieves results from unittest',()=>{
+  it('retrieves results from unittest',async ()=>{
     const patService=app.service('patient')
-    const pats=patService.find({query:{Bezeichnung1: "unittest"}})
+    const pats=await patService.find({query:{Bezeichnung1: "unittest"}})
     const pat=pats.data[0]
     const labService=app.service('labresults')
-    const results=labService.find({query: {patientid: pat.id}})
+    const results=await labService.find({query: {patientId: pat.id}})
+    //console.log(results)
   })
 });
