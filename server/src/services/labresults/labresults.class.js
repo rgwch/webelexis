@@ -1,10 +1,22 @@
 /* eslint-disable no-unused-vars */
+
+
 class Service {
   constructor (options) {
     this.options = options || {};
+    this.knex=options.Model
   }
 
   async find (params) {
+    if(params.query){
+      const pat=params.query.patientId
+      return this.knex({it: 'laboritems', rs: 'laborwerte'})
+      .select("rs.datum","rs.resultat","it.titel","it.kuerzel")
+      .where({
+        "rs.patientid":pat,
+        "it.id":"rs.itemid"
+      })
+    }
     return [];
   }
 
