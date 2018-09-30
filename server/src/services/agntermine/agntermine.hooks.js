@@ -4,6 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const abilities=require('../../hooks/abilities')
+const acl=require('./acl')
 
 /**
  *
@@ -134,7 +135,7 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
 
 module.exports = {
   before: {
-    all: [abilities()],
+    all: [abilities({acl})],
     find: [doSort(), treatDeleted()],
     get: [specialQueries()],
     create: [],

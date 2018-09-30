@@ -15,7 +15,7 @@ module.exports = function (options = {}) {
     if(context.app.get("testing")==true){
       return context
     }
-    const needed=context.service.abilities
+    const needed=options.acl
     if(!context.params.user){
       throw new ForbiddenError("No user")
     }
