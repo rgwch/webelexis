@@ -47,6 +47,7 @@ export interface ViewerConfiguration {
   getLabel: (obj) => string
   // Show "new object" Button and create Dialog with FlexFormConfig if pushed
   createDef?: FlexformConfig
+  handleError?: (err)=>void
 }
 
 @autoinject
@@ -132,6 +133,12 @@ export class CommonViewer {
         });
       }
       this.items = result
+    }).catch(err=>{
+      if(this.cv_cfg.handleError){
+        this.cv_cfg.handleError(err)
+      }else{
+        alert(err.message)
+      }
     })
   }
 

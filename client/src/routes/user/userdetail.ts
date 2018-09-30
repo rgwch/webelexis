@@ -33,6 +33,7 @@ export class UserDetail{
   logout(){
     this.ds.logout().then(()=>{
       this.we.logout()
+      this.router.navigateToRoute("dispatch")
     })
   }
 }

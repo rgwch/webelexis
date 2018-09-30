@@ -1,19 +1,16 @@
-export class Test{
+import v from './views'
+import { switchMapTo } from 'rxjs/operators';
+import { autoinject } from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
 
-  liste=[]
-  end=0
-  constructor(){
-    for(let i=0;i<50;i++){
-      this.liste.push(i)
-    }
-    this.end=50
+@autoinject
+export class TestIndex{
+  views=[v.edit,v.scroll,v.kons]
+
+  constructor(private ea:EventAggregator){
+
   }
-
-  loadData(pos){
-    console.log("loader")
-    for(let i=0;i<50;i++){
-      this.liste.push(this.end+i)
-    }
-    this.end+=50
+  switchTo(view){
+    this.ea.publish("testdetail",view)
   }
 }

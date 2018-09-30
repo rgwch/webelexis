@@ -36,11 +36,16 @@ export class FeathersDS implements IDataSource {
   async login(username: string, password: string) {
 
     try {
-      const jwt = await this.client.authenticate({
-        strategy: "local",
-        email: username,
-        password: password
-      })
+      let jwt
+      if (username && password) {
+        jwt = await this.client.authenticate({
+          strategy: "local",
+          email: username,
+          password: password
+        })
+      } else {
+        jwt = await this.client.authenticate()
+      }
       const verified = await this.client.passport.verifyJWT(jwt.accessToken)
       const user = await this.client.service('usr').get(verified.userId)
       return user
@@ -49,7 +54,7 @@ export class FeathersDS implements IDataSource {
       throw (err)
     }
   }
-  logout(){
+  logout() {
     return this.client.logout()
   }
 }

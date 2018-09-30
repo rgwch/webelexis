@@ -1,3 +1,6 @@
+import { WebelexisEvents } from './webelexisevents';
+import { UserType,User } from './models/user';
+import { DataService, DataSource } from './services/datasource';
 import { Document } from './components/document';
 /********************************************
  * This file is part of Webelexis           *
@@ -6,18 +9,28 @@ import { Document } from './components/document';
  ********************************************/
 
 import { NavigationInstruction, Next, Redirect, Router, RouterConfiguration } from "aurelia-router";
-import { LogManager } from 'aurelia-framework'
+import { LogManager, autoinject } from 'aurelia-framework'
 import 'bootstrap'
 import {connectTo} from 'aurelia-store'
 import { pluck } from 'rxjs/operators'
 
 
 @connectTo(store=>store.state.pipe(pluck("usr")))
+@autoinject
 export class App {
   public router: Router
   log = LogManager.getLogger('app.ts')
   showLeftPane=true
-  state
+
+  constructor(private ds:DataSource, private we:WebelexisEvents){
+    this.ds.login().then((usr:UserType)=>{
+      const user=new User(usr)
+      usr["type"]="usr"
+      this.we.selectItem(usr)
+    }).catch(err=>{
+      console.log("invalid stored token")
+    })
+  }
 
   toggleLeftPane(){
     this.showLeftPane=!this.showLeftPane
@@ -48,7 +61,7 @@ export class App {
         name: "test",
         viewPorts: {
           default: { moduleId: 'routes/test/index' },
-          details: { moduleId: 'routes/test/editor' }
+          details: { moduleId: 'routes/test/detail' }
         },
         title: 'test',
         nav: true

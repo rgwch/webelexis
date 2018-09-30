@@ -1,11 +1,8 @@
 <template>
-  <require from="../../components/endless-scroll"></require>
-  <!-- require from="../../components/document"></require -->
-  <div class="row">
-    <div class="col">
-      <endless-scroll reload.delegate="loadData($event)" limit.bind="65">
-        <div repeat.for="l of liste">Element ${l}</div>
-      </endless-scroll>
+  <div class="row" ref="parent">
+    <div class="btn-group-vertical bordered" style="position:absolute;left:5px;top:20px" ref="buttons">
+      <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)">${vi.name}
+      </button>
     </div>
   </div>
 </template>

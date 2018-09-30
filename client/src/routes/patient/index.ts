@@ -7,6 +7,7 @@
 import { ViewerConfiguration } from '../../components/commonviewer'
 import { autoinject } from 'aurelia-framework'
 import { Patient } from '../../models/patient';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class PatientView {
@@ -21,7 +22,13 @@ export class PatientView {
       value: ""
     }],
     createDef: Patient.getDefinition(),
-    getLabel: (obj) => Patient.getLabel(obj)
+    getLabel: (obj) => Patient.getLabel(obj),
+    handleError: (err)=>{
+      if(err.code==401){
+        this.router.navigateToRoute('user')
+      }
+    }
 
   }
+  constructor(private router:Router){}
 }

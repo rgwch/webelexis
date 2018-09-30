@@ -8,7 +8,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const ElexisUtils = require('../../util/elexis-types')
 const util = new ElexisUtils()
 const Samdas = require('@rgwch/samdastools')
-const logger = require('winston')
+const logger = require('../../logger')
 
 /*
 const withPatientId=function (options={}){
@@ -74,7 +74,7 @@ const readKonsText = context => {
         entries.push(Samdas.toHtml(entry.text))
       } else {
         entries.push("<p>?</p>")
-        logger.error("Empty record " + kons.id)
+        logger.warn("Empty record " + kons.id)
       }
       kons.eintrag = {
         remark: entry.remark,
