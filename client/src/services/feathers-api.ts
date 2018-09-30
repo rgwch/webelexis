@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018 by G. Weirich    *
+ * Copyright (c) 2018 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -10,6 +10,10 @@ import * as feathers from '@feathersjs/client';
 import * as auth from '@feathersjs/authentication-client'
 import env from '../environment'
 
+/**
+ * A DataSource implementation based on FeathersJS
+ * with SocketIO-Transport.
+ */
 export class FeathersDS implements IDataSource {
   private client
   private socket
@@ -33,7 +37,17 @@ export class FeathersDS implements IDataSource {
     return service.path
   }
 
-  async login(username: string, password: string) {
+  /**
+   * Perform Authentication. If username and password are given:
+   * use these credentials. If not: Try to login with locally stored JWT Token
+   * (which is valid for a limited time, so a simple browser reload won't log out
+   * the user, but extended inactivity will.)
+   * @param username optional e-mail
+   * @param password optional password
+   * @returns the logged in 'usr' object with all properties except the password
+   * @throws authentication errors
+   */
+  async login(username?: string, password?: string) {
 
     try {
       let jwt
@@ -54,6 +68,10 @@ export class FeathersDS implements IDataSource {
       throw (err)
     }
   }
+  
+  /**
+   * Invalidates the JWT token
+   */
   logout() {
     return this.client.logout()
   }

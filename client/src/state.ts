@@ -1,3 +1,8 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
 import { User } from './models/user';
 import {ElexisType} from './models/elexistype'
 export interface State{
