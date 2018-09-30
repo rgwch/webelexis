@@ -18,7 +18,7 @@ export class WebelexisEvents{
   }
   private logoutAction=(state)=>{
     const newState=Object.assign({},state)
-    delete newState.user
+    delete newState.usr
     return newState
   }
 

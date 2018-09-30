@@ -8,12 +8,16 @@ import { Document } from './components/document';
 import { NavigationInstruction, Next, Redirect, Router, RouterConfiguration } from "aurelia-router";
 import { LogManager } from 'aurelia-framework'
 import 'bootstrap'
+import {connectTo} from 'aurelia-store'
+import { pluck } from 'rxjs/operators'
 
 
+@connectTo(store=>store.state.pipe(pluck("usr")))
 export class App {
   public router: Router
   log = LogManager.getLogger('app.ts')
   showLeftPane=true
+  state
 
   toggleLeftPane(){
     this.showLeftPane=!this.showLeftPane

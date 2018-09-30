@@ -33,7 +33,7 @@ export class FeathersDS implements IDataSource {
     return service.path
   }
 
-  async authenticate(username: string, password: string) {
+  async login(username: string, password: string) {
 
     try {
       const jwt = await this.client.authenticate({
@@ -48,5 +48,8 @@ export class FeathersDS implements IDataSource {
       console.log(err)
       throw (err)
     }
+  }
+  logout(){
+    return this.client.logout()
   }
 }

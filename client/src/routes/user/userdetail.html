@@ -5,14 +5,28 @@
         <span class="detailcaption">Login</span>
       </div>
       <div class="body">
-        <h1>Eingeloggt: ${actUser}</h1>
-        <p>In dieser Demo-Version können Sie sich einfach durch klick auf einen der untenstehenden Buttons mit der
-          betreffenden Identität einloggen. In der echten Version wird es etwas schwieriger sein.
+        <h2>Eingeloggt: ${state.email}</h2>
+        <p>In dieser Demo-Version können Sie sich einfach durch Klick auf einen der
+          untenstehenden Buttons mit der
+          betreffenden Rolle einloggen.
         </p>
-        <button class="btn" click.trigger="login('admin@webelexis.ch','admin')">Admin</button>
-        <button class="btn" click.trigger="login('user@webelexis.ch','user')">User</button>
-        <button class="btn" click.trigger="login('guest@some.where','gast')">Gast</button>
-
+        <div class="card">
+          <div class="card-header">
+            Einloggen als...
+          </div>
+          <div class=card-body>
+            <div class="btn-toolbar" role="toolbar">
+              <div class="btn-group" style="padding-right: 10px;">
+                <button class="btn btn-success" click.trigger="login('admin@webelexis.ch','admin')"  disabled.bind="state.email.length>0">Admin</button>
+                <button class="btn btn-success" click.trigger="login('user@webelexis.ch','user')"  disabled.bind="state.email.length>0">User</button>
+                <button class="btn btn-success" click.trigger="login('guest@some.where','gast')"  disabled.bind="state.email.length>0">Gast</button>
+              </div>
+              <div class="btn-group" >
+                <button class="btn btn-primary" click.trigger="logout()" disabled.bind="state.email.length==0">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
