@@ -20,6 +20,7 @@ const auf = require('./auf/auf.service.js');
 const createpdf = require('./createpdf/createpdf.service.js');
 const documents = require('./documents/documents.service.js');
 const macros = require('./macros/macros.service.js');
+const labresults = require('./labresults/labresults.service.js');
 module.exports = function (app) {
  app.configure(elexisConfig);
  app.configure(admin);
@@ -37,4 +38,5 @@ module.exports = function (app) {
  app.configure(createpdf);
  app.configure(documents);
  app.configure(macros);
+ app.configure(labresults);
 };

@@ -1,39 +1,17 @@
 UPDATE user_ SET `id` = LOWER(`id`);
-alter table behandlungen add Zeit char(8);
-
-alter table faelle modify id varchar(40),
-	modify patientid varchar(40),
-	modify garantid varchar(40),
-	modify kostentrid varchar(40),
-	modify grund varchar(255),
-	modify diagnosen varchar(255);
-
-
-alter table behandlungen modify id varchar(40),
-	modify fallid varchar(40),
-	modify mandantid varchar(40),
-	modify rechnungsid varchar(40);
 
 alter table artikel modify id varchar(40),
 	modify lieferantid varchar(40);
 
 alter table artikel_details modify ARTICLE_ID varchar(40);
+
 alter table artikelstamm_ch change ID id varchar(40),
 	modify LieferantID varchar(40);
 
-
-alter table diagnosen modify id varchar(40);
-alter table behdl_dg_joint change ID id varchar(40),
-	modify BehandlungsID varchar(40),
-	modify DiagnoseID varchar(40);
-
-
 alter table at_medevit_elexis_gdt_protokoll change ID id varchar(40),
 	modify PatientID varchar(40);
-
 alter table at_medevit_elexis_impfplan change ID id varchar(40),
 	modify Patient_ID varchar(40);
-
 alter table at_medevit_elexis_inbox change ID id varchar(40);
 alter table at_medevit_elexis_labmap change ID id varchar(40);
 alter table at_medevit_elexis_loinc change ID id varchar(40);
@@ -48,10 +26,24 @@ alter table auf modify id varchar(40),
 
 alter table bbs modify id varchar(40), modify authorid varchar(40);
 
+alter table behandlungen modify id varchar(40),
+	modify fallid varchar(40),
+	modify mandantid varchar(40),
+	modify rechnungsid varchar(40),
+  add Zeit char(8);
+
+alter table behdl_dg_joint change ID id varchar(40),
+	modify BehandlungsID varchar(40),
+	modify DiagnoseID varchar(40);
+
+
 alter table bestellung_entry change ID id varchar(40),
 	modify ARTICLE_ID varchar(40),
 	modify stock varchar(40),
 	modify PROVIDER varchar(40);
+
+alter table bestellungen change ID id varchar(80);
+
 
 alter table bildanzeige change ID id varchar(40),
 	modify PatID varchar(40);
@@ -62,11 +54,148 @@ alter table briefe modify id varchar(40),
 	modify behandlungsid varchar(40),
 	modify patientid varchar(40);
 
+alter table ch_berchtold_privatrechnung
+  change ID id varchar(40),
+  modify subsystem varchar(40);
+
+alter table ch_elexis_agenda_daymsg
+  change ID id char(8);
+
+alter table ch_elexis_arzttarif_ch_rfe
+  change ID id varchar(40),
+  modify konsID varchar(40);
+
+alter table ch_elexis_arzttarife_ch_complementary
+  change ID id varchar(40);
+
+alter table ch_elexis_arzttarife_ch_physio
+  change ID id varchar(49);
+
+alter table ch_elexis_core_findings_condition
+  change ID id varchar(40);
+
+alter table ch_elexis_core_findings_encounter
+  change ID id varchar(40);
+
+alter table ch_elexis_core_findings_localcoding
+  change ID id varchar(40),
+  modify code varchar(40);
+
+alter table ch_elexis_core_findings_observation
+  change ID id varchar(40);
+
+alter table ch_elexis_core_findings_procedurerequest
+  change ID id varchar(40);
+
+alter table ch_elexis_developer_resources_sampletable
+  change ID id varchar(40),
+  modify PatientID varchar(40);
+
+alter table ch_elexis_eigendiagnosen
+  change ID id varchar(40),
+  modify parent varchar(40),
+  modify code varchar(40);
+
+alter table ch_elexis_icpc_encounter
+  change ID id varchar(40),
+  modify KONS varchar(40),
+  modify EPISODE varchar(40);
+
+alter table ch_elexis_icpc_episodes
+  change ID id varchar(40),
+  modify PatientID varchar(40);
+
+alter table ch_elexis_icpc_episodes_diagnoses_link
+  change ID id varchar(40),
+  modify Episode varchar(40);
+
+alter table ch_elexis_impfplan_vaccinations
+  change ID id varchar(40),
+  modify patientID varchar(40),
+  modify vaccinationType varchar(40);
+
+alter table ch_elexis_impfplan_vaccination_types
+  change ID id varchar(40);
+
+alter table ch_elexis_kassenbuch
+change ID id varchar(40),
+modify Nr varchar(40);
+
+alter table ch_elexis_medikamente_bag_ext
+  change ID id varchar(40);
+
+alter table ch_elexis_medikamente_bag_interactions
+  change ID id varchar(40),
+  modify Subst1 varchar(40),
+  modify Subst2 varchar(40),
+  modify Contributor varchar(40);
+
+alter table ch_elexis_medikamente_bag_joint
+  change ID id varchar(40),
+  modify product varchar(40),
+  modify substance varchar(40);
+
+alter table ch_elexis_medikamente_bag_substance
+  change ID id varchar(40);
+
+
 alter table ch_elexis_messages change ID id varchar(40),
 	modify origin varchar(40),
 	modify destination varchar(40);
 
+alter table ch_elexis_messwerte_messwerte
+  change ID id varchar(40),
+  modify MessungID varchar(40),
+  modify Name varchar(40),
+  modify Wert varchar(40);
+
+alter table ch_elexis_molemax
+  change ID id varchar(40),
+  modify patientID varchar(40),
+  modify parentID varchar(40);
+
+alter table ch_elexis_notes
+  change ID id varchar(40),
+  modify Parent varchar(40);
+
+alter table ch_elexis_privatrechnung
+  change ID id varchar(40),
+  modify subsystem varchar(40);
+
+alter table ch_elexis_stickynotes
+  change ID id varchar(40),
+  modify PatientID varchar(40);
+
+alter table ch_medelexis_labortarif2009
+  change ID id varchar(40);
+
+alter table ch_medelexis_therapieplan_dispenses
+  change ID id varchar(40),
+  modify medicationID varchar(40);
+
+alter table ch_medelexis_therapieplan_medication
+  change ID id varchar(40),
+  modify patientID varchar(40),
+  modify problemID varchar(40);
+
+alter table com_hilotec_elexis_messwerte_messungen
+  change ID id varchar(40),
+  modify PatientID varchar(40),
+  modify TypName varchar(40);
+
+alter table com_hilotec_elexis_messwerte_messwerte
+  change ID id varchar(40),
+  modify MessungID varchar(40),
+  modify Name varchar(40),
+  modify Wert varchar(40);
+
 alter table dbimage change ID id varchar(40);
+
+alter table default_signatures
+  change ID id varchar(40);
+
+
+alter table diagnosen modify id varchar(40);
 
 alter table eigenleistungen change ID id varchar(40);
 
@@ -89,7 +218,41 @@ alter table etiketten_objclass_link modify sticker varchar(40);
 alter table etiketten_object_link modify obj varchar(40),
 	modify etikette varchar(40);
 
+alter table faelle modify id varchar(40),
+	modify patientid varchar(40),
+	modify garantid varchar(40),
+	modify kostentrid varchar(40),
+	modify grund varchar(255),
+	modify diagnosen varchar(255);
+
+
+
 alter table heap change ID id varchar(40);
+
+alter table iatrix_problem
+  change ID id varchar(40),
+  modify PatientID varchar(40);
+
+alter table iatrix_problem_behdl_joint
+  change ID id varchar(40),
+  modify ProblemID varchar(40),
+  modify BehandlungsID varchar(40);
+
+alter table iatrix_problem_dauermedikation_joint
+  change ID id varchar(40),
+  modify ProblemID varchar(40),
+  modify DauermedikationID varchar(40);
+
+alter table iatrix_problem_dg_joint
+  change ID id varchar(40),
+  modify ProblemID varchar(40),
+  modify DiagnoseID varchar(40);
+
+alter table icd10
+  change ID id varchar(40),
+  modify parent varchar(40);
+
+
 
 alter table kontakt_adress_joint modify id varchar(40),
 	modify myid varchar(40),
@@ -104,3 +267,32 @@ alter table konto modify id varchar(40),
 	modify RechnungsID varchar(40),
 	modify ZahlungsID varchar(40);
 
+alter table labgroup_item_joint
+  modify GroupID varchar(40),
+  modify ItemID varchar(40);
+
+alter table labgroups
+  change ID id varchar(40);
+
+alter table laborder
+  change ID id varchar(40);
+
+
+alter table laborwerte modify id varchar(40),
+  modify patientid varchar(40),
+  modify itemid varchar(40),
+  modify OriginID varchar(40);
+
+alter table laboritems modify id varchar(40),
+  modify laborid varchar(40);
+
+alter table leistungen
+  change ID id varchar(40),
+  modify behandlung varchar(40),
+  modify leistg_code varchar(40),
+  modify userID varchar(40);
+
+alter table leistungsblock
+  change ID id varchar(40),
+  modify mandantid varchar(40);
+  
