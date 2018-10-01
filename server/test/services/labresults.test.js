@@ -1,5 +1,7 @@
 const assert = require('assert');
 const app = require('../../src/app');
+const chai=require('chai')
+chai.should()
 
 describe('\'labresults\' service', () => {
   it('registered the service', () => {
@@ -14,6 +16,7 @@ describe('\'labresults\' service', () => {
     const pat=pats.data[0]
     const labService=app.service('labresults')
     const results=await labService.find({query: {patientId: pat.id}})
-    //console.log(results)
+    results.should.be.ok
+    results.data.length.should.be.gt(0)
   })
 });

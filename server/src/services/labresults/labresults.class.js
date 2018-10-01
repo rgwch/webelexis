@@ -13,19 +13,19 @@ class Service {
     if (params.query) {
       const pat = params.query.patientId
       if (pat) {
-        const found=await Promise.all([this.kService.get(pat,{select: 'id'}),this.knex({ rs: 'laborwerte' }).join('laboritems', 'laboritems.id', '=', 'itemid').where({ 'patientid': pat, 'visible': "1", "rs.deleted": "0" })
-        .orderBy('datum')
+        const found=await Promise.all([this.kService.get(pat,{query: {$select: ['geschlecht']}}),this.knex({ rs: 'laborwerte' }).join({li:'laboritems'}, 'li.id', 'itemid').where({ 'patientid': pat, 'visible': "1", "rs.deleted": "0" })
+        .orderBy('datum','desc')
         .select(["rs.datum", "rs.Zeit",
-          "laboritems.kuerzel",
+          "li.kuerzel",
           "rs.resultat",
           "rs.refmale", "rs.reffemale",
-          "laboritems.RefMann",
-          "laboritems.RefFrauOrTx",
-          "laboritems.Einheit",
+          "li.RefMann",
+          "li.RefFrauOrTx",
+          "li.Einheit",
           "rs.unit",
           "gruppe", "prio"]) ])
         const s=found[0].geschlecht.toLowerCase()
-        return found[1].map(r => {
+        const result= found[1].map(r => {
           if(s==='m'){
           r.reference = r.refmale ? r.refmale : r.RefMann
           }else{
@@ -41,6 +41,10 @@ class Service {
           delete r.Einheit
           return r
         })
+        return {
+          total: found[1].length,
+          data: result
+        }
       }
     }
     return [];
