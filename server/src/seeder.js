@@ -1,4 +1,5 @@
 const logger = require('./logger')
+const roles= require('./services/roles')
 module.exports = function (app) {
 
   const docs = app.service('documents')
@@ -26,19 +27,19 @@ module.exports = function (app) {
   const guest = {
     email: "guest@some.where",
     password: "gast",
-    roles: ["guest"],
+    roles: [roles.guest],
     dummy: true
   }
   const admin = {
     email: "admin@webelexis.ch",
     password: "admin",
-    roles: ["admin"],
+    roles: [roles.admin],
     dummy: true
   }
   const user = {
     email: "user@webelexis.ch",
     password: "user",
-    roles: ["user", "guest"],
+    roles: [roles.user, roles.guest],
     dummy: true
   }
   usr.remove(null, { query: { dummy: true } }).then(removed => {

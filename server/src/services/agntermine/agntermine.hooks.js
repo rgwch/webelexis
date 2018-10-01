@@ -4,6 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const abilities=require('../../hooks/abilities')
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const acl=require('./acl')
 
 /**
@@ -29,6 +30,10 @@ async function getColors(context, mode, resource) {
   })
   return ret
 }
+/**
+ * Hook to sort appointments by begin time. Since time is encoded as string but meant als minutes
+ * from midnight, we have to cast string to integer before sorting. (Otherwise 1000 would be before 900)
+ */
 const doSort = function (options = {}) {
   return async context => {
     const query = context.app.service('termin').createQuery({ query: context.params.query });
@@ -38,7 +43,14 @@ const doSort = function (options = {}) {
 }
 
 
-
+/**
+ * Hook to perform queries on agenda metadata.
+ * The following queries are supported:
+ * - types: query possible appointment types
+ * - states: query possible appointment states
+ * - resources: 
+ * @param {*} options
+ */
 const specialQueries = function (options = {}) { // eslint-disable-line no-unused-vars
   return async context => {
     const cfg = context.app.service('elexis-config')
@@ -135,7 +147,7 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
 
 module.exports = {
   before: {
-    all: [abilities({acl})],
+    all: [ authenticate('jwt'), abilities({acl})],
     find: [doSort(), treatDeleted()],
     get: [specialQueries()],
     create: [],
