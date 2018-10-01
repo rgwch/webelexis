@@ -16,14 +16,14 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id').primary().unique().notNullable()
-        table.string('patientid')
-        table.string('mandantid')
-        table.string('datum')
+        table.string('id',40).primary().unique().notNullable()
+        table.string('patientid',40)
+        table.string('mandantid',40)
+        table.string('datum',8)
         table.string('rptxt')
         table.string('RpZusatz')
-        table.string('BriefID')
-        table.string('deleted')
+        table.string('BriefID',40)
+        table.string('deleted',1)
         table.integer('LASTUPDATE')
       })
         .then(() => console.log(`Created ${tableName} table`))

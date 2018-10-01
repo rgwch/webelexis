@@ -14,9 +14,9 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('ID');
-        table.string('DELETED');
-        table.string("KONTAKT_ID")
+        table.string('id',40);
+        table.string('DELETED',1);
+        table.string("KONTAKT_ID",40)
         table.integer("LASTUPDATE")
         table.string("HASHED_PASSWORD")
         table.string("SALT")

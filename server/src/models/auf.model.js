@@ -15,7 +15,7 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id').primary().unique().notNullable()
+        table.string('id',40).primary().unique().notNullable()
         table.string('patientid')
         table.string('fallid')
         table.string('prozent')

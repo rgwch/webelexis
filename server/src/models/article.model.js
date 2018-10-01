@@ -16,7 +16,7 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id').primary();
+        table.string('id',40).primary();
         table.bigint('lastupdate')
         fields.forEach(field=>table.string(field))
         table.binary("ExtInfo")
@@ -25,7 +25,7 @@ module.exports = function (app) {
         .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-  
+
 
   return db;
 };

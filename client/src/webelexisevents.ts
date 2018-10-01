@@ -6,6 +6,7 @@ import { ElexisType } from './models/elexistype';
 
 @autoinject
 export class WebelexisEvents{
+  private state
   private setDateAction= (state:State, date:Date)=>{
     const newState=Object.assign({},state)
     newState.date=date
@@ -26,6 +27,7 @@ export class WebelexisEvents{
     this.store.registerAction("SetDate",this.setDateAction)
     this.store.registerAction("SelectItem",this.selectItemAction)
     this.store.registerAction("Logout",this.logoutAction)
+    this.store.state.subscribe(state=>this.state=state)
   }
   setDate(date){
     this.store.dispatch(this.setDateAction,date)
@@ -33,6 +35,10 @@ export class WebelexisEvents{
 
   selectItem(item:ElexisType){
     this.store.dispatch(this.selectItemAction,item)
+  }
+
+  getSelectedItem(type:string){
+    return this.state[type]
   }
 
   logout(){

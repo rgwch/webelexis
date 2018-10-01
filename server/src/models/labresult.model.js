@@ -13,7 +13,7 @@
   db.schema.hasTable(resultTable).then(exists=>{
     if(!exists){
       db.schema.createTable(resultTable, table=>{
-        table.string('id').primary().unique().notNullable()
+        table.string('id',40).primary().unique().notNullable()
         table.string('patientid')
         table.string('datum')
         table.string('itemid')

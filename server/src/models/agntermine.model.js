@@ -10,8 +10,8 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id').primary().unique().notNullable()
-        table.string('PatID')
+        table.string('id',80).primary().unique().notNullable()
+        table.string('PatID',40)
         table.string('Bereich')
         table.string('Tag')
         table.string('Beginn')

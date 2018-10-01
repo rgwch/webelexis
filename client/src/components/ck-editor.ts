@@ -60,16 +60,20 @@ export class CKEditor {
                 const sel = this.editor.model.document.selection
                 const range = sel.getFirstRange()
                 const text = change.position.textNode.data
-                const idx = Math.max(text.lastIndexOf(' '), 0)
+                const idx = text.lastIndexOf(' ') // -1 if at beginning of line
                 const word = text.substring(idx + 1, ipos)
                 console.log(word)
                 const replacement = this.callback(word)
                 const pos = change.position.getShiftedBy(word.length * -1)
                 range.start = pos
                 writer.remove(range)
+                writer.insertText(replacement, pos)
+                /*
                 for(const repl of this.import(writer,replacement)){
                   writer.insertElement(repl,pos)
                 }
+                */
+
               }
             }
           }
@@ -100,11 +104,11 @@ export class CKEditor {
     this.value = this.editor.getData()
   }
 
-  import(writer,rt){
-    const ops=[]
-    for(const line of rt.split(/\n/)){
+  import(writer, rt) {
+    const ops = []
+    for (const line of rt.split(/\n/)) {
       ops.push(writer.createText(line))
-      ops.push(writer.createElement('paragraph'))
+      // ops.push(writer.createElement('paragraph'))
     }
     return ops
   }

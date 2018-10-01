@@ -10,7 +10,7 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('userID',36)
+        table.string('userID',40)
         table.string('param',80);
         table.string('value');
         table.bigint('lastupdate')
@@ -19,7 +19,7 @@ module.exports = function (app) {
         .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-  
+
 
   return db;
 };

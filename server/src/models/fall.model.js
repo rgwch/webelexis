@@ -6,11 +6,11 @@
 
 module.exports = function (app) {
   const db = app.get('knexClient');
-  const tableName = 'fall';
+  const tableName = 'faelle';
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id').primary();
+        table.string('id',40).primary();
         table.string('patientid');
         table.string('garantid');
         table.string('kostentrid');
@@ -32,7 +32,7 @@ module.exports = function (app) {
         .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-  
+
 
   return db;
 };
