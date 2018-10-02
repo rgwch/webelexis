@@ -65,5 +65,8 @@ app.configure(customMethods({
   }
 }))
 
-require('./seeder')(app)
+// If in testing mode: Seed databases
+if (app.get("testing")) {
+  require('./seeder')(app)
+}
 module.exports = app;

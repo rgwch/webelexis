@@ -1,6 +1,7 @@
 const logger = require('./logger')
-const roles= require('./services/roles')
+const roles = require('./services/roles')
 module.exports = function (app) {
+  
 
   const docs = app.service('documents')
   docs.get("1").then(doc => {
@@ -61,10 +62,33 @@ module.exports = function (app) {
         gw: "Gewicht"
       },
       dummy: true
-    }).then(m=>{
+    }).then(m => {
       logger.info("created dummy macros")
-    }).catch(err=>{
-      logger.error("could not create dummy macro "+err)
+    }).catch(err => {
+      logger.error("could not create dummy macro " + err)
+    })
+  })
+
+  const findings = app.service('findings')
+  findings.remove(null, { query: { dummy: true } }).then(removed => {
+    findings.create({
+      name: "dummies",
+      patientid: "007",
+      dummy: true,
+      creator: "humblebumple",
+      elements: ["foo", "bar", "baz"],
+      measurements: [
+        {
+          date: "21.4.1978",
+          values: ["17", "28", "34"]
+        }, {
+          date: "23.6.1982",
+          values: ["11", "17", "102"]
+        }, {
+          date: "30.8.1991",
+          values: ["99", "27", "null"]
+        }
+      ]
     })
   })
 }

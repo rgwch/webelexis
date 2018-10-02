@@ -5,6 +5,7 @@ import { DataService, DataSource } from "../services/datasource";
 import { resolve } from "path";
 
 export interface FindingType extends ElexisType{
+  patientid:string,
   name:string,            // e.g. 'physical'
   elements:Array<string>  // e.g. ['weight', 'height', 'bmi']
   measurements:Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
@@ -16,24 +17,24 @@ export interface FindingType extends ElexisType{
 }
 
 @autoinject
-export class Findings{
+export class FindingsManager{
   private service:DataService
 
   constructor(private ds:DataSource){
     this.service=ds.getService('findings')
   }
 
-  fetch(name:string):Promise<Finding>{
+  fetch(name:string):Promise<FindingsModel>{
     return this.service.find({query:{name:name}})
       .then(f=>{
-        return new Finding(f.data[0])
+        return new FindingsModel(f.data[0])
       },err=>{
-        return new Finding({name:name,elements:[],measurements:[]})
+        return new FindingsModel({name:name,elements:[],measurements:[]})
       })
   }
 }
 
-export class Finding{
+export class FindingsModel{
   f:FindingType
   constructor(obj:FindingType){
     this.f=obj
