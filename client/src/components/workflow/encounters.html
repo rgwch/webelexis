@@ -1,10 +1,15 @@
 <template>
   <require from="./encounter"></require>
   <require from="../endless-scroll"></require>
-  <span class="detailcaption">Konsultationen</span>
+  <require from="../../services/date-format"></require>
+  <span class="detailcaption">Konsultationen: ${actPatient.Bezeichnung1} ${actPatient.Bezeichnung2}, ${actPatient.geburtsdatum | dateFormat:"date"}</span>
   <div class="sheet">
     <div class="header">
       <input type="text" style="display:inline;">
+      <select>
+        <option value="all">Alle Fälle</option>
+        <option repeat.for="case of cases.data" value="case.id">${case.datumvon}</option>
+      </select>
     </div>
     <div class="body">
       <endless-scroll reload.delegate="fetchData($event)" limit.bind="65">

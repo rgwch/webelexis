@@ -4,8 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
- /*
-  List of elexis encounters of the currently selected patient
+/*
+ List of elexis encounters of the currently selected patient
 */
 
 import { State } from '../../state';
@@ -25,31 +25,42 @@ import { autoinject } from 'aurelia-framework';
 @autoinject
 export class Encounters {
   encounters = { data: [] }
+  cases = { data: [] }
   lastEntry: number = 0
-  private konsultationService:DataService
+  private konsultationService: DataService
+  private caseService: DataService
   private actPatient
 
-  actPatientChanged(newValue,oldValue){
-    this.encounters.data=[]
-    this.lastEntry=0
+  actPatientChanged(newValue, oldValue) {
+    this.encounters.data = []
+    this.lastEntry = 0
     this.fetchData(newValue)
   }
-  constructor(private ds:DataSource) {
-    this.konsultationService=this.ds.getService('konsultation')
+  constructor(private ds: DataSource) {
+    this.konsultationService = this.ds.getService('konsultation')
+    this.caseService = this.ds.getService('fall')
   }
 
   attached() {
   }
 
-
+  /**
+   * Fetch new data. The method is either called from actPatientChanged, then data of the new patient
+   * must be loaded. Or it's called as CustomEvent from the EndlessScroll-widtget, then more data of the current
+   * patient must be fetched.
+   * @param ev
+   */
   fetchData(ev) {
-    let id=ev.id
+    let id = ev.id
     if (ev instanceof CustomEvent) {
-      id=this.actPatient.id
+      id = this.actPatient.id
     }
-      this.konsultationService.find({ query: { "patientId": id, $skip: this.lastEntry, $limit: 20 } }).then(result => {
-        this.lastEntry += result.data.length
-        this.encounters.data = this.encounters.data.concat(result.data)
-      })
-    }
+    this.konsultationService.find({ query: { "patientId": id, $skip: this.lastEntry, $limit: 20 } }).then(result => {
+      this.lastEntry += result.data.length
+      this.encounters.data = this.encounters.data.concat(result.data)
+    })
+    this.caseService.find({query: {"patientid": id}}).then(result=>{
+      this.cases.data=result.data
+    })
+  }
 }

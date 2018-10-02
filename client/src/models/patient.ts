@@ -43,64 +43,64 @@ export class Patient {
     return ret
   }
   static getDefinition(): FlexformConfig {
-    let tr = Patient.i18.tr
+    let i18 = Patient.i18
     return {
       title: () => "", // ()=>Patient.getTitle(),
       compact: true,
       attributes: [
         {
           attribute: "Bezeichnung1",
-          label: tr("contact.lastname"),
+          label: i18.tr("contact.lastname"),
           datatype: "string",
           validation: Patient.char80,
           validationMessage: Patient.i18.tr("validation.onlyText"),
           sizehint: 4
         }, {
           attribute: "Bezeichnung2",
-          label: tr("contact.firstname"),
+          label: i18.tr("contact.firstname"),
           datatype: "string",
           validation: Patient.char80,
           validationMessage: Patient.i18.tr("validation.onlyText"),
           sizehint: 4,
         }, {
           attribute: "geburtsdatum",
-          label: tr("contact.birthdate"),
+          label: i18.tr("contact.birthdate"),
           datatype: {
             toForm: x => Patient.dateModelToView(x),
             toData: x => Patient.viewToDateModel(x)
           },
           validation: Patient.checkdate,
-          validationMessage: tr('validation.invalidDate'),
+          validationMessage: Patient.i18.tr('validation.invalidDate'),
           sizehint: 2
-        }, {
+        },{
           attribute: "geschlecht",
-          label: tr("contact.gender"),
+          label: i18.tr("contact.gender"),
           datatype: "string",
           sizehint: 2
         }, {
           attribute: "Strasse",
-          label: tr("address.street"),
+          label: i18.tr("address.street"),
           datatype: "string",
           sizehint: 12
         },
         {
           attribute: "plz",
-          label: tr("address.zip"),
+          label: i18.tr("address.zip"),
           datatype: "string",
           sizehint: 3
         }, {
           attribute: "Ort",
-          label: tr("address.place"),
+          label: i18.tr("address.place"),
           datatype: "string",
           sizehint: 9
         }, {
           attribute: "contactPoints",
-          label: tr("contact.contactpoints"),
-          datatype: new ContactRenderer(),
+          label: i18.tr("contact.contactpoints"),
+          datatype: "string",
           sizehint: 12
         }, {
           attribute: "bemerkung",
-          label: Patient.i18.tr("contact.remark"),
+          label: i18.tr("contact.remark"),
           datatype: "string",
           sizehint: 12
 
