@@ -10,6 +10,10 @@ export class TestIndex{
   constructor(private ea:EventAggregator){
 
   }
+
+  attached(params){
+    //console.log(params)
+  }
   switchTo(view){
     this.ea.publish("testdetail",view)
   }

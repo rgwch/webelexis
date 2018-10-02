@@ -14,6 +14,13 @@ export class Detail{
     })
   }
 
+  activate(params){
+    if(params.vi){
+      const actview=this.views.find(v=>v.name.toLowerCase()==params.vi)
+      this.active=actview
+    }
+  }
+
   switchTo(view){
     this.active=view
   }

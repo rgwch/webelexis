@@ -56,14 +56,14 @@ export class App {
         }
       },
 {
-        route: '/test',
+        route: '/test/:vi',
         name: "test",
         viewPorts: {
           default: { moduleId: 'routes/test/index' },
           details: { moduleId: 'routes/test/detail' }
         },
         title: 'test',
-        nav: true
+        nav: false
       },
       {
         route: '/agenda',
