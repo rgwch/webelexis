@@ -8,13 +8,15 @@
   </div>
   <form>
     <div class.bind="rowCss">
-        <div class="${colCss(attr)}" repeat.for="attr of ff_cfg.attributes">
+      <div class="${colCss(attr)}" repeat.for="attr of ff_cfg.attributes">
+        <div if.one-time="displayType(attr)=='line'">
           <label for="attr.attribute" hide.bind="ff_cfg.compact">${attr.label}</label>
           <input type="text" class="form-control" readonly.bind="isLocked" placeholder="${attr.label}"
-                  id="${attr.attribute}" value.bind="entity[attr.attribute] | flexformvalues:attr & updateTrigger:'blur'" blur.trigger="validateField(attr)">
+            id="${attr.attribute}" value.bind="entity[attr.attribute] | flexformvalues:attr & updateTrigger:'blur'"
+            blur.trigger="validateField(attr)">
           <span class="error" style="font-size: small;color:red" show.bind="attr.hasErrors">${attr.errmsg}</span>
         </div>
+      </div>
     </div>
   </form>
-
 </template>

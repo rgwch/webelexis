@@ -13,7 +13,13 @@
     "lastname": "Nachname",
     "birthdate": "Geburtsdatum",
     "gender": "Geschlecht",
-    "remark": "Bemerkung"
+    "remark": "Bemerkung",
+    "contactpoints": "Erreichbar"
+  },
+  "address":{
+    "street": "Strasse",
+    "zip": "Plz",
+    "place": "Ort"
   },
   "validation":{
     "onlyText": "2-80 Zeichen, keine Ziffern und Sonderzeichen",

@@ -19,7 +19,7 @@ describe('\'termin\' service', () => {
 
     assert.ok(service, 'Registered the service');
   });
-  it("loads and sort all appointments from 11.12.2017", async () => {
+  it("loads and sort all appointments from 11.12.2017", () => {
     return service.find({query:{ "Tag": "20171211" }}).then(termine => {
       termine.data.length.should.be.above(2)
       let check=termine.data.every(elem=>{

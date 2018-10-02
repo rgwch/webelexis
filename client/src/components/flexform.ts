@@ -21,7 +21,7 @@ export interface FlexformConfig {
   attributes: Array<{   // Attributes to display in the form
     attribute: string   // Name of the attribue as defined in the datastore backend
     label?: string      // Display-Name for the attribute
-    datatype?: string | { toForm: (x: any) => string, toData: (x: string) => any }
+    datatype?: string | { toForm: (x: any) => string, toData: (x: string) => any} | FlexformListRenderer
                 // type of the data. Either "string" or an object containing a function to
                 // render the data and a function to store the data.
     validation?: (value, entity) => boolean
@@ -33,6 +33,10 @@ export interface FlexformConfig {
   }>
 }
 
+export interface FlexformListRenderer{
+  fetchElements: (obj)=>Array<any>
+  toString: (line)=>string
+}
 @inject(NewInstance.of(ValidationController),DataSource)
 export class FlexForm {
   @bindable ff_cfg: FlexformConfig
@@ -62,6 +66,17 @@ export class FlexForm {
       return this.ff_cfg.title
     }else{
       return this.ff_cfg.title()
+    }
+  }
+
+  displayType(attrib){
+    const type=attrib.datatype
+    if(typeof(type)=='string'){
+      return "line"
+    }else if(type.toForm){
+        return "line"
+    }else{
+      return "list"
     }
   }
   /*
