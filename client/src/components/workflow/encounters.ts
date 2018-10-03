@@ -51,16 +51,27 @@ export class Encounters {
    * @param ev
    */
   fetchData(ev) {
-    let id = ev.id
-    if (ev instanceof CustomEvent) {
-      id = this.actPatient.id
+    let id;
+    if (ev) {
+      id = ev.id
     }
-    this.konsultationService.find({ query: { "patientId": id, $skip: this.lastEntry, $limit: 20 } }).then(result => {
-      this.lastEntry += result.data.length
-      this.encounters.data = this.encounters.data.concat(result.data)
-    })
-    this.caseService.find({query: {"patientid": id}}).then(result=>{
-      this.cases.data=result.data
-    })
+    if (ev instanceof CustomEvent) {
+      if (this.actPatient) {
+        id = this.actPatient.id
+      }
+    }
+    if (id) {
+      this.konsultationService.find({ query: { "patientId": id, $skip: this.lastEntry, $limit: 20 } }).then(result => {
+        this.lastEntry += result.data.length
+        this.encounters.data = this.encounters.data.concat(result.data)
+      })
+      this.caseService.find({ query: { "patientid": id } }).then(result => {
+        this.cases.data = result.data
+      })
+
+    } else {
+      this.encounters.data = []
+      this.cases.data = []
+    }
   }
 }

@@ -4,6 +4,7 @@ import { autoinject } from "aurelia-framework";
 
 @autoinject
 export class EncountersTest{
+  /*
   patService
   constructor(private ds:DataSource, private we:WebelexisEvents){
     this.patService=ds.getService('patient')
@@ -13,4 +14,5 @@ export class EncountersTest{
       this.we.selectItem(patient)
     })
   }
+  */
 }

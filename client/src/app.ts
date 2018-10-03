@@ -56,7 +56,7 @@ export class App {
         }
       },
 {
-        route: '/test/:vi',
+        route: '/test/:vi?',
         name: "test",
         viewPorts: {
           default: { moduleId: 'routes/test/index' },
