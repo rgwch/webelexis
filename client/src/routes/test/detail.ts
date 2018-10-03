@@ -29,6 +29,7 @@ export class Detail {
         alert("No Patient for testing found")
       }
       this.actPatient = p.data[0]
+      this.actPatient.type="patient"
       this.we.selectItem(this.actPatient)
     },reject=>{
       alert(reject)

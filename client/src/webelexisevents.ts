@@ -13,6 +13,9 @@ export class WebelexisEvents{
     return newState
   }
   private selectItemAction=(state:State, item:ElexisType)=>{
+    if(!item.type){
+      throw new Error("type information missing at selectItemAction")
+    }
     const newState=Object.assign({},state)
     newState[item.type]=item
     return newState
@@ -38,6 +41,9 @@ export class WebelexisEvents{
   }
 
   getSelectedItem(type:string){
+    if(type){
+      throw new Error("type information missing at getSelecedItem")
+    }
     return this.state[type]
   }
 
