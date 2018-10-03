@@ -31,6 +31,8 @@ export interface TerminType {
 
 }
 
+let terminTypes = []
+let terminStates = []
 let agendaTypColors={}
 let agendaStateColors={}
 let agendaResources=[]
@@ -39,8 +41,6 @@ let agendaResources=[]
 @connectTo(store=>store.state.pipe(pluck('usr')))
 export class TerminManager {
   terminService: DataService
-  terminTypes = []
-  terminStates = []
 
   stateChanged(newUser,oldUser){
     if(newUser){
@@ -57,6 +57,8 @@ export class TerminManager {
     agendaResources=await this.terminService.get("resources")
     agendaTypColors=await this.terminService.get("typecolors",{query: {user: user.label}})
     agendaStateColors=await this.terminService.get("statecolors", {query:{user: user.label}})
+    terminTypes = await this.terminService.get("types")
+    terminStates = await this.terminService.get("states")
     return true
   }
 
@@ -67,24 +69,9 @@ export class TerminManager {
   getStates(){
     return agendaStateColors;
   }
-  private createGap(act: TerminModel, length: number): TerminModel {
-    const start = act.getEndTime()
-    return new TerminModel({
-      Tag: act.obj.Tag,
-      Beginn: (start.hours() * 60 + start.minutes()).toString(),
-      Dauer: length.toString(),
-      TerminTyp: this.terminTypes[0],
-      TerminStatus: this.terminStates[0]
-    })
-  }
+
   async fetchForDay(date: Date, resource: string): Promise<Array<TerminModel>> {
     const day = moment(date)
-    if (this.terminTypes.length == 0) {
-      this.terminTypes = await this.terminService.get("types")
-    }
-    if (this.terminStates.length == 0) {
-      this.terminStates = await this.terminService.get("states")
-    }
     const found = await this.terminService.find({ query: { Tag: day.format("YYYYMMDD"), Bereich: resource } })
     if (found.data && found.data.length > 0) {
       const ret=[]
@@ -99,8 +86,8 @@ export class TerminManager {
           const gap={
             Tag: template.Tag,
             Bereich: template.Bereich,
-            TerminTyp:this.terminTypes[0],
-            TerminStatus: this.terminStates[0],
+            TerminTyp:terminTypes[0],
+            TerminStatus: terminStates[0],
             Beginn: firstEnd.toString(),
             Dauer: (secondBegin-firstEnd).toString()
           }
@@ -126,11 +113,18 @@ export class TerminModel {
   public getLabel = (): string => Kontakt.getLabel(this.getKontakt())
 
   public getTypColor(){
-    let tc=agendaTypColors[this.obj.TerminType] || "aaaaaa"
+    let tc=agendaTypColors[this.obj.TerminTyp] || "aaaaaa"
     return "#"+tc
   }
   public getStateColor(){
-    let ts=agendaStateColors[this.obj.TerminStatus] || "bbbbbb"
+    let ts
+    if(this.obj.TerminTyp===terminTypes[0]){
+      ts=agendaTypColors[this.obj.TerminTyp]
+    }else if(this.obj.TerminTyp===terminTypes[1]){
+      ts=agendaTypColors[this.obj.TerminTyp]
+    }else{
+      ts=agendaStateColors[this.obj.TerminStatus] || "bbbbbb"
+    }
     return "#"+ts
   }
 

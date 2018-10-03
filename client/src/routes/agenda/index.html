@@ -2,14 +2,14 @@
   <require from="../../components/workflow/agendaentry"></require>
   <require from="../../components/pickdate"></require>
   <span class="detailcaption">Agenda</span>
-  <div class="sheet">
+  <div class="sheet" style="position:relative">
     <div class="header">
       <pickdate pickerdate.two-way="dateStandard"></pickdate>
-      <select value.two-way="bereich">
+      <select style="position:absolute;right:20px;top:10px;width:150px;height:2em;" value.two-way="bereich">
           <option repeat.for="el of bereiche" model.bind="el">${el}</option>
         </select>
     </div>
-    <div class="body">
+    <div class="body" style="width:100%;overflow-x:hidden;overflow-y:auto" >
       <template repeat.for="entry of appointments.data">
         <agenda-entry class="row termin" entry.bind="entry" index.bind="$index"></agenda-entry>
       </template>
