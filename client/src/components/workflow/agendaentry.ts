@@ -5,7 +5,7 @@
  ********************************************/
 
 import { bindable, autoinject, computedFrom} from 'aurelia-framework'
-import { TerminType, Termin } from '../../models/termin'
+import { TerminType, TerminModel } from '../../models/termine-model'
 import { Kontakt } from '../../models/kontakt'
 import {DateTime}from '../../services/datetime'
 import {Globals} from '../../global'

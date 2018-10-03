@@ -15,7 +15,7 @@ import { State } from '../../state'
 @autoinject
 @connectTo<State>(/*{
   selector: {
-    actUser: store=>store.state.pipe(pluck("user")),
+    actUser: store=>store.state.pipe(pluck("usr")),
     actDate: store=>store.state.pipe(pluck("date"))
   }
 }*/)
@@ -44,9 +44,10 @@ export class Agenda {
   }
   async setDay(date, resource) {
     const terminService = this.ds.getService('termin')
-    let day = moment(date)
+    const day = moment(date)
     this.appointments.data = []
-    let entries = await terminService.find({ query: { tag: day.format("YYYYMMDD"), bereich: resource } })
+    const entries = await terminService.find({ query: { tag: day.format("YYYYMMDD"), bereich: resource } })
+
     this.appointments = entries
   }
 }
