@@ -45,18 +45,21 @@ module.exports = function (app) {
     const usr = app.service('usr')
     const guest = {
       email: "guest@some.where",
+      label: "jemand",
       password: "gast",
       roles: [roles.guest],
       dummy: true
     }
     const admin = {
       email: "admin@webelexis.ch",
+      label: "admin",
       password: "admin",
       roles: [roles.admin],
       dummy: true
     }
     const user = {
       email: "user@webelexis.ch",
+      label: "gerry",
       password: "user",
       roles: [roles.user, roles.guest],
       dummy: true

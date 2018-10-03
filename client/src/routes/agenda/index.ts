@@ -4,13 +4,13 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { DataSource, DataService } from '../../services/datasource'
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from 'aurelia-framework'
 import * as moment from 'moment'
 import { WebelexisEvents } from '../../webelexisevents'
 import { connectTo } from 'aurelia-store'
 import { State } from '../../state'
+import { TerminManager } from './../../models/termine-model';
 
 @autoinject
 @connectTo<State>(/*{
@@ -25,7 +25,9 @@ export class Agenda {
   private dateSubscriber
   private actDate
 
-  constructor(private ea: EventAggregator, private we: WebelexisEvents, private ds: DataSource) { }
+  constructor(private ea: EventAggregator, private we: WebelexisEvents,
+    private tm:TerminManager) {
+    }
 
   stateChanged(now: State, before: State) {
     this.dateStandard = moment(now.date).format("YYYY-MM-DD")
@@ -43,11 +45,9 @@ export class Agenda {
     this.dateSubscriber.dispose()
   }
   async setDay(date, resource) {
-    const terminService = this.ds.getService('termin')
     const day = moment(date)
     this.appointments.data = []
-    const entries = await terminService.find({ query: { tag: day.format("YYYYMMDD"), bereich: resource } })
-
-    this.appointments = entries
+    const entries=await this.tm.fetchForDay(date,resource)
+    this.appointments.data = entries
   }
 }

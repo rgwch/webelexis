@@ -4,73 +4,72 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { bindable, autoinject, computedFrom} from 'aurelia-framework'
+import { bindable, autoinject, computedFrom } from 'aurelia-framework'
 import { TerminType, TerminModel } from '../../models/termine-model'
 import { Kontakt } from '../../models/kontakt'
-import {DateTime}from '../../services/datetime'
-import {Globals} from '../../global'
+import { DateTime } from '../../services/datetime'
 import * as _ from 'lodash'
-import { isThisTypeNode } from 'typescript';
+import { TerminManager } from './../../models/termine-model';
 
 @autoinject
 export class AgendaEntry {
-  @bindable entry: TerminType
+  @bindable entry: TerminModel
   @bindable index: number
-  showmenu=false
-  maxLen=50;
+  showmenu = false
+  maxLen = 50;
 
 
-  constructor(private dt: DateTime, private globals:Globals) {
+  constructor(private dt: DateTime, private tm: TerminManager) {
   }
 
-  attached(){
-  }
 
-  get typecss(){
-    let style= `background-color:${this.globals.getAgendaTypColorFor(this.entry.TerminTyp)};`
+  get typecss() {
+    let style = `background-color:${this.entry.getTypColor()};`
     return style
-   }
+  }
 
-   get statecss(){
-    let style= `background-color:${this.globals.getAgendaStateColorFor(this.entry.TerminStatus)};`
-     return  style
-   }
+  get statecss() {
+    let style = `background-color:${this.entry.getStateColor()};`
+    return style
+  }
   getTimes() {
-    let ret:string = this.dt.minutesToTimeString(parseInt(this.entry.Beginn))
-    let end:number=parseInt(this.entry.Beginn)+parseInt(this.entry.Dauer)
-    return ret+"-"+this.dt.minutesToTimeString(end)
+    let ret: string = this.entry.getStartTime().format("HH:mm")
+    let end = this.entry.getEndTime().format("HH:mm")
+    return ret + "-" + end
   }
   getLabel() {
-    return Termin.getLabel(this.entry)
+    console.log(this.entry)
+    return this.entry.getLabel()
   }
 
-  get states(){
-    return _.keys(this.globals.agendaStateColors)
+  get states() {
+    return this.tm.terminStates
   }
 
-  get types(){
-    return _.keys(this.globals.agendaTypColors)
+  get types() {
+    return this.tm.terminTypes
   }
-  changeState(){
-    const actState=this.entry.TerminStatus
-    let index=_.findIndex(this.states,e=>e===actState)
-    if(index>this.states.length){
-      index=0;
-    }else{
+
+  changeState() {
+    const actState = this.entry.obj.TerminStatus
+    let index = _.findIndex(this.states, e => e === actState)
+    if (index > this.states.length) {
+      index = 0;
+    } else {
       index++;
     }
-    this.entry.TerminStatus=this.states[index]
+    this.entry.obj.TerminStatus = this.states[index]
   }
-  toggleMenu(){
-    this.showmenu=!this.showmenu
+  toggleMenu() {
+    this.showmenu = !this.showmenu
   }
 
-  get menu(){
-    if(this.entry.TerminTyp == this.types[0]){
+  get menu() {
+    if (this.entry.obj.TerminTyp == this.types[0]) {
       return []
-    }else if(this.entry.TerminTyp == this.types[1]){
+    } else if (this.entry.obj.TerminTyp == this.types[1]) {
       return []
-    }else{
+    } else {
       return this.states
     }
   }

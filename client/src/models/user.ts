@@ -1,8 +1,9 @@
 import { ElexisType } from './elexistype';
-import { autoinject } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 
 export interface UserType extends ElexisType{
   email?:string
+  label: string
   realname?: string
   elexis_id?: string
   roles?: Array<string>
@@ -12,6 +13,12 @@ export interface UserType extends ElexisType{
 export class User implements UserType{
   obj: UserType
 
+  @computedFrom('obj')
+  get label(){
+    return this.obj.label
+  }
+
+  @computedFrom('obj')
   get email(){
     return this.obj.email
   }
