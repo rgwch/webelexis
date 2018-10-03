@@ -87,33 +87,29 @@ export class TerminManager {
     }
     const found = await this.terminService.find({ query: { Tag: day.format("YYYYMMDD"), Bereich: resource } })
     if (found.data && found.data.length > 0) {
-      const ret = Array<TerminModel>()
-      const first = new TerminModel(found.data[0])
-      if (parseInt(first.obj.Beginn) !== 0) {
-        ret.push(Object.assign({}, first.obj, {
-          Beginn: "0",
-          Dauer: first.obj.Beginn,
-          TerminTyp: this.terminTypes[0],
-          TerminStatus: this.terminStates[0]
-        }))
-      }
-      for (let i = 0; i < found.data.length - 1; i++) {
-        const act = new TerminModel(found.data[i])
-        const next = new TerminModel(found.data[i + 1])
-        ret.push(act)
-        const t1 = act.getEndTime()
-        const t2 = next.getStartTime()
-        const diff = t1.diff(t2, 'minutes')
-        if (diff > 2) {
-          ret.push(this.createGap(act, diff))
+      const ret=[]
+      const template=found.data[0]
+      for(let i=0;i<found.data.length-1;i++){
+        const first=found.data[i]
+        const second=found.data[i+1]
+        const firstEnd=parseInt(first.Beginn)+parseInt(first.Dauer)
+        const secondBegin=parseInt(second.Beginn)
+        ret.push(first)
+        if(secondBegin-firstEnd>1){
+          const gap={
+            Tag: template.Tag,
+            Bereich: template.Bereich,
+            TerminTyp:this.terminTypes[0],
+            TerminStatus: this.terminStates[0],
+            Beginn: firstEnd.toString(),
+            Dauer: (secondBegin-firstEnd).toString()
+          }
+          ret.push(gap)
         }
+        //ret.push(second)
       }
-      const last = new TerminModel(found.data[found.data.length - 1])
-      const midnight = last.getEndTime().clone().hour(23).minute(59)
-      if (last.getEndTime().isBefore(midnight)) {
-        ret.push(this.createGap(last, last.getEndTime().diff(midnight, 'minutes')))
-      }
-      return ret;
+      ret.push(found.data[found.data.length-1])
+      return ret.map(r=>new TerminModel(r))
     } else {
       return []
     }
