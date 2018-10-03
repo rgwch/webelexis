@@ -17,11 +17,17 @@ async function getList(config, def) {
   return ret.split(/ *, */)
 }
 
-async function getColors(context, mode, resource) {
+/**
+ * Get agenda colors for a given user
+ * @param {*} context hook context
+ * @param {*} mode typ or status
+ * @param {*} user
+ */
+async function getColors(context, mode, user) {
   //console.log("colors requested for "+mode+", "+resource)
   //console.log(JSON.stringify(context))
   const service = context.app.service("elexis-userconfig")
-  let raw = await service.find({ query: { user: resource, param: { $like: "agenda/farben/" + mode +"/%"} } })
+  let raw = await service.find({ query: { user: user, param: { $like: "agenda/farben/" + mode +"/%"} } })
   let ret = {}
   raw.data.forEach(col=>{
     let path=col.Param.split("/")
@@ -48,7 +54,7 @@ const doSort = function (options = {}) {
  * The following queries are supported:
  * - types: query possible appointment types
  * - states: query possible appointment states
- * - resources: 
+ * - resources:
  * @param {*} options
  */
 const specialQueries = function (options = {}) { // eslint-disable-line no-unused-vars
@@ -109,10 +115,10 @@ const specialQueries = function (options = {}) { // eslint-disable-line no-unuse
       }
         break
       case "typecolors":
-        context.result = await getColors(context, "typ", context.params.query.resource)
+        context.result = await getColors(context, "typ", context.params.query.user)
         break;
       case "statecolors":
-        context.result = await getColors(context, "status", context.params.query.resource)
+        context.result = await getColors(context, "status", context.params.query.user)
         break;
     }
     return context;

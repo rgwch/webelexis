@@ -5,6 +5,9 @@
   <div class="sheet">
     <div class="header">
       <pickdate pickerdate.two-way="dateStandard"></pickdate>
+      <select value.two-way="bereich">
+          <option repeat.for="el of bereiche" model.bind="el">${el}</option>
+        </select>
     </div>
     <div class="body">
       <template repeat.for="entry of appointments.data">

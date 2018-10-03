@@ -59,7 +59,7 @@ module.exports = function (app) {
     }
     const user = {
       email: "user@webelexis.ch",
-      label: "gerry",
+      label: "Gerry",
       password: "user",
       roles: [roles.user, roles.guest],
       dummy: true

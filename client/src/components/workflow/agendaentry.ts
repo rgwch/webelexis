@@ -42,6 +42,9 @@ export class AgendaEntry {
     return this.entry.getLabel()
   }
 
+  rawContents(){
+    return this.entry.rawContents()
+  }
   get states() {
     return this.tm.terminStates
   }

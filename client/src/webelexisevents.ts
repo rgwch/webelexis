@@ -41,7 +41,7 @@ export class WebelexisEvents{
   }
 
   getSelectedItem(type:string){
-    if(type){
+    if(!type){
       throw new Error("type information missing at getSelecedItem")
     }
     return this.state[type]

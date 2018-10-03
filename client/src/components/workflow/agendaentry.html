@@ -10,14 +10,13 @@
     <div class="termin" css.bind="typecss">
       <a data-toggle="collapse" href="#termindetails_${index}" role="button">
         <span>
-          ${getLabel()} (${entry.TerminTyp}, ${entry.TerminStatus}): ${entry.Grund}
+          ${getLabel()} (${entry.obj.TerminTyp}, ${entry.obj.TerminStatus}): ${entry.obj.Grund}
         </span>
       </a>
     </div>
-    <div class="collapse" id="termindetails_${index}">
-      <div class="card card-body">
-        ${entry.Grund}
-      </div>
+    <div class="collapse" id="termindetails_${index}" style="height:100px;">
+        <textarea value.bind="rawContents()" style="width:100%;height:10em;"></textarea>
+
       <ul class="nav">
         <li class="nav-item">
           <a class="nav-link" router-href="kons">Konsultation</a>
