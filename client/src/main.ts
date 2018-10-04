@@ -1,3 +1,4 @@
+import { StickerManager } from './models/stickers.model';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -54,6 +55,11 @@ export function configure(aurelia: Aurelia) {
 
   const datasource=aurelia.container.get(FeathersDS)
   aurelia.container.registerInstance(DataSource,datasource)
+
+  const stickerManager=aurelia.container.get(StickerManager)
+  stickerManager.loadStickers().then(ok=>{
+    aurelia.container.registerInstance(StickerManager,stickerManager)
+  })
 
   aurelia.start().then(() => aurelia.setRoot());
 }

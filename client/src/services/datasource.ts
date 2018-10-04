@@ -16,7 +16,7 @@ export interface DataService {
   // retrieve an object by ID
   get(index: string, params?: any): any
   // find objects by query expression
-  find(params): any
+  find(params?): any
   // create an object
   create(data): any
   // update an object with id

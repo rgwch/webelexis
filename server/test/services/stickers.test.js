@@ -15,4 +15,14 @@ describe('\'stickers\' service', () => {
     stickers.data.should.be.ok
     stickers.data.length.should.be.gt(0)
   })
+
+  it("retrieves sticker ids for a patient",async ()=>{
+    const patService=app.service('patient')
+    const pats=await patService.find({query:{Bezeichnung1: "unittest"}})
+    const pat=pats.data[0]
+    const service = app.service('stickers');
+
+    const stickers=await service.find({query:{forPatient:pat.id}})
+    stickers.should.be.ok
+  })
 });
