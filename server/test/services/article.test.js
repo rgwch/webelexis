@@ -17,17 +17,19 @@ describe('\'article\' service', () => {
   it('registered the service', () => {
     assert.ok(service, 'Registered the service');
   });
-  xit("loads articles like 'ab%'",()=>{
+  it("loads articles like 'ab%'",()=>{
     return service.find({query:{dscr:{$like: "ab%"}}}).then(result=>{
       result.should.be.ok
-      result.data.every(article=>article.BB==="0").should.be.true
+      //result.data.every(article=>article.BB==="0").should.be.true
       result.data.every(article=>article.DSCR.toLowerCase().startsWith("ab")).should.be.true
+      return "ok"
     })
   })
   it("loads diclofenac generics from Spirig",()=>{
     return service.find({query:{dscr:{$like: "diclofenac"},comp_name: {$like: "spirig%"}, generic_type:"G"}}).then(result=>{
       result.should.be.ok
       result.data.every(art=>art.COMP_GLN==="7601001394834" && /Diclofenac/.test(art.DSCR)).should.be.true
+      return "ok"
     })
   })
 });
