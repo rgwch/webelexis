@@ -102,7 +102,10 @@ export class App {
         route: "/konsultation",
         name: "konsultation",
         title: "Konsultation",
-        moduleId: 'routes/konsultation/index',
+        viewPorts:{
+          default: { moduleId: 'routes/patient/index' },
+          details: {moduleId: 'routes/konsultation/index'}
+        },
         nav: true
       }, {
         route: "/artikel",
