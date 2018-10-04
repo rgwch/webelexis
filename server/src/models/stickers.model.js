@@ -46,7 +46,7 @@ module.exports = function (app) {
         table.string('Title')
         table.binary('Bild')
         table.integer('LASTUPDATE')
-        tablee.string("'Prefix")
+        table.string("'Prefix")
       })
     }
   })

@@ -1,9 +1,22 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+/**
+ * special queries: forPatient: id
+ * and "all:true"
+ */
+special=async context=>{
+  if(context.params.query && context.params.query.forPatient){
+
+  }else if(context.params.query && context.params.query.all){
+    
+  }
+}
+
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [],
+    find: [special],
     get: [],
     create: [],
     update: [],
