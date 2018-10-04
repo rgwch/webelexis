@@ -21,61 +21,64 @@ export interface FlexformConfig {
   attributes: Array<{   // Attributes to display in the form
     attribute: string   // Name of the attribue as defined in the datastore backend
     label?: string      // Display-Name for the attribute
-    datatype?: string | { toForm: (x: any) => string, toData: (x: string) => any} | FlexformListRenderer
-                // type of the data. Either "string" or an object containing a function to
-                // render the data and a function to store the data.
+    datatype?: string | "text" | { toForm: (x: any) => string, toData: (x: string) => any } | FlexformListRenderer
+    // type of the data. Either "string" or an object containing a function to
+    // render the data and a function to store the data.
     validation?: (value, entity) => boolean
-                // validation if given: A function that returns false, if the entry is invalid.
+    // validation if given: A function that returns false, if the entry is invalid.
     validationMessage?: string
-                // a message to display, if validation failed.
+    // a message to display, if validation failed.
     sizehint?: string | number
-              // Either a number 1-12 for the number of columns (1/12 to 12/12) or a string with css class(es).
+    // Either a number 1-12 for the number of columns (1/12 to 12/12) or a string with css class(es).
   }>
 }
 
-export interface FlexformListRenderer{
-  fetchElements: (obj)=>Array<any>
-  toString: (line)=>string
+export interface FlexformListRenderer {
+  fetchElements: (obj) => Array<any>
+  toString: (line) => string
 }
-@inject(NewInstance.of(ValidationController),DataSource)
+@inject(NewInstance.of(ValidationController), DataSource)
 export class FlexForm {
   @bindable ff_cfg: FlexformConfig
   @bindable entity: any;
-  @bindable lockable:boolean
+  @bindable lockable: boolean
   isLocked: boolean
   isDirty: boolean = false
   private original: any
 
-  constructor(private validationController: ValidationController, private ds:DataSource) { }
+  constructor(private validationController: ValidationController, private ds: DataSource) { }
 
-  attached()
-  {
-    this.isLocked=this.lockable
+  attached() {
+    this.isLocked = this.lockable
   }
 
-   // called whenever a new entity is loaded
+  // called whenever a new entity is loaded
   entityChanged(newvalue, oldvalue) {
     this.original = this.original = Object.assign({}, newvalue)
-    this.isDirty=false
-    this.isLocked=true
+    this.isDirty = false
+    this.isLocked = true
   }
 
   @computedFrom('entity')
-  get title(){
-    if(typeof(this.ff_cfg.title) === 'string'){
+  get title() {
+    if (typeof (this.ff_cfg.title) === 'string') {
       return this.ff_cfg.title
-    }else{
+    } else {
       return this.ff_cfg.title()
     }
   }
 
-  displayType(attrib){
-    const type=attrib.datatype
-    if(typeof(type)=='string'){
-      return "line"
-    }else if(type.toForm){
+  displayType(attrib) {
+    const type = attrib.datatype || 'string'
+    if (typeof (type) == 'string') {
+      if (type == "string") {
         return "line"
-    }else{
+      } else if (type == "text") {
+        return "field"
+      }
+    } else if (type.toForm) {
+      return "line"
+    } else {
       return "list"
     }
   }
@@ -127,13 +130,13 @@ export class FlexForm {
   save() {
     this.validationController.validate().then(result => {
       if (result.valid) {
-        const dataService=this.ds.getService(this.entity.type)
-        if(dataService){
-          dataService.update(this.entity.id,this.entity)
-          dataService.emit("updated",this.entity)
+        const dataService = this.ds.getService(this.entity.type)
+        if (dataService) {
+          dataService.update(this.entity.id, this.entity)
+          dataService.emit("updated", this.entity)
         }
-        this.isDirty=false
-        this.original=Object.assign({},this.entity)
+        this.isDirty = false
+        this.original = Object.assign({}, this.entity)
 
       }
     })
@@ -142,9 +145,9 @@ export class FlexForm {
   /*
     cancel all modifications and restore state after last save
   */
-  undo(){
-    this.entity=Object.assign({},this.original)
-    this.isDirty=false
+  undo() {
+    this.entity = Object.assign({}, this.original)
+    this.isDirty = false
   }
 
   @computedFrom('cfg')
@@ -176,6 +179,7 @@ export class FlexFormValueConverter {
       }
       if (typeof attr.datatype == 'string') {
         switch (attr.datatype) {
+          case "text":
           case "string": return value
           case "number": return value.toString()
         }
@@ -198,6 +202,7 @@ export class FlexFormValueConverter {
       }
       if (typeof attr.datatype == 'string') {
         switch (attr.datatype) {
+          case "text":
           case "string": return value
           case "number": return parseFloat(value)
         }

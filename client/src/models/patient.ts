@@ -101,7 +101,7 @@ export class Patient {
         }, {
           attribute: "bemerkung",
           label: i18.tr("contact.remark"),
-          datatype: "string",
+          datatype: "text",
           sizehint: 12
 
         }

@@ -16,6 +16,12 @@
             blur.trigger="validateField(attr)">
           <span class="error" style="font-size: small;color:red" show.bind="attr.hasErrors">${attr.errmsg}</span>
         </div>
+        <div if.one-time="displayType(attr)=='field'">
+          <label for="attr.attribute" hide.bind="ff_cfg.compact">${attr.label}</label>
+          <textarea id="${attr.attribute"
+            value.bind="entity[attr.attribute] | flexformvalues:attr & updateTrigger:'blur'"
+            readonly.bind="isLocked" style="width:100%;height:5em;"></textarea>
+        </div>
       </div>
     </div>
   </form>

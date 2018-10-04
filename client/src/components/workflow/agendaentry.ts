@@ -1,3 +1,4 @@
+import { WebelexisEvents } from './../../webelexisevents';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -10,6 +11,10 @@ import { Kontakt } from '../../models/kontakt'
 import { DateTime } from '../../services/datetime'
 import * as _ from 'lodash'
 import { TerminManager } from './../../models/termine-model';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import { RightPanel } from './../../routes/dispatch/right';
+import { LeftPanel } from './../../routes/dispatch/left';
+
 
 @autoinject
 export class AgendaEntry {
@@ -19,9 +24,19 @@ export class AgendaEntry {
   maxLen = 50;
 
 
-  constructor(private dt: DateTime, private tm: TerminManager) {
+  constructor(private dt: DateTime, private tm: TerminManager,
+    private ea:EventAggregator, private we:WebelexisEvents) {
   }
 
+  select(view,list){
+    const patient=this.entry.obj.kontakt
+    patient.type="patient"
+    this.we.selectItem(patient)
+    if(list){
+      this.ea.publish(LeftPanel.message,list)
+    }
+    this.ea.publish(RightPanel.message,view)
+  }
 
   get typecss() {
     let style = `background-color:${this.entry.getTypColor()};`

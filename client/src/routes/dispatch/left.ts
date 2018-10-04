@@ -18,8 +18,13 @@ export class LeftPanel{
   parent
   buttons
   connected:boolean = false
+  static message="left_panel"
 
-  constructor(private ea:EventAggregator){}
+  constructor(private ea:EventAggregator){
+    this.ea.subscribe(LeftPanel.message,view=>{
+      this.switchTo(v[view])
+    })
+  }
 
   attached(){
     const bwidth=this.buttons.offsetWidth
