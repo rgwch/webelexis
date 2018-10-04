@@ -8,9 +8,12 @@ const chai = require('chai')
 const should = chai.should()
 const assert = require('assert');
 const app = require('../../src/app');
+let user;
 
-beforeEach(()=>{
-
+beforeEach(async ()=>{
+  const usrs=app.service('users')
+  const list=await usrs.find()
+  user=list.data[0].id
 })
 describe('\'termin\' service', () => {
   let service
@@ -69,7 +72,7 @@ describe('\'termin\' service', () => {
   })
   it("fetches type colors for first resource", async ()=>{
     let resources=await service.get("resources")
-    let colors=await service.get("typecolors",{query:{"user":"test"}})
+    let colors=await service.get("typecolors",{query:{"user":user}})
     colors.should.be.ok
   })
   it("fetches status colors for first resource",async ()=>{
