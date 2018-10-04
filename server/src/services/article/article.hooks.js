@@ -6,11 +6,12 @@
 
 const filters=require('./article_filters')
 const filter=filters({blackbox:true,generics:false})
+const treatDeleted = require('../../hooks/treat-deleted');
 
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [treatDeleted()],
     get: [],
     create: [],
     update: [],

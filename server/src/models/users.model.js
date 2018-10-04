@@ -14,17 +14,18 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id',40);
+        table.string('id',40).primary().unique().notNullable();
         table.string('DELETED',1);
         table.string("KONTAKT_ID",40)
         table.integer("LASTUPDATE")
-        table.string("HASHED_PASSWORD")
-        table.string("SALT")
-        table.string("IS_ACTIVE")
-        table.string("IS_ADMINISTRATOR")
-        table.string("KEYSTORE")
+        table.string("HASHED_PASSWORD",64)
+        table.string("SALT",64)
+        table.string("IS_ACTIVE",1)
+        table.string("IS_ADMINISTRATOR",1)
+        table.text("KEYSTORE")
         table.binary("EXTINFO")
-        table.string("APIKEY")
+        table.string("TOTP",16)
+        table.string("ALLOW_EXTERNAL",1).notNullable().default(1)
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));

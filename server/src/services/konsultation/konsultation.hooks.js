@@ -9,6 +9,7 @@ const ElexisUtils = require('../../util/elexis-types')
 const util = new ElexisUtils()
 const Samdas = require('@rgwch/samdastools')
 const logger = require('../../logger')
+const treatDeleted = require('../../hooks/treat-deleted');
 
 /*
 const withPatientId=function (options={}){
@@ -127,7 +128,7 @@ const updateKonsText = async context => {
 module.exports = {
   before: {
     all: [ /* authenticate('jwt') */],
-    find: [withPatientId],
+    find: [treatDeleted(),withPatientId],
     get: [],
     create: [],
     update: [updateKonsText],

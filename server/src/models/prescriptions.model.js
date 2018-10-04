@@ -20,7 +20,7 @@ module.exports = function (app) {
         table.string('patientid',40)
         table.string('mandantid',40)
         table.string('datum',8)
-        table.string('rptxt')
+        table.text('rptxt')
         table.string('RpZusatz')
         table.string('BriefID',40)
         table.string('deleted',1)

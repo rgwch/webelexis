@@ -8,7 +8,7 @@ module.exports = function (app) {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'stickers',
+    name: 'etiketten',
     Model,
     paginate
   };
@@ -21,4 +21,3 @@ module.exports = function (app) {
 
   service.hooks(hooks);
 };
-  

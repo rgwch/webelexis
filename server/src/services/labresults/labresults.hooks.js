@@ -1,9 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const treatDeleted = require('../../hooks/treat-deleted');
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [],
+    find: [treatDeleted()],
     get: [],
     create: [],
     update: [],

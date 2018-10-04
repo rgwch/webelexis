@@ -10,23 +10,23 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id',40).primary();
-        table.string('patientid');
-        table.string('garantid');
-        table.string('kostentrid');
-        table.string('versnummer')
-        table.string('fallnummer')
-        table.string('betriebsnummer')
+        table.string('id',40).primary().unique().notNullable();
+        table.string('patientid',40);
+        table.string('garantid',40);
+        table.string('kostentrid',40);
+        table.string('versnummer',50)
+        table.string('fallnummer',50)
+        table.string('betriebsnummer',50)
         table.string('diagnosen')
-        table.string('datumvon')
-        table.string('datumbis')
-        table.string('bezeichnung')
+        table.string('datumvon',8)
+        table.string('datumbis',8)
+        table.string('bezeichnung',30)
         table.string('grund')
-        table.string('gesetz')
+        table.string('gesetz',20)
         table.binary('extinfo')
         table.string('status')
-        table.string('deleted')
-        table.bigint('lastupdate')
+        table.string('deleted',1)
+        table.integer('LASTUPDATE')
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));

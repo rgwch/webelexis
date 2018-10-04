@@ -1,4 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const treatDeleted = require('../../hooks/treat-deleted');
 const logger = require('winston');
 logger.level="debug"
 
@@ -54,7 +55,7 @@ const replaceSingleDocFields=async context=>{
 module.exports = {
   before: {
     all: [ /* authenticate('jwt') */],
-    find: [],
+    find: [treatDeleted()],
     get: [],
     create: [reduceAllFields],
     update: [reduceAllFields],

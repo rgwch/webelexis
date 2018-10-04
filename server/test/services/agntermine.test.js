@@ -9,8 +9,12 @@ const should = chai.should()
 const assert = require('assert');
 const app = require('../../src/app');
 
+beforeEach(()=>{
+
+})
 describe('\'termin\' service', () => {
   let service
+
   beforeEach(() => {
     app.set("testing",true)
     service = app.service('termin')
@@ -53,24 +57,24 @@ describe('\'termin\' service', () => {
     let resources=await service.get("resources")
     resources.length.should.be.above(1)
   })
-  it("fetches day presets of first resource", async function(){
+  xit("fetches day presets of first resource", async function(){
     let resources=await service.get("resources")
-    let presets=await service.get("daydefaults",{"resource":resources[0]})
+    let presets=await service.get("daydefaults",{"user":"Gerry"})
     presets.should.have.property("Mo")
   })
-  it("fetches time presets for first resource", async function(){
+  xit("fetches time presets for first resource", async function(){
     let resources=await service.get("resources")
-    let presets=await service.get("timedefaults",{"resource":resources[0]})
+    let presets=await service.get("timedefaults",{"user":"test"})
     presets.should.have.property("std")
   })
   it("fetches type colors for first resource", async ()=>{
     let resources=await service.get("resources")
-    let colors=await service.get("typecolors",{query:{"resource":resources[0]}})
+    let colors=await service.get("typecolors",{query:{"user":"test"}})
     colors.should.be.ok
   })
   it("fetches status colors for first resource",async ()=>{
     let resources=await service.get("resources")
-    let colors=await service.get("statecolors",{query:{"resource":resources[0]}})
+    let colors=await service.get("statecolors",{query:{"user":resources[0]}})
     colors.should.be.ok
   })
 });

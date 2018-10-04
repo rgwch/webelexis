@@ -10,6 +10,8 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       if(!context.params.query.deleted){
         context.params.query.deleted="0"
       }
+    }else{
+      context.params.query={deleted: "0"}
     }
     return context;
   };
