@@ -1,5 +1,7 @@
 UPDATE user_ SET `id` = LOWER(`id`);
 
+alter table agntermine change ID id varchar(127);
+
 alter table artikel modify id varchar(40),
 	modify lieferantid varchar(40);
 

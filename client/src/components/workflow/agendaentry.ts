@@ -5,7 +5,7 @@
  ********************************************/
 
 import { bindable, autoinject, computedFrom } from 'aurelia-framework'
-import { TerminType, TerminModel } from '../../models/termine-model'
+import { TerminType, TerminModel,Statics } from '../../models/termine-model'
 import { Kontakt } from '../../models/kontakt'
 import { DateTime } from '../../services/datetime'
 import * as _ from 'lodash'
@@ -38,42 +38,46 @@ export class AgendaEntry {
     return ret + "-" + end
   }
   getLabel() {
-    console.log(this.entry)
+    //console.log(this.entry)
     return this.entry.getLabel()
   }
 
   rawContents(){
     return this.entry.rawContents()
   }
+/*
   get states() {
-    return this.tm.terminStates
+    return Statics.terminStates
   }
-
+*/
   get types() {
-    return this.tm.terminTypes
+    return Statics.terminTypes
   }
 
+  save(){
+    this.tm.save(this.entry)
+  }
   changeState() {
     const actState = this.entry.obj.TerminStatus
-    let index = _.findIndex(this.states, e => e === actState)
-    if (index > this.states.length) {
+    let index = _.findIndex(Statics.terminStates, e => e === actState)
+    if (index > Statics.terminStates.length) {
       index = 0;
     } else {
       index++;
     }
-    this.entry.obj.TerminStatus = this.states[index]
+    this.entry.obj.TerminStatus = Statics.terminStates[index]
   }
   toggleMenu() {
     this.showmenu = !this.showmenu
   }
 
   get menu() {
-    if (this.entry.obj.TerminTyp == this.types[0]) {
+    if (this.entry.obj.TerminTyp == Statics.terminTypes[0]) {
       return []
-    } else if (this.entry.obj.TerminTyp == this.types[1]) {
+    } else if (this.entry.obj.TerminTyp == Statics.terminTypes[1]) {
       return []
     } else {
-      return this.states
+      return Statics.terminStates
     }
   }
 }

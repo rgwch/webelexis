@@ -10,7 +10,7 @@ import * as moment from 'moment'
 import { WebelexisEvents } from '../../webelexisevents'
 import { connectTo } from 'aurelia-store'
 import { State } from '../../state'
-import { TerminManager } from './../../models/termine-model';
+import { TerminManager,Statics } from './../../models/termine-model';
 import { pluck } from "rxjs/operators";
 
 @autoinject
@@ -52,8 +52,8 @@ export class Agenda {
       this.we.setDate(event.newDate)
     })
     return this.tm.loadDefaultsFor(this.we.getSelectedItem('usr')).then(result=>{
-      console.log("agenda default loaded")
-      this.bereiche=this.tm.getResources()
+      // console.log("agenda default loaded")
+      this.bereiche=Statics.agendaResources
       this.bereich=this.bereiche[0]
     })
   }

@@ -31,11 +31,13 @@ export interface TerminType {
 
 }
 
-let terminTypes = []
-let terminStates = []
-let agendaTypColors={}
-let agendaStateColors={}
-let agendaResources=[]
+export class Statics{
+  static terminTypes = []
+  static terminStates = []
+  static terminTypColors={}
+  static terminStateColors={}
+  static agendaResources=[]
+}
 
 @autoinject
 @connectTo(store=>store.state.pipe(pluck('usr')))
@@ -54,20 +56,18 @@ export class TerminManager {
   }
 
   async loadDefaultsFor(user:UserType){
-    agendaResources=await this.terminService.get("resources")
-    agendaTypColors=await this.terminService.get("typecolors",{query: {user: user.label}})
-    agendaStateColors=await this.terminService.get("statecolors", {query:{user: user.label}})
-    terminTypes = await this.terminService.get("types")
-    terminStates = await this.terminService.get("states")
+    Statics.agendaResources=await this.terminService.get("resources")
+    Statics.terminTypColors=await this.terminService.get("typecolors",{query: {user: user.label}})
+    Statics.terminStateColors=await this.terminService.get("statecolors", {query:{user: user.label}})
+    Statics.terminTypes = await this.terminService.get("types")
+    Statics.terminStates = await this.terminService.get("states")
     return true
   }
 
-  getResources(){
-    return agendaResources
-  }
-
-  getStates(){
-    return agendaStateColors;
+  async save(t:TerminModel){
+    if(t.obj.id){
+      const saved=this.terminService.update(t.obj.id,t.obj)
+    }
   }
 
   async fetchForDay(date: Date, resource: string): Promise<Array<TerminModel>> {
@@ -86,8 +86,8 @@ export class TerminManager {
           const gap={
             Tag: template.Tag,
             Bereich: template.Bereich,
-            TerminTyp:terminTypes[0],
-            TerminStatus: terminStates[0],
+            TerminTyp:Statics.terminTypes[0],
+            TerminStatus: Statics.terminStates[0],
             Beginn: firstEnd.toString(),
             Dauer: (secondBegin-firstEnd).toString()
           }
@@ -113,17 +113,17 @@ export class TerminModel {
   public getLabel = (): string => Kontakt.getLabel(this.getKontakt())
 
   public getTypColor(){
-    let tc=agendaTypColors[this.obj.TerminTyp] || "aaaaaa"
+    let tc=Statics.terminTypColors[this.obj.TerminTyp] || "aaaaaa"
     return "#"+tc
   }
   public getStateColor(){
     let ts
-    if(this.obj.TerminTyp===terminTypes[0]){
-      ts=agendaTypColors[this.obj.TerminTyp]
-    }else if(this.obj.TerminTyp===terminTypes[1]){
-      ts=agendaTypColors[this.obj.TerminTyp]
+    if(this.obj.TerminTyp===Statics.terminTypes[0]){
+      ts=Statics.terminTypColors[this.obj.TerminTyp]
+    }else if(this.obj.TerminTyp===Statics.terminTypes[1]){
+      ts=Statics.terminTypColors[this.obj.TerminTyp]
     }else{
-      ts=agendaStateColors[this.obj.TerminStatus] || "bbbbbb"
+      ts=Statics.terminStateColors[this.obj.TerminStatus] || "bbbbbb"
     }
     return "#"+ts
   }
