@@ -22,6 +22,7 @@ const documents = require('./documents/documents.service.js');
 const macros = require('./macros/macros.service.js');
 const labresults = require('./labresults/labresults.service.js');
 const findings = require('./findings/findings.service.js');
+const stickers = require('./stickers/stickers.service.js');
 module.exports = function (app) {
  app.configure(elexisConfig);
  app.configure(admin);
@@ -41,4 +42,5 @@ module.exports = function (app) {
  app.configure(macros);
  app.configure(labresults);
  app.configure(findings);
+ app.configure(stickers);
 };
