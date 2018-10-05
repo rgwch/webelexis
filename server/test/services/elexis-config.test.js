@@ -9,7 +9,7 @@ const app = require('../../src/app');
 const chai=require('chai')
 const should=chai.should()
 
-describe('\'elexis_config\' service', () => {
+xdescribe('\'elexis_config\' service', () => {
   it('registered the service', () => {
     const service = app.service('elexis-config');
 

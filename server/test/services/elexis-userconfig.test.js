@@ -8,7 +8,7 @@ const assert = require('assert');
 const app = require('../../src/app');
 const chai=require('chai').use(require('chai-as-promised'))
 
-describe('\'elexis-userconfig\' service', () => {
+xdescribe('\'elexis-userconfig\' service', () => {
   let service
   beforeEach(()=>{
     service = app.service('elexis-userconfig');

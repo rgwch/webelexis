@@ -8,6 +8,8 @@ import v from './views'
 import { autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { RightPanel } from './right';
+import { StickerManager } from '../../models/stickers.model';
+
 
 @autoinject
 export class LeftPanel{
@@ -19,8 +21,9 @@ export class LeftPanel{
   buttons
   connected:boolean = false
   static message="left_panel"
+  imgdata
 
-  constructor(private ea:EventAggregator){
+  constructor(private ea:EventAggregator,private sm:StickerManager){
     this.ea.subscribe(LeftPanel.message,view=>{
       this.switchTo(v[view])
     })
@@ -29,6 +32,11 @@ export class LeftPanel{
   attached(){
     const bwidth=this.buttons.offsetWidth
     const twidth=this.parent.offsetWidth
+    return this.sm.loadStickers().then(st=>{
+      // console.log(st)
+      let sticker=st.Hausarztmodell
+      this.imgdata=btoa(sticker.imagedata)
+    })
   }
   switchTo(view){
     this.active=view

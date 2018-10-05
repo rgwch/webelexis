@@ -15,7 +15,7 @@ beforeEach(async () => {
     const list = await usrs.find()
     user = list.data[0].id
 })
-describe('\'termin\' service', () => {
+xdescribe('\'termin\' service', () => {
     let service
 
     beforeEach(() => {
@@ -26,7 +26,7 @@ describe('\'termin\' service', () => {
 
         assert.ok(service, 'Registered the service');
     });
-    it("loads and sort all appointments from 11.12.2017", async () => {
+    xit("loads and sort all appointments from 11.12.2017", async () => {
         const termine = await service.find({ query: { "Tag": "20171211" } })
         termine.data.length.should.be.above(2)
         let check = termine.data.every(elem => {
@@ -40,7 +40,7 @@ describe('\'termin\' service', () => {
         }
 
     })
-    it("loads the first appointment of 11.12.2017", async function() {
+    xit("loads the first appointment of 11.12.2017", async function() {
         let allApps = await service.find({ query: { "Tag": "20171211" } })
         let id = allApps.data[0].ID
         let firstAppnt = await service.get(id)

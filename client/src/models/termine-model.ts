@@ -142,7 +142,4 @@ export class TerminModel {
     start.add(parseInt(this.obj.Dauer), 'minutes')
     return start
   }
-
-
-
 }

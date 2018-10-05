@@ -56,10 +56,5 @@ export function configure(aurelia: Aurelia) {
   const datasource=aurelia.container.get(FeathersDS)
   aurelia.container.registerInstance(DataSource,datasource)
 
-  const stickerManager=aurelia.container.get(StickerManager)
-  stickerManager.loadStickers().then(ok=>{
-    aurelia.container.registerInstance(StickerManager,stickerManager)
-  })
-
   aurelia.start().then(() => aurelia.setRoot());
 }

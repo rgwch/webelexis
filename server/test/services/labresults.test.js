@@ -3,7 +3,7 @@ const app = require('../../src/app');
 const chai=require('chai')
 chai.should()
 
-describe('\'labresults\' service', () => {
+xdescribe('\'labresults\' service', () => {
   it('registered the service', () => {
     const service = app.service('labresults');
 

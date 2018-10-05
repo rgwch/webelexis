@@ -14,6 +14,13 @@ describe('\'stickers\' service', () => {
     const stickers=await service.find()
     stickers.data.should.be.ok
     stickers.data.length.should.be.gt(0)
+    stickers.data.forEach(sticker=>{
+      //console.log(JSON.stringify(sticker))
+      if(sticker.Name=='Hausarztmodell'){
+        const b=Buffer.from(sticker.imagedata)
+        console.log(b.toString('base64'))
+      }
+    })
   })
 
   it("retrieves sticker ids for a patient",async ()=>{
@@ -24,5 +31,6 @@ describe('\'stickers\' service', () => {
 
     const stickers=await service.find({query:{forPatient:pat.id}})
     stickers.should.be.ok
+
   })
 });

@@ -15,7 +15,7 @@ const macroset={
   }
 }
 
-describe('\'macros\' service', () => {
+xdescribe('\'macros\' service', () => {
   xit("avoids duplicates",()=>{
     const service=app.service('macros')
 

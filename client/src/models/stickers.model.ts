@@ -15,17 +15,18 @@ export interface StickerType extends ElexisType{
 @autoinject
 export class StickerManager{
   private stickerService:DataService
-  private allStickers
+  private allStickers={}
 
   constructor(private ds:DataSource){
     this.stickerService=ds.getService('stickers')
   }
 
-  async loadStickers(){
-    this.stickerService.find().then(stickers=>{
-      for(const sticker of stickers){
-        this.allStickers[sticker.name]=sticker
+  loadStickers():Promise<any>{
+    return this.stickerService.find().then(stickers=>{
+      for(const sticker of stickers.data){
+        this.allStickers[sticker.Name]=sticker
       }
+      return this.allStickers
     })
   }
 }
