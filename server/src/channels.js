@@ -13,7 +13,7 @@ module.exports = function(app) {
   });
 
   app.on('login', (authResult, { connection }) => {
-    logger.info("user logged in, opened channel")
+    logger.debug("user logged in, opened channel")
     // connection can be undefined if there is no
     // real-time connection, e.g. when logging in via REST
     if(connection) {

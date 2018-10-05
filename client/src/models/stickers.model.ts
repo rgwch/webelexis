@@ -36,20 +36,22 @@ export class StickerManager {
 
   getImage(stickername: string) {
     const st = this.getSticker(stickername)
-    return st.imagedata
+    return st ? st.imagedata : undefined
   }
 
   getFirstSticker(stickerNames: Array<string>): StickerType {
     if (stickerNames && stickerNames.length > 0) {
       let ret = this.getSticker(stickerNames[0])
-      for (const st of stickerNames) {
-        const cand = this.getSticker(st)
-        if (parseInt(cand.importance) > parseInt(ret.importance)) {
-          ret = cand
+      if (ret) {
+        for (const st of stickerNames) {
+          const cand = this.getSticker(st)
+          if (parseInt(cand.importance) > parseInt(ret.importance)) {
+            ret = cand
+          }
         }
+        return ret;
       }
-      return ret;
-    } else { }
+    }
     return undefined
   }
 }

@@ -5,7 +5,7 @@
     <form role="form" submit.delegate="doFilter()">
       <div class="form-row" style="padding-right:10px;padding-left:10px;padding-top:4px;padding-bottom:4px;">
         <div repeat.for="field of cv_cfg.searchFields">
-          <input type="text" id="${field}" placeholder="${field.label}" value.bind="field.value">
+          <input type="text" class="form-input" id="${field}" placeholder="${field.label}" value.bind="field.value">
         </div>
         <button type="submit" click.trigger="doFilter()">
           <i class="fa fa-search"></i>
