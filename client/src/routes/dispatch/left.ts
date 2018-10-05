@@ -35,7 +35,7 @@ export class LeftPanel{
     return this.sm.loadStickers().then(st=>{
       // console.log(st)
       let sticker=st.Hausarztmodell
-      this.imgdata=btoa(sticker.imagedata)
+      this.imgdata=sticker.imagedata
     })
   }
   switchTo(view){

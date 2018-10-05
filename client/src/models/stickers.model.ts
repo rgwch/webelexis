@@ -29,4 +29,13 @@ export class StickerManager{
       return this.allStickers
     })
   }
+
+  getSticker(name:string):StickerType{
+    return this.allStickers[name]
+  }
+
+  getImage(stickername:string){
+    const st=this.getSticker(stickername)
+    return st.imagedata
+  }
 }

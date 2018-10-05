@@ -17,8 +17,8 @@ describe('\'stickers\' service', () => {
     stickers.data.forEach(sticker=>{
       //console.log(JSON.stringify(sticker))
       if(sticker.Name=='Hausarztmodell'){
-        const b=Buffer.from(sticker.imagedata)
-        console.log(b.toString('base64'))
+        //const b=Buffer.from(sticker.imagedata)
+        console.log(sticker.imagedata);
       }
     })
   })

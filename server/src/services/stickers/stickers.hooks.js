@@ -23,8 +23,8 @@ const addImage = async context => {
       const imageId = sticker.Image
       const image = await knex('dbimage').where("id", imageId)
       if (image && image.length > 0) {
-        const imgdata = image[0].Bild
-        sticker.imagedata = imgdata
+        const imgdata = Buffer.from(image[0].Bild)
+        sticker.imagedata = imgdata.toString('base64')
       }
     }
   }

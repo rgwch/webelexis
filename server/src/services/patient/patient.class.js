@@ -13,8 +13,18 @@ class Service {
   }
 
   async find(params) {
+    const stickers = this.options.app.service('stickers')
     params.query = Object.assign(params.query, { istPatient: "1", istPerson: "1" })
-    return this.kontakt.find(params);
+    const pats = await this.kontakt.find(params);
+    for(const pat of pats.data){
+      const sid=await stickers.find({query:{forPatient: pat.id}})
+      if(sid && sid.length>0){
+        pat.stickers=sid.map(s=>s.Name)
+      }else{
+        pat.stickers=[]
+      }
+    }
+    return pats
   }
 
   async get(id, params) {
