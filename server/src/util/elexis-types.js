@@ -20,6 +20,7 @@
 const java = require('java')
 const moment = require('moment')
 const JSZip = require('jszip')
+const logger = require('../logger')
 
 /* generate dependencies with
    mvn dependency:copy-dependencies
@@ -50,7 +51,7 @@ class ElexisUtils {
 
 
 
-    if (!fs.existsSync(path.join(__dirname, libdir,utils))) {
+    if (!fs.existsSync(path.join(__dirname, libdir, utils))) {
       throw new Error(`${libdir}/${utils} not found!`)
     }
 
@@ -116,14 +117,20 @@ class ElexisUtils {
   }
 
   getExtInfo(buffer) {
-    let array = java.newArray("byte",
-      Array.prototype.slice.call(buffer, 0)
-    )
+    if (buffer) {
+      try {
+        let array = java.newArray("byte",
+          Array.prototype.slice.call(buffer, 0)
+        )
 
-    let extInfo = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "fold", array)
-    if (extInfo) {
-      let jsonstring = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "toJson", extInfo)
-      return JSON.parse(jsonstring)
+        let extInfo = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "fold", array)
+        if (extInfo) {
+          let jsonstring = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "toJson", extInfo)
+          return JSON.parse(jsonstring)
+        }
+      } catch (ex) {
+        logger.error("getExtInfo:" + ex)
+      }
     }
     return {}
   }

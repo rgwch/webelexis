@@ -19,10 +19,11 @@ export interface CaseType {
   guarantor: KontaktType | string
   patient: PatientType | string
   bezeichnung: string
-  grund: "Krankheit"|"Unfall"|"Mutterschaft"
+  grund: "Krankheit" | "Unfall" | "Mutterschaft"
   gesetz: string
   datumvon: string
   datumbis: string
+  extinfo: any
   id: string
 }
 
@@ -30,20 +31,27 @@ export interface CaseType {
 export class CaseManager {   // sic!
   private caseService: DataService
 
-  constructor(private ds: DataSource, private dt:DateTime) {
+  constructor(private ds: DataSource, private dt: DateTime) {
     this.caseService = ds.getService('fall')
   }
 
-  async loadCasesFor(id:string) {
+  async loadCasesFor(id: string) {
     const result = await this.caseService.find({ query: { patientid: id } })
     if (result && result.data) {
       return result.data
     }
   }
 
-  getLabel(obj:CaseType){
-    const beginDate=this.dt.ElexisDateToLocalDate(obj.datumvon)
-    return `${obj.gesetz}/${obj.grund}: ${beginDate} - ${obj.bezeichnung}`
+  getLabel(obj: CaseType) {
+    const beginDate = this.dt.ElexisDateToLocalDate(obj.datumvon)
+    let gesetz = obj.gesetz
+    if (!gesetz) {
+      if (obj.extinfo) {
+        gesetz = obj.extinfo.billing
+      }
+    }
+
+    return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung}`
   }
 }
 
@@ -53,5 +61,5 @@ export class CaseModel {
     this.obj = obj
   }
 
-  
+
 }
