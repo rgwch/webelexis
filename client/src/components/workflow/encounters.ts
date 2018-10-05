@@ -1,3 +1,4 @@
+
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -13,6 +14,7 @@ import { DataSource, DataService } from '../../services/datasource';
 import { pluck } from 'rxjs/operators'
 import { connectTo } from 'aurelia-store'
 import { autoinject } from 'aurelia-framework';
+import { CaseManager } from './../../models/case';
 
 @autoinject
 @connectTo<State>({
@@ -25,10 +27,9 @@ import { autoinject } from 'aurelia-framework';
 @autoinject
 export class Encounters {
   encounters = { data: [] }
-  cases = { data: [] }
+  cases = []
   lastEntry: number = 0
   private konsultationService: DataService
-  private caseService: DataService
   private actPatient
 
   actPatientChanged(newValue, oldValue) {
@@ -36,9 +37,8 @@ export class Encounters {
     this.lastEntry = 0
     this.fetchData(newValue)
   }
-  constructor(private ds: DataSource) {
+  constructor(private ds: DataSource, private caseManager: CaseManager) {
     this.konsultationService = this.ds.getService('konsultation')
-    this.caseService = this.ds.getService('fall')
   }
 
   attached() {
@@ -65,13 +65,13 @@ export class Encounters {
         this.lastEntry += result.data.length
         this.encounters.data = this.encounters.data.concat(result.data)
       })
-      this.caseService.find({ query: { "patientid": id } }).then(result => {
-        this.cases.data = result.data
+      this.caseManager.loadCasesFor(id).then(result => {
+        this.cases = result
       })
 
     } else {
       this.encounters.data = []
-      this.cases.data = []
+      this.cases = []
     }
   }
 }

@@ -10,7 +10,7 @@
         <searchfield placeholder="suchen..."></searchfield>
         <select style="margin-left:20px;height:2em;">
           <option value="all">Alle Fälle</option>
-          <option repeat.for="case of cases.data" value="case.id">${case.datumvon}</option>
+          <option repeat.for="case of cases" value="case.id">${caseManager.getLabel(case)}</option>
         </select>
       </div>
     </div>

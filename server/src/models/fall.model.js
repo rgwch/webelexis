@@ -23,7 +23,7 @@ module.exports = function (app) {
         table.string('bezeichnung',30)
         table.string('grund')
         table.string('gesetz',20)
-        table.binary('extinfo')
+        table.binary('EXTINFO')
         table.string('status')
         table.string('deleted',1)
         table.integer('LASTUPDATE')

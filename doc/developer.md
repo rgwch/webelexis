@@ -1,5 +1,15 @@
 # The Webelexis Developer's Handbook
 
+## Prerequisites
+
+node >= 10
+jdk >=8
+
+npm rebuild node-sass
+npm remove java
+npm install java
+
+
 ## DataSource and DataService
 
 To apply CRUD operations on data, we first need to acquire the respective datatype from our DataSource. The DataSource ist preconfigured depending on the server implementation.
