@@ -1,3 +1,4 @@
+import { StickerManager } from './stickers.model';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -24,6 +25,7 @@ export class Patient {
 
   static dt = Container.instance.get(DateTime)
   static i18 = Container.instance.get(I18N)
+  static sm: StickerManager = Container.instance.get(StickerManager)
 
   static getLabel(obj: any): string {
     let ret = obj.Bezeichnung1 + " " + obj.Bezeichnung2
@@ -40,7 +42,28 @@ export class Patient {
     if (obj.patientnr) {
       ret += " [" + obj.patientnr + "]"
     }
-    return ret
+    const sticker = Patient.sm.getFirstSticker(obj.stickers)
+    let style = "color:black;"
+    if (sticker) {
+      style = `color:#${sticker.foreground || "black"};background-color:#${sticker.background || "white"};`
+    }
+    let final = `<span style="${style}">${ret}</span>`
+    let images = ""
+
+    if (obj.stickers) {
+      for (const name of obj.stickers) {
+        const imgdata = Patient.sm.getImage(name)
+        if (imgdata) {
+          images += `<img src="data:image/png;base64,${imgdata}" alt="${name}" style="height:1em;width:1em;padding-left:2px;"
+         data-toggle="tooltip" title="${name}">`
+        }
+      }
+    }
+    if (images) {
+      final += images
+    }
+
+    return final
   }
   static getDefinition(): FlexformConfig {
     let i18 = Patient.i18
@@ -72,7 +95,7 @@ export class Patient {
           validation: Patient.checkdate,
           validationMessage: Patient.i18.tr('validation.invalidDate'),
           sizehint: 2
-        },{
+        }, {
           attribute: "geschlecht",
           label: i18.tr("contact.gender"),
           datatype: "string",
@@ -145,8 +168,8 @@ export class Patient {
   }
 }
 
-class ContactRenderer implements FlexformListRenderer{
-  fetchElements=  (obj: PatientType) => {
+class ContactRenderer implements FlexformListRenderer {
+  fetchElements = (obj: PatientType) => {
     const ret: Array<FHIR_ContactPoint> = []
     if (obj["Telefon1"]) {
       ret.push({
@@ -164,28 +187,28 @@ class ContactRenderer implements FlexformListRenderer{
         rank: 3
       })
     }
-    if(obj["NatelNr"]){
+    if (obj["NatelNr"]) {
       ret.push({
-        system:"phone",
+        system: "phone",
         value: obj["NatelNr"],
         use: "mobile",
         rank: 1
       })
     }
-    if(obj["EMail"]){
+    if (obj["EMail"]) {
       ret.push({
-        system:"email",
+        system: "email",
         value: obj["Email"],
         use: "home",
         rank: 4
       })
     }
-    if(obj["fax"]){
+    if (obj["fax"]) {
       ret.push({
         system: "fax",
         value: obj["fax"],
         use: "old",
-        rank:100
+        rank: 100
       })
     }
     return ret

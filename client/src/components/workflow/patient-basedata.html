@@ -2,9 +2,10 @@
   <require from="../ck-editor"></require>
   <require from="../../resources/patlabel"></require>
   <require from="../flexform"></require>
-  <div class="detailcaption">${title}
-    <img repeat.for="sticker of state.stickers" src.bind="'data:image/png;base64,' + sm.getImage(sticker)" style="height:20px;"
-    alt.bind="sticker" data-toggle="tooltip" title.bind="sticker">
+  <div class="detailcaption">
+    <span innerhtml.bind="title"></span>
+    <!-- img repeat.for="sticker of state.stickers" src.bind="'data:image/png;base64,' + sm.getImage(sticker)" style="height:20px;"
+    alt.bind="sticker" data-toggle="tooltip" title.bind="sticker" -->
   </div>
   <flex-form ff_cfg.one-time="def" entity.bind="state" lockable="true"></flex-form>
 </template>

@@ -6,7 +6,7 @@ import { WebelexisEvents } from './../../webelexisevents';
  ********************************************/
 
 import { bindable, autoinject, computedFrom } from 'aurelia-framework'
-import { TerminType, TerminModel,Statics } from '../../models/termine-model'
+import { TerminType, TerminModel, Statics } from '../../models/termine-model'
 import { Kontakt } from '../../models/kontakt'
 import { DateTime } from '../../services/datetime'
 import * as _ from 'lodash'
@@ -15,7 +15,9 @@ import { EventAggregator } from 'aurelia-event-aggregator';
 import { RightPanel } from './../../routes/dispatch/right';
 import { LeftPanel } from './../../routes/dispatch/left';
 
-
+/**
+ * A single Agenda entry. Type can be 'free', 'reserved' or any one of the user defined types.
+ */
 @autoinject
 export class AgendaEntry {
   @bindable entry: TerminModel
@@ -25,19 +27,22 @@ export class AgendaEntry {
 
 
   constructor(private dt: DateTime, private tm: TerminManager,
-    private ea:EventAggregator, private we:WebelexisEvents) {
+    private ea: EventAggregator, private we: WebelexisEvents) {
   }
 
-  select(view,list){
-    const patient=this.entry.obj.kontakt
-    patient.type="patient"
+  select(view, list) {
+    const patient = this.entry.obj.kontakt
+    patient.type = "patient"
     this.we.selectItem(patient)
-    if(list){
-      this.ea.publish(LeftPanel.message,list)
+    if (list) {
+      this.ea.publish(LeftPanel.message, list)
     }
-    this.ea.publish(RightPanel.message,view)
+    this.ea.publish(RightPanel.message, view)
   }
 
+  isStaticType() {
+    return this.entry.isFree() || this.entry.isReserved()
+  }
   get typecss() {
     let style = `background-color:${this.entry.getTypColor()};`
     return style
@@ -53,23 +58,18 @@ export class AgendaEntry {
     return ret + "-" + end
   }
   getLabel() {
-    //console.log(this.entry)
     return this.entry.getLabel()
   }
 
-  rawContents(){
+  rawContents() {
     return this.entry.rawContents()
   }
-/*
-  get states() {
-    return Statics.terminStates
-  }
-*/
+
   get types() {
     return Statics.terminTypes
   }
 
-  save(){
+  save() {
     this.tm.save(this.entry)
   }
   changeState() {

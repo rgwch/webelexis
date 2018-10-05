@@ -33,6 +33,14 @@ export class RightPanel{
     this.expanded=mode
   }
 
+  activate(params) {
+    if (params.sub) {
+      const actview = this.views.find(v => v.text.toLowerCase() == params.sub)
+      this.active = actview
+    }
+  }
+
+
   toggleLeftPane(context){
     context.toggleLeftPane()
     if(context.showLeftPane){

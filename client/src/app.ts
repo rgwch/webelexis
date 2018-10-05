@@ -38,14 +38,14 @@ export class App {
     cfg.title = "Webelexis"
     cfg.map([
       {
-        route: ['',"/dispatch"],
+        route: ['',"/dispatch/:sub?"],
         name: "dispatch",
         title: "Hauptseite",
         viewPorts:{
           default: {moduleId: 'routes/dispatch/left'},
           details: {moduleId: 'routes/dispatch/right'}
         },
-        nav: true
+        nav: false
       },{
         route: "/user",
         name: "user",

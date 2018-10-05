@@ -3,39 +3,53 @@ import { DataSource, DataService } from './../services/datasource';
 import { ElexisType } from './elexistype';
 import { autoinject } from 'aurelia-framework';
 
-export interface StickerType extends ElexisType{
-  Name:string
-  importance:string
-  imagedata:Int8Array
-  foreground:string
-  background:string
+export interface StickerType extends ElexisType {
+  Name: string
+  importance: string
+  imagedata: Int8Array
+  foreground: string
+  background: string
 }
 
 
 @autoinject
-export class StickerManager{
-  private stickerService:DataService
-  private allStickers={}
+export class StickerManager {
+  private stickerService: DataService
+  private allStickers = {}
 
-  constructor(private ds:DataSource){
-    this.stickerService=ds.getService('stickers')
+  constructor(private ds: DataSource) {
+    this.stickerService = ds.getService('stickers')
   }
 
-  loadStickers():Promise<any>{
-    return this.stickerService.find().then(stickers=>{
-      for(const sticker of stickers.data){
-        this.allStickers[sticker.Name]=sticker
+  loadStickers(): Promise<any> {
+    return this.stickerService.find().then(stickers => {
+      for (const sticker of stickers.data) {
+        this.allStickers[sticker.Name] = sticker
       }
       return this.allStickers
     })
   }
 
-  getSticker(name:string):StickerType{
+  getSticker(name: string): StickerType {
     return this.allStickers[name]
   }
 
-  getImage(stickername:string){
-    const st=this.getSticker(stickername)
+  getImage(stickername: string) {
+    const st = this.getSticker(stickername)
     return st.imagedata
+  }
+
+  getFirstSticker(stickerNames: Array<string>): StickerType {
+    if (stickerNames && stickerNames.length > 0) {
+      let ret = this.getSticker(stickerNames[0])
+      for (const st of stickerNames) {
+        const cand = this.getSticker(st)
+        if (parseInt(cand.importance) > parseInt(ret.importance)) {
+          ret = cand
+        }
+      }
+      return ret;
+    } else { }
+    return undefined
   }
 }
