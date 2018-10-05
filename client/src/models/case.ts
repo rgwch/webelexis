@@ -17,3 +17,12 @@ export interface CaseType{
   endDate: Date,
   id: string
 }
+
+export class CaseManager{   // sic!
+
+
+}
+
+export class CaseModel{
+
+}

@@ -2,14 +2,17 @@
   <require from="./encounter"></require>
   <require from="../endless-scroll"></require>
   <require from="../../services/date-format"></require>
-  <span class="detailcaption">Konsultationen: ${actPatient.Bezeichnung1} ${actPatient.Bezeichnung2}, ${actPatient.geburtsdatum | dateFormat:"date"}</span>
+  <require from="../searchfield"></require>
+  <span class="detailcaption">Konsultationen</span>
   <div class="sheet">
     <div class="header">
-      <input type="text" style="display:inline;">
-      <select>
-        <option value="all">Alle Fälle</option>
-        <option repeat.for="case of cases.data" value="case.id">${case.datumvon}</option>
-      </select>
+      <div class="form-inline">
+        <searchfield placeholder="suchen..."></searchfield>
+        <select style="margin-left:20px;height:2em;">
+          <option value="all">Alle Fälle</option>
+          <option repeat.for="case of cases.data" value="case.id">${case.datumvon}</option>
+        </select>
+      </div>
     </div>
     <div class="body">
       <endless-scroll reload.delegate="fetchData($event)" limit.bind="65">

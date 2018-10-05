@@ -5,9 +5,9 @@
     <form role="form" submit.delegate="doFilter()">
       <div class="form-row" style="padding-right:10px;padding-left:10px;padding-top:4px;padding-bottom:4px;">
         <div repeat.for="field of cv_cfg.searchFields">
-          <input type="text" class="form-input" id="${field}" placeholder="${field.label}" value.bind="field.value">
+          <input type="text" class="form-input" id="${field}" placeholder="${field.label}" value.bind="field.value" style="height:36px;">
         </div>
-        <button type="submit" click.trigger="doFilter()">
+        <button type="submit" click.trigger="doFilter()" style="height:36px;">
           <i class="fa fa-search"></i>
         </button>
         <button type="button" class="btn" data-toggle="modal" data-target="#new-element-modal" if.bind="cv_cfg.createDef">

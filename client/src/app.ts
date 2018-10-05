@@ -1,3 +1,4 @@
+import { Patient } from './models/patient';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -8,18 +9,26 @@ import { WebelexisEvents } from './webelexisevents';
 import { UserType,User } from './models/user';
 import { DataSource } from './services/datasource';
 import { Router, RouterConfiguration } from "aurelia-router";
-import { LogManager, autoinject } from 'aurelia-framework'
+import { LogManager, autoinject, computedFrom } from 'aurelia-framework'
 import 'bootstrap'
 import {connectTo} from 'aurelia-store'
 import { pluck } from 'rxjs/operators'
+import { State } from './state';
 
 
-@connectTo(store=>store.state.pipe(pluck("usr")))
+@connectTo<State>({
+  selector: {
+    actUser: store => store.state.pipe(pluck("usr")),
+    actDate: store => store.state.pipe(pluck("date")),
+    actPatient: store=> store.state.pipe(pluck('patient'))
+  }
+})
 @autoinject
 export class App {
   public router: Router
   log = LogManager.getLogger('app.ts')
   showLeftPane=true
+  actPatient
 
   constructor(private ds:DataSource, private we:WebelexisEvents){
     this.ds.login().then((usr:UserType)=>{
@@ -34,6 +43,21 @@ export class App {
   toggleLeftPane(){
     this.showLeftPane=!this.showLeftPane
   }
+
+  @computedFrom('actPatient')
+  get title(){
+    if(!this.actPatient){
+      return "kein Patient ausgewählt"
+    }else{
+      if(this.actPatient.Bezeichnung1){
+        return Patient.getLabel(this.actPatient)
+      }else{
+        return "?"
+      }
+    }
+
+  }
+
   public configureRouter(cfg: RouterConfiguration, router: Router) {
     cfg.title = "Webelexis"
     cfg.map([

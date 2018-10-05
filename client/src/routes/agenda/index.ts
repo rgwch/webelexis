@@ -5,19 +5,21 @@
  ********************************************/
 
 import { EventAggregator } from "aurelia-event-aggregator";
-import { autoinject, observable } from 'aurelia-framework'
+import { autoinject, observable, computedFrom } from 'aurelia-framework'
 import * as moment from 'moment'
 import { WebelexisEvents } from '../../webelexisevents'
 import { connectTo } from 'aurelia-store'
 import { State } from '../../state'
 import { TerminManager,Statics } from './../../models/termine-model';
 import { pluck } from "rxjs/operators";
+import { Patient,PatientType } from "../../models/patient";
 
 @autoinject
 @connectTo<State>({
   selector: {
     actUser: store => store.state.pipe(pluck("usr")),
-    actDate: store => store.state.pipe(pluck("date"))
+    actDate: store => store.state.pipe(pluck("date")),
+    actPatient: store=> store.state.pipe(pluck('patient'))
   }
 })
 export class Agenda {
@@ -25,6 +27,7 @@ export class Agenda {
   dateStandard: string = "2018-01-26"
   private dateSubscriber
   private actDate
+  private actPatient:PatientType
   @observable bereich = ""
   private bereiche = []
 
@@ -32,6 +35,7 @@ export class Agenda {
     private tm: TerminManager) {
 
   }
+
 
   actDateChanged(newDate, oldDate) {
     this.dateStandard = moment(newDate).format("YYYY-MM-DD")

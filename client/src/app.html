@@ -2,11 +2,13 @@
   <require from="bootstrap/css/bootstrap.css"></require>
   <require from="styles.css"></require>
   <require from="./navbar"></require>
-  <div class="container-fluid class="schmaler">
+  <div class="container-fluid">
     <a style="float:right" route-href="route: user">
       <i class="fa fa-sign-in-alt" data-toggle="tootltip" title="login" hide.bind="state"></i>
       <i class="fa fa-sign-out-alt" data-toggle="tootltip" title.bind="state.email" show.bind="state"></i>
     </a>
+    <span style="position:absolute;right:100px;" innerhtml.bind="title"></span>
+
     <!-- navbar router.bind="router"></navbar -->
     <div role="main">
       <div id="left-part" show.bind="showLeftPane">
