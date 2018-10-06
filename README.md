@@ -1,15 +1,16 @@
 # Webelexis
 
-Die flinke, flexible  Ergänzug zu Elexis
+Die schlanke, flinke, Ergänzug zu Elexis
 
 * Läuft im Browser
 * läuft auf Mobilgeräten
 * lässt sich auch über Mobilnetze flüssig bedienen
+* kann (bei weitem) nicht alles, was Elexis kann, sondern erledigt Kernaufgaben unkopliziert.
+* Kann parallel mit Elexis im selben Netz eingesetzt werden.
 
 
 
-
-## Webelexis 3
+## Technische Grundlage Webelexis 3
 
 Dies ist die dritte Iteration des Webelexis Projekts, komplettes rewrite und redesign. Eckpunkte:
 
