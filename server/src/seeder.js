@@ -13,10 +13,11 @@ const roles = require('./services/roles')
  * exist, otherwise seeder will throw an error.
  */
 
-module.exports = function (app) {
+module.exports = async function (app) {
   const pats = app.service('patient')
   pats.find({ query: { bezeichnung1: "unittest" } }).then(testpat => {
-    if (!testpat || !testpat.data || testpat.data[0].length < 1) {
+    if (!testpat || !testpat.data || testpat.data.length < 1) {
+      logger.error("No Patient with name 'unittest' found. See src/seeder.js")
       throw new Error("No Patient with name 'unittest' found. See src/seeder.js")
     }
     return testpat.data[0]
@@ -117,4 +118,5 @@ module.exports = function (app) {
       })
     })
   })
+  return true
 }

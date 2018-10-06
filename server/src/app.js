@@ -67,6 +67,7 @@ app.configure(customMethods({
 
 // If in testing mode: Seed databases
 if (app.get("testing")) {
-  require('./seeder')(app)
+    const seeder = require('./seeder')
+    seeder(app).catch(err=>{console.log("reject "+err)})
 }
 module.exports = app;
