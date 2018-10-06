@@ -4,7 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { bindable, bindingMode, customElement, inlineView, observable } from 'aurelia-framework';
+import { bindable, bindingMode, customElement, inlineView, observable, autoinject } from 'aurelia-framework';
+import { I18N } from 'aurelia-i18n';
 declare var ClassicEditor: any
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -17,6 +18,7 @@ declare var ClassicEditor: any
   </template>
 `)
 @customElement('ck-editor')
+@autoinject
 export class CKEditor {
   @bindable value: string;
   @bindable public name;
@@ -24,6 +26,7 @@ export class CKEditor {
   public textArea: HTMLTextAreaElement;
   private editor: any
 
+  constructor(private i18:I18N){}
   /*
     valueChanged(newValue:string,oldValue:string){
       if(this.editor){
@@ -39,9 +42,9 @@ export class CKEditor {
       toolbar: ['heading', '|', 'bold', 'italic', 'undo', 'redo', 'bulletedList'],
       heading: {
         options: [
-          { model: 'paragraph', title: "Absatz", class: 'ck-heading_paragraph' },
-          { model: 'heading1', view: 'h1', title: "Überschrift 1", class: "ck-heading_heading1" },
-          { model: 'heading2', view: 'h2', title: "Überschrift 2", class: "ck-heading_heading2" }
+          { model: 'paragraph', title: this.i18.tr("edit.para"), class: 'ck-heading_paragraph' },
+          { model: 'heading1', view: 'h1', title: this.i18.tr("edit.heading1"), class: "ck-heading_heading1" },
+          { model: 'heading2', view: 'h2', title: this.i18.tr("edit.heading2"), class: "ck-heading_heading2" }
         ]
       }
 

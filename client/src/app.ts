@@ -14,6 +14,7 @@ import 'bootstrap'
 import {connectTo} from 'aurelia-store'
 import { pluck } from 'rxjs/operators'
 import { State } from './state';
+import { I18N } from 'aurelia-i18n';
 
 
 @connectTo<State>({
@@ -29,11 +30,13 @@ export class App {
   log = LogManager.getLogger('app.ts')
   showLeftPane=true
   actPatient
+  // actUser
 
-  constructor(private ds:DataSource, private we:WebelexisEvents){
+  constructor(private ds:DataSource, private we:WebelexisEvents, private i18n: I18N){
     this.ds.login().then((usr:UserType)=>{
       const user=new User(usr)
       usr["type"]="usr"
+      // this.actUser=usr
       this.we.selectItem(usr)
     }).catch(err=>{
       console.log("invalid stored token")
@@ -47,7 +50,7 @@ export class App {
   @computedFrom('actPatient')
   get title(){
     if(!this.actPatient){
-      return "kein Patient ausgewählt"
+      return this.i18n.tr("info.nopatselected") //"kein Patient ausgewählt"
     }else{
       if(this.actPatient.Bezeichnung1){
         return Patient.getLabel(this.actPatient)
@@ -64,7 +67,7 @@ export class App {
       {
         route: ['',"/dispatch/:sub?"],
         name: "dispatch",
-        title: "Hauptseite",
+        title: this.i18n.tr("nav.maintitle"),
         viewPorts:{
           default: {moduleId: 'routes/dispatch/left'},
           details: {moduleId: 'routes/dispatch/right'}
@@ -73,7 +76,7 @@ export class App {
       },{
         route: "/user",
         name: "user",
-        title: "Konto",
+        title: this.i18n.tr("nav.account"),
         viewPorts: {
           default: {moduleId: "routes/user/usermenu"},
           details: {moduleId: "routes/user/userdetail"}
@@ -96,7 +99,7 @@ export class App {
           default: { moduleId: 'routes/patient/index' },
           details: { moduleId: 'routes/agenda/index' }
         },
-        title: 'Agenda',
+        title: this.i18n.tr("nav.agenda"),
         nav: true
       }, {
         route: "/termin",
@@ -107,7 +110,7 @@ export class App {
       }, {
         route: "/patient",
         name: "patient",
-        title: "Patient",
+        title: this.i18n.tr("pat details"),
         viewPorts: {
           default: { moduleId: 'routes/patient/index' },
           details: { moduleId: 'routes/patient/detail' }
@@ -117,7 +120,7 @@ export class App {
       }, {
         route: "patient/neu",
         name: "patneu",
-        title: "Neuer Patient",
+        title: this.i18n.tr("nav.newpat"),
         viewPorts: {
           default: { moduleId: 'routes/patient/index' },
           details: { moduleId: 'routes/patient/detail' }
@@ -125,7 +128,7 @@ export class App {
       }, {
         route: "/konsultation",
         name: "konsultation",
-        title: "Konsultation",
+        title: this.i18n.tr("nav.encounters"),
         viewPorts:{
           default: { moduleId: 'routes/patient/index' },
           details: {moduleId: 'routes/konsultation/index'}
@@ -134,7 +137,7 @@ export class App {
       }, {
         route: "/artikel",
         name: "artikel",
-        title: "Artikel",
+        title: this.i18n.tr("nav.articles"),
         viewPorts: {
           default: { moduleId: 'routes/artikel/index' },
           details: { moduleId: 'routes/artikel/detail' }
@@ -143,7 +146,7 @@ export class App {
       },{
         route:"/documents",
         name:"documents",
-        title:"Dokumente",
+        title: this.i18n.tr("nav.documents"),
         viewPorts:{
           default: {moduleId: 'routes/documents/list'},
           details: {moduleId: 'components/document'}

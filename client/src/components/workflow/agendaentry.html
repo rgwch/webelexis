@@ -18,14 +18,17 @@
       <textarea value.bind="entry.obj.Grund" style="width:100%;height:6em;" blur.trigger="save()"></textarea>
       <div>
         <div class="btn-group mb-2" role="group" aria-label="Termin Aktionen">
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('stammdaten')" hide.bind="isStaticType()">
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('stammdaten')" hide.bind="isStaticType()" t="nav.patdetails">
             Patient Details
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('konsultationen')" hide.bind="isStaticType()">
-            Konsultation
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('konsultationen')" hide.bind="isStaticType()" t="nav.encounters">
+            Encounters
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('dokumente','dokumentliste')" hide.bind="isStaticType()">
-            Dokumente
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('dokumente','dokumentliste')" hide.bind="isStaticType()" t="nav.documents">
+            Documents
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('labor')" hide.bind="isStaticType()" t="nav.lab">
+            Labor
           </button>
         </div>
 

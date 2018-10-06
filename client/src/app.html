@@ -4,8 +4,8 @@
   <require from="./navbar"></require>
   <div class="container-fluid">
     <a style="float:right" route-href="route: user">
-      <i class="fa fa-sign-in-alt" data-toggle="tootltip" title="login" hide.bind="state"></i>
-      <i class="fa fa-sign-out-alt" data-toggle="tootltip" title.bind="state.email" show.bind="state"></i>
+      <i class="fa fa-sign-in-alt" data-toggle="tootltip" title="login" hide.bind="actUser"></i>
+      <i class="fa fa-sign-out-alt" data-toggle="tootltip" title.bind="actUser.email" show.bind="actUser"></i>
     </a>
     <span style="position:absolute;right:100px;" innerhtml.bind="title"></span>
 

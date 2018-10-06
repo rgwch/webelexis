@@ -8,10 +8,12 @@ import { CaseType } from './case';
 
 import { PatientType } from './patient';
 import { KontaktType } from './kontakt';
-import { autoinject } from 'aurelia-framework';
+import { autoinject, Container } from 'aurelia-framework';
 import { DataSource, DataService } from '../services/datasource';
 import * as moment from 'moment'
+import { I18N } from 'aurelia-i18n';
 
+const i18=Container.instance.get(I18N)
 /**
  * An Elexis "Fall"
  */
@@ -50,7 +52,6 @@ export class CaseManager {   // sic!
         gesetz = obj.extinfo.billing
       }
     }
-
     return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung}`
   }
 }

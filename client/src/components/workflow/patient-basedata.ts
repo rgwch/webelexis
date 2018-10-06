@@ -36,6 +36,7 @@ export class PatientBasedata {
     return this.sm.getImage(sticker)
   }
 
+  /*
   @computedFrom('state')
   get title():string{
     if(!this.state){
@@ -48,6 +49,6 @@ export class PatientBasedata {
       }
     }
   }
-
+*/
 
 }

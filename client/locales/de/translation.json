@@ -8,22 +8,21 @@
     "time_format_parse": "H:m",
     "database_format_date": "YYYYMMDD"
   },
-  "contact":{
-    "firstname": "Vornamen",
-    "lastname": "Nachname",
-    "birthdate": "Geburtsdatum",
-    "gender": "Geschlecht",
-    "remark": "Bemerkung",
-    "contactpoints": "Erreichbar"
-  },
-  "address":{
+  "address": {
     "street": "Strasse",
     "zip": "Plz",
     "place": "Ort"
   },
-  "validation":{
-    "onlyText": "2-80 Zeichen, keine Ziffern und Sonderzeichen",
-    "invalidDate": "Ungültiges Datum"
+  "article": {
+    "pagetitle": "Artikeldetails",
+    "name": "Name",
+    "buy": "Ex factory Preis",
+    "sell": "Publikumspreis",
+    "size": "Packungsgrösse",
+    "instore": "Lagerbestand",
+    "maxstore": "Maxbestand",
+    "minstore": "Minbestand",
+    "opened": "Anbruch"
   },
   "calendar": {
     "months": [
@@ -60,5 +59,50 @@
     ],
     "previousMonth": "voriger Monat",
     "nextMonth": "nächster Monat"
+  },
+  "case":{
+    "illness":"Krankheit"
+  },
+  "contact": {
+    "data": "Personalien",
+    "firstname": "Vornamen",
+    "lastname": "Nachname",
+    "birthdate": "Geburtsdatum",
+    "gender": "Geschlecht",
+    "remark": "Bemerkung",
+    "contactpoints": "Erreichbar"
+  },
+  "dlg":{
+    "close": "Schliessen",
+    "create": "Erstellen",
+    "newelem": "neues Element"
+  },
+  "edit":{
+    "para": "Absatz",
+    "heading1": "Überschrift 1",
+    "heading2": "Überschrift 2"
+  },
+  "info": {
+    "nopatselected": "Kein Patient ausgewählt"
+  },
+  "nav": {
+    "maintitle": "Praxis Breite",
+    "account": "Konto",
+    "agenda": "Agenda",
+    "patdetails": "Patient Details",
+    "newpat": "Neuer Patient",
+    "encounters": "Konsultation",
+    "documents": "Dokumente",
+    "lab": "Labor",
+    "articles": "Artikel"
+  },
+  "select": {
+    "search": "Suchen",
+    "allcases": "Alle Fälle",
+    "select": "Auswahl"
+  },
+  "validation": {
+    "onlyText": "2-80 Zeichen, keine Ziffern und Sonderzeichen",
+    "invalidDate": "Ungültiges Datum"
   }
 }

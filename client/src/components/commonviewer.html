@@ -28,7 +28,7 @@
   </div>
 
   <!-- New Item Dialog -->
-  <div class="modal fade" id="new-element-modal" tabindex="-1" role="dialog" aria-labelledby="neues Element" if.bind="cv_cfg.createDef">
+  <div class="modal fade" id="new-element-modal" tabindex="-1" role="dialog" t="[aria-labelledby]dlg.newelem" if.bind="cv_cfg.createDef">
     <div class="modal-dialog" role="document" style="background-color:yellow;">
       <div class="modal-content">
         <div class="modal-header">
@@ -41,8 +41,8 @@
           <flex-form ff_cfg.bind="cv_cfg.createDef" lockable.one-time="false" entity.bind="newobj"></flex-form >
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schliessen</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" click.delegate="newElem()">Erstellen</div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" t="dlg.close">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" click.delegate="newElem()" t="dlg.create">Create</div>
         </div>
       </div>
     </div>
