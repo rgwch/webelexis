@@ -100,11 +100,11 @@ class ElexisUtils {
   }
 
   /**
-   * Add a new entry to a VersionedResource
-   * @param entry
-   * @param newText
-   * @param remark
-   * @returns {*}
+   * Add a new text to a VersionedResource
+   * @param entry the existing VersionedResource (binary)
+   * @param newText the text to add
+   * @param remark a remark for the new version
+   * @returns {*} the updated VersionedResource
    */
   updateVersionedResource(entry, newText, remark) {
     let array = java.newArray("byte",
@@ -116,6 +116,12 @@ class ElexisUtils {
     return binfield
   }
 
+  /**
+   * Convert an Elexis ExtInfo field to json.
+   * @param {} buffer  the binary data as stored in the database
+   * @returns a JSON object with the contents of the ExtInfo (which might be {}
+   * if the input was empty or could not be read.)
+   */
   getExtInfo(buffer) {
     if (buffer) {
       try {
@@ -135,6 +141,11 @@ class ElexisUtils {
     return {}
   }
 
+  /**
+   * convert a JSON Object to ExtInfo
+   * @param {} obj  some json
+   * @returns a binary containing the ExtInfo ready to write into the database
+   */
   writeExtInfo(obj) {
     let str = JSON.stringify(obj)
     /*
