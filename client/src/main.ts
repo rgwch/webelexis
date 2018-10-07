@@ -21,9 +21,9 @@ import environment from './environment';
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    // .feature(PLATFORM.moduleName('./resources'))
+    .feature(PLATFORM.moduleName('resources/index'))
     // .globalResources('resources/date-format-value-converter')
-    //.feature(PLATFORM.moduleName('./validation'))
+    .feature(PLATFORM.moduleName('validation/index'))
     .plugin(PLATFORM.moduleName('aurelia-i18n'), (instance) => {
       instance.i18next.use(Backend);
       return instance.setup({

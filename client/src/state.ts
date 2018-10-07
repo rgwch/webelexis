@@ -10,13 +10,15 @@ export interface State{
   termin: ElexisType,
   patient: ElexisType,
   document: ElexisType
-  date: Date
+  date: Date,
+  leftPanel: boolean
 }
 
 export const webelexisState:State={
   user: undefined,
   termin: undefined,
   patient: undefined,
+  leftPanel: true,
   document: {},
   date: new Date()
 }

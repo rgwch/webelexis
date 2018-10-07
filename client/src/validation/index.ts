@@ -1,3 +1,5 @@
+import { Aurelia, PLATFORM } from 'aurelia-framework';
+
 export function configure(config){
-  config.plugin('aurelia-validation')
+  config.plugin(PLATFORM.moduleName('aurelia-validation'))
 }

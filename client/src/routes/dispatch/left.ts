@@ -21,7 +21,6 @@ export class LeftPanel{
   buttons
   connected:boolean = false
   static message="left_panel"
-  imgdata
 
   constructor(private ea:EventAggregator,private sm:StickerManager){
     this.ea.subscribe(LeftPanel.message,view=>{
@@ -34,8 +33,6 @@ export class LeftPanel{
     const twidth=this.parent.offsetWidth
     return this.sm.loadStickers().then(st=>{
       // console.log(st)
-      let sticker=st.Hausarztmodell
-      this.imgdata=sticker.imagedata
     })
   }
   switchTo(view){

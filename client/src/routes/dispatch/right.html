@@ -5,8 +5,8 @@
     </div>
     <div class="btn-group-vertical bordered" style="position:absolute;right:5px;top:20px;">
       <button class="btn" click.delegate="toggleLeftPane($parent)">
-        <!-- i class="fa fa-angle-double-left" show.bind="$parent.showLeftPane"></i>
-        <i class="fa fa-angle-double-right" hide.bind="$parent.showLeftPane"></i -->
+        <i class="fa fa-angle-double-left" show.bind="state"></i>
+        <i class="fa fa-angle-double-right" hide.bind="state"></i -->
       </button>
       <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)">
         <img src.one-time="vi.icon" data-toggle="tooltip" title.one-time="vi.text" width.one-time="tooliconwidth"

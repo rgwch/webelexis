@@ -21,14 +21,15 @@ import { Patient } from './models/patient';
   selector: {
     actUser: store => store.state.pipe(<any>pluck("usr")),
     actDate: store => store.state.pipe(<any>pluck("date")),
-    actPatient: store => store.state.pipe(<any>pluck('patient'))
+    actPatient: store => store.state.pipe(<any>pluck('patient')),
+    leftPanel: store=>store.state.pipe(<any>pluck('leftPanel'))
   }
 })
 @autoinject
 export class App {
   public router: Router
   log = LogManager.getLogger('app.ts')
-  showLeftPane = true
+  leftPanel
   actPatient
   // actUser
 
@@ -43,10 +44,11 @@ export class App {
     })
   }
 
+  /*
   toggleLeftPane() {
     this.showLeftPane = !this.showLeftPane
   }
-
+*/
   @computedFrom('actPatient')
   get title() {
     if (!this.actPatient) {

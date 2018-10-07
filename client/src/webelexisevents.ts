@@ -12,6 +12,11 @@ export class WebelexisEvents{
     newState.date=date
     return newState
   }
+  private toggleLeftPanelAction=(state:State)=>{
+    const newState=Object.assign({},state)
+    newState.leftPanel=!state.leftPanel
+    return newState
+  }
   private selectItemAction=(state:State, item:ElexisType)=>{
     if(!item.type){
       throw new Error("type information missing at selectItemAction")
@@ -30,6 +35,7 @@ export class WebelexisEvents{
     this.store.registerAction("SetDate",this.setDateAction)
     this.store.registerAction("SelectItem",this.selectItemAction)
     this.store.registerAction("Logout",this.logoutAction)
+    this.store.registerAction("leftPanel",this.toggleLeftPanelAction)
     this.store.state.subscribe(state=>this.state=state)
   }
   setDate(date){
@@ -38,6 +44,10 @@ export class WebelexisEvents{
 
   selectItem(item:ElexisType){
     this.store.dispatch(this.selectItemAction,item)
+  }
+
+  toggleLeftPanel(){
+    this.store.dispatch(this.toggleLeftPanelAction)
   }
 
   getSelectedItem(type:string){

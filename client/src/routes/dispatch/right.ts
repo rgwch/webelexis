@@ -7,7 +7,12 @@
 import v from './views'
 import { autoinject } from 'aurelia-framework';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { State } from '../../state'
+import {connectTo} from 'aurelia-store'
+import {pluck} from 'rxjs/operators'
+import {WebelexisEvents} from '../../webelexisevents'
 
+@connectTo(store=>store.state.pipe(<any>pluck("leftPanel")))
 @autoinject
 export class RightPanel{
   tooliconwidth=40
@@ -20,7 +25,7 @@ export class RightPanel{
   subscription: Subscription
   static message="right_panel"
 
-  constructor(private ea:EventAggregator){
+  constructor(private ea:EventAggregator, private we:WebelexisEvents){
     this.subscription=this.ea.subscribe(RightPanel.message,(view=>{
       const newView=v[view]
       if(newView){
@@ -29,26 +34,36 @@ export class RightPanel{
     }))
   }
 
+  stateChanged(showNow,showBefore){
+    if(showNow){
+      this.style="position:absolute;left:395px;right:85px;"
+    }else{
+      this.style="position:absolute;left:5px;right:85px;"
+    }
+  }
   expand(mode){
     this.expanded=mode
   }
 
   activate(params) {
-    if (params.sub) {
+    if (params && params.sub) {
       const actview = this.views.find(v => v.text.toLowerCase() == params.sub)
       this.active = actview
+    }else{
+      this.active=v.stammdaten
     }
   }
 
 
-  toggleLeftPane(context){
-    context.toggleLeftPane()
+  toggleLeftPane(){
+    this.we.toggleLeftPanel()
+    /*
     if(context.showLeftPane){
       this.style="position:absolute;left:395px;right:85px;"
     }else{
       this.style="position:absolute;left:5px;right:85px;"
     }
-
+  */
   }
   calcwidth(){
     const w=this.parent.getBoundingClientRect().width-this.tooliconwidth
