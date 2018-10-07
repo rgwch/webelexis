@@ -9,6 +9,7 @@ npm rebuild node-sass
 npm remove java
 npm install java
 
+the development server runs on port 9000
 
 ## DataSource and DataService
 
