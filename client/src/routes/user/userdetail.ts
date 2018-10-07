@@ -9,7 +9,7 @@ import { Router } from 'aurelia-router';
 
 
 @autoinject
-@connectTo(store=>store.state.pipe(pluck("usr")))
+@connectTo(store=>store.state.pipe(<any>pluck("usr")))
 export class UserDetail{
   name: "Itze"
   style="position:absolute;left:395px;right:15px;top:20px;"

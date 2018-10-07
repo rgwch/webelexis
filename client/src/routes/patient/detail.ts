@@ -9,7 +9,7 @@ import { pluck } from 'rxjs/operators';
 import { connectTo } from 'aurelia-store';
 import { computedFrom } from 'aurelia-binding';
 
-@connectTo(store=>store.state.pipe(pluck("patient")))
+@connectTo(store=>store.state.pipe(<any>pluck("patient")))
 export class Detail{
   state
   faelle="../../components/cases"

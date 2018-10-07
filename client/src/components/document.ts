@@ -20,8 +20,8 @@ import 'bootstrap'
 @autoinject
 @connectTo<State>({
   selector: {
-    actPatient: store => store.state.pipe(pluck('patient')),
-    obj: store => store.state.pipe(pluck('documents'))
+    actPatient: store => store.state.pipe(<any>pluck('patient')),
+    obj: store => store.state.pipe(<any>pluck('documents'))
   }
 })
 export class Document {

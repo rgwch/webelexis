@@ -8,7 +8,7 @@ import {customElement} from 'aurelia-framework'
 import {EventAggregator} from 'aurelia-event-aggregator'
 import * as moment from 'moment'
 import 'moment/locale/de'
-import Pikaday = require('pikaday');
+import * as Pikaday from 'pikaday';
 import {autoinject, bindable} from 'aurelia-framework'
 import {I18N} from 'aurelia-i18n'
 

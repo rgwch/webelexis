@@ -40,7 +40,7 @@ export class Statics {
 }
 
 @autoinject
-@connectTo(store => store.state.pipe(pluck('usr')))
+@connectTo(store => store.state.pipe(<any>pluck('usr')))
 export class TerminManager {
   terminService: DataService
 

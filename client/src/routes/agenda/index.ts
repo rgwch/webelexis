@@ -17,9 +17,9 @@ import { Patient,PatientType } from "../../models/patient";
 @autoinject
 @connectTo<State>({
   selector: {
-    actUser: store => store.state.pipe(pluck("usr")),
-    actDate: store => store.state.pipe(pluck("date")),
-    actPatient: store=> store.state.pipe(pluck('patient'))
+    actUser: store => store.state.pipe(<any>pluck("usr")),
+    actDate: store => store.state.pipe(<any>pluck("date")),
+    actPatient: store=> store.state.pipe(<any>pluck('patient'))
   }
 })
 export class Agenda {

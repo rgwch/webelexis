@@ -19,9 +19,9 @@ import { CaseManager } from './../../models/case';
 @autoinject
 @connectTo<State>({
   selector: {
-    actPatient: store => store.state.pipe(pluck('patient')),
+    actPatient: store => store.state.pipe(<any>pluck('patient')),
     //actCase: store=>store.state.pipe(pluck('case')),
-    actKons: store => store.state.pipe(pluck('konsultation'))
+    actKons: store => store.state.pipe(<any>pluck('konsultation'))
   }
 })
 @autoinject

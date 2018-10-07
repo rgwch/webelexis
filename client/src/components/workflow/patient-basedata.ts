@@ -14,7 +14,7 @@ import { DataSource, DataService } from '../../services/datasource';
 import { StickerManager } from '../../models/stickers.model';
 
 @autoinject
-@connectTo(store=>store.state.pipe(pluck("patient")))
+@connectTo(store=>store.state.pipe(<any>pluck("patient")))
 export class PatientBasedata {
   state
   def:FlexformConfig

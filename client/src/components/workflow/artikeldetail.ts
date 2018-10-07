@@ -5,7 +5,7 @@ import { pluck } from 'rxjs/operators';
 import * as num from 'numeral'
 import { I18N } from 'aurelia-i18n';
 
-@connectTo(store=>store.state.pipe(pluck("article")))
+@connectTo(store=>store.state.pipe(<any>pluck("article")))
 @autoinject
 export class ArtikelDetail{
   @bindable article;

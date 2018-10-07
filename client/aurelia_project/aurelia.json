@@ -1,252 +1,57 @@
 {
-  "name": "wlx3",
+  "name": "client",
   "type": "project:application",
   "bundler": {
-    "id": "cli",
-    "displayName": "Aurelia-CLI"
+    "id": "webpack",
+    "displayName": "Webpack"
   },
   "build": {
-    "targets": [
-      {
-        "id": "web",
-        "displayName": "Web",
-        "index": "index.html",
-        "baseDir": ".",
-        "output": "scripts"
-      }
-    ],
     "options": {
-      "minify": "stage & prod",
-      "sourcemaps": "dev & stage"
-    },
-    "bundles": [
-      {
-        "name": "app-bundle.js",
-        "source": [
-          "[**/*.js]",
-          "**/*.{css,html}"
-        ]
-      },
-      {
-        "name": "vendor-bundle.js",
-        "prepend": [
-          "node_modules/popper.js/dist/umd/popper.min.js",
-          "node_modules/bluebird/js/browser/bluebird.core.js",
-          "node_modules/aurelia-cli/lib/resources/scripts/configure-bluebird.js",
-          "node_modules/requirejs/require.js"
-        ],
-        "dependencies": [
-          "aurelia-binding",
-          "aurelia-bootstrapper",
-          "aurelia-dependency-injection",
-          "aurelia-event-aggregator",
-          "aurelia-framework",
-          "aurelia-history",
-          "aurelia-history-browser",
-          "aurelia-loader",
-          "aurelia-loader-default",
-          {
-            "name": "aurelia-logging",
-            "main": "aurelia-logging",
-            "path": "../node_modules/aurelia-logging/dist/amd",
-            "resources": []
-          },
-          "aurelia-logging-console",
-          "aurelia-metadata",
-          "aurelia-pal",
-          "aurelia-pal-browser",
-          "aurelia-path",
-          "aurelia-polyfills",
-          "aurelia-route-recognizer",
-          "aurelia-router",
-          "aurelia-task-queue",
-          "aurelia-templating",
-          "aurelia-templating-binding",
-          {
-            "name": "aurelia-templating-resources",
-            "path": "../node_modules/aurelia-templating-resources/dist/amd",
-            "main": "aurelia-templating-resources"
-          },
-          {
-            "name": "aurelia-templating-router",
-            "path": "../node_modules/aurelia-templating-router/dist/amd",
-            "main": "aurelia-templating-router"
-          },
-          {
-            "name": "aurelia-testing",
-            "path": "../node_modules/aurelia-testing/dist/amd",
-            "main": "aurelia-testing",
-            "env": "dev"
-          },
-          "text",
-          {
-            "name": "@feathersjs/client",
-            "main": "./client/index",
-            "path": "../node_modules/@feathersjs"
-          },
-          {
-            "name": "socket.io-client",
-            "main": "./dist/socket.io",
-            "path": "../node_modules/socket.io-client",
-            "resources": []
-          },
-          {
-            "name": "i18next",
-            "path": "../node_modules/i18next/dist/umd",
-            "main": "i18next"
-          },
-          {
-            "name": "aurelia-i18n",
-            "path": "../node_modules/aurelia-i18n/dist/amd",
-            "main": "aurelia-i18n"
-          },
-          {
-            "name": "i18next-xhr-backend",
-            "path": "../node_modules/i18next-xhr-backend/dist/umd",
-            "main": "i18nextXHRBackend"
-          },
-          "jquery",
-          {
-            "name": "popper.js",
-            "path": "../node_modules/popper.js/dist/umd",
-            "main": "popper.min"
-          },
-          {
-            "name": "bootstrap",
-            "path": "../node_modules/bootstrap/dist",
-            "main": "js/bootstrap.min",
-            "deps": [
-              "jquery",
-              "popper.js"
-            ],
-            "exports": "$",
-            "resources": [
-              "css/bootstrap.css"
-            ]
-          },
-          {
-            "name": "moment",
-            "main": "./moment.js",
-            "path": "../node_modules/moment",
-            "resources": []
-          },
-          {
-            "name": "pikaday",
-            "main": "pikaday.js",
-            "path": "../node_modules/pikaday",
-            "resources": [
-              "css/pikaday.css",
-              "css/site.css"
-            ]
-          },
-          "lodash",
-          {
-            "name": "aurelia-mousetrap",
-            "main": "index",
-            "path": "../node_modules/aurelia-mousetrap/dist/amd",
-            "resources": []
-          },
-          "mousetrap",
-          {
-            "name": "aurelia-validation",
-            "main": "aurelia-validation",
-            "path": "../node_modules/aurelia-validation/dist/amd",
-            "resources": []
-          },
-          {
-            "name": "aurelia-store",
-            "main": "aurelia-store",
-            "path": "../node_modules/aurelia-store/dist/amd",
-            "resources": []
-          },
-          {
-            "name": "rxjs",
-            "main": "./index.js",
-            "path": "../node_modules/rxjs",
-            "resources": []
-          },
-          {
-            "name": "rxjs/operators",
-            "main": "./index.js",
-            "path": "../node_modules/rxjs/operators",
-            "resources": []
-          },
-          "numeral",
-          {
-            "name": "@feathersjs/authentication-client",
-            "main": "lib/index.js",
-            "path": "../node_modules/@feathersjs/authentication-client",
-            "resources": []
-          },
-          "@feathersjs/errors",
-          {
-            "name": "jwt-decode",
-            "main": "lib/index.js",
-            "path": "../node_modules/jwt-decode",
-            "resources": []
-          },
-          {
-            "name": "debug",
-            "main": "./src/browser",
-            "path": "../node_modules/debug",
-            "resources": []
-          },
-          "ms"
-        ]
-      }
-    ],
-    "loader": {
-      "type": "require",
-      "configTarget": "vendor-bundle.js",
-      "includeBundleMetadataInConfig": "auto",
-      "plugins": [
-        {
-          "name": "text",
-          "extensions": [
-            ".html",
-            ".css"
-          ],
-          "stub": true
-        }
-      ]
+      "server": "dev",
+      "extractCss": "prod",
+      "coverage": false
     }
   },
   "platform": {
     "id": "web",
     "displayName": "Web",
-    "index": "index.html",
-    "baseDir": ".",
-    "output": "scripts"
+    "hmr": false,
+    "open": false,
+    "port": 8080,
+    "output": "dist"
+  },
+  "loader": {
+    "id": "none",
+    "displayName": "None"
   },
   "transpiler": {
     "id": "typescript",
     "displayName": "TypeScript",
-    "fileExtension": ".ts",
-    "dtsSource": [
-      "./custom_typings/**/*.d.ts"
-    ],
-    "source": "src/**/*.ts"
+    "fileExtension": ".ts"
   },
   "markupProcessor": {
     "id": "none",
     "displayName": "None",
-    "fileExtension": ".html",
-    "source": "src/**/*.html"
+    "fileExtension": ".html"
   },
   "cssProcessor": {
     "id": "sass",
     "displayName": "Sass",
-    "fileExtension": ".scss",
-    "source": "src/**/*.scss"
+    "fileExtension": ".scss"
   },
   "editor": {
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunner": {
-    "id": "karma",
-    "displayName": "Karma",
-    "source": "test/unit/**/*.ts"
+  "unitTestRunners": [
+    {
+      "id": "karma",
+      "displayName": "Karma"
+    }
+  ],
+  "integrationTestRunner": {
+    "id": "protractor",
+    "displayName": "Protractor"
   },
   "paths": {
     "root": "src",
@@ -259,5 +64,6 @@
   "testFramework": {
     "id": "jasmine",
     "displayName": "Jasmine"
-  }
+  },
+  "packageManager": "npm"
 }
