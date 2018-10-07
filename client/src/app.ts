@@ -9,7 +9,7 @@ import { WebelexisEvents } from './webelexisevents';
 import { UserType,User } from './models/user';
 import { DataSource } from './services/datasource';
 import { Router, RouterConfiguration } from "aurelia-router";
-import { LogManager, autoinject, computedFrom } from 'aurelia-framework'
+import { LogManager, autoinject, computedFrom, PLATFORM } from 'aurelia-framework'
 import 'bootstrap'
 import {connectTo} from 'aurelia-store'
 import { pluck } from 'rxjs/operators'
@@ -69,7 +69,7 @@ export class App {
         name: "dispatch",
         title: this.i18n.tr("nav.maintitle"),
         viewPorts:{
-          default: {moduleId: 'routes/dispatch/left'},
+          default: {moduleId: PLATFORM.moduleName('./routes/dispatch/left')},
           details: {moduleId: 'routes/dispatch/right'}
         },
         nav: false
