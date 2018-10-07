@@ -5,7 +5,7 @@ import { StickerManager } from './models/stickers.model';
  * License and Terms see LICENSE            *
  ********************************************/
 
-import {Aurelia} from 'aurelia-framework';
+import { Aurelia, PLATFORM } from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import * as Backend from 'i18next-xhr-backend';
 import * as LogManager from 'aurelia-logging'
@@ -21,10 +21,10 @@ import environment from './environment';
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    .feature('resources')
+    .feature(PLATFORM.moduleName('./resources'))
     // .globalResources('resources/date-format-value-converter')
-    .feature('validation')
-    .plugin('aurelia-i18n', (instance) => {
+    .feature(PLATFORM.moduleName('./validation'))
+    .plugin(PLATFORM.moduleName('aurelia-i18n'), (instance) => {
       instance.i18next.use(Backend);
       return instance.setup({
         backend    : {
@@ -36,13 +36,13 @@ export function configure(aurelia: Aurelia) {
         debug      : true
       });
     })
-    .plugin('aurelia-mousetrap',config=>{
+    .plugin(PLATFORM.moduleName('aurelia-mousetrap'),config=>{
       config.set('keymap', {
         "?": "KS_SEARCH",
         "n": "KS_NEW"
       });
     })
-    .plugin('aurelia-store',{initialState: webelexisState})
+    .plugin(PLATFORM.moduleName('aurelia-store'),{initialState: webelexisState})
     // .plugin('aurelia-dialog')
   if (environment.debug) {
     aurelia.use.developmentLogging();
@@ -50,11 +50,11 @@ export function configure(aurelia: Aurelia) {
   }
 
   if (environment.testing) {
-    aurelia.use.plugin('aurelia-testing');
+    aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
 
   const datasource=aurelia.container.get(FeathersDS)
   aurelia.container.registerInstance(DataSource,datasource)
 
-  aurelia.start().then(() => aurelia.setRoot());
+  aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }
