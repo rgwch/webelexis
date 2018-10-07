@@ -19,9 +19,9 @@ import { I18N } from 'aurelia-i18n';
 
 @connectTo<State>({
   selector: {
-    actUser: store => store.state.pipe(pluck("usr")),
-    actDate: store => store.state.pipe(pluck("date")),
-    actPatient: store=> store.state.pipe(pluck('patient'))
+    actUser: store => store.state.pipe(<any>pluck("usr")),
+    actDate: store => store.state.pipe(<any>pluck("date")),
+    actPatient: store=> store.state.pipe(<any>pluck('patient'))
   }
 })
 @autoinject
