@@ -18,22 +18,22 @@ export class Detail{
   toolbar=[
     {
       text: "Stammdaten",
-      icon: "/assets/id-card.svg", //basic.png",
+      icon: "/static/id-card.svg", //basic.png",
       view: "../../components/workflow/patient-basedata"
     },{
       text: "Konsultationen",
-      icon: "/assets/folder.svg", //karteikarte.jpg",
+      icon: "/static/folder.svg", //karteikarte.jpg",
       view: "../../components/workflow/encounters"
     },{
       text: "Dokumente",
-      icon: "/assets/file.svg", // documents.png",
+      icon: "/static/file.svg", // documents.png",
       view: "../../components/document"
     },{
       text: "Medikamente",
-      icon: "/assets/pill.svg", // prescriptions.png"
+      icon: "/static/pill.svg", // prescriptions.png"
     },{
       text: "Labor",
-      icon: "/assets/laboratory.svg"
+      icon: "/static/laboratory.svg"
     }
   ]
   main=this.toolbar[0].view

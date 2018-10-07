@@ -1,7 +1,7 @@
 <template bindable="router">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <img class="navbar-brand" src="/assets/webelexis_drop_50.jpg"></img>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+        <img class="navbar-brand" src="/static/webelexis_drop_50.jpg"></img>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarContent" aria-controls="navbarContent"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item" repeat.for="route of router.navigation">
                     <a class="nav-link" href.bind="route.href">${route.title}</a>
-                </li> 
+                </li>
             </ul>
         </div>
     </nav>

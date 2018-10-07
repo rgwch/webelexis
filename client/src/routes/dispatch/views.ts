@@ -9,53 +9,53 @@ import { Patient } from './../../models/patient';
 export default{
     stammdaten: {
       text: "Stammdaten",
-      icon: "/assets/id-card.svg", //basic.png",
+      icon: "/static/id-card.svg", //basic.png",
       view: PLATFORM.moduleName("../../components/workflow/patient-basedata")
     },
     konsultationen:{
       text: "Konsultationen",
-      icon: "/assets/folder.svg", //karteikarte.jpg",
+      icon: "/static/folder.svg", //karteikarte.jpg",
       view: PLATFORM.moduleName("../../components/workflow/encounters")
     },
     dokumente:{
       text: "Dokumente",
-      icon: "/assets/file.svg", // documents.png",
+      icon: "/static/file.svg", // documents.png",
       view: PLATFORM.moduleName("../../components/document")
     },
     medikamente:{
       text: "Medikamente",
-      icon: "/assets/pill.svg", // prescriptions.png"
+      icon: "/static/pill.svg", // prescriptions.png"
     },
     labor:{
       text: "Labor",
-      icon: "/assets/laboratory.svg"
+      icon: "/static/laboratory.svg"
     },
     patientenliste:{
       text: "Patienten",
-      icon: "/assets/users.svg",
+      icon: "/static/users.svg",
       view: PLATFORM.moduleName("../patient/index"),
       linksTo: "stammdaten"
     },
     artikelliste:{
       text: "Artikel",
-      icon: "/assets/pill.svg",
+      icon: "/static/pill.svg",
       view: PLATFORM.moduleName("../artikel/index"),
       linksTo: "artikeldetail"
     },
     dokumentliste:{
       text: "Dokumente",
-      icon: "/assets/file.svg",
+      icon: "/static/file.svg",
       view: PLATFORM.moduleName("../documents/list"),
       linksTo: "dokumente"
     },
     agendagross:{
       text: "Agenda",
-      icon: "/assets/calendar.svg",
+      icon: "/static/calendar.svg",
       view: PLATFORM.moduleName("../agenda/index")
     },
     artikeldetail: {
       text: "Artikel",
-      icon: "/assets/pill.svg",
+      icon: "/static/pill.svg",
       view: PLATFORM.moduleName("../../components/workflow/artikeldetail")
     }
   }
