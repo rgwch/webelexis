@@ -194,7 +194,7 @@ export class imgSrcValueConverter {
     const w = 30
     const h = 30
     if (!raw) {
-      raw = "/static/empty"
+      raw = "/empty"
     }
     if (raw.includes(".")) {
       const clr = value ? "#BED8A4" : "#A2938F"

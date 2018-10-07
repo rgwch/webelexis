@@ -24,22 +24,22 @@ export class ArticleView{
     switches:[
       {
         label:"Blackbox",
-        imgURL:"/static/blackflag",
+        imgURL:"/blackflag",
         falseBefore:(q)=>{q.BB=0;return q}
       },{
         label:"Nonpharma",
-        imgURL: "/static/pharma",
+        imgURL: "/pharma",
         falseBefore:(q)=>{q.type='P';return q}
       },{
         label:"Nur Generika",
-        imgURL: "/static/generic",
+        imgURL: "/generic",
         trueBefore:(q)=>{
           q.$or=[{GENERIC_TYPE:'G'},{GENERIC_TYPE:'X'}]
           return q;
         }
       },{
         label: "Nur SL",
-        imgURL: "/static/sl",
+        imgURL: "/sl",
         trueBefore:(q)=>{q.SL_ENTRY="1"; return q}
       }
 

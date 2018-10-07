@@ -9,53 +9,53 @@ import { Patient } from './../../models/patient';
 export default{
     stammdaten: {
       text: "Stammdaten",
-      icon: "/static/id-card.svg", //basic.png",
+      icon: "/id-card.svg", //basic.png",
       view: PLATFORM.moduleName("../../components/workflow/patient-basedata")
     },
     konsultationen:{
       text: "Konsultationen",
-      icon: "/static/folder.svg", //karteikarte.jpg",
+      icon: "/folder.svg", //karteikarte.jpg",
       view: PLATFORM.moduleName("../../components/workflow/encounters")
     },
     dokumente:{
       text: "Dokumente",
-      icon: "/static/file.svg", // documents.png",
+      icon: "/file.svg", // documents.png",
       view: PLATFORM.moduleName("../../components/document")
     },
     medikamente:{
       text: "Medikamente",
-      icon: "/static/pill.svg", // prescriptions.png"
+      icon: "/pill.svg", // prescriptions.png"
     },
     labor:{
       text: "Labor",
-      icon: "/static/laboratory.svg"
+      icon: "/laboratory.svg"
     },
     patientenliste:{
       text: "Patienten",
-      icon: "/static/users.svg",
+      icon: "/users.svg",
       view: PLATFORM.moduleName("../patient/index"),
       linksTo: "stammdaten"
     },
     artikelliste:{
       text: "Artikel",
-      icon: "/static/pill.svg",
+      icon: "/pill.svg",
       view: PLATFORM.moduleName("../artikel/index"),
       linksTo: "artikeldetail"
     },
     dokumentliste:{
       text: "Dokumente",
-      icon: "/static/file.svg",
+      icon: "/file.svg",
       view: PLATFORM.moduleName("../documents/list"),
       linksTo: "dokumente"
     },
     agendagross:{
       text: "Agenda",
-      icon: "/static/calendar.svg",
+      icon: "/calendar.svg",
       view: PLATFORM.moduleName("../agenda/index")
     },
     artikeldetail: {
       text: "Artikel",
-      icon: "/static/pill.svg",
+      icon: "/pill.svg",
       view: PLATFORM.moduleName("../../components/workflow/artikeldetail")
     }
   }

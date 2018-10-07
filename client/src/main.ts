@@ -21,14 +21,14 @@ import environment from './environment';
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    .feature(PLATFORM.moduleName('./resources'))
+    // .feature(PLATFORM.moduleName('./resources'))
     // .globalResources('resources/date-format-value-converter')
-    .feature(PLATFORM.moduleName('./validation'))
+    //.feature(PLATFORM.moduleName('./validation'))
     .plugin(PLATFORM.moduleName('aurelia-i18n'), (instance) => {
       instance.i18next.use(Backend);
       return instance.setup({
         backend    : {
-          loadPath: 'locales/{{lng}}/{{ns}}.json',
+          loadPath: './locales/{{lng}}/{{ns}}.json',
         },
         lng        : selectedLanguage,
         attributes : ['t', 'i18n'],
@@ -36,12 +36,14 @@ export function configure(aurelia: Aurelia) {
         debug      : true
       });
     })
+    /*
     .plugin(PLATFORM.moduleName('aurelia-mousetrap'),config=>{
       config.set('keymap', {
         "?": "KS_SEARCH",
         "n": "KS_NEW"
       });
     })
+    */
     .plugin(PLATFORM.moduleName('aurelia-store'),{initialState: webelexisState})
     // .plugin('aurelia-dialog')
   if (environment.debug) {

@@ -29,7 +29,7 @@ export class Documents{
     }],
     switches: [{
       label: "Nur aktueller Patient",
-      imgURL: "/static/blackflag",
+      imgURL: "/blackflag",
       trueBefore: this.currentPatient
     }],
     getLabel: (obj) => obj.subject

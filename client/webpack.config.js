@@ -119,6 +119,7 @@ module.exports = ({production, server, extractCss, coverage, analyze, karma} = {
       allChunks: true
     })),
     ...when(production || server, new CopyWebpackPlugin([
+      { from: 'locales', to: outDir+'/locales'},
       { from: 'static', to: outDir }])),
     ...when(analyze, new BundleAnalyzerPlugin())
   ]
