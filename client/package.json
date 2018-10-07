@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^11.0.1",
     "@feathersjs/authentication-client": "^1.0.6",
     "@feathersjs/client": "^3.7.3",
     "@feathersjs/errors": "^3.3.4",

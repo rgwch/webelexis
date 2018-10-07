@@ -6,8 +6,8 @@
 
 import { bindable, bindingMode, customElement, inlineView, observable, autoinject } from 'aurelia-framework';
 import { I18N } from 'aurelia-i18n';
-declare var ClassicEditor: any
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// declare var ClassicEditor: any
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 /**
  * Embed the CKEditor 5

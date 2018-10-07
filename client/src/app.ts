@@ -65,7 +65,7 @@ export class App {
     cfg.title = "Webelexis"
     cfg.map([
       {
-        route: ['', "/dispatch/:sub?"],
+        route: ['', "dispatch/:sub?"],
         name: "dispatch",
         title: this.i18n.tr("nav.maintitle"),
         viewPorts: {
