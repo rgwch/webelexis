@@ -6,18 +6,18 @@
 
 Da manche Elexis-Datentypen (ExtInfo, VersionedResource) sehr Java-spezifisch sind, ist eine Bearbeitung mit anderen Sprachen schwierig und fehlerbehaftet. Wir binden deswegen einen Java-Interpreter ein, der unter Nodejs läuft und nutzen ein Java-Tool, um diese Datentypen zu lesen und zu schreiben.
 
-Daher muss auf dem Server Java (und zwar das JDK) installiert sein. Ob Oracle oder OpenJDK ist egal.
+Daher muss auf dem Server Java (und zwar das JDK) >=8.0 installiert sein. Ob Oracle oder OpenJDK ist egal.
 
 ### Datenbank anpassen
 
 In der Elexis-Datenbank herrscht ein buntes Durcheinander von Gross/Kleinschreibung, und die ID-Felder sind für Standard-UUIDs zu kurz. Ausserdem fehlen manche benötigten Felder.
 
-Das SQL-Script modify_elexis.sql erledigt die für Webelexis nötigen Anpassungen. Die Datenbank bleibt dennoch kompatibel mit Elexis-Ungrad und Elexis 3.6. Achtung: Das Script modifiziert nur diejenigen Tabellen, die auf meiner Datenbank vorhanden sind. das sind so ziemlich alle, die vom Kern und von OpenSource Plugins erstellt wurden. Andere Tabellen müssen ggf. zusätzlich manuell angepasst werden:
+Das SQL-Script modify_elexis.sql erledigt die für Webelexis nötigen Anpassungen. Die Datenbank bleibt dennoch kompatibel mit Elexis-Ungrad und Elexis 3.6. Achtung: Das Script modifiziert nur diejenigen Tabellen, die auf meiner Datenbank vorhanden sind. Das sind so ziemlich alle, die vom Kern und von OpenSource Plugins erstellt wurden. Andere Tabellen müssen ggf. zusätzlich manuell angepasst werden:
 
 * Id-Felder heissen immer id (klein geschrieben) und sind VARCHAR(40).
 * Dementsprechend müssen auch foreign key Felder auf VARCHAR(40) erweitert werden, der Feldname kann aber unverändert bleiben.
 
-Nicht nur für Webelexis: vor dem backup muss der User, der das Backup zieht, und der, der es wieder einspielt, Superuser-Rechte haben: 
+Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, und der, der es wieder einspielt, Superuser-Rechte haben: 
 
     create user backupadmin@'localhost' identified by 'supersecret';
     grant SUPER on *.* to backupadmin@'localhost';

@@ -1,10 +1,10 @@
 {
-  "name": "client",
-  "description": "An Aurelia client application.",
-  "version": "0.1.0",
+  "name": "webelexis-client",
+  "description": "A lightweight Elexis companion.",
+  "version": "3.3.0",
   "repository": {
-    "type": "???",
-    "url": "???"
+    "type": "git",
+    "url": "https://github.com/rgwch/webelexis"
   },
   "license": "MIT",
   "dependencies": {
