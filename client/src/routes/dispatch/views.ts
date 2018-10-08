@@ -27,7 +27,8 @@ export default{
     },
     labor:{
       text: "Labor",
-      icon: "/laboratory.svg"
+      icon: "/laboratory.svg",
+      view: PLATFORM.moduleName("../../components/workflow/labresults")
     },
     patientenliste:{
       text: "Patienten",

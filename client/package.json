@@ -15,6 +15,7 @@
     "@fortawesome/fontawesome-free": "^5.3.1",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.2.0",
+    "aurelia-dialog": "^2.0.0-rc.3",
     "aurelia-i18n": "^2.3.2",
     "aurelia-logging": "^1.5.0",
     "aurelia-mousetrap": "^0.1.3",

@@ -36,6 +36,7 @@ export function configure(aurelia: Aurelia) {
         debug      : true
       });
     })
+    .plugin(PLATFORM.moduleName('aurelia-dialog'))
     /*
     .plugin(PLATFORM.moduleName('aurelia-mousetrap'),config=>{
       config.set('keymap', {

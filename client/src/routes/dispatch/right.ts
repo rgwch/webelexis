@@ -11,13 +11,14 @@ import { State } from '../../state'
 import {connectTo} from 'aurelia-store'
 import {pluck} from 'rxjs/operators'
 import {WebelexisEvents} from '../../webelexisevents'
+import defaults from '../../user/uidefaults'
 
 @connectTo(store=>store.state.pipe(<any>pluck("leftPanel")))
 @autoinject
 export class RightPanel{
-  tooliconwidth=40
-  tooliconheight=40
-  views=[v.stammdaten,v.konsultationen,v.dokumente,v.artikeldetail,v.agendagross]
+  tooliconwidth=defaults.tooliconwidth
+  tooliconheight=defaults.tooliconheight
+  views=[v.stammdaten,v.konsultationen,v.dokumente,v.artikeldetail,v.labor,v.agendagross]
   active=v.stammdaten
   expanded=false
   parent
