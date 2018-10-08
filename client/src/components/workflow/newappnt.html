@@ -1,0 +1,14 @@
+<template>
+  <require from="../../services/moment-to-string"></require>
+  <h3>Neuer Termin</h3>
+  <div class="inline-form">
+    <input type="text" value.bind="slider | MomentToString">
+    <input type="range" min="0" value.bind="slider" max="100">
+  </div>
+  <select value.bind="terminTyp">
+    <option repeat.for="tt of termintypen">${tt}</option>
+  </select>
+  <select value.bind="terminStatus">
+    <option repeat.for="ts of terminstaten">${ts}</option>
+  </select>
+</template>

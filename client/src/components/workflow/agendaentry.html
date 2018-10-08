@@ -1,4 +1,5 @@
 <template>
+  <require from="./newappnt"></require>
   <div class="col-2 termin text-truncate" css.bind="statecss">
     <div class="row">
       <div class="col-10" click.trigger="changeState()">
@@ -15,7 +16,8 @@
       </a>
     </div>
     <div class="collapse" id="termindetails_${index}" style="height:100px;">
-      <textarea value.bind="entry.obj.Grund" style="width:100%;height:6em;" blur.trigger="save()"></textarea>
+      <textarea value.bind="entry.obj.Grund" style="width:100%;height:6em;" blur.trigger="save()" hide.bind="isStaticType()"></textarea>
+      <new-appointment termin.bind="entry" show.bind="isStaticType()"></new-appointment>
       <div>
         <div class="btn-group mb-2" role="group" aria-label="Termin Aktionen">
           <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('stammdaten')" hide.bind="isStaticType()" t="nav.patdetails">
