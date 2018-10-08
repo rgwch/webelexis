@@ -136,7 +136,7 @@ export class TerminModel {
     return JSON.stringify(this.obj, null, 2)
   }
   public getStartTime(): moment.Moment {
-    const day = moment(this.obj.Tag, "YYYMMDD")
+    const day = moment(this.obj.Tag, "YYYYMMDD")
     day.add(parseInt(this.obj.Beginn), 'minutes')
     return day
   }

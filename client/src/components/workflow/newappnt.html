@@ -2,7 +2,7 @@
   <require from="../../services/moment-to-string"></require>
   <h3>Neuer Termin</h3>
   <div class="inline-form">
-    <input type="text" value.bind="slider | MomentToString">
+    <input type="text" value.bind="time | momentToString" style="width:5em;">
     <input type="range" min="0" value.bind="slider" max="100">
   </div>
   <select value.bind="terminTyp">
