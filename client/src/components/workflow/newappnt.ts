@@ -7,22 +7,29 @@ import * as moment from 'moment'
 export class NewAppointment{
   @bindable termin:TerminModel
   time:moment.Moment
-  slider:moment.Moment
-
-
+  @observable slider:number
+  from: moment.Moment
+  
   termintypen=[]
   terminstaten=[]
   terminTyp
   terminStatus
-  duration:number
+  duration:number // length of free slot in minutes
+
+  sliderChanged(percent:number){
+    const minutes=this.duration/100*percent
+    this.time=this.from.clone()
+    this.time.add(minutes,'minute')
+  }
 
   attached(){
-    this.time=this.termin.getStartTime()
+    this.from=this.termin.getStartTime()
     this.duration=this.termin.obj.Dauer
     this.termintypen=Statics.terminTypes
     this.terminstaten=Statics.terminStates
     this.terminTyp=this.termintypen[2]
     this.terminStatus=this.terminstaten[1]    
+    this.slider=0
   }
 
 }
