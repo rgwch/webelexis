@@ -95,4 +95,8 @@ export class AgendaEntry {
       return Statics.terminStates
     }
   }
+
+  expanding(){
+    console.log("expanding")
+  }
 }

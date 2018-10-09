@@ -1,9 +1,9 @@
 <template>
   <require from="../../services/moment-to-string"></require>
-  <h3>Neuer Termin</h3>
+  <h3>Neuer Termin ${termin.getBeginMinutes()} ${slider}</h3>
   <div class="inline-form">
     <input type="text" value.bind="time | momentToString" style="width:5em;">
-    <input type="range" min="0" value.bind="slider" max="100">
+    <input type="range" min.bind="termin.getBeginMinutes()" value.bind="slider" max.bind="termin.getEndMinutes()" step="5">
   </div>
   <select value.bind="terminTyp">
     <option repeat.for="tt of termintypen">${tt}</option>
