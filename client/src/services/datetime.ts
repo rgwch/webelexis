@@ -21,9 +21,11 @@ export class DateTime {
   public DateObjectToLocalDate(date:Date):string{
     return moment(date).format(this.i18.tr('adapters.date_format'))
   }
+  /*
   public toDate(mom: string):string {
     return moment(mom).format(this.i18.tr('adapters.date_format'))
   }
+  */
 
   public minutesToTimeString(minutes:number):string{
     let hours:number = Math.floor(minutes / 60)

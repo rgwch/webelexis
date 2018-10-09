@@ -33,7 +33,7 @@ export class Kontakt{
   public static getLabel=(raw:KontaktType)=>{
     let d=raw.geburtsdatum || ""
     if(d.length==8){
-      d=Kontakt.dt.toDate(d)
+      d=Kontakt.dt.ElexisDateToLocalDate(d)
     }
     let ret= raw.Bezeichnung1+" "+(raw.Bezeichnung2 || "")
     if(raw.geschlecht){
