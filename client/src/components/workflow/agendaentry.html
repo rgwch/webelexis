@@ -2,7 +2,7 @@
   <require from="./newappnt"></require>
   <div class="col-2 termin" css.bind="statecss">
     ${getTimes()}
-    <div show.bind="detailVisible" style="width:60%">
+    <div if.bind="detailVisible" style="width:60%">
       <select value.bind="entry.obj.TerminTyp">
         <option repeat.for="tt of termintypen">${tt}</option>
       </select>
@@ -20,7 +20,7 @@
         </span>
       </a>
     </div>
-    <div show.bind="detailVisible" style="height:8em;">
+    <div if.bind="detailVisible" class="blinditem au-animate" style="height:8em;">
       <textarea value.bind="entry.obj.Grund" style="width:100%;height:5em;" blur.trigger="save()"
         hide.bind="isStaticType()"></textarea>
       <new-appointment termin.bind="entry" if.bind="isStaticType()"></new-appointment>
