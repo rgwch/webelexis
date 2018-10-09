@@ -13,7 +13,7 @@ import { DataSource, DataService } from './../services/datasource';
 import { autoinject } from 'aurelia-framework';
 import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
-import {DateTime} from '../services/datetime'
+import { DateTime } from '../services/datetime'
 
 /**
  * An Elexis "Termin"
@@ -51,7 +51,7 @@ export class TerminManager {
     }
   }
 
-  constructor(private ds: DataSource, private dt:DateTime) {
+  constructor(private ds: DataSource, private dt: DateTime) {
     this.terminService = ds.getService('termin')
 
   }
@@ -66,8 +66,12 @@ export class TerminManager {
   }
 
   async save(t: TerminModel) {
-    if (t.obj.id) {
-      const saved = this.terminService.update(t.obj.id, t.obj)
+    if (t.obj.TerminTyp != Statics.terminTypes[0]) {
+      if (t.obj.id) {
+        const saved = this.terminService.update(t.obj.id, t.obj)
+      } else {
+        const saved = this.terminService.create(t.obj)
+      }
     }
   }
 
@@ -119,15 +123,15 @@ export class TerminModel {
   public getBeginMinutes = (): number => parseInt(this.obj.Beginn)
   public getDuration = (): number => parseInt(this.obj.Dauer)
   public getEndMinutes = (): number => this.getBeginMinutes() + this.getDuration()
-  
-  
-  public setTyp(typ:string):boolean {
-      this.obj.TerminTyp=typ
-      return true;
+
+
+  public setTyp(typ: string): boolean {
+    this.obj.TerminTyp = typ
+    return true;
   }
 
-  public setStartTime(st:moment.Moment){
-    this.obj.Tag=st.format("YYYYMMDD")
+  public setStartTime(st: moment.Moment) {
+    this.obj.Tag = st.format("YYYYMMDD")
   }
 
   public getTypColor(): string {

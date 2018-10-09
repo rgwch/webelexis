@@ -14,7 +14,7 @@
     "place": "Ort"
   },
   "appointment":{
-    "new_for": "Neuer Termin für: {{patient}}"
+    "new_for": "Neuer Termin für:"
   },
   "article": {
     "pagetitle": "Artikeldetails",

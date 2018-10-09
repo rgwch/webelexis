@@ -1,38 +1,46 @@
 <template>
   <require from="./newappnt"></require>
-  <div class="col-2 termin text-truncate" css.bind="statecss">
-    <div class="row">
-      <div class="col-12" click.trigger="changeState()">
-        ${getTimes()}
-        <div >
-
-        </div>
-      </div>
+  <div class="col-2 termin" css.bind="statecss">
+    ${getTimes()}
+    <div show.bind="detailVisible" style="width:60%">
+      <select value.bind="entry.obj.TerminTyp">
+        <option repeat.for="tt of termintypen">${tt}</option>
+      </select>
+      <select value.bind="entry.obj.TerminStatus">
+        <option repeat.for="tt of terminstaten">${tt}</option>
+      </select>
     </div>
   </div>
   <div class="col text-truncate">
     <div class="termin" css.bind="typecss">
-      <a data-toggle="collapse" href="#termindetails_${index}" role="button">
+      <a href="#" click.trigger="showDetail()" role="button">
         <span>
-          ${getLabel()} (${entry.obj.TerminTyp}, ${entry.obj.TerminStatus}): ${entry.obj.Grund}
+          ${getLabel()} (${entry.obj.TerminTyp}, ${entry.obj.TerminStatus}):
+          ${entry.obj.Grund}
         </span>
       </a>
     </div>
-    <div class="collapse" id="termindetails_${index}" style="height:100px;" shown.bs.collapse.trigger="expanding">
-      <textarea value.bind="entry.obj.Grund" style="width:100%;height:6em;" blur.trigger="save()" hide.bind="isStaticType()"></textarea>
+    <div show.bind="detailVisible" style="height:8em;">
+      <textarea value.bind="entry.obj.Grund" style="width:100%;height:5em;" blur.trigger="save()"
+        hide.bind="isStaticType()"></textarea>
       <new-appointment termin.bind="entry" if.bind="isStaticType()"></new-appointment>
       <div>
         <div class="btn-group mb-2" role="group" aria-label="Termin Aktionen">
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('stammdaten')" hide.bind="isStaticType()" t="nav.patdetails">
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+            click.delegate="select('stammdaten')" hide.bind="isStaticType()" t="nav.patdetails">
             Patient Details
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('konsultationen')" hide.bind="isStaticType()" t="nav.encounters">
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+            click.delegate="select('konsultationen')" hide.bind="isStaticType()" t="nav.encounters">
             Encounters
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('dokumente','dokumentliste')" hide.bind="isStaticType()" t="nav.documents">
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+            click.delegate="select('dokumente','dokumentliste')" hide.bind="isStaticType()"
+            t="nav.documents">
             Documents
           </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('labor')" hide.bind="isStaticType()" t="nav.lab">
+          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+            click.delegate="select('labor')" hide.bind="isStaticType()" t="nav.lab">
             Labor
           </button>
         </div>

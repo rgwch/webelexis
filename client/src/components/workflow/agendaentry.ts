@@ -24,10 +24,23 @@ export class AgendaEntry {
   @bindable index: number
   showmenu = false
   maxLen = 50;
+  detailVisible: boolean = false
+  termintypen = []
+  terminstaten = []
+
 
 
   constructor(private dt: DateTime, private tm: TerminManager,
     private ea: EventAggregator, private we: WebelexisEvents) {
+  }
+
+  attached() {
+    this.termintypen = Statics.terminTypes
+    this.terminstaten = Statics.terminStates
+  }
+
+  showDetail() {
+    this.detailVisible = !this.detailVisible
   }
 
   select(view, list) {
@@ -96,7 +109,4 @@ export class AgendaEntry {
     }
   }
 
-  expanding(){
-    console.log("expanding")
-  }
 }

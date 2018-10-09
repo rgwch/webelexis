@@ -10,9 +10,10 @@ import * as moment from 'moment'
 import { WebelexisEvents } from '../../webelexisevents'
 import { connectTo } from 'aurelia-store'
 import { State } from '../../state'
-import { TerminManager,Statics } from './../../models/termine-model';
+import { TerminManager,Statics, TerminType } from './../../models/termine-model';
 import { pluck } from "rxjs/operators";
 import { Patient,PatientType } from "../../models/patient";
+import { DataSource, DataService } from "services/datasource";
 
 @autoinject
 @connectTo<State>({
@@ -30,10 +31,14 @@ export class Agenda {
   private actPatient:PatientType
   @observable bereich = ""
   private bereiche = []
+  private terminService:DataService
 
   constructor(private ea: EventAggregator, private we: WebelexisEvents,
-    private tm: TerminManager) {
-
+    private tm: TerminManager, private ds:DataSource) {
+      this.terminService=ds.getService('termin')
+      this.terminService.on('created',this.terminEvents)
+      this.terminService.on('updated',this.terminEvents)
+   
   }
 
 
@@ -64,6 +69,14 @@ export class Agenda {
 
   detached() {
     this.dateSubscriber.dispose()
+  }
+
+  terminEvents=(obj:TerminType)=>{
+    if(moment(obj.Tag).isSame(moment(this.actDate))){
+      if(this.bereich===obj.Bereich){
+        this.setDay(this.actDate,this.bereich)
+      }
+    }
   }
 
   async setDay(date, resource) {
