@@ -1,13 +1,17 @@
 <template>
+  <require from="../components/commonviewer"></require>
   <ux-dialog>
     <ux-dialog-header>
     </ux-dialog-header>
     <ux-dialog-body>
-
+      <div>
+        <common-viewer cv_cfg.bind="cv"></common-viewer>
+      </div>
+      </div>
     </ux-dialog-body>
     <ux-dialog-footer>
-      <button click.trigger="controller.cancel()">Cancel</button>
-      <button click.trigger="controller.ok(patient)">Ok</button>
+      <button click.trigger="dc.cancel()">Cancel</button>
+      <button click.trigger="dc.ok(patient)">Ok</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

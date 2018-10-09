@@ -10,46 +10,19 @@ $captioncolor: #1c63ef;
 $strokecolor: blue;
 $form-background: aquamarine;
 
-.schmaler{
-  margin-left:10px;
-  margin-right:10px;
-  padding-left:10px;
-  padding-right:10px;
+/* Buttons for termin actions */
+.agendabutton{
+  margin-right:2px;
 }
 
-h1{
-  font-size: 36px;
-}
-.detailcaption{
-  color: $captioncolor;
-}
-
-.createbutton{
-  color: green;
-}
-.termin{
-  a{
-    color: black;
-  }
-  background-color: $fillcolor;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-img.nav{
-    width: 20px;
-    height: 25px;
-    //vertical-align: bottom;
-    //padding-top: 5px;
-    float: "left";
-  }
-
+/* general border */
 .bordered {
   border-color: $bordercolor;
   border-style: solid;
   border-radius: 5px;
 }
 
+/* CommonViewer and Sheet */
 common-viewer, .sheet{
 
   .header{
@@ -87,6 +60,17 @@ common-viewer, .sheet{
   }
 }
 
+/* Button to create new elements */
+.createbutton{
+  color: green;
+}
+
+
+.detailcaption{
+  color: $captioncolor;
+}
+
+/* FlexForm */
 flex-form form{
   background-color: $form-background;
   padding: 10px;
@@ -95,8 +79,28 @@ flex-form form{
   border-style: solid;
 }
 
+h1{
+  font-size: 36px;
+}
+
+/* Images used for navigation elements */
+img.nav{
+  width: 20px;
+  height: 25px;
+  //vertical-align: bottom;
+  //padding-top: 5px;
+  float: "left";
+}
 
 
+.schmaler{
+  margin-left:10px;
+  margin-right:10px;
+  padding-left:10px;
+  padding-right:10px;
+}
+
+/* The endless scroll scrolling component */
 .scroller{
   height: 100%;
   width: 100%;
@@ -104,6 +108,15 @@ flex-form form{
   overflow-x: hidden;
 }
 
-.agendabutton{
-  margin-right:2px;
+
+.termin{
+  a{
+    color: black;
+  }
+  background-color: $fillcolor;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+@import "slider.css"
+

@@ -1,6 +1,6 @@
 <template>
   <require from="../../services/moment-to-string"></require>
-  <h3>Neuer Termin ${termin.getBeginMinutes()} ${slider}</h3>
+  <span t="appointment.new_for"></span> <a href="#" innerhtml.bind="patlabel" click.delegate="selectPatient()">?</a>
   <div class="inline-form">
     <input type="text" value.bind="time" style="width:5em;">
     <input type="range" min.bind="termin.getBeginMinutes()" value.bind="slider" max.bind="termin.getEndMinutes()" step="5">
@@ -8,7 +8,5 @@
   <select value.bind="terminTyp">
     <option repeat.for="tt of termintypen">${tt}</option>
   </select>
-  <select value.bind="terminStatus">
-    <option repeat.for="ts of terminstaten">${ts}</option>
-  </select>
+  <button class="btn" click.delegate="newTermin()" t="dlg.create">xy</button>
 </template>

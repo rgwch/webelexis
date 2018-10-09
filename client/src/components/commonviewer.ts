@@ -58,7 +58,7 @@ export class CommonViewer {
   private dataService: DataService
   private newobj={}
 
-  constructor(private ea: EventAggregator, private globals: Globals,
+  constructor(private ea: EventAggregator,
     private kh: Keyhandler, private dispatcher: WebelexisEvents,
     private dataSource: DataSource, private signaler:BindingSignaler) { }
 

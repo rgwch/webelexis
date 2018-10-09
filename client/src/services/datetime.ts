@@ -14,6 +14,10 @@ export class DateTime {
   constructor(private i18) {
   }
 
+  public DateToElexisDate(date:Date):string{
+    return moment(date).format("YYYYMMDD")
+  }
+
   public ElexisDateToLocalDate(yyyymmdd:string):string{
     return moment(yyyymmdd,"YYYYMMDD").format(this.i18.tr('adapters.date_format'))
   }

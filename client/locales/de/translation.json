@@ -13,6 +13,9 @@
     "zip": "Plz",
     "place": "Ort"
   },
+  "appointment":{
+    "new_for": "Neuer Termin für: {{patient}}"
+  },
   "article": {
     "pagetitle": "Artikeldetails",
     "name": "Name",

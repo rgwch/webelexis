@@ -2,8 +2,11 @@
   <require from="./newappnt"></require>
   <div class="col-2 termin text-truncate" css.bind="statecss">
     <div class="row">
-      <div class="col-10" click.trigger="changeState()">
+      <div class="col-12" click.trigger="changeState()">
         ${getTimes()}
+        <div >
+          
+        </div>
       </div>
     </div>
   </div>
@@ -11,7 +14,7 @@
     <div class="termin" css.bind="typecss">
       <a data-toggle="collapse" href="#termindetails_${index}" role="button">
         <span>
-          ${getLabel()} (${entry.obj.TerminTyp}, ${entry.obj.TerminStatus}): ${entry.obj.Grund} - ${entry.obj.Beginn}
+          ${getLabel()} (${entry.obj.TerminTyp}, ${entry.obj.TerminStatus}): ${entry.obj.Grund}
         </span>
       </a>
     </div>

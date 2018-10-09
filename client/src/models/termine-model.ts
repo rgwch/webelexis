@@ -13,6 +13,7 @@ import { DataSource, DataService } from './../services/datasource';
 import { autoinject } from 'aurelia-framework';
 import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
+import {DateTime} from '../services/datetime'
 
 /**
  * An Elexis "Termin"
@@ -50,7 +51,7 @@ export class TerminManager {
     }
   }
 
-  constructor(private ds: DataSource) {
+  constructor(private ds: DataSource, private dt:DateTime) {
     this.terminService = ds.getService('termin')
 
   }
@@ -118,6 +119,16 @@ export class TerminModel {
   public getBeginMinutes = (): number => parseInt(this.obj.Beginn)
   public getDuration = (): number => parseInt(this.obj.Dauer)
   public getEndMinutes = (): number => this.getBeginMinutes() + this.getDuration()
+  
+  
+  public setTyp(typ:string):boolean {
+      this.obj.TerminTyp=typ
+      return true;
+  }
+
+  public setStartTime(st:moment.Moment){
+    this.obj.Tag=st.format("YYYYMMDD")
+  }
 
   public getTypColor(): string {
     let tc = Statics.terminTypColors[this.obj.TerminTyp] || "aaaaaa"

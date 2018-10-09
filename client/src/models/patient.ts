@@ -36,7 +36,7 @@ export class Patient {
       let bd = moment(obj.geburtsdatum, "YYYYMMDD")
       let now = moment()
       let years = now.diff(bd, 'years')
-      ret += `, ${Patient.dt.toDate(obj.geburtsdatum)}`
+      ret += `, ${Patient.dt.ElexisDateToLocalDate(obj.geburtsdatum)}`
       ret += ` (${years})`
     }
     if (obj.patientnr) {
