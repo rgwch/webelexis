@@ -9,7 +9,7 @@ import { autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { RightPanel } from './right';
 import { StickerManager } from '../../models/stickers.model';
-
+import defaults from '../../user/uidefaults'
 
 @autoinject
 export class LeftPanel{
@@ -21,6 +21,7 @@ export class LeftPanel{
   buttons
   connected:boolean = false
   static message="left_panel"
+  leftpanelstyle=`position:absolute;left:${defaults.buttonbarwidth}px;width:${defaults.leftpanelwidth}px;`
 
   constructor(private ea:EventAggregator,private sm:StickerManager){
     this.ea.subscribe(LeftPanel.message,view=>{

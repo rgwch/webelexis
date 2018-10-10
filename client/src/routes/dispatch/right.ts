@@ -22,7 +22,7 @@ export class RightPanel{
   active=v.stammdaten
   expanded=false
   parent
-  style="position:absolute;left:395px;right:85px;"
+  rightpanelstyle=`position:absolute;left:${defaults.buttonbarwidth+defaults.leftpanelwidth}px;right:${defaults.buttonbarwidth}px;`
   subscription: Subscription
   static message="right_panel"
 
@@ -37,9 +37,9 @@ export class RightPanel{
 
   stateChanged(showNow,showBefore){
     if(showNow){
-      this.style="position:absolute;left:395px;right:85px;"
+      this.rightpanelstyle="position:absolute;left:440px;right:85px;"
     }else{
-      this.style="position:absolute;left:5px;right:85px;"
+      this.rightpanelstyle="position:absolute;left:5px;right:85px;"
     }
   }
   expand(mode){
