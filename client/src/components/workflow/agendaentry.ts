@@ -28,13 +28,11 @@ export class AgendaEntry {
   termintypen = []
   terminstaten = []
 
-
-
   constructor(private dt: DateTime, private tm: TerminManager,
     private ea: EventAggregator, private we: WebelexisEvents) {
   }
-
-  attached() {
+  
+  bind(context) {
     this.termintypen = Statics.terminTypes
     this.terminstaten = Statics.terminStates
   }
@@ -112,14 +110,23 @@ export class AgendaEntry {
    * from UI button: Reduce duration of appointmen
    */
   shorten(){
-    this.entry.obj.Dauer=this.entry.obj.Dauer/2
+    const raw=this.entry.obj.Dauer/2
+    this.entry.obj.Dauer=5*Math.floor(raw/5)
+    
     this.tm.save(this.entry)
   }
   /**
    * from UI button: Enlarge duration of appointment
    */
   enlarge(){
-
+    this.tm.getNext(this.entry).then(nxt=>{
+      if(nxt){
+        const maxDuration=nxt.getBeginMinutes()-this.entry.getBeginMinutes()
+        this.entry.setDuration(Math.min(this.entry.getDuration()*2,maxDuration))
+        this.tm.save(this.entry)
+      }
+    })
+  
   }
   /**
    * from UI button: delete appointment

@@ -100,6 +100,6 @@ describe('\'termin\' service', () => {
       created.wrong="bad field"
       let updated=await service.update(created.id,created)
       updated.should.not.have.property('wrong')
-      updated.should.hae.property('deleted')
+      updated.should.have.property('deleted')
     })
 });

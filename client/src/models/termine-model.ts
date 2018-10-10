@@ -1,7 +1,3 @@
-import { Router } from 'aurelia-router';
-import { TerminType } from './termine-model';
-import { UserType } from './user';
-
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -15,6 +11,9 @@ import { autoinject } from 'aurelia-framework';
 import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
 import { DateTime } from '../services/datetime'
+import { Router } from 'aurelia-router';
+import { TerminType } from './termine-model';
+import { UserType } from './user';
 
 /**
  * An Elexis "Termin"
@@ -52,7 +51,7 @@ export class TerminManager {
     }
   }
 
-  constructor(private ds: DataSource, private dt: DateTime, private router:Router) {
+  constructor(private ds: DataSource, private dt: DateTime, private router: Router) {
     this.terminService = ds.getService('termin')
 
   }
@@ -78,6 +77,23 @@ export class TerminManager {
 
   async delete(t: TerminModel) {
     return await this.terminService.remove(t.obj.id)
+  }
+  async getNext(t: TerminModel): Promise<TerminModel> {
+    const found = await this.terminService.find({
+      query: {
+        Bereich: t.obj.Bereich,
+        Tag: t.obj.Tag
+      }
+    })
+    if (found.data && Array.isArray(found.data)) {
+      const a = found.data
+      for (let i = 0; i < a.length - 1; i++) {
+        if(a[i].Beginn === t.obj.Beginn){
+          return new TerminModel(a[i+1])
+        }
+      }
+    }
+    return undefined
   }
   async fetchForDay(date: Date, resource: string): Promise<Array<TerminModel>> {
     const day = moment(date)
@@ -111,7 +127,7 @@ export class TerminManager {
         return []
       }
     } catch (err) {
-      if(err.code && err.code==401){
+      if (err.code && err.code == 401) {
         this.router.navigateToRoute('user')
       }
     }
@@ -142,8 +158,12 @@ export class TerminModel {
 
   public setStartTime(st: moment.Moment) {
     this.obj.Tag = st.format("YYYYMMDD")
+    this.obj.Beginn = (60 * st.hours() + st.minutes()).toString()
   }
 
+  public setDuration(d: number) {
+    this.obj.Dauer = d.toString()
+  }
   public getTypColor(): string {
     let tc = Statics.terminTypColors[this.obj.TerminTyp] || "aaaaaa"
     return "#" + tc

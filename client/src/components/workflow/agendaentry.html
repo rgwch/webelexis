@@ -11,10 +11,8 @@
       </select>
       <div class="btn-group-vertical" role-"group">
         <button type="button" class="btn btn-outline-secondary btn-sm" t="appointment.shorten" click.delegate="shorten()"></button>
-        <button type="button" class="btn btn-outline-secondary btn-sm" t="appointment.enlarge" click.delegate="enlarge()"></button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" t="appointment.enlarge" click.delegate="enlarge($parent)"></button>
         <button type="button" class="btn btn-outline-secondary btn-sm" t="appointment.delete" click.delegate="delete()"></button>
-        
-        
       </div>
     </div>
   </div>
@@ -29,26 +27,24 @@
     </div>
     <div if.bind="detailVisible" class="slideitem au-animate" style="height:8em;">
       <div>
-        <textarea value.bind="entry.obj.Grund" style="width:100%;height:5em;"
-          blur.trigger="save()" hide.bind="isStaticType()"></textarea>
         <new-appointment termin.bind="entry" if.bind="isStaticType()"></new-appointment>
+        <textarea else value.bind="entry.obj.Grund" style="width:100%;height:5em;" blur.trigger="save()"></textarea>
         <div>
           <div class="btn-group mb-2" role="group" aria-label="Termin Aktionen">
-            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-              click.delegate="select('stammdaten')" hide.bind="isStaticType()" t="nav.patdetails">
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('stammdaten')"
+              hide.bind="isStaticType()" t="nav.patdetails">
               Patient Details
             </button>
-            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-              click.delegate="select('konsultationen')" hide.bind="isStaticType()" t="nav.encounters">
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('konsultationen')"
+              hide.bind="isStaticType()" t="nav.encounters">
               Encounters
             </button>
-            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-              click.delegate="select('dokumente','dokumentliste')" hide.bind="isStaticType()"
-              t="nav.documents">
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('dokumente','dokumentliste')"
+              hide.bind="isStaticType()" t="nav.documents">
               Documents
             </button>
-            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-              click.delegate="select('labor')" hide.bind="isStaticType()" t="nav.lab">
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('labor')"
+              hide.bind="isStaticType()" t="nav.lab">
               Labor
             </button>
           </div>
