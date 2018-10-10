@@ -38,7 +38,7 @@ module.exports = function (app) {
         table.text('anchrift')
         table.text('bemerkung')
         table.binary('diagnosen')
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.integer('LASTUPDATE')
         table.string('TitelSuffix')
       })

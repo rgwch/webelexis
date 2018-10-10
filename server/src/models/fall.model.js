@@ -25,7 +25,7 @@ module.exports = function (app) {
         table.string('gesetz',20)
         table.binary('EXTINFO')
         table.string('status')
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.integer('LASTUPDATE')
       })
         .then(() => console.log(`Created ${tableName} table`))

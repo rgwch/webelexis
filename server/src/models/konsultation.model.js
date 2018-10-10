@@ -18,7 +18,7 @@ module.exports = function (app) {
         table.string('diagnosen')
         table.string('leistungen')
         table.binary('eintrag')
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.integer('LASTUPDATE')
         table.string('Zeit')
 

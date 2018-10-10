@@ -20,7 +20,7 @@
         table.string('resultat')
         table.text('kommentar')
         table.string('flags',10)
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.string('Origin',40)
         table.string('Zeit',6)
         table.integer("LASTUPDATE")

@@ -108,5 +108,23 @@ export class AgendaEntry {
       return Statics.terminStates
     }
   }
+  /**
+   * from UI button: Reduce duration of appointmen
+   */
+  shorten(){
+    this.entry.obj.Dauer=this.entry.obj.Dauer/2
+    this.tm.save(this.entry)
+  }
+  /**
+   * from UI button: Enlarge duration of appointment
+   */
+  enlarge(){
 
+  }
+  /**
+   * from UI button: delete appointment
+   */
+  delete(){
+   this.tm.delete(this.entry) 
+  }
 }

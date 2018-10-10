@@ -23,7 +23,7 @@ module.exports = function (app) {
         table.text('rptxt')
         table.string('RpZusatz')
         table.string('BriefID',40)
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.integer('LASTUPDATE')
       })
         .then(() => console.log(`Created ${tableName} table`))

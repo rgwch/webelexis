@@ -14,7 +14,7 @@ module.exports = function (app) {
       db.schema.createTable(etikettenTable, table => {
         table.string('id',40).unique().notNullable().primary();
         table.string('Image',40)
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.string('importance',7)
         table.string('Name',40)
         table.string('foreground',6)
@@ -41,7 +41,7 @@ module.exports = function (app) {
     if(!exists){
       db.schema.createTable(imageTable,table=>{
         table.string('id',40).primary().unique().notNullable()
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.string('Datum',8)
         table.string('Title')
         table.binary('Bild')

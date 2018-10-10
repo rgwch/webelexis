@@ -4,12 +4,15 @@
 
 node >= 10
 jdk >=8
+elexis running on a slightly modified mysql database (run `server/modify_elexis.sql` for the modifications)
 
 npm rebuild node-sass
 npm remove java
 npm install java
 
 the development server runs on port 9000
+
+
 
 ## DataSource and DataService
 
@@ -37,6 +40,28 @@ export class DoSomething{
   }
 } 
 ````
+
+## Events on stored objects
+
+The DataService sends events about all objects it manages to all authenticated and authorized clients. To subscribe to an event, use something like:
+
+````
+exampleService:DataService
+
+constructor(private ds:DataSource){
+  this.exampleService=ds.getService('example')
+  this.exampleService.on('created',this.objectWasCreatedFunc)
+  this.exampleService.on('updated',this.objectWasUpdatedFunc)
+  this.exampleService.on('patched',this.objectWasPatchedFunc)
+  this.exampleService.on('removed',this.objectWasRemovedFunc)
+}
+
+objectWasCreatedFunc(obj){
+  console.log("An object is born! "+JSON.stringify(obj))
+}
+
+````
+
 
 ## State
 

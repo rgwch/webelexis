@@ -2,13 +2,20 @@
   <require from="./newappnt"></require>
   <div class="col-2 termin" css.bind="statecss">
     ${getTimes()}
-    <div if.bind="detailVisible" style="width:60%">
-      <select value.bind="entry.obj.TerminTyp">
+    <div if.bind="detailVisible && (!isStaticType())" style="width:60%" class="slideitem au-animate">
+      <select value.bind="entry.obj.TerminTyp" style="width:6em;">
         <option repeat.for="tt of termintypen">${tt}</option>
       </select>
-      <select value.bind="entry.obj.TerminStatus">
+      <select value.bind="entry.obj.TerminStatus" style="width:6em;">
         <option repeat.for="tt of terminstaten">${tt}</option>
       </select>
+      <div class="btn-group-vertical" role-"group">
+        <button type="button" class="btn btn-outline-secondary btn-sm" t="appointment.shorten" click.delegate="shorten()"></button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" t="appointment.enlarge" click.delegate="enlarge()"></button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" t="appointment.delete" click.delegate="delete()"></button>
+        
+        
+      </div>
     </div>
   </div>
   <div class="col text-truncate">

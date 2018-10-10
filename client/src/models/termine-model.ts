@@ -68,13 +68,16 @@ export class TerminManager {
   async save(t: TerminModel) {
     if (t.obj.TerminTyp != Statics.terminTypes[0]) {
       if (t.obj.id) {
-        const saved = this.terminService.update(t.obj.id, t.obj)
+        return await this.terminService.update(t.obj.id, t.obj)
       } else {
-        const saved = this.terminService.create(t.obj)
+        return await this.terminService.create(t.obj)
       }
     }
   }
 
+  async delete(t: TerminModel){
+    return await this.terminService.remove(t.obj.id)
+  }
   async fetchForDay(date: Date, resource: string): Promise<Array<TerminModel>> {
     const day = moment(date)
     const found = await this.terminService.find({ query: { Tag: day.format("YYYYMMDD"), Bereich: resource } })

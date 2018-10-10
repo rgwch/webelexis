@@ -14,7 +14,10 @@
     "place": "Ort"
   },
   "appointment":{
-    "new_for": "Neuer Termin für:"
+    "new_for": "Neuer Termin für:",
+    "delete": "Löschen",
+    "shorten": "Kürzen",
+    "enlarge": "Verlängern"
   },
   "article": {
     "pagetitle": "Artikeldetails",

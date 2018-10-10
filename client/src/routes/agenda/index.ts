@@ -38,6 +38,7 @@ export class Agenda {
       this.terminService=ds.getService('termin')
       this.terminService.on('created',this.terminEvents)
       this.terminService.on('updated',this.terminEvents)
+      this.terminService.on('removed',this.terminEvents)
    
   }
 
