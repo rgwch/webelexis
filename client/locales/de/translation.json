@@ -78,7 +78,8 @@
   "dlg":{
     "close": "Schliessen",
     "create": "Erstellen",
-    "newelem": "neues Element"
+    "newelem": "neues Element",
+    "selectpat": "Patient wählen"
   },
   "edit":{
     "para": "Absatz",

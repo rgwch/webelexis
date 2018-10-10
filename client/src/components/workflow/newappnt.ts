@@ -41,7 +41,7 @@ export class NewAppointment {
     this.terminstaten = Statics.terminStates
     this.terminTyp = this.termintypen[2]
     this.terminStatus = this.terminstaten[1]
-    this.slider = this.termin.getEndMinutes()
+    this.slider = this.termin.getBeginMinutes()
     this.kontakt = this.we.getSelectedItem('patient')
     this.patlabel = this.kontakt ? Patient.getLabel(this.kontakt) : this.i18.tr('info.nopatselected')
   }

@@ -2,12 +2,10 @@
   <require from="../components/commonviewer"></require>
   <ux-dialog>
     <ux-dialog-header>
+      <h3 t="dlg.selectpat"></h3>
     </ux-dialog-header>
     <ux-dialog-body>
-      <div>
-        <common-viewer cv_cfg.bind="cv"></common-viewer>
-      </div>
-      </div>
+      <common-viewer style="height:300px;" attach-focus cv_cfg.bind="cv"></common-viewer>
     </ux-dialog-body>
     <ux-dialog-footer>
       <button click.trigger="dc.cancel()">Cancel</button>

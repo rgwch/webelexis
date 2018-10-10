@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="col text-truncate">
-    <div class="termin" css.bind="typecss">
+    <div class="termin text-truncate" css.bind="typecss">
       <a href="#" click.trigger="showDetail()" role="button">
         <span>
           ${getLabel()} (${entry.obj.TerminTyp}, ${entry.obj.TerminStatus}):
@@ -20,31 +20,32 @@
         </span>
       </a>
     </div>
-    <div if.bind="detailVisible" class="blinditem au-animate" style="height:8em;">
-      <textarea value.bind="entry.obj.Grund" style="width:100%;height:5em;" blur.trigger="save()"
-        hide.bind="isStaticType()"></textarea>
-      <new-appointment termin.bind="entry" if.bind="isStaticType()"></new-appointment>
+    <div if.bind="detailVisible" class="slideitem au-animate" style="height:8em;">
       <div>
-        <div class="btn-group mb-2" role="group" aria-label="Termin Aktionen">
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-            click.delegate="select('stammdaten')" hide.bind="isStaticType()" t="nav.patdetails">
-            Patient Details
-          </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-            click.delegate="select('konsultationen')" hide.bind="isStaticType()" t="nav.encounters">
-            Encounters
-          </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-            click.delegate="select('dokumente','dokumentliste')" hide.bind="isStaticType()"
-            t="nav.documents">
-            Documents
-          </button>
-          <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-            click.delegate="select('labor')" hide.bind="isStaticType()" t="nav.lab">
-            Labor
-          </button>
+        <textarea value.bind="entry.obj.Grund" style="width:100%;height:5em;"
+          blur.trigger="save()" hide.bind="isStaticType()"></textarea>
+        <new-appointment termin.bind="entry" if.bind="isStaticType()"></new-appointment>
+        <div>
+          <div class="btn-group mb-2" role="group" aria-label="Termin Aktionen">
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+              click.delegate="select('stammdaten')" hide.bind="isStaticType()" t="nav.patdetails">
+              Patient Details
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+              click.delegate="select('konsultationen')" hide.bind="isStaticType()" t="nav.encounters">
+              Encounters
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+              click.delegate="select('dokumente','dokumentliste')" hide.bind="isStaticType()"
+              t="nav.documents">
+              Documents
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+              click.delegate="select('labor')" hide.bind="isStaticType()" t="nav.lab">
+              Labor
+            </button>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
