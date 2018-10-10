@@ -15,7 +15,7 @@ beforeEach(async () => {
     const list = await usrs.find()
     user = list.data[0].id
 })
-xdescribe('\'termin\' service', () => {
+describe('\'termin\' service', () => {
     let service
 
     beforeEach(() => {
@@ -80,5 +80,26 @@ xdescribe('\'termin\' service', () => {
         let resources = await service.get("resources")
         let colors = await service.get("statecolors", { query: { "user": user } })
         colors.should.be.ok
+    })
+    it("cleans an entry before create, update or patch",async ()=>{
+      let dummy={
+        PatID:"007",
+        Bereich:"somewhere",
+        Tag: "20181010",
+        Beginn: "700",
+        Dauer: "10",
+        Grund: "Keine Ahnung",
+        TerminTyp: "DummyTermin",
+        TerminStatus: "unnötig",
+        ErstelltVon:"unittest",
+        falsch: "should be eliminated"
+      }
+      let created=await service.create(dummy)
+      created.id.should.be.ok
+      created.should.not.have.property('falsch')
+      created.wrong="bad field"
+      let updated=await service.update(created.id,created)
+      updated.should.not.have.property('wrong')
+      updated.should.hae.property('deleted')
     })
 });

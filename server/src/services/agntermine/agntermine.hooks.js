@@ -6,6 +6,7 @@
 const abilities=require('../../hooks/abilities')
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const acl=require('./acl')
+const validate=require('../validator').validate
 
 /**
  *
@@ -151,14 +152,26 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
   };
 };
 
+const cleanTermin=termin=>{
+  return validate(termin,'agntermine',false)
+}
+const cleanup=context=>{
+  if(Array.isArray(context.data)){
+    context.data=context.data.map(elem=>this.cleanTermin(elem))
+  }else{
+    context.data=cleanTermin(context.data)
+  }
+  return context
+}
+
 module.exports = {
   before: {
     all: [ authenticate('jwt'), abilities({acl})],
     find: [doSort(), treatDeleted()],
     get: [specialQueries()],
-    create: [],
-    update: [],
-    patch: [],
+    create: [cleanup],
+    update: [cleanup],
+    patch: [cleanup],
     remove: []
   },
 

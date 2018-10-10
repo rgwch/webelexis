@@ -7,6 +7,7 @@
 const createService = require('feathers-knex');
 const createModel = require('../../models/agntermine.model');
 const hooks = require('./agntermine.hooks');
+const validator=require('../validator').initialize
 
 module.exports = function (app) {
   const Model = createModel(app);
@@ -20,7 +21,9 @@ module.exports = function (app) {
 
   // Initialize our service with any options it requires
   app.use('/termin', createService(options));
-
+  Model('agntermine').columnInfo().then(columns=>{
+    validator('agntermine',columns)
+  })
   // Get our initialized service so that we can register hooks and filters
   const service = app.service('termin');
   service.hooks(hooks);

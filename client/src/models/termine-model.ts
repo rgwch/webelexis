@@ -1,3 +1,4 @@
+import { Router } from 'aurelia-router';
 import { TerminType } from './termine-model';
 import { UserType } from './user';
 
@@ -51,7 +52,7 @@ export class TerminManager {
     }
   }
 
-  constructor(private ds: DataSource, private dt: DateTime) {
+  constructor(private ds: DataSource, private dt: DateTime, private router:Router) {
     this.terminService = ds.getService('termin')
 
   }
@@ -75,38 +76,44 @@ export class TerminManager {
     }
   }
 
-  async delete(t: TerminModel){
+  async delete(t: TerminModel) {
     return await this.terminService.remove(t.obj.id)
   }
   async fetchForDay(date: Date, resource: string): Promise<Array<TerminModel>> {
     const day = moment(date)
-    const found = await this.terminService.find({ query: { Tag: day.format("YYYYMMDD"), Bereich: resource } })
-    if (found.data && found.data.length > 0) {
-      const ret = []
-      const template = found.data[0]
-      for (let i = 0; i < found.data.length - 1; i++) {
-        const first = found.data[i]
-        const second = found.data[i + 1]
-        const firstEnd = parseInt(first.Beginn) + parseInt(first.Dauer)
-        const secondBegin = parseInt(second.Beginn)
-        ret.push(first)
-        if (secondBegin - firstEnd > 1) {
-          const gap = {
-            Tag: template.Tag,
-            Bereich: template.Bereich,
-            TerminTyp: Statics.terminTypes[0],
-            TerminStatus: Statics.terminStates[0],
-            Beginn: firstEnd.toString(),
-            Dauer: (secondBegin - firstEnd).toString()
+    try {
+      const found = await this.terminService.find({ query: { Tag: day.format("YYYYMMDD"), Bereich: resource } })
+      if (found.data && found.data.length > 0) {
+        const ret = []
+        const template = found.data[0]
+        for (let i = 0; i < found.data.length - 1; i++) {
+          const first = found.data[i]
+          const second = found.data[i + 1]
+          const firstEnd = parseInt(first.Beginn) + parseInt(first.Dauer)
+          const secondBegin = parseInt(second.Beginn)
+          ret.push(first)
+          if (secondBegin - firstEnd > 1) {
+            const gap = {
+              Tag: template.Tag,
+              Bereich: template.Bereich,
+              TerminTyp: Statics.terminTypes[0],
+              TerminStatus: Statics.terminStates[0],
+              Beginn: firstEnd.toString(),
+              Dauer: (secondBegin - firstEnd).toString()
+            }
+            ret.push(gap)
           }
-          ret.push(gap)
+          //ret.push(second)
         }
-        //ret.push(second)
+        ret.push(found.data[found.data.length - 1])
+        return ret.map(r => new TerminModel(r))
+      } else {
+        return []
       }
-      ret.push(found.data[found.data.length - 1])
-      return ret.map(r => new TerminModel(r))
-    } else {
-      return []
+    } catch (err) {
+      if(err.code && err.code==401){
+        this.router.navigateToRoute('user')
+      }
     }
   }
 }
