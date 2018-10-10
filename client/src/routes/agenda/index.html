@@ -6,19 +6,17 @@
   <div class="sheet" style="position:relative">
     <div class="header">
       <div class="form-inline">
-        <pickdate pickerdate.two-way="dateStandard"></pickdate>
-        <searchfield searchtext="suchen..."></searchfield>
-        <select style="position:absolute;right:20px;top:10px;width:150px;height:2em;" value.two-way="bereich">
+      <pickdate pickerdate.two-way="dateStandard"></pickdate>
+      <searchfield searchtext="suchen..."></searchfield>
+      <select style="position:absolute;right:20px;top:10px;width:150px;height:2em;" value.two-way="bereich">
           <option repeat.for="el of bereiche" model.bind="el">${el}</option>
         </select>
-      </div>
     </div>
-    <div class="body" style="width:100%;overflow-x:hidden;overflow-y:auto">
-      <table>
-        <template repeat.for="entry of appointments.data">
-          <agenda-entry class="row termin" entry.bind="entry" index.bind="$index"></agenda-entry>
-        </template>
-      </table>
+  </div>
+    <div class="body" style="width:100%;overflow-x:hidden;overflow-y:auto" >
+      <template repeat.for="entry of appointments.data">
+        <agenda-entry class="row termin" entry.bind="entry" index.bind="$index"></agenda-entry>
+      </template>
     </div>
   </div>
 </template>>
