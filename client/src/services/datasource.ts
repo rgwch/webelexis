@@ -26,7 +26,9 @@ export interface DataService {
   // send an event concerning an object
   emit(topic,msg)
   // subscribe on events concerning this DataService's data type
-  on(topic,fun)
+  on(topic,func)
+  // unsubscribe some topics
+  off(topic,func)
   // get transport name for this DataService's data type
   path: string
 }

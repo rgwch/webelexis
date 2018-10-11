@@ -70,7 +70,10 @@ xdescribe('\'konsultation\' service', () => {
     const kons={
       fallid: "fallid",
       mandantid: "mandantid",
-      eintrag: Buffer.from(entry),
+      eintrag: {
+        html:"<p>Abrakadabra</p>",
+        remark: "Unittest"
+      },
       datum: "20180101"
     }
     const created= await service.create(kons)
@@ -86,7 +89,7 @@ xdescribe('\'konsultation\' service', () => {
     fkons.should.have.property('eintrag')
     fkons.eintrag.should.have.property('html')
     fkons.eintrag.html.should.be.ok
-    fkons.eintrag.html.should.equal('Abrakadabra')
+    fkons.eintrag.html.should.equal('<p>Abrakadabra</p>')
     fkons.eintrag.remark.should.equal("Unittest")
     fkons.eintrag.html='<span style="font-weight:bold;">Simsalabim</span>'
     const updated=await service.update(fkons.id, fkons)

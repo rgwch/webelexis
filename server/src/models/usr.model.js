@@ -14,6 +14,7 @@ const path = require('path');
  *  roles: []
  *  elexisuser_id:string id of matching elexis user (if any)
  *  elexis_id: string id of matching elexis Kontakt (if any)
+ *  elexiskontakt: Kontakt: deserialized version of user/kontakt (only for transport)
  *
  * @param  app
  */

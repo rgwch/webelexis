@@ -37,6 +37,6 @@ export class Encounter {
   }
   @computedFrom('obj')
   get datum() {
-    return this.dt.DateObjectToLocalDate(this.obj.datum)
+    return this.dt.ElexisDateToLocalDate(this.obj.datum)
   }
 }

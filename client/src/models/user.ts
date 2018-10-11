@@ -6,6 +6,8 @@ export interface UserType extends ElexisType{
   label: string
   realname?: string
   elexis_id?: string
+  elexisuser_id?: string
+  elexiskontakt?:any
   roles?: Array<string>
 }
 

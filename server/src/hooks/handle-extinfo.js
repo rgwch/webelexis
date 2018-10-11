@@ -19,10 +19,10 @@ module.exports=function (options=defaultOptions){
       obj.extjson = util.getExtInfo(obj[options.extinfo])
       context.result=obj
     } else if (context.result.data) {
-        for (const kons of context.result.data) {
-          const exti = kons.extinfo
+        for (const obj of context.result.data) {
+          const exti = obj[options.extinfo]
           const json = util.getExtInfo(exti)
-          kons.extjson = json
+          obj.extjson = json
         }
       }
       return context

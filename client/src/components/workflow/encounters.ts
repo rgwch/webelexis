@@ -1,3 +1,4 @@
+import { UserType } from './../../models/user';
 import { WebelexisEvents } from './../../webelexisevents';
 
 /********************************************
@@ -18,6 +19,7 @@ import { autoinject } from 'aurelia-framework';
 import { CaseManager } from './../../models/case';
 import { EncounterType } from 'models/encounter';
 import * as moment from 'moment'
+import defaults from '../../user/global'
 
 @autoinject
 @connectTo<State>({
@@ -36,34 +38,64 @@ export class Encounters {
   private actPatient
   private actCase
 
-  canCreate=true
+  canCreate = true
 
   actPatientChanged(newValue, oldValue) {
     this.encounters.data = []
     this.lastEntry = 0
     this.fetchData(newValue)
   }
-  constructor(private ds: DataSource, private caseManager: CaseManager, private we:WebelexisEvents) {
+  constructor(private ds: DataSource, private caseManager: CaseManager, private we: WebelexisEvents) {
     this.konsultationService = this.ds.getService('konsultation')
   }
 
-  newEncounter(){
-    if(this.actCase!=null){
-      const fall=this.actCase
-      const kons:EncounterType={
+  attached() {
+    this.konsultationService.on('created', this.consActions)
+    this.konsultationService.on('updated', this.consActions)
+
+  }
+
+  detached() {
+    this.konsultationService.off('created', this.consActions)
+    this.konsultationService.off('updated', this.consActions)
+
+  }
+
+  /**
+   * On create or update events just reload, if it's our business.
+   */
+  consActions = (obj: EncounterType) => {
+    const concern = this.cases.find(fall => { return fall.id === obj.fallid })
+    if (concern && (this.actCase == null || concern.id == this.actCase.id)) {
+      this.fetchData(this.actPatient)
+    }
+  }
+
+  newEncounter() {
+    if (this.actCase != null) {
+      const fall = this.actCase
+      const user: UserType = this.we.getSelectedItem('usr')
+      let mandator = user.id
+      if (user.elexiskontakt) {
+        if (user.elexiskontakt.istmandant == "1") {
+          mandator = user.elexiskontakt.id
+        }
+      }
+      const kons: EncounterType = {
         datum: moment().format("YYYYMMDD"),
         Zeit: moment().format("HH:mm:ss"),
         fallid: this.actCase.id,
-        mandantid: "",
+        mandantid: defaults.mandator || mandator,
         eintrag: {
-          remark: this.we.getSelectedItem('usr').label,
-          html:"<p></p>",
+          remark: user.label,
+          html: "<p></p>",
           timestamp: moment().format("DD.MM.YYYY, HH:mm:ss")
         }
       }
+      this.konsultationService.create(kons).then(result=>{
+        console.log(result)
+      })
     }
-  }
-  attached() {
   }
 
   /**

@@ -125,16 +125,39 @@ const updateKonsText = async context => {
   }
 }
 
-const textContents=async context=>{
+const createKonsText = async context => {
+  try {
+    const kons = context.data
+    const html = kons.eintrag.html
+    if (html) {
+      const samdas = Samdas.fromHtml(html)
+      if (samdas) {
+        delete kons.eintrag.html
+        const versionedResource = util.createVersionedResource()
+        const vrUpdated = util.updateVersionedResource(versionedResource, samdas, kons.eintrag.remark)
+        kons.eintrag = Buffer.from(vrUpdated)
+      } else {
+        logger.warning("converting html to samdas " + html)
+      }
+    }
+    return context
+  } catch (err) {
+    logger.error("Creating kons " + err)
+    throw new Error("Could not store " + JSON.stringify(context.data.eintrag))
+  }
+
+}
+
+const textContents = async context => {
   return context
 }
 
 module.exports = {
   before: {
     all: [ /* authenticate('jwt') */],
-    find: [withPatientId,textContents],
+    find: [withPatientId, textContents],
     get: [],
-    create: [],
+    create: [createKonsText],
     update: [updateKonsText],
     patch: [],
     remove: []
