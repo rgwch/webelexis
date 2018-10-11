@@ -18,13 +18,13 @@ const {
 
 const addElexisUser=async context=>{
     if(context.result.elexisuser_id){
-      const userService=context.app.Service('users')
+      const userService=context.app.service('users')
       const user=await userService.get(context.result.elexisuser_id)
       if(user){
         context.result.elexiskontakt=user
       }
     }else if(context.result.elexis_id){
-      const kontaktService=context.app.Service('kontakt')
+      const kontaktService=context.app.service('kontakt')
       const kontakt=await kontaktService.get(context.result.elexis_id)
       if(kontakt){
         context.result.elexiskontakt=kontakt
