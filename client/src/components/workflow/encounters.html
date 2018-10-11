@@ -3,15 +3,17 @@
   <require from="../endless-scroll"></require>
   <require from="../../services/date-format"></require>
   <require from="../searchfield"></require>
+  <require from="../newitem-btn"></require>
   <span class="detailcaption">Konsultationen</span>
   <div class="sheet">
     <div class="header">
       <div class="form-inline">
-        <searchfield t="[placeholder]select.search"></searchfield>
-        <select style="margin-left:20px;height:2em;">
-          <option value="all" t="select.allcases">All cases</option>
-          <option repeat.for="case of cases" value="case.id">${caseManager.getLabel(case)}</option>
+        <searchfield t="[searchtext]select.search"></searchfield>
+        <select style="margin-left:20px;height:2em;" value.bind="actCase">
+          <option model.bind="null" t="select.allcases">All cases</option>
+          <option repeat.for="case of cases" model.bind="case">${caseManager.getLabel(case)}</option>
         </select>
+        <new-item-button disabled.bind="actCase == null"></new-item-button>
       </div>
     </div>
     <div class="body" style="height:85vh;">

@@ -31,6 +31,9 @@ export class Encounters {
   lastEntry: number = 0
   private konsultationService: DataService
   private actPatient
+  private actCase
+  
+  canCreate=true
 
   actPatientChanged(newValue, oldValue) {
     this.encounters.data = []
@@ -41,6 +44,9 @@ export class Encounters {
     this.konsultationService = this.ds.getService('konsultation')
   }
 
+  caseSelected(){
+
+  }
   attached() {
   }
 
