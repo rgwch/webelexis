@@ -5,7 +5,14 @@
  ********************************************/
 
 const treatDeleted = require('../../hooks/treat-deleted');
+const handleExtInfo = require('../../hooks/handle-extinfo');
 
+/**
+ * Check if there's a '$find' property in the query, and if so, make a LIKE - query over
+ * firstname, lastname and birthdate fields with the expression in $find. If there's no
+ * such field, just transmit the query as is to the underlying service.
+ * @param {} options
+ */
 const doQuery = function (options = {}) { // eslint-disable-line no-unused-vars
   return async context => {
 
@@ -42,6 +49,10 @@ const doQuery = function (options = {}) { // eslint-disable-line no-unused-vars
   };
 };
 
+/**
+ * Add an "order by" clause for lastname, firstname and birthdate to the query
+ * @param {*} context
+ */
 const doSort = context => {
   const query = context.app.service('kontakt').createQuery({
     query: context.params.query
@@ -50,6 +61,8 @@ const doSort = context => {
   context.params.knex = query
   return context
 }
+
+
 module.exports = {
   before: {
     all: [],
@@ -64,7 +77,7 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [],
+    get: [handleExtInfo()],
     create: [],
     update: [],
     patch: [],

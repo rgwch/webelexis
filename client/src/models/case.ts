@@ -24,8 +24,9 @@ export interface CaseType {
   grund: "Krankheit" | "Unfall" | "Mutterschaft"
   gesetz: string
   datumvon: string
-  datumbis: string
-  extinfo: any
+  datumbis?: string
+  extinfo?: any
+  extjson?: any
   id: string
 }
 
@@ -48,8 +49,8 @@ export class CaseManager {   // sic!
     const beginDate = this.dt.ElexisDateToLocalDate(obj.datumvon)
     let gesetz = obj.gesetz
     if (!gesetz) {
-      if (obj.extinfo) {
-        gesetz = obj.extinfo.billing
+      if (obj.extjson) {
+        gesetz = obj.extjson.billing
       }
     }
     return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung}`

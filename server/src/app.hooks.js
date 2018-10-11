@@ -8,7 +8,7 @@
 const logger = require('./hooks/logger');
 const update = require('./hooks/updatecommon')
 const create = require('./hooks/createcommon')
-const treatDeleted = require('../../hooks/treat-deleted');
+const treatDeleted = require('./hooks/treat-deleted');
 
 
 const abilities = require('./hooks/abilities');

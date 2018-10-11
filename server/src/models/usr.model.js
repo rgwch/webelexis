@@ -9,6 +9,12 @@ const path = require('path');
 
 /**
  *  The Webelexis user (which is deliberately /not/ a simple mapping to an elexis-user)
+ *  email: string (id)
+ *  label: string (common name)
+ *  roles: []
+ *  elexisuser_id:string id of matching elexis user (if any)
+ *  elexis_id: string id of matching elexis Kontakt (if any)
+ *
  * @param  app
  */
 module.exports = function (app) {

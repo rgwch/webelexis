@@ -10,6 +10,29 @@ const {
   hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 
+/**
+ * Try to add a matching elexis user. If none found
+ * try to add a matching elexis Kontakt
+ * @param {} context
+ */
+
+const addElexisUser=async context=>{
+    if(context.result.elexisuser_id){
+      const userService=context.app.Service('users')
+      const user=await userService.get(context.result.elexisuser_id)
+      if(user){
+        context.result.elexiskontakt=user
+      }
+    }else if(context.result.elexis_id){
+      const kontaktService=context.app.Service('kontakt')
+      const kontakt=await kontaktService.get(context.result.elexis_id)
+      if(kontakt){
+        context.result.elexiskontakt=kontakt
+      }
+    }
+    return context
+}
+
 module.exports = {
   before: {
     all: [],
@@ -22,13 +45,13 @@ module.exports = {
   },
 
   after: {
-    all: [ 
+    all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
       protect('password')
     ],
     find: [],
-    get: [],
+    get: [addElexisUser],
     create: [],
     update: [],
     patch: [],

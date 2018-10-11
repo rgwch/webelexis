@@ -6,14 +6,16 @@
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const treatDeleted = require('../../hooks/treat-deleted');
+const handleExtInfo=require('../../hooks/handle-extinfo')
 
 
 const addContact = function (options = {}) { // eslint-disable-line no-unused-vars
   return async context => {
     const s = context.app.service('kontakt')
     let k = await s.get(context.result.KONTAKT_ID, context.params)
-    context.result.kontakt = k
-
+    if(k){
+      context.result.kontakt = k
+    }
     return context;
   };
 };
@@ -32,7 +34,7 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [addContact()],
+    get: [addContact(), handleExtInfo({extinfo: "EXTINFO"})],
     create: [],
     update: [],
     patch: [],

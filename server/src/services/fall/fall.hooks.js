@@ -6,20 +6,7 @@
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const treatDeleted = require('../../hooks/treat-deleted');
-const ElexisUtils = require('../../util/elexis-types')
-const util = new ElexisUtils()
-
-
-const fetchExtInfo=context=>{
-  if(context.result && context.result.data){
-    for(const fall of context.result.data){
-      const exti=fall.EXTINFO
-      const json=util.getExtInfo(exti)
-      fall.extinfo=json
-    }
-    return context
-  }
-}
+const handleExtInfo=require('../../hooks/handle-extinfo')
 
 module.exports = {
   before: {
@@ -34,8 +21,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [fetchExtInfo],
-    get: [],
+    find: [handleExtInfo({extinfo: "EXTINFO"})],
+    get: [handleExtInfo({extinfo: "EXTINFO"})],
     create: [],
     update: [],
     patch: [],
