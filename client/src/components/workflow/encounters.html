@@ -8,7 +8,7 @@
   <div class="sheet">
     <div class="header">
       <div class="form-inline">
-        <searchfield t="[searchtext]select.search"></searchfield>
+        <searchfield t="[searchtext]select.search" result.two-way="searchexpr"></searchfield>
         <select style="margin-left:20px;height:2em;" value.bind="actCase">
           <option model.bind="null" t="select.allcases">All cases</option>
           <option repeat.for="case of cases" model.bind="case">${caseManager.getLabel(case)}</option>

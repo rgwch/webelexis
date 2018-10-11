@@ -149,6 +149,21 @@ const createKonsText = async context => {
 }
 
 const textContents = async context => {
+  if (context.params.query && context.params.query.$find) {
+    const expr = context.params.query.$find
+    delete context.params.query.$find
+    let raw = await context.service.find(context.params)
+    if(raw && raw.data){
+      let processed=[]
+      for(const k of raw.data){
+        if(k.eintrag.html && k.eintrag.html.match(expr)){
+          processed.push(k)
+        }
+      }
+      context.result=raw
+      context.result.data=processed
+    }
+  }
   return context
 }
 

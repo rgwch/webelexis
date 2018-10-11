@@ -1,5 +1,4 @@
-import { UserType } from './../../models/user';
-import { WebelexisEvents } from './../../webelexisevents';
+import { bindable } from 'aurelia-framework';
 
 /********************************************
  * This file is part of Webelexis           *
@@ -15,11 +14,13 @@ import { State } from '../../state';
 import { DataSource, DataService } from '../../services/datasource';
 import { pluck } from 'rxjs/operators'
 import { connectTo } from 'aurelia-store'
-import { autoinject } from 'aurelia-framework';
+import { autoinject, observable } from 'aurelia-framework';
 import { CaseManager } from './../../models/case';
 import { EncounterType } from 'models/encounter';
 import * as moment from 'moment'
 import defaults from '../../user/global'
+import { UserType } from './../../models/user';
+import { WebelexisEvents } from './../../webelexisevents';
 
 @autoinject
 @connectTo<State>({
@@ -36,14 +37,29 @@ export class Encounters {
   lastEntry: number = 0
   private konsultationService: DataService
   private actPatient
-  private actCase
+  @observable actCase
+  @observable searchexpr="ha"
 
   canCreate = true
 
   actPatientChanged(newValue, oldValue) {
     this.encounters.data = []
     this.lastEntry = 0
+    this.actCase=null
+    this.searchexpr=""
     this.fetchData(newValue)
+  }
+
+  actCaseChanged(newValue,oldValue){
+    this.encounters.data=[]
+    this.lastEntry=0
+    this.fetchData(this.actPatient)
+  }
+
+  searchexprChanged(newval,oldval){
+    this.encounters.data=[]
+    this.lastEntry=0
+    this.fetchData(this.actPatient)
   }
   constructor(private ds: DataSource, private caseManager: CaseManager, private we: WebelexisEvents) {
     this.konsultationService = this.ds.getService('konsultation')
@@ -115,7 +131,18 @@ export class Encounters {
       }
     }
     if (id) {
-      this.konsultationService.find({ query: { "patientId": id, $skip: this.lastEntry, $limit: 20 } }).then(result => {
+      const expr:any={
+        patientId: id, 
+        $skip: this.lastEntry, 
+        $limit: 20  
+      }
+      if(this.actCase!=null){
+        expr.fallid=this.actCase.id
+      }
+      if(this.searchexpr && this.searchexpr.length>1){
+        expr.$find=this.searchexpr
+      }
+      this.konsultationService.find({ query: expr}).then(result => {
         this.lastEntry += result.data.length
         this.encounters.data = this.encounters.data.concat(result.data)
       })
