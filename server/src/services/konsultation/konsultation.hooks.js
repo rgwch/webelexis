@@ -9,7 +9,6 @@ const ElexisUtils = require('../../util/elexis-types')
 const util = new ElexisUtils()
 const Samdas = require('@rgwch/samdastools')
 const logger = require('../../logger')
-const treatDeleted = require('../../hooks/treat-deleted');
 
 /*
 const withPatientId=function (options={}){
@@ -125,10 +124,15 @@ const updateKonsText = async context => {
     throw new Error("Could not store " + JSON.stringify(context.data.eintrag))
   }
 }
+
+const textContents=async context=>{
+  return context
+}
+
 module.exports = {
   before: {
     all: [ /* authenticate('jwt') */],
-    find: [treatDeleted(),withPatientId],
+    find: [withPatientId,textContents],
     get: [],
     create: [],
     update: [updateKonsText],

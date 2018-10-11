@@ -1,3 +1,4 @@
+import { WebelexisEvents } from './../../webelexisevents';
 
 /********************************************
  * This file is part of Webelexis           *
@@ -15,6 +16,8 @@ import { pluck } from 'rxjs/operators'
 import { connectTo } from 'aurelia-store'
 import { autoinject } from 'aurelia-framework';
 import { CaseManager } from './../../models/case';
+import { EncounterType } from 'models/encounter';
+import * as moment from 'moment'
 
 @autoinject
 @connectTo<State>({
@@ -32,7 +35,7 @@ export class Encounters {
   private konsultationService: DataService
   private actPatient
   private actCase
-  
+
   canCreate=true
 
   actPatientChanged(newValue, oldValue) {
@@ -40,12 +43,25 @@ export class Encounters {
     this.lastEntry = 0
     this.fetchData(newValue)
   }
-  constructor(private ds: DataSource, private caseManager: CaseManager) {
+  constructor(private ds: DataSource, private caseManager: CaseManager, private we:WebelexisEvents) {
     this.konsultationService = this.ds.getService('konsultation')
   }
 
-  caseSelected(){
-
+  newEncounter(){
+    if(this.actCase!=null){
+      const fall=this.actCase
+      const kons:EncounterType={
+        datum: moment().format("YYYYMMDD"),
+        Zeit: moment().format("HH:mm:ss"),
+        fallid: this.actCase.id,
+        mandantid: "",
+        eintrag: {
+          remark: this.we.getSelectedItem('usr').label,
+          html:"<p></p>",
+          timestamp: moment().format("DD.MM.YYYY, HH:mm:ss")
+        }
+      }
+    }
   }
   attached() {
   }

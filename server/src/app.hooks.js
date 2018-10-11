@@ -8,6 +8,7 @@
 const logger = require('./hooks/logger');
 const update = require('./hooks/updatecommon')
 const create = require('./hooks/createcommon')
+const treatDeleted = require('../../hooks/treat-deleted');
 
 
 const abilities = require('./hooks/abilities');
@@ -16,7 +17,7 @@ const abilities = require('./hooks/abilities');
 module.exports = {
   before: {
     all: [logger()],
-    find: [],
+    find: [treatDeleted()],
     get: [],
     create: [create()],
     update: [update()],

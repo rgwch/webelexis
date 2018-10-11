@@ -13,7 +13,7 @@
           <option model.bind="null" t="select.allcases">All cases</option>
           <option repeat.for="case of cases" model.bind="case">${caseManager.getLabel(case)}</option>
         </select>
-        <new-item-button disabled.bind="actCase == null"></new-item-button>
+        <new-item-button disabled.bind="actCase == null" click.delegate="newEncounter()"></new-item-button>
       </div>
     </div>
     <div class="body" style="height:85vh;">

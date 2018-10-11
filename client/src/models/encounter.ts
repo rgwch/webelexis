@@ -12,13 +12,16 @@ import {ElexisType} from './elexistype'
  * An Elexis "Konsultation"
  */
 export interface EncounterType extends ElexisType{
-  datum: Date,
-  mandator: KontaktType|string,
-  case: CaseType|string,
+  datum: string       // YYYYMMDD
+  Zeit:string         // HH:mm:ss
+  mandantid: string   // UUIDv4 (36) or ElexisID (25)
+  fallid: string      // UUIDv4 (36) or ElexisID (25)
+  rechnungsid?:string  // UUIDv4 (36) or ElexisID (25)
+  leistungen?:string
   eintrag: {
     remark: string,     // Editor of last modification
-    html?: string,
-    delta?: string,
+    html?: string,      // HTML Version of the entrytext
+    delta?: string,     // Delta Versiob of the entrytext
     timestamp: string   // Date of last modification
   }
 }
