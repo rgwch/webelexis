@@ -15,6 +15,12 @@ import { EventAggregator } from 'aurelia-event-aggregator';
 import { RightPanel } from './../../routes/dispatch/right';
 import { LeftPanel } from './../../routes/dispatch/left';
 
+/*
+ We use local styles here to avoid pollution of the global namespace
+ */
+import 'styles/blind.css'
+import 'styles/slider.css'
+
 /**
  * A single Agenda entry. Type can be 'free', 'reserved' or any one of the user defined types.
  */
@@ -27,6 +33,8 @@ export class AgendaEntry {
   detailVisible: boolean = false
   termintypen = []
   terminstaten = []
+  selectedTyp
+  selectedState
 
   constructor(private dt: DateTime, private tm: TerminManager,
     private ea: EventAggregator, private we: WebelexisEvents) {
@@ -76,12 +84,14 @@ export class AgendaEntry {
     return this.entry.rawContents()
   }
 
-  get types() {
-    return Statics.terminTypes
-  }
-
   save() {
-    this.tm.save(this.entry)
+    this.tm.save(this.entry).then(saved=>{
+      if(saved.id!==this.entry.obj.id){
+        alert("error while saving")
+      }
+    }).catch(err=>{
+      alert("exception while saving: "+err)
+    })
   }
   changeState() {
     const actState = this.entry.obj.TerminStatus

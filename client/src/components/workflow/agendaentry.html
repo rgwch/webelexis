@@ -3,10 +3,10 @@
   <div class="col-lg-2 col-md-3 termin text-truncate" css.bind="statecss">
     ${getTimes()}
     <div if.bind="detailVisible && (!isStaticType())" style="width:60%" class="slideitem au-animate">
-      <select value.bind="entry.obj.TerminTyp" style="width:6em;display:block">
+      <select value.bind="entry.obj.TerminTyp" style="width:6em;display:block" change.delegate="save()")>
         <option repeat.for="tt of termintypen">${tt}</option>
       </select>
-      <select value.bind="entry.obj.TerminStatus" style="width:6em;display:block">
+      <select value.bind="entry.obj.TerminStatus" style="width:6em;display:block" change.delegate="save()">
         <option repeat.for="tt of terminstaten">${tt}</option>
       </select>
       <div class="btn-group-vertical" role-"group">
