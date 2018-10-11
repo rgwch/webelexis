@@ -3,15 +3,14 @@
   <div class="card">
     <div class="card-header bg-light">
       <span>${datum}</span>
-      <i class="fa fa-lock" click.delegate="toggleEdit()" hide.bind="isEditing"></i>
-      <i class="fa fa-lock-open" click.delegate="toggleEdit()" show.bind="isEditing"></i>
+      <i class="fas fa-lock-open fa-2x" click.delegate="toggleEdit()" show.bind="isEditing"></i>
+      <i class="fas fa-lock fa-lg" click.delegate="toggleEdit()" hide.bind="isEditing"></i>
     </div>
     <div class="card-body">
-        <div if.bind="isEditing">
-            <ck-editor value.two-way="obj.eintrag.html"></ck-editor>
-        </div>
+      <div if.bind="isEditing">
+        <ck-editor value.two-way="obj.eintrag.html"></ck-editor>
+      </div>
       <p else innerhtml.bind="obj.eintrag.html"></p>
-      
+    </div>
   </div>
-  </div -->
 </template>
