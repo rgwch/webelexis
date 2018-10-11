@@ -7,7 +7,6 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const pug=require('pug-loader')
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -83,6 +82,10 @@ module.exports = ({production, server, extractCss, coverage, analyze, karma} = {
         issuer: /\.html?$/i
       },
       { test: /\.html$/i, loader: 'html-loader' },
+      {
+        test: /\.pug$/,
+        use: ['html-loader','pug-html-loader']
+      },
       { test: /\.tsx?$/, loader: "ts-loader" },
       // use Bluebird as the global Promise implementation:
       { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
