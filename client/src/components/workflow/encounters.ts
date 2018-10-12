@@ -43,24 +43,19 @@ export class Encounters {
   canCreate = true
 
   actPatientChanged(newValue, oldValue) {
-    this.encounters.data = []
-    this.lastEntry = 0
     this.actCase=null
     this.searchexpr=""
-    this.fetchData(newValue)
+    this.refresh()
   }
 
   actCaseChanged(newValue,oldValue){
-    this.encounters.data=[]
-    this.lastEntry=0
-    this.fetchData(this.actPatient)
+    this.refresh()
   }
 
   searchexprChanged(newval,oldval){
-    this.encounters.data=[]
-    this.lastEntry=0
-    this.fetchData(this.actPatient)
+    this.refresh()
   }
+
   constructor(private ds: DataSource, private caseManager: CaseManager, private we: WebelexisEvents) {
     this.konsultationService = this.ds.getService('konsultation')
   }
@@ -109,7 +104,7 @@ export class Encounters {
         }
       }
       this.konsultationService.create(kons).then(result=>{
-        console.log(result)
+        this.lastEntry=0
       }).catch(err=>{
         if(err.code==400){
           alert("The database could not handle the request. Please make sure that the server is running and that the database has the necessary modifications for webelexis.")
@@ -120,6 +115,13 @@ export class Encounters {
       })
     }
   }
+
+  refresh(){
+    this.encounters.data=[]
+    this.lastEntry=0
+    this.fetchData(this.actPatient)
+  }
+ 
 
   /**
    * Fetch new data. The method is either called from actPatientChanged, then data of the new patient

@@ -7,13 +7,7 @@ export class Searchfield{
   val
   @bindable result
 
-  bind(context){
-    console.log(this.val)
-    console.log(this.searchtext)
-  }
-
   doSearch(){
-    console.log(this.val)
     this.result=this.val
   }
 }
