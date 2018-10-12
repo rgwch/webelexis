@@ -1,4 +1,4 @@
-# Webelexis
+# Webelexis server
 
 > A service oriented server for elexis
 
