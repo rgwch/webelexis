@@ -4,6 +4,11 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+ /*
+  * connection to the Elexis database is via knex (https://knexjs.org)
+  * here we configure our knex instance.
+  */
+
 const knex = require('knex');
 
 module.exports = function (app) {

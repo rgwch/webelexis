@@ -1,7 +1,7 @@
 template
   .input-group
-    input.form-control(type="text",placeholder="${searchtext}" value="${val}", aria-label="${searchtext}")
-    .input-group-append
+    input.form-control(type="text",placeholder="${searchtext}" value.bind="val", aria-label="${searchtext}")
+    .input-group-append(click.delegate="doSearch()")
       span.input-group-text
         i.fa.fa-search
         

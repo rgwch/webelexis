@@ -4,6 +4,9 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+ /*
+    main entry point for the webelexis server
+ */
 const path = require('path');
 const favicon = require('serve-favicon');
 const compress = require('compression');
