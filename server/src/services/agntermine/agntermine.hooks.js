@@ -4,6 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const abilities=require('../../hooks/abilities')
+const treatDeleted = require('../../hooks/treat-deleted');
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const acl=require('./acl')
 const validate=require('../validator').validate
@@ -20,9 +21,9 @@ async function getList(config, def) {
 
 /**
  * Get agenda colors for a given user
- * @param {*} context hook context
- * @param {*} mode typ or status
- * @param {*} user
+ * @param {context} hook context
+ * @param {mode}  typ or status
+ * @param {user}
  */
 async function getColors(context, mode, user) {
   //console.log("colors requested for "+mode+", "+resource)
@@ -55,8 +56,12 @@ const doSort = function (options = {}) {
  * The following queries are supported:
  * - types: query possible appointment types
  * - states: query possible appointment states
- * - resources:
- * @param {*} options
+ * - resources: query agenda resources (Bereiche)
+ * - daydefaults: default locked times per weekday
+ * - timedefaults: default duration of appointment by type
+ * - typecolors: preferred colors (as hex string) for all types
+ * - statecolors: preferred colors (as hex string) for all states
+ * Example: get('types') would return an array with all defined appointment types
  */
 const specialQueries = function (options = {}) { // eslint-disable-line no-unused-vars
   return async context => {
@@ -126,8 +131,11 @@ const specialQueries = function (options = {}) { // eslint-disable-line no-unuse
   };
 };
 
-const treatDeleted = require('../../hooks/treat-deleted');
-
+/**
+ * Hook to expand the "PatID" field (id of the concerned patient, or name of the appointment)
+ * to a full "kontakt" entry. If no such 'Kontakt' exists in the database, the PatID is
+ * kept by itself as concern data.
+ */
 const addContacts = function (options = {}) { // eslint-disable-line no-unused-vars
   return async context => {
     const s = context.app.service('kontakt')
@@ -152,6 +160,10 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
   };
 };
 
+/**
+ * Make sure only valid appointment objects get to the database
+ * @param {*} termin
+ */
 const cleanTermin=termin=>{
   return validate(termin,'agntermine',false)
 }

@@ -21,6 +21,8 @@ module.exports = function (app) {
 
   // Initialize our service with any options it requires
   app.use('/termin', createService(options));
+
+  // initialize validator with column info
   Model('agntermine').columnInfo().then(columns=>{
     validator('agntermine',columns)
   })
