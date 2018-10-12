@@ -12,7 +12,7 @@ Daher muss auf dem Server Java (und zwar das JDK) >=8.0 installiert sein. Ob Ora
 
 In der Elexis-Datenbank herrscht ein buntes Durcheinander von Gross/Kleinschreibung, und die ID-Felder sind für Standard-UUIDs zu kurz. Ausserdem fehlen manche benötigten Felder.
 
-Das SQL-Script modify_elexis.sql erledigt die für Webelexis nötigen Anpassungen. Die Datenbank bleibt dennoch kompatibel mit Elexis-Ungrad und Elexis 3.6. Achtung: Das Script modifiziert nur diejenigen Tabellen, die auf meiner Datenbank vorhanden sind. Das sind so ziemlich alle, die vom Kern und von OpenSource Plugins erstellt wurden. Andere Tabellen müssen ggf. zusätzlich manuell angepasst werden:
+Das SQL-Script modify_elexis.sql (anwenden z.B. mit `use elexis; source modify_elexis.sql`) erledigt die für Webelexis nötigen Anpassungen. Die Datenbank bleibt dennoch kompatibel mit Elexis-Ungrad und Elexis 3.6. Achtung: Das Script modifiziert nur diejenigen Tabellen, die auf meiner Datenbank vorhanden sind. Das sind so ziemlich alle, die vom Kern und von OpenSource Plugins erstellt wurden. Andere Tabellen müssen ggf. zusätzlich manuell angepasst werden:
 
 * Id-Felder heissen immer id (klein geschrieben) und sind VARCHAR(40).
 * Dementsprechend müssen auch foreign key Felder auf VARCHAR(40) erweitert werden, der Feldname kann aber unverändert bleiben.
@@ -21,6 +21,11 @@ Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, un
 
     create user backupadmin@'localhost' identified by 'supersecret';
     grant SUPER on *.* to backupadmin@'localhost';
+
+Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexisdatenbank ein Patient namens 'unittest' existieren. Beispiel:
+
+    use elexis;
+    update kontakt set bezeichnung1="unittest" where bezeichnung1="Duck" and bezeichnung2="Donald";`
 
 
 ### Solr installieren
@@ -47,7 +52,7 @@ Folgende Libraries müssen besorgt und nach server/lib kopiert werden:
 * jackson-annotations-2.7.0.jar
 * jackson-core-2.7.4.jar
 * jackson-databind-2.7.4.jar
-* rgw-toolbox-4.2.5.jar
+* rgw-toolbox-4.2.6.jar
 
 Man kann das automatisieren, wenn man Maven >=3.3 installiert hat: Einfach ins Verzeichnis server/lib gehen, und dort `./fetch.sh` eingeben.
 
@@ -60,7 +65,7 @@ Dann benötigte npm Libraries installieren:
 
 In server/config/default.json die Verbindungsdaten zu einer für Webelexis angepassten Elexis-Datenbank (s. oben) eingeben
 
-Damit die Unit-Tests gelingen, irgendeinen Test-Patienten in "unittest" umbenennen (Vorname und sonstige Personalien egal)
+Damit die Unit-Tests gelingen, irgendeinen Test-Patienten in "unittest" umbenennen (s.o.)Vorname und sonstige Personalien sind egal.
 
     npm test
 
