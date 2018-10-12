@@ -57,5 +57,8 @@ export default{
       text: "Artikel",
       icon: "/pill.svg",
       view: PLATFORM.moduleName("../../components/workflow/artikeldetail")
+    },
+    db_error:{
+      view: PLATFORM.moduleName('../../dialogs/dberror.html')
     }
   }

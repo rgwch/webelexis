@@ -110,6 +110,13 @@ export class Encounters {
       }
       this.konsultationService.create(kons).then(result=>{
         console.log(result)
+      }).catch(err=>{
+        if(err.code==400){
+          alert("The database could not handle the request. Please make sure that the server is running and that the database has the necessary modifications for webelexis.")
+        }
+        else{
+          alert("Could not save")
+        }
       })
     }
   }

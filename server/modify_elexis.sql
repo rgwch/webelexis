@@ -31,8 +31,9 @@ alter table bbs modify id varchar(40), modify authorid varchar(40);
 alter table behandlungen modify id varchar(40),
 	modify fallid varchar(40),
 	modify mandantid varchar(40),
-	modify rechnungsid varchar(40),
-  add Zeit char(8);
+	modify rechnungsid varchar(40);
+
+alter table behandlungen add Zeit char(8);
 
 alter table behdl_dg_joint change ID id varchar(40),
 	modify BehandlungsID varchar(40),
