@@ -11,7 +11,7 @@
     </div>
     <div class="card-body">
       <div if.bind="isEditing">
-        <ck-editor value.two-way="obj.eintrag.html"></ck-editor>
+        <ck-editor value.two-way="obj.eintrag.html" callback.bind="makros"></ck-editor>
       </div>
       <p else innerhtml.bind="obj.eintrag.html"></p>
     </div>

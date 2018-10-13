@@ -13,6 +13,7 @@ import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import { DateTime } from '../../services/datetime';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DataSource, DataService } from '../../services/datasource';
+import { Macroprocessor } from 'user/macro';
 
 @autoinject
 export class Encounter {
@@ -20,10 +21,14 @@ export class Encounter {
   isEditing: boolean = false
   konsultationService: DataService
 
-  constructor(private dt: DateTime, private ea: EventAggregator, private ds: DataSource) {
+  constructor(private dt: DateTime, private ea: EventAggregator, private ds: DataSource,
+    private mp:Macroprocessor) {
     this.konsultationService = this.ds.getService('konsultation')
   }
 
+  makros = text => {
+    return this.mp.process("encounter",text)
+  }
   toggleEdit() {
     if (this.isEditing) {
       this.isEditing = false
@@ -33,11 +38,11 @@ export class Encounter {
     }
   }
 
-  deleteKons(){
-    const text=this.obj.eintrag.html
-    if(!text || text.replace(/<.*?>/g,"").length==0){
+  deleteKons() {
+    const text = this.obj.eintrag.html
+    if (!text || text.replace(/<.*?>/g, "").length == 0) {
       this.konsultationService.remove(this.obj.id)
-    }else{
+    } else {
       alert("Eine Konsultation kann nur gelöscht werden, wenn sie keinen Text mehr enthält.")
     }
   }
