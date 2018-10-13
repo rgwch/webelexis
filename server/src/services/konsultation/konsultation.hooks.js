@@ -69,16 +69,24 @@ const readKonsText = context => {
   if (raw && raw.data) {
     const entries = []
     for (let kons of raw.data) {
-      const entry = util.getVersionedResource(kons.eintrag)
-      if (entry.text) {
-        entries.push(Samdas.toHtml(entry.text))
-      } else {
-        entries.push("<p>?</p>")
-        logger.warn("Empty record " + kons.id)
+      if (kons.eintrag == null) {
+        kons.eintrag = { html: "<p></p>" }
       }
-      kons.eintrag = {
-        remark: entry.remark,
-        timestamp: entry.timestamp
+      if (kons.eintrag.html) {
+        entries.push(Promise.resolve(kons.eintrag.html))
+      } else {
+        const entry = util.getVersionedResource(kons.eintrag)
+        if (entry.text) {
+          entries.push(Samdas.toHtml(entry.text))
+        } else {
+          entries.push("<p></p>")
+          logger.warn("Empty record " + kons.id)
+        }
+
+        kons.eintrag = {
+          remark: entry.remark,
+          timestamp: entry.timestamp
+        }
       }
     }
     return Promise.all(entries).then(converted => {
@@ -124,7 +132,11 @@ const updateKonsText = async context => {
     throw new Error("Could not store " + JSON.stringify(context.data.eintrag))
   }
 }
-
+/**
+ * Hook to apply after find: Convert HTML text to samdas and create a new entry
+ * in the encounter's Versioned Resource with that Samdas text.
+ * @param {*} context
+ */
 const createKonsText = async context => {
   try {
     const kons = context.data
@@ -148,20 +160,29 @@ const createKonsText = async context => {
 
 }
 
+/**
+ * Find a String inside the text content.
+ * @param {*} context
+ */
 const textContents = async context => {
   if (context.params.query && context.params.query.$find) {
     const expr = context.params.query.$find
+    const re = new RegExp(expr,"i")
     delete context.params.query.$find
     let raw = await context.service.find(context.params)
-    if(raw && raw.data){
-      let processed=[]
-      for(const k of raw.data){
-        if(k.eintrag.html && k.eintrag.html.match(expr)){
-          processed.push(k)
+    if (raw && raw.data) {
+      let processed = []
+      for (const k of raw.data) {
+        if (k.eintrag && k.eintrag.html) {
+          const textonly = k.eintrag.html.replace(/<.+?>/g, "")
+          if (re.test(textonly)) {
+            processed.push(k)
+          }
         }
       }
-      context.result=raw
-      context.result.data=processed
+      context.result = raw
+      context.result.total = processed.length
+      context.result.data = processed
     }
   }
   return context
