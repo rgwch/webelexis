@@ -1,9 +1,19 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 
 import { ElexisType } from "./elexistype";
 import { autoinject } from "aurelia-framework";
 import { DataService, DataSource } from "../services/datasource";
 import { WebelexisEvents } from '../webelexisevents'
 
+/**
+ * Generic findings (blood pressure, weight and so on). 
+ * Configuration in src/user/findings
+ */
 export interface FindingType extends ElexisType {
   patientid: string,
   name: string,            // e.g. 'physical'

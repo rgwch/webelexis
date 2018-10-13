@@ -18,7 +18,7 @@
     </div>
     <div class="body" style="height:85vh;">
       <endless-scroll reload.delegate="fetchData($event)" limit.bind="65">
-        <ul class="list-group">
+        <ul class="list-group" ref="encdom">
           <li class="list-group-item" repeat.for="enc of encounters.data">
             <encounter obj.bind="enc"></encounter>
           </li>

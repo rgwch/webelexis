@@ -6,6 +6,9 @@
       <i class="fas fa-lock-open fa-lg" click.delegate="toggleEdit()" show.bind="isEditing"></i>
       <i class="fas fa-lock fa-lg" click.delegate="toggleEdit()" hide.bind="isEditing"></i>
     </div>
+    <div style="position:absolute;right:20px;" click.delegate="deleteKons()">
+      <i class="fas fa-bars"></i>
+    </div>
     <div class="card-body">
       <div if.bind="isEditing">
         <ck-editor value.two-way="obj.eintrag.html"></ck-editor>

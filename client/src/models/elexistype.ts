@@ -4,6 +4,9 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+ /**
+  * Base model for all types transported from and to the elexis database
+  */
 export interface ElexisType{
   type?: string
   id?: string

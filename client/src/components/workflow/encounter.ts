@@ -32,6 +32,15 @@ export class Encounter {
       this.isEditing = true
     }
   }
+
+  deleteKons(){
+    const text=this.obj.eintrag.html
+    if(!text || text.replace(/<.*?>/g,"").length==0){
+      this.konsultationService.remove(this.obj.id)
+    }else{
+      alert("Eine Konsultation kann nur gelöscht werden, wenn sie keinen Text mehr enthält.")
+    }
+  }
   getGuarantor() {
 
   }

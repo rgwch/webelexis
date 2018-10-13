@@ -1,8 +1,17 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { StickerType } from './stickers.model';
 import { DataSource, DataService } from './../services/datasource';
 import { ElexisType } from './elexistype';
 import { autoinject } from 'aurelia-framework';
 
+/**
+ * The Elexis 'Sticker' or 'Etikette' is some sort of badge or label for an object.
+ */
 export interface StickerType extends ElexisType {
   Name: string
   importance: string

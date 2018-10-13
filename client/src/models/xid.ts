@@ -5,7 +5,8 @@
  ********************************************/
 
  /**
-  * Some common XIDs from Elexis
+  * Some common XIDs from Elexis. A XID is a standardized way to address external
+  * identifiers
   */
 export var domains={
   elexis_uuid: "www.xid.ch/elexis/uuid",

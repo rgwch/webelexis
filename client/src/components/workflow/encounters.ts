@@ -39,7 +39,7 @@ export class Encounters {
   private actPatient
   @observable actCase
   @observable searchexpr="ha"
-
+  encdom
   canCreate = true
 
   actPatientChanged(newValue, oldValue) {
@@ -66,13 +66,14 @@ export class Encounters {
   attached() {
     this.konsultationService.on('created', this.consActions)
     this.konsultationService.on('updated', this.consActions)
+    this.konsultationService.on('removed',this.consActions)
     this.refresh()
   }
 
   detached() {
     this.konsultationService.off('created', this.consActions)
     this.konsultationService.off('updated', this.consActions)
-
+    this.konsultationService.off('deleted',this.consActions)
   }
 
   /**
@@ -81,7 +82,7 @@ export class Encounters {
   consActions = (obj: EncounterType) => {
     const concern = this.cases.find(fall => { return fall.id === obj.fallid })
     if (concern && (this.actCase == null || concern.id == this.actCase.id)) {
-      this.fetchData(this.actPatient)
+      this.refresh()
     }
   }
 
@@ -124,7 +125,17 @@ export class Encounters {
       this.encounters.data=[]
       this.lastEntry=0
       // console.log("act: "+(this.actPatient ? this.actPatient.id : "empty"))
-      this.fetchData(this.actPatient)
+      this.fetchData(this.actPatient).then(result=>{
+        let act=this.encounters.data[0]
+        if(act.eintrag.html.replace(/<.*?>/g,"")==""){
+          const children=this.encdom.getElementsByTagName("encounter")
+          if(children && children.length>0){
+            const lastKons=children[0]
+            // TODO: Actuvate edit mode
+          }
+        }
+        
+      })
     })
   }
  
@@ -157,17 +168,21 @@ export class Encounters {
       if(this.searchexpr && this.searchexpr.length>1){
         expr.$find=this.searchexpr
       }
-      this.konsultationService.find({ query: expr}).then(result => {
+      const elms=[]
+      elms.push(this.konsultationService.find({ query: expr}).then(result => {
         this.lastEntry += result.data.length
         this.encounters.data = this.encounters.data.concat(result.data)
-      })
-      this.caseManager.loadCasesFor(id).then(result => {
+      }))
+      elms.push(this.caseManager.loadCasesFor(id).then(result => {
         this.cases = result
+      }))
+      return Promise.all(elms).then(r=>{
+        return true
       })
-
     } else {
       this.encounters.data = []
       this.cases = []
+      return Promise.resolve(true)
     }
   }
 }

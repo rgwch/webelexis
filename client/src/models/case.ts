@@ -1,11 +1,10 @@
-import { DateTime } from './../services/datetime';
-import { CaseType } from './case';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-
+import { DateTime } from './../services/datetime';
+import { CaseType } from './case';
 import { PatientType } from './patient';
 import { KontaktType } from './kontakt';
 import { autoinject, Container } from 'aurelia-framework';

@@ -1,16 +1,15 @@
 <template>
-  <!-- require from="bootstrap/dist/css/bootstrap.css"></require>
-  <require from="styles.scss"></require>
-  <require from="@fortawesome/fontawesome-free/css/all.min.css"></require -->
-  <require from="./navbar"></require>
   <div class="container-fluid">
+    <!-- Display login/logout icon depending of the login state -->
     <a style="float:right" route-href="route: user">
-      <i class="fa fa-sign-in-alt" data-toggle="tootltip" title="login" hide.bind="actUser"></i>
-      <i class="fa fa-sign-out-alt" data-toggle="tootltip" title.bind="actUser.email" show.bind="actUser"></i>
+      <i class="fas fa-sign-out-alt" data-toggle="tootltip" title.bind="actUser.email"   if.bind="actUser"></i>
+      <i else class="fas fa-sign-in-alt" data-toggle="tootltip" title="login"></i>
     </a>
+    <!-- Display label of the currently selected patient -->
     <span style="position:absolute;right:100px;" innerhtml.bind="title"></span>
 
-    <!-- navbar router.bind="router"></navbar -->
+    <!-- if we ever need a menu bar: navbar router.bind="router"></navbar -->
+    <!-- Display the main view -->
     <div role="main">
       <div id="left-part" show.bind="leftPanel">
         <router-view name="default" swap-order="after"></router-view>
