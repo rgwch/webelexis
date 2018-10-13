@@ -1,23 +1,18 @@
 <!--
   ~ This file is part of Webelexis(tm)
-  ~ Copyright (c) 2017 by G. Weirich
+  ~ Copyright (c) 2017-2018 by G. Weirich
   -->
 
 <template>
   <require from="pikaday/css/pikaday.css"></require>
-
-  <!-- div style="margin-left:2px;margin-right:10px;position:relative;">
-    <i class="fa fa-2x fa-chevron-left" click.delegate="back()" style="position:relative;top:10px;margin-right:5px;"></i>
-    <input type="text" class="form-control" ref="pikhome" value.bind="actDate" click.trigger="show()">
-    <i class="fa fa-2x fa-chevron-right" click.trigger="forward()" style="position:relative;top:10px;margin-left:5px;"></i>
-  </div -->
   <div class="input-group" style="margin-right:10px;">
     <div class="input-group-prepend">
       <span class="input-group-text" click.delegate="back()">
         <i class="fa fa-chevron-left"></i>
       </span>
     </div>
-    <input type="text" class="form-control" ref="pikhome" value.bind="actDate" click.trigger="show()">
+    <input type="text" class="form-control" ref="pikhome" value.bind="actDate"
+      click.trigger="show()">
     <div class="input-group-append">
       <span class="input-group-text" click.delegate="forward()">
         <i class="fa fa-chevron-right"></i>

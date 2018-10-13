@@ -1,4 +1,3 @@
-import { StickerManager } from './models/stickers.model';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -6,7 +5,6 @@ import { StickerManager } from './models/stickers.model';
  ********************************************/
 
 import { Aurelia, PLATFORM } from 'aurelia-framework';
-import {I18N} from 'aurelia-i18n';
 import * as Backend from 'i18next-xhr-backend';
 import * as LogManager from 'aurelia-logging'
 import {webelexisState} from './state'
@@ -18,6 +16,11 @@ selectedLanguage = selectedLanguage.substr(0, 2);
 
 import environment from './environment';
 
+/**
+ * Main entry point. The aurelia framework calls this with the singleton instance of Aurelia
+ * all pre-launch configuration must happen here. Upon finishing, we call app.ts to continue launch.
+ * @param aurelia 
+ */
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()

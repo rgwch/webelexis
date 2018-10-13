@@ -4,22 +4,23 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
- /**
-  * If the query states no valie for 'deleted', add a 'deleted='0' clause.
-  * Except elexis-userconfig (table has no 'deleted' field)
-  * @param {*} options
-  */
+/**
+ * If the query states no valie for 'deleted', add a 'deleted='0' clause.
+ * Except elexis-userconfig (table has no 'deleted' field)
+ * @param {*} options
+ */
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
-    if (context.params.query) {
-      if (!context.params.query.deleted) {
-        if (context.path !== 'elexis.iserconfig') {
+    if (context.path !== 'elexis-userconfig') {
+      if (context.params.query) {
+        if (!context.params.query.deleted) {
           context.params.query.deleted = "0"
-        }
-      }
 
-    } else {
-      context.params.query = { deleted: "0" }
+        }
+
+      } else {
+        context.params.query = { deleted: "0" }
+      }
     }
     return context;
   };

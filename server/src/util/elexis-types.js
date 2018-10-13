@@ -25,7 +25,7 @@ const logger = require('../logger')
 /* generate dependencies with
    mvn dependency:copy-dependencies
    */
-const utils = "rgw-toolbox-4.2.6.jar"
+const utils = "rgw-toolbox-4.2.7.jar"
 const ann = "jackson-annotations-2.7.0.jar"
 const jackson = "jackson-core-2.7.4.jar"
 const databind = "jackson-databind-2.7.4.jar"

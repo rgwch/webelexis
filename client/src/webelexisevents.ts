@@ -1,9 +1,20 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
 
 import {Store} from 'aurelia-store'
 import {State} from './state'
 import { autoinject } from 'aurelia-framework';
 import { ElexisType } from './models/elexistype';
 
+/**
+ * This (together with aurelia-store) is the web variant of the ElexisEventDispatcher
+ * to fire a selection event, call selectItem(item)
+ * to query for a currently selected item, call getSelectedItem(itemtype)
+ * to subscribe for change events, subscribe to the 'aurelia-store'
+ */
 @autoinject
 export class WebelexisEvents{
   private state

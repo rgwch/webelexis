@@ -15,8 +15,16 @@ import { pluck } from 'rxjs/operators'
 import { State } from './state';
 import { I18N } from 'aurelia-i18n';
 import { Patient } from './models/patient';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'styles.scss'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 
+/**
+ * Starting point for the UI. Gets called from main.ts#configure()
+ * Here, the Router configuration takes place. The constructor tries to
+ * log in the current user
+ */
 @connectTo<State>({
   selector: {
     actUser: store => store.state.pipe(<any>pluck("usr")),
@@ -31,8 +39,7 @@ export class App {
   log = LogManager.getLogger('app.ts')
   leftPanel
   actPatient
-  // actUser
-
+ 
   constructor(private ds: DataSource, private we: WebelexisEvents, private i18n: I18N) {
     this.ds.login().then((usr: UserType) => {
       const user = new User(usr)
@@ -44,11 +51,6 @@ export class App {
     })
   }
 
-  /*
-  toggleLeftPane() {
-    this.showLeftPane = !this.showLeftPane
-  }
-*/
   @computedFrom('actPatient')
   get title() {
     if (!this.actPatient) {
