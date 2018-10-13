@@ -43,6 +43,9 @@ export class Encounters {
   canCreate = true
 
   actPatientChanged(newValue, oldValue) {
+    //console.log("act "+(this.actPatient ? this.actPatient.id : "empty"))
+    //console.log("new: "+(newValue ? newValue.id: "empty"))
+    //console.log("old: "+(oldValue ? oldValue.id: "empty"))
     this.actCase=null
     this.searchexpr=""
     this.refresh()
@@ -63,7 +66,7 @@ export class Encounters {
   attached() {
     this.konsultationService.on('created', this.consActions)
     this.konsultationService.on('updated', this.consActions)
-
+    this.refresh()
   }
 
   detached() {
@@ -117,9 +120,12 @@ export class Encounters {
   }
 
   refresh(){
-    this.encounters.data=[]
-    this.lastEntry=0
-    this.fetchData(this.actPatient)
+    setTimeout(()=>{
+      this.encounters.data=[]
+      this.lastEntry=0
+      // console.log("act: "+(this.actPatient ? this.actPatient.id : "empty"))
+      this.fetchData(this.actPatient)
+    })
   }
  
 
