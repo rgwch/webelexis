@@ -17,6 +17,7 @@ import { DataSource, DataService } from '../services/datasource';
 export class Macroprocessor {
   private patients: DataService
   private findings: DataService
+  bdbmi=/(\d{2,3})\/(\d{2,3})/
 
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     this.patients = ds.getService('patient')
@@ -31,7 +32,20 @@ export class Macroprocessor {
   process(context: "encounter" | "document", word: string) {
     if (context === 'encounter') {
       /* Example: interpret xxx/yy as blood pressure and create a finding for it.*/
-      if (word.match(/[0-9]{1,3}\/[0-9]{1,3}/)) {
+      const isbdmi=this.bdbmi.exec(word)
+      if(isbdmi){
+        let first=parseInt(isbdmi[1])
+        let second=parseInt(isbdmi[2])
+        if(first>second){
+          const finding = this.createFinding("Blutdruck", word)
+          return finding.name + ": " + finding.value
+        }else{
+          const bmi=Math.round(first/((second/100)^2))
+          const finding=this.createFinding("Masse",`Grösse: ${second}cm, Gewicht: ${first}Kg; BMI: ${bmi}`)
+          return finding.value
+        }
+      }
+      if (word.match(/[0-9]{2,3}\/[0-9]{2,3}/)) {
         const finding = this.createFinding("Blutdruck", word)
         return finding.name + ": " + finding.value
 
@@ -46,6 +60,7 @@ export class Macroprocessor {
     } else if (context === 'document') {
 
     }
+    return word
   }
 
   createFinding(name, value) {

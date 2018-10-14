@@ -51,7 +51,7 @@ export class Encounters {
   scroll() {
     if (this.encounters.data.length < this.encounters.total) {
       const toFetch = Math.min(number_to_fetch, this.encounters.total - this.encounters.data.length)
-      console.log("toFetch: "+toFetch)
+      // console.log("toFetch: "+toFetch)
       this.fetchData()
     }
   }
@@ -189,7 +189,7 @@ export class Encounters {
       }
       const elms = []
       if (expr.$limit > 0) {
-        console.log(`Lastitem: ${this.encounters.data.length}, total: ${this.encounters.total}, loading: ` + JSON.stringify(expr))
+        // console.log(`Lastitem: ${this.encounters.data.length}, total: ${this.encounters.total}, loading: ` + JSON.stringify(expr))
         elms.push(this.konsultationService.find({ query: expr }).then(result => {
           this.encounters.data = this.encounters.data.concat(result.data)
           this.encounters.total = result.total
