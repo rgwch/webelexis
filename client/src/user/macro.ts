@@ -1,7 +1,18 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework';
 import { DataSource, DataService } from '../services/datasource';
 
+/**
+ * Instead od simple mappings from shortcuts to texts we cjose a more powerful approach:
+ * The Macroprocessor is a class with functions to process keyboard inputs.
+ * The API is not stable yet.
+ */
 @autoinject
 export class Macroprocessor {
   private patients: DataService
@@ -11,8 +22,15 @@ export class Macroprocessor {
     this.patients = ds.getService('patient')
     this.findings = ds.getService('findings')
   }
+  /**
+   * process a keyword.
+   * @param context either an encounter or a document
+   * @param word the last word the user typed before hitting the macro key.
+   * @return the expandion fot this macro (can be a finding)
+   */
   process(context: "encounter" | "document", word: string) {
     if (context === 'encounter') {
+      /* Example: interpret xxx/yy as blood pressure and create a finding for it.*/
       if (word.match(/[0-9]{1,3}\/[0-9]{1,3}/)) {
         const finding = this.createFinding("Blutdruck", word)
         return finding.name + ": " + finding.value
