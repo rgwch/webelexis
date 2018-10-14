@@ -7,6 +7,8 @@
 import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework';
 import { DataSource, DataService } from '../services/datasource';
+import { FindingType, FindingsManager } from 'models/findings-model';
+import userdefs from '../user/findings'
 
 /**
  * Instead od simple mappings from shortcuts to texts we cjose a more powerful approach:
@@ -15,13 +17,11 @@ import { DataSource, DataService } from '../services/datasource';
  */
 @autoinject
 export class Macroprocessor {
-  private patients: DataService
-  private findings: DataService
   bdbmi=/(\d{2,3})\/(\d{2,3})/
 
-  constructor(private ds: DataSource, private we: WebelexisEvents) {
-    this.patients = ds.getService('patient')
-    this.findings = ds.getService('findings')
+  constructor(private we: WebelexisEvents, private findings:FindingsManager) {
+    //this.patients = ds.getService('patient')
+    //this.findings = ds.getService('findings')
   }
   /**
    * process a keyword.
@@ -37,18 +37,13 @@ export class Macroprocessor {
         let first=parseInt(isbdmi[1])
         let second=parseInt(isbdmi[2])
         if(first>second){
-          const finding = this.createFinding("Blutdruck", word)
-          return finding.name + ": " + finding.value
+          const data = this.createFinding("cardial", word)
+          return `BD: ${data[0]}/${data[1]}`
         }else{
           const bmi=Math.round(first/((second/100)^2))
-          const finding=this.createFinding("Masse",`Grösse: ${second}cm, Gewicht: ${first}Kg; BMI: ${bmi}`)
-          return finding.value
+          const data=this.createFinding("physical",word)
+          return `Gewicht: ${data[0]}, Grösse: ${data[1]}, BMI: ${data[2]}`
         }
-      }
-      if (word.match(/[0-9]{2,3}\/[0-9]{2,3}/)) {
-        const finding = this.createFinding("Blutdruck", word)
-        return finding.name + ": " + finding.value
-
       } else {
         switch (word) {
           case "gw": return "Gewicht";
@@ -66,16 +61,11 @@ export class Macroprocessor {
   createFinding(name, value) {
     const actPat = this.we.getSelectedItem('patient')
     const actUser = this.we.getSelectedItem('usr')
-    const finding = {
-      date: new Date(),
-      patient: actPat.id,
-      user: actUser.id,
-      name: name,
-      value: value
-    }
-    this.findings.create(finding).then(created=>{
-      console.log("finding created")
+    const item=userdefs[name]
+    const processed=item.create(value)
+    this.findings.addFinding(name,processed).then(added=>{
+
     })
-    return finding;
+    return processed;
   }
 }

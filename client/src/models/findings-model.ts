@@ -9,6 +9,7 @@ import { ElexisType } from "./elexistype";
 import { autoinject } from "aurelia-framework";
 import { DataService, DataSource } from "../services/datasource";
 import { WebelexisEvents } from '../webelexisevents'
+import findingdefs from '../user/findings'
 
 /**
  * Generic findings (blood pressure, weight and so on). 
@@ -21,7 +22,7 @@ export interface FindingType extends ElexisType {
   measurements: Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
   {
     date: Date,
-    values: Array<string>
+    values: Array<string|number>
   }
   >
 }
@@ -46,15 +47,21 @@ export class FindingsManager {
       if (fm.data && fm.data.length > 0) {
         return new FindingsModel(fm)
       } else {
+        const type=findingdefs[name]
         return new FindingsModel(
           {
             patientid: pat.id,
             name: name,
-            elements: [],
+            elements: type.elements,
             measurements: []
           })
       }
     }
+  }
+
+  async addFinding(name:string, values: Array<string|number>){
+    let finding=await this.fetch(name)
+    finding.addMeasurement(values)
   }
 }
 
@@ -66,8 +73,13 @@ export class FindingsModel {
   getName = () => this.f.name
   getElements = () => this.f.elements
   getMeasurements = () => this.f.measurements
-
-  getRowFor(date): Array<String> {
-    return []
+  addMeasurement = (m:Array<string|number>)=>{
+    this.f.measurements.push({
+      date: new Date(),
+      values: m
+    })
+  }
+  getRowFor(date): Array<String|number> {
+    return this.f.measurements.find(m=>m.date==date).values
   }
 }
