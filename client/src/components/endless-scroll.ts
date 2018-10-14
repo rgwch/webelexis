@@ -8,7 +8,7 @@ import { bindable, autoinject } from "aurelia-framework";
 
 /**
  * A component to scroll 'forever'. New items are loaded
- * from a datasource in the background as required. Clients can eather bind
+ * from a datasource in the background as required. Clients can either bind
  * a 'loadMore' function or listen to the 'reload' event and deliver the next
  * chunk of data accordingly.
  */

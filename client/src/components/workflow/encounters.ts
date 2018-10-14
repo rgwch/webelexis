@@ -20,7 +20,7 @@ import * as moment from 'moment'
 import defaults from '../../user/global'
 import { UserType } from './../../models/user';
 import { WebelexisEvents } from './../../webelexisevents';
-const number_to_fetch=20;
+const number_to_fetch = 20;
 
 @autoinject
 @connectTo<State>({
@@ -35,16 +35,26 @@ export class Encounters {
   encounters = {
     total: 10000000,
     data: [],
-    skip:0
+    skip: 0
   }
   cases = []
-  lastEntry: number = 0
+
+  private scrollTop = 0
+
   private konsultationService: DataService
   private actPatient
   @observable actCase
   @observable searchexpr = "ha"
   encdom
   canCreate = true
+
+  scroll() {
+    if (this.encounters.data.length < this.encounters.total) {
+      const toFetch = Math.min(number_to_fetch, this.encounters.total - this.encounters.data.length)
+      console.log("toFetch: "+toFetch)
+      this.fetchData()
+    }
+  }
 
   actPatientChanged(newValue, oldValue) {
     //console.log("act "+(this.actPatient ? this.actPatient.id : "empty"))
@@ -115,7 +125,7 @@ export class Encounters {
         }
       }
       this.konsultationService.create(kons).then(result => {
-        this.lastEntry = 0
+
       }).catch(err => {
         if (err.code == 400) {
           alert("The database could not handle the request. Please make sure that the server is running and that the database has the necessary modifications for webelexis.")
@@ -132,57 +142,43 @@ export class Encounters {
    */
   refresh() {
     setTimeout(() => {
-      this.encounters.total=1000000
+      this.encounters.total = 1000000
       this.encounters.data = []
-      this.encounters.skip=0
-      this.lastEntry = 0
+      this.encounters.skip = 0
       // console.log("act: "+(this.actPatient ? this.actPatient.id : "empty"))
-      this.fetchData(this.actPatient).then(result => {
-        let act = this.encounters.data[0]
-        if (act.eintrag.html.replace(/<.*?>/g, "") == "") {
-          const children = this.encdom.getElementsByTagName("encounter")
-          if (children && children.length > 0) {
-            const lastKons = children[0]
-            // TODO: Actuvate edit mode
+      this.fetchData().then(result => {
+        if (this.encounters.data.length > 0) {
+          let act = this.encounters.data[0]
+          if (act.eintrag.html.replace(/<.*?>/g, "") == "") {
+            const children = this.encdom.getElementsByTagName("encounter")
+            if (children && children.length > 0) {
+              const lastKons = children[0]
+              // TODO: Actuvate edit mode
+            }
           }
         }
-
       })
     })
   }
 
 
   /**
-   * Fetch new data. The method is either called from actPatientChanged, then data of the new patient
-   * must be loaded. Or it's called as CustomEvent from the EndlessScroll-widtget, then more data of the current patient and case must be fetched.
-   * @param ev
+   * Fetch new data. 
    */
-  fetchData(ev) {
-    let id;
-    if (ev) {
-      id = ev.id
+  fetchData() {
+    let isLoading:boolean
+    if(isLoading){
+      console.log("busy")
+      return
     }
-    if (ev instanceof CustomEvent) {
-      if (this.actPatient) {
-        id = this.actPatient.id
-      }
-    }
-    if (id) {
-      /* 
-       we load always  number_to_fetch items, beginning with lastEntry. 
-       If lastEntry + number_to_fetch >= total
-       we load only total-lastEntry and set lastEntry to total. On first call, total
-       is unknown (but assumed very high)
-       */
+    if (this.actPatient && (this.encounters.data.length < this.encounters.total)) {
+      isLoading=true;
       const expr: any = {
-        patientId: id,
-        $skip: this.lastEntry,
+        patientId: this.actPatient.id,
+        $skip: this.encounters.data.length,
         $limit: number_to_fetch
       }
-      if ((this.lastEntry + number_to_fetch) > this.encounters.total) {
-        expr.$limit = this.encounters.total - this.lastEntry
-      }
-      
+
       //  if a case (Fall) is selected, fetch only encounters for that case
       if (this.actCase != null) {
         expr.fallid = this.actCase.id
@@ -193,20 +189,19 @@ export class Encounters {
       }
       const elms = []
       if (expr.$limit > 0) {
-        console.log(`Lastitem: ${this.lastEntry}, total: ${this.encounters.total}, loading: `+JSON.stringify(expr))
+        console.log(`Lastitem: ${this.encounters.data.length}, total: ${this.encounters.total}, loading: ` + JSON.stringify(expr))
         elms.push(this.konsultationService.find({ query: expr }).then(result => {
           this.encounters.data = this.encounters.data.concat(result.data)
-          this.encounters.total=result.total
-          this.lastEntry = this.encounters.data.length
-
+          this.encounters.total = result.total
         }))
-      }else{
+      } else {
         console.log("no reloading")
       }
-      elms.push(this.caseManager.loadCasesFor(id).then(result => {
+      elms.push(this.caseManager.loadCasesFor(this.actPatient.id).then(result => {
         this.cases = result
       }))
       return Promise.all(elms).then(r => {
+        isLoading=false
         return true
       })
     } else {

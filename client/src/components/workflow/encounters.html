@@ -17,13 +17,20 @@
       </div>
     </div>
     <div class="body" style="height:85vh;">
-      <endless-scroll reload.delegate="fetchData($event)" limit.bind="65">
+      <div class="scroller" scrolltop.bind="scrollTop" scroll.trigger="scroll()">
         <ul class="list-group" ref="encdom">
           <li class="list-group-item" repeat.for="enc of encounters.data">
             <encounter obj.bind="enc"></encounter>
           </li>
         </ul>
-      </endless-scroll>
+      </div>
+      <!-- endless-scroll reload.delegate="fetchData($event)" limit.bind="65">
+        <ul class="list-group" ref="encdom">
+          <li class="list-group-item" repeat.for="enc of encounters.data">
+            <encounter obj.bind="enc"></encounter>
+          </li>
+        </ul>
+      </endless-scroll -->
     </div>
   </div>
 </template>
