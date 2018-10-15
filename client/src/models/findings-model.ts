@@ -22,7 +22,7 @@ export interface FindingType extends ElexisType {
   measurements: Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
   {
     date: Date,
-    values: Array<string|number>
+    values: Array<string | number>
   }
   >
 }
@@ -47,21 +47,23 @@ export class FindingsManager {
       if (fm.data && fm.data.length > 0) {
         return new FindingsModel(fm)
       } else {
-        const type=findingdefs[name]
-        return new FindingsModel(
-          {
-            patientid: pat.id,
-            name: name,
-            elements: type.elements,
-            measurements: []
-          })
+        const type = findingdefs[name]
+        const newFinding= await this.service.create({
+          patientid: pat.id,
+          name: name,
+          elements: type.elements,
+          measurements: []
+        })
+        return new FindingsModel(newFinding)
       }
     }
   }
 
-  async addFinding(name:string, values: Array<string|number>){
-    let finding=await this.fetch(name)
+  async addFinding(name: string, values: Array<string | number>) {
+    let finding = await this.fetch(name)
     finding.addMeasurement(values)
+    finding.f=await this.service.update(finding.f.id,finding.f)
+    return finding
   }
 }
 
@@ -73,13 +75,13 @@ export class FindingsModel {
   getName = () => this.f.name
   getElements = () => this.f.elements
   getMeasurements = () => this.f.measurements
-  addMeasurement = (m:Array<string|number>)=>{
+  addMeasurement = (m: Array<string | number>) => {
     this.f.measurements.push({
       date: new Date(),
       values: m
     })
   }
-  getRowFor(date): Array<String|number> {
-    return this.f.measurements.find(m=>m.date==date).values
+  getRowFor(date): Array<String | number> {
+    return this.f.measurements.find(m => m.date == date).values
   }
 }

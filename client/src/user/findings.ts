@@ -7,7 +7,7 @@ export default {
     title: "Masse",  
     elements: ["weight", "height", "bmi"],
     create: (val) => {
-      const { weight, height } = val.split("/")
+      const [weight, height] = val.split("/")
       const bmi = Math.round(weight / ((height / 100) ^ 2))
       return [weight, height, bmi]
     }
@@ -17,7 +17,7 @@ export default {
     title: "Kreislauf",
     elements: ["syst", "diast", "pulse"],
     create: val => {
-      const { syst, diast, pulse } = val.split("/")
+      const [syst, diast, pulse=0] = val.split("/")
       return [syst, diast, pulse]
     }
   },

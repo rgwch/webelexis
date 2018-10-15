@@ -1,14 +1,16 @@
+import { PLATFORM } from "aurelia-pal";
+
 export default{
   "edit":{
     "name": "Editor",
-    "view": "./editor"
+    "view": PLATFORM.moduleName("./editor")
   },
   "kons":{
     "name": "Konsultationen",
-    "view": "./encounters_"
+    "view": PLATFORM.moduleName("./encounters_")
   },
   "scroll":{
     "name": "Scroller",
-    "view": "./scroll_"
+    "view":PLATFORM.moduleName("./scroll_")
   }
 }
