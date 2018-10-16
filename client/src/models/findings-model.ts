@@ -10,6 +10,7 @@ import { autoinject, LogManager } from "aurelia-framework";
 import { DataService, DataSource } from "../services/datasource";
 import { WebelexisEvents } from '../webelexisevents'
 import findingdefs from '../user/findings'
+import * as _ from 'lodash'
 
 const log=LogManager.getLogger("findings-model")
 /**
@@ -36,15 +37,29 @@ export class FindingsManager {
     this.service = ds.getService('findings')
   }
 
+  async getFindingNames(){
+    return _.keys(findingdefs).map(e=>[e,findingdefs[e].title])
+  }
+
+  async getFindings(name:string,patid: string): Promise<FindingsModel>{
+    if(patid){
+      const fm = await this.service.find({ query: { name: name, patientid: patid } })
+      if (fm.data && fm.data.length > 0) {
+        log.debug("found existing "+JSON.stringify(fm.data[0]))
+        return new FindingsModel(fm.data[0])
+      }else{
+        return undefined
+      }
+    }  
+  }
   /**
    * Fetch a Finding with a given name for the currently selected Patient.
    * If no such Finding is found, create a new one.
    * @param name Name of the Finding to fetch
    */
-  async fetch(name: string): Promise<FindingsModel> {
-    const pat = this.we.getSelectedItem('patient')
-    if (pat) {
-      const fm = await this.service.find({ query: { name: name, patientid: pat.id } })
+  async fetch(name: string, patid): Promise<FindingsModel> {
+    if (patid) {
+      const fm = await this.service.find({ query: { name: name, patientid: patid } })
       if (fm.data && fm.data.length > 0) {
         log.debug("found existing "+JSON.stringify(fm.data[0]))
         return new FindingsModel(fm.data[0])
@@ -55,7 +70,7 @@ export class FindingsManager {
         }
         try {
           const newFinding = await this.service.create({
-            patientid: pat.id,
+            patientid: patid,
             name: name,
             elements: type.elements,
             measurements: []
@@ -69,10 +84,10 @@ export class FindingsManager {
       }
     }
   }
-  async addFinding(name: string, values: string[])
-  async addFinding(name: string, values: number[])
-  async addFinding(name: string, values: Array<string | number>) {
-    let finding = await this.fetch(name)
+  async addFinding(name: string, patid:string, values: string[])
+  async addFinding(name: string, patid:string, values: number[])
+  async addFinding(name: string, patid: string, values: Array<string | number>) {
+    let finding = await this.fetch(name,patid)
     try {
       finding.addMeasurement(values)
       finding.f = await this.service.update(finding.f.id, finding.f)

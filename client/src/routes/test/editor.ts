@@ -5,10 +5,12 @@ import { DataSource,DataService } from '../../services/datasource';
 @inlineView(`
 <template>
 <require from="../../components/ck-editor"></require>
+<require from="../../components/workflow/findings-view"></require>
 <div class="col">
 <ck-editor value.two-way="text" callback.bind="cb"></ck-editor>
 </div>
-<div>F: \${finding}</div>
+<div>F: \${JSON.stringify(finding)}</div>
+<findings-view></findings-view>
 </template>
 `)
 @autoinject

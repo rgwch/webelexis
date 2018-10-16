@@ -72,7 +72,7 @@ import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
 
 
-@connectTo(store=>store.state.pipe(pluck("something")))
+@connectTo(store=>store.state.pipe(<any>pluck("something")))
 export class SomethingHandler{
 
   /* 
@@ -103,9 +103,9 @@ If you're interested in a number of objects only, use something similar to:
 ~~~~
 @connectTo<State>({
   selector: {
-    actPatient: store => store.state.pipe(pluck('patient')),
-    actCase: store=>store.state.pipe(pluck('case')),
-    actKons: store => store.state.pipe(pluck('konsultation'))
+    actPatient: store => store.state.pipe(<any>pluck('patient')),
+    actCase: store=>store.state.pipe(<any>pluck('case')),
+    actKons: store => store.state.pipe(<any>pluck('konsultation'))
   }
 })
 ~~~~

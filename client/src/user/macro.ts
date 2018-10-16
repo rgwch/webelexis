@@ -63,7 +63,7 @@ export class Macroprocessor {
     const actUser = this.we.getSelectedItem('usr')
     const item=userdefs[name]
     const processed=item.create(value)
-    this.findings.addFinding(name,processed).then(added=>{
+    this.findings.addFinding(name,actPat.id, processed).then(added=>{
 
     })
     return processed;

@@ -1,3 +1,6 @@
 template
-
+  require(from="./finding-view")
+  ul
+    li(repeat.for="fg of findingGroups")
+      finding-view(finding.bind="fg")
 
