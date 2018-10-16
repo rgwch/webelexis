@@ -5,8 +5,9 @@
  ********************************************/
 
 import {FindingsManager,FindingType} from '../../models/findings-model'
-import { bindable } from 'aurelia-framework';
+import { bindable, useView, PLATFORM } from 'aurelia-framework';
 
+@useView(PLATFORM.moduleName('./findings-view'))
 export class FindingsView{
   @bindable obj: FindingType
 

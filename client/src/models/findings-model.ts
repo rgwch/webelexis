@@ -6,11 +6,12 @@
 
 
 import { ElexisType } from "./elexistype";
-import { autoinject } from "aurelia-framework";
+import { autoinject, LogManager } from "aurelia-framework";
 import { DataService, DataSource } from "../services/datasource";
 import { WebelexisEvents } from '../webelexisevents'
 import findingdefs from '../user/findings'
 
+const log=LogManager.getLogger("findings-model")
 /**
  * Generic findings (blood pressure, weight and so on). 
  * Configuration in src/user/findings
@@ -45,25 +46,41 @@ export class FindingsManager {
     if (pat) {
       const fm = await this.service.find({ query: { name: name, patientid: pat.id } })
       if (fm.data && fm.data.length > 0) {
-        return new FindingsModel(fm)
+        log.debug("found existing "+JSON.stringify(fm.data[0]))
+        return new FindingsModel(fm.data[0])
       } else {
         const type = findingdefs[name]
-        const newFinding= await this.service.create({
-          patientid: pat.id,
-          name: name,
-          elements: type.elements,
-          measurements: []
-        })
-        return new FindingsModel(newFinding)
+        if (!type) {
+          throw 'no finding definition for ' + name + ' found!'
+        }
+        try {
+          const newFinding = await this.service.create({
+            patientid: pat.id,
+            name: name,
+            elements: type.elements,
+            measurements: []
+          })
+          log.debug("created new finding "+newFinding.id)
+          return new FindingsModel(newFinding)
+        } catch (err) {
+          log.error("could not create finding %s:" + err.message + err, name)
+          throw("server error")
+        }
       }
     }
   }
-
+  async addFinding(name: string, values: string[])
+  async addFinding(name: string, values: number[])
   async addFinding(name: string, values: Array<string | number>) {
     let finding = await this.fetch(name)
-    finding.addMeasurement(values)
-    finding.f=await this.service.update(finding.f.id,finding.f)
-    return finding
+    try {
+      finding.addMeasurement(values)
+      finding.f = await this.service.update(finding.f.id, finding.f)
+      return finding
+    } catch (err) {
+      log.error("couldn't update " + JSON.stringify(finding.f) + " - " + err.message + err)
+      throw("server error")
+    }
   }
 }
 
