@@ -12,7 +12,7 @@ import { WebelexisEvents } from '../webelexisevents'
 import findingdefs from '../user/findings'
 import * as _ from 'lodash'
 
-const log=LogManager.getLogger("findings-model")
+const log = LogManager.getLogger("findings-model")
 /**
  * Generic findings (blood pressure, weight and so on). 
  * Configuration in src/user/findings
@@ -37,20 +37,20 @@ export class FindingsManager {
     this.service = ds.getService('findings')
   }
 
-  async getFindingNames(){
-    return _.keys(findingdefs).map(e=>[e,findingdefs[e].title])
+  async getFindingNames() {
+    return _.keys(findingdefs).map(e => [e, findingdefs[e].title])
   }
 
-  async getFindings(name:string,patid: string): Promise<FindingsModel>{
-    if(patid){
+  async getFindings(name: string, patid: string): Promise<FindingsModel> {
+    if (patid) {
       const fm = await this.service.find({ query: { name: name, patientid: patid } })
       if (fm.data && fm.data.length > 0) {
-        log.debug("found existing "+JSON.stringify(fm.data[0]))
+        log.debug("found existing " + JSON.stringify(fm.data[0]))
         return new FindingsModel(fm.data[0])
-      }else{
+      } else {
         return undefined
       }
-    }  
+    }
   }
   /**
    * Fetch a Finding with a given name for the currently selected Patient.
@@ -58,10 +58,14 @@ export class FindingsManager {
    * @param name Name of the Finding to fetch
    */
   async fetch(name: string, patid): Promise<FindingsModel> {
+    if (!patid) {
+      let pat = this.we.getSelectedItem('patient')
+      patid = pat ? pat.id : undefined
+    }
     if (patid) {
       const fm = await this.service.find({ query: { name: name, patientid: patid } })
       if (fm.data && fm.data.length > 0) {
-        log.debug("found existing "+JSON.stringify(fm.data[0]))
+        log.debug("found existing " + JSON.stringify(fm.data[0]))
         return new FindingsModel(fm.data[0])
       } else {
         const type = findingdefs[name]
@@ -75,26 +79,44 @@ export class FindingsManager {
             elements: type.elements,
             measurements: []
           })
-          log.debug("created new finding "+newFinding.id)
+          log.debug("created new finding " + newFinding.id)
           return new FindingsModel(newFinding)
         } catch (err) {
           log.error("could not create finding %s:" + err.message + err, name)
-          throw("server error")
+          throw ("server error")
         }
       }
     }
   }
-  async addFinding(name: string, patid:string, values: string[])
-  async addFinding(name: string, patid:string, values: number[])
+  async addFinding(name: string, patid: string, values: string[])
+  async addFinding(name: string, patid: string, values: number[])
   async addFinding(name: string, patid: string, values: Array<string | number>) {
-    let finding = await this.fetch(name,patid)
+    let finding = await this.fetch(name, patid)
     try {
       finding.addMeasurement(values)
       finding.f = await this.service.update(finding.f.id, finding.f)
       return finding
     } catch (err) {
       log.error("couldn't update " + JSON.stringify(finding.f) + " - " + err.message + err)
-      throw("server error")
+      throw ("server error")
+    }
+  }
+  
+  async removeFinding(name: string, patid: string, date: Date) {
+    if (!patid) {
+      let pat = this.we.getSelectedItem('patient')
+      patid = pat ? pat.id : undefined
+    }
+    if (patid) {
+      let finding = await this.fetch(name, patid)
+      try {
+        if (finding.removeMeasurement(date)) {
+          let updated = await this.service.update(finding.f.id, finding.f)
+        }
+      } catch (err) {
+        log.error("couldn't delete " + JSON.stringify(finding.f) + " - " + err.message)
+        throw ("server error")
+      }
     }
   }
 }
@@ -112,6 +134,14 @@ export class FindingsModel {
       date: new Date(),
       values: m
     })
+  }
+  removeMeasurement = (date: Date) => {
+    const candidate = this.f.measurements.findIndex(e => e.date == date)
+    if (candidate > -1) {
+      this.f.measurements = this.f.measurements.splice(candidate, 1)
+      return true
+    }
+    return false
   }
   getRowFor(date): Array<String | number> {
     return this.f.measurements.find(m => m.date == date).values

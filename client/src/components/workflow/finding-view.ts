@@ -18,11 +18,10 @@ export class FindingView {
   }
 
   private findingService: DataService
-  private isOpen:boolean=false
-  private num:number=undefined
-  
+  private isOpen: boolean = false
+
   constructor(private fm: FindingsManager, ds: DataSource) {
-    this.findingService = ds.getService('finding')
+    this.findingService = ds.getService('findings')
   }
 
   displayLine(row) {
@@ -37,16 +36,38 @@ export class FindingView {
   }
   attached() {
     this.findingService.on('updated', this.checkUpdate)
+    this.findingService.on('removed', this.checkUpdate)
   }
   detached() {
     this.findingService.off('updated', this.checkUpdate)
+    this.findingService.off('removed', this.checkUpdate)
   }
 
-  toggle(){
-    this.isOpen=!this.isOpen
+  selectAll() {
+    for (const m of this.finding.measurements) {
+      m['selected'] = true
+    }
+  }
+  deselectAll() {
+    for (const m of this.finding.measurements) {
+      m['selected'] = false
+    }
+  }
+  delete() {
+    const def = defs[this.finding.name]
+    for (const m of this.finding.measurements) {
+      if (m['selected']) {
+        this.fm.removeFinding(this.finding.name, null, m.date)
+      }
+    }
+  }
+  toggle() {
+    this.isOpen = !this.isOpen
   }
   checkUpdate = (updated) => {
-    if (updated.title == this.finding.title) {
+    console.log(JSON.stringify(updated))
+    console.log(JSON.stringify(this.finding))
+    if (updated.name == this.finding.name) {
       console.log("updated")
     }
   }

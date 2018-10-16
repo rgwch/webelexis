@@ -2,10 +2,7 @@
   <require from="../../services/date-format"></require>
   <div class="card">
     <div class="card-header bg-light">
-      <span>
-        <i class="fas fa-circle" click.delegate="toggle()"></i>
-      </span>
-      <span>${finding.title}
+      <span click.delegate="toggle()">${finding.title}
         <span class="badge">${finding.measurements.length}</span>
       </span>
       <!-- div style="position:absolute;right:20px;top:5px;" click.delegate="menu()">
@@ -13,13 +10,19 @@
       </div -->
       <div class="nav nav-pills navbar-right" style="position:absolute;right:20px;top:5px;">
         <div class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+          <a data-toggle="dropdown" href="#" role="button">
             <i class="fas fa-bars"></i>
           </a>
           <ul class="dropdown-menu" role="menu">
-            <li class="nav-item">select all</li>
-            <li>deselect all</li>
-            <li>delete</li>
+            <li class="nav-item">
+              <a href="#" click.delegate="selectAll()">select all</a>
+            </li>
+            <li>
+              <a href="#" click.delegate="deselectAll()">deselect all</a>
+            </li>
+            <li>
+              <a href="#" click.delegate="delete()">delete</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -27,8 +30,9 @@
     <div class="card-body" if.bind="isOpen">
       <ul class="list-group">
         <li class="list-group-item" repeat.for="m of finding.measurements">
-          <input type="checkbox">
-          <span style="font-size:smaller;font-weight:bolder">${m.date | dateFormat:"date"}</span>
+          <input type="checkbox" checked.bind="m.selected">
+          <span style="font-size:smaller;font-weight:bolder">${m.date |
+            dateFormat:"date"}</span>
           ${displayLine(m.values)}</li>
       </ul>
     </div>
