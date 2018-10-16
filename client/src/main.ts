@@ -25,7 +25,7 @@ export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'))
-    // .globalResources('resources/date-format-value-converter')
+    //.globalResources('resources/date-format')
     .feature(PLATFORM.moduleName('validation/index'))
     .plugin(PLATFORM.moduleName('aurelia-i18n'), (instance) => {
       instance.i18next.use(Backend);

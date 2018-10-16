@@ -32,7 +32,7 @@ export class FindingsView{
       ng.push({
         name: group[0],
         title: group[1],
-        values: measurements
+        measurements: measurements
       })
       this.findingGroups=ng
     }

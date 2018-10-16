@@ -18,6 +18,7 @@ import userdefs from '../user/findings'
 @autoinject
 export class Macroprocessor {
   bdbmi=/(\d{2,3})\/(\d{2,3})/
+  inr=/\d{1,3}%\/\d\.?\d?/
 
   constructor(private we: WebelexisEvents, private findings:FindingsManager) {
     //this.patients = ds.getService('patient')
@@ -31,7 +32,6 @@ export class Macroprocessor {
    */
   process(context: "encounter" | "document", word: string) {
     if (context === 'encounter') {
-      /* Example: interpret xxx/yy as blood pressure and create a finding for it.*/
       const isbdmi=this.bdbmi.exec(word)
       if(isbdmi){
         let first=parseInt(isbdmi[1])
@@ -44,7 +44,19 @@ export class Macroprocessor {
           const data=this.createFinding("physical",word)
           return `Gewicht: ${data[0]}, Grösse: ${data[1]}, BMI: ${data[2]}`
         }
-      } else {
+      } 
+      const inr=this.inr.exec(word)
+      if(inr && userdefs.coagulation){
+        const data=this.createFinding("coagulation",word)
+        if(userdefs.coagulation.verbose){
+          return userdefs.coagulation.verbose(data)
+        }
+        if(userdefs.coagulation.compact){
+          return userdefs.coagulation.compact(data)
+        }
+        return data
+      }
+      else {
         switch (word) {
           case "gw": return "Gewicht";
           case "bd": return "Blutdruck";
