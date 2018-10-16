@@ -7,9 +7,8 @@ Es wird empfohlen, zuerst den Webelexis-Server aufzusetzen (s. [dort](../server/
 
 * NodeJS >=10 installieren (Die verwendete NodeJS-Version muss ES6-Features wie Promises und async/await unterstützen)
 
-
-      git clone https://github.com/rgwch/webelexis
-      cd webelexis
+      # vom webelexis/server-Verzeichnis aus:
+      cd ../client
       npm install
       npm install -g aurelia-cli 
       au run --watch --hmr
