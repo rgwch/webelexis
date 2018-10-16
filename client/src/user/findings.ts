@@ -4,7 +4,7 @@
 
 export default {
   "physical": {
-    title: "Masse",  
+    title: "Gewicht",  
     elements: ["weight:kg", "height:cm", "bmi"],
     create: (val) => {
       const [weight, height] = val.split("/")

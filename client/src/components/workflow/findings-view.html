@@ -1,0 +1,15 @@
+<template>
+  <require from="components/workflow/finding-view"></require>
+  <span class="detailcaption">Messwerte</span>
+  <div class="sheet">
+    <div class="header">
+    </div>
+    <div class="body" style="height:85vh;overflow:auto">
+      <ul class="list-group">
+        <li class="list-group-item" repeat.for="fg of findingGroups">
+          <finding-view finding.bind="fg"></finding-view>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>

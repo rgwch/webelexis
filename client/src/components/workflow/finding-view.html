@@ -1,0 +1,17 @@
+<template>
+  <require from="../../services/date-format"></require>
+  <div class="card">
+    <div class="card-header bg-light" click.delegate="toggle()">
+      <span>${finding.title}
+        <span class="badge">${finding.measurements.length}</span>
+      </span>
+      
+    </div>
+    <div class="card-body" if.bind="isOpen">
+      <ul class="list-group">
+        <li class="list-group-item" repeat.for="m of finding.measurements">${m.date | dateFormat:"date"}
+          ${displayLine(m.values)}</li>
+      </ul>
+    </div>
+  </div>
+</template>

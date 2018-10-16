@@ -57,5 +57,10 @@ export default{
       text: "Artikel",
       icon: "/pill.svg",
       view: PLATFORM.moduleName("../../components/workflow/artikeldetail")
+    },
+    messwerte:{
+      text: "Messwerte",
+      icon: "/checklist.svg",
+      view: PLATFORM.moduleName("../../components/workflow/findings-view")
     }
   }

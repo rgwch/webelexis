@@ -11,7 +11,7 @@ import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
 
 @connectTo(store=>store.state.pipe(<any>pluck('patient')))
-@useView(PLATFORM.moduleName('./findings-view.pug'))
+//@useView(PLATFORM.moduleName('components/workflow/findings-view.pug'))
 @autoinject
 export class FindingsView{
   private findingGroups=[]
