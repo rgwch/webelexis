@@ -30,41 +30,58 @@ export interface FindingType extends ElexisType {
   >
 }
 
+/**
+ * FindingsManager is used to create, retrieve, change and update findingd
+ */
 @autoinject
 export class FindingsManager {
   private service: DataService
-  private definitions={}
+  private definitions = {}
 
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     this.service = ds.getService('findings')
-    for(const def of defs){
-      this.definitions[def.name]=def
+    for (const def of defs) {
+      this.definitions[def.name] = def
     }
   }
 
-  getDefinitions(){
+  /**
+   * get the (user provided - see /src/user/finding-defs.ts) and system processed 
+   * (see constructor) finding category definitions
+   */
+  getDefinitions() {
     return this.definitions
   }
 
+  /**
+   * Get Name and title of all defined finding categoeries
+   */
   async getFindingNames() {
-    return defs.map(e=>[e.name,e.title])
+    return defs.map(e => [e.name, e.title])
   }
 
+  /**
+   * Get the findings of a given category for a given patient
+   * @param name category to find
+   * @param patid patient to match
+   * @returns a Promise with a FindingsModel with the requested finding, or undefined if none found
+   */
   async getFindings(name: string, patid: string): Promise<FindingsModel> {
     if (patid) {
       const fm = await this.service.find({ query: { name: name, patientid: patid } })
       if (fm.data && fm.data.length > 0) {
         log.debug("found existing " + JSON.stringify(fm.data[0]))
         return new FindingsModel(fm.data[0])
-      } else {
-        return undefined
       }
     }
+    return undefined
   }
   /**
-   * Fetch a Finding with a given name for the currently selected Patient.
+   * Fetch or create a Finding with a given name for the given selected Patient.
    * If no such Finding is found, create a new one.
    * @param name Name of the Finding to fetch
+   * @param patid: Patient to match or null for the currently selected patient
+   * @returns the existing or newly created FindingModel of the specified type for the specified patient 
    */
   async fetch(name: string, patid): Promise<FindingsModel> {
     if (!patid) {
@@ -97,6 +114,13 @@ export class FindingsManager {
       }
     }
   }
+  /**
+   * Add measurements to a finding
+   * @param name name of the finding
+   * @param patid patient to match
+   * @param values an arra with strings or numbers 
+   * @returns an updated FindingModel
+   */
   async addFinding(name: string, patid: string, values: string[])
   async addFinding(name: string, patid: string, values: number[])
   async addFinding(name: string, patid: string, values: Array<string | number>) {
@@ -111,20 +135,30 @@ export class FindingsManager {
     }
   }
 
+  /**
+   * remove a measrument from a finding
+   * @param id id of the finding
+   * @param date date/time to remove
+   */
   async removeFinding(id: string, date: Date) {
-      try {
-        const f:FindingType = await this.service.get(id)
-        const finding=new FindingsModel(f)
-        if (finding.removeMeasurement(date)) {
-          let updated = await this.service.update(finding.f.id, finding.f)
-        }
-      } catch (err) {
-        log.error("couldn't delete " + id + " - " + err.message)
-        throw ("server error")
+    try {
+      const f: FindingType = await this.service.get(id)
+      const finding = new FindingsModel(f)
+      if (finding.removeMeasurement(date)) {
+        let updated = await this.service.update(finding.f.id, finding.f)
       }
+    } catch (err) {
+      log.error("couldn't delete " + id + " - " + err.message)
+      throw ("server error")
+    }
   }
 }
 
+/**
+ * FindingsModel is a wrapper around a FindingType to allow some operations
+ * Note: FindingModel will neither fetch nor save its contents to the DataService. It
+ * only manipulates in-clientside-memory.
+ */
 export class FindingsModel {
   f: FindingType
   constructor(obj: FindingType) {

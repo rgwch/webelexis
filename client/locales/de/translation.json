@@ -103,6 +103,14 @@
     "lab": "Labor",
     "articles": "Artikel"
   },
+  "menu":{
+    "add": "Hinzufügen",
+    "selectall": "Alle auswählen",
+    "deselectall": "Auswahl aufheben",
+    "delete": "Löschen",
+    "graph": "Grafik",
+    "export": "Exportieren"
+  },
   "select": {
     "search": "Suchen",
     "allcases": "Alle Fälle",

@@ -3,26 +3,22 @@
   <div class="card">
     <div class="card-header bg-light">
       <span click.delegate="toggle()">${finding.title}
-        <span class="badge">${finding.measurements.length}</span>
+        <span class="badge badge-dark">${finding.measurements.length}</span>
       </span>
-      <!-- div style="position:absolute;right:20px;top:5px;" click.delegate="menu()">
-        <i class="fas fa-bars"></i>
-      </div -->
-      <div class="nav nav-pills navbar-right" style="position:absolute;right:20px;top:5px;">
-        <div class="dropdown">
+      <!-- Menu -->
+      <div class="nav" style="position:absolute;right:20px;top:5px;">
+        <div class="dropdown" if.bind="isOpen">
           <a data-toggle="dropdown" href="#" role="button">
             <i class="fas fa-bars"></i>
           </a>
           <ul class="dropdown-menu" role="menu">
-            <li class="nav-item">
-              <a href="#" click.delegate="selectAll()">select all</a>
-            </li>
-            <li>
-              <a href="#" click.delegate="deselectAll()">deselect all</a>
-            </li>
-            <li>
-              <a href="#" click.delegate="delete()">delete</a>
-            </li>
+            <li class="dropdown-item menuitem" t="menu.add">add</li>
+            <li class="dropdown-item menuitem" click.delegate="selectAll()" t="menu.selectall">select all</li>
+            <li class="dropdown-item menuitem" click.delegate="deselectAll()" t="menu.deselectall"></li>
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-item menuitem" t="menu.graph"></li>  
+            <li class="dropdown-item menuitem" t="menu.export"></li>  
+            <li class="dropdown-item menuitem" click.delegate="delete()" t="menu.delete"></li>
           </ul>
         </div>
       </div>

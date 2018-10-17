@@ -43,16 +43,31 @@ export class FindingView {
     this.findingService.off('removed', this.checkUpdate)
   }
 
+  /**
+   * Menuoption: Add Measurement
+   */
+  addItem(){
+
+  }
+  /**
+   * Menuoption: select all measurements
+   */
   selectAll() {
     for (const m of this.finding.measurements) {
       m['selected'] = true
     }
   }
+  /**
+   * Menuoption: Unselect all measurments
+   */
   deselectAll() {
     for (const m of this.finding.measurements) {
       m['selected'] = false
     }
   }
+  /**
+   * Menuoption: Delete selected meaurements (after confirmation)
+   */
   delete() {
     for (const m of this.finding.measurements) {
       if (m['selected']) {
@@ -62,9 +77,16 @@ export class FindingView {
       }
     }
   }
+  /**
+   * Open and close display of measurements of a category
+   */
   toggle() {
     this.isOpen = !this.isOpen
   }
+  /**
+   * React on update of finding-objects (Message from the service):
+   * if it's "our" finding, update the list.
+   */
   checkUpdate = (updated) => {
     //console.log(JSON.stringify(updated))
     //console.log(JSON.stringify(this.finding))
