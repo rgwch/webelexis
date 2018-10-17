@@ -8,13 +8,13 @@ import findings from "user/findings";
 @autoinject
 export class FindingView {
   @bindable finding: {
-    name: string,
-    title: string,
+    name: string
+    title: string
+    id: string
     measurements: Array<{
       date: Date,
       values: Array<number | string>
-    }
-    >
+    }>
   }
 
   private findingService: DataService
@@ -54,10 +54,11 @@ export class FindingView {
     }
   }
   delete() {
-    const def = defs[this.finding.name]
     for (const m of this.finding.measurements) {
       if (m['selected']) {
-        this.fm.removeFinding(this.finding.name, null, m.date)
+        if(confirm(`delete ${m.date}?`)){
+          this.fm.removeFinding(this.finding.id, m.date)
+        }
       }
     }
   }
@@ -65,10 +66,11 @@ export class FindingView {
     this.isOpen = !this.isOpen
   }
   checkUpdate = (updated) => {
-    console.log(JSON.stringify(updated))
-    console.log(JSON.stringify(this.finding))
-    if (updated.name == this.finding.name) {
+    //console.log(JSON.stringify(updated))
+    //console.log(JSON.stringify(this.finding))
+    if (updated.id === this.finding.id) {
       console.log("updated")
+      this.finding.measurements=updated.measurements
     }
   }
 

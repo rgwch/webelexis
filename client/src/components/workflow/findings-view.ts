@@ -32,6 +32,7 @@ export class FindingsView{
       ng.push({
         name: group[0],
         title: group[1],
+        id: (findingElement ? findingElement.f.id : undefined),
         measurements: measurements
       })
       this.findingGroups=ng

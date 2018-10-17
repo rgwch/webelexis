@@ -44,7 +44,10 @@ export default {
     title: "Gerinnung",
     elements: ["Quick", "INR"],
     create: val => {
-      const { q, inr } = val.split(/[\/,]/)
+      let [q, inr] = val.split(/[\/,]/)
+      if(q.endsWith("%")){
+        q=q.substring(0,q.length-1)
+      }
       return [q, inr]
     },
     verbose: (row):string=>{

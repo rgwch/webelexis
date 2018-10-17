@@ -101,23 +101,18 @@ export class FindingsManager {
       throw ("server error")
     }
   }
-  
-  async removeFinding(name: string, patid: string, date: Date) {
-    if (!patid) {
-      let pat = this.we.getSelectedItem('patient')
-      patid = pat ? pat.id : undefined
-    }
-    if (patid) {
-      let finding = await this.fetch(name, patid)
+
+  async removeFinding(id: string, date: Date) {
       try {
+        const f:FindingType = await this.service.get(id)
+        const finding=new FindingsModel(f)
         if (finding.removeMeasurement(date)) {
           let updated = await this.service.update(finding.f.id, finding.f)
         }
       } catch (err) {
-        log.error("couldn't delete " + JSON.stringify(finding.f) + " - " + err.message)
+        log.error("couldn't delete " + id + " - " + err.message)
         throw ("server error")
       }
-    }
   }
 }
 
@@ -138,7 +133,7 @@ export class FindingsModel {
   removeMeasurement = (date: Date) => {
     const candidate = this.f.measurements.findIndex(e => e.date == date)
     if (candidate > -1) {
-      this.f.measurements = this.f.measurements.splice(candidate, 1)
+      this.f.measurements.splice(candidate, 1)
       return true
     }
     return false
