@@ -8,7 +8,6 @@ import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework';
 import { DataSource, DataService } from '../services/datasource';
 import { FindingType, FindingsManager } from 'models/findings-model';
-import userdefs from '../user/findings'
 
 /**
  * Instead od simple mappings from shortcuts to texts we cjose a more powerful approach:
@@ -19,8 +18,9 @@ import userdefs from '../user/findings'
 export class Macroprocessor {
   bdbmi=/(\d{2,3})\/(\d{2,3})/
   inr=/\d{1,3}%\/\d\.?\d?/
-
+  userdefs
   constructor(private we: WebelexisEvents, private findings:FindingsManager) {
+    this.userdefs=findings.getDefinitions()
     //this.patients = ds.getService('patient')
     //this.findings = ds.getService('findings')
   }
@@ -46,13 +46,13 @@ export class Macroprocessor {
         }
       } 
       const inr=this.inr.exec(word)
-      if(inr && userdefs.coagulation){
+      if(inr && this.userdefs.coagulation){
         const data=this.createFinding("coagulation",word)
-        if(userdefs.coagulation.verbose){
-          return userdefs.coagulation.verbose(data)
+        if(this.userdefs.coagulation.verbose){
+          return this.userdefs.coagulation.verbose(data)
         }
-        if(userdefs.coagulation.compact){
-          return userdefs.coagulation.compact(data)
+        if(this.userdefs.coagulation.compact){
+          return this.userdefs.coagulation.compact(data)
         }
         return data
       }
@@ -73,7 +73,7 @@ export class Macroprocessor {
   createFinding(name, value) {
     const actPat = this.we.getSelectedItem('patient')
     const actUser = this.we.getSelectedItem('usr')
-    const item=userdefs[name]
+    const item=this.userdefs[name]
     const processed=item.create(value)
     this.findings.addFinding(name,actPat.id, processed).then(added=>{
 

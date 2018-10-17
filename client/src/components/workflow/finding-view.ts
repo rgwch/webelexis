@@ -1,8 +1,6 @@
 import { useView, PLATFORM, bindable, autoinject } from "aurelia-framework";
 import { FindingsManager, FindingsModel } from "models/findings-model";
 import { DataSource, DataService } from "services/datasource";
-import defs from 'user/findings'
-import findings from "user/findings";
 
 //@useView(PLATFORM.moduleName('components/workflow/finding-view.pug'))
 @autoinject
@@ -19,13 +17,15 @@ export class FindingView {
 
   private findingService: DataService
   private isOpen: boolean = false
+  private definitions
 
   constructor(private fm: FindingsManager, ds: DataSource) {
     this.findingService = ds.getService('findings')
+    this.definitions=fm.getDefinitions()
   }
 
   displayLine(row) {
-    const def = defs[this.finding.name]
+    const def = this.definitions[this.finding.name]
     if (def && def.compact) {
       return def.compact(row)
     } else if (def.verbose) {

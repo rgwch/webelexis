@@ -6,7 +6,6 @@
 
 import {FindingsManager, FindingsModel} from '../../models/findings-model'
 import { bindable, useView, PLATFORM, autoinject } from 'aurelia-framework';
-import defs from '../../user/findings'
 import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
 

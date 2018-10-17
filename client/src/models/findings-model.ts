@@ -9,8 +9,9 @@ import { ElexisType } from "./elexistype";
 import { autoinject, LogManager } from "aurelia-framework";
 import { DataService, DataSource } from "../services/datasource";
 import { WebelexisEvents } from '../webelexisevents'
-import findingdefs from '../user/findings'
+import defs from '../user/finding-defs'
 import * as _ from 'lodash'
+import { FindingDef } from "./finding-def";
 
 const log = LogManager.getLogger("findings-model")
 /**
@@ -32,13 +33,21 @@ export interface FindingType extends ElexisType {
 @autoinject
 export class FindingsManager {
   private service: DataService
+  private definitions={}
 
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     this.service = ds.getService('findings')
+    for(const def of defs){
+      this.definitions[def.name]=def
+    }
+  }
+
+  getDefinitions(){
+    return this.definitions
   }
 
   async getFindingNames() {
-    return _.keys(findingdefs).map(e => [e, findingdefs[e].title])
+    return defs.map(e=>[e.name,e.title])
   }
 
   async getFindings(name: string, patid: string): Promise<FindingsModel> {
@@ -68,7 +77,7 @@ export class FindingsManager {
         log.debug("found existing " + JSON.stringify(fm.data[0]))
         return new FindingsModel(fm.data[0])
       } else {
-        const type = findingdefs[name]
+        const type = this.definitions[name]
         if (!type) {
           throw 'no finding definition for ' + name + ' found!'
         }
