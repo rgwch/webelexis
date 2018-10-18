@@ -12,7 +12,7 @@ export default [
   {
     name: "physical",
     title: "Gewicht",
-    elements: ["weight:kg", "height:cm", "bmi"],
+    elements: ["weight:kg", "height:cm", "bmi:formula"],
     create: (val) => {
       const [weight, height] = val.split("/")
       const bmi = Math.round(weight / ((height / 100) ^ 2))
@@ -48,7 +48,7 @@ export default [
   }, {
     name: "coagulation",
     title: "Gerinnung",
-    elements: ["Quick", "INR"],
+    elements: ["Quick:%", "INR"],
     create: val => {
       let [q, inr] = val.split(/[\/,]/)
       if (q.endsWith("%")) {
@@ -63,7 +63,7 @@ export default [
   }, {
     name: "radiology",
     title: "Röntgen",
-    elements: ["type", "description"],
+    elements: ["type", "description:text"],
     create: val => val
   }
 ]
