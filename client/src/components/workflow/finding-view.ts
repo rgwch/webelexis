@@ -1,6 +1,8 @@
 import { useView, PLATFORM, bindable, autoinject } from "aurelia-framework";
 import { FindingsManager, FindingsModel } from "models/findings-model";
 import { DataSource, DataService } from "services/datasource";
+import { DialogService } from "aurelia-dialog";
+import {AddFinding} from 'dialogs/add-finding'
 
 //@useView(PLATFORM.moduleName('components/workflow/finding-view.pug'))
 @autoinject
@@ -19,7 +21,7 @@ export class FindingView {
   private isOpen: boolean = false
   private definitions
 
-  constructor(private fm: FindingsManager, ds: DataSource) {
+  constructor(private fm: FindingsManager, private ds: DataSource, private dgs:DialogService) {
     this.findingService = ds.getService('findings')
     this.definitions=fm.getDefinitions()
   }
@@ -47,7 +49,11 @@ export class FindingView {
    * Menuoption: Add Measurement
    */
   addItem(){
-
+    this.dgs.open({viewModel:AddFinding, model: this.fm.fetch(this.finding.name,null)}).whenClosed(result=>{
+      if(!result.wasCancelled){
+        
+      }
+    })
   }
   /**
    * Menuoption: select all measurements
