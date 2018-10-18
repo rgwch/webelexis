@@ -22,8 +22,9 @@ export class PickDate {
   pikhome: HTMLInputElement
   element: any
   private pa: Pikaday
-  actDate: string
+  @bindable actDate: string
   @bindable pickerdate: string
+  @bindable actMoment: moment.Moment
   private calendarNames = {
     previousMonth: this.tr.tr('calendar.previousMonth'),
     nextMonth    : this.tr.tr('calendar.nextMonth'),
@@ -34,7 +35,7 @@ export class PickDate {
 
 
   constructor(private ea: EventAggregator, element: Element, private tr: I18N) {
-    let _self = this
+    const _self = this
     this.element = element;
     let months = []
     for (let i = 0; i < 12; i++) {
@@ -59,6 +60,7 @@ export class PickDate {
       onSelect: function () {
         // console.log("selected " + this.getDate())
         _self.actDate = moment(this.getDate()).format("dd, DD.MM.YYYY")
+        _self.actMoment=moment(this.getDate())
         _self.ea.publish('datepicker', {oldDate: new Date(), newDate: this.getDate()})
         this.hide()
       }

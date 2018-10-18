@@ -13,9 +13,9 @@ export default [
     name: "physical",
     title: "Gewicht",
     elements: ["Gewicht:kg", "Grösse:cm", "bmi"],
-    create: (val) => {
-      const [weight, height] = val.split("/")
-      const bmi = Math.round(weight / ((height / 100) ^ 2))
+    create: (val:string|Array<string>) => {
+      const [weight, height] = Array.isArray(val) ? val : val.split("/")
+      const bmi = Math.round(parseFloat(weight) / ((parseFloat(height) / 100) ^ 2))
       return [weight, height, bmi]
     },
     verbose: (row): string => {
@@ -28,7 +28,7 @@ export default [
     title: "Kreislauf",
     elements: ["Systolisch:mmHg", "Diastolisch:mmHg", "Puls:1/min"],
     create: val => {
-      const [syst, diast, pulse = 0] = val.split("/")
+      const [syst, diast, pulse = 0] = Array.isArray(val) ? val : val.split("/")
       return [syst, diast, pulse]
     },
     verbose: (row: Array<string | number>) => {
@@ -50,7 +50,7 @@ export default [
     title: "Gerinnung",
     elements: ["Quick:%", "INR"],
     create: val => {
-      let [q, inr] = val.split(/[\/,]/)
+      let [q, inr] = Array.isArray(val) ? val : val.split(/[\/,]/)
       if (q.endsWith("%")) {
         q = q.substring(0, q.length - 1)
       }

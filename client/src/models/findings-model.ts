@@ -14,7 +14,7 @@ import * as _ from 'lodash'
 import { FindingDef } from "./finding-def";
 
 const log = LogManager.getLogger("findings-model")
-let definitions:any={}
+let definitions: any = {}
 
 for (const def of defs) {
   definitions[def.name] = def
@@ -42,10 +42,10 @@ export interface FindingType extends ElexisType {
 @autoinject
 export class FindingsManager {
   private service: DataService
- 
+
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     this.service = ds.getService('findings')
-    
+
   }
 
   /**
@@ -117,6 +117,17 @@ export class FindingsManager {
       }
     }
   }
+
+  async saveFinding(f: FindingsModel) {
+    try {
+      let updated = await this.service.update(f.f.id, f.f)
+      return updated
+    } catch (err) {
+      log.error("could not update finding %s: " + err.message, JSON.stringify(f.f))
+      throw ("server error")
+    }
+  }
+
   /**
    * Add measurements to a finding
    * @param name name of the finding
@@ -124,9 +135,7 @@ export class FindingsManager {
    * @param values an arra with strings or numbers 
    * @returns an updated FindingModel
    */
-  async addFinding(name: string, patid: string, values: string[])
-  async addFinding(name: string, patid: string, values: number[])
-  async addFinding(name: string, patid: string, values: Array<string | number>) {
+  async addFinding(name: string, patid: string, values: string[]){
     let finding = await this.fetch(name, patid)
     try {
       finding.addMeasurement(values)
@@ -164,17 +173,20 @@ export class FindingsManager {
  */
 export class FindingsModel {
   f: FindingType
+  def: FindingDef
   constructor(obj: FindingType) {
     this.f = obj
+    this.def=definitions[this.f.name]
   }
   getName = () => this.f.name
-  getTitle = () => definitions[this.f.name].title
+  getTitle = () => this.def.title
   getElements = () => this.f.elements
   getMeasurements = () => this.f.measurements
-  addMeasurement = (m: Array<string | number>) => {
+  addMeasurement = (m: Array<string>, mdate: Date = undefined) => {
+    const processed=this.def.create(m)
     this.f.measurements.push({
-      date: new Date(),
-      values: m
+      date: mdate || new Date(),
+      values: processed
     })
   }
   removeMeasurement = (date: Date) => {

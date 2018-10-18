@@ -53,10 +53,9 @@ export class FindingView {
       if (item) {
         this.dgs.open({ viewModel: AddFinding, model: item }).whenClosed(result => {
           if (!result.wasCancelled) {
-            console.log("Ok")
+            this.fm.saveFinding(result.output)
           }
         })
-
       }
     })
   }
