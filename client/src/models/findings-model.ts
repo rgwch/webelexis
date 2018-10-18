@@ -135,7 +135,7 @@ export class FindingsManager {
    * @param values an arra with strings or numbers 
    * @returns an updated FindingModel
    */
-  async addFinding(name: string, patid: string, values: string[]){
+  async addFinding(name: string, patid: string, values: string[]) {
     let finding = await this.fetch(name, patid)
     try {
       finding.addMeasurement(values)
@@ -176,14 +176,14 @@ export class FindingsModel {
   def: FindingDef
   constructor(obj: FindingType) {
     this.f = obj
-    this.def=definitions[this.f.name]
+    this.def = definitions[this.f.name]
   }
   getName = () => this.f.name
   getTitle = () => this.def.title
   getElements = () => this.f.elements
   getMeasurements = () => this.f.measurements
   addMeasurement = (m: Array<string>, mdate: Date = undefined) => {
-    const processed=this.def.create(m)
+    const processed = this.def.create ? this.def.create(m) : m
     this.f.measurements.push({
       date: mdate || new Date(),
       values: processed

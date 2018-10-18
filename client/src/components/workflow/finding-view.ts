@@ -1,4 +1,4 @@
-import { useView, PLATFORM, bindable, autoinject } from "aurelia-framework";
+import { useView, PLATFORM, bindable, autoinject, computedFrom } from "aurelia-framework";
 import { FindingsManager, FindingsModel } from "models/findings-model";
 import { DataSource, DataService } from "services/datasource";
 import { DialogService } from "aurelia-dialog";
@@ -75,14 +75,25 @@ export class FindingView {
       m['selected'] = false
     }
   }
+
+  @computedFrom('finding.measurements')
+  get disabled() {
+    if (this.finding.measurements.some(m => m['selected'])) {
+      return ""
+    } else {
+      return "disabled"
+    }
+  }
   /**
    * Menuoption: Delete selected meaurements (after confirmation)
    */
   delete() {
-    for (const m of this.finding.measurements) {
-      if (m['selected']) {
-        if (confirm(`delete ${m.date}?`)) {
-          this.fm.removeFinding(this.finding.id, m.date)
+    if (this.finding.measurements.some(m => m['selected'])) {
+      for (const m of this.finding.measurements) {
+        if (m['selected']) {
+          if (confirm(`delete ${m.date}?`)) {
+            this.fm.removeFinding(this.finding.id, m.date)
+          }
         }
       }
     }

@@ -13,7 +13,7 @@
             <input type="text" class="form-control" id="e_${index}" placeholder="${el[1]}" value.bind="values[el[0]]">
           </div>
           <div class="col-sm-9" if.bind="el[1] == 'text'">
-            <textarea class="form-control" id="e_${index}" placeholder="${el[1]}"></textarea>
+            <textarea class="form-control" id="e_${index}" placeholder="${el[1]}" value.bind="values[el[0]]"></textarea>
           </div>
        
         </div>

@@ -63,7 +63,8 @@ export default [
   }, {
     name: "radiology",
     title: "Röntgen",
-    elements: ["Aufnahme", "Befund:text"],
-    create: val => val
+    elements: ["Aufnahme:text", "Befund:text"],
+    create: val => val,
+    verbose: row=>`${row[0]}:\n${row[1]}`
   }
 ]
