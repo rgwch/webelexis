@@ -4,15 +4,15 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
- /**
-  * Use this file to declare all "finding" or "measurement" types you intend to use
-  * Entries must be 'FindingDef' types as defined in models/dinding-def
-  */
+/**
+ * Use this file to declare all "finding" or "measurement" types you intend to use
+ * Entries must be 'FindingDef' types as defined in models/dinding-def
+ */
 export default [
   {
     name: "physical",
     title: "Gewicht",
-    elements: ["weight:kg", "height:cm", "bmi:formula"],
+    elements: ["Gewicht:kg", "Grösse:cm", "bmi"],
     create: (val) => {
       const [weight, height] = val.split("/")
       const bmi = Math.round(weight / ((height / 100) ^ 2))
@@ -26,7 +26,7 @@ export default [
   }, {
     name: "cardial",
     title: "Kreislauf",
-    elements: ["syst:mmHg", "diast:mmHg", "pulse:1/min"],
+    elements: ["Systolisch:mmHg", "Diastolisch:mmHg", "Puls:1/min"],
     create: val => {
       const [syst, diast, pulse = 0] = val.split("/")
       return [syst, diast, pulse]
@@ -63,7 +63,7 @@ export default [
   }, {
     name: "radiology",
     title: "Röntgen",
-    elements: ["type", "description:text"],
+    elements: ["Aufnahme", "Befund:text"],
     create: val => val
   }
 ]

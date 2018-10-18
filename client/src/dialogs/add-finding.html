@@ -1,10 +1,23 @@
 <template>
+  <require from="components/pickdate"></require>
   <ux-dialog>
     <ux-dialog-header>
-      <h3 t="menu.add"></h3>
+      <h3>${finding.getTitle()}</h3>
     </ux-dialog-header>
     <ux-dialog-body>
-
+      <pickdate pickerdate.bind="date"></pickdate>
+      <template repeat.for="el of elements">
+        <div class="form-group row" if.bind="el[1] != undefined">
+          <label for="e_${index}" class="col-sm-3 col-form-label">${el[0]}</label>
+          <div class="col-sm-9" if.bind="el[1] != 'text'">
+            <input type="text" class="form-control" id="e_${index}" placeholder="${el[1]}">
+          </div>
+          <div class="col-sm-9" if.bind="el[1] == 'text'">
+            <textarea class="form-control" id="e_${index}" placeholder="${el[1]}"></textarea>
+          </div>
+       
+        </div>
+      </template>
     </ux-dialog-body>
     <ux-dialog-footer>
       <button click.trigger="dc.cancel()">Cancel</button>

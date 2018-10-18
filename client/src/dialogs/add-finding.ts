@@ -1,20 +1,28 @@
 import { DialogController } from 'aurelia-dialog'
-import { autoinject } from 'aurelia-framework';
+import { autoinject, bindable } from 'aurelia-framework';
 import { FindingsModel } from 'models/findings-model';
 
 @autoinject
 export class AddFinding{
+  @bindable pickerdate=new Date()
   finding:FindingsModel
-  elements:String[]
+  elements
+
 
   constructor(private dc:DialogController){}
 
   activate(finding:FindingsModel){
     this.finding=finding
-    const elements=finding.getElements().map(e=>e.split(":"))
+    this.elements=finding.getElements().map(e=>e.split(":"))
   }
 
+  display(el){
+    if(el[1] == undefined){
+      return 'none'
+    }
+  }
   ok(){
+    console.log(this.pickerdate)
     this.dc.ok(this.finding)
   }
 }

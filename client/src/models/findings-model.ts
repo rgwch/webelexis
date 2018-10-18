@@ -14,6 +14,12 @@ import * as _ from 'lodash'
 import { FindingDef } from "./finding-def";
 
 const log = LogManager.getLogger("findings-model")
+let definitions:any={}
+
+for (const def of defs) {
+  definitions[def.name] = def
+}
+
 /**
  * Generic findings (blood pressure, weight and so on). 
  * Configuration in src/user/findings
@@ -36,13 +42,10 @@ export interface FindingType extends ElexisType {
 @autoinject
 export class FindingsManager {
   private service: DataService
-  private definitions = {}
-
+ 
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     this.service = ds.getService('findings')
-    for (const def of defs) {
-      this.definitions[def.name] = def
-    }
+    
   }
 
   /**
@@ -50,7 +53,7 @@ export class FindingsManager {
    * (see constructor) finding category definitions
    */
   getDefinitions() {
-    return this.definitions
+    return definitions
   }
 
   /**
@@ -94,7 +97,7 @@ export class FindingsManager {
         log.debug("found existing " + JSON.stringify(fm.data[0]))
         return new FindingsModel(fm.data[0])
       } else {
-        const type = this.definitions[name]
+        const type = definitions[name]
         if (!type) {
           throw 'no finding definition for ' + name + ' found!'
         }
@@ -165,6 +168,7 @@ export class FindingsModel {
     this.f = obj
   }
   getName = () => this.f.name
+  getTitle = () => definitions[this.f.name].title
   getElements = () => this.f.elements
   getMeasurements = () => this.f.measurements
   addMeasurement = (m: Array<string | number>) => {
