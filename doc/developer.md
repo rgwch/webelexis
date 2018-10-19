@@ -1,18 +1,30 @@
 # The Webelexis Developer's Handbook
 
-## Prerequisites
+## Prerequisites, install and launch
 
 node >= 10
 jdk >=8
 elexis running on a slightly modified mysql database (run `server/modify_elexis.sql` for the modifications)
 
-npm rebuild node-sass
-npm remove java
-npm install java
+... as needed ...:
 
-the development server runs on port 9000
+    cd server
+    npm install
+    npm rebuild node-sass
+    npm remove java
+    npm install java
+    cd lib
+    ./fetch.sh
+    cd ..
+    npm start
 
+the development server runs on port 3030
 
+    cd ../client
+    npm install
+    au run --watch --hmr
+
+the webpack development server runs on port 9000    
 
 ## DataSource and DataService
 

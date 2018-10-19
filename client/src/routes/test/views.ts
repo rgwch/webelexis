@@ -12,5 +12,9 @@ export default{
   "scroll":{
     "name": "Scroller",
     "view":PLATFORM.moduleName("./scroll_")
+  },
+  "grafik":{
+    "name": "Grafik",
+    "view": PLATFORM.moduleName("./grafik")
   }
 }
