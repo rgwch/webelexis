@@ -1,0 +1,15 @@
+<template>
+  <require from="../components/graph"></require>
+  <ux-dialog>
+    <ux-dialog-header>
+      <h3 t="dlg.selectpat"></h3>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <graph def.bind="definition"></graph>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="dc.cancel()">Cancel</button>
+      <button click.trigger="dc.ok(patient)">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

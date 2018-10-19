@@ -107,6 +107,12 @@ export class FindingView {
       }
     }
   }
+
+  chart() {
+    if (this.finding.measurements.some(m => m['selected'])) {
+      
+    }
+  }
   /**
    * Open and close display of measurements of a category
    */
