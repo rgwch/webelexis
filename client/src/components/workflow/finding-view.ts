@@ -9,6 +9,8 @@ import { FindingsManager, FindingsModel } from "models/findings-model";
 import { DataSource, DataService } from "services/datasource";
 import { DialogService } from "aurelia-dialog";
 import { AddFinding } from 'dialogs/add-finding'
+import * as moment from 'moment'
+import { I18N } from 'aurelia-i18n';
 
 /**
  * Display a single Finding type and allow to add, select, delete and display measrurements
@@ -30,7 +32,8 @@ export class FindingView {
   private isOpen: boolean = false
   private definitions
 
-  constructor(private fm: FindingsManager, private ds: DataSource, private dgs: DialogService) {
+  constructor(private fm: FindingsManager, private ds: DataSource, 
+    private dgs: DialogService, private i18:I18N) {
     this.findingService = ds.getService('findings')
     this.definitions = fm.getDefinitions()
   }
@@ -85,9 +88,8 @@ export class FindingView {
     }
   }
 
-  @computedFrom('finding.measurements')
   get disabled() {
-    if (this.finding.measurements.some(m => m['selected'])) {
+    if (this.finding && this.finding.measurements.some(m => m['selected'])) {
       return ""
     } else {
       return "disabled"
@@ -100,7 +102,8 @@ export class FindingView {
     if (this.finding.measurements.some(m => m['selected'])) {
       for (const m of this.finding.measurements) {
         if (m['selected']) {
-          if (confirm(`delete ${m.date}?`)) {
+          const ask=this.i18.tr('dlg.reallydelete', {item: moment(m.date).format("DD.MM.YYYY")})
+          if (confirm(ask)) {
             this.fm.removeFinding(this.finding.id, m.date)
           }
         }

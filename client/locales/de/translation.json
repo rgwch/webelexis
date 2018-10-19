@@ -82,7 +82,8 @@
     "close": "Schliessen",
     "create": "Erstellen",
     "newelem": "neues Element",
-    "selectpat": "Patient wählen"
+    "selectpat": "Patient wählen",
+    "reallydelete": "{{item}} wirklich löschen?"
   },
   "edit":{
     "para": "Absatz",
