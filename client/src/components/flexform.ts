@@ -10,7 +10,8 @@ import * as _ from 'lodash'
 import { DataSource, DataService } from '../services/datasource';
 
 /**
- * FlexForm: Counterpart for the CommonViewer: Generic Detail-Display. Usage: Define a FlexFormConfig and bind it
+ * FlexForm: Counterpart for the CommonViewer: Generic Detail-Display. 
+ * Usage: Define a FlexFormConfig and bind it
  * as 'cfg' to the flex-form custom element. Bind the Object to display as 'entity' to the flex-form.
  */
 export interface FlexformConfig {

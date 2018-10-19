@@ -1,9 +1,18 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { useView, PLATFORM, bindable, autoinject, computedFrom } from "aurelia-framework";
 import { FindingsManager, FindingsModel } from "models/findings-model";
 import { DataSource, DataService } from "services/datasource";
 import { DialogService } from "aurelia-dialog";
 import { AddFinding } from 'dialogs/add-finding'
 
+/**
+ * Display a single Finding type and allow to add, select, delete and display measrurements
+ */
 //@useView(PLATFORM.moduleName('components/workflow/finding-view.pug'))
 @autoinject
 export class FindingView {

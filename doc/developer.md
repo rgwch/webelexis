@@ -117,3 +117,20 @@ actPatientChanged(newState,oldState){
   // do something
 }
 ````
+
+## Data types
+
+### Finding
+
+A finding is a type of data generated externally and repeatedly over time. Examples might be the Blood Pressure, or the body weight.
+
+To record such data, we need:
+
+* a finding definition (see src/models/finding-def.ts) for each finding type to use, which tells the system, how to set up the data structure.
+
+* a list of such finding definitions (src/user/finding-defs.ts) to tell the system, which findings to manage. This list is user-supplied and must be created upon installation of the system.
+
+* One concrete finding object (src/models/findings-model.ts/FindingType) for each finding type.
+
+Helpers to manage findings are in findings-model: Finding-Manager and Finding-Model.
+

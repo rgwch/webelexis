@@ -1,4 +1,3 @@
-import { I18N } from 'aurelia-i18n';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018 by G. Weirich         *
@@ -13,6 +12,7 @@ import { DialogService } from 'aurelia-dialog'
 import { SelectPatient } from './../../dialogs/select-pat';
 import { WebelexisEvents } from './../../webelexisevents';
 import { KontaktType } from './../../models/kontakt';
+import { I18N } from 'aurelia-i18n';
 
 
 @autoinject

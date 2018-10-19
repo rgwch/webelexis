@@ -13,6 +13,9 @@ import {Patient} from '../../models/patient'
 import { DataSource, DataService } from '../../services/datasource';
 import { StickerManager } from '../../models/stickers.model';
 
+/**
+ * Display and modify data/details for the currently selected patient
+ */
 @autoinject
 @connectTo(store=>store.state.pipe(<any>pluck("patient")))
 export class PatientBasedata {
@@ -35,20 +38,5 @@ export class PatientBasedata {
   imageData(sticker){
     return this.sm.getImage(sticker)
   }
-
-  /*
-  @computedFrom('state')
-  get title():string{
-    if(!this.state){
-      return "Kein Patient gewählt"
-    }else{
-      if(this.state.Bezeichnung1){
-        return Patient.getLabel(this.state)
-      }else{
-        return "Neuer Patient"
-      }
-    }
-  }
-*/
 
 }

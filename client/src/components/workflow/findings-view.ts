@@ -9,11 +9,14 @@ import { bindable, useView, PLATFORM, autoinject } from 'aurelia-framework';
 import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
 
+/**
+ * Display Findings for the currently selected patient
+ */
 @connectTo(store=>store.state.pipe(<any>pluck('patient')))
 //@useView(PLATFORM.moduleName('components/workflow/findings-view.pug'))
 @autoinject
 export class FindingsView{
-  private findingGroups=[]
+  private findingGroups=[] // needed for the view
   private state;
 
   stateChanged(newPatient,oldPatient){

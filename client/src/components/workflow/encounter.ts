@@ -6,7 +6,7 @@ import { id } from './../../models/fhir/fhir';
  ********************************************/
 
 /**
- * Display an elexis encouter. Decode Samdas to html accordingly
+ * Display an elexis encounter. Decode Samdas to html accordingly
  */
 import { EncounterType } from '../../models/encounter';
 import { autoinject, bindable, computedFrom } from "aurelia-framework";

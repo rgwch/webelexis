@@ -2,9 +2,9 @@
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
- *
  ********************************************/
-import { WebelexisEvents } from './../webelexisevents';
+
+ import { WebelexisEvents } from './../webelexisevents';
 import { Patient } from './../models/patient';
 import { bindable, computedFrom, autoinject, observable } from 'aurelia-framework';
 import { DocType, Doc } from '../models/document'
@@ -17,6 +17,9 @@ import { ElexisType } from '../models/elexistype';
 import * as $ from 'jquery'
 import 'bootstrap'
 
+/**
+ * Abstraction for Documents of different kinds
+ */
 @autoinject
 @connectTo<State>({
   selector: {

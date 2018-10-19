@@ -1,3 +1,13 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+ /**
+  * A finding definition is used to define, how to generate and display data for external measurements.
+  * All findings tu use in the system must be defined in src/user/finding-defs.ts.
+  */
 export type FindingDef = {
   // a unique name, e.g "circulation"
   name: string
