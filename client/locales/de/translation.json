@@ -13,7 +13,7 @@
     "zip": "Plz",
     "place": "Ort"
   },
-  "appointment":{
+  "appointment": {
     "new_for": "Neuer Termin für:",
     "delete": "Löschen",
     "shorten": "Kürzen",
@@ -66,8 +66,9 @@
     "previousMonth": "voriger Monat",
     "nextMonth": "nächster Monat"
   },
-  "case":{
-    "illness":"Krankheit"
+  "case": {
+    "illness": "Krankheit",
+    "accident": "Unfall"
   },
   "contact": {
     "data": "Personalien",
@@ -78,14 +79,14 @@
     "remark": "Bemerkung",
     "contactpoints": "Erreichbar"
   },
-  "dlg":{
+  "dlg": {
     "close": "Schliessen",
     "create": "Erstellen",
     "newelem": "neues Element",
     "selectpat": "Patient wählen",
     "reallydelete": "{{item}} wirklich löschen?"
   },
-  "edit":{
+  "edit": {
     "para": "Absatz",
     "heading1": "Überschrift 1",
     "heading2": "Überschrift 2"
@@ -104,7 +105,7 @@
     "lab": "Labor",
     "articles": "Artikel"
   },
-  "menu":{
+  "menu": {
     "add": "Hinzufügen",
     "selectall": "Alle auswählen",
     "deselectall": "Auswahl aufheben",

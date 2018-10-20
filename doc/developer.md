@@ -146,3 +146,70 @@ To record such data, we need:
 
 Helpers to manage findings are in findings-model: Finding-Manager and Finding-Model.
 
+## Localization
+
+### Setup
+
+Translation files are in the directory /locales. There is a subdirectory for each supported languange with the ISO abbreviation, e.g. 'de' for german, 'en' for english and so on. More fine-grained translations are also possible, e.g. 'de_CH' or 'en_US'. To support a language, simply create a subdirectory for that language and copy 'translation.json' from 'de'. Then, change all values in that file to the new language (but leave the keys as-is).
+
+German is defined as the fallback. So if a key is not found in the current language, the german version is displayed.
+
+### Usage
+
+We use aurelia-i18n, so a lot of documentation can be found there. Here only a short overview:
+
+To translate html-files, use the t-attribute, e.g.
+
+    <h2 t="some.title">Title</h2> 
+
+This would look for
+
+    "some":{
+      "title": "Some Title"
+    }
+
+In the translation.json of the currently selected language. If it doesn't find that, it looks for the same object in translation.json of the "de" subdirectory. If still not founs, it displays simply "some.title" as the title. It will not show "Title" as probably expected. And the inner contents of the tag is completely optional. so `<h2 t="some.title>"></h2>` would yield exactly the same result.
+
+To translate programmatically, use the I18N singleton:
+
+    import {autoinject} from 'aurelia-framework'
+    import {i18N} from 'aurelia-i18n'
+
+    @autoinject
+    export class SomeClass{
+      constructor(pribate i18:I18N){}
+
+      someOutput(){
+        return this.i18.tr("some.title")
+      }
+    }
+
+  Parameters are defined like this:
+
+      "example":{
+        "reallydelete": "Wollen Sie {{dingsbums}} wirklich löschen?"
+      }  
+
+  and consume it like this:
+
+    <p t="example.reallydelete" t.params.bind="params">
+
+ where params are defined in the matching ViewModel, such as:
+
+    class Something{
+      params = {
+        dingsbums: "Windows 10"
+      }
+    }   
+
+Similarly, programmatically replace parameters like this:
+
+    someOutput(){
+      this.i18.tr("example.reallydelete",params)
+    }
+
+To localize dates, use markup like this:
+
+
+    <p>Heute ist der ${new Date() | df : undefined : 'de'}</p>
+
