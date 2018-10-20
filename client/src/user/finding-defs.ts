@@ -13,9 +13,9 @@ export default [
     name: "physical",
     title: "Gewicht",
     elements: [
-      { title: "Gewicht", unit: "Kg", manual: true, chart: "left" },
+      { title: "Gewicht", unit: "Kg", manual: true, chart: "left", color:"blue" },
       { title: "Grösse", unit: "cm", manual: true, chart: "none" },
-      { title: "bmi", chart: "right" }
+      { title: "bmi", chart: "right", color: "red" }
     ],
     create: (val: string | Array<string>) => {
       const [weight, height] = Array.isArray(val) ? val : val.split("/")

@@ -6,7 +6,7 @@ import { WebelexisEvents } from '../../webelexisevents';
 
 @autoinject
 export class Detail {
-  views = [v.edit, v.scroll, v.kons]
+  views = [v.edit, v.scroll, v.findings, v.kons]
   active = v.kons
   style = "position:absolute;left:180px;right:85px;"
   patService: DataService

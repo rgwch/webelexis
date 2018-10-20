@@ -33,7 +33,7 @@ export class Graph {
   left_offset = 30
   right_offset = 10
   top_offset = 10
-  bottom_offset = 20
+  bottom_offset = 40
 
   dateFormat = timeFormat("%d.%m.%Y")
 
@@ -66,17 +66,21 @@ export class Graph {
     const yl_domain = this.def.domain_yl || extent(yl_values, d => d[1])
 
     const sizes = this.body.node().getBoundingClientRect()
+    const yranges=[sizes.height-this.bottom_offset-this.top_offset,this.top_offset]
+    if(yr_values.length>0){
+      this.right_offset=30
+    }
     this.scaleX = scaleTime()
       .domain(x_domain)
-      .range([this.left_offset, sizes.width - this.left_offset - this.right_offset])
+      .range([this.left_offset, sizes.width - this.left_offset])
     this.scaleX.clamp(true)
     this.scaleYL = scaleLinear()
       .domain(yl_domain)
-      .range([sizes.height - this.top_offset - this.bottom_offset, this.bottom_offset])
+      .range(yranges)
     this.scaleYL.clamp(true)
     this.scaleYR = scaleLinear()
       .domain(this.def.domain_yr || extent(yr_values, d => d[1]))
-      .range([sizes.height - this.top_offset - this.bottom_offset, this.bottom_offset])
+      .range(yranges)
 
     const left_axis = axisLeft(this.scaleYL)
     const x_axis = axisBottom(this.scaleX)
@@ -88,6 +92,11 @@ export class Graph {
     this.body.append("g")
       .attr("transform", `translate(0,${sizes.height - this.top_offset - this.bottom_offset})`)
       .call(x_axis)
+      .selectAll("text")
+        .style("text-anchor","end")
+        .attr("dx","-.8em")
+        .attr("dy",".15em")
+        .attr("transform","rotate(-35)")
 
     if (yr_values.length > 0) {
       const right_axis = axisRight(this.scaleYR)
@@ -113,7 +122,7 @@ export class Graph {
         return this.scaleX(new Date(d[0]))
       })
       .attr("cy", d => {
-        let dy = this.scaleYL(d[1])
+        let dy = chart.axe=="right" ? this.scaleYR(d[1]) : this.scaleYL(d[1])
         return dy
       })
       .attr("r", "5px")

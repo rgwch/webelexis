@@ -19,6 +19,7 @@ export type FindingDef = {
     unit?: string,     // e.g. "mmHg"
     manual?: boolean,  // show in manual input box?
     chart?: "none"|"left"|"right"   // display in chart?
+    color?: string,    // html-colordef
     range?: [number,number]  // acceptable range
   }>
   // a function to create a new entry from a string

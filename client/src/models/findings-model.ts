@@ -27,7 +27,14 @@ for (const def of defs) {
 export interface FindingType extends ElexisType {
   patientid: string,
   name: string,            // e.g. 'physical'
-  elements: Array<string>  // e.g. ['weight', 'height', 'bmi']
+  // list of elements, e.g. ["systolic:mmHg","diastolic:mmHg","Pulse:1/min"]
+  elements: Array<{
+    title: string,     // e.g. "systolisch"
+    unit?: string,     // e.g. "mmHg"
+    manual?: boolean,  // show in manual input box?
+    chart?: "none" | "left" | "right"   // display in chart?
+    range?: [number, number]  // acceptable range
+  }>
   measurements: Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
   {
     date: Date,
