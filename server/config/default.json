@@ -16,6 +16,15 @@
       "password": "elexis"
     }
   },
+  "postgresql":{
+    "client": "pg",
+    "connection":{
+      "host": "localhost",
+      "database": "webelexis",
+      "user": "elexisuser",
+      "password": "elexis"
+    }
+  },
   "solr":{
     "host": "http://localhost:8983/solr",
     "core": "/webelexis",

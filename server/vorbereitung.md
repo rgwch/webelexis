@@ -25,7 +25,7 @@ Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, un
 Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexisdatenbank ein Patient namens 'unittest' existieren. Beispiel:
 
     use elexis;
-    update kontakt set bezeichnung1="unittest" where bezeichnung1="Duck" and bezeichnung2="Donald";`
+    update kontakt set Bezeichnung1="unittest" where Bezeichnung1="Duck" and Bezeichnung2="Donald";`
 
 
 ### Solr installieren

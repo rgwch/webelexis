@@ -15,7 +15,7 @@ const roles = require('./services/roles')
 
 module.exports = async function (app) {
   const pats = app.service('patient')
-  pats.find({ query: { bezeichnung1: "unittest" } }).then(testpat => {
+  pats.find({ query: { Bezeichnung1: "unittest" } }).then(testpat => {
     if (!testpat || !testpat.data || testpat.data.length < 1) {
       logger.error("No Patient with name 'unittest' found. See src/seeder.js")
       throw new Error("No Patient with name 'unittest' found. See src/seeder.js")

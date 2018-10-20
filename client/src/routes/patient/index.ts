@@ -26,6 +26,9 @@ export class PatientView {
     handleError: (err)=>{
       if(err.code==401){
         this.router.navigateToRoute('user')
+      }else{
+        console.log(err)
+        alert("Server error")
       }
     }
 

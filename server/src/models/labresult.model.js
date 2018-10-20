@@ -34,8 +34,8 @@
         table.string('OriginID',40)
         table.string('pathodesc',128)
       })
-      .then(() => logger.înfo(`Created ${resultTable} table`))
-      .catch(e => logger.error(`Error creating ${resultTable} table`, e));
+      .then(() => logger.info(`Created ${resultTable} table`))
+      .catch(e => logger.error(`Error creating ${resultTable} table`, e.message));
     }
   })
   db.schema.hasTable(itemsTable).then(exists=>{
@@ -43,7 +43,7 @@
       db.schema.createTable(itemsTable,table=>{
         table.string('id',40).primary().unique().notNullable()
         table.integer("LASTUPDATE")
-        table.string('deleted',1)
+        table.string('deleted',1).defaultTo('0')
         table.string('laborid',40)
         table.string('RefMann')
         table.string('RefFrauOrTx')
@@ -59,7 +59,7 @@
         table.string('formula')
       })
       .then(() => logger.info(`Created ${itemsTable} table`))
-      .catch(e => logger.error(`Error creating ${itemsTable} table`, e));
+      .catch(e => logger.error(`Error creating ${itemsTable} table`, e.message));
     }
   })
   return db;

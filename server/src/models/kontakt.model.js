@@ -51,7 +51,7 @@ module.exports = function (app) {
             Bezeichnung2: "Elektra",
             geschlecht: "f",
             istpatient: "1",
-            istPerson: "1",
+            istperson: "1",
             geburtsdatum: "19700506"
           }).then(() => logger.info("added unittest patient"))
         })
