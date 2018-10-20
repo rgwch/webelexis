@@ -16,25 +16,43 @@ import { FindingDef } from "./finding-def";
 const log = LogManager.getLogger("findings-model")
 let definitions: any = {}
 
-for (const def of defs) {
+for (const def of <Array<FindingDef>>defs) {
   definitions[def.name] = def
 }
 
 /**
- * Generic findings (blood pressure, weight and so on). 
- * Configuration in src/user/findings
+  * A finding definition is used to define, how to generate and display data for external measurements.
+  * All findings tu use in the system must be defined in src/user/finding-defs.ts.
+  */
+ export type FindingDef = {
+  // a unique name, e.g "circulation"
+  name: string
+  // a translatable title, e.g. "Kreislauf"
+  title: string
+  // list of elements, e.g. ["systolic:mmHg","diastolic:mmHg","Pulse:1/min"]
+  elements: Array<{
+    title:string,     // e.g. "systolisch"
+    unit?: string,     // e.g. "mmHg"
+    manual?: boolean,  // show in manual input box?
+    chart?: "none"|"left"|"right"   // display in chart?
+    color?: string,    // html-colordef
+    range?: [number,number]  // acceptable range
+  }>
+  // a function to create a new entry from a string
+  create?: (value: string | Array<string>) => Array<string>
+  // a function to display an entry in verbose form
+  verbose?: (row: Array<string | number>) => string
+  // a function to display an entry in compact form
+  compact?: (row: Array<string | number>) => string
+}
+
+
+/**
+ * A finding as stored inm the database
  */
 export interface FindingType extends ElexisType {
   patientid: string,
   name: string,            // e.g. 'physical'
-  // list of elements, e.g. ["systolic:mmHg","diastolic:mmHg","Pulse:1/min"]
-  elements: Array<{
-    title: string,     // e.g. "systolisch"
-    unit?: string,     // e.g. "mmHg"
-    manual?: boolean,  // show in manual input box?
-    chart?: "none" | "left" | "right"   // display in chart?
-    range?: [number, number]  // acceptable range
-  }>
   measurements: Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
   {
     date: Date,
@@ -112,7 +130,6 @@ export class FindingsManager {
           const newFinding = await this.service.create({
             patientid: patid,
             name: name,
-            elements: type.elements,
             measurements: []
           })
           log.debug("created new finding " + newFinding.id)
@@ -174,7 +191,7 @@ export class FindingsManager {
 }
 
 /**
- * FindingsModel is a wrapper around a FindingType to allow some operations
+ * FindingsModel is a wrapper around a FindingDef/FindingType to allow some operations
  * Note: FindingModel will neither fetch nor save its contents to the DataService. It
  * only manipulates in-clientside-memory.
  */
@@ -187,7 +204,7 @@ export class FindingsModel {
   }
   getName = () => this.f.name
   getTitle = () => this.def.title
-  getElements = () => this.f.elements
+  getElements = () => this.def.elements
   getMeasurements = () => this.f.measurements
   addMeasurement = (m: Array<string>, mdate: Date = undefined) => {
     const processed = this.def.create ? this.def.create(m) : m

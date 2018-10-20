@@ -5,10 +5,8 @@
  ********************************************/
 /* eslint-disable no-console */
 
-// auf-model.js - A KnexJS
-//
-// See http://knexjs.org/
-// for more of what you can do here.
+const logger = require('../logger')
+
 module.exports = function (app) {
   const db = app.get('knexClient');
   const tableName = 'auf';
@@ -28,8 +26,8 @@ module.exports = function (app) {
         table.string('deleted',1).defaultTo('0')
         table.integer('LASTUPDATE')
       })
-        .then(() => console.log(`Created ${tableName} table`))
-        .catch(e => console.error(`Error creating ${tableName} table`, e));
+        .then(() => logger.info(`Created ${tableName} table`))
+        .catch(e => logger.error(`Error creating ${tableName} table`, e));
     }
   });
 

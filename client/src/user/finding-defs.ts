@@ -13,7 +13,7 @@ export default [
     name: "physical",
     title: "Gewicht",
     elements: [
-      { title: "Gewicht", unit: "Kg", manual: true, chart: "left", color:"blue" },
+      { title: "Gewicht", unit: "Kg", manual: true, chart: "left", color: "blue" },
       { title: "Grösse", unit: "cm", manual: true, chart: "none" },
       { title: "bmi", chart: "right", color: "red" }
     ],
@@ -60,8 +60,8 @@ export default [
     name: "coagulation",
     title: "Gerinnung",
     elements: [
-      {title: "Quick", unit: "%", manual: true, chart: "left"},
-      {title: "INR",manual: true, chart: "right"}],
+      { title: "Quick", unit: "%", manual: true, chart: "left" },
+      { title: "INR", manual: true, chart: "right" }],
     create: val => {
       let [q, inr] = Array.isArray(val) ? val : val.split(/[\/,]/)
       if (q.endsWith("%")) {
@@ -77,8 +77,8 @@ export default [
     name: "radiology",
     title: "Röntgen",
     elements: [
-      {title: "Aufnahme", unit: "text", manual: true, chart: "none"},
-      {title: "Befund", unit:"text"}],
+      { title: "Aufnahme", unit: "text", manual: true, chart: "none" },
+      { title: "Befund", unit: "text", manual: true, chart: "none" }],
     create: val => val,
     verbose: row => `${row[0]}:\n${row[1]}`
   }

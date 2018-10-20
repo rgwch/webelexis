@@ -4,6 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+const logger = require('../logger')
+
  /**
   * An Elexis user
   * @param {*} app
@@ -27,8 +29,8 @@ module.exports = function (app) {
         table.string("TOTP",16)
         table.string("ALLOW_EXTERNAL",1).notNullable().default(1)
       })
-        .then(() => console.log(`Created ${tableName} table`))
-        .catch(e => console.error(`Error creating ${tableName} table`, e));
+        .then(() => logger.info(`Created ${tableName} table`))
+        .catch(e => logger.error(`Error creating ${tableName} table`, e));
     }
   });
 

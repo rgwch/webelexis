@@ -1,5 +1,6 @@
 const NeDB = require('nedb');
 const path = require('path');
+const logger = require('../logger')
 
 module.exports = function (app) {
   const dbPath = app.get('nedb');

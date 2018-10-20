@@ -11,7 +11,7 @@
     "client": "mysql2",
     "connection": {
       "host": "localhost",
-      "database": "elexis",
+      "database": "webelexis",
       "user": "elexisuser",
       "password": "elexis"
     }

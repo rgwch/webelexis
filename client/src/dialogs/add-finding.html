@@ -6,7 +6,7 @@
     </ux-dialog-header>
     <ux-dialog-body>
       <pickdate act-moment.two-way="pickermoment"></pickdate>
-      <template repeat.for="el of elements">
+      <div repeat.for="el of elements" style="margin-top:10px;">
         <div class="form-group row" if.bind="el.manual == true">
           <label for="e_${index}" class="col-sm-3 col-form-label">${el.title}</label>
           <div class="col-sm-9" if.bind="el.unit != 'text'">
@@ -17,7 +17,7 @@
           </div>
        
         </div>
-      </template>
+      </div>
     </ux-dialog-body>
     <ux-dialog-footer>
       <button click.trigger="dc.cancel()">Cancel</button>

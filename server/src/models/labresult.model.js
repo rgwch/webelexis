@@ -33,7 +33,8 @@
         table.string('reffemale')
         table.string('OriginID',40)
         table.string('pathodesc',128)
-      }).then(() => logger.înfo(`Created ${resultTable} table`))
+      })
+      .then(() => logger.înfo(`Created ${resultTable} table`))
       .catch(e => logger.error(`Error creating ${resultTable} table`, e));
     }
   })
@@ -56,7 +57,8 @@
         table.string('visible',1)
         table.string('digits',16)
         table.string('formula')
-      }).then(() => logger.info(`Created ${itemsTable} table`))
+      })
+      .then(() => logger.info(`Created ${itemsTable} table`))
       .catch(e => logger.error(`Error creating ${itemsTable} table`, e));
     }
   })
