@@ -1,14 +1,14 @@
 <template>
   <require from="../../services/moment-to-string"></require>
-  <span t="appointment.new_for"></span> <a href="#" innerhtml.bind="patlabel"
-    click.delegate="selectPatient()">?</a>
+  <span t="appointment.new_for"></span> <a href="#" innerhtml.bind="patlabel" click.delegate="selectPatient()">?</a>
   <div class="inline-form">
-    <input type="text" value.bind="time" style="width:5em;">
-    <input type="range" min.bind="termin.getBeginMinutes()" value.bind="slider" max.bind="termin.getEndMinutes()"
-      step="5">
+    <input type="text" value.bind="time" style="width:5em; height:3em;">
+    <input type="range" min.bind="termin.getBeginMinutes()" value.bind="slider" max.bind="termin.getEndMinutes()" step="5">
+    <br /><textarea value.bind="termin.obj.Grund" style="width:15em;height:3em"></textarea>
+
+    <select value.bind="terminTyp" style="position:relative;top: -2em;height:2em;">
+      <option repeat.for="tt of termintypen">${tt}</option>
+    </select>
+    <button class="btn btn-primary" click.delegate="newTermin()" t="dlg.create" style="position:relative;top:-2em;height:2em;"> xy</button>
   </div>
-  <select value.bind="terminTyp">
-    <option repeat.for="tt of termintypen">${tt}</option>
-  </select>
-  <button class="btn" click.delegate="newTermin()" t="dlg.create">xy</button>
 </template>
