@@ -13,6 +13,10 @@ export default{
     "name": "Scroller",
     "view":PLATFORM.moduleName("./scroll_")
   },
+  "findings":{
+    "name": "Findings",
+    "view": PLATFORM.moduleName("components/workflow/findings-view")
+  },
   "grafik":{
     "name": "Grafik",
     "view": PLATFORM.moduleName("./grafik")

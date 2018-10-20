@@ -9,12 +9,19 @@ import { inlineView } from "aurelia-framework";
 export class Grafik{
   definition={
     domain_x:[0,10],
-    values :[]
+    data: [
+      {
+        title: "Test",
+        color: "green",
+        axe: "left",
+        values: []
+      }
+    ]
   }
 
   constructor(){
     for(let i=0;i<10;i++){
-      this.definition.values.push([i,500*Math.random()+100])
+      this.definition.data[0].values.push([i,500*Math.random()+100])
     }
   }
 }

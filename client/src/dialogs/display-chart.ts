@@ -1,3 +1,4 @@
+import { ChartDefinition } from './../components/graph';
 import { FindingType } from './../models/findings-model';
 import { DialogController } from 'aurelia-dialog'
 import { autoinject } from 'aurelia-framework';
@@ -5,11 +6,22 @@ import { autoinject } from 'aurelia-framework';
 @autoinject
 export class DisplayChart{
   finding: FindingType
-  definition
+  definition: ChartDefinition ={
+    data: [
+      {
+        title: "Test",
+        values: [] 
+      }
+    ]
+  }
 
   constructor(private dc:DialogController){}
 
-  attached(){
-    this.definition.values=this.finding.measurements.map(m=>[m.date,m.values[0]])
+  activate(finding:FindingType){
+    this.finding=finding
+    this.definition.data[0].values=this.finding.measurements.map(m=>{
+      let vals
+      return [m.date,parseInt(<string>m.values[0])]
+    })
   }  
 }

@@ -1,8 +1,8 @@
 <template>
   <require from="../components/graph"></require>
-  <ux-dialog>
+  <ux-dialog style="width:80vW;height:80vH">
     <ux-dialog-header>
-      <h3 t="dlg.selectpat"></h3>
+      <h3>${finding.title}</h3>
     </ux-dialog-header>
     <ux-dialog-body>
       <graph def.bind="definition"></graph>

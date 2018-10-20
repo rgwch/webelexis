@@ -24,18 +24,13 @@ export class AddFinding{
 
   activate(finding:FindingsModel){
     this.finding=finding
-    this.elements=finding.getElements().map(e=>e.split(":"))
+    this.elements=finding.getElements()
   }
 
-  display(el){
-    if(el[1] == undefined){
-      return 'none'
-    }
-  }
   ok(){
     let r=[]
     for(const el of this.elements){
-      r.push(this.values[el[0]])
+      r.push(this.values[el.title])
     }
   
     const dat=this.pickermoment.toDate()
