@@ -26,6 +26,13 @@ the development server runs on port 3030
 
 the webpack development server runs on port 9000    
 
+## SQL Server
+
+Webelexis-Server connects to an existing Elexis(tm) database or creates one from scratch. 
+
+Webelexis-Server uses [Knex](http://knexjs.org) as a persistence layer and thus is able to work with all database systems supported by Knex. The configuration of the database is  in server/config/*.json and the decision which database to use is configured in /server/src/knex.js.
+
+
 ## DataSource and DataService
 
 To apply CRUD operations on data, we first need to acquire the respective datatype from our DataSource. The DataSource ist preconfigured depending on the server implementation.

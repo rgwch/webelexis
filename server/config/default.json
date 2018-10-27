@@ -25,6 +25,13 @@
       "password": "elexis"
     }
   },
+  "sqlite":{
+    "client": "sqlite3",
+    "connection": {
+      "filename": "../../data/webelexis.sqlite"
+    }
+  },
+
   "solr":{
     "host": "http://localhost:8983/solr",
     "core": "/webelexis",
