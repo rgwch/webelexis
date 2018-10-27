@@ -3,11 +3,11 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-const abilities=require('../../hooks/abilities')
-const treatDeleted = require('../../hooks/treat-deleted');
+const abilities = require('../../hooks/abilities')
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const acl=require('./acl')
-const validate=require('../validator').validate
+const acl = require('./acl')
+const validate = require('../validator').validate
+const { DateTime } = require('luxon')
 
 /**
  *
@@ -29,12 +29,12 @@ async function getColors(context, mode, user) {
   //console.log("colors requested for "+mode+", "+resource)
   //console.log(JSON.stringify(context))
   const service = context.app.service("elexis-userconfig")
-  let raw = await service.find({ query: { user: user, param: { $like: "agenda/farben/" + mode +"/%"} } })
+  let raw = await service.find({ query: { user: user, param: { $like: "agenda/farben/" + mode + "/%" } } })
   let ret = {}
-  raw.data.forEach(col=>{
-    let path=col.Param.split("/")
-    let elem=path[path.length-1]
-    ret[elem]=col.Value
+  raw.data.forEach(col => {
+    let path = col.Param.split("/")
+    let elem = path[path.length - 1]
+    ret[elem] = col.Value
   })
   return ret
 }
@@ -160,26 +160,35 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
   };
 };
 
+const checkLimits = async context => {
+  if (context.result.data.length == 0) {
+    let q = context.params.query
+    const dt=DateTime.fromISO(q.Tag)
+    const dayOfWeek=dt.weekdayShort
+    const daydefaults=await context.service.get("daydefaults",{params: {resource: q.Bereich}})
+    console.log(daydefaults)
+  }
+}
 /**
  * Make sure only valid appointment objects get to the database
  * @param {*} termin
  */
-const cleanTermin=termin=>{
-  return validate(termin,'agntermine',false)
+const cleanTermin = termin => {
+  return validate(termin, 'agntermine', false)
 }
-const cleanup=context=>{
-  if(Array.isArray(context.data)){
-    context.data=context.data.map(elem=>this.cleanTermin(elem))
-  }else{
-    context.data=cleanTermin(context.data)
+const cleanup = context => {
+  if (Array.isArray(context.data)) {
+    context.data = context.data.map(elem => this.cleanTermin(elem))
+  } else {
+    context.data = cleanTermin(context.data)
   }
   return context
 }
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt'), abilities({acl})],
-    find: [doSort(), treatDeleted()],
+    all: [authenticate('jwt'), abilities({ acl })],
+    find: [doSort()],
     get: [specialQueries()],
     create: [cleanup],
     update: [cleanup],
@@ -189,7 +198,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [addContacts()],
+    find: [addContacts(), checkLimits],
     get: [],
     create: [],
     update: [],

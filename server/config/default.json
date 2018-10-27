@@ -1,4 +1,13 @@
 {
+  "version": "3.1.0",
+  "defaults":{
+    "fallgesetz": "KVG",
+    "fallgrund": "Krankheit",
+    "fallbezeichnung": "Allg.",
+    "agenda":{
+      "resources": ["Arzt", "Labor"]
+    }
+  },
   "testing": true,
   "host": "localhost",
   "port": 3030,
@@ -28,7 +37,7 @@
   "sqlite":{
     "client": "sqlite3",
     "connection": {
-      "filename": "../../data/webelexis.sqlite"
+      "filename": "../../data/webelexis.db"
     }
   },
 
