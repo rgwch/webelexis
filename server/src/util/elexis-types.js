@@ -222,9 +222,13 @@ class ElexisUtils {
     return hoursS + ":" + mins
   }
 
-  // make a number of minutes from a hh:mm String
+  // make a number of minutes from a hh:mm or hhmm String
   makeMinutes(timeString) {
-    var hm = timeString.split(":")
+    let hm = timeString.split(":")
+    if(hm.length<2){
+      hm[1]=timeString.substr(-2)
+      hm[0]=timeString.substr(0,timeString.length-2)
+    }
     var ret = parseInt(hm[0]) * 60 + parseInt(hm[1])
     return ret;
   }

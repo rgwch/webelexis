@@ -51,6 +51,10 @@ module.exports = function (app) {
         .then(() => { logger.info(`Created ${tableName} table`)
         const config=app.service("elexis-config")
         const agendacfg=app.get("defaults")["agenda"] || {"resources":["Arzt"]}
+        config.create({
+          param: "agenda/bereiche",
+          wert: agendacfg.resources.join()
+        })
         for(const rsc of agendacfg.resources){
           config.create({
             "param": `agenda/tagesvorgaben/${rsc}`,

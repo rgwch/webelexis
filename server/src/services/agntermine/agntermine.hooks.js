@@ -8,6 +8,8 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const acl = require('./acl')
 const validate = require('../validator').validate
 const { DateTime } = require('luxon')
+const Elexistypes=require('../../util/elexis-types')
+const Elexis=new Elexistypes()
 
 /**
  *
@@ -163,10 +165,44 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
 const checkLimits = async context => {
   if (context.result.data.length == 0) {
     let q = context.params.query
-    const dt=DateTime.fromISO(q.Tag)
-    const dayOfWeek=dt.weekdayShort
-    const daydefaults=await context.service.get("daydefaults",{params: {resource: q.Bereich}})
-    console.log(daydefaults)
+    const dt = DateTime.fromISO(q.Tag)
+    const dayOfWeek = dt.weekday
+    let bereich = q.Bereich
+    const cfgservice = context.app.service("elexis-config")
+
+    if (!bereich || bereich.trim().length == 0) {
+      const bereiche = await getList(cfgservice, "bereiche")
+      if (bereiche && bereiche.length > 0) {
+        bereich = bereiche[0]
+      } else {
+        bereich = "default"
+      }
+    }
+    const timedefraw = await cfgservice.get("agenda/tagesvorgaben/" + bereich)
+    const timedef = timedefraw.trim().substring(7).split("~#<A")
+    let timedefs = {}
+    timedef.forEach(element => {
+      let [a, b] = element.split("=A")
+      let times = b.split(/[\n\r]+/)
+      timedefs[a] = times
+    });
+    const days=["Mo","Di","Mi","Do","Fr","Sa","So"]
+    const daydef=timedefs[days[dayOfWeek-1]]
+    for(const def of daydef){
+      const times=def.split(/\s*-\s*/)
+      const from=Elexis.makeMinutes(times[0])
+      const until=Elexis.makeMinutes(times[1])
+      const appnt={
+        Bereich: bereich,
+        TerminTyp: "Reserviert",
+        TerminStatus: "-",
+        Tag:q.Tag,
+        Beginn: from.toString(),
+        Dauer: (until-from).toString()
+      }
+      await context.service.create(appnt)
+    }
+    return context
   }
 }
 /**
