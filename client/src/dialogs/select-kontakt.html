@@ -1,0 +1,17 @@
+<template>
+  <require from="../components/searchfield"></require>
+  <require from="./select-kontakt"></require>
+  <ux-dialog>
+    <ux-dialog-header>
+      <h3>Kontakt</h3>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <searchfield searchtext="Kontakt" result.two-way="value"></searchfield>
+      <p  class.bind="k | kontaktSelected : selection & signal:'selected'" repeat.for="k of found" click.trigger="select(k)">${makeLabel(k)}</p>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="dc.cancel()">Cancel</button>
+      <button click.trigger="dc.ok(data)">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
