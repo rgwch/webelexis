@@ -1,13 +1,5 @@
 {
   "version": "3.1.0",
-  "defaults":{
-    "fallgesetz": "KVG",
-    "fallgrund": "Krankheit",
-    "fallbezeichnung": "Allg.",
-    "agenda":{
-      "resources": ["Arzt", "Labor"]
-    }
-  },
   "testing": true,
   "host": "localhost",
   "port": 3030,

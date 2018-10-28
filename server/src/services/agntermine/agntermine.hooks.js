@@ -8,38 +8,11 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const acl = require('./acl')
 const validate = require('../validator').validate
 const { DateTime } = require('luxon')
-const Elexistypes=require('../../util/elexis-types')
-const Elexis=new Elexistypes()
+const Elexistypes = require('../../util/elexis-types')
+const Elexis = new Elexistypes()
+const metaqueries = require('./metaqueries')
 
-/**
- *
- * @param {*} config
- * @param {*} def
- */
-async function getList(config, def) {
-  let ret = await config.get("agenda/" + def)
-  return ret.split(/ *, */)
-}
 
-/**
- * Get agenda colors for a given user
- * @param {context} hook context
- * @param {mode}  typ or status
- * @param {user}
- */
-async function getColors(context, mode, user) {
-  //console.log("colors requested for "+mode+", "+resource)
-  //console.log(JSON.stringify(context))
-  const service = context.app.service("elexis-userconfig")
-  let raw = await service.find({ query: { user: user, param: { $like: "agenda/farben/" + mode + "/%" } } })
-  let ret = {}
-  raw.data.forEach(col => {
-    let path = col.Param.split("/")
-    let elem = path[path.length - 1]
-    ret[elem] = col.Value
-  })
-  return ret
-}
 /**
  * Hook to sort appointments by begin time. Since time is encoded as string but meant als minutes
  * from midnight, we have to cast string to integer before sorting. (Otherwise 1000 would be before 900)
@@ -67,67 +40,15 @@ const doSort = function (options = {}) {
  */
 const specialQueries = function (options = {}) { // eslint-disable-line no-unused-vars
   return async context => {
-    const cfg = context.app.service('elexis-config')
+    const mq = metaqueries(context.app)
     switch (context.id) {
-      case "types": context.result = await getList(cfg, "TerminTypen"); break;
-      case "states": context.result = await getList(cfg, "TerminStatus"); break;
-      case "resources": context.result = await getList(cfg, "bereiche"); break;
-      case "daydefaults": {
-        async function getdaydefaults(bereich) {
-          let timedef = (await cfg.get("agenda/tagesvorgaben/" + bereich)).substring(7).split("~#<A")
-          let result = {}
-          timedef.forEach(element => {
-            let [a, b] = element.split("=A")
-            let times = b.split(/[\n\r]+/)
-            result[a] = times
-          });
-          return result;
-        }
-
-        if (context.params.resource) {
-          context.result = await getdaydefaults(context.params.resource)
-        } else {
-
-          let resources = await getList(cfg, "bereiche")
-          let result = {}
-          for (let i = 0; i < resources.length; i++) {
-            result[resources[i]] = await getdaydefaults(resources[i])
-
-          }
-          context.result = result
-
-        }
-      }
-        break;
-      case "timedefaults": {
-        const getTimedefaults = async (bereich) => {
-          let timedef = (await cfg.get("agenda/zeitvorgaben/" + bereich)).split("::")
-          let result = {}
-          timedef.forEach(el => {
-            let [a, b] = el.split("=")
-            result[a] = b
-          })
-          return result
-        }
-        if (context.params.resource) {
-          context.result = getTimedefaults(context.params.resource)
-        } else {
-          let resources = await getList(cfg, "bereiche")
-          let result = {}
-          for (let i = 0; i < resources.length; i++) {
-            result[resources[i]] = await getTimedefaults(resources[i])
-          }
-          context.result = result
-        }
-
-      }
-        break
-      case "typecolors":
-        context.result = await getColors(context, "typ", context.params.query.user)
-        break;
-      case "statecolors":
-        context.result = await getColors(context, "status", context.params.query.user)
-        break;
+      case "types": context.result = await mq.terminTypes(); break;
+      case "states": context.result = await mq.terminStates(); break;
+      case "resources": context.result = await mq.agendaResources(); break;
+      case "daydefaults": context.result = await mq.daydefaults(context.params.resource); break
+      case "timedefaults": context.result = await mq.timeDefaults(context.params.resource); break;
+      case "typecolors": context.result = await mq.typeColors(context.params.query.user); break
+      case "statecolors": context.result = await mq.stateColors(context.params.query.user); break;
     }
     return context;
   };
@@ -168,37 +89,29 @@ const checkLimits = async context => {
     const dt = DateTime.fromISO(q.Tag)
     const dayOfWeek = dt.weekday
     let bereich = q.Bereich
-    const cfgservice = context.app.service("elexis-config")
-
+    const mq = metaqueries(context.app)
     if (!bereich || bereich.trim().length == 0) {
-      const bereiche = await getList(cfgservice, "bereiche")
+      const bereiche = await mq.agendaResources()
       if (bereiche && bereiche.length > 0) {
         bereich = bereiche[0]
       } else {
         bereich = "default"
       }
     }
-    const timedefraw = await cfgservice.get("agenda/tagesvorgaben/" + bereich)
-    const timedef = timedefraw.trim().substring(7).split("~#<A")
-    let timedefs = {}
-    timedef.forEach(element => {
-      let [a, b] = element.split("=A")
-      let times = b.split(/[\n\r]+/)
-      timedefs[a] = times
-    });
-    const days=["Mo","Di","Mi","Do","Fr","Sa","So"]
-    const daydef=timedefs[days[dayOfWeek-1]]
-    for(const def of daydef){
-      const times=def.split(/\s*-\s*/)
-      const from=Elexis.makeMinutes(times[0])
-      const until=Elexis.makeMinutes(times[1])
-      const appnt={
+    const daydefs=await mq.daydefaults(bereich)
+    const days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+    const daydef = daydefs[days[dayOfWeek - 1]]
+    for (const def of daydef) {
+      const times = def.split(/\s*-\s*/)
+      const from = Elexis.makeMinutes(times[0])
+      const until = Elexis.makeMinutes(times[1])
+      const appnt = {
         Bereich: bereich,
         TerminTyp: "Reserviert",
         TerminStatus: "-",
-        Tag:q.Tag,
+        Tag: q.Tag,
         Beginn: from.toString(),
-        Dauer: (until-from).toString()
+        Dauer: (until - from).toString()
       }
       await context.service.create(appnt)
     }

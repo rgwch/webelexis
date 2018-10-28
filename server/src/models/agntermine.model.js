@@ -4,20 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const logger = require('../logger')
+const agendacfg = require('../../config/elexisdefaults').agenda
 
-const daydefaults=`
-FS1~#<ASa=A0000-0900
-1200-2359~#<ADo=A0000-0800
-1200-1300
-1700-2359~#<AFr=A0000-0800
-1200-1300
-1700-2359~#<AMi=A0000-0800
-1300-2359~#<ADi=A0000-0900
-1300-1400
-1800-2359~#<AMo=A0000-0800
-1200-1300
-1700-2359~#<ASo=A0000-2359
-`
 
 module.exports = function (app) {
   const db = app.get('knexClient');
@@ -48,20 +36,21 @@ module.exports = function (app) {
         table.string('insuranceType', 1)
         table.string('treatmentReason', 1)
       })
-        .then(() => { logger.info(`Created ${tableName} table`)
-        const config=app.service("elexis-config")
-        const agendacfg=app.get("defaults")["agenda"] || {"resources":["Arzt"]}
-        config.create({
-          param: "agenda/bereiche",
-          wert: agendacfg.resources.join()
-        })
-        for(const rsc of agendacfg.resources){
+        .then(() => {
+          logger.info(`Created ${tableName} table`)
+          const config = app.service("elexis-config")
+          //const agendacfg = app.get("defaults")["agenda"] || { "resources": ["Arzt"] }
           config.create({
-            "param": `agenda/tagesvorgaben/${rsc}`,
-            "wert": daydefaults
+            param: "agenda/bereiche",
+            wert: agendacfg.resources.join()
           })
-        }
-      })
+          for (const rsc of agendacfg.resources) {
+            config.create({
+              "param": `agenda/tagesvorgaben/${rsc}`,
+              "wert": agendacfg.daydefaults
+            })
+          }
+        })
         .catch(e => logger.error(`Error creating ${tableName} table`, e));
     }
   });
