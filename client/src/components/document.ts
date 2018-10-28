@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
- import { WebelexisEvents } from './../webelexisevents';
+import { WebelexisEvents } from './../webelexisevents';
 import { Patient } from './../models/patient';
 import { bindable, computedFrom, autoinject, observable } from 'aurelia-framework';
 import { DocType, Doc } from '../models/document'
@@ -14,8 +14,8 @@ import { State } from '../state';
 import { pluck } from 'rxjs/operators'
 import { connectTo } from 'aurelia-store'
 import { ElexisType } from '../models/elexistype';
-import * as $ from 'jquery'
-import 'bootstrap'
+import { DialogService } from 'aurelia-dialog';
+import { DocumentData} from '../dialogs/document-data'
 
 /**
  * Abstraction for Documents of different kinds
@@ -73,7 +73,8 @@ export class Document {
     return t;
   }
 
-  constructor(private ea: EventAggregator, private ds: DataSource, private dispatcher: WebelexisEvents) {
+  constructor(private ea: EventAggregator, private ds: DataSource,
+    private dispatcher: WebelexisEvents, private dlgs: DialogService) {
     this.docService = this.ds.getService('documents')
     this.tmplService = this.ds.getService('templates')
     this.dispatcher.selectItem(this.obj)
@@ -97,8 +98,8 @@ export class Document {
     this.obj.subject = template.subject
     this.obj.template = template.id
     this.obj.concern = this.actPatient
-    const doc=new Doc(this.obj)
-    this.obj.contents=doc.getEditable(template.contents)
+    const doc = new Doc(this.obj)
+    this.obj.contents = doc.getEditable(template.contents)
     this.htmlText = this.obj.contents
     this.dispatcher.selectItem(this.obj)
   }
@@ -107,6 +108,12 @@ export class Document {
    * Display a modal dialog (bootstrap modal) to enter/accept a subject line for the document.
    */
   doSave() {
+    this.dlgs.open({ viewModel: DocumentData, model: this.obj}).whenClosed(result => {
+      if (!result.wasCancelled) {
+        console.log(result.output)
+      }
+    })
+    /*
     $('#subjectinput').val(this.obj.subject)
     $('#subjectdlg').modal('show')
     $('#subjectdlg').on('hidden.bs.modal', e => {
@@ -137,6 +144,7 @@ export class Document {
         })
       }
     })
+    */
   }
 
   async doCreatePdf() {
@@ -165,12 +173,12 @@ export class Document {
 
   doDelete() {
     console.log("delete")
-    if(this.obj.id){
+    if (this.obj.id) {
       this.docService.remove(this.obj.id)
     }
-    this.obj={
+    this.obj = {
       date: new Date(),
-      contents:"",
+      contents: "",
       type: "documents"
     }
     this.dispatcher.selectItem(this.obj)

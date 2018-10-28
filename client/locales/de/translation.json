@@ -84,7 +84,10 @@
     "create": "Erstellen",
     "newelem": "neues Element",
     "selectpat": "Patient wählen",
-    "reallydelete": "{{item}} wirklich löschen?"
+    "reallydelete": "{{item}} wirklich löschen?",
+    "docsave": "Dokument speichern",
+    "subject": "Titel",
+    "addressee": "Adressat"
   },
   "edit": {
     "para": "Absatz",

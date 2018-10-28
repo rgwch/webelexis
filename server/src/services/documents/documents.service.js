@@ -3,6 +3,7 @@ const createService = require('feathers-nedb');
 const createModel = require('../../models/documents.model');
 const hooks = require('./documents.hooks');
 const doctool=require('../../util/topdf')
+const customMethods = require('feathers-custom-methods')
 
 module.exports = function (app) {
   const Model = createModel(app);
@@ -19,6 +20,12 @@ module.exports = function (app) {
 
   // Get our initialized service so that we can register hooks
   const service = app.service('documents');
+  app.configure(customMethods({
+    methods: {
+      documents: ['toPDF', "store"]
+    }
+  }))
+
   service.toPDF=doctool.toPDF
 
   service.hooks(hooks);

@@ -14,7 +14,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('./logger');
 const authentication = require('./authentication')
-
+const knex = require('./knex');
 const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
@@ -25,8 +25,6 @@ const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
-const knex = require('./knex');
-const customMethods = require('feathers-custom-methods')
 
 const app = express(feathers());
 app.set('public', path.join(__dirname, "../public"))
@@ -62,11 +60,6 @@ app.use(express.notFound());
 app.use(express.errorHandler({ logger }));
 
 app.hooks(appHooks);
-app.configure(customMethods({
-  methods: {
-    documents: ['toPDF', "store"]
-  }
-}))
 
 // If in testing mode: Seed databases
 if (app.get("testing")) {

@@ -184,7 +184,7 @@ To translate programmatically, use the I18N singleton:
 
     @autoinject
     export class SomeClass{
-      constructor(pribate i18:I18N){}
+      constructor(private i18:I18N){}
 
       someOutput(){
         return this.i18.tr("some.title")
@@ -228,6 +228,7 @@ We use aurelia-dialog as a common dialog interface.
 
 ````
 import { DialogService } from 'aurelia-dialog'
+import {SomeDialog} from '../dialogs/some-dialog'
 import {autoinject} from 'aurelia-framework'
 ...
 constructor(private dlgs:DialogService){}
@@ -238,7 +239,7 @@ dlgTriggered(){
       console.log("cancel or close button pressed")
     }else{
       console.log("ok pressed")
-      // do something
+      // do something with response.output
     }
   })
 }
