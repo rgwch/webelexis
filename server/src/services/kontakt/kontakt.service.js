@@ -8,8 +8,8 @@ const createService = require('feathers-knex');
 const createModel = require('../../models/kontakt.model');
 const hooks = require('./kontakt.hooks');
 
-module.exports = function (app) {
-  const Model = createModel(app);
+module.exports = async function (app) {
+  const Model = await createModel(app);
   const paginate = app.get('paginate');
 
   const options = {

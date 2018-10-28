@@ -5,12 +5,13 @@
  ********************************************/
 const logger = require('../logger')
 
-module.exports = function (app) {
+module.exports = async function (app) {
   const db = app.get('knexClient');
   const tableName = 'kontakt';
-  db.schema.hasTable(tableName).then(exists => {
-    if (!exists) {
-      db.schema.createTable(tableName, table => {
+  const exists = await db.schema.hasTable(tableName)
+  if (!exists) {
+    try {
+      const created = await db.schema.createTable(tableName, table => {
         table.string('id', 40).primary().unique().notNullable();
         table.string('istorganisation', 1);
         table.string('istperson', 1)
@@ -36,32 +37,31 @@ module.exports = function (app) {
         table.string('Website')
         table.string('gruppe')
         table.string('patientnr', 50)
-        table.text('anchrift')
+        table.text('anschrift')
         table.text('bemerkung')
         table.binary('diagnosen')
         table.string('deleted', 1)
         table.integer('LASTUPDATE')
         table.string('TitelSuffix')
       })
-        .then(() => {
-          logger.info(`Created ${tableName} table`)
-          db(tableName).insert({
-            id: "007007007",
-            Bezeichnung1: "unittest",
-            Bezeichnung2: "Elektra",
-            geschlecht: "f",
-            istpatient: "1",
-            istperson: "1",
-            geburtsdatum: "19700506",
-            deleted: "0",
-            lastupdate: new Date().getTime()
-          }).then(() => logger.info("added unittest patient"))
-        })
-        .catch(e => logger.error(`Error creating ${tableName} table`, e));
+      logger.info(`Created ${tableName} table`)
+      const unittest = await db(tableName).insert({
+        id: "007007007",
+        Bezeichnung1: "unittest",
+        Bezeichnung2: "Elektra",
+        geschlecht: "f",
+        istpatient: "1",
+        istperson: "1",
+        geburtsdatum: "19700506",
+        deleted: "0",
+        lastupdate: new Date().getTime()
+      })
+      logger.info("added unittest patient")
 
+    } catch (err) {
+      logger.error(`Error creating ${tableName} table`, err)
     }
-  });
-
+  }
 
   return db;
 };

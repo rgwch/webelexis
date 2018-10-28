@@ -5,18 +5,20 @@
  ********************************************/
 const uuid = require('uuid/v4')
 const { DateTime } = require('luxon')
+const defaults=require('../../../config/elexisdefaults').fall
 
 class Service {
 
   constructor(options) {
     this.options = options || {};
-    this.kontakt = options.app.service("kontakt")
   }
 
   async find(params) {
     const stickers = this.options.app.service('stickers')
+    const kontakt = this.options.app.service("kontakt")
+
     params.query = Object.assign(params.query, { istpatient: "1", istperson: "1" })
-    const pats = await this.kontakt.find(params);
+    const pats = await kontakt.find(params);
     for (const pat of pats.data) {
       const sid = await stickers.find({ query: { forPatient: pat.id } })
       if (sid && sid.length > 0) {
@@ -29,10 +31,12 @@ class Service {
   }
 
   async get(id, params) {
-    return this.kontakt.get(id, params)
+    const kontakt = this.options.app.service("kontakt")
+    return kontakt.get(id, params)
   }
 
   async create(data, params) {
+    const kontakt = this.options.app.service("kontakt")
     if (Array.isArray(data)) {
       return await Promise.all(data.map(current => this.create(current)));
     }
@@ -45,12 +49,12 @@ class Service {
     if (!newPatient.PatientNr || newPatient.PatientNr == 0) {
       newPatient.PatientNr = await this.nextPatientNr()
     }
-    const pat = await this.kontakt.create(newPatient)
+    const pat = await kontakt.create(newPatient)
     const fall = await faelle.create({
       "patientid": pat.id,
-      "gesetz": (this.options.app.get("defaults")["fallgesetz"] || "Privat"),
+      "gesetz": (defaults["fallgesetz"] || "Privat"),
       "datumvon": DateTime.local().toFormat("yyyyLLdd"),
-      "grund": (this.options.app.get("defaults")["fallgrund"] || "Krankheit"),
+      "grund": (defaults["fallgrund"] || "Krankheit"),
       "garantid": pat.id,
       "kostentrid": pat.id,
       "versnummer": " ",
@@ -74,8 +78,9 @@ class Service {
     if (!data.PatientNr || data.PatientNr == 0) {
       data.PatientNr = await this.nextPatientNr()
     }
+    const kontakt = this.options.app.service("kontakt")
     //data.lastupdate=new Date().getTime()
-    return this.kontakt.update(id, data, params)
+    return kontakt.update(id, data, params)
   }
 
   async patch(id, data, params) {
@@ -83,7 +88,8 @@ class Service {
   }
 
   async remove(id, params) {
-    return this.kontakt.remove(id);
+    const kontakt = this.options.app.service("kontakt")
+    return kontakt.remove(id);
   }
 }
 
