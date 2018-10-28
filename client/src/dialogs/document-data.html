@@ -1,0 +1,21 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header>
+      <h3>Document Metadata</h3>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="form-group row">
+        <label for="meta_subject" class="col-form-label">Subject</label>
+        <input id="meta_subject" type="text" class="form-control" value=data.subject>
+      </div>
+      <div class="form-group row">
+        <label for="meta_adressee" class="col-form-label">Adressee</label>
+        <input id="meta_adressee" class="form-control" type="text" value=data.kontakt>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="dc.cancel()">Cancel</button>
+      <button click.trigger="dc.ok(data)">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

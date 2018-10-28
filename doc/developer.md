@@ -220,3 +220,77 @@ To localize dates, use markup like this:
 
     <p>Heute ist der ${new Date() | df : undefined : 'de'}</p>
 
+## Dialogs
+
+We use aurelia-dialog as a common dialog interface.
+
+### caller
+
+````
+import { DialogService } from 'aurelia-dialog'
+import {autoinject} from 'aurelia-framework'
+...
+constructor(private dlgs:DialogService){}
+
+dlgTriggered(){
+  this.dlgs.open({ViewModel: SomeDialog, model: someModel}).whenClosed(response=>{
+    if(response.wasCancelled){
+      console.log("cancel or close button pressed")
+    }else{
+      console.log("ok pressed")
+      // do something
+    }
+  })
+}
+````
+
+### Dialog
+
+SomeDialog.html
+
+```
+<template>
+  <ux-dialog>
+    <ux-dialog-header>
+      <h3>Header</h3>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="form-group row">
+        <label for="meta_subject" class="col-form-label">Subject</label>
+        <input id="meta_subject" type="text" class="form-control" value=data.subject>
+      </div>
+      <div class="form-group row">
+        <label for="meta_other" class="col-form-label">Other</label>
+        <input id="meta_other" class="form-control" type="text" value=data.other>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="dc.cancel()">Cancel</button>
+      <button click.trigger="dc.ok(data)">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
+```
+
+SomeDialog.ts
+
+```
+import { DialogController } from 'aurelia-dialog'
+import { autoinject} from 'aurelia-framework';
+
+@autoinject
+export class SomeDialog{
+  data
+
+  constructor(private dc:DialogController){}
+
+  activate(data){
+    this.data=data
+  }
+
+  ok(data){
+    // some cleanup if necessary
+    this.dc.ok(data)
+  }
+}
+```

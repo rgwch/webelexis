@@ -35,8 +35,9 @@ export class Document {
   }
 
   templates: Array<DocType>
-  private dataService: DataService
-  @observable htmlText: string
+  private docService: DataService
+  private tmplService: DataService
+  htmlText: string
   @observable actPatient
   setsubject: any
 
@@ -45,11 +46,7 @@ export class Document {
     this.obj.concern = newvalue
     this.htmlText = this.obj.contents
   }
-/*
-  htmlTextChanged(newvalue: string, oldvalue: string) {
-    this.obj.contents = newvalue
-  }
-*/
+
   objChanged(newValue, oldValue) {
     if (newValue && newValue.contents) {
       this.htmlText = newValue.contents
@@ -77,13 +74,14 @@ export class Document {
   }
 
   constructor(private ea: EventAggregator, private ds: DataSource, private dispatcher: WebelexisEvents) {
-    this.dataService = this.ds.getService('documents')
+    this.docService = this.ds.getService('documents')
+    this.tmplService = this.ds.getService('templates')
     this.dispatcher.selectItem(this.obj)
   }
 
 
   attached() {
-    this.dataService.find({ query: { template: "1" } }).then(templates => {
+    this.tmplService.find().then(templates => {
       this.templates = templates.data
     })
 
@@ -119,7 +117,7 @@ export class Document {
       this.obj.subject = $('#subjectinput').val()
       $('#subjectdlg').modal('hide')
       if (this.obj.id) {
-        this.dataService.update(this.obj.id, this.obj).then(updated => {
+        this.docService.update(this.obj.id, this.obj).then(updated => {
           console.log("Updated " + JSON.stringify(updated))
 
         }).catch(err => {
@@ -127,7 +125,7 @@ export class Document {
         })
       } else {
         this.obj.date = new Date()
-        this.dataService.create(this.obj).then(created => {
+        this.docService.create(this.obj).then(created => {
           console.log("Created " + JSON.stringify(created))
           this.obj.id = created.id
           // some storage systems (e.g. mongo, nedb) add automatically an _id
@@ -145,7 +143,7 @@ export class Document {
     const doc = new Doc(this.obj)
     let result = this.obj.contents
     if (this.obj.template) {
-      const template = await this.dataService.get(this.obj.template)
+      const template = await this.docService.get(this.obj.template)
       if (template) {
         // result = doc.mergeWithTemplate(template)
         //const pdf=await this.dataService.toPDF(merged)
@@ -168,7 +166,7 @@ export class Document {
   doDelete() {
     console.log("delete")
     if(this.obj.id){
-      this.dataService.remove(this.obj.id)
+      this.docService.remove(this.obj.id)
     }
     this.obj={
       date: new Date(),
