@@ -9,7 +9,7 @@ const logger = require('../logger')
 module.exports = function (app) {
   const db = app.get('knexClient');
   const tableName = 'artikelstamm_ch';
-  const fields=["deleted","TYPE","BB","CUMM_VERSION","GTIN","PHAR",
+  const fields=["TYPE","BB","CUMM_VERSION","GTIN","PHAR",
     "DSCR","ADDDSCR","ATC","COMP_GLN","COMP_NAME","PEXF","PPUB",
     "PKG_SIZE","SL_ENTRY","IKSCAT","LIMITATION","LIMITATION_PTS",
     "LIMITATION_TXT","GENERIC_TYPE","HAS_GENERIC","LPPV","DEDUCTBLE",
@@ -19,6 +19,7 @@ module.exports = function (app) {
     if(!exists) {
       db.schema.createTable(tableName, table => {
         table.string('id',40).primary();
+        table.string('deleted',1)
         table.bigint('lastupdate')
         fields.forEach(field=>table.string(field))
         table.binary("ExtInfo")

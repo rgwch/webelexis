@@ -41,12 +41,12 @@ module.exports = function (app) {
     if (!exists) {
       db.schema.createTable(imageTable, table => {
         table.string('id', 40).primary().unique().notNullable()
-        table.string('deleted', 1).defaultTo('0')
+        table.string('deleted', 1)
         table.string('Datum', 8)
         table.string('Title')
         table.binary('Bild')
         table.integer('LASTUPDATE')
-        table.string("'Prefix")
+        table.string("Prefix")
       }).then(() => logger.info(`Created ${imageTable} table`))
         .catch(e => logger.error(`Error creating ${imageTable} table`, e));
     }

@@ -11,6 +11,7 @@ const { DateTime } = require('luxon')
 const Elexistypes = require('../../util/elexis-types')
 const Elexis = new Elexistypes()
 const metaqueries = require('./metaqueries')
+const logger = require('../../logger')
 
 
 /**
@@ -98,11 +99,11 @@ const checkLimits = async context => {
         bereich = "default"
       }
     }
-    const daydefs=await mq.daydefaults(bereich)
+    const daydefs = await mq.daydefaults(bereich)
     const days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
     const daydef = daydefs[days[dayOfWeek - 1]]
-    const types=await mq.terminTypes()
-    const states=await mq.terminStates()
+    const types = await mq.terminTypes()
+    const states = await mq.terminStates()
     for (const def of daydef) {
       const times = def.split(/\s*-\s*/)
       const from = Elexis.makeMinutes(times[0])
@@ -115,7 +116,12 @@ const checkLimits = async context => {
         Beginn: from.toString(),
         Dauer: (until - from).toString()
       }
-      await context.service.create(appnt)
+      try {
+        const inserted = await context.service.create(appnt)
+        logger.debug("inserted " + inserted)
+      } catch (err) {
+        logger.error("agntermine inser error" + err)
+      }
     }
     return context
   }
@@ -141,7 +147,7 @@ module.exports = {
     all: [authenticate('jwt'), abilities({ acl })],
     find: [doSort()],
     get: [specialQueries()],
-    create: [cleanup],
+    create: [/*cleanup*/],
     update: [cleanup],
     patch: [cleanup],
     remove: []

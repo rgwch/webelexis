@@ -43,7 +43,7 @@
       db.schema.createTable(itemsTable,table=>{
         table.string('id',40).primary().unique().notNullable()
         table.integer("LASTUPDATE")
-        table.string('deleted',1).defaultTo('0')
+        table.string('deleted',1)
         table.string('laborid',40)
         table.string('RefMann')
         table.string('RefFrauOrTx')

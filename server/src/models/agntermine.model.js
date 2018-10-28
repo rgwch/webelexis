@@ -7,13 +7,14 @@ const logger = require('../logger')
 const agendacfg = require('../../config/elexisdefaults').agenda
 
 
-module.exports = function (app) {
+module.exports = async function (app) {
   const db = app.get('knexClient');
   const tableName = 'agntermine';
-  db.schema.hasTable(tableName).then(exists => {
-    if (!exists) {
-      db.schema.createTable(tableName, table => {
-        table.string('id', 127).primary().unique().notNullable()
+  const exists = await db.schema.hasTable(tableName)
+  if (!exists) {
+    try {
+      await db.schema.createTable(tableName, table => {
+        table.string('id', 127).primary().unique()
         table.string('PatID', 80)
         table.string('Bereich', 40)
         table.string('Tag', 8)
@@ -36,24 +37,25 @@ module.exports = function (app) {
         table.string('insuranceType', 1)
         table.string('treatmentReason', 1)
       })
-        .then(() => {
-          logger.info(`Created ${tableName} table`)
-          const config = app.service("elexis-config")
-          //const agendacfg = app.get("defaults")["agenda"] || { "resources": ["Arzt"] }
-          config.create({
-            param: "agenda/bereiche",
-            wert: agendacfg.resources.join()
-          })
-          for (const rsc of agendacfg.resources) {
-            config.create({
-              "param": `agenda/tagesvorgaben/${rsc}`,
-              "wert": agendacfg.daydefaults
-            })
-          }
+      logger.info(`Created ${tableName} table`)
+      const config = app.service("elexis-config")
+      //const agendacfg = app.get("defaults")["agenda"] || { "resources": ["Arzt"] }
+      await config.create({
+        param: "agenda/bereiche",
+        wert: agendacfg.resources.join()
+      })
+      for (const rsc of agendacfg.resources) {
+        await config.create({
+          "param": `agenda/tagesvorgaben/${rsc}`,
+          "wert": agendacfg.daydefaults
         })
-        .catch(e => logger.error(`Error creating ${tableName} table`, e));
+      }
+      logger.info("inserted agenda defaults")
+    } catch (err) {
+      logger.error(`Error creating ${tableName} table`, err);
     }
-  });
+  }
+
 
 
   return db;

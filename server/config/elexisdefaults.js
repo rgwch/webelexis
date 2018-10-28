@@ -20,15 +20,15 @@ module.exports = {
     termintypdefaults: ["Frei","Reserviert","Normal"],
     terminstatedefaults: ["-", "geplant", "eingetroffen", "fertig", "abgesagt"],
     typcolordefaults: {
-      Reserviert: "black",
-      Frei: "green",
-      Normal: "yellow"
+      Reserviert: "000000",
+      Frei: "80ff80",
+      Normal: "ff8040"
     },
     statecolordefaults: {
-      geplant: "green",
-      eingetroffen: "red",
-      fertig: "blue",
-      abgeagt: "grey"
+      geplant: "ff8000",
+      eingetroffen: "ff0000",
+      fertig: "008000",
+      abgeagt: "e5e5e5"
     },
     timedefaults: {
       Reserviert: 30,

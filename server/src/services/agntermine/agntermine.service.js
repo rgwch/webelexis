@@ -9,8 +9,8 @@ const createModel = require('../../models/agntermine.model');
 const hooks = require('./agntermine.hooks');
 const validator=require('../validator').initialize
 
-module.exports = function (app) {
-  const Model = createModel(app);
+module.exports = async function (app) {
+  const Model = await createModel(app);
   const paginate = app.get('paginate');
 
   const options = {

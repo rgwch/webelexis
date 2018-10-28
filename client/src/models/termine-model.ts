@@ -88,8 +88,8 @@ export class TerminManager {
     if (found.data && Array.isArray(found.data)) {
       const a = found.data
       for (let i = 0; i < a.length - 1; i++) {
-        if(a[i].Beginn === t.obj.Beginn){
-          return new TerminModel(a[i+1])
+        if (a[i].Beginn === t.obj.Beginn) {
+          return new TerminModel(a[i + 1])
         }
       }
     }
@@ -97,39 +97,43 @@ export class TerminManager {
   }
   async fetchForDay(date: Date, resource: string): Promise<Array<TerminModel>> {
     const day = moment(date)
-    try {
-      const found = await this.terminService.find({ query: { Tag: day.format("YYYYMMDD"), Bereich: resource } })
-      if (found.data && found.data.length > 0) {
-        const ret = []
-        const template = found.data[0]
-        for (let i = 0; i < found.data.length - 1; i++) {
-          const first = found.data[i]
-          const second = found.data[i + 1]
-          const firstEnd = parseInt(first.Beginn) + parseInt(first.Dauer)
-          const secondBegin = parseInt(second.Beginn)
-          ret.push(first)
-          if (secondBegin - firstEnd > 1) {
-            const gap = {
-              Tag: template.Tag,
-              Bereich: template.Bereich,
-              TerminTyp: Statics.terminTypes[0],
-              TerminStatus: Statics.terminStates[0],
-              Beginn: firstEnd.toString(),
-              Dauer: (secondBegin - firstEnd).toString()
+    if (resource) {
+      try {
+        const found = await this.terminService.find({ query: { Tag: day.format("YYYYMMDD"), Bereich: resource } })
+        if (found.data && found.data.length > 0) {
+          const ret = []
+          const template = found.data[0]
+          for (let i = 0; i < found.data.length - 1; i++) {
+            const first = found.data[i]
+            const second = found.data[i + 1]
+            const firstEnd = parseInt(first.Beginn) + parseInt(first.Dauer)
+            const secondBegin = parseInt(second.Beginn)
+            ret.push(first)
+            if (secondBegin - firstEnd > 1) {
+              const gap = {
+                Tag: template.Tag,
+                Bereich: template.Bereich,
+                TerminTyp: Statics.terminTypes[0],
+                TerminStatus: Statics.terminStates[0],
+                Beginn: firstEnd.toString(),
+                Dauer: (secondBegin - firstEnd).toString()
+              }
+              ret.push(gap)
             }
-            ret.push(gap)
+            //ret.push(second)
           }
-          //ret.push(second)
+          ret.push(found.data[found.data.length - 1])
+          return ret.map(r => new TerminModel(r))
+        } else {
+          return []
         }
-        ret.push(found.data[found.data.length - 1])
-        return ret.map(r => new TerminModel(r))
-      } else {
-        return []
+      } catch (err) {
+        if (err.code && err.code == 401) {
+          this.router.navigateToRoute('user')
+        }
       }
-    } catch (err) {
-      if (err.code && err.code == 401) {
-        this.router.navigateToRoute('user')
-      }
+    } else {
+      return []
     }
   }
 }
