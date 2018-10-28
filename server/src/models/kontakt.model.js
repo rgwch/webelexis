@@ -39,7 +39,7 @@ module.exports = function (app) {
         table.text('anchrift')
         table.text('bemerkung')
         table.binary('diagnosen')
-        table.string('deleted', 1).defaultTo('0')
+        table.string('deleted', 1)
         table.integer('LASTUPDATE')
         table.string('TitelSuffix')
       })
@@ -52,7 +52,9 @@ module.exports = function (app) {
             geschlecht: "f",
             istpatient: "1",
             istperson: "1",
-            geburtsdatum: "19700506"
+            geburtsdatum: "19700506",
+            deleted: "0",
+            lastupdate: new Date().getTime()
           }).then(() => logger.info("added unittest patient"))
         })
         .catch(e => logger.error(`Error creating ${tableName} table`, e));

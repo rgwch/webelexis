@@ -12,7 +12,7 @@ module.exports = function (app) {
       db.schema.createTable(etikettenTable, table => {
         table.string('id', 40).unique().notNullable().primary();
         table.string('Image', 40)
-        table.string('deleted', 1).defaultTo('0')
+        table.string('deleted', 1)
         table.string('importance', 7)
         table.string('Name', 40)
         table.string('foreground', 6)

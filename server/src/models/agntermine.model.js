@@ -26,7 +26,7 @@ module.exports = function (app) {
         table.string('angelegt', 10)
         table.string('lastedit', 10)
         table.string('flags', 10)
-        table.string('deleted', 1).defaultTo('0')
+        table.string('deleted', 1)
         table.text("Extension")
         table.string('linkgroup')
         table.integer('lastupdate')

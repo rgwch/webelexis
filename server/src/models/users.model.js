@@ -17,7 +17,7 @@ module.exports = function (app) {
     if(!exists) {
       db.schema.createTable(tableName, table => {
         table.string('id',40).primary().unique().notNullable();
-        table.string('DELETED',1).defaultTo('0');
+        table.string('DELETED',1)
         table.string("KONTAKT_ID",40)
         table.integer("LASTUPDATE")
         table.string("HASHED_PASSWORD",64)

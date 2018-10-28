@@ -17,8 +17,8 @@ module.exports = {
 1800-2359~#<AMo=A0000-0800
 1200-1300
 1700-2359~#<ASo=A0000-2359`,
-    termintypdefaults: ["Reserviert", "Frei","Normal"],
-    terminstatedefaults: ["geplant", "eingetroffen", "fertig", "abgesagt"],
+    termintypdefaults: ["Frei","Reserviert","Normal"],
+    terminstatedefaults: ["-", "geplant", "eingetroffen", "fertig", "abgesagt"],
     typcolordefaults: {
       Reserviert: "black",
       Frei: "green",

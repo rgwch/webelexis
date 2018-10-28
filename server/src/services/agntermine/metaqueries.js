@@ -1,5 +1,5 @@
 const logger = require('../../logger')
-const defaults = require('../../../config/elexisdefaults')
+const defaults = require('../../../config/elexisdefaults').agenda
 
 /**
  *
@@ -16,7 +16,7 @@ function getList(config, def) {
 }
 
 function getdaydefaults(config, bereich) {
-  config.get("agenda/tagesvorgaben/" + bereich).then(raw => {
+  return config.get("agenda/tagesvorgaben/" + bereich).then(raw => {
     const timedef = raw.trim().substring(7).split("~#<A")
     let result = {}
     timedef.forEach(element => {
@@ -54,9 +54,9 @@ function getTimedefaults(config, bereich) {
  */
 function getColors(app, mode, user) {
   //console.log("colors requested for "+mode+", "+resource)
-  const config = context.app.service("elexis-userconfig")
+  const config = app.service("elexis-userconfig")
 
-  config.find({ query: { user: user, param: { $like: `agenda/farben/${mode}/%` } } }).then(raw=>{
+  config.find({ query: { user: user, param: { $like: `agenda/farben/${mode}/%` } } }).then(raw => {
     let ret = {}
     raw.data.forEach(col => {
       let path = col.Param.split("/")
@@ -64,7 +64,7 @@ function getColors(app, mode, user) {
       ret[elem] = col.Value
     })
     return ret
-  }).catch(err=>{
+  }).catch(err => {
     logger.warn(err)
     return undefined
   })
@@ -73,18 +73,16 @@ function getColors(app, mode, user) {
 
 module.exports = function (app) {
   const elexisconfig = app.service("elexis-config")
-  async function terminTypes() {
-    return (await getList(elexisconfig, "TerminTypen")) || defaults.termintypdefaults
-  }
-  const terminStates = async () => (await getList(elexisconfig, "TerminStatus")) || defaults.terminstatedefaults
+  const meta = {}
+  meta.terminTypes = async () => (await getList(elexisconfig, "TerminTypen")) || defaults.termintypdefaults
+  meta.terminStates = async () => (await getList(elexisconfig, "TerminStatus")) || defaults.terminstatedefaults
+  meta.agendaResources = async () => (await getList(elexisconfig, "bereiche")) || defaults.resources
 
-  const agendaResources = async () => (await getList(elexisconfig, "bereiche")) || defaults.resources
-
-  const daydefaults = async resource => {
+  meta.daydefaults = async resource => {
     if (resource) {
-      return getdaydefaults(elexisconfig, resource)
+      return await getdaydefaults(elexisconfig, resource)
     } else {
-      let resources = await agendaResources()
+      let resources = await meta.agendaResources()
       let result = {}
       for (let i = 0; i < resources.length; i++) {
         result[resources[i]] = await getdaydefaults(elexisconfig, resources[i])
@@ -93,11 +91,11 @@ module.exports = function (app) {
     }
   }
 
-  const timeDefaults = async resource => {
+  meta.timeDefaults = async resource => {
     if (resource) {
       return getTimedefaults(elexisconfig, resource)
     } else {
-      const resources = await agendaResources();
+      const resources = await meta.agendaResources();
       let result = {}
       for (let i = 0; i < resources.length; i++) {
         result[resources[i]] = await getTimedefaults(elexisconfig, resources[i])
@@ -106,11 +104,13 @@ module.exports = function (app) {
     }
   }
 
-  const typeColors = async (user) => {
-    return (await getColors(app,"typ",user)) || defaults.typcolordefaults
+  meta.typeColors = async (user) => {
+    return (await getColors(app, "typ", user)) || defaults.typcolordefaults
   }
 
-  const stateColors = async user =>{
-    return (await getColors(app,"status",user)) || defaults.statecolordefaults
+  meta.stateColors = async user => {
+    return (await getColors(app, "status", user)) || defaults.statecolordefaults
   }
+
+  return meta
 }

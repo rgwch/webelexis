@@ -101,14 +101,16 @@ const checkLimits = async context => {
     const daydefs=await mq.daydefaults(bereich)
     const days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
     const daydef = daydefs[days[dayOfWeek - 1]]
+    const types=await mq.terminTypes()
+    const states=await mq.terminStates()
     for (const def of daydef) {
       const times = def.split(/\s*-\s*/)
       const from = Elexis.makeMinutes(times[0])
       const until = Elexis.makeMinutes(times[1])
       const appnt = {
         Bereich: bereich,
-        TerminTyp: "Reserviert",
-        TerminStatus: "-",
+        TerminTyp: types[1],
+        TerminStatus: states[0],
         Tag: q.Tag,
         Beginn: from.toString(),
         Dauer: (until - from).toString()
