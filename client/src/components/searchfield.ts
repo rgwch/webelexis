@@ -7,7 +7,7 @@
 import { bindable, PLATFORM, useView} from "aurelia-framework";
 
 /**
- * A generic search box. bind "searchtext" to the placeholder and "result" to the value.
+ * A generic search box. bind "searchtext" to the placeholder and "result" two-way to the value.
  */
 @useView(PLATFORM.moduleName('./searchfield.pug'))
 export class Searchfield{

@@ -1,5 +1,5 @@
 import { Patient } from 'models/patient';
-import { SelectPatient } from './select-pat';
+import { SelectKontakt } from './select-kontakt';
 import { DocType } from './../models/document';
 import { DialogController, DialogService } from 'aurelia-dialog'
 import { autoinject, bindable } from 'aurelia-framework';
@@ -27,7 +27,7 @@ export class DocumentData{
   }
 
   selectPatient(){
-    this.ds.open({viewModel: SelectPatient, model: this.document}).whenClosed(result=>{
+    this.ds.open({viewModel: SelectKontakt, model: this.document}).whenClosed(result=>{
       if(!result.wasCancelled){
         this.document.adressee=result.output
         this.data.addressee=result.output
