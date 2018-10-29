@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const {Ability, AbilityBuilder, ForbiddenError} = require('@casl/ability')
 
 const defineAbilitiesFor=(user)=>{

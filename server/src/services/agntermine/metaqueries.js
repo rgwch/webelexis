@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const logger = require('../../logger')
 const defaults = require('../../../config/elexisdefaults').agenda
 

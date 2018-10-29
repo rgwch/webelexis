@@ -4,7 +4,9 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-/* eslint-disable no-console */
+/**
+ * 'npm start' will execute this script
+ */
 const logger = require('./logger');
 const app = require('./app');
 const port = app.get('port');

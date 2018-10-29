@@ -5,7 +5,7 @@
  ********************************************/
 
 /**
- * If the query states no valie for 'deleted', add a 'deleted='0' clause.
+ * If the query states no value for 'deleted', add a 'deleted='0' clause.
  * Except elexis-userconfig (table has no 'deleted' field)
  * @param {*} options
  */

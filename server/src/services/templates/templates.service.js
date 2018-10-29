@@ -1,4 +1,9 @@
-// Initializes the `templates` service on path `/templates`
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const createService = require('feathers-nedb');
 const createModel = require('../../models/templates.model');
 const hooks = require('./templates.hooks');
