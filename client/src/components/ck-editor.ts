@@ -6,7 +6,7 @@
 
 import { bindable, bindingMode, customElement, inlineView, observable, autoinject } from 'aurelia-framework';
 import { I18N } from 'aurelia-i18n';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ckeditor
 
 /**
  * Embed the CKEditor 5
@@ -37,6 +37,7 @@ export class CKEditor {
   public attached() {
     console.log("ckeditor attached")
     this.textArea.innerHTML = this.value
+    CKEDITOR.replace('editor') 
     ClassicEditor.create(this.textArea, {
       toolbar: ['heading', '|', 'bold', 'italic', 'undo', 'redo', 'bulletedList'],
       heading: {
