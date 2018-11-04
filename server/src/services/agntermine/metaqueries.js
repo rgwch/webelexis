@@ -13,7 +13,7 @@ const defaults = require('../../../config/elexisdefaults').agenda
  * @param {*} def
  */
 function getList(config, def) {
-  config.get("agenda/" + def).then(ret => {
+  return config.get("agenda/" + def).then(ret => {
     return ret.split(/\s*,\s*/)
   }).catch(err => {
     logger.warn(err)
@@ -38,7 +38,7 @@ function getdaydefaults(config, bereich) {
 }
 
 function getTimedefaults(config, bereich) {
-  config.get("agenda/zeitvorgaben/" + bereich).then(raw => {
+  return config.get("agenda/zeitvorgaben/" + bereich).then(raw => {
     const timedef = raw.trim().split("::")
     let result = {}
     timedef.forEach(el => {
@@ -60,9 +60,10 @@ function getTimedefaults(config, bereich) {
  */
 function getColors(app, mode, user) {
   //console.log("colors requested for "+mode+", "+resource)
+
   const config = app.service("elexis-userconfig")
 
-  config.find({ query: { user: user, param: { $like: `agenda/farben/${mode}/%` } } }).then(raw => {
+  return config.find({ query: { user: user, param: { $like: `agenda/farben/${mode}/%` } } }).then(raw => {
     let ret = {}
     raw.data.forEach(col => {
       let path = col.Param.split("/")
@@ -80,10 +81,17 @@ function getColors(app, mode, user) {
 module.exports = function (app) {
   const elexisconfig = app.service("elexis-config")
   const meta = {}
+  /** fetch predefined appointment types */
   meta.terminTypes = async () => (await getList(elexisconfig, "TerminTypen")) || defaults.termintypdefaults
+  /** fetch predefined appointment states */
   meta.terminStates = async () => (await getList(elexisconfig, "TerminStatus")) || defaults.terminstatedefaults
+  /** fetch predefined agenda resources */
   meta.agendaResources = async () => (await getList(elexisconfig, "bereiche")) || defaults.resources
 
+  /**
+   * fetch the predefined not-schedulable times for each weekday for the given resource
+   * @param {string} resource
+   */
   meta.daydefaults = async resource => {
     if (resource) {
       return await getdaydefaults(elexisconfig, resource)
@@ -97,6 +105,10 @@ module.exports = function (app) {
     }
   }
 
+  /**
+   * fetch the predefined durations for eacht appointment type of the given resource
+   * @param {string} resource
+   */
   meta.timeDefaults = async resource => {
     if (resource) {
       return getTimedefaults(elexisconfig, resource)
@@ -110,10 +122,20 @@ module.exports = function (app) {
     }
   }
 
+  /**
+   * get a list of colors for appointment types defined for a given user. If there is no
+   * color set for that user, return a default color set.
+   * @param {string} user
+   */
   meta.typeColors = async (user) => {
     return (await getColors(app, "typ", user)) || defaults.typcolordefaults
   }
 
+  /**
+    * get a list of colors for appointment states defined for a given user. If there is no
+    * color set for that user, return a default color set.
+    * @param {string} user
+    */
   meta.stateColors = async user => {
     return (await getColors(app, "status", user)) || defaults.statecolordefaults
   }
