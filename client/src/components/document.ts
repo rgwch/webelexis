@@ -28,11 +28,7 @@ import { DocumentData} from '../dialogs/document-data'
   }
 })
 export class Document {
-  @observable obj: DocType = this.obj = {
-    date: new Date(),
-    contents: "",
-    type: "documents"
-  }
+  @observable obj: DocType
 
   templates: Array<DocType>
   private docService: DataService
