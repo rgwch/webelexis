@@ -1,5 +1,5 @@
 import {bindable, bindingMode, customElement, inlineView} from 'aurelia-framework';
-import 'ckeditor'
+//import 'ckeditor/ckeditor' // doesn't work, include it in index.ejs
 declare const CKEDITOR
 
 @inlineView(`
@@ -10,6 +10,7 @@ declare const CKEDITOR
 @customElement('ck-editor')
 export class CKEditor {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) public value;
+  @bindable public callback
   @bindable public name;
   public textArea: HTMLTextAreaElement;
 
@@ -25,6 +26,15 @@ export class CKEditor {
     editor.on('change', (e) => {
       this.value = e.editor.getData();
     });
+    editor.on('key',evt=>{
+      if(evt.data.keyCode==223){   // $
+        const ed=evt.editor.getSelection()
+        const range=ed.getRanges()[0]
+        const cursor=range.startOffset
+        console.log(cursor)
+      }
+      console.log(evt)
+    })
     editor.setData(this.value)
   }
 
