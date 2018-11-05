@@ -59,9 +59,6 @@ export class AgendaEntry {
     this.ea.publish(RightPanel.message, view)
   }
 
-  isStaticType() {
-    return this.entry.isFree() || this.entry.isReserved()
-  }
   get typecss() {
     let style = `background-color:${this.entry.getTypColor()};`
     return style

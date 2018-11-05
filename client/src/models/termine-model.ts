@@ -148,8 +148,9 @@ export class TerminModel {
   public getLabel = (): string => Kontakt.getLabel(this.getKontakt())
   public getTyp = (): string => this.obj.TerminTyp
   public getState = (): string => this.obj.TerminStatus
-  public isReserved = (): boolean => this.obj.TerminTyp == Statics.terminTypes[0]
-  public isFree = (): boolean => this.obj.TerminTyp == Statics.terminTypes[1]
+  public isReserved = (): boolean => this.obj.TerminTyp == Statics.terminTypes[1]
+  public isFree = (): boolean => this.obj.TerminTyp == Statics.terminTypes[0]
+  public isAppointment = (): boolean => (!this.isFree()) && (!this.isReserved())
   public getBeginMinutes = (): number => parseInt(this.obj.Beginn)
   public getDuration = (): number => parseInt(this.obj.Dauer)
   public getEndMinutes = (): number => this.getBeginMinutes() + this.getDuration()

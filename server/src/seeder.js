@@ -62,7 +62,7 @@ module.exports = async function (app) {
   }
   const user = {
     email: "user@webelexis.ch",
-    label: "Arzt",
+    label: "Gerry",
     password: "user",
     roles: [roles.user, roles.guest],
     dummy: true

@@ -11,7 +11,7 @@ import './select-kontakt.scss'
 export class SelectKontakt{
   @observable value;
   found=[]
-  selection:string=""
+  selection:KontaktType=null
 
   private kontaktService:DataService;
 
@@ -30,7 +30,7 @@ export class SelectKontakt{
   }
 
   select(k){
-    this.selection=k.id
+    this.selection=k
     this.signaler.signal('selected')
     console.log(k)
   }
@@ -42,7 +42,7 @@ export class SelectKontakt{
 @valueConverter('kontaktSelected')
 export class KontaktSelected{
   toView(item,sel){
-    if(sel == item.id){
+    if(sel && (sel.id == item.id)){
       return "highlight"
     }else{
       return "listitem"
