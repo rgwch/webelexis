@@ -4,13 +4,12 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { WebelexisEvents } from './../webelexisevents';
+import { WebelexisEvents } from '../webelexisevents';
 import { autoinject } from 'aurelia-framework';
-import { DataSource, DataService } from '../services/datasource';
-import { FindingType, FindingsManager } from 'models/findings-model';
+import { FindingsManager } from 'models/findings-model';
 
 /**
- * Instead od simple mappings from shortcuts to texts we cjose a more powerful approach:
+ * Instead od simple mappings from shortcuts to texts we chose a more powerful approach:
  * The Macroprocessor is a class with functions to process keyboard inputs.
  * The API is not stable yet.
  */
@@ -21,14 +20,12 @@ export class Macroprocessor {
   userdefs
   constructor(private we: WebelexisEvents, private findings:FindingsManager) {
     this.userdefs=findings.getDefinitions()
-    //this.patients = ds.getService('patient')
-    //this.findings = ds.getService('findings')
   }
   /**
    * process a keyword.
    * @param context either an encounter or a document
    * @param word the last word the user typed before hitting the macro key.
-   * @return the expandion fot this macro (can be a finding)
+   * @return the expansion for this macro (can be a finding)
    */
   process(context: "encounter" | "document", word: string) {
     if (context === 'encounter') {
@@ -60,7 +57,11 @@ export class Macroprocessor {
         switch (word) {
           case "gw": return "Gewicht";
           case "bd": return "Blutdruck";
-          case "kons": return `**S:**\n**O:**\nB:\n**P:**\n`
+          case "kons": return `
+            <b>S:</b>&nbsp;<br />
+            <b>O:</b>&nbsp;<br />
+            <b>B:</b>&nbsp;<br />
+            <b>P:</b>&nbsp`
           default: return "bubblegum";
         }
       }
