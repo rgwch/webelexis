@@ -1,4 +1,4 @@
-import { Macroprocessor } from './../../user/macro';
+import { Macroprocessor } from '../../services/macro';
 import { inlineView, autoinject } from "aurelia-framework";
 import { DataSource,DataService } from '../../services/datasource';
 
