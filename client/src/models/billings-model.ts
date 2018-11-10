@@ -2,12 +2,14 @@ import { EncounterType } from './encounter';
 import { DataSource, DataService } from './../services/datasource';
 import { ElexisType } from './elexistype';
 import { autoinject } from 'aurelia-framework';
-export type BillingDef={
-
-}
 
 export interface BillingType extends ElexisType{
-
+  behandlung: string
+  leistg_txt: string
+  leistg_code: string
+  klasse: string
+  zahl: string
+  vk_preis: string
 }
 
 @autoinject
@@ -20,6 +22,11 @@ export class BillingsManager{
 
   async getBillings(kons:EncounterType){
     const ret= await this.billingService.find({query:{behandlung:kons.id}})
-    return ret
+    return ret.data.map(b=>new BillingModel(b))
   }
+}
+
+export class BillingModel{
+  constructor(private obj:BillingType){}
+
 }

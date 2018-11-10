@@ -1,12 +1,8 @@
-import { inlineView,bindable, autoinject } from "aurelia-framework";
+import { PLATFORM,bindable, autoinject, useView } from "aurelia-framework";
 import { BillingsManager } from "models/billings-model";
 
-@inlineView(`
-<template>
-  <p>billings</p>
-</template>
-`)
 @autoinject
+@useView(PLATFORM.moduleName("./billing.pug"))
 export class Billing{
   @bindable kons;
   billings
@@ -14,6 +10,8 @@ export class Billing{
   constructor(private bm:BillingsManager){}
 
   attached(){
-    this.bm.getBillings(this.kons)
+    this.bm.getBillings(this.kons).then(result=>{
+      this.billings=result
+    })
   }
 }
