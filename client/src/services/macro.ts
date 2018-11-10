@@ -22,7 +22,7 @@ export class Macroprocessor {
    * process a keyword.
    * @param context either an encounter or a document
    * @param word the last word the user typed before hitting the macro key.
-   * @return the expansion for this macro (can be a finding)
+   * @return the expansion for this macro (can be a finding or a billing)
    */
   process(context: "encounter" | "document", word: string) {
     if (context === 'encounter') {
