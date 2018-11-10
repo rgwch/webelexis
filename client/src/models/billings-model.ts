@@ -28,5 +28,9 @@ export class BillingsManager{
 
 export class BillingModel{
   constructor(private obj:BillingType){}
+  getLabel(){
+    const code=this.obj.leistg_code.split(/\s*-\s*/)
+    return this.obj.zahl+" "+code[0]+" "+this.obj.leistg_txt
+  }
 
 }
