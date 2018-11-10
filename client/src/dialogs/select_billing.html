@@ -1,11 +1,12 @@
 <template>
+  <require from="../components/searchfield"></require>
   <ux-dialog>
     <ux-dialog-header>
-      Test
+      <searchfield placeholder="Position" result.two-way="position"></searchfield>
     </ux-dialog-header>
     <ux-dialog-body>
-      test
-    </ux-dialog-body>
+      <div class="compactlist" repeat.for="el of billables">${makeLabel(el)}</div>
+   </ux-dialog-body>
     <ux-dialog-footer>
       <button click.trigger="dc.cancel()">Cancel</button>
       <button click.trigger="dc.ok(selection)">Ok</button>
