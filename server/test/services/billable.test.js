@@ -1,6 +1,18 @@
 const assert = require('assert');
 const feathers = require('@feathersjs/feathers')
 const createService = require('../../src/services/billable/billable.class')
+const knex = require('feathers-knex');
+const realApp=require('../../src/app')
+
+const tarmed={
+  name:'tarmed',
+  Model: realApp.get('knexClient')
+}
+
+const article={
+  name: "artikelstamm_ch",
+  Model: realApp.get('knexClient')
+}
 
 class FallService {
   async get(id, params) {
@@ -19,6 +31,8 @@ describe('\'billable\' service', () => {
     app = feathers()
     app.use('/fall', new FallService())
     app.use('/billable', createService({ app: app }))
+    app.use('/tarmed', knex(tarmed))
+    app.use('/article', knex(article))
   })
 
   it('registered the service', () => {
@@ -33,7 +47,8 @@ describe('\'billable\' service', () => {
       query: {
         find: "kons",
         encounter: {
-          fallid: "007"
+          fallid: "007",
+          datum: "20181111"
         }
       }
     })

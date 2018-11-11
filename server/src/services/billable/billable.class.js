@@ -13,10 +13,11 @@ class Service {
       },
       GueltigVon: { $lte: kons.datum },
       GueltigBis: { $gte: kons.datum },
+      ischapter: "0",
       Law: law
     }
     const result = await tarmedService.find({ query: query })
-    return result
+    return result.data
   }
 
   async article(text) {
@@ -24,8 +25,8 @@ class Service {
     const query = {
       DSCR: { $like: text + "%" }
     }
-    const result=await articleService.find({query: query})
-    return result
+    const result = await articleService.find({ query: query })
+    return result.data.map(c => { c.code = c.PHAR; return c })
   }
   async find(params) {
     if (params && params.query) {
@@ -70,8 +71,9 @@ class Service {
           break;
       }
       return result
+    } else {
+      return [];
     }
-    return [];
   }
 
   async get(id, params) {

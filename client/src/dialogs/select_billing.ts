@@ -5,45 +5,30 @@ import { EncounterType } from 'models/encounter';
 
 @autoinject
 export class SelectBilling {
-  tarmedService: DataService
-  articleService: DataService
+  billableService: DataService
   @observable position: string
   encounter: EncounterType
-  billables=[]
-  a={
-    b:"c",
-    [this.position]:"d"
-  }
-  sql=(fld)=>{return {query: {[fld]: {$like: this.position+"%"}}}}
-
-  activate(kons){
-    this.encounter=kons
+  billables = []
+ 
+  activate(kons) {
+    this.encounter = kons
   }
   positionChanged(newValue, oldValue) {
-    this.billables=[]
-    const tsql=this.sql("tx255")
-    
-    this.tarmedService.find({query: {$find: this.position,$enctr: this.encounter}}).then(result=>{
-      if(result.data && result.data.length){
-        this.billables=this.billables.concat(result.data)
-      }
-    })
-    this.articleService.find(this.sql("DSCR")).then(result=>{
-      if(result.data && result.data.length){
-        this.billables=this.billables.concat(result.data)
-      }
+    this.billables = []
+    this.billableService.find({ query: { find: this.position, encounter: this.encounter } }).then(result => {
+        this.billables = result
     })
   }
   constructor(private dc: DialogController, private ds: DataSource) {
-    this.tarmedService = ds.getService("tarmed")
-    this.articleService = ds.getService("article")
+    this.billableService = ds.getService("billable")
   }
 
-  makeLabel(elem){
-    if(elem.tx255){
-      return elem.tx255
-    }else{
-      return elem.DSCR
+  makeLabel(elem) {
+    const code = elem.code || elem.id.split(/-/)[0]
+    if (elem.tx255) {
+      return code + " " + elem.tx255
+    } else {
+      return code + " " + elem.DSCR
     }
   }
 

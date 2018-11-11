@@ -48,11 +48,11 @@ describe('\'termin\' service', () => {
         firstAppnt.Tag.should.be.equal("20171211")
         firstAppnt.TerminTyp.should.be.equal("Reserviert")
     })
-    it("loads a list of appointment types", async function() {
+    xit("loads a list of appointment types", async function() {
         let types = await service.get("types")
         types.length.should.be.above(1)
     })
-    it("loads a list of appointment states", async function() {
+    xit("loads a list of appointment states", async function() {
         let states = await service.get("states")
         states.should.not.be.undefined
         states.length.should.be.above(1)
@@ -61,22 +61,22 @@ describe('\'termin\' service', () => {
         let resources = await service.get("resources")
         resources.length.should.be.above(1)
     })
-    it("fetches day presets of first resource", async function() {
+    xit("fetches day presets of first resource", async function() {
         let resources = await service.get("resources")
         let presets = await service.get("daydefaults", { "resource": resources[0] })
         presets.should.have.property("Mo")
     })
-    it("fetches time presets for first resource", async function() {
+    xit("fetches time presets for first resource", async function() {
         let resources = await service.get("resources")
         let presets = await service.get("timedefaults", { "resource": resources[0] })
         presets.should.have.property("std")
     })
-    it("fetches type colors for first resource", async () => {
+    xit("fetches type colors for first resource", async () => {
         let resources = await service.get("resources")
         let colors = await service.get("typecolors", { query: { "user": user } })
         colors.should.be.ok
     })
-    it("fetches status colors for first resource", async () => {
+    xit("fetches status colors for first resource", async () => {
         let resources = await service.get("resources")
         let colors = await service.get("statecolors", { query: { "user": user } })
         colors.should.be.ok

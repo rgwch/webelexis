@@ -4,6 +4,7 @@ import { ElexisType } from './elexistype';
 import { autoinject } from 'aurelia-framework';
 
 export interface BillingType extends ElexisType{
+  code?: string
   behandlung: string
   leistg_txt: string
   leistg_code: string
@@ -29,8 +30,8 @@ export class BillingsManager{
 export class BillingModel{
   constructor(private obj:BillingType){}
   getLabel(){
-    const code=this.obj.leistg_code.split(/\s*-\s*/)
-    return this.obj.zahl+" "+code[0]+" "+this.obj.leistg_txt
+    const code=this.obj.code || this.obj.leistg_code.split(/\s*-\s*/)[0]
+    return this.obj.zahl+" "+code+" "+this.obj.leistg_txt
   }
 
 }
