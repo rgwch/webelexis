@@ -3,10 +3,11 @@ const createService = require('./billable.class.js');
 const hooks = require('./billable.hooks');
 
 module.exports = function (app) {
-  
+
   const paginate = app.get('paginate');
 
   const options = {
+    app,
     paginate
   };
 
