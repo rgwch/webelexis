@@ -6,7 +6,7 @@ const findpos = async ctx => {
       const enct = ctx.params.query.$enctr
       ctx.params.query.GueltigVon = { $lte: enct.datum }
       ctx.params.query.GueltigBis = { $gte: enct.datum }
-      // ctx.params.query.Law = {$or: ["KVG","UVG"]}
+      ctx.params.query.$or = [{Law: "KVG"}, {Law: "UVG"}]
       delete ctx.params.query.$enctr
     }
     delete ctx.params.query.$find
