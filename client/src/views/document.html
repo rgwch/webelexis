@@ -1,0 +1,35 @@
+<template>
+  <require from="components/ck-editor"></require>
+  <span class="detailcaption">Dokumente</span>
+  <div class="sheet" style="width:100%">
+    <div class="header">
+      <ul class="nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+            aria-expanded="false">Datei</a>
+          <div class="dropdown-menu">
+            <p class="dropdown-item" click.trigger="doSave()">Speichern</p>
+            <p class="dropdown-item" click.trigger="doSaveTemplate()">Speichern als
+              Vorlage...</p>
+            <div class="dropdown-divider"></div>
+
+            <p class="dropdown-item" click.trigger="doDelete()">Löschen</p>
+            <div class="dropdown-divider"></div>
+            <p class="dropdown-item" click.trigger="doCreatePdf()">Drucken</p>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="#">Vorlage</a>
+          <div class="dropdown-menu">
+            <p class="dropdown-item" repeat.for="tmpl of templates" click.trigger="fromTemplate(tmpl)">${tmpl.subject}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="body">
+      <div id="editor">
+        <ck-editor value.two-way="htmlText"></ck-editor>
+      </div>
+    </div>
+  </div>
+</template>
