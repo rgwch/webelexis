@@ -137,9 +137,17 @@ export class FindingView {
   checkUpdate = (updated) => {
     //console.log(JSON.stringify(updated))
     //console.log(JSON.stringify(this.finding))
-    if (updated.id === this.finding.id) {
-      console.log("updated")
-      this.finding.measurements = updated.measurements
+    if (this.finding && this.finding.id) {
+      if (updated.id === this.finding.id) {
+        console.log("updated")
+        this.finding.measurements = updated.measurements
+      }
+    }else{
+      if(this.finding && this.finding.name){
+        if(this.finding.name==updated.name){
+          this.finding=updated
+        }
+      }
     }
   }
 

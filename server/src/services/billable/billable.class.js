@@ -9,7 +9,7 @@ class Service {
     const tarmedService = this.options.app.service('tarmed')
     const query = {
       tx255: {
-        $like: text + "%"
+        $like: "%" + text + "%"
       },
       GueltigVon: { $lte: kons.datum },
       GueltigBis: { $gte: kons.datum },

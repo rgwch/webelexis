@@ -35,7 +35,7 @@ export default [
       if (inr && userdefs.coagulation) {
         const data = fm.createFindingFromString("coagulation", word)
         if (userdefs.coagulation.verbose) {
-          return userdefs.verbose(data)
+          return userdefs.coagulation.verbose(data)
         }
         if (userdefs.coagulation.compact) {
           return userdefs.coagulation.compact(data)
