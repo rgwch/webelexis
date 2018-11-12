@@ -15,7 +15,7 @@ export default{
   },
   "findings":{
     "name": "Findings",
-    "view": PLATFORM.moduleName("components/workflow/findings-view")
+    "view": PLATFORM.moduleName("views/findings-view")
   },
   "grafik":{
     "name": "Grafik",

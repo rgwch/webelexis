@@ -9,17 +9,17 @@ export default{
     stammdaten: {
       text: "Stammdaten",
       icon: "/id-card.svg", //basic.png",
-      view: PLATFORM.moduleName("../../components/workflow/patient-basedata")
+      view: PLATFORM.moduleName("views/patient-basedata")
     },
     konsultationen:{
       text: "Konsultationen",
       icon: "/folder.svg", //karteikarte.jpg",
-      view: PLATFORM.moduleName("../../components/workflow/encounters")
+      view: PLATFORM.moduleName("views/encounters")
     },
     dokumente:{
       text: "Dokumente",
       icon: "/file.svg", // documents.png",
-      view: PLATFORM.moduleName("../../components/document")
+      view: PLATFORM.moduleName("views/document")
     },
     medikamente:{
       text: "Medikamente",
@@ -28,7 +28,7 @@ export default{
     labor:{
       text: "Labor",
       icon: "/laboratory.svg",
-      view: PLATFORM.moduleName("../../components/workflow/labresults")
+      view: PLATFORM.moduleName("views/labresults")
     },
     patientenliste:{
       text: "Patienten",
@@ -56,11 +56,11 @@ export default{
     artikeldetail: {
       text: "Artikel",
       icon: "/pill.svg",
-      view: PLATFORM.moduleName("../../components/workflow/artikeldetail")
+      view: PLATFORM.moduleName("views/artikeldetail")
     },
     messwerte:{
       text: "Messwerte",
       icon: "/checklist.svg",
-      view: PLATFORM.moduleName("../../components/workflow/findings-view")
+      view: PLATFORM.moduleName("views/findings-view")
     }
   }

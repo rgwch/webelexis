@@ -1,3 +1,8 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
 const assert = require('assert');
 const feathers = require('@feathersjs/feathers')
 const createService = require('../../src/services/billable/billable.class')

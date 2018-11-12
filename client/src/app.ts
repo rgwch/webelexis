@@ -153,7 +153,7 @@ export class App {
         title: this.i18n.tr("nav.documents"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName('./routes/documents/list') },
-          details: { moduleId: PLATFORM.moduleName('./components/document') }
+          details: { moduleId: PLATFORM.moduleName('views/document') }
         }
       }
     ])
