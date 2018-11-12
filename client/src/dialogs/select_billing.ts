@@ -9,6 +9,7 @@ export class SelectBilling {
   @observable position: string
   encounter: EncounterType
   billables = []
+  selected=[]
  
   activate(kons) {
     this.encounter = kons
@@ -23,6 +24,13 @@ export class SelectBilling {
     this.billableService = ds.getService("billable")
   }
 
+  select(item){
+    this.selected.push(item)
+  }
+  deselect(item){
+    const idx=this.selected.indexOf(item)
+    this.selected.splice(idx,1)
+  }
   makeLabel(elem) {
     const code = elem.code || elem.id.split(/-/)[0]
     if (elem.tx255) {

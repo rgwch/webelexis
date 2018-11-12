@@ -99,13 +99,13 @@ export class FindingView {
   /**
    * Menuoption: Delete selected meaurements (after confirmation)
    */
-  delete() {
+  async delete() {
     if (this.finding.measurements.some(m => m['selected'])) {
       for (const m of this.finding.measurements) {
         if (m['selected']) {
           const ask = this.i18.tr('dlg.reallydelete', { item: moment(m.date).format("DD.MM.YYYY") })
           if (confirm(ask)) {
-            this.fm.removeFinding(this.finding.id, m.date)
+            await this.fm.removeFinding(this.finding.id, m.date)
           }
         }
       }

@@ -5,7 +5,14 @@
       <searchfield placeholder="Position" result.two-way="position"></searchfield>
     </ux-dialog-header>
     <ux-dialog-body>
-      <div class="compactlist" repeat.for="el of billables">${makeLabel(el)}</div>
+      <div class="row">
+        <div class="col">
+            <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">${makeLabel(el)}</div>
+        </div>
+        <div class="col">
+          <div class="compactlist" repeat.for="sel of selected" click.delegate="deselect(sel)">${makeLabel(sel)}</div>
+        </div>
+      </div>
    </ux-dialog-body>
     <ux-dialog-footer>
       <button click.trigger="dc.cancel()">Cancel</button>
