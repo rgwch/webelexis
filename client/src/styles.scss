@@ -22,6 +22,14 @@ $form-background: aquamarine;
   border-radius: 5px;
 }
 
+.compactlist{
+    padding-top: 0px;
+    padding-bottom: 1px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: smaller;
+    cursor: pointer;
+}
 /* CommonViewer and Sheet */
 common-viewer, .sheet{
 
@@ -42,13 +50,8 @@ common-viewer, .sheet{
 
   }
   .entry{
-    padding-top: 0px;
-    padding-bottom: 1px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-size: smaller;
+    @extend .compactlist;
     color: black;
-    cursor: pointer;
   }
   .highlight{
     @extend .entry;
@@ -122,3 +125,4 @@ img.nav{
 .nav .menuitem {
   cursor:pointer;
 }
+

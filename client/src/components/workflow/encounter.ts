@@ -1,4 +1,3 @@
-import { id } from './../../models/fhir/fhir';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -13,7 +12,7 @@ import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import { DateTime } from '../../services/datetime';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DataSource, DataService } from '../../services/datasource';
-import { Macroprocessor } from 'user/macro';
+import { Macroprocessor } from 'services/macro';
 
 @autoinject
 export class Encounter {

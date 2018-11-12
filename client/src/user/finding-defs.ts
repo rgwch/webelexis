@@ -6,7 +6,7 @@
 
 /**
  * Use this file to declare all "finding" or "measurement" types you intend to use
- * Entries must be 'FindingDef' types as defined in models/dinding-def
+ * Entries must be 'FindingDef' types as defined in models/findings-model
  */
 export default [
   {

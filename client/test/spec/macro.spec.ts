@@ -1,4 +1,4 @@
-import  {Macroprocessor} from '../../src/user/macro'
+import  {Macroprocessor} from '../../src/services/macro'
 import { Dummysource } from './dummysource';
 import { WebelexisEvents } from './dummyevents';
 

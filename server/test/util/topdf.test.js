@@ -3,7 +3,7 @@ const path=require('path')
 const doctool=require('../../src/util/topdf')
 const should = require('chai').should();
 
-describe("toPDF creates PDF documents",()=>{
+xdescribe("toPDF creates PDF documents",()=>{
   it("merges a template and a document",()=>{
     const template=fs.readFileSync(path.join(__dirname,"../../src/services/documents/example-template.html"))
     const doc={

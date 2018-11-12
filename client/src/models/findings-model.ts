@@ -170,6 +170,16 @@ export class FindingsManager {
     }
   }
 
+  createFindingFromString(name,value){
+      const actPat = this.we.getSelectedItem('patient')
+      const actUser = this.we.getSelectedItem('usr')
+      const item=definitions[name]
+      const processed=item.create(value)
+      this.addFinding(name,actPat.id, processed).then(added=>{
+  
+      })
+      return processed;
+  }
   /**
    * remove a measrument from a finding
    * @param id id of the finding

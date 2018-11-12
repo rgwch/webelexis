@@ -147,7 +147,7 @@ module.exports = {
     all: [authenticate('jwt'), abilities({ acl })],
     find: [doSort()],
     get: [specialQueries()],
-    create: [/*cleanup*/],
+    create: [cleanup],
     update: [cleanup],
     patch: [cleanup],
     remove: []

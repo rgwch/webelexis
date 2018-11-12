@@ -22,7 +22,7 @@ Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, un
     create user backupadmin@'localhost' identified by 'supersecret';
     grant SUPER on *.* to backupadmin@'localhost';
 
-Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexisdatenbank ein Patient namens 'unittest' existieren. Beispiel:
+Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Datenbank ein Patient namens 'unittest' existieren. Beispiel:
 
     use elexis;
     update kontakt set Bezeichnung1="unittest" where Bezeichnung1="Duck" and Bezeichnung2="Donald";`
@@ -62,6 +62,9 @@ Dann benötigte npm Libraries installieren:
     npm install
 
 (Das wird nur gelingen, wenn das Java-JDK wie oben beschrieben bereits installiert ist)
+Nach einem Upgrade von NodeJS oder Java muss oft node-java neu installiert werden (leider sind die Fehlermeldungen von npm beim Startversuch nicht wirklich hilfreich)
+
+    npm install java
 
 In server/config/default.json die Verbindungsdaten zu einer für Webelexis angepassten Elexis-Datenbank (s. oben) eingeben
 
