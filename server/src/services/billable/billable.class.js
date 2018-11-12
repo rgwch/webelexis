@@ -19,7 +19,7 @@ class Service {
       GueltigVon: { $lte: kons.datum },
       GueltigBis: { $gte: kons.datum },
       ischapter: "0",
-      Law: law
+      Law: law == "KVG" ? "KVG" : { $ne: "KVG" }
     }
     const result = await tarmedService.find({ query: query })
     return result.data
@@ -50,9 +50,9 @@ class Service {
       if (!fall) {
         logger.warn("case not found " + caseID)
       }
-      const law = fall.gesetz ? fall.gesetz.toLowerCase() : "null"
+      const law = fall.gesetz || fall.extjson.billing || "null"
       let result = []
-      switch (law) {
+      switch (law.toLowerCase()) {
         case "kvg":
           result = result.concat(await this.tarmed(enctr, "KVG", searchexpr))
           result = result.concat(await this.article(searchexpr))
@@ -62,17 +62,18 @@ class Service {
         case "ivg":
         case "mv":
         case "mvg":
-          result = result.concat(this.tarmed(enctr, "UVG", searchexpr))
-          result = result.concat(this.article)
+          result = result.concat(await this.tarmed(enctr, "UVG", searchexpr))
+          result = result.concat(await this.article(searchexpr))
           break;
         case "frei":
         case "privat":
         case "unbekannt":
         case "null":
-          result = result.concat(this.article)
+          result = result.concat(await this.tarmed(enctr, "UVG", searchexpr))
+          result = result.concat(await this.article(searchexpr))
           break;
         case "vvg":
-          result = result.concat(this.article)
+          result = result.concat(await this.article(searchexpr))
           break;
       }
       return result

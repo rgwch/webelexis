@@ -13,6 +13,8 @@ import { DateTime } from '../services/datetime';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DataSource, DataService } from '../services/datasource';
 import { Macroprocessor } from 'services/macro';
+import { WebelexisEvents } from 'webelexisevents';
+
 
 @autoinject
 export class Encounter {
@@ -21,19 +23,22 @@ export class Encounter {
   konsultationService: DataService
 
   constructor(private dt: DateTime, private ea: EventAggregator, private ds: DataSource,
-    private mp:Macroprocessor) {
+    private mp: Macroprocessor, private we: WebelexisEvents) {
     this.konsultationService = this.ds.getService('konsultation')
   }
 
   makros = text => {
-    return this.mp.process("encounter",text)
+    return this.mp.process("encounter", text)
   }
   toggleEdit() {
     if (this.isEditing) {
       this.isEditing = false
+      this.we.deselect('konsultation')
       this.konsultationService.update(this.obj.id, this.obj)
     } else {
       this.isEditing = true
+      this.obj.type = "konsultation"
+      this.we.selectItem(this.obj)
     }
   }
 

@@ -27,7 +27,7 @@ const number_to_fetch = 20;
   selector: {
     actPatient: store => store.state.pipe(<any>pluck('patient')),
     //actCase: store=>store.state.pipe(pluck('case')),
-    actKons: store => store.state.pipe(<any>pluck('konsultation'))
+    //actKons: store => store.state.pipe(<any>pluck('konsultation'))
   }
 })
 @autoinject
@@ -60,9 +60,11 @@ export class Encounters {
     //console.log("act "+(this.actPatient ? this.actPatient.id : "empty"))
     //console.log("new: "+(newValue ? newValue.id: "empty"))
     //console.log("old: "+(oldValue ? oldValue.id: "empty"))
-    this.actCase = null
-    this.searchexpr = ""
-    this.refresh()
+    if(newValue && oldValue && (newValue.id !== oldValue.id)){
+      this.actCase = null
+      this.searchexpr = ""
+      this.refresh()
+    }
   }
 
   actCaseChanged(newValue, oldValue) {
@@ -153,7 +155,7 @@ export class Encounters {
             const children = this.encdom.getElementsByTagName("encounter")
             if (children && children.length > 0) {
               const lastKons = children[0]
-              // TODO: Actuvate edit mode
+              // TODO: Activate edit mode
             }
           }
         }

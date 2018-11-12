@@ -6,6 +6,11 @@
 import { PLATFORM } from 'aurelia-framework';
 
 export default{
+    leistungen:{
+      text: "Leistungen",
+      icon: "/hand.svg",
+      view: PLATFORM.moduleName("views/select-billing")
+    },
     stammdaten: {
       text: "Stammdaten",
       icon: "/id-card.svg", //basic.png",

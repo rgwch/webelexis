@@ -42,11 +42,17 @@ export class WebelexisEvents{
     return newState
   }
 
+  private deselectType=(state:State,type:string)=>{
+    const newState=Object.assign({},state)
+    delete newState[type]
+    return newState
+  }
   constructor(private store:Store<State>){
     this.store.registerAction("SetDate",this.setDateAction)
     this.store.registerAction("SelectItem",this.selectItemAction)
     this.store.registerAction("Logout",this.logoutAction)
     this.store.registerAction("leftPanel",this.toggleLeftPanelAction)
+    this.store.registerAction("deselect",this.deselectType)
     this.store.state.subscribe(state=>this.state=state)
   }
   setDate(date){
@@ -55,6 +61,10 @@ export class WebelexisEvents{
 
   selectItem(item:ElexisType){
     this.store.dispatch(this.selectItemAction,item)
+  }
+
+  deselect(type:string){
+    this.store.dispatch(this.deselectType,type)
   }
 
   toggleLeftPanel(){

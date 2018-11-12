@@ -1,3 +1,12 @@
 <template>
-  <h1>A Fast View</h1>
+  <require from="components/searchfield"></require>
+  <span class="detailcaption">Leistungen</span>
+  <div class="sheet">
+    <div class="header">
+      <searchfield placeholder="Position" result.two-way="position"></searchfield>
+    </div>
+    <div class="body" style="height:85vh;overflow:auto">
+      <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">${makeLabel(el)}</div>
+    </div>
+  </div>
 </template>
