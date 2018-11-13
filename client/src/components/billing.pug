@@ -1,5 +1,5 @@
 template
-  .sheet
+  .sheet(dragover.trigger="dragOver($event)", drop.trigger="dragDrop($event)")
     .header(style="position:relative") Verrechnung
       div(style="position:absolute;right:20px;top:2px", click.delegate="addBilling()")
         i.fas.fa-bars

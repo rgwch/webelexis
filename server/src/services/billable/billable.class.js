@@ -33,9 +33,10 @@ class Service {
     const result = await articleService.find({ query: query })
     return result.data.map(c => { c.code = c.PHAR; return c })
   }
+
   async find(params) {
     if (params && params.query) {
-      const searchexpr = params.query.find
+      const searchexpr = params.query.find.replace(/\s+/,"%")
       const enctr = params.query.encounter
       if (!enctr) {
         logger.warn("No Encounter given for billable.find")

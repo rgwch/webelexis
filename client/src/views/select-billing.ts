@@ -40,4 +40,7 @@ export class SelectBilling {
     }
   }
 
+  drag(event){
+    console.log(event)
+  }
 }

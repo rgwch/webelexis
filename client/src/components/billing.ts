@@ -24,4 +24,12 @@ export class Billing{
       }
     })
   }
+
+  dragOver(event){
+    event.preventDefault()
+  }
+  dragDrop(event){
+    event.preventDefault()
+    console.log(event)
+  }
 }

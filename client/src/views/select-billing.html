@@ -6,7 +6,8 @@
       <searchfield placeholder="Position" result.two-way="position"></searchfield>
     </div>
     <div class="body" style="height:85vh;overflow:auto">
-      <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">${makeLabel(el)}</div>
+      <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">
+        <span draggable="true" dragstart.trigger="drag($event)">${makeLabel(el)}</span></div>
     </div>
   </div>
 </template>
