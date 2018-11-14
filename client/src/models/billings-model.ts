@@ -37,8 +37,8 @@ export class BillingsManager{
     return billable
   }
 
-  async createBilling(billable){
-    const created=await this.billableService.create(billable)
+  async createBilling(guid,billable){
+    const created=await this.billableService.create({billable,guid})
   }
 }
 

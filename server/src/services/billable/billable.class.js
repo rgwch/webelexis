@@ -25,7 +25,7 @@ class Service {
     }
     const result = await tarmedService.find({ query: query })
     return result.data.map(c => {
-      c.uid=c.ID
+      c.uid = c.ID
       c.klasse = tarmed_class;
       return c
     })
@@ -38,7 +38,7 @@ class Service {
     }
     const result = await articleService.find({ query: query })
     return result.data.map(c => {
-      c.uid=c.id
+      c.uid = c.id
       c.code = c.PHAR;
       c.klasse = article_class;
       return c
@@ -107,21 +107,24 @@ class Service {
       default:
         throw ("unsupported billable class " + klasse)
     }
-    return [service,uid]
+    return [service, uid]
   }
 
   async get(id, params) {
-    const [service,uid]=this.decodeService(id)
-    return await service.get(uid, params)
+    const [service, uid] = this.decodeService(id)
+    const billable = await service.get(uid, params)
+    return billable
   }
 
   async create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    const [service, uid] = this.decodeService(data.id)
-    data.id=uid
-    return await service.create(data)
+    const [service, uid] = this.decodeService(data.guid)
+    delete data.billable.id
+    delete data.billable.uid
+    const created=await service.create(data.billable)
+    return created
   }
 
   async update(id, data, params) {
@@ -133,7 +136,7 @@ class Service {
   }
 
   async remove(id, params) {
-    const [service,uid]=this.decodeService(id)
+    const [service, uid] = this.decodeService(id)
     return await service.remove(uid);
   }
 }
