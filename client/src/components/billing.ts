@@ -35,6 +35,12 @@ export class Billing{
   
   dragDrop(event){
     event.preventDefault()
+    const data = event.dataTransfer.getData("text");
+    this.bm.getBillable(data.id).then(billable=>{
+      this.bm.createBilling(billable).then(billing=>{
+        this.billings.push(billing)
+      })
+    })
     console.log(event)
     return true
   }

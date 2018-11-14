@@ -21,14 +21,24 @@ export interface BillingType extends ElexisType{
 @autoinject
 export class BillingsManager{
   billingService:DataService
+  billableService:DataService
 
   constructor(private ds:DataSource){
     this.billingService=this.ds.getService('billing')
+    this.billableService=this.ds.getService('billable')
   }
 
   async getBillings(kons:EncounterType){
     const ret= await this.billingService.find({query:{behandlung:kons.id}})
     return ret.data.map(b=>new BillingModel(b))
+  }
+  async getBillable(code:string){
+    const billable=await this.billableService.get(code)
+    return billable
+  }
+
+  async createBilling(billable){
+    const created=await this.billableService.create(billable)
   }
 }
 
