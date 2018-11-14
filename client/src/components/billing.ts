@@ -29,6 +29,10 @@ export class Billing{
     event.preventDefault()
     return true;
   }
+  /**
+   *  a billable was dropped -> bill it
+   */
+  
   dragDrop(event){
     event.preventDefault()
     console.log(event)

@@ -4,6 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const logger = require('../../logger')
+const tarmed_class = "ch.elexis.data.TarmedLeistung"
+const article_class = "ch.artikelstamm.elexis.common.ArtikelstammItem"
 
 class Service {
   constructor(options) {
@@ -22,7 +24,10 @@ class Service {
       Law: law == "KVG" ? "KVG" : { $ne: "KVG" }
     }
     const result = await tarmedService.find({ query: query })
-    return result.data.map(c=>{c.codesystem="tarmed"; return c})
+    return result.data.map(c => {
+      c.klasse = tarmed_class;
+      return c
+    })
   }
 
   async article(text) {
@@ -31,12 +36,16 @@ class Service {
       DSCR: { $like: text + "%" }
     }
     const result = await articleService.find({ query: query })
-    return result.data.map(c => { c.code = c.PHAR; c.codesystem="article"; return c })
+    return result.data.map(c => {
+      c.code = c.PHAR;
+      c.klasse = article_class;
+      return c
+    })
   }
 
   async find(params) {
     if (params && params.query) {
-      const searchexpr = params.query.find.replace(/\s+/,"%")
+      const searchexpr = params.query.find.replace(/\s+/, "%")
       const enctr = params.query.encounter
       if (!enctr) {
         logger.warn("No Encounter given for billable.find")
@@ -84,9 +93,20 @@ class Service {
   }
 
   async get(id, params) {
-    return {
-      id, text: `A new message with ID: ${id}!`
-    };
+    const [klasse, uid] = id.split("!")
+    const articleService = this.options.app.service('article')
+    let service
+    switch (klasse) {
+      case article_class:
+        service = this.options.app.service('article')
+        break;
+      case tarmed_class:
+        service = this.options.app.service('tarmed')
+        break;
+      default:
+        throw ("unsupported billable class " + klasse)
+    }
+    return await service.get(uid)
   }
 
   async create(data, params) {

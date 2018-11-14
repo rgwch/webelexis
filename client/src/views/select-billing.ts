@@ -42,7 +42,7 @@ export class SelectBilling {
 
   drag(event){
     console.log(event)
-    event.dataTransfer.setData("text",event.target)
+    event.dataTransfer.setData("text",event.target.id)
     return true
   }
 }

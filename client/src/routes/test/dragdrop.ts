@@ -15,7 +15,8 @@ export class DragDrop {
     console.log("drop")
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
+    console.log(data)
+    // ev.target.appendChild(document.getElementById(data));
     return true
   }
 }
