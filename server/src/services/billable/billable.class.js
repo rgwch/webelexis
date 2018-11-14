@@ -22,7 +22,7 @@ class Service {
       Law: law == "KVG" ? "KVG" : { $ne: "KVG" }
     }
     const result = await tarmedService.find({ query: query })
-    return result.data
+    return result.data.map(c=>{c.codesystem="tarmed"; return c})
   }
 
   async article(text) {
@@ -31,7 +31,7 @@ class Service {
       DSCR: { $like: text + "%" }
     }
     const result = await articleService.find({ query: query })
-    return result.data.map(c => { c.code = c.PHAR; return c })
+    return result.data.map(c => { c.code = c.PHAR; c.codesystem="article"; return c })
   }
 
   async find(params) {

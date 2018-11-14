@@ -6,17 +6,23 @@ import { WebelexisEvents } from '../../webelexisevents';
 
 @autoinject
 export class Detail {
-  views = [v.edit, v.scroll, v.findings, v.kons]
+  views = [v.edit, v.scroll, v.findings, v.kons, v.dragdrop]
   active = v.kons
   style = "position:absolute;left:180px;right:85px;"
   patService: DataService
+  caseService: DataService
+  konsService: DataService
   actPatient
+  actCase
+  actKons
 
   constructor(private ea: EventAggregator, private ds: DataSource, private we: WebelexisEvents) {
     this.ea.subscribe("testdetail", (v) => {
       this.switchTo(v)
     })
     this.patService = ds.getService('patient')
+    this.caseService = ds.getService('fall')
+    this.konsService = ds.getService('konsultation')
   }
 
   activate(params) {
@@ -29,10 +35,30 @@ export class Detail {
         alert("No Patient for testing found")
       }
       this.actPatient = p.data[0]
-      this.actPatient.type="patient"
+      this.actPatient.type = "patient"
       this.we.selectItem(this.actPatient)
-    },reject=>{
+      return this.actPatient
+    }, reject => {
       alert(reject)
+    }).then(pat => {
+      return this.caseService.find({ query: { patientid: pat.id } }).then(cas => {
+        if (!cas || !cas.data || cas.data.length < 1) {
+          alert("No Case for testing found")
+        }
+        this.actCase = cas.data[0]
+        return this.actCase
+      })
+    }).then(cas => {
+      return this.konsService.find({ query: { fallid: cas.id } }).then(kons => {
+        if (!kons || !kons.data || kons.data.length < 1) {
+          alert("No encounter for testing found")
+        }
+        
+        this.actKons = kons.data[0]
+        this.actKons.type = "konsultation"
+        this.we.selectItem(this.actKons)
+        return this.actKons
+      })
     })
   }
 

@@ -27,9 +27,11 @@ export class Billing{
 
   dragOver(event){
     event.preventDefault()
+    return true;
   }
   dragDrop(event){
     event.preventDefault()
     console.log(event)
+    return true
   }
 }

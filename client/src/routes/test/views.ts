@@ -20,5 +20,9 @@ export default{
   "grafik":{
     "name": "Grafik",
     "view": PLATFORM.moduleName("./grafik")
+  },
+  "dragdrop":{
+    "name": "Drag&drop",
+    "view": PLATFORM.moduleName("./dragdrop")
   }
 }

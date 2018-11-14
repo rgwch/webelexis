@@ -12,9 +12,9 @@ export class SelectBilling {
   selected=[]
  
   activate(kons) {
-    this.encounter = this.we.getSelectedItem("konsultation")
   }
   positionChanged(newValue, oldValue) {
+    this.encounter = this.we.getSelectedItem("konsultation")
     this.billables = []
     this.billableService.find({ query: { find: this.position, encounter: this.encounter } }).then(result => {
         this.billables = result
@@ -42,5 +42,7 @@ export class SelectBilling {
 
   drag(event){
     console.log(event)
+    event.dataTransfer.setData("text",event.target)
+    return true
   }
 }
