@@ -4,8 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const logger = require('../../logger')
-const tarmed_class = "ch.elexis.data.TarmedLeistung"
-const article_class = "ch.artikelstamm.elexis.common.ArtikelstammItem"
+const tarmed_type = "tarmed"
+const article_type = "article"
 
 class Service {
   constructor(options) {
@@ -26,7 +26,7 @@ class Service {
     const result = await tarmedService.find({ query: query })
     return result.data.map(c => {
       c.uid = c.ID
-      c.klasse = tarmed_class;
+      c.type = tarmed_type;
       return c
     })
   }
@@ -40,7 +40,7 @@ class Service {
     return result.data.map(c => {
       c.uid = c.id
       c.code = c.PHAR;
-      c.klasse = article_class;
+      c.type = article_type;
       return c
     })
   }
@@ -95,17 +95,17 @@ class Service {
   }
 
   decodeService(code) {
-    const [klasse, uid] = code.split("!")
+    const [type, uid] = code.split("!")
     let service
-    switch (klasse) {
-      case article_class:
+    switch (type) {
+      case article_type:
         service = this.options.app.service('article')
         break;
-      case tarmed_class:
+      case tarmed_type:
         service = this.options.app.service('tarmed')
         break;
       default:
-        throw ("unsupported billable class " + klasse)
+        throw ("unsupported billable class " + type)
     }
     return [service, uid]
   }
@@ -120,7 +120,7 @@ class Service {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    const [service, uid] = this.decodeService(data.guid)
+    const service=this.options.app.service('billing')
     delete data.billable.id
     delete data.billable.uid
     const created=await service.create(data.billable)

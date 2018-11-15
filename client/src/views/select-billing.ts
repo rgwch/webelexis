@@ -9,40 +9,38 @@ export class SelectBilling {
   @observable position: string
   encounter: EncounterType
   billables = []
-  selected=[]
- 
+  selected = []
+
   activate(kons) {
   }
   positionChanged(newValue, oldValue) {
     this.encounter = this.we.getSelectedItem("konsultation")
     this.billables = []
     this.billableService.find({ query: { find: this.position, encounter: this.encounter } }).then(result => {
-        this.billables = result
+      this.billables = result
     })
   }
-  constructor(private ds: DataSource, private we:WebelexisEvents) {
+  constructor(private ds: DataSource, private we: WebelexisEvents) {
     this.billableService = ds.getService("billable")
   }
 
-  select(item){
+  select(item) {
     this.selected.push(item)
   }
-  deselect(item){
-    const idx=this.selected.indexOf(item)
-    this.selected.splice(idx,1)
+  deselect(item) {
+    const idx = this.selected.indexOf(item)
+    this.selected.splice(idx, 1)
   }
+  getCode = elem => elem.code || elem.id.split(/-/)[0]
+  getText = elem => elem.tx255 || elem.DSCR
+
   makeLabel(elem) {
-    const code = elem.code || elem.id.split(/-/)[0]
-    if (elem.tx255) {
-      return code + " " + elem.tx255
-    } else {
-      return code + " " + elem.DSCR
-    }
+    return this.getCode(elem) + " " + this.getText(elem)
   }
 
-  drag(event){
+  drag(event) {
     console.log(event)
-    event.dataTransfer.setData("text",event.target.id)
+    event.dataTransfer.setData("text", event.target.id)
     return true
   }
 }

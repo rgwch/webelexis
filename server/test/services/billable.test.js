@@ -8,15 +8,20 @@ const feathers = require('@feathersjs/feathers')
 const createService = require('../../src/services/billable/billable.class')
 const knex = require('feathers-knex');
 const realApp=require('../../src/app')
-
+const paginate = {
+  "default": 50,
+  "max": 100
+}
 const tarmed={
   name:'tarmed',
-  Model: realApp.get('knexClient')
+  Model: realApp.get('knexClient'),
+  paginate
 }
 
 const article={
   name: "artikelstamm_ch",
-  Model: realApp.get('knexClient')
+  Model: realApp.get('knexClient'),
+  paginate
 }
 
 class FallService {

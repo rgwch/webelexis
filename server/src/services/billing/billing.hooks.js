@@ -1,11 +1,17 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const adapter=async ctx=>{
+  switch(ctx.data.type){
+
+  }
+}
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [],
+    create: [adapter],
     update: [],
     patch: [],
     remove: []
