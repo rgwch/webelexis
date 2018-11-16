@@ -1,9 +1,12 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
-const adapter=async ctx=>{
-  switch(ctx.data.type){
-
-  }
+const adapter=ctx=>{
+  const type=ctx.data.type
+  const adaptername=`./${type}_adapter`
+  const adapter=require(adaptername)
+  const billing=adapter.createBilling(ctx.data)
+  ctx.data=billing
+  return ctx
 }
 
 module.exports = {
