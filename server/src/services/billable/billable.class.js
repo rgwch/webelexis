@@ -27,11 +27,13 @@ class Service {
     return result.data.map(c => {
       c.uid = c.ID
       c.type = tarmed_type;
+      c.encounter_id=kons.id;
+      c.count=1;
       return c
     })
   }
 
-  async article(text) {
+  async article(kons,text) {
     const articleService = this.options.app.service('article')
     const query = {
       DSCR: { $like: text + "%" }
@@ -41,6 +43,8 @@ class Service {
       c.uid = c.id
       c.code = c.PHAR;
       c.type = article_type;
+      c.encounte_id=kons.id
+      c.count=1
       return c
     })
   }

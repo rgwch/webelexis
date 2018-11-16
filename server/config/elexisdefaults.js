@@ -1,4 +1,7 @@
 module.exports = {
+  "mandator":{
+    
+  },
   "fall": {
     "fallgesetz": "KVG",
     "fallgrund": "Krankheit",
