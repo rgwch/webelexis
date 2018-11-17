@@ -37,7 +37,7 @@ export class Billing{
     event.preventDefault()
     const data = event.dataTransfer.getData("text");
     this.bm.getBillable(data).then(billable=>{
-      this.bm.createBilling(data,billable).then(billing=>{
+      this.bm.createBilling(billable,this.kons,1).then(billing=>{
         this.billings.push(billing)
       })
     })

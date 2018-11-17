@@ -37,8 +37,10 @@ export class BillingsManager{
     return billable
   }
 
-  async createBilling(guid,billable){
-    const created=await this.billableService.create({billable,guid})
+  async createBilling(billable, encounter:EncounterType, count:number){
+    billable.encounter_id=encounter.id
+    billable.count=count.toString()
+    const created=await this.billingService.create({billable})
   }
 }
 
