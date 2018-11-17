@@ -6,10 +6,11 @@ const adapter=async ctx=>{
   const adaptername=`./${type}-adapter`
   const adapter=require(adaptername)
   const billing=adapter.createBilling(ctx.data)
+  billing.behandlung=ctx.data.encounter_id
   const encounterService=ctx.app.service('konsultation')
   const encounter=await encounterService.get(ctx.data.encounter_id)
   const caseService=ctx.app.service('fall')
-  const fall=caseService.get(encounter.fallid)
+  const fall=await caseService.get(encounter.fallid)
   let billingsystem=fall.extjson.billing
   if(!billingsystem){
     billingsystem=fall.gesetz
@@ -19,15 +20,15 @@ const adapter=async ctx=>{
   }
   const now=DateTime.local().toFormat("yyyyLLdd")
   const knex=ctx.app.get('knexClient')
-  let mul=knex('vk_preise').select('MULTIPLIKATOR')
+  let mul=await knex('vk_preise').select('MULTIPLIKATOR')
     .where('typ',billingsystem)
     .andWhere('datum_von','<=',now)
     .andWhere('datum_bis','>=',now)
-  if(!mul){
-    mul=1.0
+  if(!mul || mul.length<1){
+    mul=[{MULTIPLIKATOR:"1.0"}]
   }
-  billing.VK_SCALE=mul
-  billing.vk_preis=billing.VK_TP*mul
+  billing.VK_SCALE=mul[0].MULTIPLIKATOR
+  billing.vk_preis=billing.VK_TP*parseFloat(billing.VK_SCALE)
   ctx.data=billing
   return ctx
 }

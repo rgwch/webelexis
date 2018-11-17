@@ -7,7 +7,39 @@ const assert = require('assert');
 const should=require('chai').should()
 const app = require('../../src/app');
 
-xdescribe('\'billing\' service', () => {
+class KonsService{
+  async get(id){
+    return {
+      fallid: "007"
+    }
+  }
+}
+
+class FallService{
+  async get(id){
+    return {
+      extjson:{
+        billing: "KVG"
+      },
+      gesetz: "KVG"
+    }
+  }
+}
+describe('\'billing\' service', () => {
+  let ks;
+  let fs;
+
+  before(()=>{
+    ks=app.service("konsultation")
+    fs=app.service('fall')
+    app.use("/konsultation", new KonsService())
+    app.use("/fall", new FallService())
+  })
+
+  after(()=>{
+    app.use("/konsultation",ks)
+    app.use("/fall",fs)
+  })
   it('registered the service', () => {
     const service = app.service('billing');
 
