@@ -5,4 +5,5 @@ template
         i.fas.fa-bars
     </div>
     .body
-      .entry(repeat.for="b of billings") ${b.getLabel()}
+      div(style="overflow:scroll;height:130px" ref="billingdiv" if.bind="display")
+        .entry(if.bind="display" repeat.for="b of billings") ${b.getLabel()}
