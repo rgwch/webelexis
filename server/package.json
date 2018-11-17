@@ -27,7 +27,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "NODE_ENV=debug node src/",
-    "mocha": "mocha test/ --recursive --exit"
+    "mocha": "mocha test/ --recursive --timeout 10000 --exit"
   },
   "dependencies": {
     "@casl/ability": "^2.4.2",

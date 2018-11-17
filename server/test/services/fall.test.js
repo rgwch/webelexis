@@ -8,7 +8,7 @@ const assert = require('assert');
 const should=require('chai').should()
 const app = require('../../src/app');
 
-describe('\'fall\' service', () => {
+xdescribe('\'fall\' service', () => {
   let service;
   beforeEach(()=>{
     service=app.service('fall')

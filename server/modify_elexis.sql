@@ -192,6 +192,10 @@ alter table com_hilotec_elexis_messwerte_messwerte
   modify Name varchar(40),
   modify Wert varchar(40);
 
+alter table config add deleted char(1);
+
+alter table userconfig add deleted char(1);
+
 alter table dbimage change ID id varchar(40);
 
 alter table default_signatures

@@ -34,7 +34,7 @@ class FallService {
 }
 
 
-describe('\'billable\' service', () => {
+xdescribe('\'billable\' service', () => {
   let app
 
   beforeEach(() => {

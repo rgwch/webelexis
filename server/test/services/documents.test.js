@@ -9,7 +9,7 @@ const should=require('chai').should()
 const fs=require('fs')
 const path=require('path')
 
-xdescribe('\'documents\' service', () => {
+/* xx */ xdescribe('\'documents\' service', () => {
   beforeEach(async ()=>{
     const service=app.service('documents')
     await service.remove(null,{query: {subject: "a test"}})

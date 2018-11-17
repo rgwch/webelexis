@@ -15,7 +15,7 @@ beforeEach(async () => {
     const list = await usrs.find()
     user = list.data[0].id
 })
-describe('\'termin\' service', () => {
+xdescribe('\'termin\' service', () => {
     let service
 
     beforeEach(() => {
@@ -26,7 +26,7 @@ describe('\'termin\' service', () => {
 
         assert.ok(service, 'Registered the service');
     });
-    xit("loads and sort all appointments from 11.12.2017", async () => {
+    it("loads and sort all appointments from 11.12.2017", async () => {
         const termine = await service.find({ query: { "Tag": "20171211" } })
         termine.data.length.should.be.above(2)
         let check = termine.data.every(elem => {
@@ -40,19 +40,19 @@ describe('\'termin\' service', () => {
         }
 
     })
-    xit("loads the first appointment of 11.12.2017", async function() {
+    it("loads the first appointment of 11.12.2017", async function() {
         let allApps = await service.find({ query: { "Tag": "20171211" } })
-        let id = allApps.data[0].ID
+        let id = allApps.data[0].id
         let firstAppnt = await service.get(id)
         firstAppnt.should.not.be.undefined
         firstAppnt.Tag.should.be.equal("20171211")
         firstAppnt.TerminTyp.should.be.equal("Reserviert")
     })
-    xit("loads a list of appointment types", async function() {
+    it("loads a list of appointment types", async function() {
         let types = await service.get("types")
         types.length.should.be.above(1)
     })
-    xit("loads a list of appointment states", async function() {
+    it("loads a list of appointment states", async function() {
         let states = await service.get("states")
         states.should.not.be.undefined
         states.length.should.be.above(1)
@@ -61,22 +61,22 @@ describe('\'termin\' service', () => {
         let resources = await service.get("resources")
         resources.length.should.be.above(1)
     })
-    xit("fetches day presets of first resource", async function() {
+    it("fetches day presets of first resource", async function() {
         let resources = await service.get("resources")
         let presets = await service.get("daydefaults", { "resource": resources[0] })
         presets.should.have.property("Mo")
     })
-    xit("fetches time presets for first resource", async function() {
+    it("fetches time presets for first resource", async function() {
         let resources = await service.get("resources")
         let presets = await service.get("timedefaults", { "resource": resources[0] })
         presets.should.have.property("std")
     })
-    xit("fetches type colors for first resource", async () => {
+    it("fetches type colors for first resource", async () => {
         let resources = await service.get("resources")
         let colors = await service.get("typecolors", { query: { "user": user } })
         colors.should.be.ok
     })
-    xit("fetches status colors for first resource", async () => {
+    it("fetches status colors for first resource", async () => {
         let resources = await service.get("resources")
         let colors = await service.get("statecolors", { query: { "user": user } })
         colors.should.be.ok
@@ -101,5 +101,6 @@ describe('\'termin\' service', () => {
       let updated=await service.update(created.id,created)
       updated.should.not.have.property('wrong')
       updated.should.have.property('deleted')
+      await service.remove(created.id)
     })
 });

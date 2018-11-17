@@ -16,6 +16,8 @@ Das SQL-Script modify_elexis.sql (anwenden z.B. mit `use elexis; source modify_e
 
 * Id-Felder heissen immer id (klein geschrieben) und sind VARCHAR(40).
 * Dementsprechend müssen auch foreign key Felder auf VARCHAR(40) erweitert werden, der Feldname kann aber unverändert bleiben.
+* Alle Tabellen haben `deleted char(1)` und `lastupdate bigint` Felder.
+
 
 Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, und der, der es wieder einspielt, Superuser-Rechte haben: 
 

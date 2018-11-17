@@ -89,7 +89,7 @@ xdescribe('\'konsultation\' service', () => {
     fkons.should.have.property('eintrag')
     fkons.eintrag.should.have.property('html')
     fkons.eintrag.html.should.be.ok
-    fkons.eintrag.html.should.equal('<p>Abrakadabra</p>')
+    fkons.eintrag.html.should.equal('Abrakadabra<br />')
     fkons.eintrag.remark.should.equal("Unittest")
     fkons.eintrag.html='<span style="font-weight:bold;">Simsalabim</span>'
     const updated=await service.update(fkons.id, fkons)

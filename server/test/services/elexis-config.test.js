@@ -6,32 +6,20 @@
 
 const assert = require('assert');
 const app = require('../../src/app');
-const chai=require('chai')
-const should=chai.should()
+const chai = require('chai')
+const should = chai.should()
 
 xdescribe('\'elexis_config\' service', () => {
+  let service;
+
   it('registered the service', () => {
-    const service = app.service('elexis-config');
+    service = app.service('elexis-config');
 
     assert.ok(service, 'Registered the service');
   });
-  it("loads a configuration variable",()=>{
-    const service= app.service('elexis-config')
-    return service.get('dbversion').then(ver=>{
-      ver.startsWith("3.").should.be.ok
-    })
-  })
-  it("parses config", ()=>{
-    const service= app.service('elexis-config')
-  
-    return service.find({query:{
-      param: {
-        $like: '%version%'
-      }
-    }}).then(result=>{
-      result.should.have.property("data")
-      result.data.should.be.an.instanceof(Array)
-      result.data.length.should.be.above(1)
-    }) 
+  it("loads a configuration variable", async () => {
+    const ver = await service.get('dbversion')
+    ver.startsWith("3.").should.be.ok
+
   })
 });

@@ -7,7 +7,7 @@ const assert = require('assert');
 const should=require('chai').should()
 const app = require('../../src/app');
 
-describe('\'billing\' service', () => {
+xdescribe('\'billing\' service', () => {
   it('registered the service', () => {
     const service = app.service('billing');
 

@@ -7,7 +7,7 @@
 const assert = require('assert');
 const app = require('../../src/app');
 
-describe('\'usr\' service', () => {
+xdescribe('\'usr\' service', () => {
   it('registered the service', () => {
     const service = app.service('usr');
 
@@ -17,6 +17,7 @@ describe('\'usr\' service', () => {
     const service = app.service('usr');
     const created=await service.create({email: "habs",label:"dummy", password:"secrett", dummy: true})
     created.should.be.ok
+    await service.remove(created.email)
   })
   xit("finds a user", ()=>{
     const service = app.service('usr');
@@ -45,6 +46,7 @@ describe('\'usr\' service', () => {
     retrieved.should.be.ok
     retrieved.should.have.property('elexiskontakt')
     retrieved.elexiskontakt.should.have.property('kontakt')
-    console.log("ok")
+    const removed = await usrService.remove('somemail')
+    removed.should.be.ok
   })
 });
