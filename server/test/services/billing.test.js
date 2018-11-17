@@ -49,12 +49,12 @@ describe('\'billing\' service', () => {
   it('creates a billing from a tarmed billable',async ()=>{
     const service = app.service('billing');
     const tarmedService=app.service('tarmed')
-    const tarmeds=await tarmedService.find({query:{code:'00.0010'}})
+    const tarmeds=await tarmedService.find({query:{code:'00.0010', Law:"KVG"}})
     tarmeds.should.be.ok
     tarmeds.should.have.property('data')
     tarmeds.data.length.should.be.gt(0)
     const tarmed=tarmeds.data[0]
-    tarmed.uid=tarmed.ID
+    tarmed.uid=tarmed.id
     tarmed.type='tarmed'
     tarmed.encounter_id="007"
     tarmed.count=1

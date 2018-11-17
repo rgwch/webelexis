@@ -379,6 +379,12 @@ alter table stock_entry
   modify ARTICLE_ID varchar(40),
   modify PROVIDER varchar(40);
 
+alter table tarmed
+  change ID id varchar(40);
+
+alter table tarmed_extension
+  modify Code varchar(40);
+  
 alter table traces
   modify workstation varchar(80);
 
