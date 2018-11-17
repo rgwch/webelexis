@@ -7,7 +7,7 @@
     </div>
     <div class="body" style="height:85vh;overflow:auto">
       <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">
-        <span draggable="true" dragstart.trigger="drag($event)" id="${el.klasse+'!'+el.uid}">
+        <span draggable="true" dragstart.trigger="drag($event)" id="${el.type+'!'+el.id}">
           <b>${getCode(el)}</b> ${getText(el)}
         </span></div>
     </div>

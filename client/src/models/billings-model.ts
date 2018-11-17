@@ -33,6 +33,7 @@ export class BillingsManager{
     return ret.data.map(b=>new BillingModel(b))
   }
   async getBillable(code:string){
+    const parts=code.split("!")
     const billable=await this.billableService.get(code)
     return billable
   }
@@ -40,7 +41,8 @@ export class BillingsManager{
   async createBilling(billable, encounter:EncounterType, count:number){
     billable.encounter_id=encounter.id
     billable.count=count.toString()
-    const created=await this.billingService.create({billable})
+    const created=await this.billingService.create(billable)
+    return created
   }
 }
 

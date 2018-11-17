@@ -111,12 +111,13 @@ class Service {
       default:
         throw ("unsupported billable class " + type)
     }
-    return [service, uid]
+    return [service, uid, type]
   }
 
   async get(id, params) {
-    const [service, uid] = this.decodeService(id)
+    const [service, uid, type] = this.decodeService(id)
     const billable = await service.get(uid, params)
+    billable.type=type
     return billable
   }
 
