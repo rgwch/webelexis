@@ -295,3 +295,11 @@ export class SomeDialog{
   }
 }
 ```
+## Billing
+
+The billing systems consists of 'billables' - code elements that might be billed, such as tarmed code, articles and so on. And of 'billings' which are kind of materialized billables, i.e. billables applied to a given encounter.
+
+To create a billing, first retrieve an encounter and a billable and then apply create on the service billing with that billable.
+
+To incorporate new billing systems, just implement an adapter for that billing system in server/src/services/billing
+
