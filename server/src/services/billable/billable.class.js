@@ -66,7 +66,7 @@ class Service {
       if (!fall) {
         logger.warn("case not found " + caseID)
       }
-      const law = fall.gesetz || fall.extjson.billing || "null"
+      const law = fall.gesetz || fall.extjson.Gesetz || fall.extjson.billing || "null"
       let result = []
       switch (law.toLowerCase()) {
         case "kvg":
@@ -91,6 +91,8 @@ class Service {
         case "vvg":
           result = result.concat(await this.article(enctr, searchexpr))
           break;
+        default:
+          throw("Unknown case law in find billables")
       }
       return result
     } else {

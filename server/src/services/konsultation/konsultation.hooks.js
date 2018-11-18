@@ -169,6 +169,7 @@ const textContents = async context => {
     const expr = context.params.query.$find
     const re = new RegExp(expr,"i")
     delete context.params.query.$find
+    context.params.query.$limit=500
     let raw = await context.service.find(context.params)
     if (raw && raw.data) {
       let processed = []
