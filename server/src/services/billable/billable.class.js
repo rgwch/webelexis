@@ -27,13 +27,13 @@ class Service {
     return result.data.map(c => {
       c.uid = c.id
       c.type = tarmed_type;
-      c.encounter_id=kons.id;
-      c.count=1;
+      c.encounter_id = kons.id;
+      c.count = 1;
       return c
     })
   }
 
-  async article(kons,text) {
+  async article(kons, text) {
     const articleService = this.options.app.service('article')
     const query = {
       DSCR: { $like: text + "%" }
@@ -43,8 +43,8 @@ class Service {
       c.uid = c.id
       c.code = c.PHAR;
       c.type = article_type;
-      c.encounter_id=kons.id
-      c.count=1
+      c.encounter_id = kons.id
+      c.count = 1
       return c
     })
   }
@@ -71,7 +71,7 @@ class Service {
       switch (law.toLowerCase()) {
         case "kvg":
           result = result.concat(await this.tarmed(enctr, "KVG", searchexpr))
-          result = result.concat(await this.article(searchexpr))
+          result = result.concat(await this.article(enctr, searchexpr))
           break;
         case "uvg":
         case "iv":
@@ -79,17 +79,17 @@ class Service {
         case "mv":
         case "mvg":
           result = result.concat(await this.tarmed(enctr, "UVG", searchexpr))
-          result = result.concat(await this.article(searchexpr))
+          result = result.concat(await this.article(enctr, searchexpr))
           break;
         case "frei":
         case "privat":
         case "unbekannt":
         case "null":
           result = result.concat(await this.tarmed(enctr, "UVG", searchexpr))
-          result = result.concat(await this.article(searchexpr))
+          result = result.concat(await this.article(enctr, searchexpr))
           break;
         case "vvg":
-          result = result.concat(await this.article(searchexpr))
+          result = result.concat(await this.article(enctr, searchexpr))
           break;
       }
       return result
@@ -117,7 +117,7 @@ class Service {
   async get(id, params) {
     const [service, uid, type] = this.decodeService(id)
     const billable = await service.get(uid, params)
-    billable.type=type
+    billable.type = type
     return billable
   }
 
@@ -125,10 +125,10 @@ class Service {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    const service=this.options.app.service('billing')
+    const service = this.options.app.service('billing')
     delete data.billable.id
     delete data.billable.uid
-    const created=await service.create(data.billable)
+    const created = await service.create(data.billable)
     return created
   }
 

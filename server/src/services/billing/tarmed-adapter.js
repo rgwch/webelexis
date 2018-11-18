@@ -17,7 +17,6 @@ module.exports.createBilling = async (tm, app) => {
     al = parseFloat(limits.TP_AL)
   }
   const billing = {
-    behandlung: tm.encounter,
     leistg_txt: tm.tx255,
     leistg_code: tm.id,
     klasse: tarmed_class,

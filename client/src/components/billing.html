@@ -2,8 +2,8 @@
   <div class="card" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
     <div class="card-header" style="position:relative">
       Verrechnung
-      <div style="position:absolute;right:20px;top:2px" click.delegate="addBilling()">
-        <i class="fas fa-bars"></i>
+      <div style="position:absolute;right:20px;top:2px">
+        <span>CHF</span>${sum}
       </div>
 
     </div>
@@ -11,7 +11,7 @@
       <div class="menu" show.bind="showmenu" css="position:fixed;background-color:yellow;left:${menuleft}px;top:${menutop}px;">
         <div class="menuitem" click.trigger="modifyText()">Text ändern</div>
         <div class="menuitem" click.delegate="modifyNumber()">Zahl ändern</div>
-        <hr />
+        <hr class="separator" />
         <div class="menuitem" click.trigger="remove()">Löschen</div>
       </div>
       <div>

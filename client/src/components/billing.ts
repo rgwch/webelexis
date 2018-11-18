@@ -3,6 +3,7 @@ import { SelectBilling } from '../dialogs/select_billing';
 import { PLATFORM, bindable, autoinject, useView } from "aurelia-framework";
 import { BillingsManager } from "models/billings-model";
 import { DialogService } from "aurelia-dialog";
+import { TouchSequence } from 'selenium-webdriver';
 
 @autoinject
 // @useView(PLATFORM.moduleName("./billing.pug"))
@@ -15,6 +16,7 @@ export class Billing {
   menuleft=50;
   menutop=60;
   currentItem:BillingModel
+  sum:number
 
   constructor(private bm: BillingsManager, private ds: DialogService) { }
 
@@ -25,7 +27,20 @@ export class Billing {
   loadBillings(){
     this.bm.getBillings(this.kons).then(result => {
       this.billings = result.sort((a, b) => a.compare(b))
+      this.recalc()
     })
+  
+  }
+
+  recalc(){
+    let sum=0
+    for(const billing of this.billings){
+      const b=billing.getBilling()
+      const preis=parseFloat(b.vk_preis)
+      const num=parseFloat(b.zahl)
+      sum+=preis*num
+    }
+    this.sum=sum/100;
   }
   addBilling() {
     /*
@@ -59,6 +74,7 @@ export class Billing {
           const act = [].concat(this.billings)
           act.push(new BillingModel(billing))
           this.billings = act.sort((a, b) => a.compare(b))
+          this.recalc()
         })
       }
     })
@@ -67,7 +83,17 @@ export class Billing {
 
   modifyNumber(){
     const item:BillingModel=this.currentItem
-    this.bm.increaseCount(item).then(it=>{
+    this.showmenu=false;
+    const nn=prompt("Neue Zahl",this.currentItem.getBilling().zahl)
+    if(nn){
+      this.bm.setCount(item,nn).then(r=>{
+        this.loadBillings()
+      })
+    }
+  }
+
+  remove(){
+    this.bm.removeBilling(this.currentItem).then(i=>{
       this.loadBillings()
       this.showmenu=false
     })

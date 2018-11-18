@@ -49,9 +49,16 @@ export class BillingsManager {
     const created = await this.billingService.create(billable)
     return created
   }
+  async setCount(item,count){
+    item.getBilling().zahl=count.toString()
+    return await this.billingService.update(item.getBilling().id,item.getBilling())   
+  }
   async increaseCount(item:BillingModel){
     item.increase()
     return await this.billingService.update(item.getBilling().id,item.getBilling())
+  }
+  async removeBilling(billing:BillingModel){
+    return await this.billingService.remove(billing.getBilling().id)
   }
 }
 
