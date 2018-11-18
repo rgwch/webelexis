@@ -15,7 +15,7 @@ beforeEach(async () => {
     const list = await usrs.find()
     user = list.data[0].id
 })
-xdescribe('\'termin\' service', () => {
+describe('\'termin\' service', () => {
     let service
 
     beforeEach(() => {

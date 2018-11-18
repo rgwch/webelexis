@@ -9,7 +9,7 @@ const should = chai.should()
 const assert = require('assert');
 const app = require('../../src/app');
 
-xdescribe('\'article\' service', () => {
+describe('\'article\' service', () => {
   let service;
   beforeEach(()=>{
     service = app.service('article');

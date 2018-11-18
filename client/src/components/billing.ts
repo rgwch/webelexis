@@ -5,7 +5,7 @@ import { BillingsManager } from "models/billings-model";
 import { DialogService } from "aurelia-dialog";
 
 @autoinject
-// @useView(PLATFORM.moduleName("./billing.pug"))
+@useView(PLATFORM.moduleName("./billing.pug"))
 export class Billing{
   @bindable kons;
   billings

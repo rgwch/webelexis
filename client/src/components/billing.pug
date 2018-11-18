@@ -6,4 +6,4 @@ template
     </div>
     .body
       div(style="overflow:scroll;height:130px" ref="billingdiv" if.bind="display")
-        .entry(if.bind="display" repeat.for="b of billings") ${b.getLabel()}
+        .entry(repeat.for="b of billings") ${b.getLabel()}

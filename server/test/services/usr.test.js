@@ -7,7 +7,7 @@
 const assert = require('assert');
 const app = require('../../src/app');
 
-xdescribe('\'usr\' service', () => {
+describe('\'usr\' service', () => {
   it('registered the service', () => {
     const service = app.service('usr');
 
@@ -19,17 +19,12 @@ xdescribe('\'usr\' service', () => {
     created.should.be.ok
     await service.remove(created.email)
   })
-  xit("finds a user", ()=>{
-    const service = app.service('usr');
-   return service.find({query: {email:"habs"}}).then(ans=>{
-     //console.log(ans)
-   })
-  })
   it("creates a token",()=>{
     const service=app.service('authentication')
     assert.ok(service,"authentication registered")
     return service.create({user:"gerry",password:"secret"}).then(jwt=>{
       //console.log(jwt)
+      jwt.should.be.ok
     })
   })
   it("creates a user matching an elexis user",async ()=>{

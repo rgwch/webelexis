@@ -13,7 +13,7 @@ const Samdas=require('@rgwch/samdastools')
 const elexistools=new (require('../../src/util/elexis-types'))()
 
 
-xdescribe('\'konsultation\' service', () => {
+describe('\'konsultation\' service', () => {
   let service;
   beforeEach(() => {
     service = app.service('konsultation');

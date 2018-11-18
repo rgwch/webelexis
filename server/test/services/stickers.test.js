@@ -2,7 +2,7 @@ const assert = require('assert');
 const app = require('../../src/app');
 require('chai').should()
 
-xdescribe('\'stickers\' service', () => {
+describe('\'stickers\' service', () => {
   it('registered the service', () => {
     const service = app.service('stickers');
 
@@ -18,7 +18,7 @@ xdescribe('\'stickers\' service', () => {
       //console.log(JSON.stringify(sticker))
       if(sticker.Name=='Hausarztmodell'){
         //const b=Buffer.from(sticker.imagedata)
-        console.log(sticker.imagedata);
+        // console.log(sticker.imagedata);
       }
     })
   })
