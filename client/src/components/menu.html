@@ -1,0 +1,16 @@
+<template>
+  <div class="nav" style="position:absolute;right:20px;top:5px;">
+    <div class="dropdown" if.bind="isOpen">
+      <a data-toggle="dropdown" href="#" role="button">
+        <i class="fas fa-bars"></i>
+      </a>
+      <ul class="dropdown-menu" role="menu">
+        <template repeat.for="item of items">
+          <li if.bind="item.separator" class="dropdown-divider"></li>
+          <li else class="dropdown-item menuitem" class.bind="item.disabled" click.delegate="item.func()">${item.text}</li>
+        </template>
+      </ul>
+    </div>
+  </div>
+</div>
+</template>
