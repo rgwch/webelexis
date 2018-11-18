@@ -1,15 +1,21 @@
 <template>
-  <div class="sheet" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-    <div class="header" style="position:relative">
+  <div class="card" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+    <div class="card-header" style="position:relative">
       Verrechnung
       <div style="position:absolute;right:20px;top:2px" click.delegate="addBilling()">
         <i class="fas fa-bars"></i>
       </div>
 
     </div>
-    <div class="body">
-      <div if.bind="displaybillings">
-        <div class="entry" repeat.for="b of billings">
+    <div class="card-body" style="position:relative">
+      <div class="menu" show.bind="showmenu" css="position:fixed;background-color:yellow;left:${menuleft}px;top:${menutop}px;">
+        <div class="menuitem" click.trigger="modifyText()">Text ändern</div>
+        <div class="menuitem" click.delegate="modifyNumber()">Zahl ändern</div>
+        <hr />
+        <div class="menuitem" click.trigger="remove()">Löschen</div>
+      </div>
+      <div>
+        <div class="entry" repeat.for="b of billings" click.delegate="toggleMenu(b,$index,$event)">
           ${b.getLabel()}
         </div>
       </div>

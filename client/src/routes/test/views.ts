@@ -24,5 +24,9 @@ export default{
   "dragdrop":{
     "name": "Drag&drop",
     "view": PLATFORM.moduleName("./dragdrop")
+  },
+  "smartlist":{
+    "name": "Smartlist",
+    "view": PLATFORM.moduleName("./smartlist_")
   }
 }

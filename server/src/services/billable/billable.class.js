@@ -4,8 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const logger = require('../../logger')
-const tarmed_type = "tarmed"
-const article_type = "article"
+const tarmed_type = "ch.elexis.data.TarmedLeistung"
+const article_type = "ch.artikelstamm.elexis.common.ArtikelstammItem"
 
 class Service {
   constructor(options) {
@@ -25,7 +25,7 @@ class Service {
     }
     const result = await tarmedService.find({ query: query })
     return result.data.map(c => {
-      c.uid = c.ID
+      c.uid = c.id
       c.type = tarmed_type;
       c.encounter_id=kons.id;
       c.count=1;
@@ -43,7 +43,7 @@ class Service {
       c.uid = c.id
       c.code = c.PHAR;
       c.type = article_type;
-      c.encounte_id=kons.id
+      c.encounter_id=kons.id
       c.count=1
       return c
     })

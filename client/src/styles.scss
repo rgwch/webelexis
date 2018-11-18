@@ -30,6 +30,11 @@ $form-background: aquamarine;
     font-size: smaller;
     cursor: pointer;
 }
+
+.compactlist:hover{
+    font-weight:bold;
+}
+
 /* CommonViewer and Sheet */
 common-viewer, .sheet{
 
@@ -53,6 +58,7 @@ common-viewer, .sheet{
     @extend .compactlist;
     color: black;
   }
+  
   .highlight{
     @extend .entry;
     background-color: yellow;
@@ -126,3 +132,16 @@ img.nav{
   cursor:pointer;
 }
 
+.menu{
+  border-style: solid;
+  border-width: 1px;
+  border-color: blue;
+  .menuitem{
+    cursor:pointer;
+
+  }
+  .menuitem:hover{
+    color:white;
+    background-color: black
+  }
+}

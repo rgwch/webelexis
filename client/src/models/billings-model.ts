@@ -8,7 +8,7 @@ import { DataSource, DataService } from './../services/datasource';
 import { ElexisType } from './elexistype';
 import { autoinject } from 'aurelia-framework';
 
-export interface BillingType extends ElexisType{
+export interface BillingType extends ElexisType {
   code?: string
   behandlung: string
   leistg_txt: string
@@ -19,38 +19,69 @@ export interface BillingType extends ElexisType{
 }
 
 @autoinject
-export class BillingsManager{
-  billingService:DataService
-  billableService:DataService
+export class BillingsManager {
+  billingService: DataService
+  billableService: DataService
+  billableCache = new Map()
 
-  constructor(private ds:DataSource){
-    this.billingService=this.ds.getService('billing')
-    this.billableService=this.ds.getService('billable')
+  constructor(private ds: DataSource) {
+    this.billingService = this.ds.getService('billing')
+    this.billableService = this.ds.getService('billable')
   }
 
-  async getBillings(kons:EncounterType){
-    const ret= await this.billingService.find({query:{behandlung:kons.id}})
-    return ret.data.map(b=>new BillingModel(b))
+  async getBillings(kons: EncounterType) {
+    const ret = await this.billingService.find({ query: { behandlung: kons.id } })
+    return ret.data.map(b => new BillingModel(b))
   }
-  async getBillable(code:string){
-    const parts=code.split("!")
-    const billable=await this.billableService.get(code)
-    return billable
+  async getBillable(code: string) {
+    if (this.billableCache.has(code)) {
+      return this.billableCache.get(code)
+    } else {
+      const billable = await this.billableService.get(code)
+      this.billableCache.set(code,billable)
+      return billable
+    }
   }
 
-  async createBilling(billable, encounter:EncounterType, count:number){
-    billable.encounter_id=encounter.id
-    billable.count=count.toString()
-    const created=await this.billingService.create(billable)
+  async createBilling(billable, encounter: EncounterType, count: number) {
+    billable.encounter_id = encounter.id
+    billable.count = count.toString()
+    const created = await this.billingService.create(billable)
     return created
+  }
+  async increaseCount(item:BillingModel){
+    item.increase()
+    return await this.billingService.update(item.getBilling().id,item.getBilling())
   }
 }
 
-export class BillingModel{
-  constructor(private obj:BillingType){}
-  getLabel(){
-    const code=this.obj.code || this.obj.leistg_code.split(/\s*-\s*/)[0]
-    return this.obj.zahl+" "+code+" "+this.obj.leistg_txt
+export class BillingModel {
+  code: string
+  constructor(private obj: BillingType) {
+    this.code = this.obj.code || this.obj.leistg_code.split(/\s*-\s*/)[0]
+  }
+  getLabel() {
+    return this.obj.zahl + " " + this.code + " " + this.obj.leistg_txt
+  }
+  getBilling(){
+    return this.obj
+  }
+  isBillingOf=(billable)=>{
+    return (this.code==billable.code && this.obj.klasse==billable.type)
   }
 
+  increase(){
+    this.obj.zahl=(parseInt(this.obj.zahl)+1).toString();
+  }
+  compare = (other) => {
+    if (this.code && other && other.code) {
+      return this.code.localeCompare(other.code)
+    } else if (this.code) {
+      return 1
+    } else if (other && other.code) {
+      return -1
+    } else {
+      return 0
+    }
+  }
 }

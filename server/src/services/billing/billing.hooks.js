@@ -2,9 +2,13 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { DateTime } = require('luxon')
 const uuid = require('uuid/v4')
 
+const typemap={
+  "ch.elexis.data.TarmedLeistung":"tarmed",
+  "ch.artikelstamm.elexis.common.ArtikelstammItem":"article"
+}
 
 const adapter = async ctx => {
-  const type = ctx.data.type
+  const type = typemap[ctx.data.type]
   const adaptername = `./${type}-adapter`
   const adapter = require(adaptername)
   const billing = await adapter.createBilling(ctx.data, ctx.app)
