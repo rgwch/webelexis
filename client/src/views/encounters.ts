@@ -44,31 +44,33 @@ export class Encounters {
   private konsultationService: DataService
   private actPatient
   @observable actCase
-  @observable searchexpr = ""
+  @observable searchexpr
   encdom
   canCreate = true
 
   scroll() {
     if (this.encounters.data.length < this.encounters.total) {
-      const toFetch = Math.min(number_to_fetch, this.encounters.total - this.encounters.data.length)
-      // console.log("toFetch: "+toFetch)
-      this.fetchData(this.actPatient)
+      this.fetchData()
     }
   }
 
   actPatientChanged(newValue, oldValue) {
-    this.actCase = null
-    this.searchexpr = ""
-    this.refresh(newValue)
+    //console.log("act "+(this.actPatient ? this.actPatient.id : "empty"))
+    //console.log("new: "+(newValue ? newValue.id: "empty"))
+    //console.log("old: "+(oldValue ? oldValue.id: "empty"))
+    if((!oldValue) || (newValue.id !== oldValue.id)){
+      this.actCase = null
+      this.searchexpr = ""
+      this.refresh()
+    }
   }
+
   actCaseChanged(newValue, oldValue) {
-    this.refresh(this.actPatient)
+    this.refresh()
   }
 
   searchexprChanged(newval, oldval) {
-    if (newval != oldval) {
-      this.refresh(this.actPatient)
-    }
+    this.refresh()
   }
 
   constructor(private ds: DataSource, private caseManager: CaseManager, private we: WebelexisEvents) {
@@ -79,7 +81,7 @@ export class Encounters {
     this.konsultationService.on('created', this.consActions)
     this.konsultationService.on('updated', this.consActions)
     this.konsultationService.on('removed', this.consActions)
-    this.refresh(this.actPatient)
+    this.refresh()
   }
 
   detached() {
@@ -94,7 +96,7 @@ export class Encounters {
   consActions = (obj: EncounterType) => {
     const concern = this.cases.find(fall => { return fall.id === obj.fallid })
     if (concern && (this.actCase == null || concern.id == this.actCase.id)) {
-      this.refresh(this.actPatient)
+      this.refresh()
     }
   }
 
@@ -138,21 +140,24 @@ export class Encounters {
   /**
    * reload the encounter list completely
    */
-  refresh(patient) {
-    this.encounters.total = 1000000
-    this.encounters.data = []
-    this.encounters.skip = 0
-    this.fetchData(patient).then(result => {
-      if (this.encounters.data.length > 0) {
-        let act = this.encounters.data[0]
-        if (act.eintrag.html.replace(/<.*?>/g, "") == "") {
-          const children = this.encdom.getElementsByTagName("encounter")
-          if (children && children.length > 0) {
-            const lastKons = children[0]
-            // TODO: Activate edit mode
+  refresh() {
+    setTimeout(() => {                    // async needed for ckeditor to work correctly
+      this.encounters.total = 1000000
+      this.encounters.data = []
+      this.encounters.skip = 0
+      // console.log("act: "+(this.actPatient ? this.actPatient.id : "empty"))
+      this.fetchData().then(result => {
+        if (this.encounters.data.length > 0) {
+          let act = this.encounters.data[0]
+          if (act.eintrag.html.replace(/<.*?>/g, "") == "") {
+            const children = this.encdom.getElementsByTagName("encounter")
+            if (children && children.length > 0) {
+              const lastKons = children[0]
+              // TODO: Activate edit mode
+            }
           }
         }
-      }
+      })
     })
   }
 
@@ -160,20 +165,20 @@ export class Encounters {
   /**
    * Fetch new data. 
    */
-  fetchData(patient) {
-    let isLoading: boolean
-    if (isLoading) {
+  fetchData() {
+    let isLoading:boolean
+    if(isLoading){
       console.log("busy")
       return
     }
-    const pat = patient || this.actPatient
-    if (pat && (this.encounters.data.length < this.encounters.total)) {
-      isLoading = true;
+    if (this.actPatient && (this.encounters.data.length < this.encounters.total)) {
+      isLoading=true;
       const expr: any = {
-        patientId: pat.id,
+        patientId: this.actPatient.id,
         $skip: this.encounters.data.length,
         $limit: number_to_fetch
       }
+
       //  if a case (Fall) is selected, fetch only encounters for that case
       if (this.actCase != null) {
         expr.fallid = this.actCase.id
@@ -183,16 +188,20 @@ export class Encounters {
         expr.$find = this.searchexpr
       }
       const elms = []
-      console.log(`Patient: ${pat.Bezeichnung1} ${pat.Bezeichnung2} Lastitem: ${this.encounters.data.length}, total: ${this.encounters.total}, loading: ` + JSON.stringify(expr))
-      elms.push(this.konsultationService.find({ query: expr }).then(result => {
-        this.encounters.data = this.encounters.data.concat(result.data)
-        this.encounters.total = result.total
-      }))
-      elms.push(this.caseManager.loadCasesFor(pat.id).then(result => {
+      if (expr.$limit > 0) {
+        // console.log(`Lastitem: ${this.encounters.data.length}, total: ${this.encounters.total}, loading: ` + JSON.stringify(expr))
+        elms.push(this.konsultationService.find({ query: expr }).then(result => {
+          this.encounters.data = this.encounters.data.concat(result.data)
+          this.encounters.total = result.total
+        }))
+      } else {
+        console.log("no reloading")
+      }
+      elms.push(this.caseManager.loadCasesFor(this.actPatient.id).then(result => {
         this.cases = result
       }))
       return Promise.all(elms).then(r => {
-        isLoading = false
+        isLoading=false
         return true
       })
     } else {
