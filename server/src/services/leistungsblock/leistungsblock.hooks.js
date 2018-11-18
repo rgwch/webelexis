@@ -1,13 +1,24 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const handleExtInfo=require('../../hooks/handle-extinfo')
+const handleZipped = require('../../hooks/handle-zipped')
 
-const getElements=ctx=>{
-  if(ctx.result){
-    const leistungen=ctx.result.codeelements.split(/:=:/)
-    ctx.result.billables=[]
-    for(const l of leistungen){
-      const [system,code,text]=l.split(/\s*\|\s*/)
-      ctx.result.billables.push({system: system.toLowerCase(),code,text})
+const makeBillables = elements => {
+  const ret = []
+  const leistungen = elements.split(/:=:/)
+  for (const l of leistungen) {
+    const [system, code, text] = l.split(/\s*\|\s*/)
+    ret.push({ system: system.toLowerCase(), code, text })
+  }
+  return ret;
+}
+
+const getElements = ctx => {
+  if (ctx.result) {
+    if(ctx.result.data && Array.isArray(ctx.result.data)){
+      for(const r of ctx.result.data){
+        r.billables=makeBillables(r.codeelements)
+      }
+    }else{
+      ctx.result.billables = makeBillables(ctx.result.codeelements)
     }
   }
   return ctx
@@ -15,7 +26,7 @@ const getElements=ctx=>{
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],
@@ -26,8 +37,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [handleExtInfo({extinfo:'leistungen'})],
-    get: [handleExtInfo({extinfo:'leistungen'}),getElements],
+    find: [handleZipped('leistungen','elemente' ), getElements],
+    get: [handleZipped('leistungen','elemente' ), getElements],
     create: [],
     update: [],
     patch: [],

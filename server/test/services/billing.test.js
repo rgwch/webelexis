@@ -55,7 +55,7 @@ describe('\'billing\' service', () => {
     tarmeds.data.length.should.be.gt(0)
     const tarmed=tarmeds.data[0]
     tarmed.uid=tarmed.id
-    tarmed.type='tarmed'
+    tarmed.type='ch.elexis.data.TarmedLeistung'
     tarmed.encounter_id="007"
     tarmed.count=1
     const billed=await service.create(tarmed)
