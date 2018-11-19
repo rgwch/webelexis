@@ -23,7 +23,7 @@ const path=require('path')
   it('creates, modifies, loads and deletes a document',async ()=>{
     const service = app.service('documents');
     const contactservice=app.service('kontakt')
-    const pats=await contactservice.find({query: {$find: "test%"}})
+    const pats=await contactservice.find({query: {$find: "%test%"}})
     pats.data.should.be.ok
     pats.data.length.should.be.gt(1)
     const pat=pats.data[0]
@@ -35,7 +35,7 @@ const path=require('path')
       type: "documents",
       template: null,
       category: "tests",
-      contents: "<h1>Lorem Ipsum</h1><p>Perseveratur ut liquidmum</p>"
+      contents: "<h1>Lorem Ipsum</h1><p>Perseveratur ut liquidum</p>"
     }
     const created=await service.create(doc)
     created.should.have.property('id')

@@ -303,3 +303,6 @@ To create a billing, first retrieve an encounter and a billable and then apply c
 
 To incorporate new billing systems, just implement an adapter for that billing system in server/src/services/billing
 
+
+## Documents
+
