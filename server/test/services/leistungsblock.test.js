@@ -17,6 +17,10 @@ describe('\'leistungsblock\' service', () => {
     // result.data.should.be.an.Array
     const k15=result.data[0]
     k15.should.have.property("billables")
-    Array.isArray(k15.billables).should.be.true
+    k15.should.have.property("elemente")
+    k15.should.not.have.property("leistungen")
+    k15.should.not.have.property("codeelements")
+    k15.billables.should.be.an('array')
+    k15.elemente.should.be.an('array')
   })
 });
