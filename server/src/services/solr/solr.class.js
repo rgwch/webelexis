@@ -1,4 +1,8 @@
 /* eslint-disable no-unused-vars */
+const request=require('request')
+const fs=require('fs')
+const getUri=require('get-uri')
+
 class Service {
   constructor (options) {
     this.options = options || {};
@@ -20,6 +24,14 @@ class Service {
     }
 
     const url=this.options.host+this.options.core+`/update/extract?literal.id=${data.id}&commit=true`
+    const ropt={
+      uri:url,
+      method:'POST',
+      body: getUri(data.contents)
+    }
+    request(ropt,(err,ans)=>{
+      
+    })
     return data;
   }
 

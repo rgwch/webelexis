@@ -48,6 +48,7 @@
     "feathers-knex": "^3.3.0",
     "feathers-nedb": "^3.0.0",
     "feathers-solr": "^1.1.14",
+    "get-uri": "^2.0.2",
     "helmet": "^3.9.0",
     "java": "^0.10.0",
     "jshint": "^2.9.6",
