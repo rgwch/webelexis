@@ -46,6 +46,7 @@ export class LeistungsblockManager {
       try {
         const billable = await this.bm.getBillable(element.system + "!" + element.code)
         if (billable) {
+          billable.encounter_id=kons.id
           const billed = await this.bm.createBilling(billable, kons, 1)
           ret.push(billed)
         }

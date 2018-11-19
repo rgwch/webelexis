@@ -73,6 +73,9 @@ export class BillingsManager {
   async removeBilling(billing: BillingModel) {
     return await this.billingService.remove(billing.getBilling().id)
   }
+  async removeAllBillings(kons:EncounterType){
+    return await this.billingService.remove(null,{query:{behandlung: kons.id}})
+  }
 }
 
 export class BillingModel {

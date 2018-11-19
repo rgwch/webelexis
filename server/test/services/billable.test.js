@@ -64,4 +64,10 @@ describe('\'billable\' service', () => {
     })
     console.log(billables)
   })
+  it("gets an appropriate code",async ()=>{
+    const service = app.service('billable');
+    const billable=await service.get("tarmed!00.0010")
+    billable.should.be.ok
+    billable.code.should.equal("00.0010")
+  })
 });

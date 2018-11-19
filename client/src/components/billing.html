@@ -3,7 +3,7 @@
     <div class="card-header" style="position:relative">
       Verrechnung
       <div style="position:absolute;right:20px;top:2px">
-        <span>CHF</span>${sum}
+        <span click.delegate="addBilling()">CHF ${sum}</span>
       </div>
 
     </div>
@@ -13,6 +13,7 @@
         <div class="menuitem" click.delegate="modifyNumber()">Zahl ändern</div>
         <hr class="separator" />
         <div class="menuitem" click.trigger="remove()">Löschen</div>
+        <div class="menuitem" click.trigger="removeAll()">Alle Löschen</div>
       </div>
       <div>
         <div class="entry" repeat.for="b of billings" click.delegate="toggleMenu(b,$index,$event)">

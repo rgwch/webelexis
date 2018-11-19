@@ -49,6 +49,21 @@ class Service {
     })
   }
 
+  async findMatchingLaw(enctr){
+
+    const caseID = enctr.fallid
+    if (!caseID) {
+      logger.warn("Encounter %s has no caseID", enctr.fallid)
+    }
+    const fallService = this.options.app.service('fall')
+    const fall = await fallService.get(caseID)
+    if (!fall) {
+      logger.warn("case not found " + caseID)
+    }
+    const law = fall.gesetz || fall.extjson.Gesetz || fall.extjson.billing || "null"
+    return law
+  }
+
   async find(params) {
     if (params && params.query) {
       const searchexpr = params.query.find.replace(/\s+/, "%")
@@ -57,16 +72,7 @@ class Service {
         logger.warn("No Encounter given for billable.find")
         return []
       }
-      const caseID = enctr.fallid
-      if (!caseID) {
-        logger.warn("Encounter %s has no caseID", enctr.fallid)
-      }
-      const fallService = this.options.app.service('fall')
-      const fall = await fallService.get(caseID)
-      if (!fall) {
-        logger.warn("case not found " + caseID)
-      }
-      const law = fall.gesetz || fall.extjson.Gesetz || fall.extjson.billing || "null"
+      const law = await this.findMatchingLaw(enctr)
       let result = []
       switch (law.toLowerCase()) {
         case "kvg":
@@ -129,9 +135,27 @@ class Service {
    */
   async get(id, params) {
     const [service, uid, type] = this.decodeService(id)
-    const billable = await service.get(uid, params)
-    billable.type = type
-    return billable
+    try {
+      const billable = await service.get(uid, params)
+      billable.type = type
+      return billable
+    } catch (err) {
+      if (err.name == "NotFound") {
+        if(type==tarmed_type){
+          const test=await service.find({query: {code:uid}})
+          if(test.data && test.data.length>0){
+            const billable=test.data[0]
+            billable.uid = billable.id
+            billable.type = tarmed_type;
+            billable.count = 1;
+            return billable
+          }else{
+            throw(err)
+          }
+
+        }
+      }
+    }
   }
 
   async create(data, params) {

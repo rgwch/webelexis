@@ -20,7 +20,7 @@ import { EncounterType } from 'models/encounter';
  */
 @autoinject
 export class Macroprocessor {
-  constructor(private we: WebelexisEvents, private findings: FindingsManager, private lb:LeistungsblockManager) {
+  constructor(private we: WebelexisEvents, private findings: FindingsManager, private lb: LeistungsblockManager) {
   }
   /**
    * process a keyword.
@@ -34,14 +34,15 @@ export class Macroprocessor {
         const matched = m.match.exec(word)
         if (matched) {
           return m.func(matched, word, this.findings)
-        }else{  // if no user-supplied macro matches, try billing blocks
-          this.lb.findBlock(word).then(block=>{
-            if(block){
-              this.lb.createBillings(block,<EncounterType>context)
-            }
-          })
         }
       }
+      // if no user-supplied macro matches, try billing blocks
+      this.lb.findBlock(word).then(block => {
+        if (block) {
+          this.lb.createBillings(block, <EncounterType>context)
+        }
+      })
+      return ""
     } else if (context.type === 'document') {
 
     }

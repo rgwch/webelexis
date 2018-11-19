@@ -1,15 +1,15 @@
+import { DataSource } from 'services/datasource';
 import { BillingModel } from './../models/billings-model';
-import { SelectBilling } from '../dialogs/select_billing';
 import { PLATFORM, bindable, autoinject, useView } from "aurelia-framework";
 import { BillingsManager } from "models/billings-model";
-import { DialogService } from "aurelia-dialog";
-import { TouchSequence } from 'selenium-webdriver';
+import { EventAggregator } from 'aurelia-event-aggregator';
 
 @autoinject
 // @useView(PLATFORM.moduleName("./billing.pug"))
 export class Billing {
   @bindable kons;
   billings: Array<BillingModel>
+  private billingService
   billingdiv
   showmenu=false;
   contextmenu
@@ -18,10 +18,24 @@ export class Billing {
   currentItem:BillingModel
   sum:number
 
-  constructor(private bm: BillingsManager, private ds: DialogService) { }
+  constructor(private bm: BillingsManager, private ds: DataSource, private ea:EventAggregator) {
+    this.billingService=ds.getService('billing')
+   }
 
   attached() {
-    this.loadBillings()
+    this.loadBillings() 
+    this.billingService.on('created',this.updateBillings)
+  }
+
+  detached(){
+    this.billingService.off('created',this.updateBillings)
+  }
+
+  updateBillings=updated=>{
+    console.log(this.kons)
+    if(updated.behandlung==this.kons.id){
+      this.loadBillings()
+    }
   }
 
   loadBillings(){
@@ -43,13 +57,7 @@ export class Billing {
     this.sum=sum/100;
   }
   addBilling() {
-    /*
-    this.ds.open({viewModel: SelectBilling, model: this.kons}).whenClosed(result=>{
-      if(!result.wasCancelled){
-        console.log("result")
-      }
-    })
-    */
+    this.ea.publish("left_panel","leistungen")
   }
 
   dragOver(event) {
@@ -71,10 +79,10 @@ export class Billing {
         })
       } else {
         this.bm.createBilling(billable, this.kons, 1).then(billing => {
-          const act = [].concat(this.billings)
-          act.push(new BillingModel(billing))
-          this.billings = act.sort((a, b) => a.compare(b))
-          this.recalc()
+          //const act = [].concat(this.billings)
+          //act.push(new BillingModel(billing))
+          //this.billings = act.sort((a, b) => a.compare(b))
+          //this.recalc()
         })
       }
     })
@@ -98,6 +106,14 @@ export class Billing {
       this.showmenu=false
     })
   }
+
+  removeAll(){
+    this.bm.removeAllBillings(this.kons).then(i=>{
+      this.loadBillings()
+      this.showmenu=false
+    })
+  }
+
   toggleMenu(item,index,event){
     this.menutop=event.clientY;
     this.menuleft=event.clientX;
