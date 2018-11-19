@@ -7,9 +7,16 @@ describe('\'solr\' service', () => {
 
     assert.ok(service, 'Registered the service');
   });
-  it('stores a file',async ()=>{
+  it('stores a file', () => {
     const service = app.service('solr');
+    const file = {
+      contents: `file://${__dirname}/solr.test.js`
+    }
 
-    const created=service.create()
+    return service.create(file).then(created => {
+      assert(created.statusCode==200)
+    }).catch(err => {
+      assert.fail(err)
+    })
   })
 });

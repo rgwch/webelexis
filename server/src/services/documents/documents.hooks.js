@@ -14,7 +14,9 @@ const uri_regexp = /\w+:\/\/(\/?\/?)[^\s]+/
 const handleCreate = async ctx => {
   if (ctx.data && ctx.data.contents) {
     if (uri_regexp.exec(ctx.data.contents)) {
-      //do_index
+      const solrService=ctx.app.service('solr')
+      const created=await solrService.create(ctx.data)
+      console.log(created)
     }
   }
   if(ctx.data.template){

@@ -1,49 +1,63 @@
 /* eslint-disable no-unused-vars */
-const request=require('request')
-const fs=require('fs')
-const getUri=require('get-uri')
+const request = require('request')
+const fs = require('fs')
+const getUri = require('get-uri')
+const uuid = require('uuid/v4')
 
 class Service {
-  constructor (options) {
+  constructor(options) {
     this.options = options || {};
   }
 
-  async find (params) {
+  async find(params) {
     return [];
   }
 
-  async get (id, params) {
+  async get(id, params) {
     return {
       id, text: `A new message with ID: ${id}!`
     };
   }
 
-  async create (data, params) {
+  create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-
-    const url=this.options.host+this.options.core+`/update/extract?literal.id=${data.id}&commit=true`
-    const ropt={
-      uri:url,
-      method:'POST',
-      body: getUri(data.contents)
+    if (!data.id) {
+      data.id = uuid()
     }
-    request(ropt,(err,ans)=>{
-      
+    const url = this.options.host + this.options.core +
+     `/update/extract?literal.id=${data.id}&literal.path=${data.contents}&commit=true`
+
+    return new Promise((resolve, reject) => {
+      getUri(data.contents, (err, rs) => {
+        if (err) {
+          reject(err)
+        }
+        const ropt = {
+          uri: url,
+          method: 'POST',
+          body: rs
+        }
+        request(ropt, (err, ans) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(ans)
+        })
+      })
     })
+  }
+
+  async update(id, data, params) {
     return data;
   }
 
-  async update (id, data, params) {
+  async patch(id, data, params) {
     return data;
   }
 
-  async patch (id, data, params) {
-    return data;
-  }
-
-  async remove (id, params) {
+  async remove(id, params) {
     return { id };
   }
 }
