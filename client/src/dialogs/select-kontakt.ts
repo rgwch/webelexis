@@ -32,7 +32,6 @@ export class SelectKontakt{
   select(k){
     this.selection=k
     this.signaler.signal('selected')
-    console.log(k)
   }
 }
 

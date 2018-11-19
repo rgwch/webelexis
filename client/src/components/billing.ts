@@ -32,7 +32,6 @@ export class Billing {
   }
 
   updateBillings=updated=>{
-    console.log(this.kons)
     if(updated.behandlung==this.kons.id){
       this.loadBillings()
     }

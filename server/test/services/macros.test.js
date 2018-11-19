@@ -38,7 +38,6 @@ const macroset={
       const m2= await service.create(macroset)
       throw(new Error("failure"))
     }catch(err){
-      console.log("eeee")
       // do nothing
     }
     const got=await service.get(macroset.name)

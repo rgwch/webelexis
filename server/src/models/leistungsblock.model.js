@@ -1,9 +1,5 @@
-/* eslint-disable no-console */
+const logger=require('../logger')
 
-// leistungsblock-model.js - A KnexJS
-//
-// See http://knexjs.org/
-// for more of what you can do here.
 module.exports = function (app) {
   const db = app.get('knexClient');
   const tableName = 'leistungsblock';
@@ -19,8 +15,8 @@ module.exports = function (app) {
         table.string('Macro',30)
         table.string('codeelements')
       })
-        .then(() => console.log(`Created ${tableName} table`))
-        .catch(e => console.error(`Error creating ${tableName} table`, e));
+        .then(() => logger.info(`Created ${tableName} table`))
+        .catch(e => logger.error(`Error creating ${tableName} table`, e));
     }
   });
 

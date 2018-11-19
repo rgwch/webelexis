@@ -139,12 +139,12 @@ export class FindingView {
     //console.log(JSON.stringify(this.finding))
     if (this.finding && this.finding.id) {
       if (updated.id === this.finding.id) {
-        console.log("updated")
         this.finding.measurements = updated.measurements
       }
     }else{
       if(this.finding && this.finding.name){
         if(this.finding.name==updated.name){
+          updated.title=this.finding.title
           this.finding=updated
         }
       }

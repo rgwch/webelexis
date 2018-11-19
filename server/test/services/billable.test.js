@@ -62,7 +62,6 @@ describe('\'billable\' service', () => {
         }
       }
     })
-    console.log(billables)
   })
   it("gets an appropriate code",async ()=>{
     const service = app.service('billable');

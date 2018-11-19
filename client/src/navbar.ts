@@ -14,6 +14,5 @@ export class Navbar{
     this.loggedIn= (now != undefined)
   }
   attached(){
-    console.log("state :")
   }
 }

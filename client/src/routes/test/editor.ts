@@ -27,7 +27,7 @@ export class Editor {
     })
   }
   cb = (text) => {
-    const encounter = this.we.getSelectedItem('encounter')
+    const encounter = this.we.getSelectedItem('konsultation')
     try {
       return this.mp.process(encounter, text)
     } catch (err) {

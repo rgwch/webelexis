@@ -4,9 +4,9 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
- /*
-    main entry point for the webelexis server
- */
+/*
+   main entry point for the webelexis server
+*/
 const path = require('path');
 const favicon = require('serve-favicon');
 const compress = require('compression');
@@ -19,7 +19,6 @@ const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
-
 
 const middleware = require('./middleware');
 const services = require('./services');
@@ -63,7 +62,7 @@ app.hooks(appHooks);
 
 // If in testing mode: Seed databases
 if (app.get("testing")) {
-    const seeder = require('./seeder')
-    seeder(app).catch(err=>{console.log("reject "+err)})
+  const seeder = require('./seeder')
+  seeder(app).catch(err => { console.log("reject " + err) })
 }
 module.exports = app;

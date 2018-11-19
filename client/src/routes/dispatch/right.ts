@@ -69,7 +69,6 @@ export class RightPanel{
   calcwidth(){
     const w=this.parent.getBoundingClientRect().width-this.tooliconwidth
     const st= `width:${w}px`
-    console.log(st);
     return st
   }
   switchTo(view){
