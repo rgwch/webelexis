@@ -19,6 +19,7 @@ class Service {
       return Promise.all(data.map(current => this.create(current, params)));
     }
 
+    const url=this.options.host+this.options.core+`/update/extract?literal.id=${data.id}&commit=true`
     return data;
   }
 

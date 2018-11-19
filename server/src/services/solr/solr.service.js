@@ -1,15 +1,14 @@
 // Initializes the `solr` service on path `/solr`
 const hooks = require('./solr.hooks');
-const solr=require('feathers-solr')
+const createService=require('./solr.class')
 
 module.exports = function (app) {
 
   const options=app.get("solr")
 
-  const Service=new solr.Service(options)
 
   // Initialize our service with any options it requires
-  app.use('/solr', Service());
+  app.use('/solr', createService(options));
 
   // Get our initialized service so that we can register hooks
   const service = app.service('solr');
