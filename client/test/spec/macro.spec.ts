@@ -1,6 +1,7 @@
 import  {Macroprocessor} from '../../src/services/macro'
 import { Dummysource } from './dummysource';
 import { WebelexisEvents } from './dummyevents';
+import { EncounterType } from 'models/encounter';
 
 describe("macros",()=>{
   let dataSource
@@ -10,8 +11,18 @@ describe("macros",()=>{
     eventSource=new WebelexisEvents()
   })
   it("resolves some patterns",()=>{
-    const mp=new Macroprocessor(dataSource,eventSource)
-    const bd=mp.process("encounter", "120/80")
+    const mp=new Macroprocessor(dataSource,eventSource,null)
+    const encounter:EncounterType={
+      datum:"20181119",
+      Zeit:"09:00",
+      mandantid: "007",
+      fallid:"007",
+      eintrag: {
+        remark:"dummy",
+        timestamp: new Date().toString()
+      }
+    }
+    const bd=mp.process(encounter, "120/80")
     expect(bd).toBe("Blut")
   })
 })

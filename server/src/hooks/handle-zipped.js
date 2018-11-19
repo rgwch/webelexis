@@ -10,7 +10,6 @@ const unzip = raw => {
     return new Promise((resolve, reject) => {
       let ret = ""
       rs.on('data', chunk => {
-        console.log(chunk)
         ret += chunk
       })
       rs.on('end', () => resolve(ret))

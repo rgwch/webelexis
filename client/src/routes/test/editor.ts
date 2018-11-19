@@ -1,6 +1,7 @@
+import { WebelexisEvents } from 'webelexisevents';
 import { Macroprocessor } from '../../services/macro';
 import { inlineView, autoinject } from "aurelia-framework";
-import { DataSource,DataService } from '../../services/datasource';
+import { DataSource, DataService } from '../../services/datasource';
 
 @inlineView(`
 <template>
@@ -16,16 +17,21 @@ import { DataSource,DataService } from '../../services/datasource';
 @autoinject
 export class Editor {
   text = "<p>Hello, World</p><p>Goodnight, Sun</p>"
-  findings:DataService
+  findings: DataService
   finding
 
-  constructor(private mp: Macroprocessor, private ds:DataSource) {
-    this.findings=ds.getService('findings')
-    this.findings.on('created',obj=>{
-      this.finding=obj
+  constructor(private mp: Macroprocessor, private ds: DataSource, private we: WebelexisEvents) {
+    this.findings = ds.getService('findings')
+    this.findings.on('created', obj => {
+      this.finding = obj
     })
   }
   cb = (text) => {
-    return this.mp.process("encounter", text)
+    const encounter = this.we.getSelectedItem('encounter')
+    try {
+      return this.mp.process(encounter, text)
+    } catch (err) {
+      alert(err)
+    }
   }
 }

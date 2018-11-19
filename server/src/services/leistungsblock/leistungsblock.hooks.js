@@ -1,7 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const handleZipped = require('../../hooks/handle-zipped')
 
-const makeBillables = lb => {
+const process = lb => {
+  lb.type="block"
   const elements = lb.codeelements
   if (elements) {
     const leistungen = elements.split(/:=:/)
@@ -30,10 +31,10 @@ const getElements = ctx => {
   if (ctx.result) {
     if (ctx.result.data && Array.isArray(ctx.result.data)) {
       for (const r of ctx.result.data) {
-        makeBillables(r)
+        process(r)
       }
     } else {
-      makeBillables(ctx.result)
+      process(ctx.result)
     }
   }
   return ctx

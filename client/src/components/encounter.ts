@@ -28,7 +28,7 @@ export class Encounter {
   }
 
   makros = text => {
-    return this.mp.process("encounter", text)
+    return this.mp.process(this.obj, text)
   }
   toggleEdit() {
     if (this.isEditing) {
