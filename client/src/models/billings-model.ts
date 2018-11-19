@@ -33,13 +33,26 @@ export class BillingsManager {
     const ret = await this.billingService.find({ query: { behandlung: kons.id } })
     return ret.data.map(b => new BillingModel(b))
   }
+  /**
+   * get a bullable from a code. Note: The code must have the form:
+   * system!code, e.g. tarmed!00.0010
+   * @param code 
+   */
   async getBillable(code: string) {
+    if (code.indexOf("!") == -1) {
+      throw Error("bad code format for getBillable")
+    }
     if (this.billableCache.has(code)) {
       return this.billableCache.get(code)
     } else {
-      const billable = await this.billableService.get(code)
-      this.billableCache.set(code,billable)
-      return billable
+      try {
+        const billable = await this.billableService.get(code)
+        this.billableCache.set(code, billable)
+        return billable
+      } catch (err) {
+        alert(err)
+        return undefined
+      }
     }
   }
 
@@ -49,15 +62,15 @@ export class BillingsManager {
     const created = await this.billingService.create(billable)
     return created
   }
-  async setCount(item,count){
-    item.getBilling().zahl=count.toString()
-    return await this.billingService.update(item.getBilling().id,item.getBilling())   
+  async setCount(item, count) {
+    item.getBilling().zahl = count.toString()
+    return await this.billingService.update(item.getBilling().id, item.getBilling())
   }
-  async increaseCount(item:BillingModel){
+  async increaseCount(item: BillingModel) {
     item.increase()
-    return await this.billingService.update(item.getBilling().id,item.getBilling())
+    return await this.billingService.update(item.getBilling().id, item.getBilling())
   }
-  async removeBilling(billing:BillingModel){
+  async removeBilling(billing: BillingModel) {
     return await this.billingService.remove(billing.getBilling().id)
   }
 }
@@ -70,15 +83,15 @@ export class BillingModel {
   getLabel() {
     return this.obj.zahl + " " + this.code + " " + this.obj.leistg_txt
   }
-  getBilling(){
+  getBilling() {
     return this.obj
   }
-  isBillingOf=(billable)=>{
-    return (this.code==billable.code && this.obj.klasse==billable.type)
+  isBillingOf = (billable) => {
+    return (this.code == billable.code && this.obj.klasse == billable.type)
   }
 
-  increase(){
-    this.obj.zahl=(parseInt(this.obj.zahl)+1).toString();
+  increase() {
+    this.obj.zahl = (parseInt(this.obj.zahl) + 1).toString();
   }
   compare = (other) => {
     if (this.code && other && other.code) {

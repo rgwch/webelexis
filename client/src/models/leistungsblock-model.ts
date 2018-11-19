@@ -44,10 +44,11 @@ export class LeistungsblockManager {
     const ret = []
     for (const element of elemente) {
       try {
-        const billable = await this.bm.getBillable(element.code)
-        const billed = await this.bm.createBilling(billable, kons, 1)
-        ret.push(billed)
-
+        const billable = await this.bm.getBillable(element.system + "!" + element.code)
+        if (billable) {
+          const billed = await this.bm.createBilling(billable, kons, 1)
+          ret.push(billed)
+        }
       } catch (err) {
         alert(err)
       }

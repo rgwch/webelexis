@@ -92,7 +92,7 @@ class Service {
           result = result.concat(await this.article(enctr, searchexpr))
           break;
         default:
-          throw("Unknown case law in find billables")
+          throw ("Unknown case law in find billables")
       }
       return result
     } else {
@@ -103,19 +103,30 @@ class Service {
   decodeService(code) {
     const [type, uid] = code.split("!")
     let service
+    let ptyp
     switch (type) {
       case article_type:
+      case 'article':
         service = this.options.app.service('article')
+        ptyp = article_type
         break;
       case tarmed_type:
+      case 'tarmed':
         service = this.options.app.service('tarmed')
+        ptyp = tarmed_type
         break;
       default:
+        ptyp = "unknown"
         throw ("unsupported billable class " + type)
     }
-    return [service, uid, type]
+    return [service, uid, ptyp]
   }
 
+  /**
+   * Get a service from an id. The ID must be: system!code
+   * @param {} id
+   * @param {*} params
+   */
   async get(id, params) {
     const [service, uid, type] = this.decodeService(id)
     const billable = await service.get(uid, params)
