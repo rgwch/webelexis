@@ -3,13 +3,26 @@
   <span class="detailcaption">Leistungen</span>
   <div class="sheet">
     <div class="header">
-      <searchfield placeholder="Position" result.two-way="position"></searchfield>
+      <searchfield placeholder="Position" result.two-way="ls_position"></searchfield>
     </div>
-    <div class="body" style="height:85vh;overflow:auto">
+    <div class="body" style="height:35vh;overflow:auto">
       <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">
         <span draggable="true" dragstart.trigger="drag($event)" id="${el.type+'!'+el.id}">
           <b>${getCode(el)}</b> ${getText(el)}
         </span></div>
+    </div>
+  </div>
+  <span class="detailcaption">Blöcke</span>
+  <div class="sheet">
+    <div class="header">
+      <searchfield placeholder="Block" result.two-way="bl_position"></searchfield>
+    </div>
+    <div class="body" style="height:35vh;overflow:auto">
+      <div class="compactlist" repeat.for="bl of blocks" click.delegate="select(bl)">
+        <span draggable="true" dragstart.trigger="drag($event)" id="${bl.id}">
+          * ${getLabel(bl)}
+        </span>
+      </div>
     </div>
   </div>
 </template>
