@@ -30,11 +30,11 @@ Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Daten
     update kontakt set Bezeichnung1="unittest" where Bezeichnung1="Duck" and Bezeichnung2="Donald";`
 
 
-### Solr installieren
+### Lucinda installieren
 
-Optional arbeitet Webelexis mit [Apache Solr](http://lucene.apache.org/solr/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore und ist eine für den Javascript-Bereich logische Weiterentwicklung der Lucene-basierten Elexis-Ungrad Dokumentenverwaltung [Lucinda](https://elexis.ch/ungrad/features/lucinda/).
+Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/lucinda/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore 
 
-Installation und Konfiguration von Solr ist vergleichsweise simpel. Siehe Website von Solr. Danach eine Coee namens "Webelexis" erstellen und dort alle Dokumente einlesen. Dies kann natürlich scriptgesteuert erfolgen.
+Installation und Konfiguration von Lucinda ist vergleichsweise simpel. 
 
 ### Html2pdf installieren
 

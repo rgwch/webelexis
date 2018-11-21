@@ -3,13 +3,8 @@ const createService = require('./lucinda.class.js');
 const hooks = require('./lucinda.hooks');
 
 module.exports = function (app) {
-  
-  const paginate = app.get('paginate');
 
-  const options = {
-    paginate
-  };
-
+  const options=app.get("lucinda")
   // Initialize our service with any options it requires
   app.use('/lucinda', createService(options));
 

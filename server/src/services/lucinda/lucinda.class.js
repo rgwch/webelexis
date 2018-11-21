@@ -1,3 +1,8 @@
+const request = require('request')
+const fs = require('fs')
+const getUri = require('get-uri')
+const uuid = require('uuid/v4')
+
 /* eslint-disable no-unused-vars */
 class Service {
   constructor (options) {
@@ -8,10 +13,19 @@ class Service {
     return [];
   }
 
-  async get (id, params) {
-    return {
-      id, text: `A new message with ID: ${id}!`
-    };
+  get (id, params) {
+    if(id=="info"){
+      return new Promise((resolve,reject)=>{
+        request(this.options.url+"ping",(err,result)=>{
+          if(err){
+            reject(err)
+          }
+          if(result){
+            resolve(result.body)
+          }
+        })
+      })
+    }
   }
 
   async create (data, params) {
