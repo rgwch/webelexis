@@ -29,6 +29,7 @@ const tarmed = require('./tarmed/tarmed.service.js');
 const billable = require('./billable/billable.service.js');
 const leistungsblock = require('./leistungsblock/leistungsblock.service.js');
 const solr = require('./solr/solr.service.js');
+const lucinda = require('./lucinda/lucinda.service.js');
 module.exports = function (app) {
  app.configure(elexisConfig);
  app.configure(admin);
@@ -56,4 +57,5 @@ module.exports = function (app) {
  app.configure(billable);
  app.configure(leistungsblock);
  app.configure(solr);
+ app.configure(lucinda);
 };

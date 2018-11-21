@@ -19,7 +19,7 @@
     </div>
     <div class="body" style="height:35vh;overflow:auto">
       <div class="compactlist" repeat.for="bl of blocks" click.delegate="select(bl)">
-        <span draggable="true" dragstart.trigger="drag($event)" id="${bl.id}">
+        <span draggable="true" dragstart.trigger="drag($event)" id="block!${bl.id}">
           * ${getLabel(bl)}
         </span>
       </div>

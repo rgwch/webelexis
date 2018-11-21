@@ -32,6 +32,9 @@
       "filename": "../../data/webelexis.db"
     }
   },
+  "lucinda":{
+    "url": "http://localhost:2016"
+  },
   "solr": {
     "host": "http://localhost:8983/solr",
     "core": "/webelexis",
