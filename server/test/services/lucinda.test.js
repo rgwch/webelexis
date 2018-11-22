@@ -38,6 +38,8 @@ describe('\'lucinda\' service', () => {
     result._id.should.be.a('string')
     const retrieved= await service.get(result._id)
     retrieved.should.be.ok
+    const pdf=Buffer.from(retrieved)
+    // pdf.should.equal(buffer)
   })
 });
 
