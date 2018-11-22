@@ -48,7 +48,7 @@ class Service {
     return new Promise((resolve, reject) => {
       request({
         method: "POST",
-        uri: this.options.url + "index",
+        uri: this.options.url + "addfile",
         body: data,
         json: true
       }, (err, result) => {

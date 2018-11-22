@@ -26,12 +26,13 @@ describe('\'lucinda\' service', () => {
     const buffer=fs.readFileSync(testfile)
     const doc={
       payload: buffer.toString("base64"),
-      some: "thing"
+      some: "thing",
+      filename: "test.pdf"
     }
     const created=await service.create(doc)
     created.should.be.ok
     created.should.have.property("statusCode")
-    assert(created.statusCode==200,"Statuscode is 200")
+    assert(created.statusCode==201,"Statuscode is 201 - created")
     const result=created.body
     result.status.should.equal("ok")
     result._id.should.be.a('string')
@@ -39,3 +40,4 @@ describe('\'lucinda\' service', () => {
     retrieved.should.be.ok
   })
 });
+
