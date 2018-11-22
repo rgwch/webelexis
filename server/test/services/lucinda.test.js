@@ -23,9 +23,9 @@ describe('\'lucinda\' service', () => {
 
   it("indexes a pdf file", async () => {
     const testfile=path.join(__dirname,"../test.pdf")
-    // const buffer=fs.readFileSync(testfile)
+    const buffer=fs.readFileSync(testfile)
     const doc={
-      payload: fs.createReadStream(testfile),
+      payload: buffer.toString("base64"),
       some: "thing"
     }
     const created=await service.create(doc)
