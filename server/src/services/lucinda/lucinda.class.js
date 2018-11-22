@@ -10,7 +10,25 @@ class Service {
   }
 
   async find(params) {
-    return [];
+    return new Promise((resolve,reject)=>{
+      request({
+        method: "POST",
+        url: this.options.url+"query",
+        json: true,
+        body: params.query
+      },(err,res)=>{
+        if(err) reject(err)
+        if(res){
+          if(res.statusCode==204){
+            resolve([])
+          }else if(res.statusCode==200){
+            resolve(res.body)
+          }else{
+            reject("bad result")
+          }
+        }
+      })
+    })
   }
 
   get(id, params) {
@@ -25,14 +43,14 @@ class Service {
           }
         })
       })
-    }else{
-      return new Promise((resolve,reject)=>{
-        request.get(this.options.url+"get/"+id,(err,result)=>{
-          if(err) reject(err)
-          if(result){
-            if(result.statusCode == 200){
+    } else {
+      return new Promise((resolve, reject) => {
+        request.get(this.options.url + "get/" + id, (err, result) => {
+          if (err) reject(err)
+          if (result) {
+            if (result.statusCode == 200) {
               resolve(result.body)
-            }else{
+            } else {
               reject("not found")
             }
           }
@@ -72,8 +90,19 @@ class Service {
   }
 
   remove(id, params) {
-    return new Promise((resolve,reject)=>{
-      
+    return new Promise((resolve, reject) => {
+      request.get(this.options.url + "remove/" + id, (err, res) => {
+        if (err) reject(err)
+        if (res) {
+          if (res.statusCode == 200) {
+            if (typeof(res.body)=='string') {
+              resolve(JSON.parse(res.body))
+            } else {
+              resolve(res.body)
+            }
+          }
+        }
+      })
     })
   }
 }

@@ -36,10 +36,16 @@ describe('\'lucinda\' service', () => {
     const result=created.body
     result.status.should.equal("ok")
     result._id.should.be.a('string')
+    const queried=await service.find({query: "lorem ipsum"})
+    queried.status.should.equal("ok")
+    queried.result.should.be.an('array')
+    queried.result.length.should.be.gt(0)
     const retrieved= await service.get(result._id)
     retrieved.should.be.ok
     const pdf=Buffer.from(retrieved)
     // pdf.should.equal(buffer)
+    const deleted=await service.remove(result._id)
+    deleted.status.should.equal("ok")
   })
 });
 
