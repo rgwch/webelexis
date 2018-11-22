@@ -5,22 +5,22 @@ const uuid = require('uuid/v4')
 
 /* eslint-disable no-unused-vars */
 class Service {
-  constructor (options) {
+  constructor(options) {
     this.options = options || {};
   }
 
-  async find (params) {
+  async find(params) {
     return [];
   }
 
-  get (id, params) {
-    if(id=="info"){
-      return new Promise((resolve,reject)=>{
-        request(this.options.url+"ping",(err,result)=>{
-          if(err){
+  get(id, params) {
+    if (id == "info") {
+      return new Promise((resolve, reject) => {
+        request(this.options.url + "ping", (err, result) => {
+          if (err) {
             reject(err)
           }
-          if(result){
+          if (result) {
             resolve(result.body)
           }
         })
@@ -28,23 +28,37 @@ class Service {
     }
   }
 
-  async create (data, params) {
+  create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
+    return new Promise((resolve, reject) => {
+      request({
+        method: "POST",
+        uri: this.options.url + "index",
+        body: data,
+        json: true
+      }, (err, result) => {
+        if (err) {
+          reject(err)
+        }
+        if (result) {
+          resolve(result)
+        }
+      })
+    })
 
+  }
+
+  async update(id, data, params) {
     return data;
   }
 
-  async update (id, data, params) {
+  async patch(id, data, params) {
     return data;
   }
 
-  async patch (id, data, params) {
-    return data;
-  }
-
-  async remove (id, params) {
+  async remove(id, params) {
     return { id };
   }
 }
