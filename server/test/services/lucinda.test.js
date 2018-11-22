@@ -32,6 +32,9 @@ describe('\'lucinda\' service', () => {
     created.should.be.ok
     created.should.have.property("statusCode")
     assert(created.statusCode==200,"Statuscode is 200")
+    const result=created.body
+    result.status.should.equal("ok")
+    result._id.should.be.a('string')
 
   })
 });
