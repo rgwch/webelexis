@@ -71,8 +71,10 @@ class Service {
     return data;
   }
 
-  async remove(id, params) {
-    return { id };
+  remove(id, params) {
+    return new Promise((resolve,reject)=>{
+      
+    })
   }
 }
 
