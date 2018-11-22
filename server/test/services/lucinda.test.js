@@ -35,6 +35,7 @@ describe('\'lucinda\' service', () => {
     const result=created.body
     result.status.should.equal("ok")
     result._id.should.be.a('string')
-
+    const retrieved= await service.get(result._id)
+    retrieved.should.be.ok
   })
 });

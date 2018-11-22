@@ -25,6 +25,19 @@ class Service {
           }
         })
       })
+    }else{
+      return new Promise((resolve,reject)=>{
+        request.get(this.options.url+"get/"+id,(err,result)=>{
+          if(err) reject(err)
+          if(result){
+            if(result.statusCode == 200){
+              resolve(result.body)
+            }else{
+              reject("not found")
+            }
+          }
+        })
+      })
     }
   }
 
