@@ -4,7 +4,10 @@ const app = require('../../src/app');
 const fs=require('fs')
 const path=require('path')
 
-describe('\'lucinda\' service', () => {
+/**
+ * remove the x from xdescribe, if you have a working lucinda server
+ */
+xdescribe('\'lucinda\' service', () => {
   let service
 
   before(() => {

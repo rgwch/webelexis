@@ -168,6 +168,16 @@ class Service {
       return Promise.all(data.map(current => this.create(current, params)));
     }
     const billingService = this.options.app.service('billing')
+    /*
+    const existing=await billingService.find({query: {behandlung:data.encounter_id}})
+    for(const billing of existing.data){
+      if(billing.code == data.code && billing.klasse == data.type){
+        billing.zahl=(parseInt(billing.zahl)+1).toString
+        billingService.patch(billing.id,{zahl: billing.zahl})
+        return billing
+      }
+    }
+    */
     delete data.billable.id
     delete data.billable.uid
     const created = await billingService.create(data.billable)
