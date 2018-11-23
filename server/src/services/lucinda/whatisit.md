@@ -46,5 +46,7 @@ In `server/config/default.json` add:
 
 #### 3. Run tests
 
-in `server/test/services/lucinda.test.js` change 'xdescribe'  to 'describe', and run `npm test`
+* Launch a browser and navigate to `http://localhost:2016/lucinda/2.0/ping`. Lucinda should send back something like "Welcome to Lucinda".
+
+* in `server/test/services/lucinda.test.js` change 'xdescribe'  to 'describe', and run `npm test`
 
