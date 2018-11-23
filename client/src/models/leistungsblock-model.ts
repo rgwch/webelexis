@@ -39,6 +39,12 @@ export class LeistungsblockManager {
     }
   }
 
+  async applyBlock(id, kons:EncounterType){
+    const lb:LeistungsblockType=await this.lbService.get(id)
+    const result= this.createBillings(lb,kons)
+    return result
+  }
+
   async createBillings(lb: LeistungsblockType, kons: EncounterType) {
     const elemente = lb.billables || lb.elements
     const ret = []

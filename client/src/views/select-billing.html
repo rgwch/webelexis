@@ -12,12 +12,11 @@
         </span></div>
     </div>
   </div>
-  <span class="detailcaption">Blöcke</span>
-  <div class="sheet">
+  <div class="sheet" style="margin-top:4px">
     <div class="header">
-      <searchfield placeholder="Block" result.two-way="bl_position"></searchfield>
+      Blöcke
     </div>
-    <div class="body" style="height:35vh;overflow:auto">
+    <div class="body" style="height:45vh;overflow:auto">
       <div class="compactlist" repeat.for="bl of blocks" click.delegate="select(bl)">
         <span draggable="true" dragstart.trigger="drag($event)" id="block!${bl.id}">
           * ${getLabel(bl)}

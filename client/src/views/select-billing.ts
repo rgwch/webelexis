@@ -8,7 +8,6 @@ export class SelectBilling {
   billableService: DataService
   blockService: DataService
   @observable ls_position: string
-  @observable bl_position: string
   encounter: EncounterType
   billables = []
   blocks = []
@@ -27,14 +26,7 @@ export class SelectBilling {
       this.billables = result
     })
   }
-  bl_positionChanged(newValue, oldValue) {
-    this.encounter = this.we.getSelectedItem("konsultation")
-    this.blocks = []
-    this.blockService.find({ query: { name: this.bl_position, encounter: this.encounter } }).then(result => {
-      this.blocks = result.data
-    })
-
-  }
+  
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     this.billableService = ds.getService("billable")
     this.blockService = ds.getService('leistungsblock')
@@ -56,7 +48,7 @@ export class SelectBilling {
   }
 
   drag(event) {
-    console.log(event)
+    //console.log(event)
     event.dataTransfer.setData("text", event.target.id)
     return true
   }

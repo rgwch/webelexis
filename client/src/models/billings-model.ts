@@ -34,7 +34,7 @@ export class BillingsManager {
     return ret.data.map(b => new BillingModel(b))
   }
   /**
-   * get a bullable from a code. Note: The code must have the form:
+   * get a billable from a code. Note: The code must have the form:
    * system!code, e.g. tarmed!00.0010
    * @param code 
    */

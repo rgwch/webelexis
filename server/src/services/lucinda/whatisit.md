@@ -32,7 +32,7 @@ This Service connects Webelexis with a [Lucinda](https://github.com/rgwch/lucind
 
 * run lucinda:
 
-      java -jar lucinda-server-2.0.0-SNAPSHOT.jar
+      java -jar lucinda-server-2.0.1.jar
 
 #### 2. tell Webelexis the connection details:
 
