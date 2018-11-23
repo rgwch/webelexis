@@ -158,14 +158,19 @@ class Service {
     }
   }
 
+  /**
+   * Create a Billing from a Billable
+   * @param {} data  The billable
+   * @param {*} params
+   */
   async create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    const service = this.options.app.service('billing')
+    const billingService = this.options.app.service('billing')
     delete data.billable.id
     delete data.billable.uid
-    const created = await service.create(data.billable)
+    const created = await billingService.create(data.billable)
     return created
   }
 

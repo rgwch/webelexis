@@ -7,6 +7,10 @@ const typemap={
   "ch.artikelstamm.elexis.common.ArtikelstammItem":"article"
 }
 
+/**
+ * Create a Billing from a Billable
+ * @param {*} ctx
+ */
 const adapter = async ctx => {
   const type = typemap[ctx.data.type]
   const adaptername = `./${type}-adapter`
