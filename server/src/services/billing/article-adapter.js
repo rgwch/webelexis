@@ -6,8 +6,8 @@ module.exports.createBilling = async (art, app) => {
     leistg_code: art.GTIN || art.PHAR,
     klasse: article_class,
     zahl: art.count.toString(),
-    ek_kosten: art.PEXF,
-    VK_TP: art.PPUB,
+    ek_kosten: art.PEXF*100,
+    VK_TP: art.PPUB*100,
     SCALE: "100",
     SCALE2: "100"
   }
