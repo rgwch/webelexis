@@ -67,26 +67,17 @@ export class Billing {
   /**
    *  a billable was dropped -> bill it
    */
-
   dragDrop(event) {
     event.preventDefault()
     const data = event.dataTransfer.getData("text");
     if (data.startsWith('block')) {
-      this.lbm.applyBlock(data.substring('block!'.length),this.kons).then(result=>{
-
+      this.lbm.applyBlock(data.substring('block!'.length),this.kons,this.billings).then(block=>{
+        this.loadBillings()
       })
     } else {
       this.bm.getBillable(data).then(billable => {
-        const existing = this.billings.find(elem => elem.isBillingOf(billable))
-        if (existing) {
-          this.bm.increaseCount(existing).then(b => {
-            this.loadBillings()
-          })
-        } else {
-
-          this.bm.createBilling(billable, this.kons, 1).then(billing => {
-          })
-        }
+        this.bm.createBilling(billable, this.kons, 1, this.billings).then(billing => {
+        })
       })
     }
     return true

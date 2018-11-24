@@ -56,11 +56,17 @@ export class BillingsManager {
     }
   }
 
-  async createBilling(billable, encounter: EncounterType, count: number) {
+  async createBilling(billable, encounter: EncounterType, count: number, others: Array<BillingModel>) {
     billable.encounter_id = encounter.id
-    billable.count = count.toString()
-    const created = await this.billingService.create(billable)
-    return created
+    const existing = others.find(elem => elem.isBillingOf(billable))
+    if (existing) {
+      existing.increase(count)
+      return await this.billingService.update(existing.getBilling().id, existing.getBilling())
+    } else {
+      billable.count = count.toString()
+      const created = await this.billingService.create(billable)
+      return created
+    }
   }
   async setCount(item, count) {
     item.getBilling().zahl = count.toString()
@@ -73,8 +79,8 @@ export class BillingsManager {
   async removeBilling(billing: BillingModel) {
     return await this.billingService.remove(billing.getBilling().id)
   }
-  async removeAllBillings(kons:EncounterType){
-    return await this.billingService.remove(null,{query:{behandlung: kons.id}})
+  async removeAllBillings(kons: EncounterType) {
+    return await this.billingService.remove(null, { query: { behandlung: kons.id } })
   }
 }
 
@@ -92,9 +98,15 @@ export class BillingModel {
   isBillingOf = (billable) => {
     return (this.code == billable.code && this.obj.klasse == billable.type)
   }
+  getCount(): number {
+    return parseInt(this.obj.zahl)
+  }
 
-  increase() {
-    this.obj.zahl = (parseInt(this.obj.zahl) + 1).toString();
+  increase(num?: number) {
+    if (!num) {
+      num = 1
+    }
+    this.obj.zahl = (this.getCount() + num).toString();
   }
   compare = (other) => {
     if (this.code && other && other.code) {

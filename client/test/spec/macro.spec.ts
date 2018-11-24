@@ -11,7 +11,7 @@ describe("macros",()=>{
     eventSource=new WebelexisEvents()
   })
   it("resolves some patterns",()=>{
-    const mp=new Macroprocessor(dataSource,eventSource,null)
+    const mp=new Macroprocessor(dataSource,eventSource,null,null)
     const encounter:EncounterType={
       datum:"20181119",
       Zeit:"09:00",

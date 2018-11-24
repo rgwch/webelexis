@@ -1,6 +1,3 @@
-import { ElexisType } from './../models/elexistype';
-import { LeistungsblockManager } from './../models/leistungsblock-model';
-import { DataSource, DataService } from './datasource';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018 by G. Weirich         *
@@ -12,6 +9,9 @@ import { autoinject } from 'aurelia-framework';
 import { FindingsManager } from 'models/findings-model';
 import macros from '../user/macrodefs'
 import { EncounterType } from 'models/encounter';
+import { BillingsManager } from 'models/billings-model';
+import { ElexisType } from './../models/elexistype';
+import { LeistungsblockManager } from './../models/leistungsblock-model';
 
 /**
  * Instead od simple mappings from shortcuts to texts we chose a more powerful approach:
@@ -20,7 +20,8 @@ import { EncounterType } from 'models/encounter';
  */
 @autoinject
 export class Macroprocessor {
-  constructor(private we: WebelexisEvents, private findings: FindingsManager, private lb: LeistungsblockManager) {
+  constructor(private we: WebelexisEvents, private findings: FindingsManager, 
+    private lb: LeistungsblockManager, private bm:BillingsManager) {
   }
   /**
    * process a keyword.
@@ -37,9 +38,10 @@ export class Macroprocessor {
         }
       }
       // if no user-supplied macro matches, try billing blocks
-      this.lb.findBlock(word).then(block => {
+      this.lb.findBlock(word).then(async block => {
         if (block) {
-          this.lb.createBillings(block, <EncounterType>context)
+          const others=await this.bm.getBillings(<EncounterType>context)
+          this.lb.createBillings(block, <EncounterType>context,others)
         }
       })
       return ""
