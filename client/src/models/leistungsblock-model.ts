@@ -57,22 +57,23 @@ export class LeistungsblockManager {
       billable.encounter_id = kons.id
       return this.bm.createBilling(billable, kons, 1, others)
     }))
-    /*
-    const ret = []
-    for (const element of elemente) {
-      try {
-        const billable = await this.bm.getBillable(element.system + "!" + element.code)
-        if (billable) {
-          billable.encounter_id = kons.id
-          const billed = await this.bm.createBilling(billable, kons, 1, others)
-          ret.push(billed)
-        }
-      } catch (err) {
-        alert(err)
-      }
-    }
-    
-    return ret
-    */
+  }
+
+  async getElements(lb: LeistungsblockType){
+    const elemente = lb.billables || lb.elements
+    const elems=await Promise.all(elemente.map(el => {
+      return this.bm.getBillable(el.system + "!" + el.code)
+    }))
+    return elems
+  }
+}
+
+export class LeistungsblockModel {
+  constructor(private block: LeistungsblockType) { }
+  async getElementIDs() {
+    const elemente = this.block.billables || this.block.elements
+    const billables = elemente.map(el => {
+      (el.system + "!" + el.code)
+    })
   }
 }

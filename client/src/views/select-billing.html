@@ -18,9 +18,12 @@
     </div>
     <div class="body" style="height:45vh;overflow:auto">
       <div class="compactlist" repeat.for="bl of blocks" click.delegate="select(bl)">
-        <span draggable="true" dragstart.trigger="drag($event)" id="block!${bl.id}">
+        <span draggable="true" dragstart.trigger="drag($event)" id="block!${bl.id}" click.delegate="changeState(bl)">
           * ${getLabel(bl)}
         </span>
+        <div show.bind="bl.openState">
+          <div repeat.for="el of bl.resolved">${getCode(el)} ${getText(el)}</div>
+        </div>
       </div>
     </div>
   </div>
