@@ -77,6 +77,7 @@ export class Billing {
     } else {
       this.bm.getBillable(data).then(billable => {
         this.bm.createBilling(billable, this.kons, 1, this.billings).then(billing => {
+          this.loadBillings()
         })
       })
     }

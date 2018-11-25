@@ -27,6 +27,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "NODE_ENV=debug node src/",
+    "prod": "NODE_ENV=production node src/",
     "mocha": "mocha test/ --recursive --timeout 10000 --exit"
   },
   "dependencies": {

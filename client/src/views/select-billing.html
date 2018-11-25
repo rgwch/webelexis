@@ -22,7 +22,9 @@
           * ${getLabel(bl)}
         </span>
         <div show.bind="bl.openState">
-          <div repeat.for="el of bl.resolved">${getCode(el)} ${getText(el)}</div>
+          <div draggable="true" dragstart.trigger="drag($event)" id="${el.type+'!'+el.id}" repeat.for="el of bl.resolved">
+            ${getCode(el)} ${getText(el)}
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 {
   "testing": false,
   "host": "localhost",
-  "port": 80,
+  "port": 8080,
   "public": "../../client/dist/",
   "paginate": {
     "default": 50,
