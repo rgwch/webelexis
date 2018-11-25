@@ -8,7 +8,9 @@ Die schlanke, flinke Ergänzug zu Elexis
 * kann (bei weitem) nicht alles, was Elexis kann, sondern erledigt Kernaufgaben unkompliziert.
 * Kann parallel mit Elexis im selben Netz eingesetzt werden.
 
+## Demo Videos
 
+[Einstieg](http://www.screencast.com/t/5EnOY5EUd)
 
 ## Technische Grundlage Webelexis 3
 
