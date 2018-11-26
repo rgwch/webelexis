@@ -1,5 +1,5 @@
 export default {
-  debug: false,
-  testing: false,
-  baseURL: "/"
+  debug: true,
+  testing: true,
+  baseURL: 'http://localhost:3030'
 };

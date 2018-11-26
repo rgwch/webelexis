@@ -56,7 +56,7 @@ export class BillingsManager {
     }
   }
 
-  async createBilling(billable, encounter: EncounterType, count: number, others: Array<BillingModel>) {
+  async createBilling(billable, encounter: EncounterType, count: number, others: Array<BillingModel>):Promise<BillingType> {
     billable.encounter_id = encounter.id
     const existing = others.find(elem => elem.isBillingOf(billable))
     if (existing) {
@@ -64,7 +64,8 @@ export class BillingsManager {
       return await this.billingService.update(existing.getBilling().id, existing.getBilling())
     } else {
       billable.count = count.toString()
-      const created = await this.billingService.create(billable)
+      const created:BillingType = await this.billingService.create(billable)
+      others.push(new BillingModel(created))
       return created
     }
   }

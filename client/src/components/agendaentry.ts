@@ -1,10 +1,10 @@
-import { WebelexisEvents } from '../webelexisevents';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
+import { WebelexisEvents } from '../webelexisevents';
 import { bindable, autoinject, computedFrom } from 'aurelia-framework'
 import { TerminType, TerminModel, Statics } from '../models/termine-model'
 import { Kontakt } from '../models/kontakt'

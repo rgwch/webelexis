@@ -1,4 +1,12 @@
-import { DataSource } from 'services/datasource';
+import { BillingType } from './../models/billings-model';
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+import { EncounterType } from 'models/encounter';
+import { DataSource, DataService } from 'services/datasource';
 import { BillingModel } from './../models/billings-model';
 import { PLATFORM, bindable, autoinject, useView } from "aurelia-framework";
 import { BillingsManager } from "models/billings-model";
@@ -8,9 +16,9 @@ import { LeistungsblockManager } from 'models/leistungsblock-model';
 @autoinject
 // @useView(PLATFORM.moduleName("./billing.pug"))
 export class Billing {
-  @bindable kons;
+  @bindable kons:EncounterType;
   billings: Array<BillingModel>
-  private billingService
+  private billingService:DataService
   billingdiv
   showmenu = false;
   contextmenu
@@ -18,6 +26,7 @@ export class Billing {
   menutop = 60;
   currentItem: BillingModel
   sum: number
+  clazz= "bg-light"
 
   constructor(private bm: BillingsManager, private lbm: LeistungsblockManager, private ds: DataSource, private ea: EventAggregator) {
     this.billingService = ds.getService('billing')
@@ -32,7 +41,7 @@ export class Billing {
     this.billingService.off('created', this.updateBillings)
   }
 
-  updateBillings = updated => {
+  updateBillings = (updated:BillingType) => {
     if (updated.behandlung == this.kons.id) {
       this.loadBillings()
     }
@@ -56,12 +65,22 @@ export class Billing {
     }
     this.sum = sum / 100;
   }
-  addBilling() {
+
+  /**
+   * If the user click on the amount field -> show billings view
+   */
+  billingsView() {
     this.ea.publish("left_panel", "leistungen")
   }
 
   dragOver(event) {
     event.preventDefault()
+    this.clazz="bg-warning"
+    return true;
+  }
+
+  dragleave(event){
+    this.clazz="bg-light"
     return true;
   }
   /**
@@ -81,6 +100,7 @@ export class Billing {
         })
       })
     }
+    this.clazz="bg-light"
     return true
   }
 

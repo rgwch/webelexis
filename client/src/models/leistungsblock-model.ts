@@ -53,10 +53,17 @@ export class LeistungsblockManager {
     const billables = await Promise.all(elemente.map(el => {
       return this.bm.getBillable(el.system + "!" + el.code)
     }))
+    /* must be for..of loop for sharing 'others'
     return Promise.all(billables.map(billable => {
       billable.encounter_id = kons.id
       return this.bm.createBilling(billable, kons, 1, others)
     }))
+    */
+   const ret=[]
+   for(const billable of billables){
+     billable.encounter_id=kons.id
+      ret.push(await this.bm.createBilling(billable,kons,1,others))
+   }
   }
 
   async getElements(lb: LeistungsblockType){

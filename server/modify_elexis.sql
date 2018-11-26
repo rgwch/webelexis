@@ -259,7 +259,8 @@ alter table icd10
   change ID id varchar(40),
   modify parent varchar(40);
 
-
+alter table kontakt
+  change telefon2 Telefon2 varchar(254);
 
 alter table kontakt_adress_joint modify id varchar(40),
 	modify myid varchar(40),
@@ -384,7 +385,7 @@ alter table tarmed
 
 alter table tarmed_extension
   modify Code varchar(40);
-  
+
 alter table traces
   modify workstation varchar(80);
 

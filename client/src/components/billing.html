@@ -1,9 +1,10 @@
 <template>
-  <div class="card" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+  <div class="card" class.bind="clazz" dragover.trigger="dragOver($event)" 
+      dragleave.trigger="dragleave($event)" drop.trigger="dragDrop($event)">
     <div class="card-header" style="position:relative">
       Verrechnung
-      <div style="position:absolute;right:20px;top:2px">
-        <span click.delegate="addBilling()">CHF ${sum}</span>
+      <div style="position:absolute;right:20px;top:2px;cursor:pointer;">
+        <span click.delegate="billingsView()">CHF ${sum}</span>
       </div>
 
     </div>

@@ -1,10 +1,10 @@
-import { StickerManager } from './stickers.model';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
+ import { StickerManager } from './stickers.model';
 import { KontaktType } from './kontakt';
 import { FHIR_Patient, FHIR_ContactPoint } from '../models/fhir/fhir'
 import { DateTime } from '../services/datetime';
@@ -116,12 +116,34 @@ export class Patient {
           label: i18.tr("address.place"),
           datatype: "string",
           sizehint: 9
-        }, {
+        }, /*{
           attribute: "contactPoints",
           label: i18.tr("contact.contactpoints"),
           datatype: "string",
           sizehint: 12
+        }, */
+        {
+          attribute: "Telefon1",
+          label: i18.tr("contact.phone1"),
+          datatype: "string",
+          sizehint: 4
         }, {
+          attribute: "Telefon2",
+          label: i18.tr("contact.phone2"),
+          datatype: "string",
+          sizehint: 4
+        }, {
+          attribute: "NatelNr",
+          label: i18.tr("contact.mobile"),
+          datatype: "string",
+          sizehint: 4
+        },{
+          attribute: "Email",
+          label: i18.tr("contact.email"),
+          datatype: "string",
+          sizehint: 6
+        },
+        {
           attribute: "bemerkung",
           label: i18.tr("contact.remark"),
           datatype: "text",
