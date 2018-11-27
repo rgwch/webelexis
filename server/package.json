@@ -41,7 +41,7 @@
     "@feathersjs/express": "^1.1.2",
     "@feathersjs/feathers": "^3.0.5",
     "@feathersjs/socketio": "^3.0.2",
-    "@rgwch/samdastools": "file:../../samdastools",
+    "@rgwch/samdastools": "^1.5.2",
     "async": "^2.6.1",
     "compression": "^1.7.1",
     "cors": "^2.8.4",
