@@ -45,6 +45,9 @@
     "rxjs": "^6.3.3",
     "socket.io-client": "^2.1.1"
   },
+  "optionalDependencies": {
+    "fsevents": "^2.0.1"
+  },
   "peerDependencies": {},
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
