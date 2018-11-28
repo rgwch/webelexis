@@ -15,7 +15,10 @@ Es wird empfohlen, zuerst den Webelexis-Server aufzusetzen (s. [dort](../server/
 
 Die Parameter sind optional. --watch sorgt dafür, dass der webpack-compiler nach jeder Dateiänderung automatisch anspringt und --hmr (hot module replace) bewirkt, das die Webapp zum Ersetzen neu compilierten Codes nicht neu geladen, sondern nahtlos fortgesetzt wird (was oft, aber nicht immer gut geht).
 
+### Troubleshoot
+
 Nach einem Upgrade von NodeJS oder dem Betriebssystem muss oft node-sass neu installiert werden (leider sind die Fehlermeldungen von npm beim Startversuch nicht wirklich hilfreich)
 
     npm install node-sass
 
+Manchmal wird man bei `npm install` mit einer langen Liste unklarer Fehlermeldungen "erschlagen". Oft hilft es dann, das Verzeichnis 'node_modules' und die Datei 'package-lock.json' zu löschen und erneut `npm install` auszuführen.
