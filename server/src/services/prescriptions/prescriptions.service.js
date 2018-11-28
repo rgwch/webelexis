@@ -14,16 +14,16 @@ module.exports = function (app) {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'rezepte',
+    name: 'patient_artikel_joint',
     Model,
     paginate
   };
 
   // Initialize our service with any options it requires
-  app.use('/rezept', createService(options));
+  app.use('/prescriptions', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('rezept');
+  const service = app.service('prescriptions');
 
   service.hooks(hooks);
 };

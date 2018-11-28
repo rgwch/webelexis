@@ -5,7 +5,13 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const handleExtinfo=require('../../hooks/handle-extinfo')
 
+const current=ctx=>{
+  if(ctx.params.query && ctx.params.query.current){
+    
+  }
+}
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
@@ -19,7 +25,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [handleExtinfo({extinfo:"ExtInfo"})],
     get: [],
     create: [],
     update: [],
