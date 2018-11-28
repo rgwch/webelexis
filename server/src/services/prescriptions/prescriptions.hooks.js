@@ -6,16 +6,22 @@
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const handleExtinfo=require('../../hooks/handle-extinfo')
+const {DateTime}=require('luxon')
 
-const current=ctx=>{
+const current=async ctx=>{
   if(ctx.params.query && ctx.params.query.current){
-    
+    const now=DateTime.local().toFormat('yyyyLLddHHmmss')
+    ctx.params.query.patientid=ctx.params.query.current
+    delete ctx.params.query.current
+    ctx.params.query.DateFrom={$lte:now}
+    ctx.params.query.$or=[{DateUntil:{$gte:now}},{DateUntil: null}]
   }
+  return ctx
 }
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [],
+    find: [current],
     get: [],
     create: [],
     update: [],

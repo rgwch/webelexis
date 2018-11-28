@@ -4,31 +4,33 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const filters=require('./article_filters')
-const filter=filters({blackbox:true,generics:false})
+const filters = require('./article_filters')
+const filter = filters({ blackbox: true, generics: false })
+const handleExtinfo = require('../../hooks/handle-extinfo')
 
-const scopes={
-  "ch.artikelstamm.elexix.common.ArtikelstammItem":"artikelstamm_ch",
+const scopes = {
+  "ch.artikelstamm.elexix.common.ArtikelstammItem": "artikelstamm_ch",
   "ch.elexis.medikamente.bag.data.BAGMedi": "artikel",
   "ch.elexis.artikel_ch.data.Medikament": "artikel",
-  "ch.elexis.data.Artikel":"artikel"
+  "ch.elexis.data.Artikel": "artikel"
 }
 /**
- * Find article by scoped ID. A Scoped ID is an elexis type of ID, denoted with class::id, e.g.
+ * Get article by scoped ID. A Scoped ID is an elexis type of ID, denoted with class::id, e.g.
  *  'ch.artikelstamm.elexis.common.ArtikelStammItem::0000wqwqe88070'
- *
+
  */
-const fromScopedId=ctx=>{
-  if(ctx.params.query && ctx.params.query.scopedId){
-    const [scope,id]=ctx.params.query.scopedId.split("::")
-    const table=scopes.scope
+const fromScopedId = async ctx => {
+  const [scope, id] = ctx.id.split("::")
+  if (id) {
+    ctx.id = id
   }
+  return ctx
 }
 module.exports = {
   before: {
     all: [],
-    find: [fromScopedId],
-    get: [],
+    find: [],
+    get: [fromScopedId],
     create: [],
     update: [],
     patch: [],
@@ -38,7 +40,7 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [],
+    get: [handleExtinfo({ extinfo: "ExtInfo" })],
     create: [],
     update: [],
     patch: [],

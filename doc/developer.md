@@ -4,7 +4,7 @@
 
 node >= 10
 jdk >=8
-elexis running on a slightly modified mysql database (run `server/modify_elexis.sql` for the modifications)
+elexis running on a slightly modified mysql database (source `server/modify_elexis.sql` for the modifications)
 
 ... as needed ...:
 
@@ -25,6 +25,14 @@ the development server runs on port 3030
     au run --watch --hmr
 
 the webpack development server runs on port 9000    
+
+## Deployment
+
+      cd client
+      au build -env prod
+      cd ../server
+      sudo npm run prod
+
 
 ## SQL Server
 

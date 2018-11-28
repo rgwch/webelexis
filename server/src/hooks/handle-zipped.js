@@ -1,5 +1,10 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const unzipper = require('unzipper')
-const stream = require('stream')
 
 const unzip = raw => {
   if (raw) {
@@ -21,6 +26,11 @@ const unzip = raw => {
     return Promise.resolve("")
   }
 }
+/**
+ * unzip zipped fields
+ * @param source: Name of the zipped field
+ * @param dest: name of the field to place the unzipped content
+ */
 module.exports = (source, dest) => {
   return async ctx => {
     if (ctx.result && ctx.result[source]) {
