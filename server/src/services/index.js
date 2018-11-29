@@ -30,6 +30,7 @@ const billable = require('./billable/billable.service.js');
 const leistungsblock = require('./leistungsblock/leistungsblock.service.js');
 const solr = require('./solr/solr.service.js');
 const lucinda = require('./lucinda/lucinda.service.js');
+const oddb = require('./oddb/oddb.service.js');
 module.exports = function (app) {
  app.configure(elexisConfig);
  app.configure(admin);
@@ -58,4 +59,5 @@ module.exports = function (app) {
  app.configure(leistungsblock);
  app.configure(solr);
  app.configure(lucinda);
+ app.configure(oddb);
 };
