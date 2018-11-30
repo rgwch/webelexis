@@ -4,11 +4,11 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
- /*
-  * connection to the Elexis database is via knex (https://knexjs.org)
-  * here we configure our knex instance. The client credentials are
-  * configured in /config/*.json
-  */
+/*
+ * connection to the Elexis database is via knex (https://knexjs.org)
+ * here we configure our knex instance. The client credentials are
+ * configured in /config/*.json
+ */
 
 const knex = require('knex');
 
@@ -16,7 +16,7 @@ module.exports = function (app) {
   const { client, connection } = app.get('mysql');
   // const { client, connection } = app.get('postgresql');
   // const {client,connection} = app.get("sqlite");
-  const db = knex({ client, connection });
+  const db = knex({ client, connection, pool: { max: 50 } });
 
   app.set('knexClient', db);
 };

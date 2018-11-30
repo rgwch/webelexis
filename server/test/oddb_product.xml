@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PRODUCT xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://wiki.oddb.org/wiki.php?pagename=Swissmedic.Datendeklaration" CREATION_DATETIME="2018-11-30T00:05:08+0100" PROD_DATE="2018-11-30T00:05:08+0100" VALID_DATE="2018-11-30T00:05:08+0100" GENERATED_BY="oddb2xml 2.5.8">
+  <PRD DT="" SHA256="534c4bc1dbd29819b88426ca3114c2fb91c67e580dba82d4b61ca613648ee87e">
+    <GTIN>7680002770021</GTIN>
+    <PRODNO>0027701</PRODNO>
+    <DSCRD>Coeur-Vaisseaux Sérocytol, suppositoire</DSCRD>
+    <DSCRF>Coeur-Vaisseaux Sérocytol, suppositoire</DSCRF>
+    <ATC>J06AA</ATC>
+    <IT>08.07.</IT>
+    <CPT/>
+    <PackGrSwissmedic>9</PackGrSwissmedic>
+    <EinheitSwissmedic>Suppositorien</EinheitSwissmedic>
+    <SubstanceSwissmedic>globulina equina (immunisé avec coeur, endothélium vasculaire porcins)</SubstanceSwissmedic>
+    <CompositionSwissmedic>globulina equina (immunisé avec coeur, endothélium vasculaire porcins) 8 mg, propylenglycolum, conserv.: E 216, E 218, excipiens pro suppositorio.</CompositionSwissmedic>
+  </PRD>
+  <PRD DT="" SHA256="3b788be9e3c715f671552c34414cc769a6e22e19bdd6ab4ed9c2fb866ce65ca4">
+    <GTIN>7680551840015</GTIN>
+    <PRODNO>5518401</PRODNO>
+    <DSCRD>REMICADE Trockensub 100 mg Durchstf</DSCRD>
+    <DSCRF>REMICADE subst sèche 100 mg flac</DSCRF>
+    <ATC>L04AB02</ATC>
+    <IT>07.15.0.</IT>
+    <CPT>
+      <CPTCMP>
+        <LINE>0</LINE>
+        <SUBNO>651</SUBNO>
+        <QTY>100</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+    </CPT>
+    <PackGrSwissmedic>1</PackGrSwissmedic>
+    <EinheitSwissmedic>Durchstechflasche(n)</EinheitSwissmedic>
+    <SubstanceSwissmedic>infliximabum</SubstanceSwissmedic>
+    <CompositionSwissmedic>Praeparatio cryodesiccata: infliximabum 100 mg, saccharum, polysorbatum 80, natrii dihydrogenophosphas monohydricus, dinatrii phosphas dihydricus, pro vitro.</CompositionSwissmedic>
+  </PRD>
+  <PRD DT="" SHA256="68b7f01f2cc3b64af75fa71cbbc8ba8390ebda5bde9e0d1b3a22c7411e4db492">
+    <GTIN>7680551850144</GTIN>
+    <PRODNO>5518501</PRODNO>
+    <DSCRD>CO-AMOXICILLIN Sandoz Filmtabl 625 mg 10 Stk</DSCRD>
+    <DSCRF>CO-AMOXICILLINE Sandoz cpr pell 625 mg 10 pce</DSCRF>
+    <GENCD>G</GENCD>
+    <ATC>J01CR02</ATC>
+    <IT>08.01.93</IT>
+    <CPT>
+      <CPTCMP>
+        <LINE>0</LINE>
+        <SUBNO>26</SUBNO>
+        <QTY>125</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+      <CPTCMP>
+        <LINE>1</LINE>
+        <SUBNO>102</SUBNO>
+        <QTY>500</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+    </CPT>
+    <PackGrSwissmedic>10</PackGrSwissmedic>
+    <EinheitSwissmedic>Tablette(n)</EinheitSwissmedic>
+    <SubstanceSwissmedic>acidum clavulanicum, amoxicillinum anhydricum</SubstanceSwissmedic>
+    <CompositionSwissmedic>acidum clavulanicum 125 mg ut kalii clavulanas, amoxicillinum anhydricum 500 mg ut amoxicillinum trihydricum, excipiens pro compresso obducto.</CompositionSwissmedic>
+  </PRD>
+  <PRD DT="" SHA256="87b5bab7f47b43bfdecf5c1c02f90b950687decd6d69b27e4ee873cb65b5b355">
+    <GTIN>7680551850168</GTIN>
+    <PRODNO>5518501</PRODNO>
+    <DSCRD>CO-AMOXICILLIN Sandoz Filmtabl 625 mg 20 Stk</DSCRD>
+    <DSCRF>CO-AMOXICILLINE Sandoz cpr pell 625 mg 20 pce</DSCRF>
+    <GENCD>G</GENCD>
+    <ATC>J01CR02</ATC>
+    <IT>08.01.93</IT>
+    <CPT>
+      <CPTCMP>
+        <LINE>0</LINE>
+        <SUBNO>26</SUBNO>
+        <QTY>125</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+      <CPTCMP>
+        <LINE>1</LINE>
+        <SUBNO>102</SUBNO>
+        <QTY>500</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+    </CPT>
+    <PackGrSwissmedic>20</PackGrSwissmedic>
+    <EinheitSwissmedic>Tablette(n)</EinheitSwissmedic>
+    <SubstanceSwissmedic>acidum clavulanicum, amoxicillinum anhydricum</SubstanceSwissmedic>
+    <CompositionSwissmedic>acidum clavulanicum 125 mg ut kalii clavulanas, amoxicillinum anhydricum 500 mg ut amoxicillinum trihydricum, excipiens pro compresso obducto.</CompositionSwissmedic>
+  </PRD>
+  <PRD DT="" SHA256="5ccd11603583e0dd8aa5ae8a9687abe55ceb3784b1e83f5328bdde9e8a3d5ea3">
+    <GTIN>7680551880011</GTIN>
+    <PRODNO>5518801</PRODNO>
+    <DSCRD>XATRAL uno Ret Tabl 10 mg 30 Stk</DSCRD>
+    <DSCRF>XATRAL uno cpr ret 10 mg 30 pce</DSCRF>
+    <GENCD>O</GENCD>
+    <ATC>G04CA01</ATC>
+    <IT>05.99.0.</IT>
+    <CPT>
+      <CPTCMP>
+        <LINE>0</LINE>
+        <SUBNO>70</SUBNO>
+        <QTY>10</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+    </CPT>
+    <PackGrSwissmedic>30</PackGrSwissmedic>
+    <EinheitSwissmedic>Tablette(n)</EinheitSwissmedic>
+    <SubstanceSwissmedic>alfuzosini hydrochloridum</SubstanceSwissmedic>
+    <CompositionSwissmedic>alfuzosini hydrochloridum 10 mg, excipiens pro compresso.</CompositionSwissmedic>
+  </PRD>
+  <PRD DT="" SHA256="6fcb2b3592045cd2cc3f51d77c818c274065f007a8c3f5ca4261da9ea5775f8c">
+    <GTIN>7680551880035</GTIN>
+    <PRODNO>5518801</PRODNO>
+    <DSCRD>XATRAL uno Ret Tabl 10 mg 90 Stk</DSCRD>
+    <DSCRF>XATRAL uno cpr ret 10 mg 90 pce</DSCRF>
+    <GENCD>O</GENCD>
+    <ATC>G04CA01</ATC>
+    <IT>05.99.0.</IT>
+    <CPT>
+      <CPTCMP>
+        <LINE>0</LINE>
+        <SUBNO>70</SUBNO>
+        <QTY>10</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+    </CPT>
+    <PackGrSwissmedic>90</PackGrSwissmedic>
+    <EinheitSwissmedic>Tablette(n)</EinheitSwissmedic>
+    <SubstanceSwissmedic>alfuzosini hydrochloridum</SubstanceSwissmedic>
+    <CompositionSwissmedic>alfuzosini hydrochloridum 10 mg, excipiens pro compresso.</CompositionSwissmedic>
+  </PRD>
+  <PRD DT="" SHA256="0230afcfbc2b73cdb3c276e8e10b0d46a2cec6963194dd3baac422450dfc0ff7">
+    <GTIN>7680551880059</GTIN>
+    <PRODNO>5518801</PRODNO>
+    <DSCRD>XATRAL uno Ret Tabl 10 mg 10 Stk</DSCRD>
+    <DSCRF>XATRAL uno cpr ret 10 mg 10 pce</DSCRF>
+    <GENCD>O</GENCD>
+    <ATC>G04CA01</ATC>
+    <IT>05.99.0.</IT>
+    <CPT>
+      <CPTCMP>
+        <LINE>0</LINE>
+        <SUBNO>70</SUBNO>
+        <QTY>10</QTY>
+        <QTYU>mg</QTYU>
+      </CPTCMP>
+    </CPT>
+    <PackGrSwissmedic>10</PackGrSwissmedic>
+    <EinheitSwissmedic>Tablette(n)</EinheitSwissmedic>
+    <SubstanceSwissmedic>alfuzosini hydrochloridum</SubstanceSwissmedic>
+    <CompositionSwissmedic>alfuzosini hydrochloridum 10 mg, excipiens pro compresso.</CompositionSwissmedic>
+  </PRD>
+</PRODUCT>

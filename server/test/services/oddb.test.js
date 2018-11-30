@@ -10,9 +10,9 @@ describe('\'oddb\' service', () => {
   });
 
   it('loads a new Artikelstamm',async ()=>{
-    // const homedir=require('os').homedir()
-    console.log(__dirname)
+    const homedir=require('os').homedir()
+    // const done=await service.update(path.join(homedir,"oddb2xml.zip"),{})
     const done=await service.update(path.join(__dirname,'../oddb_test.zip'),{})
     done.should.be.ok
-  })
+  }).timeout(100000)
 });
