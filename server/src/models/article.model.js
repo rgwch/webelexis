@@ -33,9 +33,9 @@ module.exports = function (app) {
         table.string("LIMITATION",1)    // has limitations?
         table.string("LIMITATION_TXT")  // Text of limitation
         table.string("GENERIC_TYPE",1)  // Is generic/generic original?
-        table.string("HAS_GENERIC",1)   //  A geneeric exists
-        table.string("LPPV",1)
-        table.string("DEDUCTIBLE",6)    // Null, 10,20 oddb_article.xml
+        table.string("HAS_GENERIC",1)   // A generic exists
+        table.string("LPPV",1)          // Special use medicament, not paid by insurance
+        table.string("DEDUCTIBLE",6)    // Null, 10,20 (% KVG share) -> oddb_article.xml
         table.string("NARCOTIC",1)      // Is narcotic substance? (BTMG) -> oddb_article.xml
         table.string("NARCOTIC_CAS")
         table.string("VACCINE",1)       // Is vaccine?
