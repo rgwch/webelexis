@@ -8,6 +8,12 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const handleExtinfo=require('../../hooks/handle-extinfo')
 const {DateTime}=require('luxon')
 
+/**
+ * find the current medication of the given patient (if search parameter current is given and is an id
+ * of a patient)
+ *
+ * @param {} ctx
+ */
 const current=async ctx=>{
   if(ctx.params.query && ctx.params.query.current){
     const now=DateTime.local().toFormat('yyyyLLddHHmmss')

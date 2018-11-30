@@ -18,7 +18,7 @@ import defaults from '../../user/uidefaults'
 export class RightPanel{
   tooliconwidth=defaults.tooliconwidth
   tooliconheight=defaults.tooliconheight
-  views=[v.stammdaten,v.konsultationen,v.dokumente,v.artikeldetail,v.labor,v.agendagross]
+  views=[v.stammdaten,v.konsultationen,v.dokumente,v.artikeldetail,v.labor,v.agendagross,v.medikation]
   active=v.stammdaten
   expanded=false
   parent

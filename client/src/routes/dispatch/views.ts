@@ -67,5 +67,10 @@ export default{
       text: "Messwerte",
       icon: "/checklist.svg",
       view: PLATFORM.moduleName("views/findings-view")
+    },
+    medikation:{
+      text: "Medikation",
+      icon: "/pills.svg",
+      view: PLATFORM.moduleName("views/prescriptions-view")
     }
   }
