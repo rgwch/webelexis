@@ -11,14 +11,14 @@
   "mysql": {
     "client": "mysql2",
     "connection": {
-      "host": "localhost",
+      "host": "192.168.0.40",
       "database": "elexis",
       "user": "elexisuser",
       "password": "elexis"
     }
   },
   "lucinda":{
-    "url": "http://localhost:2016/lucinda/2.0/"
+    "url": "http://192.168.0.1:2016/lucinda/2.0/"
   },
   "solr": {
     "host": "http://localhost:8983/solr",
