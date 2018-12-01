@@ -11,6 +11,8 @@ RUN apk add --no-cache --virtual build_deps \
 RUN cd /home/node && git clone https://github.com/rgwch/webelexis \
   && npm install -g aurelia-cli
 
+COPY server/lib/* webelexis/server/lib/
+
 USER node
 RUN cd webelexis/client \
   && npm install \
