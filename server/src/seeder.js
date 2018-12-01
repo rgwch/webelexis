@@ -57,14 +57,14 @@ module.exports = async function (app) {
     email: "admin@webelexis.ch",
     label: "admin",
     password: "admin",
-    roles: [roles.admin],
+    roles: [roles.admin, roles.doc, roles.guest, roles.agenda],
     dummy: true
   }
   const user = {
     email: "user@webelexis.ch",
     label: "Gerry",
     password: "user",
-    roles: [roles.user, roles.guest],
+    roles: [roles.user, roles.guest, roles.doc, roles.mpa, roles.agenda, roles.billing],
     dummy: true
   }
   usr.remove(null, { query: { dummy: true } }).then(removed => {

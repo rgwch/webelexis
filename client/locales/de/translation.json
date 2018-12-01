@@ -94,7 +94,9 @@
     "reallydelete": "{{item}} wirklich löschen?",
     "docsave": "Dokument speichern",
     "subject": "Titel",
-    "addressee": "Adressat"
+    "addressee": "Adressat",
+    "username": "E-Mail",
+    "password": "Passwort"
   },
   "edit": {
     "para": "Absatz",

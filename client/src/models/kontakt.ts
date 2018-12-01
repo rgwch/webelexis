@@ -15,14 +15,23 @@ import {MailType} from './mail'
  * An Elexis "Kontakt"
  */
 export interface KontaktType extends ElexisType{
-    ID:string,
-    Bezeichnung1: string,
-    Bezeichnung2?: string,
-    Bezeichnung3?: string,
-    geburtsdatum?: string,
-    geschlecht: "m" | "f" | "w",
-    adressen?: [AddressType],
-    mails?: [MailType]
+    ID:string
+    Bezeichnung1: string
+    Bezeichnung2?: string
+    Bezeichnung3?: string
+    geburtsdatum?: string
+    istperson?:string
+    istanwender?:string
+    istmandant?:string
+    istorganisation?:string
+    geschlecht?: "m" | "f" | "w"
+    strasse?: string
+    plz?:string
+    ort?:string
+    telefon1?:string
+    telefon2?:string
+    natel?:string
+    email?: string
 }
 
 
