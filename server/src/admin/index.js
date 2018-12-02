@@ -28,7 +28,7 @@ module.exports=function(app){
   })
   app.use("/resetpwd/:mail/:uuid",async (request,response)=>{
     const mail=request.params.mail
-    const uuid=request.params.uuid
+    const uid=request.params.uuid
     const userService=app.service('usr')
     const user=await userService.get(mail)
     const now=new Date().getTime()
@@ -37,10 +37,15 @@ module.exports=function(app){
     if(diff>14400000){
       response.status(410).json({"status":"error","message":"expired"})
     }else{
-      if(user.token.uuid!=uuid){
+      if(user.token.uuid!=uid){
         response.status(400).json({status:"error","message":"invalid request"})
       }else{
-        response.render("newpwd")
+        // response.redirect("/static/newpwd.html")
+        user.token.uuid=uuid()
+        user.token.ts=new Date().getTime()
+        userService.update(user.email,user).then(updated=>{
+          response.render('newpwd',{title: `${defaults.system.sitename}`, user: user.email, uid: user.token.uuid})
+        })
       }
     }
     const token=user.token

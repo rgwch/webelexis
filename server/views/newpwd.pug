@@ -1,0 +1,10 @@
+html
+  head
+    title=title
+  body
+    h2 Neues Passwort eingeben
+    form(submit="chpwd")
+      input(type="hidden" name="uid" value="#{uid}")
+      input(type="hidden" name="uname" value=user)
+      input(type="password" name="password")
+      button(type="submit") Submit

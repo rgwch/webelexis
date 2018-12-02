@@ -27,8 +27,9 @@ const channels = require('./channels');
 const admin=require('./admin')
 
 const app = express(feathers());
-app.set('public', path.join(__dirname, "../public"))
-
+// app.set('public', path.join(__dirname, "../public"))
+app.set('views',path.join(__dirname,'../views'))
+app.set('view engine','pug')
 // Load app configuration
 app.configure(configuration());
 // Enable CORS, security, compression, favicon and body parsing
