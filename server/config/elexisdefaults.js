@@ -1,6 +1,10 @@
 module.exports = {
+  "system":{
+    url: "http://localhost:3030",
+    admin: "someone@webelexis.ch"
+  },
   "mandator":{
-    
+
   },
   "fall": {
     "fallgesetz": "KVG",

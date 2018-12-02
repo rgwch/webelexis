@@ -5,5 +5,9 @@ export default{
     name: "Login",
     view: PLATFORM.moduleName('./userdetail')
     
+  },
+  lostpwd:{
+    name: "Passwort vergessen",
+    view: 
   }
 }

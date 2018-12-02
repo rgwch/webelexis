@@ -24,6 +24,7 @@ const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
+const admin=require('./admin')
 
 const app = express(feathers());
 app.set('public', path.join(__dirname, "../public"))
@@ -39,7 +40,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
-
+app.use('/static',express.static(path.join(__dirname,'../public')))
 // Set up Plugins and providers
 
 app.configure(express.rest())
@@ -48,7 +49,7 @@ app.configure(knex);
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 app.configure(authentication)
-
+app.configure(admin)
 // Set up our services (see `services/index.js`)
 app.configure(services);
 // Set up event channels (see channels.js)
