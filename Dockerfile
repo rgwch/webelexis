@@ -38,6 +38,6 @@ USER node
 
 WORKDIR /home/node/webelexis/server
 ENV NODE_ENV=dockered
-#CMD ["npm","run","dockered"]
+CMD ["npm","run","dockered"]
 
 

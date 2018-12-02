@@ -32,14 +32,16 @@ module.exports = function (app) {
   service.get("admin").then(adm => {
     logger.info("found admin user")
   }).catch(err => {
-    const input = require('../../keyboard')
-    input("Please enter admin password: ").then(async pwd => {
-      try{
-      const adm=await service.create({ email: "admin", password: pwd, roles: ['admin'], dummy: false })
-      logger.info("created admin")
-      }catch(err){
-        logger.error("could not create admin %s",err)
-      }
-    })
+    if (!app.get("testing")) {
+      const input = require('../../keyboard')
+      input("Please enter admin password: ").then(async pwd => {
+        try {
+          const adm = await service.create({ email: "admin", password: pwd, roles: ['admin'], dummy: false })
+          logger.info("created admin")
+        } catch (err) {
+          logger.error("could not create admin %s", err)
+        }
+      })
+    }
   })
 };
