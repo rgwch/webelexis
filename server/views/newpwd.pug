@@ -3,7 +3,7 @@ html
     title=title
   body
     h2 Neues Passwort eingeben
-    form(submit="chpwd")
+    form(action="/static/chpwd")
       input(type="hidden" name="uid" value="#{uid}")
       input(type="hidden" name="uname" value=user)
       input(type="password" name="password")

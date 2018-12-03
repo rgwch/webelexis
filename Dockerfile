@@ -1,8 +1,8 @@
 FROM node:alpine
-RUN apk add openjdk8 bash git
+RUN apk add openjdk8
 
 RUN apk add --no-cache --virtual build_deps python \
-  g++ gcc make binutils-gold
+  g++ gcc make binutils-gold bash git
 
 RUN npm install -g aurelia-cli \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac
@@ -28,11 +28,17 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
 ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/2.9.7/jackson-databind-2.9.7.jar \
   /home/node/webelexis/server/lib/jackson-databind-2.9.7.jar
 
-#COPY server/lib/ /home/node/webelexis/server/lib/
 
 USER root
 
-RUN apk del build_deps
+RUN apk del build_deps \
+ && cd webelexis/server \
+ && npm --production prune \
+ && npm prune \
+ && npm remove -g aurelia-cli \
+ && cd ../client \
+ && npm --production prune \
+ && npm prune
 
 USER node
 
