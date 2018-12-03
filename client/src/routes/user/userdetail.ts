@@ -6,6 +6,7 @@ import { autoinject } from 'aurelia-framework';
 import { connectTo } from 'aurelia-store'
 import { pluck } from 'rxjs/operators'
 import { Router } from 'aurelia-router';
+import env from '../../environment'
 
 
 @autoinject
@@ -23,13 +24,20 @@ export class UserDetail {
   }
 
   attached() {
+    fetch(env.baseURL+"/metadata").then(response=>{
+      return response.json()
+    }).then(json=>{
+      this.demomode=json.testing
+      env["metadata"]=json
+    })
+    /*
     this.userService.find({ query: { dummy: true } }).then(dummies => {
       if (dummies.data.length > 1) {
         this.demomode = true
       }
     })
+    */
   }
-
   login(email?, pwd?) {
     if (!email) {
       email = this.username

@@ -13,8 +13,8 @@
     "connection": {
       "host": "localhost",
       "database": "elexis",
-      "user": "elexisuser",
-      "password": "elexis"
+      "user": "praxis",
+      "password": "topsecret"
     }
   },
   "postgresql": {
@@ -22,8 +22,8 @@
     "connection": {
       "host": "localhost",
       "database": "webelexis",
-      "user": "elexisuser",
-      "password": "elexis"
+      "user": "praxis",
+      "password": "topsecret"
     }
   },
   "sqlite": {

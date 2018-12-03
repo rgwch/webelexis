@@ -32,6 +32,7 @@ app.set('views',path.join(__dirname,'../views'))
 app.set('view engine','pug')
 // Load app configuration
 app.configure(configuration());
+app.set("userconfig",require('../../data/settings'))
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
 app.use(helmet());

@@ -51,9 +51,11 @@ module.exports=function(app){
     const token=user.token
   })
   app.use("/metadata",(request,response)=>{
+    const settings=app.get("userconfig")
     response.json({
-      testing: app.get("testing") || false,
-      sitename: defaults.system.sitename
+      testing: settings.testing || false,
+      sitename: settings.sitename,
+      admin: settings.admin
     })
   })
 }

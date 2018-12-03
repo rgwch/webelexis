@@ -16,7 +16,9 @@ module.exports = function (app) {
   const { client, connection } = app.get('mysql');
   // const { client, connection } = app.get('postgresql');
   // const {client,connection} = app.get("sqlite");
-  const db = knex({ client, connection, pool: { max: 50 } });
+  const db = knex({ client,
+      connection: app.get("userconfig").elexisdb || connection,
+      pool: { max: 50 } });
 
   app.set('knexClient', db);
 };
