@@ -8,6 +8,6 @@ export default{
   },
   lostpwd:{
     name: "Passwort vergessen",
-    view: 
+    view: PLATFORM.moduleName('./lostpassword')
   }
 }

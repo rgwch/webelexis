@@ -2,7 +2,7 @@ module.exports = {
   "system":{
     url: "http://localhost:3030",
     admin: "someone@webelexis.ch",
-    sitename: "Praxis Breite"
+    sitename: "Praxis Webelexis"
   },
   "mandator":{
 

@@ -19,7 +19,7 @@ export class LeftPanel{
   active=v.patientenliste
   parent
   buttons
-  connected:boolean = false
+  linked:boolean = false
   static message="left_panel"
   leftpanelstyle=`position:absolute;left:${defaults.buttonbarwidth}px;width:${defaults.leftpanelwidth}px;`
 
@@ -38,12 +38,12 @@ export class LeftPanel{
   }
   switchTo(view){
     this.active=view
-    if(this.connected && view.linksTo){
+    if(this.linked && view.linksTo){
       this.ea.publish(RightPanel.message,view.linksTo)
     }
   }
 
-  connect(){
-    this.connected=!this.connected
+  link(){
+    this.linked=!this.linked
   }
 }

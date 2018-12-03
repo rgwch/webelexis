@@ -58,13 +58,6 @@ export class RightPanel{
 
   toggleLeftPane(){
     this.we.toggleLeftPanel()
-    /*
-    if(context.showLeftPane){
-      this.style="position:absolute;left:395px;right:85px;"
-    }else{
-      this.style="position:absolute;left:5px;right:85px;"
-    }
-  */
   }
   calcwidth(){
     const w=this.parent.getBoundingClientRect().width-this.tooliconwidth
