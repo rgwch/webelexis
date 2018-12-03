@@ -46,7 +46,8 @@ export class RightPanel{
     this.expanded=mode
   }
 
-  activate(params) {
+  activate(params /*, routeConfig */) {
+    //routeConfig.navModel.setTitle("test")
     if (params && params.sub) {
       const actview = this.views.find(v => v.text.toLowerCase() == params.sub)
       this.active = actview

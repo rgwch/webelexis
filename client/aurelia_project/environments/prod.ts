@@ -1,5 +1,8 @@
 export default {
   debug: false,
   testing: false,
-  baseURL: "/"
+  baseURL: "/",
+  metadata: {
+    sitename: "Webelexis"
+  }
 };

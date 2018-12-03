@@ -15,6 +15,7 @@ import { pluck } from 'rxjs/operators'
 import { State } from './state';
 import { I18N } from 'aurelia-i18n';
 import { Patient } from './models/patient';
+import env from 'environment'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'styles.scss'
 import '@fortawesome/fontawesome-free/css/all.min.css'
@@ -41,6 +42,12 @@ export class App {
   actPatient
  
   constructor(private ds: DataSource, private we: WebelexisEvents, private i18n: I18N) {
+    fetch(env.baseURL+"/metadata").then(response=>{
+      return response.json()
+    }).then(json=>{
+      env["metadata"]=json
+      this.router.title=env.metadata["sitename"]
+    })
     this.ds.login().then((usr: UserType) => {
       const user = new User(usr)
       usr["type"] = "usr"
@@ -66,12 +73,12 @@ export class App {
   }
 
   public configureRouter(cfg: RouterConfiguration, router: Router) {
-    cfg.title = "Webelexis"
+    cfg.title = ""
     cfg.map([
       {
         route: ['', "dispatch/:sub?"],
         name: "dispatch",
-        title: this.i18n.tr("nav.maintitle"),
+        // title: env.metadata["sitename"],
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName('./routes/dispatch/left') },
           details: { moduleId: PLATFORM.moduleName('./routes/dispatch/right') }

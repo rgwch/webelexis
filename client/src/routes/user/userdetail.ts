@@ -24,12 +24,8 @@ export class UserDetail {
   }
 
   attached() {
-    fetch(env.baseURL+"/metadata").then(response=>{
-      return response.json()
-    }).then(json=>{
-      this.demomode=json.testing
-      env["metadata"]=json
-    })
+    this.demomode=env.metadata["testing"]
+   
     /*
     this.userService.find({ query: { dummy: true } }).then(dummies => {
       if (dummies.data.length > 1) {
