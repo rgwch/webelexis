@@ -64,7 +64,7 @@ app.use(express.errorHandler({ logger }));
 app.hooks(appHooks);
 
 // If in testing mode: Seed databases
-if (app.get("testing")) {
+if (app.get("userconfig").testing) {
   const seeder = require('./seeder')
   seeder(app).catch(err => { console.log("reject " + err) })
 }

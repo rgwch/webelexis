@@ -32,7 +32,8 @@ module.exports = function (app) {
   service.get("admin").then(adm => {
     logger.info("found admin user")
   }).catch(err => {
-    if (!app.get("testing")) {
+    const ucf=app.get("userconfig")
+    if (!ucf || !ucf.testing) {
       const input = require('../../keyboard')
       input("Please enter admin password: ").then(async pwd => {
         try {

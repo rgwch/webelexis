@@ -16,6 +16,12 @@ module.exports={
     user: "elexisuser",
     password: "elexis"
   },
+  smtp:{
+    host: "some.smpt.host",
+    port: 587,
+    user: "smtpuser",
+    pwd: "smtppassword"
+  },
   lucinda:{
     url: "http://localhost:2016/lucinda/2.0"
   }

@@ -2,11 +2,14 @@ const nodemailer=require('nodemailer')
 const logger=require('./logger')
 
 class Mailer{
-  constructor(sender){
+  constructor(app, sender){
+    this.app=app
     this.sender=sender
+    const settings = app.get("userconfig")
+
     this.smtp={
-      host: process.env.SMTPHOST,
-      port: process.env.SMTPPORT,
+      host: settings.smtp_host,
+      port: settings.smtp,
       secure: false,
       auth:{
         user: process.env.SMTPUSER,

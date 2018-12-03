@@ -18,7 +18,7 @@ module.exports = function (app) {
       userService.update(user.email, user).then(updated => {
 
       })
-      const mailer = new Mailer(defaults.system.admin)
+      const mailer = new Mailer(app,defaults.system.admin)
       const mail = `Bitte folgen Sie innert 4 Stunden diesem Link: ${defaults.system.url}, um Ihr Passwort zurückzusetzen.`
       mailer.send(mail, "Webelexis Passwort Wiederherstellung")
       reply.send("Sie erhalten in Kürze eine Mail mit Anweisungen, wie Sie Ihr Passwort zurücksetzen können.")
