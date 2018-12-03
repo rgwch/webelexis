@@ -3,7 +3,7 @@
   "testing": true,
   "host": "localhost",
   "port": 3030,
-  "public": "../public/",
+  "public": "../../client/dist/",
   "paginate": {
     "default": 50,
     "max": 100

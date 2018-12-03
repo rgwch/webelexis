@@ -50,4 +50,10 @@ module.exports=function(app){
     }
     const token=user.token
   })
+  app.use("/metadata",(request,response)=>{
+    response.json({
+      testing: app.get("testing") || false,
+      sitename: defaults.system.sitename
+    })
+  })
 }
