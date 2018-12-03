@@ -38,7 +38,7 @@ module.exports = function (app) {
       response.status(410).json({ "status": "error", "message": "expired" })
     } else {
       if (user.token.uuid != uid) {
-        response.status(400).json({ status: "error", "message": "invalid request" })
+        response.status(400).render("error",{ status: "error", "message": "invalid request" })
       } else {
         // response.redirect("/static/newpwd.html")
         user.token.uuid = uuid()
@@ -54,16 +54,23 @@ module.exports = function (app) {
     const uid=request.body.uid
     const uname=request.body.uname
     const password=request.body.password
+    const repeat=request.body.password2
     const userService = app.service('usr')
     const user=await userService.get(uname)
     const ts=user.token.ts
     const now=new Date().getTime()
     const diff=now-ts
     if(diff>300000){
-      response.status(410).json({status: "error", "message":"expired"})
+      response.status(410).render("error",{"message":"expired"})
     }else{
       if(user.token.uuid===uid){
+        if(password===repeat){
+        user.password=password
+        const updated=await userService.update(uname,user)
         response.render('pwdok')
+        }else{
+          response.render("error",{message: "Passwords don't match"})
+        }
       }else{
         response.status(400).json({ status: "error", "message": "invalid request" })
       }
