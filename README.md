@@ -12,6 +12,36 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 [Einstieg](http://www.screencast.com/t/5EnOY5EUd)
 
+## Kurzanleitung
+
+**ACHTUNG**: Nur an einer Kopie der produktiven Datenbank testen.
+
+**ACHTUNG**: Nur hinter einer Firewall testen.
+
+### - Einen Ordner 'data' erstellen, und darin eine Datei 'settings.js' mit folgenden Einträgen:
+
+```
+module.exports={
+  testing: true,
+  sitename: "Praxis Webelexis",
+  admin: "someone@webelexis.ch",
+  elexisdb: {
+    host: "localhost",
+    database: "elexis",
+    user: "elexisuser",
+    password: "elexis"
+  }
+}
+```
+
+### - Dann im Terminal:
+
+    mysql -h host -u username -ppasswort elexis <modify_elexis.sql
+    sudo docker run -p 80:3030 --name webelexis -v `pwd`/data:/home/node/webelexis/data rgwch/webelexis:latest
+
+### - Dann einen Browser auf `http://localhost` richten.
+
+
 ## Technische Grundlage Webelexis 3
 
 Dies ist die dritte Iteration des Webelexis Projekts, komplettes rewrite und redesign. Eckpunkte:

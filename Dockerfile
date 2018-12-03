@@ -1,12 +1,8 @@
 FROM node:alpine
-RUN apk add openjdk8
-
-RUN apk add --no-cache --virtual build_deps python \
-  g++ gcc make binutils-gold bash git
-
-RUN npm install -g aurelia-cli \
+RUN apk add openjdk8 \
+  && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git \
+  && npm install -g aurelia-cli \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac
-
 
 USER node
 WORKDIR /home/node
@@ -45,5 +41,4 @@ USER node
 WORKDIR /home/node/webelexis/server
 ENV NODE_ENV=dockered
 CMD ["npm","run","dockered"]
-
 
