@@ -5,17 +5,14 @@
  ********************************************/
 
 import {DateTime} from '../services/datetime'
-import {autoinject} from 'aurelia-framework'
 import {Container} from 'aurelia-framework'
-import {AddressType} from './address'
-import {ElexisType} from './elexistype'
-import {MailType} from './mail'
+import {ElexisType,UUID} from './elexistype'
 
 /**
  * An Elexis "Kontakt"
  */
 export interface KontaktType extends ElexisType{
-    ID:string
+    ID:UUID
     Bezeichnung1: string
     Bezeichnung2?: string
     Bezeichnung3?: string

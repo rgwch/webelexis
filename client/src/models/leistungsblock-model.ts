@@ -1,7 +1,7 @@
 import { DataService } from 'services/datasource';
 import { DataSource } from 'services/datasource';
 import { autoinject } from "aurelia-framework";
-import { ElexisType } from "./elexistype";
+import { ElexisType,UUID } from "./elexistype";
 import { EncounterType } from './encounter';
 import { BillingsManager, BillingModel } from './billings-model';
 
@@ -14,7 +14,7 @@ export interface LeistungsblockType extends ElexisType {
   name: string
   billables?: Array<Blockdef>
   elements?: Array<Blockdef>
-  mandantid: string
+  mandantid: UUID
 }
 
 @autoinject
@@ -24,7 +24,7 @@ export class LeistungsblockManager {
     this.lbService = ds.getService('leistungsblock')
   }
 
-  async findBlock(name: string, userid?: string) {
+  async findBlock(name: string, userid?: UUID) {
     const q = {
       name: name
     }
@@ -39,10 +39,10 @@ export class LeistungsblockManager {
     }
   }
 
-  async getBlock(id) {
+  async getBlock(id:UUID) {
     return this.lbService.get(id)
   }
-  async applyBlock(id, kons: EncounterType, others: Array<BillingModel>) {
+  async applyBlock(id:UUID, kons: EncounterType, others: Array<BillingModel>) {
     const lb: LeistungsblockType = await this.lbService.get(id)
     const result = this.createBillings(lb, kons, others)
     return result

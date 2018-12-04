@@ -11,3 +11,5 @@ export interface ElexisType{
   type?: string
   id?: string
 }
+
+export type UUID=string

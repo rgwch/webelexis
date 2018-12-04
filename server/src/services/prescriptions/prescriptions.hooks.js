@@ -27,7 +27,7 @@ const current=ctx=>{
 
 const addArticle=async ctx=>{
   const articleService=ctx.app.service('article')
-  for(const art of result.data){
+  for(const art of ctx.result.data){
     const artid=art.Artikel
     if(artid){
       art.Artikel=await articleService.get(artid)

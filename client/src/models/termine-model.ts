@@ -12,15 +12,15 @@ import { connectTo } from 'aurelia-store';
 import { pluck } from 'rxjs/operators';
 import { DateTime } from '../services/datetime'
 import { Router } from 'aurelia-router';
-import { TerminType } from './termine-model';
 import { UserType } from './user';
+import { ElexisType,UUID } from './elexistype';
 
 /**
  * An Elexis "Termin"
  */
-export interface TerminType {
-  id?: string,
-  PatID?: string,
+export interface TerminType extends ElexisType{
+  id?: UUID,
+  PatID?: UUID,
   Bereich?: string,
   Tag: string,
   Beginn: string,

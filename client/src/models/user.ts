@@ -5,7 +5,7 @@ import { KontaktType } from './kontakt';
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { ElexisType } from './elexistype';
+import { ElexisType, UUID } from './elexistype';
 import { autoinject, computedFrom } from "aurelia-framework";
 import { DataSource, DataService } from 'services/datasource';
 import global from '../user/global'
@@ -20,8 +20,8 @@ export interface UserType extends ElexisType {
   email: string
   label?: string
   realname?: string
-  elexis_id?: string
-  elexisuser_id?: string
+  elexis_id?: UUID
+  elexisuser_id?: UUID
   elexiskontakt?: KontaktType
   roles: Array<string>
 }

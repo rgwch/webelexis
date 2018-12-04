@@ -3,6 +3,7 @@ import { DataSource } from "services/datasource";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
+import { PrescriptionManager } from "models/prescription-model";
 
 @autoinject
 @connectTo<State>({
@@ -12,7 +13,6 @@ import { pluck } from "rxjs/operators";
 })
 export class Prescriptions{
   searchexpr=""
-  prescriptionService
   private actPatient
   fixmedi=[]
 
@@ -23,14 +23,13 @@ export class Prescriptions{
     }
   }
 
-  constructor(private ds:DataSource){
-    this.prescriptionService=ds.getService('prescriptions')
+  constructor(private ds:DataSource, private pm:PrescriptionManager){
   }   
   attached(){
 
   }
   refresh(id){
-    this.prescriptionService.find({query:{current: id}}).then(result=>{
+    this.pm.fetchCurrent(id).then(result=>{
       this.fixmedi=result.data
     })
   }

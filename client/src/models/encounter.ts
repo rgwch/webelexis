@@ -6,7 +6,7 @@
 
 import { CaseType } from './case';
 import { KontaktType } from './kontakt';
-import {ElexisType} from './elexistype'
+import {ElexisType,UUID} from './elexistype'
 
 /**
  * An Elexis "Konsultation"
@@ -14,9 +14,9 @@ import {ElexisType} from './elexistype'
 export interface EncounterType extends ElexisType{
   datum: string       // YYYYMMDD
   Zeit:string         // HH:mm:ss
-  mandantid: string   // UUIDv4 (36) or ElexisID (25)
-  fallid: string      // UUIDv4 (36) or ElexisID (25)
-  rechnungsid?:string  // UUIDv4 (36) or ElexisID (25)
+  mandantid: UUID     // UUIDv4 (36) or ElexisID (25)
+  fallid: UUID        // UUIDv4 (36) or ElexisID (25)
+  rechnungsid?:UUID   // UUIDv4 (36) or ElexisID (25)
   leistungen?:string
   eintrag: {
     remark: string,     // Editor of last modification

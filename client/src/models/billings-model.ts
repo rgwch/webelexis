@@ -5,12 +5,12 @@
  ********************************************/
 import { EncounterType } from './encounter';
 import { DataSource, DataService } from './../services/datasource';
-import { ElexisType } from './elexistype';
+import { ElexisType,UUID } from './elexistype';
 import { autoinject } from 'aurelia-framework';
 
 export interface BillingType extends ElexisType {
   code?: string
-  behandlung: string
+  behandlung: UUID
   leistg_txt: string
   leistg_code: string
   klasse: string
