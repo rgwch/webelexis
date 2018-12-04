@@ -13,8 +13,8 @@ module.exports={
   elexisdb: {
     host: "localhost",
     database: "elexis",
-    user: "elexisuser",
-    password: "elexis"
+    user: "praxis",
+    password: "topsecret"
   },
   smtp:{
     host: "some.smpt.host",

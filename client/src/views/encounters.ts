@@ -30,7 +30,6 @@ const number_to_fetch = 20;
     //actKons: store => store.state.pipe(<any>pluck('konsultation'))
   }
 })
-@autoinject
 export class Encounters {
   encounters = {
     total: 10000000,

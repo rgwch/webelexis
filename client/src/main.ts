@@ -41,6 +41,7 @@ export function configure(aurelia: Aurelia) {
     })
     .plugin(PLATFORM.moduleName('aurelia-animator-css'))
     .plugin(PLATFORM.moduleName('aurelia-dialog'))
+    .plugin(PLATFORM.moduleName('@casl/aurelia'))
     /*
     .plugin(PLATFORM.moduleName('aurelia-mousetrap'),config=>{
       config.set('keymap', {

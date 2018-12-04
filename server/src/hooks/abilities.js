@@ -5,13 +5,23 @@
  ********************************************/
 
 const {Ability, AbilityBuilder, ForbiddenError} = require('@casl/ability')
+const LruCache=require('lru-cache')
+const CACHE=new LruCache(10)
 
-const defineAbilitiesFor=(user)=>{
-  return AbilityBuilder.define((can,cannot)=>{
+module.exports=/*defineAbilitiesFor=*/(user)=>{
+  if(CACHE.has(user.email)){
+    return CACHE.get(user.email)
+  }else{
+    const ability=AbilityBuilder.define((can,cannot)=>{
 
-  })
+    })
+    CACHE.set(user.email,ability)
+    return ability
+  }
+
 }
 
+/*
 // eslint-disable-next-line no-unused-vars
 module.exports = function (options = {}) {
   Ability.addAlias('update','patch')
@@ -33,3 +43,4 @@ module.exports = function (options = {}) {
     throw new ForbiddenError("Unauthorized");
   };
 };
+*/

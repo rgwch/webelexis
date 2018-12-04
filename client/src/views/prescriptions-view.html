@@ -11,7 +11,11 @@
         <div class="card-header">
           Fixmedikation
         </div>
-        <div class="card-body" >
+        <div class="card-body">
+          <div style="overflow:auto;height:100px;">
+            <div class="compactlist" repeat.for="fm of fixmedi">${fm.Artikel}
+              ${fm.prescType}</div>
+          </div>
         </div>
       </div>
       <div class="card" style="height:33%">

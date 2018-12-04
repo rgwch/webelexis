@@ -5,21 +5,24 @@
  ********************************************/
 
 import { IDataSource, DataService } from './datasource'
+import {Ability} from '@casl/ability'
 import * as io from 'socket.io-client';
 import * as feathers from '@feathersjs/client';
 import * as auth from '@feathersjs/authentication-client'
 import env from '../environment'
+import { autoinject } from 'aurelia-framework';
 
 /**
  * A DataSource implementation based on FeathersJS
  * with SocketIO-Transport.
  */
+@autoinject
 export class FeathersDS implements IDataSource {
   private client
   private socket
   private authenticator
 
-  constructor() {
+  constructor(private ability:Ability) {
     const socket = io.connect(env.baseURL);
 
     this.client = feathers()
@@ -62,6 +65,7 @@ export class FeathersDS implements IDataSource {
       }
       const verified = await this.client.passport.verifyJWT(jwt.accessToken)
       const user = await this.client.service('usr').get(verified.userId)
+      this.ability.update(user.rules)
       return user
     } catch (err) {
       console.log(err)
