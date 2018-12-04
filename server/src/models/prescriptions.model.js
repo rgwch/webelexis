@@ -44,7 +44,7 @@ module.exports = function (app) {
         table.String('ANZAHL', 3)
         table.binary('ExtInfo')
         table.string('Artikel')
-        table.string('prescType', 2)
+        table.string('prescType', 2)  // 0: Fix, 1: reserve, 2: Recipe (ok, that's weird), 3 Self-Dispensed, 5 Symptomatic
         table.string('sortOrder', 3)
         table.string('prescDate', 8)
         table.string('prescriptor', 40)

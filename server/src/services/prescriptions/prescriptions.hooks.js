@@ -14,13 +14,24 @@ const {DateTime}=require('luxon')
  *
  * @param {} ctx
  */
-const current=async ctx=>{
+const current=ctx=>{
   if(ctx.params.query && ctx.params.query.current){
     const now=DateTime.local().toFormat('yyyyLLddHHmmss')
     ctx.params.query.patientid=ctx.params.query.current
     delete ctx.params.query.current
     ctx.params.query.DateFrom={$lte:now}
     ctx.params.query.$or=[{DateUntil:{$gte:now}},{DateUntil: null}]
+  }
+  return ctx
+}
+
+const addArticle=async ctx=>{
+  const articleService=ctx.app.service('article')
+  for(const art of result.data){
+    const artid=art.Artikel
+    if(artid){
+      art.Artikel=await articleService.get(artid)
+    }
   }
   return ctx
 }
@@ -37,7 +48,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [handleExtinfo({extinfo:"ExtInfo"})],
+    find: [handleExtinfo({extinfo:"ExtInfo"}), addArticle],
     get: [],
     create: [],
     update: [],

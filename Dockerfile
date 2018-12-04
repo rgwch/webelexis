@@ -3,7 +3,7 @@ EXPOSE 3030
 
 WORKDIR /home/node
 
-RUN apk add openjdk8 \
+RUN apk add --no-cache openjdk8 \
   && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git \
   && npm install -g aurelia-cli \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
@@ -13,7 +13,13 @@ RUN apk add openjdk8 \
   && au build --env prod \
   && cd ../server \
   && npm install \
-  && npm install java
+  && npm install java \
+  && apk del build_deps \
+  && npm --production prune \
+  && npm remove -g aurelia-cli \
+  && cd ../client \
+  && npm --production prune \
+  && chown -R 1000:1000 /home/node/webelexis
 
 ADD --chown=1000:1000 https://bintray.com/rgwch/maven/download_file?file_path=rgwch%2Frgw-toolbox%2F4.2.7%2Frgw-toolbox-4.2.7.jar \
   /home/node/webelexis/server/lib/rgw-toolbox-4.2.7.jar
@@ -25,15 +31,6 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
   /home/node/webelexis/server/lib/jackson-databind-2.9.7.jar
 
 
-RUN apk del build_deps \
- && cd webelexis/server \
- && npm --production prune \
- && npm prune \
- && npm remove -g aurelia-cli \
- && cd ../client \
- && npm --production prune \
- && npm prune \
- && chown -R 1000:1000 /home/node/webelexis
 
 USER node
 
