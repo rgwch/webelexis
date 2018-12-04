@@ -1,13 +1,13 @@
 FROM node:alpine
+EXPOSE 3030
+
+WORKDIR /home/node
+
 RUN apk add openjdk8 \
   && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git \
   && npm install -g aurelia-cli \
-  && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac
-
-USER node
-WORKDIR /home/node
-
-RUN git clone https://github.com/rgwch/webelexis \
+  && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
+  && git clone https://github.com/rgwch/webelexis \
   && cd webelexis/client \
   && npm install \
   && au build --env prod \
@@ -25,8 +25,6 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
   /home/node/webelexis/server/lib/jackson-databind-2.9.7.jar
 
 
-USER root
-
 RUN apk del build_deps \
  && cd webelexis/server \
  && npm --production prune \
@@ -34,7 +32,8 @@ RUN apk del build_deps \
  && npm remove -g aurelia-cli \
  && cd ../client \
  && npm --production prune \
- && npm prune
+ && npm prune \
+ && chown -R 1000:1000 /home/node/webelexis
 
 USER node
 
