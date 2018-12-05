@@ -26,6 +26,7 @@ const fromScopedId = async ctx => {
   }
   return ctx
 }
+
 module.exports = {
   before: {
     all: [],

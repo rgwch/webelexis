@@ -5,8 +5,8 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const handleExtinfo=require('../../hooks/handle-extinfo')
-const {DateTime}=require('luxon')
+const handleExtinfo = require('../../hooks/handle-extinfo')
+const { DateTime } = require('luxon')
 
 /**
  * find the current medication of the given patient (if search parameter current is given and is an id
@@ -14,30 +14,36 @@ const {DateTime}=require('luxon')
  *
  * @param {} ctx
  */
-const current=ctx=>{
-  if(ctx.params.query && ctx.params.query.current){
-    const now=DateTime.local().toFormat('yyyyLLddHHmmss')
-    ctx.params.query.patientid=ctx.params.query.current
+const current = ctx => {
+  if (ctx.params.query && ctx.params.query.current) {
+    const now = DateTime.local().toFormat('yyyyLLddHHmmss')
+    ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
-    ctx.params.query.DateFrom={$lte:now}
-    ctx.params.query.$or=[{DateUntil:{$gte:now}},{DateUntil: null}]
+    ctx.params.query.DateFrom = { $lte: now }
+    ctx.params.query.$or = [{ DateUntil: { $gte: now } }, { DateUntil: null }]
   }
   return ctx
 }
 
-const addArticle=async ctx=>{
-  const articleService=ctx.app.service('article')
-  for(const art of ctx.result.data){
-    const artid=art.Artikel
-    if(artid){
-      art.Artikel=await articleService.get(artid)
+const addArticle = async ctx => {
+  const articleService = ctx.app.service('article')
+  for (const art of ctx.result.data) {
+    const artid = art.Artikel
+    try {
+      if (artid) {
+        art.Artikel = await articleService.get(artid)
+      } else {
+        art.Artikel = await articleService.get(art.artikelid)
+      }
+    } catch (err) {
+      art.Artikel = { DSCR: "nicht gefunden" }
     }
   }
   return ctx
 }
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [current],
     get: [],
     create: [],
@@ -48,7 +54,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [handleExtinfo({extinfo:"ExtInfo"}), addArticle],
+    find: [handleExtinfo({ extinfo: "ExtInfo" }), addArticle],
     get: [],
     create: [],
     update: [],

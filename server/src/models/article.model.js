@@ -9,6 +9,7 @@ const logger = require('../logger')
 module.exports = function (app) {
   const db = app.get('knexClient');
   const tableName = 'artikelstamm_ch';
+  
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
