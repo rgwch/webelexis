@@ -23,6 +23,10 @@
           Reservemedikation
         </div>
         <div class="card-body">
+          <div style="overflow:auto;height:100px;">
+            <div class="compactlist" repeat.for="fm of reservemedi">${pm.getLabel(fm)}
+              ${fm.prescType}</div>
+          </div>
         </div>
       </div>
       <div class="card" style="height:33%">
@@ -30,6 +34,10 @@
           Bedarfsmedikation
         </div>
         <div class="card-body">
+          <div style="overflow:auto;height:100px;">
+            <div class="compactlist" repeat.for="fm of symptommedi">${pm.getLabel(fm)}
+              ${fm.prescType}</div>
+          </div>
         </div>
       </div>
     </div>

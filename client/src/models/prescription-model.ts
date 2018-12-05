@@ -1,6 +1,7 @@
 import { autoinject } from 'aurelia-framework'
 import { DataSource } from 'services/datasource';
 import { ElexisType, UUID } from './elexistype';
+import { Z_FIXED } from 'zlib';
 
 enum PrescType {
   Fixmedikation,
@@ -36,7 +37,21 @@ export class PrescriptionManager {
 
   fetchCurrent(patientid: UUID) {
     return this.prescriptionLoader.find({ query: { current: patientid } }).then(result => {
-      return result.data
+      const ret={
+        fix:[],
+        reserve:[],
+        symptom:[]
+      }
+      for(const art of result.data){
+        switch(art.prescType){
+          case 0: ret.fix.push(art); break;
+          case 1: ret.reserve.push(art); break;
+          case 5: ret.symptom.push(art);break;
+          // don't know what to do with 2-4
+          default: ret.symptom.push(art); 
+        }
+      }
+      return ret
     })
   }
 

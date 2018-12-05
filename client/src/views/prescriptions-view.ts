@@ -1,3 +1,4 @@
+import { Z_FIXED } from 'zlib';
 import { autoinject } from "aurelia-framework";
 import { DataSource } from "services/datasource";
 import { connectTo } from "aurelia-store";
@@ -15,6 +16,8 @@ export class Prescriptions {
   searchexpr = ""
   private actPatient
   fixmedi = []
+  reservemedi = []
+  symptommedi = []
 
   actPatientChanged(newValue, oldValue) {
     if ((!oldValue) || (newValue.id !== oldValue.id)) {
@@ -28,12 +31,14 @@ export class Prescriptions {
 
   refresh(id) {
     this.pm.fetchCurrent(id).then(result => {
-      this.fixmedi = result
+      this.fixmedi = result.fix
+      this.reservemedi = result.reserve
+      this.symptommedi = result.symptom
     })
   }
 
-  getLabel(medi){
-    let lbl=this.pm.getLabel(medi)
+  getLabel(medi) {
+    let lbl = this.pm.getLabel(medi)
     return lbl
   }
 }

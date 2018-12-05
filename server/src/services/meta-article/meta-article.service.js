@@ -1,4 +1,9 @@
-// Initializes the `meta-article` service on path `/meta-article`
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const createService = require('./meta-article.class.js');
 const hooks = require('./meta-article.hooks');
 

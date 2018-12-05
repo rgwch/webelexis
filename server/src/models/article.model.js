@@ -9,7 +9,7 @@ const logger = require('../logger')
 module.exports = function (app) {
   const db = app.get('knexClient');
   const tableName = 'artikelstamm_ch';
-  
+
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
@@ -44,7 +44,7 @@ module.exports = function (app) {
         table.string("Maxbestand",4)    // Max number in local store
         table.string("Minbestand",4)    // order threshhold in store
         table.string("Istbestand,4")    // currently in store
-        table.string("Verkaufseinheit",4) // Number of irems per package
+        table.string("Verkaufseinheit",4) // Number of items per package
         table.string("Anbruch",4)       // parts of packages in store
         table.string("PRODNO",10)       // -> oddb_product.xml
         table.string("SUBSTANCE")       // -> oddb_product.xml
