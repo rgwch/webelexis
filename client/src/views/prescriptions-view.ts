@@ -11,26 +11,29 @@ import { PrescriptionManager } from "models/prescription-model";
     actPatient: store => store.state.pipe(<any>pluck('patient')),
   }
 })
-export class Prescriptions{
-  searchexpr=""
+export class Prescriptions {
+  searchexpr = ""
   private actPatient
-  fixmedi=[]
+  fixmedi = []
 
   actPatientChanged(newValue, oldValue) {
-    if((!oldValue) || (newValue.id !== oldValue.id)){
+    if ((!oldValue) || (newValue.id !== oldValue.id)) {
       this.searchexpr = ""
       this.refresh(newValue.id)
     }
   }
 
-  constructor(private ds:DataSource, private pm:PrescriptionManager){
-  }   
-  attached(){
-
+  constructor(private pm: PrescriptionManager) {
   }
-  refresh(id){
-    this.pm.fetchCurrent(id).then(result=>{
-      this.fixmedi=result.data
+
+  refresh(id) {
+    this.pm.fetchCurrent(id).then(result => {
+      this.fixmedi = result
     })
+  }
+
+  getLabel(medi){
+    let lbl=this.pm.getLabel(medi)
+    return lbl
   }
 }

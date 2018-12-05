@@ -31,7 +31,7 @@ export class PrescriptionManager {
   private artikelLoader
   constructor(private ds: DataSource) {
     this.prescriptionLoader = ds.getService('prescriptions')
-    this.artikelLoader = ds.getService('article')
+    this.artikelLoader = ds.getService('meta-article')
   }
 
   fetchCurrent(patientid: UUID) {
@@ -40,11 +40,7 @@ export class PrescriptionManager {
     })
   }
 
-  async getLabel(presc: PrescriptionType) {
-    if (!(presc.Artikel instanceof Object)) {
-      presc.Artikel = await this.artikelLoader.get(presc.Artikel)
-    }
+  getLabel(presc: PrescriptionType) {
     return presc.Artikel["DSCR"]
-
   }
 }

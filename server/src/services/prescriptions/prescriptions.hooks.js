@@ -26,7 +26,7 @@ const current = ctx => {
 }
 
 const addArticle = async ctx => {
-  const articleService = ctx.app.service('article')
+  const articleService = ctx.app.service('meta-article')
   for (const art of ctx.result.data) {
     const artid = art.Artikel
     try {
