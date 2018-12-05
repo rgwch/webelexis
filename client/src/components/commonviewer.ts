@@ -167,6 +167,10 @@ export class CommonViewer {
     })
   }
 
+  drag(event){
+    event.dataTransfer.setData("text", event.target.id)
+    return true
+  }
 }
 
 /*

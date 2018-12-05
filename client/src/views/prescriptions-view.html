@@ -14,7 +14,7 @@
         <div class="card-body">
           <div style="overflow:auto;">
             <div class="compactlist" repeat.for="fm of fixmedi">
-              <span draggable="true" dragstart.trigger="drag($event)" id="${fm.id}">
+              <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
                 ${pm.getLabel(fm)}
               </span>
             </div>
@@ -28,7 +28,7 @@
         <div class="card-body">
           <div style="overflow:auto;height:100px;">
             <div class="compactlist" repeat.for="fm of reservemedi">
-              <span draggable="true" dragstart.trigger="drag($event)" id="${fm.id}">
+              <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
                 ${pm.getLabel(fm)} 
               </span>
             </div>
@@ -42,7 +42,7 @@
         <div class="card-body">
           <div style="overflow:auto;height:100px;">
             <div class="compactlist" repeat.for="fm of symptommedi">
-              <span draggable="true" dragstart.trigger="drag($event)" id="${fm.id}">
+              <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
                 ${pm.getLabel(fm)} 
               </span>
             </div>
