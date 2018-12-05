@@ -37,8 +37,38 @@ export class Prescriptions {
     })
   }
 
+  /*
   getLabel(medi) {
     let lbl = this.pm.getLabel(medi)
     return lbl
+  }
+  */
+ findId(element){
+   if(element.id.startsWith("card_")){
+     return element.id.subString(5)
+   }
+   if(element.parentElement.id.startsWith("card_")){
+      return element.parentElement.id.substring(5)
+   }
+ }
+  drag(event) {
+    event.dataTransfer.setData("text", event.target.id)
+    return true
+  }
+
+  dragOver(event){
+    event.preventDefault()
+    return true;
+  }
+
+  dragDrop(event){
+    event.preventDefault()
+    const data=event.dataTransfer.getData("text")
+    if(event.currentTarget && event.currentTarget.id){
+      const target=event.currentTarget.id.substring(5)
+      this.pm.setMode(data,target).then(updated=>{
+        this.refresh(this.actPatient.id)
+      })
+    }
   }
 }

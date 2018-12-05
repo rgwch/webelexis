@@ -7,36 +7,45 @@
       <searchfield t="[searchtext]select.search" result.two-way="searchexpr"></searchfield>
     </div>
     <div class="body" style="height:85vh">
-      <div class="card" style="height:33%">
+      <div class="card" id="card_fixmedi" style="height:33%" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
         <div class="card-header">
           Fixmedikation
         </div>
         <div class="card-body">
-          <div style="overflow:auto;height:100px;">
-            <div class="compactlist" repeat.for="fm of fixmedi">${pm.getLabel(fm)}
-              ${fm.prescType}</div>
+          <div style="overflow:auto;">
+            <div class="compactlist" repeat.for="fm of fixmedi">
+              <span draggable="true" dragstart.trigger="drag($event)" id="${fm.id}">
+                ${pm.getLabel(fm)}
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card" style="height:33%">
+      <div class="card" id="card_reservemedi" style="height:33%" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
         <div class="card-header">
           Reservemedikation
         </div>
         <div class="card-body">
           <div style="overflow:auto;height:100px;">
-            <div class="compactlist" repeat.for="fm of reservemedi">${pm.getLabel(fm)}
-              ${fm.prescType}</div>
+            <div class="compactlist" repeat.for="fm of reservemedi">
+              <span draggable="true" dragstart.trigger="drag($event)" id="${fm.id}">
+                ${pm.getLabel(fm)} 
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card" style="height:33%">
+      <div class="card" id="card_symptommedi" style="height:33%" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
         <div class="card-header">
-          Bedarfsmedikation
+          Nicht (mehr) regelmässig
         </div>
         <div class="card-body">
           <div style="overflow:auto;height:100px;">
-            <div class="compactlist" repeat.for="fm of symptommedi">${pm.getLabel(fm)}
-              ${fm.prescType}</div>
+            <div class="compactlist" repeat.for="fm of symptommedi">
+              <span draggable="true" dragstart.trigger="drag($event)" id="${fm.id}">
+                ${pm.getLabel(fm)} 
+              </span>
+            </div>
           </div>
         </div>
       </div>
