@@ -144,7 +144,7 @@ const cleanup = context => {
 
 module.exports = {
   before: {
-    all: [authenticate('jwt'), abilities({ acl })],
+    all: [authenticate('jwt')],
     find: [doSort()],
     get: [specialQueries()],
     create: [cleanup],
