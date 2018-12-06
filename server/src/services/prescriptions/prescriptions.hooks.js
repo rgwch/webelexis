@@ -20,6 +20,9 @@ const current = ctx => {
     ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
     ctx.params.query.DateFrom = { $lte: now }
+    ctx.params.query.$sort={
+      prescDate:-1
+    }
     // ctx.params.query.$or = [{ DateUntil: { $gte: now } }, { DateUntil: null }]
   }
   return ctx
