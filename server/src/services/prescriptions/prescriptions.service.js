@@ -16,7 +16,10 @@ module.exports = function (app) {
   const options = {
     name: 'patient_artikel_joint',
     Model,
-    paginate
+    paginate:{
+      default:100,
+      max:500
+    }
   };
 
   // Initialize our service with any options it requires
