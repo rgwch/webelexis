@@ -20,7 +20,7 @@ const current = ctx => {
     ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
     ctx.params.query.DateFrom = { $lte: now }
-    ctx.params.query.$or = [{ DateUntil: { $gte: now } }, { DateUntil: null }]
+    // ctx.params.query.$or = [{ DateUntil: { $gte: now } }, { DateUntil: null }]
   }
   return ctx
 }
@@ -41,12 +41,18 @@ const addArticle = async ctx => {
   }
   return ctx
 }
+const createcheck=ctx=>{
+  if(ctx.params.DateUntil=="null"){
+    ctx.params.DateUntil=null
+  }
+  return ctx
+}
 module.exports = {
   before: {
     all: [authenticate('jwt')],
     find: [current],
     get: [],
-    create: [],
+    create: [createcheck],
     update: [],
     patch: [],
     remove: []

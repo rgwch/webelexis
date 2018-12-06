@@ -69,11 +69,11 @@ export class PrescriptionManager {
     switch (mode) {
       case "fixmedi": prescription.prescType = FIXMEDI;
         prescription.DateFrom = nowFormatted
-        delete prescription.DateUntil
+        prescription.DateUntil = null
         break;
       case "reservemedi": prescription.prescType = RESERVE;
         prescription.DateFrom = nowFormatted
-        delete prescription.DateUntil
+        prescription.DateUntil = null
         break;
 
       case "symptommedi": prescription.prescType = SYMPTOMATIC;
@@ -81,6 +81,7 @@ export class PrescriptionManager {
         break;
       default: prescription.prescType = SYMPTOMATIC
     }
+    prescription.prescDate=this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
     // console.log(prescription.prescType+" -> "+updated.prescType)
     return updated
@@ -101,9 +102,9 @@ export class PrescriptionManager {
   async createFromArticle(artid: UUID) {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,
-      DateFrom: this.dt.DateToElexisDateTime(new Date()),
+      DateFrom: moment().subtract(10,'minutes').format(ELEXISDATETIME),
       Artikel: "ch.artikelstamm.elexix.common.ArtikelstammItem::" + artid,
-      prescDate: moment().subtract(10,'minutes').format(ELEXISDATETIME),
+      prescDate: this.dt.DateToElexisDate(new Date()),
       prescriptor: this.we.getSelectedItem('usr').id
     }
     const created = await this.prescriptionLoader.create(presc)
