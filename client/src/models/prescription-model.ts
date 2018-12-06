@@ -3,17 +3,15 @@ import { autoinject } from 'aurelia-framework'
 import { DataSource } from 'services/datasource';
 import { ElexisType, UUID } from './elexistype';
 import { DateTime as edt } from '../services/datetime'
-import { DateTime } from 'luxon'
-import { sortAndDeduplicateDiagnostics } from 'typescript';
-
+import * as moment from 'moment'
 const FIXMEDI = "0"
 const RESERVE = "1"
 const RECIPE = "2"
 const SELFDISPENSED = "3"
 const DONTKNOW = "4"
 const SYMPTOMATIC = "5"
-const ELEXISDATETIME = "yyyyLLddHHmmss"
-
+//const ELEXISDATETIME = "yyyyLLddHHmmss"
+const ELEXISDATETIME="YYYYMMDDHHmmss"
 export interface PrescriptionType extends ElexisType {
   Dosis?: string
   Bemerkung?: string
@@ -60,8 +58,8 @@ export class PrescriptionManager {
 
   async setMode(data: string, mode: string) {
     const [datatype, dataid] = data.split("::")
-    const now = DateTime().minus({ minutes: 10 })
-    const nowFormatted=now.toFormat(ELEXISDATETIME)
+    const now = moment().subtract(10,'minutes')
+    const nowFormatted=now.format(ELEXISDATETIME)
     let prescription: PrescriptionType
     if (datatype == "prescription") {
       prescription = await this.prescriptionLoader.get(dataid)
@@ -105,7 +103,7 @@ export class PrescriptionManager {
       patientid: this.we.getSelectedItem('patient').id,
       DateFrom: this.dt.DateToElexisDateTime(new Date()),
       Artikel: "ch.artikelstamm.elexix.common.ArtikelstammItem::" + artid,
-      prescDate: DateTime().minus({minutes:10}).toFormat(ELEXISDATETIME),
+      prescDate: moment().subtract(10,'minutes').format(ELEXISDATETIME),
       prescriptor: this.we.getSelectedItem('usr').id
     }
     const created = await this.prescriptionLoader.create(presc)
