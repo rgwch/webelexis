@@ -2,7 +2,9 @@ import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework'
 import { DataSource } from 'services/datasource';
 import { ElexisType, UUID } from './elexistype';
-import { DateTime } from '../services/datetime'
+import { DateTime as edt } from '../services/datetime'
+import { DateTime } from 'luxon'
+import { sortAndDeduplicateDiagnostics } from 'typescript';
 
 const FIXMEDI = "0"
 const RESERVE = "1"
@@ -10,6 +12,7 @@ const RECIPE = "2"
 const SELFDISPENSED = "3"
 const DONTKNOW = "4"
 const SYMPTOMATIC = "5"
+const ELEXISDATETIME = "yyyyLLddHHmmss"
 
 export interface PrescriptionType extends ElexisType {
   Dosis?: string
@@ -30,7 +33,7 @@ export class PrescriptionManager {
   private prescriptionLoader
   private artikelLoader
 
-  constructor(private ds: DataSource, private we: WebelexisEvents, private dt: DateTime) {
+  constructor(private ds: DataSource, private we: WebelexisEvents, private dt: edt) {
     this.prescriptionLoader = ds.getService('prescriptions')
     this.artikelLoader = ds.getService('meta-article')
   }
@@ -57,6 +60,8 @@ export class PrescriptionManager {
 
   async setMode(data: string, mode: string) {
     const [datatype, dataid] = data.split("::")
+    const now = DateTime().minus({ minutes: 10 })
+    const nowFormatted=now.toFormat(ELEXISDATETIME)
     let prescription: PrescriptionType
     if (datatype == "prescription") {
       prescription = await this.prescriptionLoader.get(dataid)
@@ -65,16 +70,16 @@ export class PrescriptionManager {
     }
     switch (mode) {
       case "fixmedi": prescription.prescType = FIXMEDI;
-        prescription.DateFrom = this.dt.DateToElexisDateTime(new Date())
+        prescription.DateFrom = nowFormatted
         delete prescription.DateUntil
         break;
       case "reservemedi": prescription.prescType = RESERVE;
-        prescription.DateFrom = this.dt.DateToElexisDateTime(new Date())
+        prescription.DateFrom = nowFormatted
         delete prescription.DateUntil
         break;
 
       case "symptommedi": prescription.prescType = SYMPTOMATIC;
-        prescription.DateUntil = this.dt.DateToElexisDateTime(new Date())
+        prescription.DateUntil = nowFormatted
         break;
       default: prescription.prescType = SYMPTOMATIC
     }
@@ -88,7 +93,7 @@ export class PrescriptionManager {
     let ret = `${presc.Artikel["DSCR"]} (${from}`
     if (presc.DateUntil) {
       const until = this.dt.ElexisDateTimeToLocalDate(presc.DateUntil)
-      ret += " - "+until + ")"
+      ret += " - " + until + ")"
     } else {
       ret += ")"
     }
@@ -100,7 +105,7 @@ export class PrescriptionManager {
       patientid: this.we.getSelectedItem('patient').id,
       DateFrom: this.dt.DateToElexisDateTime(new Date()),
       Artikel: "ch.artikelstamm.elexix.common.ArtikelstammItem::" + artid,
-      prescDate: this.dt.DateToElexisDate(new Date()),
+      prescDate: DateTime().minus({minutes:10}).toFormat(ELEXISDATETIME),
       prescriptor: this.we.getSelectedItem('usr').id
     }
     const created = await this.prescriptionLoader.create(presc)
