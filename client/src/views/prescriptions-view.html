@@ -3,17 +3,23 @@
 
   <span class="detailcaption">Medikation</span>
   <div class="sheet">
-    <div class="header">
-      <searchfield t="[searchtext]select.search" result.two-way="searchexpr"></searchfield>
-      <img src="/trash.svg">
+    <div class="header" ref="page_header">
+      <div class="row">
+        <div class="col">
+          <searchfield t="[searchtext]select.search" result.two-way="searchexpr"></searchfield>
+        </div>
+        <div class="col">
+          <img src="/trash.svg" dragover.trigger="dragTrash($event)" drop.trigger="dropTrash($event)">
+        </div>
+      </div>
     </div>
-    <div class="body" style="height:85vh">
-      <div class="card" id="card_fixmedi" style="height:33%" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+    <div class="body" css="height:${total}px">
+      <div class="card" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
         <div class="card-header">
           Fixmedikation
         </div>
-        <div class="card-body">
-          <div style="overflow:auto;">
+        <div class="card-body" >
+          <div css="overflow:auto;height:${client}px">
             <div class="compactlist" repeat.for="fm of fixmedi">
               <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
                 ${pm.getLabel(fm)}
@@ -22,32 +28,32 @@
           </div>
         </div>
       </div>
-      <div class="card" id="card_reservemedi" style="height:33%" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+      <div class="card" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
         <div class="card-header">
           Reservemedikation
         </div>
-        <div class="card-body">
-          <div style="overflow:auto;height:100px;">
+        <div class="card-body" ref="reservemedi_comp">
+          <div css="overflow:auto;height:${client}px">
             <div class="compactlist" repeat.for="fm of reservemedi">
               <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                ${pm.getLabel(fm)} 
+                ${pm.getLabel(fm)}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <div class="card" id="card_symptommedi" style="height:33%" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-        <div class="card-header">
+      <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)" ref="c_ganz">
+        <div class="card-header" ref="c_header">
           Nicht (mehr) regelmässig
         </div>
-        <div class="card-body">
-          <div style="overflow:auto;height:100px;">
-            <div class="compactlist" repeat.for="fm of symptommedi">
+        <div class="card-body" ref="symptomatic_comp">
+          <ul css="overflow:auto;height:${client}px">
+            <li class="compactlist" repeat.for="fm of symptommedi">
               <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                ${pm.getLabel(fm)} 
+                ${pm.getLabel(fm)}
               </span>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

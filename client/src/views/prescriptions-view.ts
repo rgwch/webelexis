@@ -5,6 +5,7 @@ import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
 import { PrescriptionManager } from "models/prescription-model";
+import { runInThisContext } from 'vm';
 
 @autoinject
 @connectTo<State>({
@@ -18,9 +19,18 @@ export class Prescriptions {
   fixmedi = []
   reservemedi = []
   symptommedi = []
+  fixmedi_comp: Element
+  reservemedi_comp: Element
+  symptomatic_comp: Element
+  page_header: Element
+  c_ganz:Element
+  c_header:Element
+  total
+  part
+  client
 
   actPatientChanged(newValue, oldValue) {
-    if ((!oldValue) || (newValue.id !== oldValue.id)) {
+    if (newValue && ((!oldValue) || (newValue.id !== oldValue.id))) {
       this.searchexpr = ""
       this.refresh(newValue.id)
     }
@@ -29,6 +39,11 @@ export class Prescriptions {
   constructor(private pm: PrescriptionManager) {
   }
 
+  attached() {
+    this.total=(window.innerHeight-this.page_header.getBoundingClientRect().height)*.9
+    this.part=this.total/3-10
+    this.client=this.part-this.c_header.getBoundingClientRect().height-20
+  }
   refresh(id) {
     this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
@@ -43,32 +58,47 @@ export class Prescriptions {
     return lbl
   }
   */
- findId(element){
-   if(element.id.startsWith("card_")){
-     return element.id.subString(5)
-   }
-   if(element.parentElement.id.startsWith("card_")){
+  findId(element) {
+    if (element.id.startsWith("card_")) {
+      return element.id.subString(5)
+    }
+    if (element.parentElement.id.startsWith("card_")) {
       return element.parentElement.id.substring(5)
-   }
- }
+    }
+  }
   drag(event) {
     event.dataTransfer.setData("text", event.target.id)
     return true
   }
 
-  dragOver(event){
+  dragOver(event) {
     event.preventDefault()
     return true;
   }
 
-  dragDrop(event){
+  dragDrop(event) {
     event.preventDefault()
-    const data=event.dataTransfer.getData("text")
-    if(event.currentTarget && event.currentTarget.id){
-      const target=event.currentTarget.id.substring(5)
-      this.pm.setMode(data,target).then(updated=>{
-        this.refresh(this.actPatient.id)
+    const data = event.dataTransfer.getData("text")
+    if (event.currentTarget && event.currentTarget.id) {
+      const target = event.currentTarget.id.substring(5)
+      this.pm.setMode(data, target).then(updated => {
+        setTimeout(()=>{
+          this.refresh(this.actPatient.id)
+        },10)
+       
       })
     }
+    return true
+  }
+  dragTrash(event){
+    event.preventDefault()
+    return true
+  }
+  dropTrash(event){
+    event.preventDefault()
+    const data = event.dataTransfer.getData("text")
+    this.pm.delete(data).then(removed=>{
+      this.refresh(this.actPatient.id)
+    })
   }
 }
