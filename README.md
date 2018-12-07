@@ -10,12 +10,10 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 ## Demo Videos
 
-[Patientenliste](http://www.screencast.com/t/dZygwPdHG09e)
-
-[Medikation](http://www.screencast.com/t/gvsjA5Cubwgm)
-
-[Agenda](https://youtu.be/k0_RfUutVSc)
-
+[Einstieg](https://youtu.be/Sn3PidSQYvU), 
+[Patientenliste](http://www.screencast.com/t/dZygwPdHG09e), 
+[Medikation](http://www.screencast.com/t/gvsjA5Cubwgm), 
+[Agenda](https://youtu.be/k0_RfUutVSc), 
 [Konsultation](http://www.screencast.com/t/5EnOY5EUd)
 
 ## Kurzanleitung
