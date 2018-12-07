@@ -1,3 +1,4 @@
+import { Subscription } from 'aurelia-event-aggregator';
 import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework'
 import { DataSource } from 'services/datasource';
@@ -11,7 +12,7 @@ const SELFDISPENSED = "3"
 const DONTKNOW = "4"
 const SYMPTOMATIC = "5"
 //const ELEXISDATETIME = "yyyyLLddHHmmss"
-const ELEXISDATETIME="YYYYMMDDHHmmss"
+const ELEXISDATETIME = "YYYYMMDDHHmmss"
 export interface PrescriptionType extends ElexisType {
   Dosis?: string
   Bemerkung?: string
@@ -58,8 +59,8 @@ export class PrescriptionManager {
 
   async setMode(data: string, mode: string) {
     const [datatype, dataid] = data.split("::")
-    const now = moment().subtract(10,'minutes')
-    const nowFormatted=now.format(ELEXISDATETIME)
+    const now = moment().subtract(10, 'minutes')
+    const nowFormatted = now.format(ELEXISDATETIME)
     let prescription: PrescriptionType
     if (datatype == "prescription") {
       prescription = await this.prescriptionLoader.get(dataid)
@@ -81,7 +82,7 @@ export class PrescriptionManager {
         break;
       default: prescription.prescType = SYMPTOMATIC
     }
-    prescription.prescDate=this.dt.DateToElexisDate(new Date())
+    prescription.prescDate = this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
     // console.log(prescription.prescType+" -> "+updated.prescType)
     return updated
@@ -90,7 +91,7 @@ export class PrescriptionManager {
   getLabel(presc: PrescriptionType) {
     const from = this.dt.ElexisDateTimeToLocalDate(presc.DateFrom)
     let ret = `${presc.Artikel["DSCR"]} (${from}`
-    if (presc.DateUntil) {
+    if (presc.DateUntil && presc.DateUntil.substr(0, 8) !== presc.DateFrom.substr(0, 8)) {
       const until = this.dt.ElexisDateTimeToLocalDate(presc.DateUntil)
       ret += " - " + until + ")"
     } else {
@@ -102,12 +103,13 @@ export class PrescriptionManager {
   async createFromArticle(artid: UUID) {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,
-      DateFrom: moment().subtract(10,'minutes').format(ELEXISDATETIME),
+      DateFrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),
       Artikel: "ch.artikelstamm.elexix.common.ArtikelstammItem::" + artid,
       prescDate: this.dt.DateToElexisDate(new Date()),
       prescriptor: this.we.getSelectedItem('usr').id
     }
     const created = await this.prescriptionLoader.create(presc)
+    console.log("created from article:" + JSON.stringify(created))
     return created
   }
   async delete(data: string) {

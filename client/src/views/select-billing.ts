@@ -22,10 +22,16 @@ export class SelectBilling {
 
   ls_positionChanged(newValue, oldValue) {
     this.encounter = this.we.getSelectedItem("konsultation")
-    this.billables = []
-    this.billableService.find({ query: { find: this.ls_position, encounter: this.encounter } }).then(result => {
-      this.billables = result
-    })
+    if (!this.encounter) {
+      alert("Damit die richtigen Positionen angezeigt werden, bitte eine Konsultation zum Verrechnen öffnen")
+    } else {
+      this.billables = []
+      this.billableService.find({ query: { find: this.ls_position, encounter: this.encounter } }).then(result => {
+        this.billables = result
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 
   constructor(private ds: DataSource, private we: WebelexisEvents, private bm: LeistungsblockManager) {
