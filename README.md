@@ -10,7 +10,11 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 ## Demo Videos
 
-[Einstieg](http://www.screencast.com/t/5EnOY5EUd)
+[Einstieg](https://youtu.be/eN2FyPkbNJM), 
+[Patientenliste](http://www.screencast.com/t/dZygwPdHG09e), 
+[Medikation](http://www.screencast.com/t/gvsjA5Cubwgm), 
+[Agenda](https://youtu.be/k0_RfUutVSc), 
+[Konsultation](http://www.screencast.com/t/5EnOY5EUd)
 
 ## Kurzanleitung
 
@@ -26,10 +30,10 @@ module.exports={
   sitename: "Praxis Webelexis",
   admin: "someone@webelexis.ch",
   elexisdb: {
-    host: "localhost",
+    host: "172.121.16.3",
     database: "elexis",
     user: "elexisuser",
-    password: "elexis"
+    password: "topsecret"
   }
 }
 ```
