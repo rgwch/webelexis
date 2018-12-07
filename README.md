@@ -16,7 +16,7 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 [Agenda](https://youtu.be/k0_RfUutVSc)
 
-[Einstieg](http://www.screencast.com/t/5EnOY5EUd)
+[Konsultation](http://www.screencast.com/t/5EnOY5EUd)
 
 ## Kurzanleitung
 
