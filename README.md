@@ -12,7 +12,7 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 [Patientenliste](http://www.screencast.com/t/dZygwPdHG09e)
 
-[Medikation](https://www.screencast.com/t/e6IKOIHuzr4T)
+[Medikation](http://www.screencast.com/t/gvsjA5Cubwgm)
 
 [Einstieg](http://www.screencast.com/t/5EnOY5EUd)
 
