@@ -14,6 +14,8 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 [Medikation](http://www.screencast.com/t/gvsjA5Cubwgm)
 
+[Agenda](https://youtu.be/k0_RfUutVSc)
+
 [Einstieg](http://www.screencast.com/t/5EnOY5EUd)
 
 ## Kurzanleitung
@@ -30,10 +32,10 @@ module.exports={
   sitename: "Praxis Webelexis",
   admin: "someone@webelexis.ch",
   elexisdb: {
-    host: "localhost",
+    host: "172.121.16.3",
     database: "elexis",
     user: "elexisuser",
-    password: "elexis"
+    password: "topsecret"
   }
 }
 ```
