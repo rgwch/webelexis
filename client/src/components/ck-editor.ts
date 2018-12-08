@@ -4,6 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 import { bindable, bindingMode, customElement, inlineView } from 'aurelia-framework';
+import { HighlightSpanKind } from 'typescript';
 
 declare const CKEDITOR
 
@@ -18,6 +19,7 @@ export class CKEditor {
   @bindable public callback
   @bindable public name;
   public textArea: HTMLTextAreaElement;
+  private editor
 
   private element: any;
 
@@ -26,12 +28,21 @@ export class CKEditor {
     this.element = element;
   }
 
+
+/*
+  valueChanged(newv, oldv) {
+    if (this.editor && newv) {
+      this.editor.insertHtml("x")
+    }
+  }
+*/
+
   public attached() {
-    let editor = CKEDITOR.replace(this.textArea);
-    editor.on('change', (e) => {
+    this.editor = CKEDITOR.replace(this.textArea);
+    this.editor.on('change', (e) => {
       this.value = e.editor.getData();
     });
-    editor.on('key', evt => {
+    this.editor.on('key', evt => {
       if (evt.data.domEvent.$.key == '$') {
         const ed = evt.editor
         const sel = ed.getSelection()
@@ -56,7 +67,7 @@ export class CKEditor {
         return false;
       }
     })
-    editor.setData(this.value)
+    this.editor.setData(this.value)
   }
 
 

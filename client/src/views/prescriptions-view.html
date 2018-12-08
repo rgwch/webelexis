@@ -10,6 +10,7 @@
         </div>
         <div class="col">
           <img src="/trash.svg" dragover.trigger="dragTrash($event)" drop.trigger="dropTrash($event)">
+          <img style="margin-left: 20px" src="/medical-prescription.svg" click.delegate="makePrescription()">
         </div>
       </div>
     </div>
@@ -18,7 +19,7 @@
         <div class="card-header">
           Fixmedikation
         </div>
-        <div class="card-body" >
+        <div class="card-body">
           <div css="overflow:auto;height:${client}px">
             <div class="compactlist" repeat.for="fm of fixmedi">
               <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
@@ -42,7 +43,8 @@
           </div>
         </div>
       </div>
-      <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)" ref="c_ganz">
+      <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)"
+        drop.trigger="dragDrop($event)" ref="c_ganz">
         <div class="card-header" ref="c_header">
           Nicht (mehr) regelmässig
         </div>

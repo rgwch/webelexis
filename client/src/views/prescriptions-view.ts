@@ -1,11 +1,10 @@
-import { Z_FIXED } from 'zlib';
+import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from "aurelia-framework";
 import { DataSource } from "services/datasource";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
 import { PrescriptionManager } from "models/prescription-model";
-import { runInThisContext } from 'vm';
 
 @autoinject
 @connectTo<State>({
@@ -36,7 +35,7 @@ export class Prescriptions {
     }
   }
 
-  constructor(private pm: PrescriptionManager) {
+  constructor(private pm: PrescriptionManager, private ea: EventAggregator) {
   }
 
   attached() {
@@ -100,5 +99,9 @@ export class Prescriptions {
     this.pm.delete(data).then(removed=>{
       this.refresh(this.actPatient.id)
     })
+  }
+  makePrescription(){
+    this.ea.publish("left_panel", "rezept")
+    this.ea.publish("rpPrinter","Hello, World")
   }
 }
