@@ -45,6 +45,8 @@ module.exports={
 
 ### - Dann einen Browser auf `http://localhost` richten.
 
+(bzw. wo auch immer der Docker-Container erreichbar ist)
+
 
 ## Technische Grundlage Webelexis 3
 
