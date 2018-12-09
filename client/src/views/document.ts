@@ -15,7 +15,7 @@ import { pluck } from 'rxjs/operators'
 import { connectTo } from 'aurelia-store'
 import { ElexisType } from '../models/elexistype';
 import { DialogService } from 'aurelia-dialog';
-import { DocumentData} from '../dialogs/document-data'
+import { DocumentData } from '../dialogs/document-data'
 
 /**
  * Abstraction for Documents of different kinds
@@ -104,7 +104,7 @@ export class Document {
    * Display a modal dialog (bootstrap modal) to enter/accept a subject line for the document.
    */
   doSave() {
-    this.dlgs.open({ viewModel: DocumentData, model: this.obj}).whenClosed(result => {
+    this.dlgs.open({ viewModel: DocumentData, model: this.obj }).whenClosed(result => {
       if (!result.wasCancelled) {
         console.log(result.output)
       }
@@ -172,11 +172,5 @@ export class Document {
     if (this.obj.id) {
       this.docService.remove(this.obj.id)
     }
-    this.obj = {
-      date: new Date(),
-      contents: "",
-      type: "documents"
-    }
-    this.dispatcher.selectItem(this.obj)
   }
 }
