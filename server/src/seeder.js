@@ -16,6 +16,7 @@ const roles = require('./services/roles')
 module.exports = async function (app) {
   // Find patient with name 'unittest' and exit if not found
   const pats = app.service('patient')
+  //const allpats= await pats.find({query:{Bezeichnung2: {$like: "ar%"}}})
   const testpat = await pats.find({ query: { Bezeichnung1: "unittest" } })
   if (!testpat || !testpat.data || testpat.data.length < 1) {
     logger.error("No Patient with name 'unittest' found. See src/seeder.js")

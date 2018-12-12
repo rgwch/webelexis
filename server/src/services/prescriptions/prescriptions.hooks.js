@@ -7,6 +7,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const handleExtinfo = require('../../hooks/handle-extinfo')
 const { DateTime } = require('luxon')
+const flatten=require('../../hooks/flatten')
 
 /**
  * find the current medication of the given patient (if search parameter current is given and is an id
@@ -20,33 +21,44 @@ const current = ctx => {
     ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
     ctx.params.query.DateFrom = { $lte: now }
-    ctx.params.query.$sort={
-      prescDate:-1
+    ctx.params.query.$sort = {
+      prescDate: -1
     }
     // ctx.params.query.$or = [{ DateUntil: { $gte: now } }, { DateUntil: null }]
   }
   return ctx
 }
 
+let articleService
+
+const doAddArticle = async art => {
+  const artid = art.Artikel
+  try {
+    if (artid) {
+      art.Artikel = await articleService.get(artid)
+    } else {
+      art.Artikel = await articleService.get(art.artikelid)
+    }
+  } catch (err) {
+    art.Artikel = { DSCR: "nicht gefunden" }
+  }
+  return art
+}
+
 const addArticle = async ctx => {
-  const articleService = ctx.app.service('meta-article')
-  for (const art of ctx.result.data) {
-    const artid = art.Artikel
-    try {
-      if (artid) {
-        art.Artikel = await articleService.get(artid)
-      } else {
-        art.Artikel = await articleService.get(art.artikelid)
-      }
-    } catch (err) {
-      art.Artikel = { DSCR: "nicht gefunden" }
+  articleService = ctx.app.service('meta-article')
+  if (ctx.method === 'get') {
+    ctx.result = await doAddArticle(ctx.result)
+  } else {
+    for (const art of ctx.result.data) {
+      await doAddArticle(art)
     }
   }
   return ctx
 }
-const createcheck=ctx=>{
-  if(ctx.params.DateUntil=="null"){
-    ctx.params.DateUntil=null
+const createcheck = ctx => {
+  if (ctx.params.DateUntil == "null") {
+    ctx.params.DateUntil = null
   }
   return ctx
 }
@@ -56,7 +68,7 @@ module.exports = {
     find: [current],
     get: [],
     create: [createcheck],
-    update: [],
+    update: [flatten(['Artikel'])],
     patch: [],
     remove: []
   },
@@ -64,7 +76,7 @@ module.exports = {
   after: {
     all: [],
     find: [handleExtinfo({ extinfo: "ExtInfo" }), addArticle],
-    get: [],
+    get: [addArticle],
     create: [],
     update: [],
     patch: [],

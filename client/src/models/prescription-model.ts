@@ -57,7 +57,18 @@ export class PrescriptionManager {
     })
   }
 
-  async setMode(data: string, mode: string) {
+  async fetch(data:string){
+    const [datatype, dataid] = data.split("::")
+    let prescription: PrescriptionType
+    if (datatype == "prescription") {
+      prescription = await this.prescriptionLoader.get(dataid)
+    } else if (datatype == "article") {
+      prescription = await this.createFromArticle(dataid)
+    }
+    return prescription  
+  }
+
+  async setMode(data: string, mode: string) : Promise<PrescriptionType>{
     const [datatype, dataid] = data.split("::")
     const now = moment().subtract(10, 'minutes')
     const nowFormatted = now.format(ELEXISDATETIME)
@@ -88,7 +99,7 @@ export class PrescriptionManager {
     return updated
   }
 
-  getLabel(presc: PrescriptionType) {
+  getLabel(presc: PrescriptionType) : string{
     const from = this.dt.ElexisDateTimeToLocalDate(presc.DateFrom)
     let ret = `${presc.Artikel["DSCR"]} (${from}`
     if (presc.DateUntil && presc.DateUntil.substr(0, 8) !== presc.DateFrom.substr(0, 8)) {
@@ -100,7 +111,7 @@ export class PrescriptionManager {
     return ret
   }
 
-  async createFromArticle(artid: UUID) {
+  async createFromArticle(artid: UUID) :Promise<PrescriptionType> {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,
       DateFrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),

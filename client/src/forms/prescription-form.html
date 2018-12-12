@@ -7,7 +7,7 @@
     </div>
     <div class="body">
       <!-- ck-editor value.two-way="rpText"></ck-editor -->
-      <textarea style="width:100%;height:100%" value.two-way="rptext"></textarea>
+      <textarea dragover.trigger="drag($event)" drop.trigger="drop($event)" style="width:100%;height:100%" value.two-way="rptext" ref="textArea"></textarea>
     </div>
   </div>
  

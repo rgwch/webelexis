@@ -65,7 +65,10 @@ app.hooks(appHooks);
 
 // If in testing mode: Seed databases
 if (app.get("userconfig").testing) {
+  logger.info("runnung in testing mode")
   const seeder = require('./seeder')
   seeder(app).catch(err => { console.log("reject " + err) })
+}else{
+  logger.info("running in production mode")
 }
 module.exports = app;
