@@ -29,29 +29,37 @@ const current = ctx => {
   return ctx
 }
 
-let articleService
 
-const doAddArticle = async art => {
+
+const doAddArticle = async (ctx,art) => {
   const artid = art.Artikel
+  const rpid=art.REZEPTID
   try {
     if (artid) {
-      art.Artikel = await articleService.get(artid)
+      art.Artikel = await ctx.articleService.get(artid)
     } else {
-      art.Artikel = await articleService.get(art.artikelid)
+      art.Artikel = await ctx.articleService.get(art.artikelid)
     }
   } catch (err) {
     art.Artikel = { DSCR: "nicht gefunden" }
+  }
+  try{
+    if(rpid){
+      art.REZEPTID=await ctx.app.service('rezepte').get(art.REZEPTID)
+    }
+  } catch(err){
+    art.REZEPTID = null
   }
   return art
 }
 
 const addArticle = async ctx => {
-  articleService = ctx.app.service('meta-article')
+  ctx.articleService = ctx.app.service('meta-article')
   if (ctx.method === 'get') {
-    ctx.result = await doAddArticle(ctx.result)
+    ctx.result = await doAddArticle(ctx,ctx.result)
   } else {
     for (const art of ctx.result.data) {
-      await doAddArticle(art)
+      await doAddArticle(ctx,art)
     }
   }
   return ctx
@@ -68,7 +76,7 @@ module.exports = {
     find: [current],
     get: [],
     create: [createcheck],
-    update: [flatten(['Artikel'])],
+    update: [flatten(['Artikel','REZEPTID'])],
     patch: [],
     remove: []
   },

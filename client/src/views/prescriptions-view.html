@@ -15,31 +15,51 @@
       </div>
     </div>
     <div class="body" css="height:${total}px">
-      <div class="card" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-        <div class="card-header">
-          Fixmedikation
+      <div class="row">
+        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+          <div class="card-header">
+            Fixmedikation
+          </div>
+          <div class="card-body">
+            <div css="overflow:auto;height:${client}px">
+              <div class="compactlist" repeat.for="fm of fixmedi">
+                <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
+                  ${pm.getLabel(fm)}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <div css="overflow:auto;height:${client}px">
-            <div class="compactlist" repeat.for="fm of fixmedi">
-              <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                ${pm.getLabel(fm)}
-              </span>
+        <div class="card col" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+          <div class="card-header">
+            Reservemedikation
+          </div>
+          <div class="card-body" ref="reservemedi_comp">
+            <div css="overflow:auto;height:${client}px">
+              <div class="compactlist" repeat.for="fm of reservemedi">
+                <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
+                  ${pm.getLabel(fm)}
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="card" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-        <div class="card-header">
-          Reservemedikation
+      <div class="row">
+        <div class="card col" css="height:${part}px">
+          <div class="card-header">
+            Rezepte
+          </div>
+          <div class="card-body">
+            b
+          </div>
         </div>
-        <div class="card-body" ref="reservemedi_comp">
-          <div css="overflow:auto;height:${client}px">
-            <div class="compactlist" repeat.for="fm of reservemedi">
-              <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                ${pm.getLabel(fm)}
-              </span>
-            </div>
+        <div class="card col">
+          <div class="card-header">
+            Rezept
+          </div>
+          <div class="card-body">
+            c
           </div>
         </div>
       </div>

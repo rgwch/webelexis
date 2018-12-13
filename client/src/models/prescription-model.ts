@@ -42,8 +42,10 @@ export class PrescriptionManager {
       const ret = {
         fix: [],
         reserve: [],
-        symptom: []
+        symptom: [],
+        rezepte: null
       }
+      const rps = new Map()
       for (const art of result.data) {
         switch (art.prescType) {
           case FIXMEDI: ret.fix.push(art); break;
@@ -52,12 +54,27 @@ export class PrescriptionManager {
           // don't know what to do with 2-4
           default: ret.symptom.push(art);
         }
+        if (art.REZEPTID) {
+          const rezept = art.REZEPTID
+          if (rezept.id) {
+            let entry = rps.get(rezept.id)
+            if (!entry) {
+              entry = {
+                date: rezept.datum,
+                articles: []
+              }
+              rps.set(rezept.id, entry)
+            }
+            entry.articles.push(art)
+          }
+        }
       }
+      ret.rezepte=rps.entries
       return ret
     })
   }
 
-  async fetch(data:string){
+  async fetch(data: string) {
     const [datatype, dataid] = data.split("::")
     let prescription: PrescriptionType
     if (datatype == "prescription") {
@@ -65,10 +82,10 @@ export class PrescriptionManager {
     } else if (datatype == "article") {
       prescription = await this.createFromArticle(dataid)
     }
-    return prescription  
+    return prescription
   }
 
-  async setMode(data: string, mode: string) : Promise<PrescriptionType>{
+  async setMode(data: string, mode: string): Promise<PrescriptionType> {
     const [datatype, dataid] = data.split("::")
     const now = moment().subtract(10, 'minutes')
     const nowFormatted = now.format(ELEXISDATETIME)
@@ -99,7 +116,7 @@ export class PrescriptionManager {
     return updated
   }
 
-  getLabel(presc: PrescriptionType) : string{
+  getLabel(presc: PrescriptionType): string {
     const from = this.dt.ElexisDateTimeToLocalDate(presc.DateFrom)
     let ret = `${presc.Artikel["DSCR"]} (${from}`
     if (presc.DateUntil && presc.DateUntil.substr(0, 8) !== presc.DateFrom.substr(0, 8)) {
@@ -111,7 +128,7 @@ export class PrescriptionManager {
     return ret
   }
 
-  async createFromArticle(artid: UUID) :Promise<PrescriptionType> {
+  async createFromArticle(artid: UUID): Promise<PrescriptionType> {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,
       DateFrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),

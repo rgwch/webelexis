@@ -18,12 +18,14 @@ export class Prescriptions {
   fixmedi = []
   reservemedi = []
   symptommedi = []
-  fixmedi_comp: Element
-  reservemedi_comp: Element
-  symptomatic_comp: Element
+  rezepte = []
+  rezept = []
+  //fixmedi_comp: Element
+  //reservemedi_comp: Element
+  //symptomatic_comp: Element
   page_header: Element
-  c_ganz:Element
-  c_header:Element
+  // c_ganz: Element
+  c_header: Element
   total
   part
   client
@@ -39,15 +41,16 @@ export class Prescriptions {
   }
 
   attached() {
-    this.total=(window.innerHeight-this.page_header.getBoundingClientRect().height)*.9
-    this.part=this.total/3-10
-    this.client=this.part-this.c_header.getBoundingClientRect().height-20
+    this.total = (window.innerHeight - this.page_header.getBoundingClientRect().height) * .9
+    this.part = this.total / 3 - 10
+    this.client = this.part - this.c_header.getBoundingClientRect().height - 20
   }
   refresh(id) {
     this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
       this.symptommedi = result.symptom
+      this.rezepte = result.rezepte
     })
   }
 
@@ -81,27 +84,27 @@ export class Prescriptions {
     if (event.currentTarget && event.currentTarget.id) {
       const target = event.currentTarget.id.substring(5)
       this.pm.setMode(data, target).then(updated => {
-        setTimeout(()=>{
+        setTimeout(() => {
           this.refresh(this.actPatient.id)
-        },10)
-       
+        }, 10)
+
       })
     }
     return true
   }
-  dragTrash(event){
+  dragTrash(event) {
     event.preventDefault()
     return true
   }
-  dropTrash(event){
+  dropTrash(event) {
     event.preventDefault()
     const data = event.dataTransfer.getData("text")
-    this.pm.delete(data).then(removed=>{
+    this.pm.delete(data).then(removed => {
       this.refresh(this.actPatient.id)
     })
   }
-  makePrescription(){
+  makePrescription() {
     this.ea.publish("left_panel", "rezept")
-    this.ea.publish("rpPrinter","Hello, World")
+    this.ea.publish("rpPrinter", "Hello, World")
   }
 }
