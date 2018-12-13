@@ -43,7 +43,7 @@ export class PrescriptionManager {
         fix: [],
         reserve: [],
         symptom: [],
-        rezepte: null
+        rezepte: []
       }
       const rps = new Map()
       for (const art of result.data) {
@@ -61,15 +61,15 @@ export class PrescriptionManager {
             if (!entry) {
               entry = {
                 date: rezept.datum,
-                articles: []
+                prescriptions: []
               }
               rps.set(rezept.id, entry)
             }
-            entry.articles.push(art)
+            entry.prescriptions.push(art)
           }
         }
       }
-      ret.rezepte=rps.entries
+      ret.rezepte=Array.from(rps)
       return ret
     })
   }

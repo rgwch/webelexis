@@ -1,5 +1,7 @@
 <template>
   <require from="components/searchfield"></require>
+  <require from="../services/date-format"></require>
+  <require from="components/newitem-btn"></require>
 
   <span class="detailcaption">Medikation</span>
   <div class="sheet">
@@ -30,7 +32,8 @@
             </div>
           </div>
         </div>
-        <div class="card col" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+        <div class="card col" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)"
+          drop.trigger="dragDrop($event)">
           <div class="card-header">
             Reservemedikation
           </div>
@@ -46,20 +49,31 @@
         </div>
       </div>
       <div class="row">
-        <div class="card col" css="height:${part}px">
+        <div class="card col-4" css="height:${part}px">
           <div class="card-header">
             Rezepte
+            <new-item-button click.delegate="createRezept()"></new-item-button>
           </div>
           <div class="card-body">
-            b
+            <div css="overflow:auto;height:${client}px">
+              <div class="compactlist" repeat.for="rp of rezepte" click.trigger="selectRezept(rp)">
+                ${rp[1].date | dateFormat:"date"}
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card col">
+        <div class="card col-8">
           <div class="card-header">
             Rezept
           </div>
           <div class="card-body">
-            c
+            <div css="overflow:auto;height:${client}px">
+              <div class="compactlist" repeat.for="presc of rezept">
+                <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
+                  ${pm.getLabel(presc)}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

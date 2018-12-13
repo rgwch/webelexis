@@ -49,17 +49,23 @@ export class Prescriptions {
     this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
-      this.symptommedi = result.symptom
-      this.rezepte = result.rezepte
+      this.symptommedi = result.symptom.sort((a,b)=>{return a.DSCR.compare(b.DSCR)})
+      this.rezepte = result.rezepte.sort((a,b)=>{return a[1].date.compare(b[1].date)})
     })
   }
 
-  /*
-  getLabel(medi) {
-    let lbl = this.pm.getLabel(medi)
-    return lbl
+  selectRezept(rp){
+    this.rezept=rp[1].prescriptions
   }
-  */
+
+  createRezept(){
+    const rp=[undefined,{
+      date: new Date(),
+      precriptions: []
+    }]
+    this.rezepte.push(rp)
+  }
+
   findId(element) {
     if (element.id.startsWith("card_")) {
       return element.id.subString(5)
