@@ -7,7 +7,7 @@
 import { WebelexisEvents } from '../webelexisevents';
 import { Patient } from '../models/patient';
 import { bindable, computedFrom, autoinject, observable } from 'aurelia-framework';
-import { DocType, Doc } from '../models/document'
+import { DocType, DocManager } from '../models/document-model'
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { DataSource, DataService } from '../services/datasource';
 import { State } from '../state';
@@ -70,7 +70,8 @@ export class Document {
   }
 
   constructor(private ea: EventAggregator, private ds: DataSource,
-    private dispatcher: WebelexisEvents, private dlgs: DialogService) {
+    private dispatcher: WebelexisEvents, private dlgs: DialogService,
+    private dm:DocManager) {
     this.docService = this.ds.getService('documents')
     this.tmplService = this.ds.getService('templates')
     this.dispatcher.selectItem(this.obj)
@@ -94,8 +95,7 @@ export class Document {
     this.obj.subject = template.subject
     this.obj.template = template.id
     this.obj.concern = this.actPatient
-    const doc = new Doc(this.obj)
-    this.obj.contents = doc.getEditable(template.contents)
+    this.obj.contents = this.dm.getEditable(template.id,this.obj)
     this.htmlText = this.obj.contents
     this.dispatcher.selectItem(this.obj)
   }
@@ -144,7 +144,6 @@ export class Document {
   }
 
   async doCreatePdf() {
-    const doc = new Doc(this.obj)
     let result = this.obj.contents
     if (this.obj.template) {
       const template = await this.docService.get(this.obj.template)

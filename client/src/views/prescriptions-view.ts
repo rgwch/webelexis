@@ -33,12 +33,12 @@ export class Prescriptions {
   actPatientChanged(newValue, oldValue) {
     if (newValue && ((!oldValue) || (newValue.id !== oldValue.id))) {
       this.searchexpr = ""
-      this.actrezept=undefined
-      this.rezept=[]
-      this.refresh(newValue.id).then(()=>{
+      this.actrezept = undefined
+      this.rezept = []
+      this.refresh(newValue.id).then(() => {
         this.signaler.signal('selected')
       })
-      
+
     }
   }
 
@@ -90,6 +90,10 @@ export class Prescriptions {
     })
   }
 
+  toPdf(){
+
+  }
+
   findId(element) {
     if (element.id.startsWith("card_")) {
       return element.id.subString(5)
@@ -112,15 +116,15 @@ export class Prescriptions {
     event.preventDefault()
     const data = event.dataTransfer.getData("text")
     if (event.currentTarget && event.currentTarget.id) {
-      const target = event.currentTarget.id.substring(5)
-      const params: any = {}
-      if (target == "rezept") {
+      let params: { mode?: string, rezeptid?: string } = {}
+      params.mode = event.currentTarget.id.substring(5)
+      if (params.mode == "rezept") {
         params.rezeptid = this.actrezept;
       }
-      this.pm.setMode(data, target, params).then(updated => {
+      this.pm.setMode(data, params).then(updated => {
         setTimeout(() => {
-          this.refresh(this.actPatient.id).then(()=>{
-            if(target=='rezept'){
+          this.refresh(this.actPatient.id).then(() => {
+            if (params.mode == 'rezept') {
               this.selectRezept(this.rezepte[0])
             }
           })

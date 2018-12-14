@@ -69,6 +69,7 @@
         <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
           <div class="card-header">
             Rezept
+            <img src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
           </div>
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">

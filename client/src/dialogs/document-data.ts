@@ -1,7 +1,7 @@
 import { Kontakt } from './../models/kontakt';
 import { Patient } from 'models/patient';
 import { SelectKontakt } from './select-kontakt';
-import { DocType } from './../models/document';
+import { DocType } from './../models/document-model';
 import { DialogController, DialogService } from 'aurelia-dialog'
 import { autoinject, bindable } from 'aurelia-framework';
 

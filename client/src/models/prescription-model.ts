@@ -102,7 +102,7 @@ export class PrescriptionManager {
    * @param data 
    * @param mode 
    */
-  async setMode(data: string, mode: string, params?: any): Promise<PrescriptionType> {
+  async setMode(data: string, params?: any): Promise<PrescriptionType> {
     const [datatype, dataid] = data.split("::")
     const now = moment().subtract(10, 'minutes')
     const nowFormatted = now.format(ELEXISDATETIME)
@@ -113,7 +113,7 @@ export class PrescriptionManager {
       prescription = await this.createFromArticle(dataid)
     }
 
-    switch (mode) {
+    switch (params.mode) {
       case "fixmedi": 
         prescription.prescType = FIXMEDI;
         prescription.DateUntil = null

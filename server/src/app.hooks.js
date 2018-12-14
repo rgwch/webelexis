@@ -20,7 +20,7 @@ module.exports = {
     create: [create()],
     update: [update()],
     patch: [update()],
-    remove: [softDelete()]
+    remove: [softDelete]
   },
 
   after: {
