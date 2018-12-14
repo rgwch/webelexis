@@ -69,7 +69,7 @@ export class PrescriptionManager {
           }
         }
       }
-      ret.rezepte=Array.from(rps)
+      ret.rezepte = Array.from(rps)
       return ret
     })
   }
@@ -85,7 +85,12 @@ export class PrescriptionManager {
     return prescription
   }
 
-  async setMode(data: string, mode: string): Promise<PrescriptionType> {
+  /**
+   * Set the mode of a Prescription (fix, reserve)
+   * @param data 
+   * @param mode 
+   */
+  async setMode(data: string, mode: string, params?:any): Promise<PrescriptionType> {
     const [datatype, dataid] = data.split("::")
     const now = moment().subtract(10, 'minutes')
     const nowFormatted = now.format(ELEXISDATETIME)
@@ -95,16 +100,17 @@ export class PrescriptionManager {
     } else if (datatype == "article") {
       prescription = await this.createFromArticle(dataid)
     }
+    prescription.DateFrom = nowFormatted
+    prescription.DateUntil = null
+
     switch (mode) {
       case "fixmedi": prescription.prescType = FIXMEDI;
-        prescription.DateFrom = nowFormatted
-        prescription.DateUntil = null
         break;
       case "reservemedi": prescription.prescType = RESERVE;
-        prescription.DateFrom = nowFormatted
-        prescription.DateUntil = null
         break;
-
+      case "rezept": prescription.prescType = RECIPE
+        prescription.REZEPTID=params.rezeptid
+        break;
       case "symptommedi": prescription.prescType = SYMPTOMATIC;
         prescription.DateUntil = nowFormatted
         break;

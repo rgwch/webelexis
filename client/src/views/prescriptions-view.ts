@@ -20,9 +20,7 @@ export class Prescriptions {
   symptommedi = []
   rezepte = []
   rezept = []
-  //fixmedi_comp: Element
-  //reservemedi_comp: Element
-  //symptomatic_comp: Element
+  actrezept: string
   page_header: Element
   // c_ganz: Element
   c_header: Element
@@ -49,17 +47,18 @@ export class Prescriptions {
     this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
-      this.symptommedi = result.symptom.sort((a,b)=>{return a.DSCR.compare(b.DSCR)})
-      this.rezepte = result.rezepte.sort((a,b)=>{return a[1].date.compare(b[1].date)})
+      this.symptommedi = result.symptom.sort((a, b) => { return a.DSCR.compare(b.DSCR) })
+      this.rezepte = result.rezepte.sort((a, b) => { return a[1].date.compare(b[1].date) })
     })
   }
 
-  selectRezept(rp){
-    this.rezept=rp[1].prescriptions
+  selectRezept(rp) {
+    this.rezept = rp[1].prescriptions
+    this.actrezept = rp[0]
   }
 
-  createRezept(){
-    const rp=[undefined,{
+  createRezept() {
+    const rp = [undefined, {
       date: new Date(),
       precriptions: []
     }]
@@ -89,7 +88,11 @@ export class Prescriptions {
     const data = event.dataTransfer.getData("text")
     if (event.currentTarget && event.currentTarget.id) {
       const target = event.currentTarget.id.substring(5)
-      this.pm.setMode(data, target).then(updated => {
+      const params: any = {}
+      if (target == "rezept") {
+        params.rezeptid = this.actrezept;
+      }
+      this.pm.setMode(data, target, params).then(updated => {
         setTimeout(() => {
           this.refresh(this.actPatient.id)
         }, 10)

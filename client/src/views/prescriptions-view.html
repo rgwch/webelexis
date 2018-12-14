@@ -18,6 +18,7 @@
     </div>
     <div class="body" css="height:${total}px">
       <div class="row">
+        <!-- Fixmedikation -->
         <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
           <div class="card-header">
             Fixmedikation
@@ -32,12 +33,13 @@
             </div>
           </div>
         </div>
+        <!-- Reservemedikation -->
         <div class="card col" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)"
           drop.trigger="dragDrop($event)">
           <div class="card-header">
             Reservemedikation
           </div>
-          <div class="card-body" ref="reservemedi_comp">
+          <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="fm of reservemedi">
                 <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
@@ -49,6 +51,7 @@
         </div>
       </div>
       <div class="row">
+        <!-- Rezeptliste -->
         <div class="card col-4" css="height:${part}px">
           <div class="card-header">
             Rezepte
@@ -62,7 +65,8 @@
             </div>
           </div>
         </div>
-        <div class="card col-8">
+        <!-- Momentan ausgewähltes Rezept -->
+        <div class="card col-8" id="card_rezept">
           <div class="card-header">
             Rezept
           </div>
@@ -77,12 +81,13 @@
           </div>
         </div>
       </div>
+      <!-- Komplettliste alle Medikamente des Patienten -->
       <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)"
         drop.trigger="dragDrop($event)" ref="c_ganz">
         <div class="card-header" ref="c_header">
           Nicht (mehr) regelmässig
         </div>
-        <div class="card-body" ref="symptomatic_comp">
+        <div class="card-body">
           <ul css="overflow:auto;height:${client}px">
             <li class="compactlist" repeat.for="fm of symptommedi">
               <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
