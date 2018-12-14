@@ -9,9 +9,7 @@ const logger = require('./hooks/logger');
 const update = require('./hooks/updatecommon')
 const create = require('./hooks/createcommon')
 const treatDeleted = require('./hooks/treat-deleted');
-
-
-const abilities = require('./hooks/abilities');
+const softDelete=require('./hooks/softdelete')
 
 
 module.exports = {
@@ -22,7 +20,7 @@ module.exports = {
     create: [create()],
     update: [update()],
     patch: [update()],
-    remove: []
+    remove: [softDelete()]
   },
 
   after: {

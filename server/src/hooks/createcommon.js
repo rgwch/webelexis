@@ -11,7 +11,7 @@ const uuid = require('uuid/v4')
  * make sure every newly created object has an id and lastupdate/deleted fields
  */
 module.exports = function (options = {}) {
-  return async context => {
+  return context => {
     if (context.data) {
       if (!context.data.id) {
         context.data.id = uuid()
