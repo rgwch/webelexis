@@ -1,3 +1,12 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+ /**
+  * Utility to send mails. We need this primarly to help the user retrieve lost passwords
+  */
 const nodemailer=require('nodemailer')
 const logger=require('./logger')
 

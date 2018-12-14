@@ -20,7 +20,7 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 **ACHTUNG**: Nur an einer Kopie der produktiven Datenbank testen.
 
-**ACHTUNG**: Nur hinter einer Firewall testen.
+**ACHTUNG**: Nur hinter einer Firewall oder an einer Test-Datenbank ohne echte Patientendaten testen.
 
 ### - Einen Ordner 'data' erstellen, und darin eine Datei 'settings.js' mit folgenden Einträgen:
 
@@ -40,13 +40,16 @@ module.exports={
 
 ### - Dann im Terminal:
 
-    mysql -h host -u username -ppasswort elexis <modify_elexis.sql
+    mysql -h host -u username -ppasswort elexis <modify_elexis.sql  # Natürlich nur beim ersten Mal
     sudo docker run -p 80:3030 --name webelexis -v `pwd`/data:/home/node/webelexis/data rgwch/webelexis:latest
 
 ### - Dann einen Browser auf `http://localhost` richten.
 
 (bzw. wo auch immer der Docker-Container erreichbar ist)
 
+## Run from scratch
+
+Webelexis kann auch auf einer leeren Datenbank gestartet werden (mysql oder sqlite). Es erstellt dann selber die Webelexis-Datenstrukturen. Diese Datenbank ist dann aber nicht garantiert kompatibel zu Elexis, sollte also nur für reine Webelexis-Umgebungen verwendet werden. Wann immer gemischter Betrieb vorgesehen ist (das ist das empfohlene Setup), sollte zuerst Elexis und dann Webelexis initialisiert werden.
 
 ## Technische Grundlage Webelexis 3
 

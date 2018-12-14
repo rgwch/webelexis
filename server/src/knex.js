@@ -13,6 +13,7 @@
 const knex = require('knex');
 
 module.exports = function (app) {
+  // undocument exactly one of the following three lines
   const { client, connection } = app.get('mysql');
   // const { client, connection } = app.get('postgresql');
   // const {client,connection} = app.get("sqlite");

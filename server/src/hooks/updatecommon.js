@@ -6,7 +6,7 @@
 
 /**
  * Wehen an object is updated, set 'lastupdate' field correctly
- * and make sure, 'deleted' is '0'.
+ * and make sure, 'deleted' is set (if it's not set, set it to "0").
  */
 module.exports = function (options = {}) {
   return context => {
