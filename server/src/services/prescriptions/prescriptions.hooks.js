@@ -75,7 +75,7 @@ module.exports = {
     all: [authenticate('jwt')],
     find: [current],
     get: [],
-    create: [createcheck],
+    create: [createcheck,flatten(['Artikel','REZEPTID'])],
     update: [flatten(['Artikel','REZEPTID'])],
     patch: [],
     remove: []

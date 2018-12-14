@@ -13,6 +13,8 @@ const DONTKNOW = "4"
 const SYMPTOMATIC = "5"
 //const ELEXISDATETIME = "yyyyLLddHHmmss"
 const ELEXISDATETIME = "YYYYMMDDHHmmss"
+const ELEXISDATE = "YYYYMMDD"
+
 export interface PrescriptionType extends ElexisType {
   Dosis?: string
   Bemerkung?: string
@@ -74,6 +76,16 @@ export class PrescriptionManager {
     })
   }
 
+  async createRezept(){
+    const rpService=this.ds.getService('rezepte')
+    const rp={
+      patientid: this.we.getSelectedItem('patient').id,
+      mandantid: this.we.getSelectedItem('usr').id,
+      datum: moment().format(ELEXISDATE)
+    }
+    const ret=await rpService.create(rp)
+    return ret;
+  }
   async fetch(data: string) {
     const [datatype, dataid] = data.split("::")
     let prescription: PrescriptionType
@@ -90,7 +102,7 @@ export class PrescriptionManager {
    * @param data 
    * @param mode 
    */
-  async setMode(data: string, mode: string, params?:any): Promise<PrescriptionType> {
+  async setMode(data: string, mode: string, params?: any): Promise<PrescriptionType> {
     const [datatype, dataid] = data.split("::")
     const now = moment().subtract(10, 'minutes')
     const nowFormatted = now.format(ELEXISDATETIME)
@@ -100,22 +112,30 @@ export class PrescriptionManager {
     } else if (datatype == "article") {
       prescription = await this.createFromArticle(dataid)
     }
-    prescription.DateFrom = nowFormatted
-    prescription.DateUntil = null
 
     switch (mode) {
-      case "fixmedi": prescription.prescType = FIXMEDI;
+      case "fixmedi": 
+        prescription.prescType = FIXMEDI;
+        prescription.DateUntil = null
         break;
-      case "reservemedi": prescription.prescType = RESERVE;
+      case "reservemedi": 
+        prescription.prescType = RESERVE;
+        prescription.DateUntil = null
         break;
-      case "rezept": prescription.prescType = RECIPE
-        prescription.REZEPTID=params.rezeptid
+      case "rezept": 
+        const copy=Object.assign({},prescription)
+        delete copy.id
+        prescription=await this.prescriptionLoader.create(copy)
+        prescription.prescType = RECIPE
+        prescription.DateUntil = null
+        prescription.REZEPTID = params.rezeptid
         break;
       case "symptommedi": prescription.prescType = SYMPTOMATIC;
         prescription.DateUntil = nowFormatted
         break;
       default: prescription.prescType = SYMPTOMATIC
     }
+    prescription.DateFrom = nowFormatted
     prescription.prescDate = this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
     // console.log(prescription.prescType+" -> "+updated.prescType)

@@ -8,6 +8,7 @@ $bordercolor: #1c63ef;
 $fillcolor: #d3d3d3;
 $captioncolor: #1c63ef;
 $strokecolor: blue;
+$highlightcolor: orange;
 $form-background: aquamarine;
 
 /* Buttons for termin actions */
@@ -31,6 +32,10 @@ $form-background: aquamarine;
     cursor: pointer;
 }
 
+.highlight-item{
+  @extend .compactlist;
+  background-color: $highlightcolor;
+}
 .compactlist:hover{
     font-weight:bold;
 }
@@ -61,7 +66,7 @@ common-viewer, .sheet{
   
   .highlight{
     @extend .entry;
-    background-color: yellow;
+    background-color: $highlightcolor;
   }
   img{
     width: 30px;

@@ -1,3 +1,5 @@
+import { BindingSignaler } from 'aurelia-templating-resources';
+import { ArtikelDetail } from './artikeldetail';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from "aurelia-framework";
 import { DataSource } from "services/datasource";
@@ -22,20 +24,26 @@ export class Prescriptions {
   rezept = []
   actrezept: string
   page_header: Element
-  // c_ganz: Element
   c_header: Element
   total
   part
   client
 
+
   actPatientChanged(newValue, oldValue) {
     if (newValue && ((!oldValue) || (newValue.id !== oldValue.id))) {
       this.searchexpr = ""
-      this.refresh(newValue.id)
+      this.actrezept=undefined
+      this.rezept=[]
+      this.refresh(newValue.id).then(()=>{
+        this.signaler.signal('selected')
+      })
+      
     }
   }
 
-  constructor(private pm: PrescriptionManager, private ea: EventAggregator) {
+  constructor(private pm: PrescriptionManager, private ea: EventAggregator,
+    private signaler: BindingSignaler) {
   }
 
   attached() {
@@ -44,25 +52,42 @@ export class Prescriptions {
     this.client = this.part - this.c_header.getBoundingClientRect().height - 20
   }
   refresh(id) {
-    this.pm.fetchCurrent(id).then(result => {
+    return this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
-      this.symptommedi = result.symptom.sort((a, b) => { return a.DSCR.compare(b.DSCR) })
-      this.rezepte = result.rezepte.sort((a, b) => { return a[1].date.compare(b[1].date) })
+      this.symptommedi = result.symptom.sort((a, b) => {
+        if (a.Artikel && b.Artikel) {
+          const aa = a.Artikel;
+          const ba = b.Artikel;
+          if (aa.DSCR && ba.DSCR) {
+            return aa.DSCR.localeCompare(ba.DSCR)
+          } else {
+            return 0;
+          }
+        }
+
+      })
+      this.rezepte = result.rezepte.sort((a, b) => {
+        return a[1].date.localeCompare(b[1].date) * -1
+      })
     })
   }
 
   selectRezept(rp) {
     this.rezept = rp[1].prescriptions
     this.actrezept = rp[0]
+    this.signaler.signal('selected')
   }
 
   createRezept() {
-    const rp = [undefined, {
-      date: new Date(),
-      precriptions: []
-    }]
-    this.rezepte.push(rp)
+    this.pm.createRezept().then(raw => {
+      const rp = [raw.id, {
+        date: raw.datum,
+        prescriptions: []
+      }]
+      this.rezepte.unshift(rp)
+      this.selectRezept(rp)
+    })
   }
 
   findId(element) {
@@ -94,7 +119,11 @@ export class Prescriptions {
       }
       this.pm.setMode(data, target, params).then(updated => {
         setTimeout(() => {
-          this.refresh(this.actPatient.id)
+          this.refresh(this.actPatient.id).then(()=>{
+            if(target=='rezept'){
+              this.selectRezept(this.rezepte[0])
+            }
+          })
         }, 10)
 
       })
@@ -115,5 +144,18 @@ export class Prescriptions {
   makePrescription() {
     this.ea.publish("left_panel", "rezept")
     this.ea.publish("rpPrinter", "Hello, World")
+  }
+}
+
+/*
+  set item class according to selection Status (needs signal 'selected')
+*/
+export class selectionClassValueConverter {
+  toView(item, sel) {
+    if (sel == item[0]) {
+      return "highlight-item"
+    } else {
+      return "compactlist"
+    }
   }
 }

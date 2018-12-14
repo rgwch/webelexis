@@ -52,21 +52,21 @@
       </div>
       <div class="row">
         <!-- Rezeptliste -->
-        <div class="card col-4" css="height:${part}px">
+        <div class="card col-3" css="height:${part}px">
           <div class="card-header">
             Rezepte
             <new-item-button click.delegate="createRezept()"></new-item-button>
           </div>
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
-              <div class="compactlist" repeat.for="rp of rezepte" click.trigger="selectRezept(rp)">
+              <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte" click.trigger="selectRezept(rp)">
                 ${rp[1].date | dateFormat:"date"}
               </div>
             </div>
           </div>
         </div>
         <!-- Momentan ausgewähltes Rezept -->
-        <div class="card col-8" id="card_rezept">
+        <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
           <div class="card-header">
             Rezept
           </div>
@@ -83,7 +83,7 @@
       </div>
       <!-- Komplettliste alle Medikamente des Patienten -->
       <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)"
-        drop.trigger="dragDrop($event)" ref="c_ganz">
+        drop.trigger="dragDrop($event)">
         <div class="card-header" ref="c_header">
           Nicht (mehr) regelmässig
         </div>

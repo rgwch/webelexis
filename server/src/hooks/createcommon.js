@@ -12,12 +12,18 @@ const uuid = require('uuid/v4')
  */
 module.exports = function (options = {}) {
   return async context => {
-    if(context.data){
-      if(!context.data.id){
-        context.data.id=uuid()
+    if (context.data) {
+      if (!context.data.id) {
+        context.data.id = uuid()
       }
-      context.data.lastupdate=new Date().getTime();
-      context.data.deleted="0";
+      if (context.data.lastupdate) {
+        context.data.lastupdate = new Date().getTime();
+      } else if (context.data.LASTUPDATE) {
+        context.data.LASTUPDATE = new Date().getTime();
+      }else{
+        context.data.lastupdate=new Date().getTime();
+      }
+      context.data.deleted = "0";
     }
     return context;
   };
