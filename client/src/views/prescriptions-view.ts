@@ -1,12 +1,12 @@
 import { BindingSignaler } from 'aurelia-templating-resources';
-import { ArtikelDetail } from './artikeldetail';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from "aurelia-framework";
-import { DataSource } from "services/datasource";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
 import { PrescriptionManager } from "models/prescription-model";
+import { DocManager,DocType } from 'models/document-model';
+import { DateTime } from 'services/datetime';
 
 @autoinject
 @connectTo<State>({
@@ -43,7 +43,7 @@ export class Prescriptions {
   }
 
   constructor(private pm: PrescriptionManager, private ea: EventAggregator,
-    private signaler: BindingSignaler) {
+    private signaler: BindingSignaler, private dm: DocManager, private dt:DateTime) {
   }
 
   attached() {
@@ -91,7 +91,20 @@ export class Prescriptions {
   }
 
   toPdf(){
-
+    let table="<table>"
+    for(const item of this.rezept){
+      table+=`<tr><td>1</td><td>${item.Artikel.DSCR}</td><td>2x1</td></tr>`
+    }
+    const fields=[{field:"liste",replace:table}]
+    const doc:DocType={
+      date: this.dt.DateToElexisDate(new Date()),
+      template: "rezept"
+    }
+    this.dm.merge(doc,fields).then(pdf=>{
+      const win = window.open("", "_new")
+      win.document.write(pdf)
+  
+    })
   }
 
   findId(element) {
