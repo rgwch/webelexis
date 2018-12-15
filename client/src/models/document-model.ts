@@ -3,6 +3,7 @@ import { Patient } from "./patient";
 import { Kontakt } from "./kontakt";
 import { WebelexisEvents } from "../../test/spec/dummyevents";
 import { DataSource } from "services/datasource";
+import { autoinject } from "aurelia-framework";
 
 /**
  * A Document. It's a template if it has no concern field and template is "1".
@@ -16,6 +17,7 @@ export interface DocType extends ElexisType {
   template?: string   // id of the template or "1" if this is a template by itself.
 }
 
+@autoinject
 export class DocManager{
   docService
 

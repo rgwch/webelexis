@@ -26,7 +26,7 @@ describe('\'softdelete\' hook', () => {
     });
 
     app.service('dummy').hooks({
-      before: {remove: [softdelete()]}
+      before: {remove: [softdelete]}
     });
   });
 
@@ -34,7 +34,7 @@ describe('\'softdelete\' hook', () => {
     const ch=app.service('dummy')
     const result = await ch.get('test');
     assert.equal(result.deleted,"0")
-    const deleted= await ch.remove('test')
+    const deleted= await ch.remove('test',{provider: "test"})
     assert.equal(deleted.deleted,"1")
     const check=await ch.get('test')
     assert.equal(check.deleted,"1")
