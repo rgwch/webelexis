@@ -27,3 +27,7 @@ scripts
 data/*.db
 data/*.db~
 data/settings.js
+data/sample-docbase/webelexis-tests
+data/sample-docbase/*.html
+data/sample-docbase/*.pdf
+

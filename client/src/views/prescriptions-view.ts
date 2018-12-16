@@ -98,7 +98,7 @@ export class Prescriptions {
     const fields=[{field:"liste",replace:table}]
     const doc:DocType={
       date: this.dt.DateToElexisDate(new Date()),
-      template: "rezept"
+      template: "templates/rezept"
     }
     this.dm.merge(doc,fields).then(pdf=>{
       const win = window.open("", "_new")

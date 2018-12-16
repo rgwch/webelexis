@@ -23,12 +23,10 @@ const macros = require('./macros/macros.service.js');
 const labresults = require('./labresults/labresults.service.js');
 const findings = require('./findings/findings.service.js');
 const stickers = require('./stickers/stickers.service.js');
-const templates = require('./templates/templates.service.js');
 const billing = require('./billing/billing.service.js');
 const tarmed = require('./tarmed/tarmed.service.js');
 const billable = require('./billable/billable.service.js');
 const leistungsblock = require('./leistungsblock/leistungsblock.service.js');
-const solr = require('./solr/solr.service.js');
 const lucinda = require('./lucinda/lucinda.service.js');
 const oddb = require('./oddb/oddb.service.js');
 const metaArticle = require('./meta-article/meta-article.service.js');
@@ -53,13 +51,10 @@ module.exports = function (app) {
  app.configure(labresults);
  app.configure(findings);
  app.configure(stickers);
- app.configure(templates);
-
  app.configure(billing);
  app.configure(tarmed);
  app.configure(billable);
  app.configure(leistungsblock);
- app.configure(solr);
  app.configure(lucinda);
  app.configure(oddb);
  app.configure(metaArticle);

@@ -26,6 +26,7 @@ module.exports = async function (app) {
   logger.info("found patient 'unittest'")
 
   // find or create basic document template
+  /*
   const templates = app.service('templates')
   try {
     const template = await templates.get("1")
@@ -44,8 +45,8 @@ module.exports = async function (app) {
     logger.info("basic template created")
 
   }
-
-  // create thrre users: admin, guest, user
+*/
+  // create three users: admin, guest, user
   const usr = app.service('usr')
   const guest = {
     email: "guest@some.where",

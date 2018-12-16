@@ -39,6 +39,10 @@ export class PrescriptionManager {
     this.artikelLoader = ds.getService('meta-article')
   }
 
+  /**
+   * Fetch medication of current patient
+   * @param patientid 
+   */
   fetchCurrent(patientid: UUID) {
     return this.prescriptionLoader.find({ query: { current: patientid } }).then(result => {
       const ret = {
@@ -76,6 +80,9 @@ export class PrescriptionManager {
     })
   }
 
+  /**
+   * Create a new "rezept"
+   */
   async createRezept(){
     const rpService=this.ds.getService('rezepte')
     const rp={
@@ -86,6 +93,12 @@ export class PrescriptionManager {
     const ret=await rpService.create(rp)
     return ret;
   }
+
+  /**
+   * Fetch a prescription from an "extended id" 
+   * @param data an 'extended id': <datatype::id> 
+   * 
+   */
   async fetch(data: string) {
     const [datatype, dataid] = data.split("::")
     let prescription: PrescriptionType
@@ -99,8 +112,8 @@ export class PrescriptionManager {
 
   /**
    * Set the mode of a Prescription (fix, reserve)
-   * @param data 
-   * @param mode 
+   * @param data extended id: <datatype::id>
+   * @param mode fixmedi|reservemedi|rezept|symptommedi
    */
   async setMode(data: string, params?: any): Promise<PrescriptionType> {
     const [datatype, dataid] = data.split("::")
