@@ -40,7 +40,7 @@ export class BriefManager {
   replaceFields(template: string, brief: BriefType, fields?: Array<{ field: string, replace: string }>) {
     const fieldmatcher = /\[\w+\.\w+\]/ig
     for (const f of fields) {
-      template = template.replace(f.field, f.replace)
+      template = template.replace("["+f.field+"]", f.replace)
     }
 
     const compiled = template.replace(fieldmatcher, field => {
