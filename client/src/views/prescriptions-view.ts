@@ -5,7 +5,7 @@ import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
 import { PrescriptionManager } from "models/prescription-model";
-import { DocManager,DocType } from 'models/document-model';
+import { BriefManager,BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
 
 @autoinject
@@ -43,7 +43,7 @@ export class Prescriptions {
   }
 
   constructor(private pm: PrescriptionManager, private ea: EventAggregator,
-    private signaler: BindingSignaler, private dm: DocManager, private dt:DateTime) {
+    private signaler: BindingSignaler, private bm: BriefManager, private dt:DateTime) {
   }
 
   attached() {
@@ -96,11 +96,13 @@ export class Prescriptions {
       table+=`<tr><td>1</td><td>${item.Artikel.DSCR}</td><td>2x1</td></tr>`
     }
     const fields=[{field:"liste",replace:table}]
-    const doc:DocType={
-      date: this.dt.DateToElexisDate(new Date()),
-      template: "templates/rezept"
+    const rp:BriefType={
+      Datum: this.dt.DateToElexisDate(new Date()),
+      Betreff: "Rezept",
+      typ: "Rezept",
+      MimeType: "text/html"
     }
-    this.dm.merge(doc,fields).then(pdf=>{
+    this.bm.generate(rp,"rezept", fields).then(pdf=>{
       const win = window.open("", "_new")
       win.document.write(pdf)
   

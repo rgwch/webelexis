@@ -43,6 +43,7 @@
             "name": "Server debug",
             "program": "${workspaceFolder}/server/src/index.js",
             "outputCapture": "std",
+            "cwd": "${workspaceFolder}/server",
             "env":{
               "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
             }

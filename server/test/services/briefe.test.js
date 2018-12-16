@@ -1,9 +1,16 @@
 const assert = require('assert');
 const app = require('../../src/app');
+const path=require('path')
 require('chai').should()
 
 describe('\'briefe\' service', () => {
   let service = app.service('briefe');
+  /*
+  const orig=app.get('userconfig')
+  const docbase=orig['docbase'] || require('os').homedir()
+  const cloned=Object.assign({},orig,{docbase: path.join("../",docbase)})
+  app.set("userconfig",cloned)
+  */
   it('registered the service', () => {
     assert.ok(service, 'Registered the service');
   });

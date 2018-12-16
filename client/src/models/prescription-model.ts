@@ -83,14 +83,14 @@ export class PrescriptionManager {
   /**
    * Create a new "rezept"
    */
-  async createRezept(){
-    const rpService=this.ds.getService('rezepte')
-    const rp={
+  async createRezept() {
+    const rpService = this.ds.getService('rezepte')
+    const rp = {
       patientid: this.we.getSelectedItem('patient').id,
       mandantid: this.we.getSelectedItem('usr').id,
       datum: moment().format(ELEXISDATE)
     }
-    const ret=await rpService.create(rp)
+    const ret = await rpService.create(rp)
     return ret;
   }
 
@@ -127,18 +127,18 @@ export class PrescriptionManager {
     }
 
     switch (params.mode) {
-      case "fixmedi": 
+      case "fixmedi":
         prescription.prescType = FIXMEDI;
         prescription.DateUntil = null
         break;
-      case "reservemedi": 
+      case "reservemedi":
         prescription.prescType = RESERVE;
         prescription.DateUntil = null
         break;
-      case "rezept": 
-        const copy=Object.assign({},prescription)
+      case "rezept":
+        const copy = Object.assign({}, prescription)
         delete copy.id
-        prescription=await this.prescriptionLoader.create(copy)
+        prescription = await this.prescriptionLoader.create(copy)
         prescription.prescType = RECIPE
         prescription.DateUntil = null
         prescription.REZEPTID = params.rezeptid
@@ -157,7 +157,9 @@ export class PrescriptionManager {
 
   getLabel(presc: PrescriptionType): string {
     const from = this.dt.ElexisDateTimeToLocalDate(presc.DateFrom)
-    let ret = `${presc.Artikel["DSCR"]} (${from}`
+    const label = presc.Artikel ? presc.Artikel["DSCR"] || "--" : "?"
+    let ret = `${label} (${from}`
+
     if (presc.DateUntil && presc.DateUntil.substr(0, 8) !== presc.DateFrom.substr(0, 8)) {
       const until = this.dt.ElexisDateTimeToLocalDate(presc.DateUntil)
       ret += " - " + until + ")"

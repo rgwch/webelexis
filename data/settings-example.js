@@ -10,6 +10,7 @@ module.exports={
   testing: true,
   sitename: "Praxis Webelexis",
   admin: "someone@webelexis.ch",
+  docbase:"data/sample-docbase",
   elexisdb: {
     host: "localhost",
     database: "elexis",
