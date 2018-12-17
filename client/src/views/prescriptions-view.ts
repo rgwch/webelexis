@@ -5,7 +5,7 @@ import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
 import { PrescriptionManager } from "models/prescription-model";
-import { BriefManager,BriefType } from 'models/briefe-model';
+import { BriefManager, BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
 
 @autoinject
@@ -43,7 +43,7 @@ export class Prescriptions {
   }
 
   constructor(private pm: PrescriptionManager, private ea: EventAggregator,
-    private signaler: BindingSignaler, private bm: BriefManager, private dt:DateTime) {
+    private signaler: BindingSignaler, private bm: BriefManager, private dt: DateTime) {
   }
 
   attached() {
@@ -90,22 +90,27 @@ export class Prescriptions {
     })
   }
 
-  toPdf(){
-    let table="<table>"
-    for(const item of this.rezept){
-      table+=`<tr><td>1</td><td>${item.Artikel.DSCR}</td><td>2x1</td></tr>`
+  toPdf() {
+    let table = "<table>"
+    for (const item of this.rezept) {
+      table += `<tr><td>1</td><td>${item.Artikel.DSCR}</td><td>2x1</td></tr>`
     }
-    const fields=[{field:"liste",replace:table}]
-    const rp:BriefType={
+    const fields = [{ field: "liste", replace: table }]
+    const rp: BriefType = {
       Datum: this.dt.DateToElexisDate(new Date()),
       Betreff: "Rezept",
       typ: "Rezept",
-      MimeType: "text/html"
+      MimeType: "text/html",
+      patientid: this.actPatient
     }
-    this.bm.generate(rp,"rezept", fields).then(pdf=>{
+    this.bm.generate(rp, "rezept", fields).then(html => {
       const win = window.open("", "_new")
-      win.document.write(pdf)
-  
+      if (!win) {
+        alert("Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf")
+      } else {
+        win.document.write(html)
+        win.print()  
+      }
     })
   }
 

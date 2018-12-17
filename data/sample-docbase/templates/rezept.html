@@ -5,6 +5,9 @@
   <meta charset="utf-8" />
   <title>Praxis Webelexis</title>
   <style>
+    @page{
+      size: 148mm 210mm;
+    }
     body {
       /* Definition der Schriftart und -grösse für den ganzen Text */
       font-family: Helvetica, Sans-Serif;
@@ -13,9 +16,9 @@
       text-align: left;
       width: 148mm;
       height: 209mm;
-      margin-left: 20mm;
+      margin-left: 10mm;
       margin-right: 15mm;
-      border: solid blue 1px;
+      /* border: solid blue 1px;  */
       position: absolute;
     }
 
@@ -46,15 +49,15 @@
     .rightrow {
       position: absolute;
       top: 4em;
-      left: 74mm;
-      width: 74mm;
+      right: 5px;
+      width: 40mm;
       overflow: hidden;
       text-align: left;
     }
 
     .concern {
       font-weight: bold;
-      font-size: 12px;
+      font-size: 16px;
       text-align: left;
       position: absolute;
       top: 1em;
@@ -66,13 +69,15 @@
       top: 40mm;
       bottom: 5mm;
       width: 100%;
-      border: solid black 1px;
+      border-top: solid black 1px;
+      padding-top:5px;
+      /* border: solid black 1px; */
 
     }
 
     .contents {
       position: absolute;
-      top: 3em;
+      top: 5em;
       left: 2em;
       right: 2em;
       overflow: hidden;
@@ -82,7 +87,7 @@
       /* Stil für tabellarische Daten */
       border-collapse: collapse;
       padding: 8px;
-
+      width: 100%;
     }
 
     table,
@@ -119,8 +124,8 @@
 
 <body>
   <div class="heading">
-    <span style="position: absolute;left: 1em;">Rezept</span>
-    <span style="position:absolute;right:1em;">[Datum]</span>
+    <span style="position: absolute;left: 1em;top: 4px; font-weight:bolder;">Rezept</span>
+    <span style="position:absolute;right:1em;top: 4px; font-weight:bolder;">[Datum.heute]</span>
   </div>
   <div class="leftrow">
     <span style="font-size:16px;font-weight:bold;">Gerry Weirich</span><br />
@@ -137,7 +142,7 @@
   <div class="payload">
     Rp.
     <div class="concern">
-      [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.Geburtdatum]
+      [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]
     </div>
 
     <div class="contents">

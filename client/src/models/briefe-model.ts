@@ -2,6 +2,7 @@ import { WebelexisEvents } from './../webelexisevents';
 import { DataService, DataSource } from 'services/datasource';
 import { autoinject } from 'aurelia-framework';
 import { ElexisType } from './elexistype';
+import { DateTime } from 'services/datetime';
 
 export interface BriefType extends ElexisType {
   Betreff: string
@@ -22,7 +23,7 @@ export interface BriefType extends ElexisType {
 export class BriefManager {
   briefService: DataService
 
-  constructor(private ds: DataSource, private we: WebelexisEvents) {
+  constructor(private ds: DataSource, private we: WebelexisEvents, private dt:DateTime) {
     this.briefService = ds.getService('briefe')
   }
 
@@ -46,12 +47,13 @@ export class BriefManager {
     const compiled = template.replace(fieldmatcher, field => {
       const stripped = field.substring(1, field.length - 1)
       const [element, attribute] = stripped.split(".")
-      let replacement
-      switch (element) {
+      let replacement:string
+      switch (element.toLowerCase()) {
         case "adressat":
         case "addressee": replacement = brief.destid ? brief.destid[attribute] : null; break;
         case "patient":
         case "concern": replacement = brief.patientid ? brief.patientid[attribute] : null; break
+        case "datum": replacement = this.dt.DateObjectToLocalDate(new Date())
         default: {
           const lastSelected = this.we.getSelectedItem(element)
           if (lastSelected) {
@@ -60,6 +62,9 @@ export class BriefManager {
         }
       }
       if (replacement) {
+        if(replacement.match(/[0-9]{8,8}/)){
+          replacement=this.dt.ElexisDateToLocalDate(replacement)
+        }
         return replacement
       } else {
         return field

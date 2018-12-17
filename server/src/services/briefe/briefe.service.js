@@ -21,6 +21,7 @@ module.exports = function (app) {
 
   // Get our initialized service so that we can register hooks and filters
   const service = app.service('briefe');
+  service.hooks(hooks);
 
   // auto-import templates
   const cfg = app.get("userconfig")
@@ -61,5 +62,4 @@ module.exports = function (app) {
       }
     })
   }
-  service.hooks(hooks);
 };

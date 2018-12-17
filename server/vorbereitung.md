@@ -27,7 +27,7 @@ Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, un
 Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Datenbank ein Patient namens 'unittest' existieren. Beispiel:
 
     use elexis;
-    update kontakt set Bezeichnung1="unittest" where Bezeichnung1="Duck" and Bezeichnung2="Donald";`
+    update kontakt set Bezeichnung1="unittest" where Bezeichnung1 like "Test%" and istPatient="1" and deleted="0" limit 1;`
 
 
 ### Lucinda installieren
@@ -42,7 +42,7 @@ Wenn von Webelexis aus Dokumente (Rezpete, AUF, Briefe etc.) erstellt werden sol
 
 ### Nodejs installieren
 
-Emfehlung: Node >10 und NPM>5
+Empfehlung: Node >10 und NPM>5
 
 ### Webelexis clonen und installieren
 
@@ -87,3 +87,38 @@ Dann Server mit `npm start` laufen lassen.
 
 Dann einen Browser auf localhost:9000 richten.    
 
+# Alternative: Docker
+
+## 1. Docker installieren
+
+Siehe die Prozedur für Ihr Betriebssystem bei [Docker](https://www.docker.com/get-started)
+
+## 2. Konfiguration vorbereiten
+
+Ein Verzeichnis 'data' im aktuellen Verzeichnis erstellen. Dort eine Datei 'settings.js' erstellen:
+
+
+```
+module.exports={
+  testing: true,
+  sitename: "Praxis Webelexis",
+  admin: "someone@webelexis.ch",
+  docbase:"/home/node/webelexis/data/sample-docbase",
+  elexisdb: {
+    host: "172.121.16.3",
+    database: "elexis",
+    user: "elexisuser",
+    password: "topsecret"
+  }
+}
+```
+
+(Wobei Sie natürlich die Angaben anpasen müssen)
+
+## 3. Webelexis starten
+
+`sudo docker run -p 80:3030 --name webelexis -v `pwd`/data:/home/node/webelexis/data rgwch/webelexis:latest`
+
+## 4. Webelexis verwenden
+
+Richten Sie Ihren Browser (vorzugsweise Chrome) auf `http://localhost`
