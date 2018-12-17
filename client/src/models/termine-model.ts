@@ -28,7 +28,8 @@ export interface TerminType extends ElexisType{
   Grund?: string,
   TerminTyp: string,
   TerminStatus: string,
-  kontakt?: KontaktType
+  kontakt?: KontaktType,
+  ErstelltVon: string
 
 }
 

@@ -3,6 +3,7 @@ export default {
   testing: false,
   baseURL: "/",
   metadata: {
-    sitename: "Webelexis"
+    sitename: "Webelexis",
+    ip: "?"
   }
 };

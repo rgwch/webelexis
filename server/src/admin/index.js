@@ -81,7 +81,8 @@ module.exports = function (app) {
     response.json({
       testing: settings.testing || false,
       sitename: settings.sitename,
-      admin: settings.admin
+      admin: settings.admin,
+      ip: request.ip
     })
   })
 }

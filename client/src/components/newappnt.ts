@@ -13,6 +13,8 @@ import { SelectPatient } from '../dialogs/select-pat';
 import { WebelexisEvents } from '../webelexisevents';
 import { KontaktType } from '../models/kontakt';
 import { I18N } from 'aurelia-i18n';
+import env from 'environment'
+
 
 
 @autoinject
@@ -58,11 +60,14 @@ export class NewAppointment {
   }
 
   newTermin() {
+    const user=this.we.getSelectedItem('usr')  || {label: "wlx"}
+    const ip=env.metadata.ip || "?"
     this.termin.obj.Beginn=this.slider
     this.termin.obj.Dauer=30
     this.termin.obj.TerminTyp=this.terminTyp
     this.termin.obj.TerminStatus=this.terminStatus
     this.termin.obj.PatID=this.kontakt.id
+    this.termin.obj.ErstelltVon=user.label+"@"+ip
     this.tm.save(this.termin)
   }
 }

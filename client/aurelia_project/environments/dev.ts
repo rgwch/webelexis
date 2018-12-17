@@ -3,6 +3,7 @@ export default {
   testing: true,
   baseURL: 'http://localhost:3030',
   metadata: {
-    sitename: "Webelexis"
+    sitename: "Webelexis",
+    ip: "?"
   }
 };

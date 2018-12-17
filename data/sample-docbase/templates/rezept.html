@@ -9,11 +9,13 @@
       /* Definition der Schriftart und -grösse für den ganzen Text */
       font-family: Helvetica, Sans-Serif;
       font-style: normal;
-      font-size: 12px;
+      font-size: 14px;
       text-align: left;
       width: 148mm;
-      height: 210mm;
-      border: solid blue;
+      height: 209mm;
+      margin-left: 20mm;
+      margin-right: 15mm;
+      border: solid blue 1px;
       position: absolute;
     }
 
@@ -41,22 +43,41 @@
       text-align: left;
     }
 
+    .rightrow {
+      position: absolute;
+      top: 4em;
+      left: 74mm;
+      width: 74mm;
+      overflow: hidden;
+      text-align: left;
+    }
+
     .concern {
       font-weight: bold;
       font-size: 12px;
       text-align: left;
       position: absolute;
-      top: 90mm;
+      top: 1em;
       right: 1em;
     }
 
-    .contents{
+    .payload {
       position: absolute;
-      top: 100mm;
+      top: 40mm;
+      bottom: 5mm;
+      width: 100%;
+      border: solid black 1px;
+
+    }
+
+    .contents {
+      position: absolute;
+      top: 3em;
       left: 2em;
       right: 2em;
       overflow: hidden;
     }
+
     table {
       /* Stil für tabellarische Daten */
       border-collapse: collapse;
@@ -98,19 +119,30 @@
 
 <body>
   <div class="heading">
-    [Datum]
+    <span style="position: absolute;left: 1em;">Rezept</span>
+    <span style="position:absolute;right:1em;">[Datum]</span>
   </div>
   <div class="leftrow">
-    Gerry Weirich<br />
+    <span style="font-size:16px;font-weight:bold;">Gerry Weirich</span><br />
     Facharzt für Innere Medizin<br />
-    Rietstrasse 30<br/>
-    8200 Schaffhausen<br/>
+    Rietstrasse 30<br />
+    8200 Schaffhausen<br />
   </div>
-  <div class="concern">
-    [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.Geburtdatum]
+  <div class="rightrow">
+    Tel.: 052 624 40 77<br />
+    Mail: praxis@weirich.ch<br />
+    ZSR: G 0813.14<br />
+    GLN: 7601000085924
   </div>
-  <div class="contents">
-    [liste]
+  <div class="payload">
+    Rp.
+    <div class="concern">
+      [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.Geburtdatum]
+    </div>
+
+    <div class="contents">
+      [liste]
+    </div>
   </div>
 </body>
 
