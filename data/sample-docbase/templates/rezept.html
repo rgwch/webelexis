@@ -9,10 +9,12 @@
       /* Definition der Schriftart und -grösse für den ganzen Text */
       font-family: Helvetica, Sans-Serif;
       font-style: normal;
-      font-size: 11px;
+      font-size: 12px;
       text-align: left;
       width: 148mm;
       height: 210mm;
+      border: solid blue;
+      position: absolute;
     }
 
     .heading {
@@ -20,29 +22,41 @@
       font-style: oblique;
       font-size: 18px;
       text-align: center;
-      color: darkgreen;
-    }
-
-    .address {
+      background-color: lightskyblue;
+      color: black;
       position: absolute;
-      left: 15cm;
-      top: 4cm;
-
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 2em;
     }
 
-    .subheading {
-      /* Stil für Untertext */
-      font-style: normal;
-      font-size: 9px;
-      text-align: center;
+    .leftrow {
+      position: absolute;
+      top: 4em;
+      left: 5px;
+      width: 74mm;
+      height: 45mm;
+      overflow: hidden;
+      text-align: left;
     }
 
     .concern {
       font-weight: bold;
       font-size: 12px;
       text-align: left;
+      position: absolute;
+      top: 90mm;
+      right: 1em;
     }
 
+    .contents{
+      position: absolute;
+      top: 100mm;
+      left: 2em;
+      right: 2em;
+      overflow: hidden;
+    }
     table {
       /* Stil für tabellarische Daten */
       border-collapse: collapse;
@@ -84,22 +98,18 @@
 
 <body>
   <div class="heading">
-    Praxis Webelexis
+    [Datum]
   </div>
-  <span class="subheading">
-    Hintere Gasse 27, 5555 Elexikon
-  </span>
-  <div class="address">
-    [Adressat.Anschrift]
+  <div class="leftrow">
+    Gerry Weirich<br />
+    Facharzt für Innere Medizin<br />
+    Rietstrasse 30<br/>
+    8200 Schaffhausen<br/>
   </div>
-  <div class="editable">
-    <div class="concern">
-      [patient.label]<br />[concern.Anschrift]
-    </div>
-    <data-editable name="hier einfügen">
-      <p>[addressee.salutation]</p>
-      <p class="textbody"></p>
-    </data-editabl  e>
+  <div class="concern">
+    [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.Geburtdatum]
+  </div>
+  <div class="contents">
     [liste]
   </div>
 </body>
