@@ -1,7 +1,7 @@
 export default {
   debug: false,
   testing: false,
-  baseURL: "/",
+  baseURL: window.location.href,
   metadata: {
     sitename: "Webelexis",
     ip: "?"
