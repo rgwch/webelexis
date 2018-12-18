@@ -53,7 +53,7 @@ Folgende Libraries müssen besorgt und nach server/lib kopiert werden:
 * jackson-annotations-2.7.0.jar
 * jackson-core-2.7.4.jar
 * jackson-databind-2.7.4.jar
-* rgw-toolbox-4.2.6.jar
+* rgw-toolbox-4.2.7.jar
 
 Man kann das automatisieren, wenn man Maven >=3.3 installiert hat: Einfach ins Verzeichnis server/lib gehen, und dort `./fetch.sh` eingeben.
 
