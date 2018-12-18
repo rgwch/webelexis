@@ -38,9 +38,6 @@ Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/luci
 
 Installation und Konfiguration von Lucinda ist vergleichsweise simpel. 
 
-### Html2pdf installieren
-
-Wenn von Webelexis aus Dokumente (Rezpete, AUF, Briefe etc.) erstellt werden sollen, muss html2pdf auf dem Server installiert werden.
 
 ### Nodejs installieren
 
