@@ -34,14 +34,14 @@ Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Daten
 
 ### Lucinda installieren
 
-Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/lucinda/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore 
+Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/lucinda/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore. 
 
 Installation und Konfiguration von Lucinda ist vergleichsweise simpel. 
 
 
 ### Nodejs installieren
 
-Empfehlung: Node >10 und NPM>5
+Empfehlung: Node >10 und NPM>5 (Die verwendete Node-Version muss zwingend Features wie Promises und async/await, sowie fsPromises bieten).
 
 ### Webelexis clonen und installieren
 
