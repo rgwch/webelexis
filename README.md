@@ -18,7 +18,7 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 ## Installationsanleitungen
 
-Siehe [hier](server/vorbereitung) für den Server und [hier](client/vorbereitung) für den Client.
+Siehe [hier](server/vorbereitung.md) für den Server und [hier](client/vorbereitung.md) für den Client.
 
 ## Kurzanleitung für die Docker-Version
 
