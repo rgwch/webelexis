@@ -1,17 +1,47 @@
-import { bindable } from "aurelia-framework";
+import { BindingSignaler } from 'aurelia-templating-resources';
+import { bindable, autoinject} from "aurelia-framework";
 import { PrescriptionManager, PrescriptionType } from "models/prescription-model";
 
+@autoinject
 export class Medication {
-  @bindable obj
+  @bindable obj:PrescriptionType
+  expanded=false;
+  constructor(private pm: PrescriptionManager, private signaler:BindingSignaler) { }
 
-  constructor(private pm: PrescriptionManager) { }
-
-  getLabel(o:PrescriptionType){
-    if(o && o.Artikel){
-      if(o.Artikel["DSCR"]){
-        return o.Artikel["DSCR"]
+  getLabel() {
+    let lbl=""
+    const o=this.obj
+    if (o) {
+      if (o.ANZAHL) {
+        lbl += o.ANZAHL.toString() + " "
+      }
+      if (o.Artikel && o.Artikel["DSCR"]) {
+        lbl += o.Artikel["DSCR"]
+      }else{
+        lbl+="?"
+      }
+      if(o.Dosis){
+        lbl+=" "+o.Dosis
+      }
+      if(o.Bemerkung){
+        lbl+=" ("+o.Bemerkung+")"
       }
     }
-    return "?"
+    return lbl
+  }
+
+  drag(event) {
+    event.dataTransfer.setData("text", event.target.id)
+    return true
+  }
+
+  expand(){
+    this.expanded=!this.expanded
+  }
+
+  save(){
+    this.pm.save(this.obj).then(s=>{
+      this.signaler.signal('update')
+    })
   }
 }

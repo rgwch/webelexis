@@ -1,7 +1,7 @@
 import { Subscription } from 'aurelia-event-aggregator';
 import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework'
-import { DataSource } from 'services/datasource';
+import { DataSource, DataService } from 'services/datasource';
 import { ElexisType, UUID } from './elexistype';
 import { DateTime as edt } from '../services/datetime'
 import * as moment from 'moment'
@@ -31,8 +31,8 @@ export interface PrescriptionType extends ElexisType {
 }
 @autoinject
 export class PrescriptionManager {
-  private prescriptionLoader
-  private artikelLoader
+  private prescriptionLoader:DataService
+  private artikelLoader:DataService
 
   constructor(private ds: DataSource, private we: WebelexisEvents, private dt: edt) {
     this.prescriptionLoader = ds.getService('prescriptions')
@@ -169,6 +169,10 @@ export class PrescriptionManager {
     return ret
   }
 
+  async save(obj:PrescriptionType){
+    return await this.prescriptionLoader.update(obj.id,obj)
+  }
+  
   async createFromArticle(artid: UUID): Promise<PrescriptionType> {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,

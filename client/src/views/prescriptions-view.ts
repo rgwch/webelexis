@@ -93,7 +93,8 @@ export class Prescriptions {
   toPdf() {
     let table = "<table>"
     for (const item of this.rezept) {
-      table += `<tr><td>1</td><td>${item.Artikel.DSCR}</td><td>2x1</td></tr>`
+      const remark=item.Bemerkung ? ("<br />"+item.Bemerkung) : ""
+      table += `<tr><td>${item.ANZAHL || ""}</td><td>${item.Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
     const fields = [{ field: "liste", replace: table }]
     const rp: BriefType = {

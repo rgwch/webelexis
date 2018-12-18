@@ -20,33 +20,28 @@
     <div class="body" css="height:${total}px">
       <div class="row">
         <!-- Fixmedikation -->
-        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)"
-          drop.trigger="dragDrop($event)">
-          <div class="card-header noselect">
-            Fixmedikation
+        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+          <div class="card-header">
+            <span class="noselect">Fixmedikation</span>
           </div>
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="fm of fixmedi">
-                <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                  ${pm.getLabel(fm)}
-                </span>
+                <medication obj.bind="fm"></medication>
               </div>
             </div>
           </div>
         </div>
         <!-- Reservemedikation -->
-        <div class="card col" id="card_reservemedi" css="height:${part}px"
-          dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-          <div class="card-header noselect">
-            Reservemedikation
+        <div class="card col" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)"
+          drop.trigger="dragDrop($event)">
+          <div class="card-header">
+            <span class="noselect">Reservemedikation</span>
           </div>
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="fm of reservemedi">
-                <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                  ${pm.getLabel(fm)}
-                </span>
+                <medication obj.bind="fm"></medication>
               </div>
             </div>
           </div>
@@ -56,21 +51,20 @@
         <!-- Rezeptliste -->
         <div class="card col-3" css="height:${part}px">
           <div class="card-header" noselect>
-            Rezepte
+            <span class="noselect">Rezepte</span>
             <new-item-button click.delegate="createRezept()"></new-item-button>
           </div>
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
-              <div class.bind="rp | selectionClass:actrezept & signal:'selected'"
-                repeat.for="rp of rezepte" click.trigger="selectRezept(rp)">
+              <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte"
+                click.trigger="selectRezept(rp)">
                 ${rp[1].date | dateFormat:"date"}
               </div>
             </div>
           </div>
         </div>
         <!-- Momentan ausgewähltes Rezept -->
-        <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)"
-          drop.trigger="dragDrop($event)">
+        <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
           <div class="card-header" noselect>
             Rezept
             <img src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
@@ -78,9 +72,7 @@
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="presc of rezept">
-                <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                  ${pm.getLabel(presc)}
-                </span>
+                <medication obj.bind="presc"></medication>
               </div>
             </div>
           </div>
@@ -95,10 +87,6 @@
         <div class="card-body">
           <ul css="overflow:auto;height:${client}px">
             <li class="compactlist" repeat.for="fm of symptommedi">
-              <!-- span draggable="true" dragstart.trigger="drag($event)"
-              id="prescription::${fm.id}">
-              ${pm.getLabel(fm)}
-              </span -->
               <medication obj.bind="fm"></medication>
             </li>
           </ul>
