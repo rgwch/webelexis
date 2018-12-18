@@ -98,6 +98,11 @@
     "username": "E-Mail",
     "password": "Passwort"
   },
+  "errmsg":{
+    "error": "Fehler",
+    "connect": "Verbindungsfehler",
+    "rights": "Ungenügende Rechte"
+  },
   "edit": {
     "para": "Absatz",
     "heading1": "Überschrift 1",

@@ -42,16 +42,19 @@ export class App {
   actPatient
  
   constructor(private ds: DataSource, private we: WebelexisEvents, private i18n: I18N) {
+    // this.log.setLevel(LogManager.logLevel.info)
+    this.log.info("getting metadata from "+env.baseURL)
     fetch(env.baseURL+"/metadata").then(response=>{
       return response.json()
     }).then(json=>{
       env["metadata"]=json
       this.router.title=env.metadata["sitename"]
+    }).catch(err=>{
+      alert(this.i18n.tr("errmsg.connect"))
     })
     this.ds.login().then((usr: UserType) => {
       const user = new User(usr)
       usr["type"] = "usr"
-      // this.actUser=usr
       this.we.selectItem(usr)
     }).catch(err => {
       console.log("invalid stored token")
@@ -121,7 +124,7 @@ export class App {
       }, {
         route: "/patient",
         name: "patient",
-        title: this.i18n.tr("pat details"),
+        title: this.i18n.tr("nav.patdetails"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName('./routes/patient/index') },
           details: { moduleId: PLATFORM.moduleName('./routes/patient/detail') }

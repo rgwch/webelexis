@@ -4,17 +4,25 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { Aurelia, PLATFORM } from 'aurelia-framework';
+import { Aurelia, PLATFORM, LogManager } from 'aurelia-framework';
 import * as Backend from 'i18next-xhr-backend';
-import * as LogManager from 'aurelia-logging'
-import {webelexisState} from './state'
-import {DataSource} from './services/datasource'
-import {FeathersDS} from './services/feathers-api'
-
+import { webelexisState } from './state'
+import { DataSource } from './services/datasource'
+import { FeathersDS } from './services/feathers-api'
+import { ConsoleAppender } from 'aurelia-logging-console'
 let selectedLanguage = navigator['languages'][0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 
 import environment from './environment';
+
+LogManager.addAppender(new ConsoleAppender())
+if (environment.debug) {
+  LogManager.setLevel(LogManager.logLevel.debug)
+} else {
+  LogManager.setLevel(LogManager.logLevel.info)
+}
+
+
 
 /**
  * Main entry point. The aurelia framework calls this with the singleton instance of Aurelia
@@ -30,13 +38,13 @@ export function configure(aurelia: Aurelia) {
     .plugin(PLATFORM.moduleName('aurelia-i18n'), (instance) => {
       instance.i18next.use(Backend);
       return instance.setup({
-        backend    : {
+        backend: {
           loadPath: './locales/{{lng}}/{{ns}}.json',
         },
-        lng        : selectedLanguage,
-        attributes : ['t', 'i18n'],
+        lng: selectedLanguage,
+        attributes: ['t', 'i18n'],
         fallbackLng: 'de',
-        debug      : true
+        debug: true
       });
     })
     .plugin(PLATFORM.moduleName('aurelia-animator-css'))
@@ -50,19 +58,14 @@ export function configure(aurelia: Aurelia) {
       });
     })
     */
-    .plugin(PLATFORM.moduleName('aurelia-store'),{initialState: webelexisState})
-    // .plugin('aurelia-dialog')
-  if (environment.debug) {
-    aurelia.use.developmentLogging();
-    LogManager.logLevel.debug
-  }
-
+    .plugin(PLATFORM.moduleName('aurelia-store'), { initialState: webelexisState })
+ 
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
 
-  const datasource=aurelia.container.get(FeathersDS)
-  aurelia.container.registerInstance(DataSource,datasource)
+  const datasource = aurelia.container.get(FeathersDS)
+  aurelia.container.registerInstance(DataSource, datasource)
 
   aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }
