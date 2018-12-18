@@ -2,6 +2,7 @@
   <require from="components/searchfield"></require>
   <require from="../services/date-format"></require>
   <require from="components/newitem-btn"></require>
+  <require from="components/medication"></require>
 
   <span class="detailcaption">Medikation</span>
   <div class="sheet">
@@ -19,8 +20,9 @@
     <div class="body" css="height:${total}px">
       <div class="row">
         <!-- Fixmedikation -->
-        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-          <div class="card-header">
+        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)"
+          drop.trigger="dragDrop($event)">
+          <div class="card-header noselect">
             Fixmedikation
           </div>
           <div class="card-body">
@@ -34,9 +36,9 @@
           </div>
         </div>
         <!-- Reservemedikation -->
-        <div class="card col" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)"
-          drop.trigger="dragDrop($event)">
-          <div class="card-header">
+        <div class="card col" id="card_reservemedi" css="height:${part}px"
+          dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+          <div class="card-header noselect">
             Reservemedikation
           </div>
           <div class="card-body">
@@ -53,21 +55,23 @@
       <div class="row">
         <!-- Rezeptliste -->
         <div class="card col-3" css="height:${part}px">
-          <div class="card-header">
+          <div class="card-header" noselect>
             Rezepte
             <new-item-button click.delegate="createRezept()"></new-item-button>
           </div>
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
-              <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte" click.trigger="selectRezept(rp)">
+              <div class.bind="rp | selectionClass:actrezept & signal:'selected'"
+                repeat.for="rp of rezepte" click.trigger="selectRezept(rp)">
                 ${rp[1].date | dateFormat:"date"}
               </div>
             </div>
           </div>
         </div>
         <!-- Momentan ausgewähltes Rezept -->
-        <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-          <div class="card-header">
+        <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)"
+          drop.trigger="dragDrop($event)">
+          <div class="card-header" noselect>
             Rezept
             <img src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
           </div>
@@ -91,9 +95,11 @@
         <div class="card-body">
           <ul css="overflow:auto;height:${client}px">
             <li class="compactlist" repeat.for="fm of symptommedi">
-              <span draggable="true" dragstart.trigger="drag($event)" id="prescription::${fm.id}">
-                ${pm.getLabel(fm)}
-              </span>
+              <!-- span draggable="true" dragstart.trigger="drag($event)"
+              id="prescription::${fm.id}">
+              ${pm.getLabel(fm)}
+              </span -->
+              <medication obj.bind="fm"></medication>
             </li>
           </ul>
         </div>
