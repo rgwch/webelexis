@@ -3,7 +3,7 @@
     <input type="text" style="width:4em;" id="anzahl" value.bind="obj.ANZAHL" blur.trigger="save()">
   </span>
   <span click.trigger="expand()" draggable="true" dragstart.trigger="drag($event)" id="prescription::${obj.id}">
-    ${getLabel() & signal : 'update'}
+    ${getLabel() & signal:'update'}
   </span>
   <span if.bind="expanded">
     <input type="text" style="width:6em;" id="dosis" value.bind="obj.Dosis" blur.trigger="save()"><br />

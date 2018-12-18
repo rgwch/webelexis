@@ -41,7 +41,7 @@ const doAddArticle = async (ctx,art) => {
       art.Artikel = await ctx.articleService.get(art.artikelid)
     }
   } catch (err) {
-    art.Artikel = { DSCR: "nicht gefunden" }
+    art.Artikel = { DSCR: "doAddArticle: nicht gefunden" }
   }
   try{
     if(rpid){

@@ -18,6 +18,8 @@ Das SQL-Script modify_elexis.sql (anwenden z.B. mit `use elexis; source modify_e
 * Dementsprechend müssen auch foreign key Felder auf VARCHAR(40) erweitert werden, der Feldname kann aber unverändert bleiben.
 * Alle Tabellen haben `deleted char(1)` und `lastupdate bigint` Felder.
 
+*Achtung*: Wenn Sie diese Datenbankanpassung unterlassen, werden sporadisch 'seltsame' Fehler auftreten.
+Zum Beispiel werden möglicherweise Objekte verwechselt (weil die id in 24 statt 40 Felder gespeichert wird und somit eventuell nicht mehr eindeutig ist)
 
 Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, und der, der es wieder einspielt, Superuser-Rechte haben: 
 

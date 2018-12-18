@@ -16,7 +16,11 @@ Die schlanke, flinke Ergänzug zu Elexis
 [Agenda](https://youtu.be/k0_RfUutVSc), 
 [Konsultation](http://www.screencast.com/t/5EnOY5EUd)
 
-## Kurzanleitung
+## Installationsanleitungen
+
+Siehe [hier](server/vorbereitung) für den Server und [hier](client/vorbereitung) für den Client.
+
+## Kurzanleitung für die Docker-Version
 
 **ACHTUNG**: Nur an einer Kopie der produktiven Datenbank testen.
 

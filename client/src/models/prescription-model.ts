@@ -83,15 +83,19 @@ export class PrescriptionManager {
   /**
    * Create a new "rezept"
    */
-  async createRezept() {
+  createRezept() {
     const rpService = this.ds.getService('rezepte')
     const rp = {
       patientid: this.we.getSelectedItem('patient').id,
       mandantid: this.we.getSelectedItem('usr').id,
       datum: moment().format(ELEXISDATE)
     }
-    const ret = await rpService.create(rp)
-    return ret;
+    
+    return rpService.create(rp).then(ret=>{
+      return ret;
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 
   /**

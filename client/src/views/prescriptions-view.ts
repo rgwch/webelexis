@@ -52,6 +52,10 @@ export class Prescriptions {
     this.client = this.part - this.c_header.getBoundingClientRect().height - 20
   }
   refresh(id) {
+    this.fixmedi = []
+    this.symptommedi = []
+    this.reservemedi = []
+    // this.rezepte = []
     return this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
@@ -63,9 +67,9 @@ export class Prescriptions {
             return aa.DSCR.localeCompare(ba.DSCR)
           } else {
             return 0;
+
           }
         }
-
       })
       this.rezepte = result.rezepte.sort((a, b) => {
         return a[1].date.localeCompare(b[1].date) * -1
@@ -87,13 +91,16 @@ export class Prescriptions {
       }]
       this.rezepte.unshift(rp)
       this.selectRezept(rp)
+    }).catch(err => {
+      console.log(err)
+      alert("Konnte kein Rezept erstellen")
     })
   }
 
   toPdf() {
     let table = "<table>"
     for (const item of this.rezept) {
-      const remark=item.Bemerkung ? ("<br />"+item.Bemerkung) : ""
+      const remark = item.Bemerkung ? ("<br />" + item.Bemerkung) : ""
       table += `<tr><td>${item.ANZAHL || ""}</td><td>${item.Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
     const fields = [{ field: "liste", replace: table }]
@@ -110,7 +117,7 @@ export class Prescriptions {
         alert("Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf")
       } else {
         win.document.write(html)
-        win.print()  
+        win.print()
       }
     })
   }
@@ -123,11 +130,12 @@ export class Prescriptions {
       return element.parentElement.id.substring(5)
     }
   }
+  /*
   drag(event) {
     event.dataTransfer.setData("text", event.target.id)
     return true
   }
-
+*/
   dragOver(event) {
     event.preventDefault()
     return true;
@@ -136,6 +144,7 @@ export class Prescriptions {
   dragDrop(event) {
     event.preventDefault()
     const data = event.dataTransfer.getData("text")
+    console.log("drop: " + data)
     if (event.currentTarget && event.currentTarget.id) {
       let params: { mode?: string, rezeptid?: string } = {}
       params.mode = event.currentTarget.id.substring(5)

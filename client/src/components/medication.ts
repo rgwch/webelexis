@@ -32,6 +32,7 @@ export class Medication {
 
   drag(event) {
     event.dataTransfer.setData("text", event.target.id)
+    console.log("drag: "+event.target.id)
     return true
   }
 
