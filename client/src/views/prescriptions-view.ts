@@ -23,6 +23,7 @@ export class Prescriptions {
   rezepte = []
   rezept = []
   actrezept: string
+  rezeptZusatz: string
   page_header: Element
   c_header: Element
   total
@@ -51,6 +52,7 @@ export class Prescriptions {
     this.part = this.total / 3 - 10
     this.client = this.part - this.c_header.getBoundingClientRect().height - 20
   }
+
   refresh(id) {
     this.fixmedi = []
     this.symptommedi = []
@@ -79,6 +81,7 @@ export class Prescriptions {
 
   selectRezept(rp) {
     this.rezept = rp[1].prescriptions
+    this.rezeptZusatz=rp[1].RpZusatz
     this.actrezept = rp[0]
     this.signaler.signal('selected')
   }
@@ -87,7 +90,8 @@ export class Prescriptions {
     this.pm.createRezept().then(raw => {
       const rp = [raw.id, {
         date: raw.datum,
-        prescriptions: []
+        prescriptions: [],
+        RpZusatz: raw.RpZusatz
       }]
       this.rezepte.unshift(rp)
       this.selectRezept(rp)
@@ -103,7 +107,8 @@ export class Prescriptions {
       const remark = item.Bemerkung ? ("<br />" + item.Bemerkung) : ""
       table += `<tr><td>${item.ANZAHL || ""}</td><td>${item.Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
-    const fields = [{ field: "liste", replace: table }]
+    table+="</table>"
+    const fields = [{ field: "liste", replace: table },{field: "zusatz", replace: this.rezeptZusatz}]
     const rp: BriefType = {
       Datum: this.dt.DateToElexisDate(new Date()),
       Betreff: "Rezept",

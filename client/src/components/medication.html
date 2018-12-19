@@ -1,12 +1,12 @@
 <template>
-  <span if.bind="expanded">
-    <input type="text" style="width:4em;" id="anzahl" value.bind="obj.ANZAHL" blur.trigger="save()">
+  <span if.bind="expanded && type=='rp'">
+    <input type="text" style="width:4em;" id="anzahl" value.bind="obj.ANZAHL" blur.trigger="save()" keydown.trigger="checkkey($event)" focus.bind="numberFocus">
   </span>
-  <span click.trigger="expand()" draggable="true" dragstart.trigger="drag($event)" id="prescription::${obj.id}">
+  <span class="noselect" click.trigger="expand()" draggable="true" dragstart.trigger="drag($event)" id="prescription::${obj.id}">
     ${getLabel() & signal:'update'}
   </span>
   <span if.bind="expanded">
-    <input type="text" style="width:6em;" id="dosis" value.bind="obj.Dosis" blur.trigger="save()"><br />
-    <input type="text" style="width: 32em;" id="remark" value.bind="obj.Bemerkung" blur.trigger="save()">
+    <input type="text" style="width:6em;" id="dosis" value.bind="obj.Dosis" blur.trigger="save()" keydown.trigger="checkkey($event)" focus.bind="dosisFocus"><br />
+    <input type="text" style="width: 32em;" id="remark" value.bind="obj.Bemerkung" blur.trigger="save()" keydown.trigger="checkkey($event)">
   </span>
 </template>

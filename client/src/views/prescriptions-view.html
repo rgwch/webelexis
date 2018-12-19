@@ -27,7 +27,7 @@
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="fm of fixmedi">
-                <medication obj.bind="fm"></medication>
+                <medication obj.bind="fm" type="fix"></medication>
               </div>
             </div>
           </div>
@@ -41,7 +41,7 @@
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="fm of reservemedi">
-                <medication obj.bind="fm"></medication>
+                <medication obj.bind="fm" type="res"></medication>
               </div>
             </div>
           </div>
@@ -65,16 +65,17 @@
         </div>
         <!-- Momentan ausgewähltes Rezept -->
         <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-          <div class="card-header" noselect>
-            Rezept
+          <div class="card-header">
+            <span class="noselect">Rezept</span>
             <img src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
           </div>
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="presc of rezept">
-                <medication obj.bind="presc"></medication>
+                <medication obj.bind="presc" type="rp"></medication>
               </div>
             </div>
+            <input type="text" value.bind="rezeptZusatz" style="width:100%;font-size: smaller">
           </div>
         </div>
       </div>
@@ -82,12 +83,12 @@
       <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)"
         drop.trigger="dragDrop($event)">
         <div class="card-header" ref="c_header">
-          Nicht (mehr) regelmässig
+          <span class="noselect">Nicht (mehr) regelmässig</span>
         </div>
         <div class="card-body">
           <ul css="overflow:auto;height:${client}px">
             <li class="compactlist" repeat.for="fm of symptommedi">
-              <medication obj.bind="fm"></medication>
+              <medication obj.bind="fm" type="sym"></medication>
             </li>
           </ul>
         </div>

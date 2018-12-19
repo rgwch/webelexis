@@ -19,7 +19,7 @@ module.exports = function (app) {
         table.string('mandantid', 40)
         table.string('datum', 8)
         // table.text('rptxt')    not used
-        // table.string('RpZusatz') not used
+        table.string('RpZusatz',80)
         table.string('BriefID', 40)
         table.string('deleted', 1)
         table.integer('LASTUPDATE')
