@@ -1,4 +1,13 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const errors = require("@feathersjs/errors");
+
+const errhandler=ctx=>{
+  if(ctx.error){
+    const newError = new errors.GeneralError("server error");
+    ctx.error = newError;
+    return ctx;
+  }
+}
 
 module.exports = {
   before: {
@@ -22,7 +31,7 @@ module.exports = {
   },
 
   error: {
-    all: [],
+    all: [errhandler],
     find: [],
     get: [],
     create: [],

@@ -6,13 +6,18 @@
 
 import { BindingSignaler } from 'aurelia-templating-resources';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { autoinject } from "aurelia-framework";
+import { autoinject, LogManager } from "aurelia-framework";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
 import { PrescriptionManager } from "models/prescription-model";
 import { BriefManager, BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
+import { DocType, DocManager } from '../models/document-model'
+import { PatientManager } from 'models/patient';
+// import * as html2pdf from 'html2pdf.js'
+
+const log = LogManager.getLogger('prescriptions-view')
 
 @autoinject
 @connectTo<State>({
@@ -21,6 +26,7 @@ import { DateTime } from 'services/datetime';
   }
 })
 export class Prescriptions {
+  log
   searchexpr = ""
   private actPatient
   fixmedi = []
@@ -50,7 +56,8 @@ export class Prescriptions {
   }
 
   constructor(private pm: PrescriptionManager, private ea: EventAggregator,
-    private signaler: BindingSignaler, private bm: BriefManager, private dt: DateTime) {
+    private signaler: BindingSignaler, private bm: BriefManager, 
+    private dt: DateTime, private dm: DocManager, private patm:PatientManager) {
   }
 
   attached() {
@@ -87,7 +94,7 @@ export class Prescriptions {
 
   selectRezept(rp) {
     this.rezept = rp[1].prescriptions
-    this.rezeptZusatz=rp[1].RpZusatz
+    this.rezeptZusatz = rp[1].RpZusatz
     this.actrezept = rp[0]
     this.signaler.signal('selected')
   }
@@ -113,8 +120,8 @@ export class Prescriptions {
       const remark = item.Bemerkung ? ("<br />" + item.Bemerkung) : ""
       table += `<tr><td>${item.ANZAHL || ""}</td><td>${item.Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
-    table+="</table>"
-    const fields = [{ field: "liste", replace: table },{field: "zusatz", replace: this.rezeptZusatz}]
+    table += "</table>"
+    const fields = [{ field: "liste", replace: table }, { field: "zusatz", replace: this.rezeptZusatz }]
     const rp: BriefType = {
       Datum: this.dt.DateToElexisDate(new Date()),
       Betreff: "Rezept",
@@ -129,6 +136,22 @@ export class Prescriptions {
       } else {
         win.document.write(html)
         win.print()
+        /*
+        const domdoc = win.document.body
+        const worker=new html2pdf.Worker
+        worker.from(domdoc).toPdf().thenExternal(rs=>{
+          console.log(rs)
+        })*/
+        const wlxdoc: DocType = {
+          date: rp.Datum,
+          payload: html,
+          category: "Ausgang",
+          concern: this.patm.createConcern(this.actPatient),
+          subject: "Rezept"
+        }
+        this.dm.store(wlxdoc).catch(err=>{
+          alert("Fehler beim Speichern")
+        })
       }
     })
   }

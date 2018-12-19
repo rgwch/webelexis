@@ -40,7 +40,7 @@ export class Document {
 
   actPatientChanged(newvalue: ElexisType, oldvalue: ElexisType) {
     this.obj.concern = newvalue
-    this.htmlText = this.obj.contents
+   
   }
 
   objChanged(newValue, oldValue) {
@@ -89,17 +89,7 @@ export class Document {
 
   }
 
-  fromTemplate(template: DocType) {
-    delete this.obj.id
-    delete this.obj["_id"]
-    this.obj.subject = template.subject
-    this.obj.template = template.id
-    this.obj.concern = this.actPatient
-    this.obj.contents = this.dm.getEditable(template.id,this.obj)
-    this.htmlText = this.obj.contents
-    this.dispatcher.selectItem(this.obj)
-  }
-
+  
   /**
    * Display a modal dialog (bootstrap modal) to enter/accept a subject line for the document.
    */
@@ -143,23 +133,9 @@ export class Document {
     */
   }
 
-  async doCreatePdf() {
-    let result = this.obj.contents
-    if (this.obj.template) {
-      const template = await this.docService.get(this.obj.template)
-      if (template) {
-        // result = doc.mergeWithTemplate(template)
-        //const pdf=await this.dataService.toPDF(merged)
-        //return pdf
-      }
-    }
-    const win = window.open("", "_new")
-    win.document.write(result)
-  }
-
+ 
   doSaveTemplate() {
     console.log("save template")
-    this.obj.template = "1"
     delete this.obj.concern
     delete this.obj.id
     delete this.obj["_id"]

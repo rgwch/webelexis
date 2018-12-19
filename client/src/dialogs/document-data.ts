@@ -18,7 +18,7 @@ export class DocumentData {
   activate(doc: DocType) {
     this.document = doc
     this.data.subject = doc.subject
-    this.data.addressee = doc.addressee ? Patient.getLabel(doc.addressee) : "Adressat"
+    //this.data.addressee = doc. ? Patient.getLabel(doc.addressee) : "Adressat"
 
   }
 

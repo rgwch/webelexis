@@ -4,11 +4,11 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
- import { StickerManager } from './stickers.model';
+import { StickerManager } from './stickers.model';
 import { KontaktType } from './kontakt';
 import { FHIR_Patient, FHIR_ContactPoint } from '../models/fhir/fhir'
 import { DateTime } from '../services/datetime';
-import { Container } from 'aurelia-framework'
+import { Container, autoinject } from 'aurelia-framework'
 import * as moment from 'moment'
 import { I18N } from 'aurelia-i18n'
 import { FlexformConfig, FlexformListRenderer } from '../components/flexform'
@@ -19,6 +19,26 @@ import { FlexformConfig, FlexformListRenderer } from '../components/flexform'
  */
 export interface PatientType extends KontaktType {
 
+}
+
+@autoinject
+export class PatientManager {
+
+  constructor(private dt: DateTime) { }
+
+  createConcern(pat: PatientType) {
+    const n1 = pat.Bezeichnung1
+    const n2 = pat.Bezeichnung2
+    const n3 = pat.geburtsdatum
+    let ret = n1 ? n1.substr(0, Math.min(3, n1.length)) : "x"
+    ret += "/"
+    ret += n1 || "x"
+    ret += "_"
+    ret += n2 || "x"
+    ret += "_"
+    ret += n3 ? this.dt.ElexisDateToLocalDate(n3) : "x"
+    return ret;
+  }
 }
 
 export class Patient {
@@ -137,7 +157,7 @@ export class Patient {
           label: i18.tr("contact.mobile"),
           datatype: "string",
           sizehint: 4
-        },{
+        }, {
           attribute: "Email",
           label: i18.tr("contact.email"),
           datatype: "string",

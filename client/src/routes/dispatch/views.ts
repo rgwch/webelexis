@@ -87,10 +87,5 @@ export default{
       icon: "/pills.svg",
       view: PLATFORM.moduleName("views/prescriptions-view"),
       role: global.roles.user
-    },
-    rezept:{
-      text: "Rezept",
-      icon: "/medical-prescription.svg",
-      view: PLATFORM.moduleName("forms/prescription-form")
     }
   }
