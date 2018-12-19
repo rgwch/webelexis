@@ -34,17 +34,14 @@ Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Daten
 
 ### Lucinda installieren
 
-Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/lucinda/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore 
+Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/lucinda/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore. 
 
 Installation und Konfiguration von Lucinda ist vergleichsweise simpel. 
 
-### Html2pdf installieren
-
-Wenn von Webelexis aus Dokumente (Rezpete, AUF, Briefe etc.) erstellt werden sollen, muss html2pdf auf dem Server installiert werden.
 
 ### Nodejs installieren
 
-Empfehlung: Node >10 und NPM>5
+Empfehlung: Node >10 und NPM>5 (Die verwendete Node-Version muss zwingend Features wie Promises und async/await, sowie fsPromises bieten).
 
 ### Webelexis clonen und installieren
 
@@ -56,7 +53,7 @@ Folgende Libraries müssen besorgt und nach server/lib kopiert werden:
 * jackson-annotations-2.7.0.jar
 * jackson-core-2.7.4.jar
 * jackson-databind-2.7.4.jar
-* rgw-toolbox-4.2.6.jar
+* rgw-toolbox-4.2.7.jar
 
 Man kann das automatisieren, wenn man Maven >=3.3 installiert hat: Einfach ins Verzeichnis server/lib gehen, und dort `./fetch.sh` eingeben.
 
