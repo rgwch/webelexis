@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { BindingSignaler } from 'aurelia-templating-resources';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from "aurelia-framework";

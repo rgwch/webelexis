@@ -1,3 +1,10 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+ 
 import { WebelexisEvents } from './../webelexisevents';
 import { DataService, DataSource } from 'services/datasource';
 import { autoinject } from 'aurelia-framework';
@@ -27,6 +34,12 @@ export class BriefManager {
     this.briefService = ds.getService('briefe')
   }
 
+  /**
+   * Generate a letter (which means: merge a template with a number of field definitions and system constants)
+   * @param brief 
+   * @param template 
+   * @param fields 
+   */
   async generate(brief: BriefType, template: string, fields?: Array<{ field: string, replace: string }>) {
     const tmpls = await this.briefService.find({ query: { Betreff: template + "_webelexis", typ: "Vorlagen" } })
     if (tmpls.data.length > 0) {
@@ -38,6 +51,16 @@ export class BriefManager {
     }
   }
 
+  /**
+   * Replace fields in the template with data from the 'brief' and fields from an array.
+   * First scan the template for fieldnames enclosed in [brackets] matching the names in the fields-Array
+   * and replace them with the values in the field array.
+   * Second, scan for fields of the form [datatype.attribute] and replace them with the currently active 
+   * instance of the datatype and the named attribute therof.
+   * @param template An html template with some fields to replace in the form [fieldname] or [datatype.attribute]
+   * @param brief 
+   * @param fields 
+   */
   replaceFields(template: string, brief: BriefType, fields?: Array<{ field: string, replace: string }>) {
     const fieldmatcher = /\[\w+\.\w+\]/ig
     for (const f of fields) {
