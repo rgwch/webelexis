@@ -56,8 +56,8 @@ export class Prescriptions {
   }
 
   constructor(private pm: PrescriptionManager, private ea: EventAggregator,
-    private signaler: BindingSignaler, private bm: BriefManager, 
-    private dt: DateTime, private dm: DocManager, private patm:PatientManager) {
+    private signaler: BindingSignaler, private bm: BriefManager,
+    private dt: DateTime, private dm: DocManager, private patm: PatientManager) {
   }
 
   attached() {
@@ -70,11 +70,12 @@ export class Prescriptions {
     this.fixmedi = []
     this.symptommedi = []
     this.reservemedi = []
-    // this.rezepte = []
+    this.rezepte = []
+    this.rezept = []
     return this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
-      this.symptommedi = result.symptom.sort((a, b) => {
+      const rest = result.symptom.sort((a, b) => {
         if (a.Artikel && b.Artikel) {
           const aa = a.Artikel;
           const ba = b.Artikel;
@@ -86,6 +87,25 @@ export class Prescriptions {
           }
         }
       })
+      let sign = rest[0]
+      const compacted = []
+      for (let i=0;i<rest.length;i++) {
+        const r=rest[i]
+        if (r.Artikel && r.Artikel.DSCR) {
+          if (r.Artikel.DSCR === sign.Artikel.DSCR) {
+            if (r.DateFrom < sign.DateFrom) {
+              sign.DateFrom = r.DateFrom
+            }
+            if(r.DateUntil>sign.DateUntil){
+              sign.DateUntil=r.DateUntil
+            }
+          }else{
+            compacted.push(sign)
+            sign=rest[i]
+          }
+        }
+      }
+      this.symptommedi = compacted
       this.rezepte = result.rezepte.sort((a, b) => {
         return a[1].date.localeCompare(b[1].date) * -1
       })
@@ -93,6 +113,7 @@ export class Prescriptions {
   }
 
   selectRezept(rp) {
+    this.rezept=[]
     this.rezept = rp[1].prescriptions
     this.rezeptZusatz = rp[1].RpZusatz
     this.actrezept = rp[0]
@@ -149,7 +170,7 @@ export class Prescriptions {
           concern: this.patm.createConcern(this.actPatient),
           subject: "Rezept"
         }
-        this.dm.store(wlxdoc).catch(err=>{
+        this.dm.store(wlxdoc).catch(err => {
           alert("Fehler beim Speichern")
         })
       }

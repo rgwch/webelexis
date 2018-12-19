@@ -1,8 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const errors = require("@feathersjs/errors");
+const logger = require('../../logger')
 
 const errhandler=ctx=>{
   if(ctx.error){
+    logger.error(ctx.error)
     const newError = new errors.GeneralError("server error");
     ctx.error = newError;
     return ctx;
