@@ -67,11 +67,13 @@ export class Prescriptions {
   }
 
   refresh(id) {
+    /*
     this.fixmedi = []
     this.symptommedi = []
     this.reservemedi = []
     this.rezepte = []
-    this.rezept = []
+    // this.rezept = []
+    */
     return this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
@@ -89,19 +91,19 @@ export class Prescriptions {
       })
       let sign = rest[0]
       const compacted = []
-      for (let i=0;i<rest.length;i++) {
-        const r=rest[i]
+      for (let i = 0; i < rest.length; i++) {
+        const r = rest[i]
         if (r.Artikel && r.Artikel.DSCR) {
           if (r.Artikel.DSCR === sign.Artikel.DSCR) {
             if (r.DateFrom < sign.DateFrom) {
               sign.DateFrom = r.DateFrom
             }
-            if(r.DateUntil>sign.DateUntil){
-              sign.DateUntil=r.DateUntil
+            if (r.DateUntil > sign.DateUntil) {
+              sign.DateUntil = r.DateUntil
             }
-          }else{
+          } else {
             compacted.push(sign)
-            sign=rest[i]
+            sign = rest[i]
           }
         }
       }
@@ -112,12 +114,16 @@ export class Prescriptions {
     })
   }
 
-  selectRezept(rp) {
-    this.rezept=[]
-    this.rezept = rp[1].prescriptions
-    this.rezeptZusatz = rp[1].RpZusatz
-    this.actrezept = rp[0]
-    this.signaler.signal('selected')
+  selectRezept(rp?) {
+    if (rp) {
+      this.actrezept = rp[0]
+      this.rezept = rp[1].prescriptions
+      this.rezeptZusatz = rp[1].RpZusatz
+    }
+    setTimeout(() => {
+      this.signaler.signal('selected')
+      this.signaler.signal('update')
+    }, 100)
   }
 
   createRezept() {
@@ -185,12 +191,7 @@ export class Prescriptions {
       return element.parentElement.id.substring(5)
     }
   }
-  /*
-  drag(event) {
-    event.dataTransfer.setData("text", event.target.id)
-    return true
-  }
-*/
+
   dragOver(event) {
     event.preventDefault()
     return true;
@@ -209,11 +210,14 @@ export class Prescriptions {
       this.pm.setMode(data, params).then(updated => {
         setTimeout(() => {
           this.refresh(this.actPatient.id).then(() => {
+            this.selectRezept()
+            /*
             if (params.mode == 'rezept') {
               this.selectRezept(this.rezepte[0])
             }
+            */
           })
-        }, 10)
+        }, 50)
 
       })
     }

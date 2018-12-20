@@ -57,7 +57,7 @@
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte"
-                click.trigger="selectRezept(rp)">
+                click.delegate="selectRezept(rp)">
                 ${rp[1].date | dateFormat:"date"}
               </div>
             </div>
@@ -72,7 +72,7 @@
           <div class="card-body">
             <div css="overflow:auto;height:${client}px">
               <div class="compactlist" repeat.for="presc of rezept">
-                <medication obj.bind="presc & signal: 'selected'" type="rp"></medication>
+                <medication obj.bind="presc" type="rp"></medication>
               </div>
             </div>
             <input type="text" value.bind="rezeptZusatz" style="width:100%;font-size: smaller">
