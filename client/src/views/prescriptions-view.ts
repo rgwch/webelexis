@@ -34,7 +34,7 @@ export class Prescriptions {
   symptommedi = []
   rezepte = []
   rezept = []
-  actrezept: string
+  actrezept = []
   rezeptZusatz: string
   page_header: Element
   c_header: Element
@@ -67,13 +67,13 @@ export class Prescriptions {
   }
 
   refresh(id) {
-    /*
+
     this.fixmedi = []
     this.symptommedi = []
     this.reservemedi = []
     this.rezepte = []
     // this.rezept = []
-    */
+
     return this.pm.fetchCurrent(id).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
@@ -116,7 +116,7 @@ export class Prescriptions {
 
   selectRezept(rp?) {
     if (rp) {
-      this.actrezept = rp[0]
+      this.actrezept = rp
       this.rezept = rp[1].prescriptions
       this.rezeptZusatz = rp[1].RpZusatz
     }
@@ -205,17 +205,15 @@ export class Prescriptions {
       let params: { mode?: string, rezeptid?: string } = {}
       params.mode = event.currentTarget.id.substring(5)
       if (params.mode == "rezept") {
-        params.rezeptid = this.actrezept;
+        params.rezeptid = this.actrezept[0];
       }
       this.pm.setMode(data, params).then(updated => {
         setTimeout(() => {
           this.refresh(this.actPatient.id).then(() => {
-            this.selectRezept()
-            /*
             if (params.mode == 'rezept') {
-              this.selectRezept(this.rezepte[0])
+              this.rezept.push(updated)
+              this.selectRezept(this.actrezept)
             }
-            */
           })
         }, 50)
 
@@ -230,7 +228,15 @@ export class Prescriptions {
   dropTrash(event) {
     event.preventDefault()
     const data = event.dataTransfer.getData("text")
+    const typ = event.dataTransfer.getData("wlx")
     this.pm.delete(data).then(removed => {
+      if (typ == "rp") {
+        const [t, d] = data.split("::")
+        const idx = this.rezept.findIndex(el=>el.id==d)
+        if (idx != -1) {
+          this.rezept = this.rezept.splice(idx, 1)
+        }
+      }
       this.refresh(this.actPatient.id)
     })
   }
@@ -244,8 +250,8 @@ export class Prescriptions {
   set item class according to selection Status (needs signal 'selected')
 */
 export class selectionClassValueConverter {
-  toView(item, sel) {
-    if (sel == item[0]) {
+  toView(item, selected) {
+    if (selected && (selected[0] == item[0])) {
       return "highlight-item"
     } else {
       return "compactlist"

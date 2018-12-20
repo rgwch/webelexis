@@ -31,8 +31,8 @@ export interface PrescriptionType extends ElexisType {
 }
 @autoinject
 export class PrescriptionManager {
-  private prescriptionLoader:DataService
-  private artikelLoader:DataService
+  private prescriptionLoader: DataService
+  private artikelLoader: DataService
 
   constructor(private ds: DataSource, private we: WebelexisEvents, private dt: edt) {
     this.prescriptionLoader = ds.getService('prescriptions')
@@ -90,10 +90,10 @@ export class PrescriptionManager {
       mandantid: this.we.getSelectedItem('usr').id,
       datum: moment().format(ELEXISDATE)
     }
-    
-    return rpService.create(rp).then(ret=>{
+
+    return rpService.create(rp).then(ret => {
       return ret;
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err)
     })
   }
@@ -120,15 +120,9 @@ export class PrescriptionManager {
    * @param mode fixmedi|reservemedi|rezept|symptommedi
    */
   async setMode(data: string, params?: any): Promise<PrescriptionType> {
-    const [datatype, dataid] = data.split("::")
     const now = moment().subtract(10, 'minutes')
     const nowFormatted = now.format(ELEXISDATETIME)
-    let prescription: PrescriptionType
-    if (datatype == "prescription") {
-      prescription = await this.prescriptionLoader.get(dataid)
-    } else if (datatype == "article") {
-      prescription = await this.createFromArticle(dataid)
-    }
+    let prescription = await this.fetch(data)
 
     switch (params.mode) {
       case "fixmedi":
@@ -146,6 +140,7 @@ export class PrescriptionManager {
         prescription.prescType = RECIPE
         prescription.DateUntil = null
         prescription.REZEPTID = params.rezeptid
+        prescription.Artikel=copy.Artikel
         break;
       case "symptommedi": prescription.prescType = SYMPTOMATIC;
         prescription.DateUntil = nowFormatted
@@ -156,7 +151,7 @@ export class PrescriptionManager {
     prescription.prescDate = this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
     // console.log(prescription.prescType+" -> "+updated.prescType)
-    return updated
+    return prescription
   }
 
   getLabel(presc: PrescriptionType): string {
@@ -173,10 +168,10 @@ export class PrescriptionManager {
     return ret
   }
 
-  async save(obj:PrescriptionType){
-    return await this.prescriptionLoader.update(obj.id,obj)
+  async save(obj: PrescriptionType) {
+    return await this.prescriptionLoader.update(obj.id, obj)
   }
-  
+
   async createFromArticle(artid: UUID): Promise<PrescriptionType> {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,
