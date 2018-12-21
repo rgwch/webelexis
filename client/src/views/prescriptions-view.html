@@ -17,15 +17,16 @@
         </div>
       </div>
     </div>
-    <div class="body" css="height:${total}px">
+    <div class="body" css="height:${total+20}px;overflow:hidden">
       <div class="row">
         <!-- Fixmedikation -->
-        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" 
+          drop.trigger="dragDrop($event)">
           <div class="card-header">
             <span class="noselect">Fixmedikation</span>
           </div>
-          <div class="card-body">
-            <medication list.bind="fixmedi" type="fix"></medication>
+          <div class="card-body" css="height:${client}px">
+            <medication list.bind="fixmedi" type="fix" h="${client}px"></medication>
           </div>
         </div>
         <!-- Reservemedikation -->
@@ -35,19 +36,19 @@
             <span class="noselect">Reservemedikation</span>
           </div>
           <div class="card-body">
-            <medication list.bind="reservemedi" type="res"></medication>
+            <medication list.bind="reservemedi" type="res" h="${client}px"></medication>
           </div>
         </div>
       </div>
       <div class="row">
         <!-- Rezeptliste -->
-        <div class="card col-3" css="height:${part}px">
+        <div class="card col-3">
           <div class="card-header" noselect>
             <span class="noselect">Rezepte</span>
             <new-item-button click.delegate="createRezept()"></new-item-button>
           </div>
           <div class="card-body">
-            <!-- 
+            
             <div css="overflow:auto;height:${client}px">
               <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte"
                 click.delegate="selectRezept(rp)">
@@ -55,7 +56,7 @@
               </div>
             </div>
           </div>
-           -->
+           
           </div>
           <!-- Momentan ausgewähltes Rezept -->
           <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
@@ -80,7 +81,7 @@
             <span class="noselect">Nicht (mehr) regelmässig</span>
           </div>
           <div class="card-body">
-            <medication list.bind="symptommedi" type="sym"></medication>
+            <medication list.bind="symptommedi" type="sym" h="${client}px"></medication>
           </div>
         </div>
       </div>

@@ -6,13 +6,14 @@ import { PrescriptionManager, PrescriptionType } from "models/prescription-model
 export class Medication {
   @bindable list: Array<PrescriptionType>
   @bindable type: string = ""
-  expanded:number;
   dosisFocus: boolean = false
   numberFocus: boolean = false
-
+  @bindable h = "6em"
   constructor(private pm: PrescriptionManager, private signaler: BindingSignaler) { }
 
-  attached(){
+  opened = -1
+
+  attached() {
     console.log("attached")
   }
 
@@ -40,20 +41,25 @@ export class Medication {
 
   drag(event) {
     event.dataTransfer.setData("text", event.target.id)
-    event.dataTransfer.setData("wlx",this.type)
+    event.dataTransfer.setData("wlxobj", event.target)
+    event.dataTransfer.setData("wlxorigin", this.type)
     console.log("drag: " + event.target.id)
     return true
   }
 
   expand(idx) {
-    console.log("expand "+idx)
-    this.expanded = idx
+    // console.log("expand "+idx)
+    if (this.opened == idx) {
+      this.opened = -1
+    } else {
+      this.opened = idx
       if (this.type == "rp") {
         this.numberFocus = true
       } else {
         this.dosisFocus = true
       }
-    this.signaler.signal('expand')  
+    }
+    this.signaler.signal('expand')
   }
   save(obj) {
     this.pm.save(obj).then(s => {
@@ -63,7 +69,7 @@ export class Medication {
 
   checkkey(event) {
     if (event.keyCode == 13) {
-      this.expanded = -1
+      this.opened = -1
     }
     return true
   }
