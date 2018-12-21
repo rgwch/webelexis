@@ -5,12 +5,16 @@ import { DataSource, DataService } from 'services/datasource';
 import { ElexisType, UUID } from './elexistype';
 import { DateTime as edt } from '../services/datetime'
 import * as moment from 'moment'
-const FIXMEDI = "0"
-const RESERVE = "1"
-const RECIPE = "2"
-const SELFDISPENSED = "3"
-const DONTKNOW = "4"
-const SYMPTOMATIC = "5"
+
+export class Modalities{
+  static FIXMEDI: "1"
+  static RESERVE = "1"
+  static RECIPE = "2"
+  static SELFDISPENSED = "3"
+  static DONTKNOW = "4"
+  static SYMPTOMATIC = "5"
+}
+
 //const ELEXISDATETIME = "yyyyLLddHHmmss"
 const ELEXISDATETIME = "YYYYMMDDHHmmss"
 const ELEXISDATE = "YYYYMMDD"
@@ -54,9 +58,9 @@ export class PrescriptionManager {
       const rps = new Map()
       for (const art of result.data) {
         switch (art.prescType) {
-          case FIXMEDI: ret.fix.push(art); break;
-          case RESERVE: ret.reserve.push(art); break;
-          case SYMPTOMATIC: ret.symptom.push(art); break;
+          case Modalities.FIXMEDI: ret.fix.push(art); break;
+          case Modalities.RESERVE: ret.reserve.push(art); break;
+          case Modalities.SYMPTOMATIC: ret.symptom.push(art); break;
           // don't know what to do with 2-4
           default: ret.symptom.push(art);
         }
@@ -126,26 +130,26 @@ export class PrescriptionManager {
 
     switch (params.mode) {
       case "fixmedi":
-        prescription.prescType = FIXMEDI;
+        prescription.prescType = Modalities.FIXMEDI;
         prescription.DateUntil = null
         break;
       case "reservemedi":
-        prescription.prescType = RESERVE;
+        prescription.prescType = Modalities.RESERVE;
         prescription.DateUntil = null
         break;
       case "rezept":
         const copy = Object.assign({}, prescription)
         delete copy.id
         prescription = await this.prescriptionLoader.create(copy)
-        prescription.prescType = RECIPE
+        prescription.prescType = Modalities.RECIPE
         prescription.DateUntil = null
         prescription.REZEPTID = params.rezeptid
         prescription.Artikel=copy.Artikel
         break;
-      case "symptommedi": prescription.prescType = SYMPTOMATIC;
+      case "symptommedi": prescription.prescType = Modalities.SYMPTOMATIC;
         prescription.DateUntil = nowFormatted
         break;
-      default: prescription.prescType = SYMPTOMATIC
+      default: prescription.prescType = Modalities.SYMPTOMATIC
     }
     prescription.DateFrom = nowFormatted
     prescription.prescDate = this.dt.DateToElexisDate(new Date())

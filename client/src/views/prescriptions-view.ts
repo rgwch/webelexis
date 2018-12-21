@@ -10,7 +10,7 @@ import { autoinject, LogManager } from "aurelia-framework";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
-import { PrescriptionManager } from "models/prescription-model";
+import { PrescriptionManager, Modalities } from "models/prescription-model";
 import { BriefManager, BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
 import { DocType, DocManager } from '../models/document-model'
@@ -26,6 +26,7 @@ const log = LogManager.getLogger('prescriptions-view')
   }
 })
 export class Prescriptions {
+  mod=Modalities
   log
   searchexpr = ""
   private actPatient
@@ -192,11 +193,7 @@ export class Prescriptions {
     }
   }
 
-  dragOver(event) {
-    event.preventDefault()
-    return true;
-  }
-
+  /*
   dragDrop(event) {
     event.preventDefault()
     const data = event.dataTransfer.getData("text")
@@ -221,6 +218,7 @@ export class Prescriptions {
     }
     return true
   }
+  */
   dragTrash(event) {
     event.preventDefault()
     return true

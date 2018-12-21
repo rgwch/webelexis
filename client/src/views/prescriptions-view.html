@@ -20,23 +20,21 @@
     <div class="body" css="height:${total+20}px;overflow:hidden">
       <div class="row">
         <!-- Fixmedikation -->
-        <div class="card col" id="card_fixmedi" css="height:${part}px" dragover.trigger="dragOver($event)" 
-          drop.trigger="dragDrop($event)">
+        <div class="card col" id="card_fixmedi" css="height:${part}px" >
           <div class="card-header">
             <span class="noselect">Fixmedikation</span>
           </div>
           <div class="card-body" css="height:${client}px">
-            <medication list.bind="fixmedi" type="fix" h="${client}px"></medication>
+            <medication list.bind="fixmedi" modality="${mod.FIXMEDI}" h="${client}px"></medication>
           </div>
         </div>
         <!-- Reservemedikation -->
-        <div class="card col" id="card_reservemedi" css="height:${part}px" dragover.trigger="dragOver($event)"
-          drop.trigger="dragDrop($event)">
+        <div class="card col" id="card_reservemedi" css="height:${part}px">
           <div class="card-header">
             <span class="noselect">Reservemedikation</span>
           </div>
           <div class="card-body">
-            <medication list.bind="reservemedi" type="res" h="${client}px"></medication>
+            <medication list.bind="reservemedi" modality="${mod.RESERVE}" h="${client}px"></medication>
           </div>
         </div>
       </div>
@@ -59,7 +57,7 @@
            
           </div>
           <!-- Momentan ausgewähltes Rezept -->
-          <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+          <div class="card col-9" id="card_rezept">
             <div class="card-header">
               <span class="noselect">Rezept</span>
               <img src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
@@ -75,13 +73,12 @@
           </div>
         </div>
         <!-- Komplettliste alle Medikamente des Patienten -->
-        <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)"
-          drop.trigger="dragDrop($event)">
+        <div class="card" id="card_symptommedi" css="height:${part+10}px">
           <div class="card-header" ref="c_header">
             <span class="noselect">Nicht (mehr) regelmässig</span>
           </div>
           <div class="card-body">
-            <medication list.bind="symptommedi" type="sym" h="${client}px"></medication>
+            <medication list.bind="symptommedi" modality="${mod.SYMPTOMATIC}" h="${client}px"></medication>
           </div>
         </div>
       </div>
