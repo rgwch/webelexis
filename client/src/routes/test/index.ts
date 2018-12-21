@@ -5,7 +5,7 @@ import { EventAggregator } from 'aurelia-event-aggregator';
 
 @autoinject
 export class TestIndex{
-  views=[v.edit,v.scroll,v.kons,v.findings,v.grafik,v.dragdrop,v.smartlist]
+  views=[v.edit,v.scroll,v.kons,v.findings,v.grafik,v.dragdrop,v.smartlist, v.medication]
 
   constructor(private ea:EventAggregator){
 

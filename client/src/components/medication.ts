@@ -4,13 +4,17 @@ import { PrescriptionManager, PrescriptionType } from "models/prescription-model
 
 @autoinject
 export class Medication {
-  @bindable liste: Array<PrescriptionType>
+  @bindable list: Array<PrescriptionType>
   @bindable type: string = ""
   expanded:number;
   dosisFocus: boolean = false
   numberFocus: boolean = false
 
   constructor(private pm: PrescriptionManager, private signaler: BindingSignaler) { }
+
+  attached(){
+    console.log("attached")
+  }
 
   getLabel(obj) {
     let lbl = ""
@@ -41,25 +45,25 @@ export class Medication {
     return true
   }
 
-  expand() {
-    this.expanded = !this.expanded
-    if (this.expanded) {
+  expand(idx) {
+    console.log("expand "+idx)
+    this.expanded = idx
       if (this.type == "rp") {
         this.numberFocus = true
       } else {
         this.dosisFocus = true
       }
-    }
+    this.signaler.signal('expand')  
   }
-  save() {
-    this.pm.save(this.obj).then(s => {
+  save(obj) {
+    this.pm.save(obj).then(s => {
       this.signaler.signal('update')
     })
   }
 
   checkkey(event) {
     if (event.keyCode == 13) {
-      this.expanded = false
+      this.expanded = -1
     }
     return true
   }

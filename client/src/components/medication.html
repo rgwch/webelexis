@@ -1,17 +1,20 @@
 <template>
-  <div css="overflow:auto;height:${client}px">
+  <div style="border: solid 2px gold">
     <div class="compactlist" repeat.for="fm of list">
-      <span if.bind="expanded && type=='rp'">
-        <input type="text" style="width:4em;" id="anzahl" value.bind="obj.ANZAHL" blur.trigger="save()" keydown.trigger="checkkey($event)"
+      <span if.bind="$index == expanded && type=='rp'">
+        <input type="text" style="width:4em;" id="anzahl" value.bind="fm.ANZAHL" blur.trigger="save(fm)" 
+          keydown.trigger="checkkey($event)"
           focus.bind="numberFocus">
       </span>
-      <span class="noselect" click.trigger="expand()" draggable="true" dragstart.trigger="drag($event)" id="prescription::${obj.id}">
-        ${getLabel(obj)}
+      <span class="noselect" click.trigger="expand($index)" draggable="true" dragstart.trigger="drag($event)" 
+      id="prescription::${fm.id}">
+        ${getLabel(fm)} Index: ${$index}
       </span>
-      <span if.bind="expanded">
-        <input type="text" style="width:6em;" id="dosis" value.bind="obj.Dosis" blur.trigger="save()" keydown.trigger="checkkey($event)"
+      <span if.bind="$index == expanded & signal:'expand'">
+        <input type="text" style="width:6em;" id="dosis" value.bind="fm.Dosis" blur.trigger="save(fm)" 
+        keydown.trigger="checkkey($event)"
           focus.bind="dosisFocus"><br />
-        <input type="text" style="width: 32em;" id="remark" value.bind="obj.Bemerkung" blur.trigger="save()"
+        <input type="text" style="width: 32em;" id="remark" value.bind="fm.Bemerkung" blur.trigger="save(fm)"
           keydown.trigger="checkkey($event)">
       </span>
     </div>

@@ -28,5 +28,9 @@ export default{
   "smartlist":{
     "name": "Smartlist",
     "view": PLATFORM.moduleName("./smartlist_")
+  },
+  "medication":{
+    "name":"Medikation",
+    "view": PLATFORM.moduleName("./medi")
   }
 }
