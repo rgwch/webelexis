@@ -25,11 +25,7 @@
             <span class="noselect">Fixmedikation</span>
           </div>
           <div class="card-body">
-            <div css="overflow:auto;height:${client}px">
-              <div class="compactlist" repeat.for="fm of fixmedi">
-                <medication obj.bind="fm" type="fix"></medication>
-              </div>
-            </div>
+            <medication list.bind="fixmedi" type="fix"></medication>
           </div>
         </div>
         <!-- Reservemedikation -->
@@ -39,11 +35,7 @@
             <span class="noselect">Reservemedikation</span>
           </div>
           <div class="card-body">
-            <div css="overflow:auto;height:${client}px">
-              <div class="compactlist" repeat.for="fm of reservemedi">
-                <medication obj.bind="fm" type="res"></medication>
-              </div>
-            </div>
+            <medication list.bind="reservemedi" type="res"></medication>
           </div>
         </div>
       </div>
@@ -55,6 +47,7 @@
             <new-item-button click.delegate="createRezept()"></new-item-button>
           </div>
           <div class="card-body">
+            <!-- 
             <div css="overflow:auto;height:${client}px">
               <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte"
                 click.delegate="selectRezept(rp)">
@@ -62,37 +55,34 @@
               </div>
             </div>
           </div>
-        </div>
-        <!-- Momentan ausgewähltes Rezept -->
-        <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
-          <div class="card-header">
-            <span class="noselect">Rezept</span>
-            <img src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
+           -->
           </div>
-          <div class="card-body rezept">
-            <div css="overflow:auto;height:${client}px">
-              <div class="compactlist" repeat.for="presc of rezept">
-                <medication obj.bind="presc" type="rp"></medication>
-              </div>
+          <!-- Momentan ausgewähltes Rezept -->
+          <div class="card col-9" id="card_rezept" dragover.trigger="dragOver($event)" drop.trigger="dragDrop($event)">
+            <div class="card-header">
+              <span class="noselect">Rezept</span>
+              <img src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
             </div>
-            <input type="text" value.bind="rezeptZusatz" style="width:100%;font-size: smaller">
+            <div class="card-body rezept">
+              <div css="overflow:auto;height:${client}px">
+                <div class="compactlist" repeat.for="presc of rezept">
+                  <medication obj.bind="presc" type="rp"></medication>
+                </div>
+              </div>
+              <input type="text" value.bind="rezeptZusatz" style="width:100%;font-size: smaller">
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Komplettliste alle Medikamente des Patienten -->
-      <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)"
-        drop.trigger="dragDrop($event)">
-        <div class="card-header" ref="c_header">
-          <span class="noselect">Nicht (mehr) regelmässig</span>
-        </div>
-        <div class="card-body">
-          <ul css="overflow:auto;height:${client}px">
-            <li class="compactlist" repeat.for="fm of symptommedi">
-              <medication obj.bind="fm" type="sym"></medication>
-            </li>
-          </ul>
+        <!-- Komplettliste alle Medikamente des Patienten -->
+        <div class="card" id="card_symptommedi" css="height:${part+10}px" dragover.trigger="dragOver($event)"
+          drop.trigger="dragDrop($event)">
+          <div class="card-header" ref="c_header">
+            <span class="noselect">Nicht (mehr) regelmässig</span>
+          </div>
+          <div class="card-body">
+            <medication list.bind="symptommedi" type="sym"></medication>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </template>

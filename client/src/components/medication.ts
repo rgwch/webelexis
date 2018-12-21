@@ -4,17 +4,17 @@ import { PrescriptionManager, PrescriptionType } from "models/prescription-model
 
 @autoinject
 export class Medication {
-  @bindable obj: PrescriptionType
+  @bindable liste: Array<PrescriptionType>
   @bindable type: string = ""
-  expanded = false;
+  expanded:number;
   dosisFocus: boolean = false
   numberFocus: boolean = false
 
   constructor(private pm: PrescriptionManager, private signaler: BindingSignaler) { }
 
-  getLabel() {
+  getLabel(obj) {
     let lbl = ""
-    const o = this.obj
+    const o = obj
     if (o) {
       if (o.ANZAHL) {
         lbl += o.ANZAHL.toString() + " "
