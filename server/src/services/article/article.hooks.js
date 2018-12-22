@@ -6,7 +6,7 @@
 
 const filters = require('./article_filters')
 const filter = filters({ blackbox: true, generics: false })
-const handleExtinfo = require('../../hooks/handle-extinfo')
+const handleExtinfo = require('../../hooks/handle-extinfo')({extinfo: "ExtInfo"})
 
 const scopes = {
   "ch.artikelstamm.elexix.common.ArtikelstammItem": "artikelstamm_ch",
@@ -41,7 +41,7 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [handleExtinfo({ extinfo: "ExtInfo" })],
+    get: [handleExtinfo],
     create: [],
     update: [],
     patch: [],

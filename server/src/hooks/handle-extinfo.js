@@ -7,7 +7,7 @@
 const ElexisUtils = require('../util/elexis-types')
 const util = new ElexisUtils()
 
-const defaultOptions={
+const defaultOptions = {
   extinfo: "extinfo"
 }
 
@@ -18,20 +18,27 @@ const defaultOptions={
  * ExtInfo field (case sensitive!). Defaults to 'extinfo'
  */
 
-module.exports=function (options=defaultOptions){
-  return context=>{
-    if (context.result && context.result[options.extinfo]) {
-      const obj=context.result
-      obj.extjson = util.getExtInfo(obj[options.extinfo])
-      context.result=obj
-    } else if (context.result.data) {
+module.exports = function (options = defaultOptions) {
+  return context => {
+    if (context.method == "get" || context.method == "find") {
+      if (context.result && context.result[options.extinfo]) {
+        const obj = context.result
+        obj.extjson = util.getExtInfo(obj[options.extinfo])
+        context.result = obj
+      } else if (context.result.data) {
         for (const obj of context.result.data) {
           const exti = obj[options.extinfo]
           const json = util.getExtInfo(exti)
           obj.extjson = json
         }
       }
-      return context
+    } else if (context.method == "create" || context.method == "update") {
+      if(context.data && context.data.extjson){
+        context.data[options.extinfo]=util.writeExtInfo(context.data.extJson)
+        delete context.data.extjson
+      }
+    }
+    return context
   }
 
 }

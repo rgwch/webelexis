@@ -68,6 +68,9 @@ const createcheck = ctx => {
   if (ctx.params.DateUntil == "null") {
     ctx.params.DateUntil = null
   }
+  if(ctx.params.Artikel && ctx.params.Artikel.id){
+    
+  }
   return ctx
 }
 module.exports = {
@@ -84,7 +87,7 @@ module.exports = {
   after: {
     all: [],
     find: [handleExtinfo({ extinfo: "ExtInfo" }), addArticle],
-    get: [addArticle],
+    get: [addArticle, handleExtinfo({extinfo: "ExtInfo"})],
     create: [],
     update: [],
     patch: [],
