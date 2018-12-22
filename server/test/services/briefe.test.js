@@ -3,7 +3,7 @@ const app = require('../../src/app');
 const path=require('path')
 require('chai').should()
 
-describe('\'briefe\' service', () => {
+xdescribe('\'briefe\' service', () => {
   let service = app.service('briefe');
   /*
   const orig=app.get('userconfig')

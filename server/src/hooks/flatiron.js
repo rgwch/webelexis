@@ -16,18 +16,17 @@
     }
 */
 
-const flatten = (ctx, fieldlist) => {
-  return ctx => {
-    for (const field of fieldlist) {
-      // note: typeof(null) is 'object'. Don't ask why. So double check here.
-      const obj = ctx.data[field.obj]
-      if (obj && typeof obj == 'object' && obj.id) {
-        const prefix = field.prefix ? field.prefix + "::" : ""
-        ctx.data[field.id] = prefix + obj.id
-      }
+const flatten = (item, fieldlist) => {
+  for (const field of fieldlist) {
+    // note: typeof(null) is 'object'. Don't ask why. So double check here.
+    const obj = item[field.obj]
+    if (obj && typeof obj == 'object' && obj.id) {
+      const prefix = field.prefix ? field.prefix + "::" : ""
+      item[field.id] = prefix + obj.id
+      delete item[field.obj]
     }
-    return ctx
   }
+  return item
 }
 
 const fold = async (app, obj, fieldlist) => {
@@ -42,8 +41,23 @@ const fold = async (app, obj, fieldlist) => {
 module.exports = fieldlist => {
   return async ctx => {
     switch (ctx.method) {
-      case 'get': return fold(ctx.app, ctx.result, fieldlist)
+      case 'get': await fold(ctx.app, ctx.result, fieldlist); break
+      case 'find':
+        for (const el of ctx.result.data) {
+          await fold(ctx.app, el, fieldlist)
+        }
+        break;
+      case 'create':
+      case 'update':
+        if (Array.isArray(ctx.data)) {
+          for (const elem of ctx.data) {
+            flatten(elem, fieldlist)
+          }
+        } else {
+          ctx.data=flatten(ctx.data, fieldlist)
+        }
+        break;
     }
-
+    return ctx
   }
 }

@@ -7,7 +7,12 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const handleExtinfo = require('../../hooks/handle-extinfo')
 const { DateTime } = require('luxon')
-const flatten=require('../../hooks/flatten')
+const flatiron=require('../../hooks/flatiron')([{
+  id: "Artikel",
+  obj: "Artikel_exp",
+  service: "meta-article",
+  prefix: "ch.artikelstamm.elexis.common.ArtikelstammItem"
+}])
 
 /**
  * find the current medication of the given patient (if search parameter current is given and is an id
@@ -68,9 +73,7 @@ const createcheck = ctx => {
   if (ctx.params.DateUntil == "null") {
     ctx.params.DateUntil = null
   }
-  if(ctx.params.Artikel && ctx.params.Artikel.id){
-    
-  }
+
   return ctx
 }
 module.exports = {
@@ -78,16 +81,16 @@ module.exports = {
     all: [authenticate('jwt')],
     find: [current],
     get: [],
-    create: [createcheck,flatten(['Artikel','REZEPTID'])],
-    update: [flatten(['Artikel','REZEPTID'])],
-    patch: [],
+    create: [createcheck,flatiron],
+    update: [flatiron],
+    patch: [flatiron],
     remove: []
   },
 
   after: {
     all: [],
-    find: [handleExtinfo({ extinfo: "ExtInfo" }), addArticle],
-    get: [addArticle, handleExtinfo({extinfo: "ExtInfo"})],
+    find: [handleExtinfo({ extinfo: "ExtInfo" }), flatiron],
+    get: [flatiron, handleExtinfo({extinfo: "ExtInfo"})],
     create: [],
     update: [],
     patch: [],

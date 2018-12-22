@@ -9,7 +9,7 @@ const filter = filters({ blackbox: true, generics: false })
 const handleExtinfo = require('../../hooks/handle-extinfo')({extinfo: "ExtInfo"})
 
 const scopes = {
-  "ch.artikelstamm.elexix.common.ArtikelstammItem": "artikelstamm_ch",
+  "ch.artikelstamm.elexis.common.ArtikelstammItem": "artikelstamm_ch",
   "ch.elexis.medikamente.bag.data.BAGMedi": "artikel",
   "ch.elexis.artikel_ch.data.Medikament": "artikel",
   "ch.elexis.data.Artikel": "artikel"
