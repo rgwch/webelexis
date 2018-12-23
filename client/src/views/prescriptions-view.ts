@@ -79,9 +79,9 @@ export class Prescriptions {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
       const rest = result.symptom.sort((a, b) => {
-        if (a.Artikel && b.Artikel) {
-          const aa = a.Artikel;
-          const ba = b.Artikel;
+        if (a._Artikel && b._Artikel) {
+          const aa = a._Artikel;
+          const ba = b._Artikel;
           if (aa.DSCR && ba.DSCR) {
             return aa.DSCR.localeCompare(ba.DSCR)
           } else {
@@ -94,8 +94,8 @@ export class Prescriptions {
       const compacted = []
       for (let i = 0; i < rest.length; i++) {
         const r = rest[i]
-        if (r.Artikel && r.Artikel.DSCR) {
-          if (r.Artikel.DSCR === sign.Artikel.DSCR) {
+        if (r._Artikel && r._Artikel.DSCR) {
+          if (r._Artikel.DSCR === sign._Artikel.DSCR) {
             if (r.DateFrom < sign.DateFrom) {
               sign.DateFrom = r.DateFrom
             }
@@ -146,7 +146,7 @@ export class Prescriptions {
     let table = "<table>"
     for (const item of this.rezept) {
       const remark = item.Bemerkung ? ("<br />" + item.Bemerkung) : ""
-      table += `<tr><td>${item.ANZAHL || ""}</td><td>${item.Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
+      table += `<tr><td>${item.ANZAHL || ""}</td><td>${item._Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
     table += "</table>"
     const fields = [{ field: "liste", replace: table }, { field: "zusatz", replace: this.rezeptZusatz }]

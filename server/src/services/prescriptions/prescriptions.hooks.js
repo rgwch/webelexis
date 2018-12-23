@@ -5,11 +5,11 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const handleExtinfo = require('../../hooks/handle-extinfo')
 const { DateTime } = require('luxon')
-const flatiron=require('../../hooks/flatiron')([{
+const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "ExtInfo" })
+const flatiron = require('../../hooks/flatiron')([{
   id: "Artikel",
-  obj: "Artikel_exp",
+  obj: "_Artikel",
   service: "meta-article",
   prefix: "ch.artikelstamm.elexis.common.ArtikelstammItem"
 }])
@@ -25,7 +25,8 @@ const current = ctx => {
     const now = DateTime.local().toFormat('yyyyLLddHHmmss')
     ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
-    ctx.params.query.DateFrom = { $lte: now }
+    // ctx.params.query.DateFrom = { $lte: now }
+    ctx.params.query.$or = [{ DateFrom: null }, { DateFrom: { $lte: now } }]
     ctx.params.query.$sort = {
       prescDate: -1
     }
@@ -34,11 +35,9 @@ const current = ctx => {
   return ctx
 }
 
-
-
-const doAddArticle = async (ctx,art) => {
+const doAddArticle = async (ctx, art) => {
   const artid = art.Artikel
-  const rpid=art.REZEPTID
+  const rpid = art.REZEPTID
   try {
     if (artid) {
       art.Artikel = await ctx.articleService.get(artid)
@@ -48,22 +47,25 @@ const doAddArticle = async (ctx,art) => {
   } catch (err) {
     art.Artikel = { DSCR: "doAddArticle: nicht gefunden" }
   }
-  try{
-    if(rpid){
-      art.REZEPTID=await ctx.app.service('rezepte').get(art.REZEPTID)
+  try {
+    if (rpid) {
+      art.REZEPTID = await ctx.app.service('rezepte').get(art.REZEPTID)
     }
-  } catch(err){
+  } catch (err) {
     art.REZEPTID = null
   }
   return art
 }
 
-const addArticle = async ctx => {
+const getArticle = async ctx => {
   ctx.articleService = ctx.app.service('meta-article')
-  if (ctx.method === 'get') {
-    ctx.result = await doAddArticle(ctx,ctx.result)
-  } else {
-    for (const art of ctx.result.data) {
+  ctx.result = await doAddArticle(ctx, ctx.result)
+  return ctx
+}
+const findArticle=async ctx =>{
+  ctx.articleService = ctx.app.service('meta-article')
+  if(ctx.result && ctx.result.data){
+    for(const art of ctx.result.data){
       await doAddArticle(ctx,art)
     }
   }
@@ -81,16 +83,16 @@ module.exports = {
     all: [authenticate('jwt')],
     find: [current],
     get: [],
-    create: [createcheck,flatiron],
-    update: [flatiron],
+    create: [createcheck, handleExtinfo, flatiron],
+    update: [handleExtinfo, flatiron],
     patch: [flatiron],
     remove: []
   },
 
   after: {
     all: [],
-    find: [handleExtinfo({ extinfo: "ExtInfo" }), flatiron],
-    get: [flatiron, handleExtinfo({extinfo: "ExtInfo"})],
+    find: [handleExtinfo, findArticle],
+    get: [getArticle, handleExtinfo],
     create: [],
     update: [],
     patch: [],

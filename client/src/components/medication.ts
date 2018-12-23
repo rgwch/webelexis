@@ -34,8 +34,8 @@ export class Medication {
       if (o.ANZAHL) {
         lbl += o.ANZAHL.toString() + " "
       }
-      if (o.Artikel && o.Artikel["DSCR"]) {
-        lbl += o.Artikel["DSCR"]
+      if (o._Artikel && o._Artikel["DSCR"]) {
+        lbl += o._Artikel["DSCR"]
       } else {
         lbl += "?"
       }

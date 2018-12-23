@@ -8,11 +8,19 @@ describe('\'prescriptions\' service', () => {
   it('registered the service', () => {
     assert.ok(service, 'Registered the service');
   });
-  it('loads current medication from unittest',async ()=>{
+  it('loads and updates current medication from unittest',async ()=>{
     const patService=app.service('patient')
     const list=await patService.find({query: {bezeichnung1:"unittest"}})
     const testperson=list.data[0]
     const medis=await service.find({query: {current: testperson.id}})
     medis.should.be.ok
+    medis.data.length.should.be.gt(0)
+    const medi=medis.data[0]
+    medi.Artikel.should.be.a('string')
+    medi._Artikel.should.be.an('object')
+    medi._Artikel.id.should.equal(medi.Artikel)
+    const updated=await service.update(medi.id,medi)
+    updated.should.not.have.propery('_Artikel')
+    updated.Artikel.should.equal(medi.Artikel)
   })
 });
