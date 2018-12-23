@@ -6,8 +6,7 @@
 
 // Application hooks that run for every service
 const logger = require('./hooks/logger');
-const update = require('./hooks/updatecommon')
-const create = require('./hooks/createcommon')
+const cleanup=require('./hooks/pre-store')
 const treatDeleted = require('./hooks/treat-deleted');
 const softDelete=require('./hooks/softdelete')
 
@@ -17,9 +16,9 @@ module.exports = {
     all: [logger()],
     find: [treatDeleted()],
     get: [],
-    create: [create()],
-    update: [update()],
-    patch: [update()],
+    create: [cleanup],
+    update: [cleanup],
+    patch: [cleanup],
     remove: [softDelete]
   },
 

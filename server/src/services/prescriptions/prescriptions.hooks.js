@@ -6,6 +6,7 @@
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { DateTime } = require('luxon')
+const logger = require('../../logger')
 const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "ExtInfo" })
 const flatiron = require('../../hooks/flatiron')([{
   id: "REZEPTID",
@@ -44,6 +45,7 @@ const doAddArticle = async (ctx, art) => {
       art._Artikel = await ctx.articleService.get(art.artikelid)
     }
   } catch (err) {
+    logger.warn("prescription-hooks#doAddArticle: Article not found " + JSON.stringify(art))
     art._Artikel = { DSCR: "doAddArticle: nicht gefunden" }
   }
   return art
@@ -100,8 +102,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [handleExtinfo, findArticle,flatiron],
-    get: [getArticle, handleExtinfo,flatiron],
+    find: [handleExtinfo, findArticle, flatiron],
+    get: [getArticle, handleExtinfo, flatiron],
     create: [],
     update: [],
     patch: [],

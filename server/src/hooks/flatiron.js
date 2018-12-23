@@ -29,8 +29,8 @@ const flatten = (item, fieldlist) => {
     if (obj && typeof obj == 'object' && obj.id) {
       const prefix = field.prefix ? field.prefix + "::" : ""
       item[field.id] = prefix + obj.id
-      delete item[field.obj]
     }
+    delete item[field.obj]
   }
   return item
 }

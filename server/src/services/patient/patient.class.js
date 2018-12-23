@@ -79,7 +79,6 @@ class Service {
       data.PatientNr = await this.nextPatientNr()
     }
     const kontakt = this.options.app.service("kontakt")
-    //data.lastupdate=new Date().getTime()
     return kontakt.update(id, data, params)
   }
 

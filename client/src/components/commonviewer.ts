@@ -52,7 +52,7 @@ export interface ViewerConfiguration {
 @autoinject
 export class CommonViewer {
   @bindable cv_cfg: ViewerConfiguration
-  items:Array<any>
+  items
   selectedItem:string=""  // referenced in view
   private dataService: DataService
   private newobj={}
@@ -168,7 +168,10 @@ export class CommonViewer {
   }
 
   drag(event){
-    event.dataTransfer.setData("text", event.target.id)
+    const obj = this.items.data.find(el => event.target.id.endsWith(el.id))
+    event.dataTransfer.setData("text/plain", event.target.id)
+    event.dataTransfer.setData("webelexis/object", JSON.stringify(obj))
+    event.dataTransfer.setData("webelexis/datatype", this.cv_cfg.dataType)
     return true
   }
 }
