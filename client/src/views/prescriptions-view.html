@@ -50,7 +50,7 @@
             <div css="overflow:auto;height:${client}px">
               <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte"
                 click.delegate="selectRezept(rp)">
-                ${rp[1].date | dateFormat:"date"}
+                ${rp.datum | dateFormat:"date"}
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@
             <img class="noselect" src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
           </div>
           <div class="card-body">
-            <medication list.bind="rezept" modality="${mod.RECIPE}" h="${client-20}px"></medication>
+            <medication list.bind="actrezept.prescriptions" modality="${mod.RECIPE}" h="${client-20}px"></medication>
             <input type="text" value.bind="rezeptZusatz" style="width:100%;font-size: smaller">
           </div>
         </div>

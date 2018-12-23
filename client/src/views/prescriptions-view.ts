@@ -10,16 +10,21 @@ import { autoinject, LogManager } from "aurelia-framework";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
-import { PrescriptionManager, Modalities, PrescriptionType } from "models/prescription-model";
+import { PrescriptionManager, Modalities, PrescriptionType, RezeptType } from "models/prescription-model";
 import { BriefManager, BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
 import { DocType, DocManager } from '../models/document-model'
 import { PatientManager } from 'models/patient';
 import { TRANSFER_MESSAGE } from '../components/medication'
-import { UUID } from 'models/elexistype';
+import { ElexisType, UUID } from 'models/elexistype';
+import { WebelexisEvents } from './../webelexisevents';
+import { PatientType } from './../models/patient';
+
 // import * as html2pdf from 'html2pdf.js'
 
 const log = LogManager.getLogger('prescriptions-view')
+
+
 
 @autoinject
 @connectTo<State>({
@@ -32,13 +37,12 @@ export class Prescriptions {
   trashstyle = "margin-left:20px"
   log
   searchexpr = ""
-  private actPatient
-  fixmedi = []
-  reservemedi = []
-  symptommedi = []
-  rezepte = []
-  rezept = []
-  actrezept = []
+  private actPatient:PatientType
+  fixmedi: Array<PrescriptionType> = new Array<PrescriptionType>()
+  reservemedi: PrescriptionType[] = []
+  symptommedi: PrescriptionType[] = []
+  rezepte: RezeptType[] = []
+  actrezept: RezeptType = undefined
   rezeptZusatz: string
   page_header: Element
   c_header: Element
@@ -51,7 +55,6 @@ export class Prescriptions {
     if (newValue && ((!oldValue) || (newValue.id !== oldValue.id))) {
       this.searchexpr = ""
       this.actrezept = undefined
-      this.rezept = []
       this.refresh(newValue.id).then(() => {
         this.signaler.signal('selected')
       })
@@ -61,7 +64,8 @@ export class Prescriptions {
 
   constructor(private pm: PrescriptionManager, private ea: EventAggregator,
     private signaler: BindingSignaler, private bm: BriefManager,
-    private dt: DateTime, private dm: DocManager, private patm: PatientManager) {
+    private dt: DateTime, private dm: DocManager, private patm: PatientManager,
+    private we: WebelexisEvents) {
   }
 
   attached() {
@@ -70,13 +74,13 @@ export class Prescriptions {
     this.client = this.part - this.c_header.getBoundingClientRect().height - 20
   }
 
-  refresh(patid:UUID) {
+  refresh(patid: UUID) {
 
     this.fixmedi = []
     this.symptommedi = []
     this.reservemedi = []
     this.rezepte = []
-    // this.rezept = []
+    this.actrezept = undefined
 
     return this.pm.fetchCurrent(patid).then(result => {
       this.fixmedi = result.fix
@@ -113,16 +117,16 @@ export class Prescriptions {
       }
       this.symptommedi = compacted
       this.rezepte = result.rezepte.sort((a, b) => {
-        return a[1].date.localeCompare(b[1].date) * -1
+        return a.datum.localeCompare(b.datum) * -1
       })
     })
   }
 
-  selectRezept(rp?) {
+  selectRezept(rp?: RezeptType) {
     if (rp) {
+      rp.type="rezepte"
       this.actrezept = rp
-      this.rezept = rp[1].prescriptions
-      this.rezeptZusatz = rp[1].RpZusatz
+      this.we.selectItem(rp)
     }
     setTimeout(() => {
       this.signaler.signal('selected')
@@ -131,14 +135,11 @@ export class Prescriptions {
   }
 
   createRezept() {
-    this.pm.createRezept().then(raw => {
-      const rp = [raw.id, {
-        date: raw.datum,
-        prescriptions: [],
-        RpZusatz: raw.RpZusatz
-      }]
-      this.rezepte.unshift(rp)
-      this.selectRezept(rp)
+    this.pm.createRezept().then((raw: RezeptType) => {
+      raw.prescriptions = []
+      this.rezepte.unshift(raw)
+      this.selectRezept(raw)
+      return raw
     }).catch(err => {
       console.log(err)
       alert("Konnte kein Rezept erstellen")
@@ -147,7 +148,7 @@ export class Prescriptions {
 
   toPdf() {
     let table = "<table>"
-    for (const item of this.rezept) {
+    for (const item of this.actrezept.prescriptions) {
       const remark = item.Bemerkung ? ("<br />" + item.Bemerkung) : ""
       table += `<tr><td>${item.ANZAHL || ""}</td><td>${item._Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
@@ -158,7 +159,7 @@ export class Prescriptions {
       Betreff: "Rezept",
       typ: "Rezept",
       MimeType: "text/html",
-      patientid: this.actPatient
+      patientid: this.actPatient.id
     }
     this.bm.generate(rp, "rezept", fields).then(html => {
       const win = window.open("", "_new")
@@ -181,7 +182,7 @@ export class Prescriptions {
           subject: "Rezept"
         }
         this.dm.store(wlxdoc).catch(err => {
-          alert("Fehler beim Speichern")
+          // alert("Fehler beim Speichern")
         })
       }
     })
@@ -198,19 +199,19 @@ export class Prescriptions {
 
   dragTrash(event) {
     event.preventDefault()
-    this.trashstyle="margin-left:18px;transform: scale(1.5);"
+    this.trashstyle = "margin-left:18px;transform: scale(1.5);"
     return true
   }
-  dragTrashEnter(event){
-    this.trashstyle="margin-left:18px;color:red;"
+  dragTrashEnter(event) {
+    this.trashstyle = "margin-left:18px;color:red;"
   }
-  dragTrashLeave(event){
-    this.trashstyle="margin-left:20px;transform:scale(1.0)"
+  dragTrashLeave(event) {
+    this.trashstyle = "margin-left:20px;transform:scale(1.0)"
   }
   dropTrash(event) {
     event.preventDefault()
-    this.trashstyle="margin-left:20px;transform:scale(1.0)"
- 
+    this.trashstyle = "margin-left:20px;transform:scale(1.0)"
+
     const obj: PrescriptionType = JSON.parse(event.dataTransfer.getData("webelexis/object"))
     const mod = event.dataTransfer.getData("webelexis/modality")
     console.log("trash: " + obj + ", " + mod)
@@ -235,8 +236,8 @@ export class Prescriptions {
   set item class according to selection Status (needs signal 'selected')
 */
 export class selectionClassValueConverter {
-  toView(item, selected) {
-    if (selected && (selected[0] == item[0])) {
+  toView(item:RezeptType, selected:RezeptType) {
+    if (selected && (selected.id == item.id)) {
       return "highlight-item"
     } else {
       return "compactlist"

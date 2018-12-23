@@ -3,6 +3,7 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
+const logger = require('../logger')
 
 /*
   Fetch Objects for foreign-key ids when loading objects and remove these objects when storing
@@ -44,7 +45,11 @@ const fold = async (app, obj, fieldlist) => {
   for (const field of fieldlist) {
     if (obj[field.id] && field.service) {
       const rel = app.service(field.service)
-      obj[field.obj] = await rel.get(obj[field.id])
+      try {
+        obj[field.obj] = await rel.get(obj[field.id])
+      } catch (err) {
+        logger.error("flatiron " + err)
+      }
     }
   }
   return obj
@@ -69,7 +74,7 @@ module.exports = fieldlist => {
             flatten(elem, fieldlist)
           }
         } else {
-          ctx.data=flatten(ctx.data, fieldlist)
+          ctx.data = flatten(ctx.data, fieldlist)
         }
         break;
     }

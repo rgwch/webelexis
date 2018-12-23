@@ -13,3 +13,5 @@ export interface ElexisType{
 }
 
 export type UUID=string
+
+export type DATE=string

@@ -1,3 +1,4 @@
+import { WebelexisEvents } from './../../test/spec/dummyevents';
 import { DataService } from 'services/datasource';
 import { BindingSignaler } from 'aurelia-templating-resources';
 import { bindable, autoinject } from "aurelia-framework";
@@ -12,7 +13,8 @@ export class Medication {
   dosisFocus: boolean = false
   numberFocus: boolean = false
   @bindable h = "6em"
-  constructor(private pm: PrescriptionManager, private signaler: BindingSignaler, private ea: EventAggregator) {
+  constructor(private pm: PrescriptionManager, private signaler: BindingSignaler, 
+    private ea: EventAggregator, private we:WebelexisEvents) {
     this.ea.subscribe(TRANSFER_MESSAGE, (msg) => {
       if (msg.source != this.modality) {
         const presc: PrescriptionType = msg.obj
@@ -70,8 +72,10 @@ export class Medication {
     const mod = event.dataTransfer.getData("webelexis/modality")
     // console.log("drop: " + obj + ", " + mod)
     if (this.modality == Modalities.RECIPE) {
+      obj._Rezept=this.we.getSelectedItem('rezepte')
+      obj.REZEPTID=obj._Rezept.id
       this.pm.cloneAs(obj,Modalities.RECIPE).then(result=>{
-        
+        this.list.push(obj)
       })
     } else {
       obj.prescType = this.modality

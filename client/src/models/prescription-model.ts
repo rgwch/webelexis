@@ -1,3 +1,4 @@
+import { Prescriptions } from './../views/prescriptions-view';
 import { Subscription } from 'aurelia-event-aggregator';
 import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework'
@@ -19,6 +20,19 @@ export class Modalities {
 const ELEXISDATETIME = "YYYYMMDDHHmmss"
 const ELEXISDATE = "YYYYMMDD"
 
+export interface RezeptType extends ElexisType {
+  patientid: UUID
+  mandantid: UUID
+  datum: string // 8
+  rptext: string
+  RpZusatz: string
+  BriefID: UUID
+  prescriptions: Array<PrescriptionType>
+}
+
+export interface ArticleType extends ElexisType {
+  DSCR: string
+}
 export interface PrescriptionType extends ElexisType {
   Dosis?: string
   Bemerkung?: string
@@ -28,13 +42,16 @@ export interface PrescriptionType extends ElexisType {
   DateFrom: string  // YYYYMMDDHHmmss
   DateUntil?: string
   ANZAHL?: string
-  Artikel: UUID
-  _Artikel?: ElexisType
+  Artikel?: UUID
+  _Artikel?: ArticleType
+  artikelid?: UUID
   prescType?: string
   sortOrder?: string
   prescDate: string // YYYYMMDD
   prescriptor: UUID
 }
+
+
 @autoinject
 export class PrescriptionManager {
   private prescriptionLoader: DataService
@@ -58,36 +75,29 @@ export class PrescriptionManager {
         rezepte: []
       }
       const rps = new Map()
-      for (const art of result.data) {
-        if (!art.prescType) {
-          art.prescType = "-1"
+      for (const prescription of result.data) {
+        if (!prescription.prescType) {
+          prescription.prescType = "-1"
         }
-        switch (art.prescType) {
-          case Modalities.FIXMEDI: ret.fix.push(art); break;
-          case Modalities.RESERVE: ret.reserve.push(art); break;
-          case Modalities.SYMPTOMATIC: ret.symptom.push(art); break;
+        switch (prescription.prescType) {
+          case Modalities.FIXMEDI: ret.fix.push(prescription); break;
+          case Modalities.RESERVE: ret.reserve.push(prescription); break;
+          case Modalities.SYMPTOMATIC: ret.symptom.push(prescription); break;
           // don't know what to do with 2-4
-          default: ret.symptom.push(art);
+          default: ret.symptom.push(prescription);
         }
-        if(art.prescType==Modalities.RECIPE){
-          console.log(art.REZEPTID, art._Rezept)
-        }
-        if (art._Rezept) {
-          const rezept = art._Rezept
-          if (rezept.id) {
-            let entry = rps.get(rezept.id)
-            if (!entry) {
-              entry = {
-                date: rezept.datum,
-                prescriptions: []
-              }
-              rps.set(rezept.id, entry)
-            }
-            entry.prescriptions.push(art)
+        if (prescription._Rezept) {
+          const rezept = prescription._Rezept
+          let rp = rps.get(rezept.id)
+          if (!rp) {
+            rp = rezept
+            rp.prescriptions = []
+            rps.set(rezept.id, rp)
           }
+          rp.prescriptions.push(prescription)
         }
       }
-      ret.rezepte = Array.from(rps)
+      ret.rezepte = Array.from(rps).map(r => r[1])
       return ret
     })
   }
