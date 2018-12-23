@@ -1,4 +1,4 @@
-import { WebelexisEvents } from './../../test/spec/dummyevents';
+import { WebelexisEvents } from '../webelexisevents';
 import { DataService } from 'services/datasource';
 import { BindingSignaler } from 'aurelia-templating-resources';
 import { bindable, autoinject } from "aurelia-framework";
@@ -92,7 +92,7 @@ export class Medication {
       this.opened = -1
     } else {
       this.opened = idx
-      if (this.modality == "rp") {
+      if (this.modality == Modalities.RECIPE) {
         this.numberFocus = true
       } else {
         this.dosisFocus = true
@@ -100,6 +100,7 @@ export class Medication {
     }
     this.signaler.signal('expand')
   }
+
   save(obj) {
     this.pm.save(obj).then(s => {
       this.signaler.signal('update')
@@ -109,6 +110,7 @@ export class Medication {
   checkkey(event) {
     if (event.keyCode == 13) {
       this.opened = -1
+      
     }
     return true
   }

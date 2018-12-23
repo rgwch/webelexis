@@ -206,8 +206,12 @@ export class PrescriptionManager {
     return ret
   }
 
-  async save(obj: PrescriptionType) {
-    return await this.prescriptionLoader.update(obj.id, obj)
+  save(obj: PrescriptionType) {
+    return this.prescriptionLoader.update(obj.id, obj).then(updated=>{
+      return updated
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 
   async createFromArticle(artid: UUID): Promise<PrescriptionType> {
