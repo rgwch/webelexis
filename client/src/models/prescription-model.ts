@@ -6,8 +6,8 @@ import { ElexisType, UUID } from './elexistype';
 import { DateTime as edt } from '../services/datetime'
 import * as moment from 'moment'
 
-export class Modalities{
-  static FIXMEDI: "1"
+export class Modalities {
+  static FIXMEDI = "0"
   static RESERVE = "1"
   static RECIPE = "2"
   static SELFDISPENSED = "3"
@@ -24,10 +24,12 @@ export interface PrescriptionType extends ElexisType {
   Bemerkung?: string
   patientid: UUID
   REZEPTID?: UUID
+  _Rezept?: ElexisType
   DateFrom: string  // YYYYMMDDHHmmss
   DateUntil?: string
   ANZAHL?: string
-  Artikel: UUID | ElexisType
+  Artikel: UUID
+  _Artikel?: ElexisType
   prescType?: string
   sortOrder?: string
   prescDate: string // YYYYMMDD
@@ -57,6 +59,9 @@ export class PrescriptionManager {
       }
       const rps = new Map()
       for (const art of result.data) {
+        if (!art.prescType) {
+          art.prescType = "-1"
+        }
         switch (art.prescType) {
           case Modalities.FIXMEDI: ret.fix.push(art); break;
           case Modalities.RESERVE: ret.reserve.push(art); break;
@@ -64,8 +69,11 @@ export class PrescriptionManager {
           // don't know what to do with 2-4
           default: ret.symptom.push(art);
         }
-        if (art.REZEPTID) {
-          const rezept = art.REZEPTID
+        if(art.prescType==Modalities.RECIPE){
+          console.log(art.REZEPTID, art._Rezept)
+        }
+        if (art._Rezept) {
+          const rezept = art._Rezept
           if (rezept.id) {
             let entry = rps.get(rezept.id)
             if (!entry) {
@@ -82,6 +90,22 @@ export class PrescriptionManager {
       ret.rezepte = Array.from(rps)
       return ret
     })
+  }
+
+  /**
+   * create a new Prescription based on an existing prescription with a new Modality
+   * @param presc 
+   * @param modality 
+   */
+  async cloneAs(presc: PrescriptionType, modality: string) {
+    const ret = Object.assign({}, presc, { prescType: modality })
+    ret.DateFrom = moment().subtract(10, 'minutes').format(ELEXISDATETIME)
+    ret.prescDate = ret.DateFrom
+    delete ret.id
+    const created = await this.prescriptionLoader.create(ret)
+    created._Artikel = ret._Artikel
+    created._Rezept = ret._Rezept
+    return created
   }
 
   /**
@@ -144,7 +168,7 @@ export class PrescriptionManager {
         prescription.prescType = Modalities.RECIPE
         prescription.DateUntil = null
         prescription.REZEPTID = params.rezeptid
-        prescription.Artikel=copy.Artikel
+        prescription.Artikel = copy.Artikel
         break;
       case "symptommedi": prescription.prescType = Modalities.SYMPTOMATIC;
         prescription.DateUntil = nowFormatted

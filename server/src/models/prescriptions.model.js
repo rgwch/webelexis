@@ -43,6 +43,7 @@ module.exports = function (app) {
         table.string('DateUntil', 14)
         table.String('ANZAHL', 3)
         table.binary('ExtInfo')
+        table.string('artikelid',40)
         table.string('Artikel')
         table.string('prescType', 2)  // 0: Fix, 1: reserve, 2: Recipe (ok, that's weird), 3 Self-Dispensed, 5 Symptomatic
         table.string('sortOrder', 3)

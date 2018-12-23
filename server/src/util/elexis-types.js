@@ -147,13 +147,12 @@ class ElexisUtils {
    * @returns a binary containing the ExtInfo ready to write into the database
    */
   writeExtInfo(obj) {
-    let str = JSON.stringify(obj)
-    /*
-    const zip=new JSZip()
-    zip.file("json", str)
-    return zip.generateAsync({"type": "nodebuffer"})
-*/
-    return java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "flattenFromJson", str)
+    if (obj && obj != {}) {
+      const str = JSON.stringify(obj)
+      return java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "flattenFromJson", str)
+    } else {
+      return null;
+    }
   }
 
   dateStrings(date) {
@@ -225,9 +224,9 @@ class ElexisUtils {
   // make a number of minutes from a hh:mm or hhmm String
   makeMinutes(timeString) {
     let hm = timeString.split(":")
-    if(hm.length<2){
-      hm[1]=timeString.substr(-2)
-      hm[0]=timeString.substr(0,timeString.length-2)
+    if (hm.length < 2) {
+      hm[1] = timeString.substr(-2)
+      hm[0] = timeString.substr(0, timeString.length - 2)
     }
     var ret = parseInt(hm[0]) * 60 + parseInt(hm[1])
     return ret;

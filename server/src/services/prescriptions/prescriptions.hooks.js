@@ -8,10 +8,9 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { DateTime } = require('luxon')
 const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "ExtInfo" })
 const flatiron = require('../../hooks/flatiron')([{
-  id: "Artikel",
-  obj: "_Artikel",
-  service: "meta-article",
-  prefix: "ch.artikelstamm.elexis.common.ArtikelstammItem"
+  id: "REZEPTID",
+  obj: "_Rezept",
+  service: "rezepte"
 }])
 
 /**
@@ -40,19 +39,12 @@ const doAddArticle = async (ctx, art) => {
   const rpid = art.REZEPTID
   try {
     if (artid) {
-      art.Artikel = await ctx.articleService.get(artid)
+      art._Artikel = await ctx.articleService.get(artid)
     } else {
-      art.Artikel = await ctx.articleService.get(art.artikelid)
+      art._Artikel = await ctx.articleService.get(art.artikelid)
     }
   } catch (err) {
-    art.Artikel = { DSCR: "doAddArticle: nicht gefunden" }
-  }
-  try {
-    if (rpid) {
-      art.REZEPTID = await ctx.app.service('rezepte').get(art.REZEPTID)
-    }
-  } catch (err) {
-    art.REZEPTID = null
+    art._Artikel = { DSCR: "doAddArticle: nicht gefunden" }
   }
   return art
 }
@@ -62,20 +54,37 @@ const getArticle = async ctx => {
   ctx.result = await doAddArticle(ctx, ctx.result)
   return ctx
 }
-const findArticle=async ctx =>{
+const findArticle = async ctx => {
   ctx.articleService = ctx.app.service('meta-article')
-  if(ctx.result && ctx.result.data){
-    for(const art of ctx.result.data){
-      await doAddArticle(ctx,art)
+  if (ctx.result && ctx.result.data) {
+    for (const art of ctx.result.data) {
+      await doAddArticle(ctx, art)
     }
   }
   return ctx
 }
-const createcheck = ctx => {
-  if (ctx.params.DateUntil == "null") {
-    ctx.params.DateUntil = null
-  }
 
+const do_createCheck = obj => {
+  delete obj._Artikel
+  delete obj._Rezept
+  if (obj.DateUntil == "null") {
+    obj.DateUntil = null
+  }
+  return obj
+}
+
+/**
+ * Before create and update: Remove _Artikel and _Rezept
+ * @param {*} ctx
+ */
+const createcheck = ctx => {
+  if (Array.isArray(ctx.data)) {
+    for (const dat of ctx.data) {
+      do_createCheck(dat)
+    }
+  } else {
+    ctx.data = do_createCheck(ctx.data)
+  }
   return ctx
 }
 module.exports = {
@@ -84,15 +93,15 @@ module.exports = {
     find: [current],
     get: [],
     create: [createcheck, handleExtinfo, flatiron],
-    update: [handleExtinfo, flatiron],
+    update: [createcheck, handleExtinfo, flatiron],
     patch: [flatiron],
     remove: []
   },
 
   after: {
     all: [],
-    find: [handleExtinfo, findArticle],
-    get: [getArticle, handleExtinfo],
+    find: [handleExtinfo, findArticle,flatiron],
+    get: [getArticle, handleExtinfo,flatiron],
     create: [],
     update: [],
     patch: [],

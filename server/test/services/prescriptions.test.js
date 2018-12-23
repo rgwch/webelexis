@@ -16,11 +16,13 @@ describe('\'prescriptions\' service', () => {
     medis.should.be.ok
     medis.data.length.should.be.gt(0)
     const medi=medis.data[0]
-    medi.Artikel.should.be.a('string')
+    const art=medi.Artikel || medi.artikelid
+    art.should.be.a('string')
     medi._Artikel.should.be.an('object')
-    medi._Artikel.id.should.equal(medi.Artikel)
+    medi._Artikel.id.should.equal(art)
     const updated=await service.update(medi.id,medi)
-    updated.should.not.have.propery('_Artikel')
-    updated.Artikel.should.equal(medi.Artikel)
+    updated.should.not.have.property('_Artikel')
+    const art2=updated.Artikel || updated.artikelid
+    art2.should.equal(art)
   })
 });

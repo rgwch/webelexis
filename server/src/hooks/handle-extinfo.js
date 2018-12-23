@@ -12,6 +12,24 @@ const defaultOptions = {
 }
 
 /**
+ * simplify the retrieval of objects from feathers hook functions. Returns always an Array
+ * @param {} ctx
+ */
+const getItems = ctx => {
+  if (ctx.type == "before") {
+    return Array.isArray(ctx.data) ? ctx.data : [ctx.data]
+  } else {
+    if (ctx.result) {
+      if (ctx.result.data) {
+        return ctx.result.data
+      } else {
+        return Array.isArray(ctx.result) ? ctx.result : [ctx.result]
+      }
+    }
+  }
+}
+
+/**
  * Add a decoded version of the ExtInfo-Field
  * as 'extjson' to the returned object.
  * @param options: 'extinfo': Name of the original
@@ -21,27 +39,21 @@ const defaultOptions = {
 module.exports = function (options = defaultOptions) {
   return context => {
     if (context.method == "get" || context.method == "find") {
-      if (context.result && context.result[options.extinfo]) {
-        const obj = context.result
-        if (obj.extinfo) {
+      const items = getItems(context)
+      for (const obj of items) {
+        if (obj[options.extinfo]) {
           obj.extjson = util.getExtInfo(obj[options.extinfo])
-          context.result = obj
-        } else if (context.result.data) {
-          for (const obj of context.result.data) {
-            const exti = obj[options.extinfo]
-            const json = util.getExtInfo(exti)
-            obj.extjson = json
-          }
         }
       }
     } else if (context.method == "create" || context.method == "update") {
-      if (context.data && context.data.extjson) {
-        if (context.data.extjson != {}) {
-          context.data[options.extinfo] = util.writeExtInfo(context.data.extJson)
+      const items = getItems(context)
+      for (const obj of items) {
+        if (obj.extjson != {}) {
+          obj[options.extinfo] = util.writeExtInfo(context.data.extJson)
         }
-        delete context.data.extjson
+        delete obj.extjson
       }
-      return context
     }
+    return context
   }
 }

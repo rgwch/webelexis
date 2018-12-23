@@ -10,11 +10,13 @@ import { autoinject, LogManager } from "aurelia-framework";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
-import { PrescriptionManager, Modalities } from "models/prescription-model";
+import { PrescriptionManager, Modalities, PrescriptionType } from "models/prescription-model";
 import { BriefManager, BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
 import { DocType, DocManager } from '../models/document-model'
 import { PatientManager } from 'models/patient';
+import { TRANSFER_MESSAGE } from '../components/medication'
+import { UUID } from 'models/elexistype';
 // import * as html2pdf from 'html2pdf.js'
 
 const log = LogManager.getLogger('prescriptions-view')
@@ -26,7 +28,8 @@ const log = LogManager.getLogger('prescriptions-view')
   }
 })
 export class Prescriptions {
-  mod=Modalities
+  mod = Modalities
+  trashstyle = "margin-left:20px"
   log
   searchexpr = ""
   private actPatient
@@ -67,7 +70,7 @@ export class Prescriptions {
     this.client = this.part - this.c_header.getBoundingClientRect().height - 20
   }
 
-  refresh(id) {
+  refresh(patid:UUID) {
 
     this.fixmedi = []
     this.symptommedi = []
@@ -75,7 +78,7 @@ export class Prescriptions {
     this.rezepte = []
     // this.rezept = []
 
-    return this.pm.fetchCurrent(id).then(result => {
+    return this.pm.fetchCurrent(patid).then(result => {
       this.fixmedi = result.fix
       this.reservemedi = result.reserve
       const rest = result.symptom.sort((a, b) => {
@@ -193,50 +196,34 @@ export class Prescriptions {
     }
   }
 
-  /*
-  dragDrop(event) {
-    event.preventDefault()
-    const data = event.dataTransfer.getData("text")
-    console.log("drop: " + data)
-    if (event.currentTarget && event.currentTarget.id) {
-      let params: { mode?: string, rezeptid?: string } = {}
-      params.mode = event.currentTarget.id.substring(5)
-      if (params.mode == "rezept") {
-        params.rezeptid = this.actrezept[0];
-      }
-      this.pm.setMode(data, params).then(updated => {
-        setTimeout(() => {
-          this.refresh(this.actPatient.id).then(() => {
-            if (params.mode == 'rezept') {
-              this.rezept.push(updated)
-              this.selectRezept(this.actrezept)
-            }
-          })
-        }, 50)
-
-      })
-    }
-    return true
-  }
-  */
   dragTrash(event) {
     event.preventDefault()
+    this.trashstyle="margin-left:18px;transform: scale(1.5);"
     return true
+  }
+  dragTrashEnter(event){
+    this.trashstyle="margin-left:18px;color:red;"
+  }
+  dragTrashLeave(event){
+    this.trashstyle="margin-left:20px;transform:scale(1.0)"
   }
   dropTrash(event) {
     event.preventDefault()
-    const data = event.dataTransfer.getData("text")
-    const typ = event.dataTransfer.getData("wlx")
-    this.pm.delete(data).then(removed => {
-      if (typ == "rp") {
-        const [t, d] = data.split("::")
-        const idx = this.rezept.findIndex(el=>el.id==d)
-        if (idx != -1) {
-          this.rezept = this.rezept.splice(idx, 1)
-        }
-      }
-      this.refresh(this.actPatient.id)
-    })
+    this.trashstyle="margin-left:20px;transform:scale(1.0)"
+ 
+    const obj: PrescriptionType = JSON.parse(event.dataTransfer.getData("webelexis/object"))
+    const mod = event.dataTransfer.getData("webelexis/modality")
+    console.log("trash: " + obj + ", " + mod)
+    if (mod == Modalities.FIXMEDI || mod == Modalities.RECIPE || mod == Modalities.RESERVE) {
+      obj.prescType = Modalities.SYMPTOMATIC
+      obj.DateUntil = this.dt.DateToElexisDate(new Date())
+      this.pm.save(obj).then(result => {
+        this.ea.publish(TRANSFER_MESSAGE, {
+          obj, source: "trash"
+        })
+      })
+    }
+    this.refresh(this.actPatient.id)
   }
   makePrescription() {
     this.ea.publish("left_panel", "rezept")
