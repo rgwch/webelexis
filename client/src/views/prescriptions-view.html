@@ -48,9 +48,9 @@
           <div class="card-body">
 
             <div css="overflow:auto;height:${client}px">
-              <div class.bind="rp | selectionClass:actrezept & signal:'selected'" repeat.for="rp of rezepte"
-                click.delegate="selectRezept(rp)">
-                ${rp.datum | dateFormat:"date"}
+              <div class.bind="rpd | selectionClass:actrezept & signal:'selected'" repeat.for="rpd of rpdefs"
+                click.delegate="selectRezept(rpd)">
+                ${rpd.rezept.datum | dateFormat:"date"}
               </div>
             </div>
           </div>
@@ -63,8 +63,8 @@
             <img class="noselect" src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
           </div>
           <div class="card-body">
-            <medication list.bind="actrezept.prescriptions" modality="${mod.RECIPE}" h="${client-20}px"></medication>
-            <input type="text" value.bind="rezeptZusatz" style="width:100%;font-size: smaller">
+            <medication list.bind="actrpd.prescriptions" modality="${mod.RECIPE}" h="${client-20}px"></medication>
+            <input type="text" value.bind="actprd.rezept.RpZusatz" style="width:100%;font-size: smaller">
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ import { autoinject, LogManager } from "aurelia-framework";
 import { connectTo } from "aurelia-store";
 import { State } from "state";
 import { pluck } from "rxjs/operators";
-import { PrescriptionManager, Modalities, PrescriptionType, RezeptType } from "models/prescription-model";
+import { PrescriptionManager, Modalities, PrescriptionType, RezeptType, RpDef } from "models/prescription-model";
 import { BriefManager, BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
 import { DocType, DocManager } from '../models/document-model'
@@ -41,8 +41,8 @@ export class Prescriptions {
   fixmedi: Array<PrescriptionType> = new Array<PrescriptionType>()
   reservemedi: PrescriptionType[] = []
   symptommedi: PrescriptionType[] = []
-  rezepte: RezeptType[] = []
-  actrezept: RezeptType = undefined
+  rpdefs: RpDef[] = []
+  actrpd: RpDef = undefined
   rezeptZusatz: string
   page_header: Element
   c_header: Element
@@ -54,7 +54,7 @@ export class Prescriptions {
   actPatientChanged(newValue, oldValue) {
     if (newValue && ((!oldValue) || (newValue.id !== oldValue.id))) {
       this.searchexpr = ""
-      this.actrezept = undefined
+      this.actrpd = undefined
       this.refresh(newValue.id).then(() => {
         this.signaler.signal('selected')
       })
@@ -79,8 +79,8 @@ export class Prescriptions {
     this.fixmedi = []
     this.symptommedi = []
     this.reservemedi = []
-    this.rezepte = []
-    this.actrezept = undefined
+    this.rpdefs = []
+    this.actrpd = undefined
 
     return this.pm.fetchCurrent(patid).then(result => {
       this.fixmedi = result.fix
@@ -116,17 +116,17 @@ export class Prescriptions {
         }
       }
       this.symptommedi = compacted
-      this.rezepte = result.rezepte.sort((a, b) => {
-        return a.datum.localeCompare(b.datum) * -1
+      this.rpdefs = result.rezeptdefs.sort((a:RpDef, b:RpDef) => {
+        return a.rezept.datum.localeCompare(b.rezept.datum) * -1
       })
     })
   }
 
-  selectRezept(rp?: RezeptType) {
-    if (rp) {
-      rp.type="rezepte"
-      this.actrezept = rp
-      this.we.selectItem(rp)
+  selectRezept(rpd?: RpDef) {
+    if (rpd) {
+      rpd.rezept.type="rezepte"
+      this.actrpd = rpd
+      this.we.selectItem(rpd.rezept)
     }
     setTimeout(() => {
       this.signaler.signal('selected')
@@ -136,10 +136,13 @@ export class Prescriptions {
 
   createRezept() {
     this.pm.createRezept().then((raw: RezeptType) => {
-      raw.prescriptions = []
-      this.rezepte.unshift(raw)
-      this.selectRezept(raw)
-      return raw
+      const rpd: RpDef={
+        rezept: raw,
+        prescriptions: []
+      }
+      this.rpdefs.unshift(rpd)
+      this.selectRezept(rpd)
+      return rpd
     }).catch(err => {
       console.log(err)
       alert("Konnte kein Rezept erstellen")
@@ -148,12 +151,12 @@ export class Prescriptions {
 
   toPdf() {
     let table = "<table>"
-    for (const item of this.actrezept.prescriptions) {
+    for (const item of this.actrpd.prescriptions) {
       const remark = item.Bemerkung ? ("<br />" + item.Bemerkung) : ""
       table += `<tr><td>${item.ANZAHL || ""}</td><td>${item._Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
     table += "</table>"
-    const fields = [{ field: "liste", replace: table }, { field: "zusatz", replace: this.rezeptZusatz }]
+    const fields = [{ field: "liste", replace: table }, { field: "zusatz", replace: this.actrpd.rezept.RpZusatz }]
     const rp: BriefType = {
       Datum: this.dt.DateToElexisDate(new Date()),
       Betreff: "Rezept",

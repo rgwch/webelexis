@@ -27,6 +27,10 @@ export interface RezeptType extends ElexisType {
   BriefID: UUID
   prescriptions: Array<PrescriptionType>
 }
+export interface RpDef {
+  rezept: RezeptType,
+  prescriptions: PrescriptionType[]
+}
 
 export interface ArticleType extends ElexisType {
   DSCR: string
@@ -70,7 +74,7 @@ export class PrescriptionManager {
         fix: [],
         reserve: [],
         symptom: [],
-        rezepte: []
+        rezeptdefs: []
       }
       const rps = new Map()
       for (const prescription of result.data) {
@@ -86,16 +90,18 @@ export class PrescriptionManager {
         }
         if (prescription._Rezept) {
           const rezept = prescription._Rezept
-          let rp = rps.get(rezept.id)
-          if (!rp) {
-            rp = rezept
-            rp.prescriptions = []
-            rps.set(rezept.id, rp)
+          let rpd: RpDef = rps.get(rezept.id)
+          if (!rpd) {
+            rpd = {
+              rezept: rezept,
+              prescriptions: []
+            }
+            rps.set(rezept.id, rpd)
           }
-          rp.prescriptions.push(prescription)
+          rpd.prescriptions.push(prescription)
         }
       }
-      ret.rezepte = Array.from(rps).map(r => r[1])
+      ret.rezeptdefs = Array.from(rps).map(r => r[1])
       return ret
     })
   }
@@ -145,7 +151,7 @@ export class PrescriptionManager {
     if (datatype == "prescription") {
       prescription = await this.prescriptionLoader.get(dataid)
     } else if (datatype == "article") {
-      const article=await this.artikelLoader.get(dataid)
+      const article = await this.artikelLoader.get(dataid)
       prescription = await this.createFromArticle(article)
     }
     return prescription
@@ -223,7 +229,7 @@ export class PrescriptionManager {
     }
     const created = await this.prescriptionLoader.create(presc)
     console.log("created from article:" + JSON.stringify(created))
-    created._Artikel=article
+    created._Artikel = article
     return created
   }
   async delete(data: string) {

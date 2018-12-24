@@ -55,7 +55,7 @@ export class Medication {
   drag(event) {
     const obj = this.list.find(el => event.target.id.endsWith(el.id))
     event.dataTransfer.setData("text/plain", event.target.id)
-    event.dataTransfer.setData("webelexis/object", JSON.stringify(obj)) //!! circular
+    event.dataTransfer.setData("webelexis/object", JSON.stringify(obj)) 
     event.dataTransfer.setData("webelexis/modality", this.modality)
     event.dataTransfer.setData("webelexis/datatype", "prescriptions")
     return true

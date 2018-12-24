@@ -1,6 +1,9 @@
 const uuid = require('uuid/v4')
 
 const do_prepare = obj => {
+  if(obj.LASTUPDATE && obj.lastupdate){
+    console.log("lastupdate: "+JSON.stringify(obj))
+  }
   if (obj.LASTUPDATE) {
     obj.LASTUPDATE = new Date().getTime()
     delete obj.lastupdate
