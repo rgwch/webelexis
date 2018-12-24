@@ -48,7 +48,7 @@
           <div class="card-body">
 
             <div css="overflow:auto;height:${client}px">
-              <div class.bind="rpd | selectionClass:actrezept & signal:'selected'" repeat.for="rpd of rpdefs"
+              <div class.bind="rpd | selectionClass:actrpd & signal:'selected'" repeat.for="rpd of rpdefs"
                 click.delegate="selectRezept(rpd)">
                 ${rpd.rezept.datum | dateFormat:"date"}
               </div>

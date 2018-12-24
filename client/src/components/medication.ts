@@ -1,3 +1,4 @@
+import { DateTime } from 'services/datetime';
 import { WebelexisEvents } from '../webelexisevents';
 import { DataService } from 'services/datasource';
 import { BindingSignaler } from 'aurelia-templating-resources';
@@ -14,7 +15,7 @@ export class Medication {
   numberFocus: boolean = false
   @bindable h = "6em"
   constructor(private pm: PrescriptionManager, private signaler: BindingSignaler,
-    private ea: EventAggregator, private we: WebelexisEvents) {
+    private ea: EventAggregator, private we: WebelexisEvents, private dt:DateTime) {
     this.ea.subscribe(TRANSFER_MESSAGE, (msg) => {
       if (msg.source != this.modality) {
         const presc: PrescriptionType = msg.obj
@@ -30,7 +31,7 @@ export class Medication {
 
   opened = -1
 
-  getLabel(obj) {
+  getLabel(obj:PrescriptionType) {
     let lbl = ""
     const o = obj
     if (o) {
@@ -47,6 +48,17 @@ export class Medication {
       }
       if (o.Bemerkung) {
         lbl += " (" + o.Bemerkung + ")"
+      }
+      if(this.modality!=Modalities.RECIPE){
+        if(o.DateFrom){
+          lbl+=" ["+this.dt.ElexisDateToLocalDate(o.DateFrom)
+          if(o.DateUntil){
+            if(o.DateUntil!=o.DateFrom){
+              lbl+="-"+this.dt.ElexisDateToLocalDate(o.DateUntil)
+            }            
+          }
+          lbl+="]"
+        }
       }
     }
     return lbl

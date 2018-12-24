@@ -239,8 +239,8 @@ export class Prescriptions {
   set item class according to selection Status (needs signal 'selected')
 */
 export class selectionClassValueConverter {
-  toView(item:RezeptType, selected:RezeptType) {
-    if (selected && (selected.id == item.id)) {
+  toView(item:RpDef, selected:RpDef) {
+    if (selected && (selected.rezept.id == item.rezept.id)) {
       return "highlight-item"
     } else {
       return "compactlist"
