@@ -58,10 +58,12 @@ export interface PrescriptionType extends ElexisType {
 export class PrescriptionManager {
   private prescriptionLoader: DataService
   private artikelLoader: DataService
+  private rezepteLoader: DataService
 
   constructor(private ds: DataSource, private we: WebelexisEvents, private dt: edt) {
     this.prescriptionLoader = ds.getService('prescriptions')
     this.artikelLoader = ds.getService('meta-article')
+    this.rezepteLoader = ds.getService('rezepte')
   }
 
   /**
@@ -126,20 +128,24 @@ export class PrescriptionManager {
    * Create a new "rezept"
    */
   createRezept() {
-    const rpService = this.ds.getService('rezepte')
     const rp = {
       patientid: this.we.getSelectedItem('patient').id,
       mandantid: this.we.getSelectedItem('usr').id,
       datum: moment().format(ELEXISDATE)
     }
 
-    return rpService.create(rp).then(ret => {
+    return this.rezepteLoader.create(rp).then(ret => {
       return ret;
     }).catch(err => {
       console.log(err)
     })
   }
 
+  saveRezept(rezept:RezeptType){
+    return this.rezepteLoader.update(rezept.id,rezept).then(updated=>{
+      return updated
+    })
+  }
   /**
    * Fetch a prescription from an "extended id" 
    * @param data an 'extended id': <datatype::id> 

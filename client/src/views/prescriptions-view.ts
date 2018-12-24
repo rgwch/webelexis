@@ -37,7 +37,7 @@ export class Prescriptions {
   trashstyle = "margin-left:20px"
   log
   searchexpr = ""
-  private actPatient:PatientType
+  private actPatient: PatientType
   fixmedi: Array<PrescriptionType> = new Array<PrescriptionType>()
   reservemedi: PrescriptionType[] = []
   symptommedi: PrescriptionType[] = []
@@ -116,7 +116,7 @@ export class Prescriptions {
         }
       }
       this.symptommedi = compacted
-      this.rpdefs = result.rezeptdefs.sort((a:RpDef, b:RpDef) => {
+      this.rpdefs = result.rezeptdefs.sort((a: RpDef, b: RpDef) => {
         return a.rezept.datum.localeCompare(b.rezept.datum) * -1
       })
     })
@@ -124,7 +124,7 @@ export class Prescriptions {
 
   selectRezept(rpd?: RpDef) {
     if (rpd) {
-      rpd.rezept.type="rezepte"
+      rpd.rezept.type = "rezepte"
       this.actrpd = rpd
       this.we.selectItem(rpd.rezept)
     }
@@ -136,7 +136,7 @@ export class Prescriptions {
 
   createRezept() {
     this.pm.createRezept().then((raw: RezeptType) => {
-      const rpd: RpDef={
+      const rpd: RpDef = {
         rezept: raw,
         prescriptions: []
       }
@@ -153,7 +153,8 @@ export class Prescriptions {
     let table = "<table>"
     for (const item of this.actrpd.prescriptions) {
       const remark = item.Bemerkung ? ("<br />" + item.Bemerkung) : ""
-      table += `<tr><td>${item.ANZAHL || ""}</td><td>${item._Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
+      const anzahl = item.ANZAHL || "1"
+      table += `<tr><td>${anzahl}</td><td>${item._Artikel.DSCR}${remark}</td><td>${item.Dosis || ""}</td></tr>`
     }
     table += "</table>"
     const fields = [{ field: "liste", replace: table }, { field: "zusatz", replace: this.actrpd.rezept.RpZusatz }]
@@ -201,8 +202,10 @@ export class Prescriptions {
   }
 
   dragTrash(event) {
-    event.preventDefault()
-    this.trashstyle = "margin-left:18px;transform: scale(1.5);"
+    if (event.dataTransfer.types.find(el => el == ("webelexis/modality"))) {
+      event.preventDefault()
+      this.trashstyle = "margin-left:18px;transform: scale(1.5);"
+    }
     return true
   }
   dragTrashEnter(event) {
@@ -220,14 +223,14 @@ export class Prescriptions {
     console.log("trash: " + obj + ", " + mod)
     if (mod == Modalities.FIXMEDI || mod == Modalities.RECIPE || mod == Modalities.RESERVE) {
       obj.prescType = Modalities.SYMPTOMATIC
+      delete obj.REZEPTID
       obj.DateUntil = this.dt.DateToElexisDate(new Date())
       this.pm.save(obj).then(result => {
         this.ea.publish(TRANSFER_MESSAGE, {
-          obj, source: "trash"
+          obj, source: "trash", origin: mod
         })
       })
     }
-    this.refresh(this.actPatient.id)
   }
   makePrescription() {
     this.ea.publish("left_panel", "rezept")
@@ -239,7 +242,7 @@ export class Prescriptions {
   set item class according to selection Status (needs signal 'selected')
 */
 export class selectionClassValueConverter {
-  toView(item:RpDef, selected:RpDef) {
+  toView(item: RpDef, selected: RpDef) {
     if (selected && (selected.rezept.id == item.rezept.id)) {
       return "highlight-item"
     } else {

@@ -15,9 +15,9 @@ export class Medication {
   numberFocus: boolean = false
   @bindable h = "6em"
   constructor(private pm: PrescriptionManager, private signaler: BindingSignaler,
-    private ea: EventAggregator, private we: WebelexisEvents, private dt:DateTime) {
+    private ea: EventAggregator, private we: WebelexisEvents, private dt: DateTime) {
     this.ea.subscribe(TRANSFER_MESSAGE, (msg) => {
-      if (msg.source != this.modality) {
+      if (msg.source != this.modality && msg.origin == this.modality) {
         const presc: PrescriptionType = msg.obj
         if (this.list) {
           const idx = this.list.findIndex(el => el.id == presc.id)
@@ -31,7 +31,7 @@ export class Medication {
 
   opened = -1
 
-  getLabel(obj:PrescriptionType) {
+  getLabel(obj: PrescriptionType) {
     let lbl = ""
     const o = obj
     if (o) {
@@ -49,15 +49,15 @@ export class Medication {
       if (o.Bemerkung) {
         lbl += " (" + o.Bemerkung + ")"
       }
-      if(this.modality!=Modalities.RECIPE){
-        if(o.DateFrom){
-          lbl+=" ["+this.dt.ElexisDateToLocalDate(o.DateFrom)
-          if(o.DateUntil){
-            if(o.DateUntil!=o.DateFrom){
-              lbl+="-"+this.dt.ElexisDateToLocalDate(o.DateUntil)
-            }            
+      if (this.modality != Modalities.RECIPE) {
+        if (o.DateFrom) {
+          lbl += " [" + this.dt.ElexisDateToLocalDate(o.DateFrom)
+          if (o.DateUntil) {
+            if (o.DateUntil != o.DateFrom) {
+              lbl += "-" + this.dt.ElexisDateToLocalDate(o.DateUntil)
+            }
           }
-          lbl+="]"
+          lbl += "]"
         }
       }
     }
@@ -67,7 +67,7 @@ export class Medication {
   drag(event) {
     const obj = this.list.find(el => event.target.id.endsWith(el.id))
     event.dataTransfer.setData("text/plain", event.target.id)
-    event.dataTransfer.setData("webelexis/object", JSON.stringify(obj)) 
+    event.dataTransfer.setData("webelexis/object", JSON.stringify(obj))
     event.dataTransfer.setData("webelexis/modality", this.modality)
     event.dataTransfer.setData("webelexis/datatype", "prescriptions")
     return true
@@ -93,19 +93,24 @@ export class Medication {
     } else if (datatype == "prescriptions") {
       const obj: PrescriptionType = JSON.parse(json)
       const mod = event.dataTransfer.getData("webelexis/modality")
-      // console.log("drop: " + obj + ", " + mod)
-      if (this.modality == Modalities.RECIPE) {
-        obj._Rezept = this.we.getSelectedItem('rezepte')
-        obj.REZEPTID = obj._Rezept.id
-        this.pm.cloneAs(obj, Modalities.RECIPE).then(result => {
-          this.list.push(obj)
-        })
-      } else {
-        obj.prescType = this.modality
-        this.pm.save(obj).then(result => {
-          this.ea.publish(TRANSFER_MESSAGE, { obj, source: this.modality })
-          this.list.push(obj)
-        })
+      if (mod != this.modality) {
+        // console.log("drop: " + obj + ", " + mod)
+        if (this.modality == Modalities.RECIPE) {
+          obj._Rezept = this.we.getSelectedItem('rezepte')
+          obj.REZEPTID = obj._Rezept.id
+          if(!obj.ANZAHL){
+            obj.ANZAHL="1"
+          }
+          this.pm.cloneAs(obj, Modalities.RECIPE).then(result => {
+            this.list.push(obj)
+          })
+        } else {
+          obj.prescType = this.modality
+          this.pm.save(obj).then(result => {
+            this.ea.publish(TRANSFER_MESSAGE, { obj, source: this.modality, origin: mod })
+            this.list.push(obj)
+          })
+        }
       }
     }
   }
