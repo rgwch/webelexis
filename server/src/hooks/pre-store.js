@@ -13,7 +13,7 @@ const uuid = require('uuid/v4')
  * @param {*} obj
  */
 const do_prepare = obj => {
-  if (obj.LASTUPDATE) {
+  if (obj.hasOwnProperty("LASTUPDATE")) {
     obj.LASTUPDATE = new Date().getTime()
     delete obj.lastupdate
   } else {

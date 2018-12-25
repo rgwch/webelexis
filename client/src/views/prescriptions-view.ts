@@ -15,10 +15,11 @@ import { BriefManager, BriefType } from 'models/briefe-model';
 import { DateTime } from 'services/datetime';
 import { DocType, DocManager } from '../models/document-model'
 import { PatientManager } from 'models/patient';
-import { TRANSFER_MESSAGE } from '../components/medication'
+import { REMOVE_MESSAGE, ADD_MESSAGE } from '../components/medication'
 import { ElexisType, UUID } from 'models/elexistype';
 import { WebelexisEvents } from './../webelexisevents';
 import { PatientType } from './../models/patient';
+import './prescription-view.scss'
 
 // import * as html2pdf from 'html2pdf.js'
 
@@ -38,7 +39,7 @@ export class Prescriptions {
   log
   searchexpr = ""
   private actPatient: PatientType
-  fixmedi: Array<PrescriptionType> = new Array<PrescriptionType>()
+  fixmedi: PrescriptionType[] = []
   reservemedi: PrescriptionType[] = []
   symptommedi: PrescriptionType[] = []
   rpdefs: RpDef[] = []
@@ -226,9 +227,16 @@ export class Prescriptions {
       delete obj.REZEPTID
       obj.DateUntil = this.dt.DateToElexisDate(new Date())
       this.pm.save(obj).then(result => {
-        this.ea.publish(TRANSFER_MESSAGE, {
+        this.ea.publish(REMOVE_MESSAGE, {
           obj, source: "trash", origin: mod
         })
+      })
+    }
+  }
+  addToRp(list: Array<PrescriptionType>, from: string) {
+    for (const obj of list) {
+      this.ea.publish(ADD_MESSAGE, {
+        obj, dest: Modalities.RECIPE, from
       })
     }
   }

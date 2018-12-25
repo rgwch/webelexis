@@ -1,7 +1,7 @@
 {
   "name": "webelexis-server",
   "description": "A service oriented server for elexis",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "homepage": "http://www.webelexis.ch",
   "license": "MIT",
   "repository": "https://github.com/rgwch/webelexis",

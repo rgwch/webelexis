@@ -5,18 +5,21 @@ import { BindingSignaler } from 'aurelia-templating-resources';
 import { bindable, autoinject } from "aurelia-framework";
 import { PrescriptionManager, PrescriptionType, Modalities, ArticleType } from "models/prescription-model";
 import { EventAggregator } from 'aurelia-event-aggregator';
+import './medication.scss'
 
-export const TRANSFER_MESSAGE = "took_prescription"
+export const REMOVE_MESSAGE = "remove_prescription"
+export const ADD_MESSAGE = "add_prescription"
 @autoinject
 export class Medication {
   @bindable list: Array<PrescriptionType>
   @bindable modality: string = ""
   dosisFocus: boolean = false
   numberFocus: boolean = false
+  dropzone: HTMLElement
   @bindable h = "6em"
   constructor(private pm: PrescriptionManager, private signaler: BindingSignaler,
     private ea: EventAggregator, private we: WebelexisEvents, private dt: DateTime) {
-    this.ea.subscribe(TRANSFER_MESSAGE, (msg) => {
+    this.ea.subscribe(REMOVE_MESSAGE, (msg) => {
       if (msg.source != this.modality && msg.origin == this.modality) {
         const presc: PrescriptionType = msg.obj
         if (this.list) {
@@ -25,6 +28,11 @@ export class Medication {
             this.list.splice(idx, 1)
           }
         }
+      }
+    })
+    this.ea.subscribe(ADD_MESSAGE, msg => {
+      if (this.modality == msg.dest) {
+        this.addItem(msg.obj, msg.fromModality)
       }
     })
   }
@@ -64,6 +72,14 @@ export class Medication {
     return lbl
   }
 
+  mark(mode: boolean) {
+    if (mode) {
+      this.dropzone.style.border = "dashed 2px orange"
+    } else {
+      this.dropzone.style.border = "none"
+    }
+  }
+
   drag(event) {
     const obj = this.list.find(el => event.target.id.endsWith(el.id))
     event.dataTransfer.setData("text/plain", event.target.id)
@@ -76,12 +92,37 @@ export class Medication {
   dragOver(event) {
     if (event.dataTransfer.types.find(el => el.startsWith("webelexis")) && this.list) {
       event.preventDefault()
+      this.mark(true)
     }
     return true;
   }
 
+  dragLeave(event) {
+    this.mark(false)
+  }
+
+  addItem(obj: PrescriptionType, fromModality: string) {
+    if (this.modality == Modalities.RECIPE) {
+      let rezept = this.we.getSelectedItem('rezepte')
+      obj._Rezept = rezept
+      obj.REZEPTID = rezept.id
+      if (!obj.ANZAHL) {
+        obj.ANZAHL = "1"
+      }
+      this.pm.cloneAs(obj, Modalities.RECIPE).then(result => {
+        this.list.push(obj)
+      })
+    } else {
+      obj.prescType = this.modality
+      this.pm.save(obj).then(result => {
+        this.ea.publish(REMOVE_MESSAGE, { obj, source: this.modality, origin: fromModality })
+        this.list.push(obj)
+      })
+    }
+  }
   dragDrop(event) {
     event.preventDefault()
+    this.mark(false)
     const datatype = event.dataTransfer.getData("webelexis/datatype")
     const json = event.dataTransfer.getData("webelexis/object")
     if (datatype == "article") {
@@ -95,22 +136,7 @@ export class Medication {
       const mod = event.dataTransfer.getData("webelexis/modality")
       if (mod != this.modality) {
         // console.log("drop: " + obj + ", " + mod)
-        if (this.modality == Modalities.RECIPE) {
-          obj._Rezept = this.we.getSelectedItem('rezepte')
-          obj.REZEPTID = obj._Rezept.id
-          if(!obj.ANZAHL){
-            obj.ANZAHL="1"
-          }
-          this.pm.cloneAs(obj, Modalities.RECIPE).then(result => {
-            this.list.push(obj)
-          })
-        } else {
-          obj.prescType = this.modality
-          this.pm.save(obj).then(result => {
-            this.ea.publish(TRANSFER_MESSAGE, { obj, source: this.modality, origin: mod })
-            this.list.push(obj)
-          })
-        }
+        this.addItem(obj, mod)
       }
     }
   }

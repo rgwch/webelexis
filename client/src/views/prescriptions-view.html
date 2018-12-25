@@ -21,8 +21,9 @@
       <div class="row">
         <!-- Fixmedikation -->
         <div class="card col" id="card_fixmedi" css="height:${part}px">
-          <div class="card-header">
-            <span class="noselect">Fixmedikation</span>
+          <div class="card-header noselect">
+            <span>Fixmedikation</span>
+            <img class="clickable" src="/medical-prescription.svg" alt="Zum Rezept" click.delegate="addToRp(fixmedi,mod.FIXMEDI)">
           </div>
           <div class="card-body" css="height:${client}px">
             <medication list.bind="fixmedi" modality="${mod.FIXMEDI}" h="${client}px"></medication>
@@ -32,6 +33,7 @@
         <div class="card col" id="card_reservemedi" css="height:${part}px">
           <div class="card-header">
             <span class="noselect">Reservemedikation</span>
+            <img class="clickable" src="/medical-prescription.svg" alt="Zum Rezept" click.delegate="addToRp(reservemedi,mod.RESERVE)">
           </div>
           <div class="card-body">
             <medication list.bind="reservemedi" modality="${mod.RESERVE}" h="${client}px"></medication>
@@ -50,7 +52,7 @@
             <div css="overflow:auto;height:${client}px">
               <div class.bind="rpd | selectionClass:actrpd & signal:'selected'" repeat.for="rpd of rpdefs"
                 click.delegate="selectRezept(rpd)">
-                ${rpd.rezept.datum | dateFormat:"date"}
+                <span class="noselect">${rpd.rezept.datum | dateFormat:"date"}</span>
               </div>
             </div>
           </div>
@@ -58,9 +60,9 @@
         </div>
         <!-- Momentan ausgewähltes Rezept -->
         <div class="card col-9" id="card_rezept">
-          <div class="card-header">
-            <span class="noselect">Rezept</span>
-            <img class="noselect" src="/printer.svg" alt="print" click.trigger="toPdf(actrezept)">
+          <div class="card-header noselect">
+            <span>Rezept</span>
+            <img class="clickable" src="/printer.svg" alt="print" click.delegate="toPdf(actrezept)">
           </div>
           <div class="card-body">
             <medication list.bind="actrpd.prescriptions" modality="${mod.RECIPE}" h="${client-20}px"></medication>
