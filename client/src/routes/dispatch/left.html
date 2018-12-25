@@ -1,18 +1,19 @@
 <template>
   <div class="row" ref="parent">
-    <div class="btn-group-vertical bordered" style="position:absolute;left:5px;top:20px" ref="buttons">
+    <div class="btn-group-vertical bordered" style="position:absolute;left:5px;top:20px"
+      ref="buttons">
       <button class="btn" click.trigger="link()">
         <i class="fa fa-exchange-alt" show.bind="!linked"></i>
         <i class="fa fa-times" show.bind="linked"></i>
       </button>
       <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)">
-        <img src.one-time="vi.icon" data-toggle="tooltip" title.one-time="vi.text" width.one-time="tooliconwidth"
-          height.one-time="tooliconheight">
+        <img src.one-time="vi.icon" data-toggle="tooltip" title.one-time="vi.text"
+          width.one-time="tooliconwidth" height.one-time="tooliconheight">
       </button>
     </div>
     <div style.bind="leftpanelstyle">
       <compose view-model.bind="active['view']"></compose>
     </div>
-    </div>
-    <!-- img src.bind="'data:image/png;base64,' + imgdata" -->
+  </div>
+  <!-- img src.bind="'data:image/png;base64,' + imgdata" -->
 </template>

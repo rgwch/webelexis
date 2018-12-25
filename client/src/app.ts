@@ -88,12 +88,12 @@ export class App {
         },
         nav: false
       }, {
-        route: "/user",
+        route: "/user/:vi?",
         name: "user",
         title: this.i18n.tr("nav.account"),
         viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/user/usermenu") },
-          details: { moduleId: PLATFORM.moduleName("./routes/user/userdetail") }
+          default: { moduleId: PLATFORM.moduleName("./routes/user/index") },
+          details: { moduleId: PLATFORM.moduleName("./routes/user/detail") }
         }
       },
       {
