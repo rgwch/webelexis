@@ -24,6 +24,8 @@ node_modules
 
 # Compiled files
 scripts
+doc/*.epub
+doc/*.json
 data/*.db
 data/*.db~
 data/settings.js
