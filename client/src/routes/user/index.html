@@ -1,6 +1,7 @@
 <template>
   <div class="row" ref="parent">
     <div class="btn-group-vertical bordered" style="position:absolute;left:5px;top:20px" ref="buttons">
+      <button class="btn" click.trigger="home()"><span class="fa fa-home"> Hauptseite</span></button>
       <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)" if.bind="vi.show">${vi.name}
       </button>
     </div>

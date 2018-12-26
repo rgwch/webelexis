@@ -1,0 +1,21 @@
+<template>
+  <div class="sheet" css.bind="$parent.style">
+    <div class="header">
+      Kontodetails
+    </div>
+    <div class="body">
+      <form>
+        <div class="form-row">
+          <label for="email" class="col-2">E-Mail</label>
+          <input type="text" class="form-control col-10" aria-describedby="emailHelp" id="email" readonly value.bind="user.email">
+        </div>
+        <div class="form-row">
+          <label for="firstname" class="col-2">Vorname</label>
+          <input type="text" class="form-control col-4" id="firstname" value.bind="user.firstname">
+          <label for="name" class="col-2">Name</label>
+          <input type="text" class="form-control col-4" id="lastname" value.bind="user.lastname">
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

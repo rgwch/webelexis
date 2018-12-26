@@ -12,8 +12,7 @@ import env from '../../environment'
 @autoinject
 @connectTo(store => store.state.pipe(<any>pluck("usr")))
 export class UserDetail {
-  name: "Itze"
-  style = "position:absolute;left:395px;right:15px;top:20px;"
+  //style = "position:absolute;left:395px;right:15px;top:20px;"
   userService: DataService
   demomode = false
   password: string
