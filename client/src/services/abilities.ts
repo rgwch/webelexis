@@ -3,9 +3,10 @@ import { AbilityBuilder, Ability } from '@casl/ability'
 export class Abilities {
 
   defineRulesFor(user) {
+    console.log("abilities called")
     const { can, rules } = AbilityBuilder.extract()
 
-    can('read', ['Post', 'Comment'])
+    can('read', ['Post', 'Comment', 'User'])
 
     if (user) {
       can('create', 'Post')
@@ -17,6 +18,7 @@ export class Abilities {
   }
 
   configureAbility({ container }) {
+    console.log("Abilities configured")
     const ability = new Ability([])
 
     container.registerInstance(Ability, ability)

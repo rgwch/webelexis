@@ -5,7 +5,7 @@
  ********************************************/
 
 const logger = require('./logger')
-const roles = require('./services/roles')
+const roles = require('../config/roles')
 
 /**
  * In testing-mode, Seeder creates data to initialize the NeDB-databases.

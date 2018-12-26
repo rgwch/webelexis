@@ -31,14 +31,32 @@ const lucinda = require('./lucinda/lucinda.service.js');
 const oddb = require('./oddb/oddb.service.js');
 const metaArticle = require('./meta-article/meta-article.service.js');
 const briefe = require('./briefe/briefe.service.js');
+const {ACE,declareACE}=require('../util/acl')
+const generateACLs=servicename=>{
+  const a=[]
+  const a1=new ACE(servicename)
+  const a2=new ACE(servicename+".create",a1)
+  const a3=new ACE(servicename+".remove",a1)
+  const a4=new ACE(servicename+".update",a1)
+  const a5=new ACE(servicename+".patch",a4)
+  const a6=new ACE(servicename+".find",a4)
+  const a7=new ACE(servicename+".get",a6)
+  declareACE([a1,a2,a3,a4,a5,a6,a7])
+}
 module.exports = function (app) {
  app.configure(elexisConfig);
+ generateACLs('elexis-config')
  app.configure(admin);
  app.configure(users);
+ generateACLs('users')
  app.configure(kontakt);
+ generateACLs('kontakt')
  app.configure(patient);
+ generateACLs('patient')
  app.configure(agntermine);
+ generateACLs('termin');
  app.configure(usr);
+ generateACLs('usr')
  app.configure(fall);
  app.configure(konsultation);
  app.configure(article);
@@ -51,6 +69,7 @@ module.exports = function (app) {
  app.configure(labresults);
  app.configure(findings);
  app.configure(stickers);
+ generateACLs('stickers')
  app.configure(billing);
  app.configure(tarmed);
  app.configure(billable);

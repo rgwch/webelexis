@@ -14,6 +14,7 @@ let selectedLanguage = navigator['languages'][0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 
 import environment from './environment';
+import { Abilities } from 'services/abilities';
 
 LogManager.addAppender(new ConsoleAppender())
 if (environment.debug) {
@@ -21,8 +22,6 @@ if (environment.debug) {
 } else {
   LogManager.setLevel(LogManager.logLevel.info)
 }
-
-
 
 /**
  * Main entry point. The aurelia framework calls this with the singleton instance of Aurelia
@@ -49,7 +48,7 @@ export function configure(aurelia: Aurelia) {
     })
     .plugin(PLATFORM.moduleName('aurelia-animator-css'))
     .plugin(PLATFORM.moduleName('aurelia-dialog'))
-    .plugin(PLATFORM.moduleName('@casl/aurelia'))
+    .plugin(PLATFORM.moduleName('@casl/aurelia'),Abilities)
     /*
     .plugin(PLATFORM.moduleName('aurelia-mousetrap'),config=>{
       config.set('keymap', {

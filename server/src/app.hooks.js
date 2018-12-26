@@ -6,14 +6,14 @@
 
 // Application hooks that run for every service
 const logger = require('./hooks/logger');
-const cleanup=require('./hooks/pre-store')
+const cleanup = require('./hooks/pre-store')
 const treatDeleted = require('./hooks/treat-deleted');
-const softDelete=require('./hooks/softdelete')
-
+const softDelete = require('./hooks/softdelete')
+const acl = require('./hooks/acl')
 
 module.exports = {
   before: {
-    all: [logger()],
+    all: [logger(),acl],
     find: [treatDeleted()],
     get: [],
     create: [cleanup],
@@ -23,7 +23,7 @@ module.exports = {
   },
 
   after: {
-    all: [ logger() ],
+    all: [logger()],
     find: [],
     get: [],
     create: [],
@@ -33,7 +33,7 @@ module.exports = {
   },
 
   error: {
-    all: [ logger() ],
+    all: [logger()],
     find: [],
     get: [],
     create: [],

@@ -3,9 +3,7 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-const abilities = require('../../hooks/abilities')
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const acl = require('./acl')
 const validate = require('../validator').validate
 const { DateTime } = require('luxon')
 const Elexistypes = require('../../util/elexis-types')

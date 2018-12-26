@@ -24,15 +24,7 @@ export class UserDetail {
   }
 
   attached() {
-    this.demomode=env.metadata["testing"]
-   
-    /*
-    this.userService.find({ query: { dummy: true } }).then(dummies => {
-      if (dummies.data.length > 1) {
-        this.demomode = true
-      }
-    })
-    */
+    this.demomode = env.metadata["testing"]
   }
   login(email?, pwd?) {
     if (!email) {
