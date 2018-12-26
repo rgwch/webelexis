@@ -1,19 +1,40 @@
 import v from './views'
 import { autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
+import { checkACE } from '../../services/checkrole'
 
 @autoinject
-export class TestIndex{
-  views=[v.login,v.lostpwd]
+export class TestIndex {
+  views = [v.login, v.lostpwd, v.createuser]
+  display={}
 
-  constructor(private ea:EventAggregator){
+  constructor(private ea: EventAggregator, private check: checkACE) {
 
   }
 
-  attached(params){
-    //console.log(params)
+  async doShow(view) {
+    if (view.acl) {
+      const dis = await this.check.toView(view.acl)
+      return dis
+    } else {
+      return true;
+    }
   }
-  switchTo(view){
-    this.ea.publish("testdetail",view)
+
+  attached() {
+    for(const vi of this.views){
+      vi['show']=true
+      if(vi["acl"]){
+        this.check.toView(vi["acl"]).then(result=>{
+          if(!result){
+            vi['show']=false
+          }
+        })
+      }
+    }
+  }
+
+  switchTo(view) {
+    this.ea.publish("testdetail", view)
   }
 }

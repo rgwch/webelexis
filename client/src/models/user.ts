@@ -9,6 +9,9 @@ import { ElexisType, UUID } from './elexistype';
 import { autoinject, computedFrom } from "aurelia-framework";
 import { DataSource, DataService } from 'services/datasource';
 import global from '../user/global'
+import * as LRU from 'lru-cache'
+
+import env from 'environment'
 
 /**
  * A Webelexis User (which is deliberately not an Elexis-User, but can be linked
@@ -23,16 +26,20 @@ export interface UserType extends ElexisType {
   elexis_id?: UUID
   elexisuser_id?: UUID
   elexiskontakt?: KontaktType
-  roles: Array<string>
+  roles: string[]
 }
 
 @autoinject
 export class UserManager {
   private userService: DataService
   private kontaktService: DataService
+  private adminService: DataService
+  private cache
   constructor(private ds: DataSource) {
     this.userService = ds.getService('usr')
     this.kontaktService = ds.getService('kontakt')
+    this.adminService = ds.getService('admin')
+    this.cache=new LRU(100)
   }
 
   hasRole(usr: UserType, role: string): boolean {
@@ -44,6 +51,18 @@ export class UserManager {
       return (usr.roles.indexOf(role) != -1)
     } else {
       return false
+    }
+  }
+
+  async hasACE(usr: UserType, acename: string) {
+    const key = "ace:" + (usr ? usr.email : "guest") + "." + acename
+    let r = this.cache.get(key)
+    if (r) {
+      return r
+    } else {
+      r = await this.adminService.get("can:" + acename)
+      this.cache.set(key, r)
+      return r
     }
   }
 

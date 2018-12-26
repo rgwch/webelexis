@@ -4,6 +4,8 @@ export default {
   baseURL: window.location.href,
   metadata: {
     sitename: "Webelexis",
-    ip: "?"
+    ip: "?",
+    roles: {guest:'guest',admin:"admin"},
+    aclmapping: { "guest": [] }
   }
 };

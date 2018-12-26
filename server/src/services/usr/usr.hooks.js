@@ -5,7 +5,6 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const abilities=require('../../hooks/abilities')
 
 const {
   hashPassword, protect
@@ -33,17 +32,6 @@ const addElexisUser=async context=>{
     return context
 }
 
-/**
- * add a copy of the user's ability rules to help the client build its UI
- * The server will not use these rules but instead read them from its store on each request
- * to avoid hacking the abilitiess on client side.
- * @param {*} context 
- */
-const addAbilityRules=async context=>{
-  const allowed=abilities(context.result)
-  context.rules=allowed.rules
-  return context
-}
 module.exports = {
   before: {
     all: [],
@@ -62,7 +50,7 @@ module.exports = {
       protect('password')
     ],
     find: [],
-    get: [addElexisUser, addAbilityRules],
+    get: [addElexisUser],
     create: [],
     update: [],
     patch: [],

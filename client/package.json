@@ -8,8 +8,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@casl/ability": "^2.5.1",
-    "@casl/aurelia": "^0.4.1",
     "@ckeditor/ckeditor5-build-classic": "^11.0.1",
     "@feathersjs/authentication-client": "^1.0.6",
     "@feathersjs/client": "^3.7.3",
@@ -39,6 +37,7 @@
     "jquery": "^3.3.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
+    "lru-cache": "^5.1.1",
     "moment": "^2.22.2",
     "mousetrap": "^1.6.2",
     "numeral": "^2.0.6",

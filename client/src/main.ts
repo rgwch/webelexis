@@ -14,7 +14,6 @@ let selectedLanguage = navigator['languages'][0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 
 import environment from './environment';
-import { Abilities } from 'services/abilities';
 
 LogManager.addAppender(new ConsoleAppender())
 if (environment.debug) {
@@ -32,7 +31,8 @@ export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'))
-    //.globalResources('resources/date-format')
+    .globalResources(PLATFORM.moduleName('services/date-format'))
+    .globalResources(PLATFORM.moduleName('services/checkrole'))
     .feature(PLATFORM.moduleName('validation/index'))
     .plugin(PLATFORM.moduleName('aurelia-i18n'), (instance) => {
       instance.i18next.use(Backend);
@@ -48,7 +48,6 @@ export function configure(aurelia: Aurelia) {
     })
     .plugin(PLATFORM.moduleName('aurelia-animator-css'))
     .plugin(PLATFORM.moduleName('aurelia-dialog'))
-    .plugin(PLATFORM.moduleName('@casl/aurelia'),Abilities)
     /*
     .plugin(PLATFORM.moduleName('aurelia-mousetrap'),config=>{
       config.set('keymap', {

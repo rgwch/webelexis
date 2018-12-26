@@ -5,7 +5,6 @@
  ********************************************/
 
 import { IDataSource, DataService } from './datasource'
-import {Ability} from '@casl/ability'
 import * as io from 'socket.io-client';
 import * as feathers from '@feathersjs/client';
 import * as auth from '@feathersjs/authentication-client'
@@ -22,7 +21,7 @@ export class FeathersDS implements IDataSource {
   private socket
   private authenticator
 
-  constructor(private ability:Ability) {
+  constructor() {
     const socket = io.connect(env.baseURL);
 
     this.client = feathers()
@@ -65,7 +64,6 @@ export class FeathersDS implements IDataSource {
       }
       const verified = await this.client.passport.verifyJWT(jwt.accessToken)
       const user = await this.client.service('usr').get(verified.userId)
-      this.ability.update(user.rules)
       return user
     } catch (err) {
       console.log(err)

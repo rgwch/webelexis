@@ -2,6 +2,8 @@ const logger = require('../logger')
 const Mailer = require('../mailer')
 const defaults = require('../../config/elexisdefaults')
 const uuid = require('uuid/v4')
+const roles=require('../../config/roles')
+const {hasRight} = require('../util/acl')
 
 module.exports = function (app) {
 
@@ -18,7 +20,7 @@ module.exports = function (app) {
       userService.update(user.email, user).then(updated => {
 
       })
-      const mailer = new Mailer(app,defaults.system.admin)
+      const mailer = new Mailer(app, defaults.system.admin)
       const mail = `Bitte folgen Sie innert 4 Stunden diesem Link: ${defaults.system.url}, um Ihr Passwort zurückzusetzen.`
       mailer.send(mail, "Webelexis Passwort Wiederherstellung")
       reply.send("Sie erhalten in Kürze eine Mail mit Anweisungen, wie Sie Ihr Passwort zurücksetzen können.")
@@ -38,7 +40,7 @@ module.exports = function (app) {
       response.status(410).json({ "status": "error", "message": "expired" })
     } else {
       if (user.token.uuid != uid) {
-        response.status(400).render("error",{ status: "error", "message": "invalid request" })
+        response.status(400).render("error", { status: "error", "message": "invalid request" })
       } else {
         // response.redirect("/static/newpwd.html")
         user.token.uuid = uuid()
@@ -50,28 +52,28 @@ module.exports = function (app) {
     }
     const token = user.token
   })
-  app.post("/chpwd",async (request,response)=>{
-    const uid=request.body.uid
-    const uname=request.body.uname
-    const password=request.body.password
-    const repeat=request.body.password2
+  app.post("/chpwd", async (request, response) => {
+    const uid = request.body.uid
+    const uname = request.body.uname
+    const password = request.body.password
+    const repeat = request.body.password2
     const userService = app.service('usr')
-    const user=await userService.get(uname)
-    const ts=user.token.ts
-    const now=new Date().getTime()
-    const diff=now-ts
-    if(diff>300000){
-      response.status(410).render("error",{"message":"expired"})
-    }else{
-      if(user.token.uuid===uid){
-        if(password===repeat){
-        user.password=password
-        const updated=await userService.update(uname,user)
-        response.render('pwdok')
-        }else{
-          response.render("error",{message: "Passwords don't match"})
+    const user = await userService.get(uname)
+    const ts = user.token.ts
+    const now = new Date().getTime()
+    const diff = now - ts
+    if (diff > 300000) {
+      response.status(410).render("error", { "message": "expired" })
+    } else {
+      if (user.token.uuid === uid) {
+        if (password === repeat) {
+          user.password = password
+          const updated = await userService.update(uname, user)
+          response.render('pwdok')
+        } else {
+          response.render("error", { message: "Passwords don't match" })
         }
-      }else{
+      } else {
         response.status(400).json({ status: "error", "message": "invalid request" })
       }
     }
@@ -82,7 +84,8 @@ module.exports = function (app) {
       testing: settings.testing || false,
       sitename: settings.sitename,
       admin: settings.admin,
-      ip: request.ip
+      ip: request.ip,
+      roles
     })
   })
 }
