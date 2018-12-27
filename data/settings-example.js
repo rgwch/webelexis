@@ -15,7 +15,8 @@ module.exports={
     host: "localhost",
     database: "elexis",
     user: "praxis",
-    password: "topsecret"
+    password: "topsecret",
+    automodify: false
   },
   smtp:{
     host: "some.smpt.host",
