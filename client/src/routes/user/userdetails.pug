@@ -1,3 +1,5 @@
+mixin inp(id,v)
+  input.form-control.col-10(id= id value.bind= v)
 template
   .sheet(css.bind="$parent.style")
     .header Kontodetails
@@ -5,8 +7,8 @@ template
       form
         .form-row
           label.col-2(for="email") E-Mail
-          input.form-control.col-10(id="email" value.bind="user.email") 
+          +inp('email','user.email')
         .form-row
           label.col-2(for="name") Name
-          input.form-control.col-10(id="name" value.bind="name")  
-
+          +inp('name','user.name')
+      
