@@ -1,7 +1,8 @@
 import { WebelexisEvents } from "webelexisevents";
-import { autoinject } from "aurelia-framework";
+import { autoinject, useView, PLATFORM } from "aurelia-framework";
 
 @autoinject
+@useView(PLATFORM.moduleName('./userdetails.pug'))
 export class Userdetails{
   user
 

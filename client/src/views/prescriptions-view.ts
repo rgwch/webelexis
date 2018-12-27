@@ -172,7 +172,10 @@ export class Prescriptions {
         alert("Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf")
       } else {
         win.document.write(html)
-        win.print()
+        // Allow freshly opened window to load css and render
+        setTimeout(() => {
+          win.print()
+        }, 50);
         /*
         const domdoc = win.document.body
         const worker=new html2pdf.Worker
