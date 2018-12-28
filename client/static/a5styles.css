@@ -19,6 +19,7 @@ body {
   /* Stil für Seitenkopf */
   font-style: oblique;
   font-size: 18px;
+  font-weight: bolder;
   text-align: center;
   background-color: lightskyblue;
   color: black;
@@ -29,6 +30,16 @@ body {
   height: 2em;
 }
 
+span.topleft{
+  position:absolute;
+  left:1em;
+  top:4px;
+}
+span.topright{
+  position:absolute;
+  right:1em;
+  top:4px;
+}
 .leftrow {
   position: absolute;
   top: 4em;

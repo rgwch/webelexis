@@ -47,7 +47,229 @@ Wenn Sie sich als 'admin' einloggen, können Sie anschliessend von der Webelexis
 
 ### Briefvorlagen
 
-In Webelexis sind Briefvorlagen in HTML erstellt. Das macht das System flexibler - man ist nicht mehr auf ein Textprogram wie OpenOffice oder Word angewiesen, dafür ist das Erstellen von Vorlagen aber ein wenig schwieriger. In `data/sample-docbase/templates` finden Sie einige Beispiele zum Anpassen. 
+In Webelexis sind Briefvorlagen in HTML erstellt. Das macht das System flexibler - man ist nicht mehr auf ein Textprogram wie OpenOffice oder Word angewiesen, dafür ist das Erstellen von Vorlagen aber ein wenig schwieriger. In `data/sample-docbase/templates` finden Sie einige Beispiele zum Anpassen. Hier nur kurz das Prinzip:
+
+Ein Rezept, das so aussehen soll:
+
+![](img/rezept.jpg)
+
+Kann entweder mit html oder mit pug definiert werden. [Pug](https://pugjs.org/api/getting-started.html) ist eine Seitenbeschreibungssprache, die sich nach HTML complilieren lässt. Der Vorteil ist, dass weniger Schreibarbeit nötig ist, und dass die Dateien, wenn man den Aufbau einmal verstanden hat, übersichtlicher sind, als die HTML-&lt;Klammerwüsten&gt;. 
+Hier zeige ich die Rezeptvorlage mit pug:
+
+Zunächst eine gemeinsame Basis für alle Dokumente im Format A5:
+
+~~~css
+//- a5.pug
+doctype html
+html(lang="de")
+  head
+    meta(charset="utf-8")
+    title= sitename
+    link(rel="stylesheet" href="/a5styles.css")
+  body
+    heading.heading
+      block doctitle
+      span.topright [Datum.heute]
+    main
+      block content
+~~~
+
+Dann eine Vorlage fürs Rezept, die diese Basis-Vorlage erweitert:
+
+~~~css
+//- rezept.pug
+extends a5.pug
+
+block doctitle
+  span.topleft Rezept
+
+block content
+  .leftrow
+    span(style="font-size:16px;font-weight:bold;")= mandator.name
+    br
+    span= mandator.subtitle
+    br
+    span= mandator.street
+    br
+    span= mandator.place
+  .rightrow
+    table.header
+      tr
+        td Tel.:
+        td #{mandator.phone}
+      tr
+        td E-Mail:
+        td #{mandator.email}
+      tr
+        td ZSR:
+        td #{mandator.zsr}
+      tr
+        td GLN:
+        td #{mandator.gln}
+  .payload
+    span Rp.
+    .concern  [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]
+    .contents [liste][zusatz]
+
+~~~
+
+Eine wesentliche Rolle spielt auch das css-stylesheet, das am Anfang von a5.pug eingelesen wird:
+
+~~~css
+@page{
+  size: 148mm 210mm;
+}
+body {
+  /* Definition der Schriftart und -grösse für den ganzen Text */
+  font-family: Helvetica, Sans-Serif;
+  font-style: normal;
+  font-size: 14px;
+  text-align: left;
+  width: 148mm;
+  height: 209mm;
+  margin-left: 10mm;
+  margin-right: 15mm;
+  position: absolute;
+}
+
+.heading {
+  /* Stil für Seitentitel */
+  font-style: oblique;
+  font-size: 18px;
+  font-weight: bolder;
+  text-align: center;
+  background-color: lightskyblue;
+  color: black;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 2em;
+}
+
+/* Text oben links */
+span.topleft{
+  position:absolute;
+  left:1em;
+  top:4px;
+}
+/* Text oben rechts */
+span.topright{
+  position:absolute;
+  right:1em;
+  top:4px;
+}
+/* Linke Spalte des Kopfbereichs */
+.leftrow {
+  position: absolute;
+  top: 4em;
+  left: 5px;
+  width: 74mm;
+  height: 45mm;
+  overflow: hidden;
+  text-align: left;
+}
+
+/* Rechte Spalte des Kopfbereichs */
+.rightrow {
+  position: absolute;
+  top: 4em;
+  right: 5px;
+  width: 50mm;
+  overflow: hidden;
+  text-align: left;
+}
+
+/* Betreff (Patientenname) */
+.concern {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: left;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+
+/* Variabler Datenteil */
+.payload {
+  position: absolute;
+  top: 40mm;
+  bottom: 5mm;
+  width: 100%;
+  border-top: solid black 1px;
+  padding-top:5px;
+  /* border: solid black 1px; */
+
+}
+
+/* Eigentlicher Inhalt */
+.contents {
+  position: absolute;
+  top: 5em;
+  left: 2em;
+  right: 2em;
+  overflow: hidden;
+}
+
+/* Tabelle im Kopfbereich (ohne Linien) */
+table.header {
+  border: 0;
+  text-align: left;
+  padding: 0;
+}
+
+table.header tr{
+  border: 0;
+  padding: 0;
+}
+table.header td{
+  border: 0;
+  padding: 0;
+}
+
+/* Tabelle im Inhaltsbereich */
+table {
+  /* Stil für tabellarische Daten */
+  border-collapse: collapse;
+  padding: 8px;
+  width: 100%;
+}
+
+table,
+th,
+td {
+  /* Gemeinsame Formatierung aller Tabellenzellen, kann ev, weiter unten modifiziert werden */
+  border: 1px solid black;
+  text-align: left;
+}
+
+.rowheader {
+  /* Die erste Spalte */
+
+  text-align: left;
+  font-weight: normal;
+  background-color: #e6f7ff;
+
+}
+
+th.group {
+  /* Zeilen mit Gruppennamen */
+  background-color: #e6e6e6;
+  page-break-after: avoid;
+  /* Kein Seitenumbruch direkt nach dem Gruppentitel */
+}
+
+td {
+  /* Tabellenzellen, alle gemeinsam */
+  padding: 4px;
+  margin: 2px;
+}
+
+~~~
+
+Wenn Sie eine Vorlage geändert oder eine neue Vorlage erstellt haben, müssen Sie den Server neu starten, damit er die Vorlagen nach HTML umwandelt und einliest.
+
+Alternativ können Sie Vorlagen auch direkt als HTML erstellen (also rezept.html statt rezept.pug schreiben). In diesem Fall müssen Sie die gleichnamigen .pug Dateien aber entfernen, sonst wird Ihr HTML beim nächsten Start wieder überschrieben.
 
 ## Der Server
 

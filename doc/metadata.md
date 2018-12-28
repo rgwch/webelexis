@@ -12,5 +12,5 @@ date: 28.12.2018
 lang: de    
 rights: Copyright &copy; 2018. All rights reserved. 
 stylesheet: style.css
-cover-image: cover.png 
+cover-image: img/cover.png 
 ...
