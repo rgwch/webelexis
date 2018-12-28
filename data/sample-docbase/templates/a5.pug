@@ -1,2 +1,12 @@
 doctype html
 html(lang="de")
+  head
+    meta(charset="utf-8")
+    title= meta.sitename
+    link(rel="stylesheet" href="/briefstyles.css")
+  body
+    heading.heading
+      span(style="position:absolute;left:1em;top:4px;font-weight:bolder;")= brieftype
+      span(style="position:absolute;right:1em;top:4px;font-weight:bolder;") [Datum.heute]
+    main
+      block content
