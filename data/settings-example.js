@@ -16,12 +16,13 @@ module.exports={
   /* A list of mandators and metadata for them. Metadata are uses in templates. You can define whatever you want
      and refer to it e.g. in 'briefe' templates. See data/sample-docbase/templates/rezept.pug for an example. */
   mandators: {
-    chefe: {
-      name: "Dr. med. Dok Tor",
+    default: {
+      name: "Dr. med. Dok Tormed",
+      subtitle: "Facharzt für Webelexik",
       street: "Hinterdorf 17",
       place: "9999 Webelexikon",
       phone: "555 55 55",
-      email: "chefe@webelexis.org",
+      email: "doc@webelexis.org",
       zsr: "G088113",
       gln: "123456789012"
     }

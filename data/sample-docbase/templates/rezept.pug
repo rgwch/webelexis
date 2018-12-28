@@ -1,10 +1,32 @@
 extends a5.pug
 
+block doctitle
+  span Rezept
+
 block content
   .leftrow
-    span(style="font-size:16px;font-weight:bold;")= meta.mandator.name
+    span(style="font-size:16px;font-weight:bold;")= mandator.name
     br
-    span Facharzt für Innere Medizin
+    span= mandator.subtitle
     br
-    span= meta.mandator.street
-    
+    span= mandator.street
+    br
+    span= mandator.place
+  .rightrow
+    table.header
+      tr
+        td Tel.:
+        td #{mandator.phone}
+      tr
+        td E-Mail:
+        td #{mandator.email}
+      tr
+        td ZSR:
+        td #{mandator.zsr}
+      tr
+        td GLN:
+        td #{mandator.gln}
+  .payload
+    span Rp.
+    .concern  [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]
+    .contents [liste][zusatz]

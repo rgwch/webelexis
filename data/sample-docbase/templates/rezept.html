@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
-  <meta charset="utf-8" />
-  <title>Praxis Webelexis</title>
-  <link rel="stylesheet" href="/briefstyles.css">
-</head>
-
-<body>
-  <div class="heading">
-    <span style="position:absolute;left:1em;top:4px;font-weight:bolder;">Rezept</span>
-    <span style="position:absolute;right:1em;top:4px;font-weight:bolder;">[Datum.heute]</span>
-  </div>
-  <div class="leftrow">
-    <span style="font-size:16px;font-weight:bold;">Gerry Weirich</span><br />
-    Facharzt für Innere Medizin<br />
-    Rietstrasse 30<br />
-    8200 Schaffhausen<br />
-  </div>
-  <div class="rightrow">
-    Tel.: 052 624 40 77<br />
-    Mail: praxis@weirich.ch<br />
-    ZSR: G 0813.14<br />
-    GLN: 7601000085924
-  </div>
-  <div class="payload">
-    Rp.
-    <div class="concern">
-      [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]
-    </div>
-
-    <div class="contents">
-      [liste]
-      [zusatz]
-    </div>
-  </div>
-</body>
-
+  <head>
+    <meta charset="utf-8">
+    <title>Praxis Webelexis</title>
+    <link rel="stylesheet" href="/a5styles.css">
+  </head>
+  <body>
+    <heading class="heading">
+      <span style="position:absolute;left:1em;top:4px;font-weight:bolder;"><span>Rezept</span>
+    </span><span style="position:absolute;right:1em;top:4px;font-weight:bolder;">[Datum.heute]</span></heading>
+    <main>
+      <div class="leftrow"><span style="font-size:16px;font-weight:bold;">Dr. med. Dok Tor</span><br><span>Facharzt für Webelexik</span><br><span>Hinterdorf 17</span><br><span>9999 Webelexikon</span></div>
+      <div class="rightrow">
+        <table class="header">
+          <tr>
+            <td>Tel.:</td>
+            <td>555 55 55</td>
+          </tr>
+          <tr>
+            <td>E-Mail:</td>
+            <td>chefe@webelexis.org</td>
+          </tr>
+          <tr>
+            <td>ZSR:</td>
+            <td>G088113</td>
+          </tr>
+          <tr>
+            <td>GLN:</td>
+            <td>123456789012</td>
+          </tr>
+        </table>
+      </div>
+      <div class="payload"><span>Rp.</span>
+        <div class="concern"> [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]</div>
+        <div class="contents">[liste][zusatz]</div>
+      </div>
+    </main>
+  </body>
 </html>

@@ -32,6 +32,7 @@
         "--recursive",
         "${workspaceFolder}/server/test"
       ],
+      "cwd": "${workspaceFolder}/server",
       "env":{
         "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
       },

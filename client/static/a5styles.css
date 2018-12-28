@@ -43,7 +43,7 @@ body {
   position: absolute;
   top: 4em;
   right: 5px;
-  width: 40mm;
+  width: 50mm;
   overflow: hidden;
   text-align: left;
 }
@@ -75,7 +75,20 @@ body {
   right: 2em;
   overflow: hidden;
 }
+table.header {
+  border: 0;
+  text-align: left;
+  padding: 0;
+}
 
+table.header tr{
+  border: 0;
+  padding: 0;
+}
+table.header td{
+  border: 0;
+  padding: 0;
+}
 table {
   /* Stil für tabellarische Daten */
   border-collapse: collapse;
@@ -88,7 +101,7 @@ th,
 td {
   /* Gemeinsame Formatierung aller Tabellenzellen, kann ev, weiter unten modifiziert werden */
   border: 1px solid black;
-  text-align: center;
+  text-align: left;
 }
 
 .rowheader {

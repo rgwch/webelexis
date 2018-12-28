@@ -11,7 +11,7 @@ const fs = require('fs')
 const path = require('path')
 const logger = require('../../logger')
 const { DateTime } = require('luxon')
-const compilePug = require('./compile-pug')
+const compilePug = require('../../util/compile-pug')
 
 module.exports = function (app) {
   const Model = createModel(app);
@@ -32,6 +32,7 @@ module.exports = function (app) {
 
   // auto-import templates
   const cfg = app.get("userconfig")
+  cfg.mandator=cfg.mandators.default
   if (cfg.docbase) {
     const templatesDir = path.join(cfg.docbase, "templates")
     fs.readdir(templatesDir, (err, files) => {
@@ -40,7 +41,7 @@ module.exports = function (app) {
       } else {
         for (const file of files) {
           if (file.endsWith('.pug')) {
-            compilePug(templatesDir, file)
+            compilePug(templatesDir, file,cfg)
           }
         }
         const templates = []
