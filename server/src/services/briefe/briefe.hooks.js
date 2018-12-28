@@ -1,8 +1,13 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const fs = require('fs').promises
 const path = require('path')
 const logger = require('../../logger')
-logger.level = "info"
 
 const retrieve = async ctx => {
   const meta = ctx.result

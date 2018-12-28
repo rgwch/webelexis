@@ -1,4 +1,9 @@
-// Initializes the `documents` service on path `/documents`
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const createService = require('feathers-nedb');
 const createModel = require('../../models/documents.model');
 const hooks = require('./documents.hooks');

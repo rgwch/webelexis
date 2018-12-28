@@ -1,10 +1,17 @@
-// Initializes the `briefe` service on path `/briefe`
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const createService = require('feathers-knex');
 const createModel = require('../../models/briefe.model');
 const hooks = require('./briefe.hooks');
 const fs = require('fs')
 const path = require('path')
 const logger = require('../../logger')
+const { DateTime } = require('luxon')
+const compilePug = require('./compile-pug')
 
 module.exports = function (app) {
   const Model = createModel(app);
@@ -31,6 +38,11 @@ module.exports = function (app) {
       if (err) {
         logger.error("could not read template dir " + path.resolve(templatesDir))
       } else {
+        for (const file of files) {
+          if (file.endsWith('.pug')) {
+            compilePug(templatesDir, file)
+          }
+        }
         const templates = []
         for (const file of files) {
           const basename = path.basename(file, ".html")
@@ -51,12 +63,13 @@ module.exports = function (app) {
           brief.Path = `templates/${name}.html`
           return service.update(brief)
         }
-      }else{
-        const brief={
-          Betreff: name+"_webelexis",
+      } else {
+        const brief = {
+          Betreff: name + "_webelexis",
           typ: "Vorlagen",
           Path: `templates/${name}.html`,
-          MimeType: "text/html"
+          MimeType: "text/html",
+          Datum: DateTime.local().toFormat('yyyyLLddhhmmss')
         }
         return service.create(brief)
       }

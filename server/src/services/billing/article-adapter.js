@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const article_class = "ch.artikelstamm.elexis.common.ArtikelstammItem"
 
 module.exports.createBilling = async (art, app) => {
