@@ -70,7 +70,7 @@ module.exports = function (config) {
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
     browsers: [
-      'Chromium',
+      'Chromium'
     ],
 
     /*
