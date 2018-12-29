@@ -53,13 +53,19 @@ export class BriefManager {
       throw new Error("Template " + template + " not found")
     }
   }
-
+  /**
+   * Fetch a related kontakt from thebid in the field denoted by 'flat'. 
+   * To reduce number of net accesses, once a kontakt is fetched, we store it in the field denoted by
+   * 'fold'. So, on as subseqent call, we can just return the value of tmpl[fold].
+   */
   findKontakt = async (tmpl, flat, fold): Promise<KontaktType> => {
     if (tmpl[fold]) {
       return tmpl[fold]
-    }
-    if (tmpl[flat]) {
-      return await this.kontaktService.get(tmpl[flat])
+    } else if (tmpl[flat]) {
+      tmpl[fold] = await this.kontaktService.get(tmpl[flat])
+      return tmpl[fold]
+    } else {
+      throw new Error("Not found");
     }
   }
   /**
@@ -89,22 +95,35 @@ export class BriefManager {
     } catch (err) {
       console.log(err)
     }
-    const compiled = template.replace(fieldmatcher, field => {
-      const stripped = field.substring(1, field.length - 1)
-      const [element, attribute] = stripped.split(".")
-      let replacement: string
-      switch (element.toLowerCase()) {
+    function getEntity(desc: string): ElexisType {
+      let entity: ElexisType = undefined
+      switch (desc.toLowerCase()) {
         case "adressat":
-        case "addressee": replacement = destinator ? destinator[attribute] : null; break;
-        case "patient": replacement = concerning ? concerning[attribute] : null; break;
+        case "addressee": entity = destinator; break;
+        case "patient": entity = concerning; break;
         case "concern":
-
-        case "datum": replacement = this.dt.DateObjectToLocalDate(new Date())
-        default: {
-          const lastSelected = this.we.getSelectedItem(element)
-          if (lastSelected) {
-            replacement = lastSelected[attribute]
-          }
+        // case "datum": entity = this.dt.DateObjectToLocalDate(new Date())
+        default:
+          entity = this.we.getSelectedItem(desc)
+      }
+      return entity
+    }
+    const compiled = template.replace(fieldmatcher, field => {
+      const full = field.substring(1, field.length - 1)
+      const parts = full.split(":")
+      let value = parts[0]
+      if (parts.length == 3) { // [patient:mw:er/sie], [adressat:mwn:er/sie/unpers]
+        const entity = getEntity(parts[0])
+        const v1 = parts[2].split("/")
+      }
+      const [element, attribute] = value.split(".")
+      let replacement: string = ""
+      if (element == "datum") {
+        replacement = this.dt.DateObjectToLocalDate(new Date())
+      } else {
+        const entity = getEntity(element)
+        if (entity) {
+          replacement = entity[attribute]
         }
       }
       if (replacement) {
@@ -118,4 +137,6 @@ export class BriefManager {
     })
     return compiled
   }
+
+  processField(k: KontaktType) { }
 }
