@@ -1,3 +1,4 @@
+import { PatientType } from './patient';
 import { KontaktType } from './kontakt';
 /********************************************
  * This file is part of Webelexis           *
@@ -21,6 +22,7 @@ export interface BriefType extends ElexisType {
   destid?: UUID
   behandlungsid?: UUID
   patientid?: UUID
+  _Patient?: PatientType
   typ: "Vorlagen" | "Allg." | "AUF-Zeugnis" | "Rezept" | "Labor" | "Bestellung" | "Rechnung"
   MimeType: string
   Path?: string
@@ -65,7 +67,8 @@ export class BriefManager {
       tmpl[fold] = await this.kontaktService.get(tmpl[flat])
       return tmpl[fold]
     } else {
-      throw new Error("Not found");
+      console.log("not found %s",tmpl)
+      return undefined
     }
   }
   /**
@@ -100,8 +103,8 @@ export class BriefManager {
       switch (desc.toLowerCase()) {
         case "adressat":
         case "addressee": entity = destinator; break;
-        case "patient": entity = concerning; break;
-        case "concern":
+        case "patient": 
+        case "concern": entity = concerning; break;
         // case "datum": entity = this.dt.DateObjectToLocalDate(new Date())
         default:
           entity = this.we.getSelectedItem(desc)

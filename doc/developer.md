@@ -314,3 +314,13 @@ To incorporate new billing systems, just implement an adapter for that billing s
 
 ## Documents
 
+## Access control system
+
+Webelexis relies on an ability based access control system: A resource is protected by an Access Control Element (ACE). A collection of such elements is called ACL (Access Control List). A user has one or more roles. A role is linked to an ACL. ACEs are hierarchically organized. An ACE contains implicitly all children ACEs and so on. The top ACE is the root. The admin role has the root ACE and therefore all other ACEs.
+
+ACEs are created in services/index.js. Every service can define up to 6 ACEs: get,find,create,update,patch and remove.
+
+The definition of roles is installation dependend and therefore in the user configurable area: server/config/roles.js defines roles and their names, and Aclmapper defined mappings of ACE to roles.
+
+**Important**: The roles should be set up before starting the system. Once some objects are created, changes of the role system can lead to errors. The aclmapper on the other hand, can easiliy be changed at any time.
+

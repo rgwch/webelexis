@@ -27,20 +27,26 @@ module.exports={
       gln: "123456789012"
     }
   },
+  /* The place to store templates and documents */
   docbase:"data/sample-docbase",
+  /* connection to the database */
   elexisdb: {
     host: "localhost",
     database: "elexis",
     user: "praxis",
     password: "topsecret",
+    /* set automodify to true to let webelexis modify the elexis database */
     automodify: false
   },
+  /* We need an SMTP hot to send mails for lost password retrieval */
   smtp:{
     host: "some.smpt.host",
     port: 587,
     user: "smtpuser",
     pwd: "smtppassword"
   },
+  /* Definition of the document store. Can be Lucinda or Solr. Fallback is always
+    storage in the file system */
   lucinda:{
     url: "http://localhost:2016/lucinda/2.0"
   }
