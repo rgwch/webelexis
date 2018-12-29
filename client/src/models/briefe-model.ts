@@ -95,7 +95,7 @@ export class BriefManager {
     } catch (err) {
       console.log(err)
     }
-    function getEntity(desc: string): ElexisType {
+    const getEntity=(desc: string): ElexisType=> {
       let entity: ElexisType = undefined
       switch (desc.toLowerCase()) {
         case "adressat":

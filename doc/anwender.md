@@ -271,6 +271,26 @@ Wenn Sie eine Vorlage geändert oder eine neue Vorlage erstellt haben, müssen S
 
 Alternativ können Sie Vorlagen auch direkt als HTML erstellen (also rezept.html statt rezept.pug schreiben). In diesem Fall müssen Sie die gleichnamigen .pug Dateien aber entfernen, sonst wird Ihr HTML beim nächsten Start wieder überschrieben.
 
+### Makros
+
+Ähnlich wie bei Elexis können Sie auch bei Webelexis Makros im Konsultationstext eingeben. Im Gegensatz zu Elexis können Makros bei Webelexis aber nicht nur Textkürzel expandieren und Leistungsblöcke verrechnen, sondern auch differenziertere kontextabhängige Aktionen auslösen. Standardmässig sind folgende Makros eingerichtet:
+
+* Wenn ein Makro der Name eines Leistungsblocks ist, wird dieser verrechnet.
+
+* Textkürzel werden expandiert (z.B. kons$).
+
+* grössereZahl/kleinereZahl wird als Blutdruckwert interpretiert und so als Messwert f den aktuellen Tag eingetragen. Beispiel: 130/80.
+
+* grössereZahl/kleinereZahl/nochEineZahl wird aös BD/Puls interpretiert und eingetragen
+
+* kleinereZahl/grössereZahl wird als Gewicht/Grösse interpretiert und zusammen mit dem errechneten BMI als Messwert eingetragen.
+
+* Zahl%/Dezimalzahl wird als Quick/INR interpretiert.
+
+* BZZahl wird als Blutzuckerwert interpretiert.
+
+Die Definition von Makros ist durch diese vermehrten Möglichkeiten leider komplexer geworden. Man kann sie auch nicht mehr von der Benutzeroberfläche aus erstellen, sondern muss sie als Funktionen in user/macrodefs.ts schreiben.
+
 ## Der Server
 
 ### Docker-basiert
