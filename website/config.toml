@@ -1,0 +1,9 @@
+baseURL = "http://www.webelexis.ch"
+languageCode = "de-ch"
+title = "Webelexis"
+theme = "ananke"
+
+[params]
+favicon = "/webelexis.png"
+description = "Elexis on steroids"
+background_color_class="bg-lightest-blue"

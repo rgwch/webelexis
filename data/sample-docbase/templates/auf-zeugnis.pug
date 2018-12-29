@@ -1,0 +1,33 @@
+extends a5
+
+block doctitle
+  span.topleft Arztzeugnis
+
+block content
+  .leftrow
+    span(style="font-size:16px;font-weight:bold;")= mandator.name
+    br
+    span= mandator.subtitle
+    br
+    span= mandator.street
+    br
+    span= mandator.place
+  .rightrow
+    table.header
+      tr
+        td Tel.:
+        td #{mandator.phone}
+      tr
+        td E-Mail:
+        td #{mandator.email}
+      tr
+        td ZSR:
+        td #{mandator.zsr}
+      tr
+        td GLN:
+        td #{mandator.gln}
+  .payload
+
+    .concern  [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]
+    .contents.
+      steht wegen [fall.grund] in meiner Behandlung.
