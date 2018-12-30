@@ -32,22 +32,24 @@ module.exports = function (app) {
 
   // auto-import templates
   const cfg = app.get("userconfig")
-  cfg.mandator=cfg.mandators.default
+  cfg.mandator = cfg.mandators.default
   if (cfg.docbase) {
     const templatesDir = path.resolve(path.join(cfg.docbase, "templates"))
     fs.readdir(templatesDir, (err, files) => {
       if (err) {
-        logger.error("could not read template dir %s:%s", templatesDir,err)
+        logger.error("could not read template dir %s:%s", templatesDir, err)
       } else {
         for (const file of files) {
           if (file.endsWith('.pug')) {
-            compilePug(templatesDir, file,cfg)
+            compilePug(templatesDir, file, cfg)
           }
         }
         const templates = []
         for (const file of files) {
-          const basename = path.basename(file, ".html")
-          templates.push(matchTemplate(basename))
+          if (file.endsWith(".html")) {
+            const basename = path.basename(file, ".html")
+            templates.push(matchTemplate(basename))
+          }
         }
         Promise.all(templates).then(r => {
           logger.info(`imported ${r.length} templates`)
