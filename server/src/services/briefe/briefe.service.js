@@ -34,10 +34,10 @@ module.exports = function (app) {
   const cfg = app.get("userconfig")
   cfg.mandator=cfg.mandators.default
   if (cfg.docbase) {
-    const templatesDir = path.join(cfg.docbase, "templates")
+    const templatesDir = path.resolve(path.join(cfg.docbase, "templates"))
     fs.readdir(templatesDir, (err, files) => {
       if (err) {
-        logger.error("could not read template dir " + path.resolve(templatesDir))
+        logger.error("could not read template dir %s:%s", templatesDir,err)
       } else {
         for (const file of files) {
           if (file.endsWith('.pug')) {
