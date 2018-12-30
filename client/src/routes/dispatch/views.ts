@@ -87,5 +87,10 @@ export default{
       icon: "/pills.svg",
       view: PLATFORM.moduleName("views/prescriptions-view"),
       role: global.roles.user
+    },
+    briefe:{
+      text: "Briefe",
+      icon: "/envelope.svg",
+      view: PLATFORM.moduleName("views/letters-view")
     }
   }

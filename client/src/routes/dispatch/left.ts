@@ -15,7 +15,7 @@ import defaults from '../../user/uidefaults'
 export class LeftPanel{
   tooliconwidth=40
   tooliconheight=40
-  views=[v.patientenliste,v.artikelliste,v.dokumentliste,v.messwerte,v.leistungen]
+  views=[v.patientenliste,v.artikelliste,v.dokumentliste,v.briefe,v.messwerte,v.leistungen]
   active=v.patientenliste
   parent
   buttons
