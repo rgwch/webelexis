@@ -39,3 +39,96 @@ Wenn Sie ein verschlüsseltes WLAN benutzen, sind Sie diesbezüglich im Vorteil:
 Daher erneut die Empfehlung, lieber ein kabelgebundenes LAN zu verwechseln. Diese Kabel mit ihren verdrillten Adern sind kaum abzuhören, und da man genau weiss, wo man Netzwerksteckdosen installiert hat, ist auch jeder mögliche Angriffspunkt bekannt. Wenn das ausnahmsweise nicht der Fall ist, beispielsweise, weil das Netzwerk nicht nur von Ihnen kontrollierte Räume umfasst, dann sollten Sie auf verschlüsselte Kommunikation setzen. Mysql Server in neueren Versionen bieten von sich aus primär verschlüsselte Kommunikation an.
 
 Bei Fernzugriff sind die möglichen Lauscher natürlich um Grössenordnungen zahlreicher. Wenn Sie aber meinen obigen Empfehlungen gefolgt sind, und den Zugriff nur über einen SSH- oder VPN- Tunnel ermöglichen, dann sind die Daten auf dem Transport nach aktuellem Stand der Technik sicher verschlüsselt.
+
+## Entdeckung
+
+Manchmal kann man einen unberechtigten Zugriff nicht verhindern. Wir alle kennen die Geschichten von hochgesicherten Computern, in die Hacker eingedrungen sind. Niemand ist hundertprozentig dagegen gefeit. Aber wenn ein Einbruch geschieht, dann sollte man ihn wenigstens entdecken und zügig unterbinden.
+
+* Machen Sie Ihr Praxispersonal darauf aufmerksam, dass alle Zugriffe auf die Praxiscomputer aufgezeichnet werden (Dazu sind Sie aus rechtlichen Gründen verpflichtet).
+
+* Tun Sie das dann auch. Konfigurieren Sie alle Programme so, dass Logdateien geschrieben werden. Überprüfen Sie diese Logdateien regelmässig auf "verdächtige" Aktionen (Zugriffe zu ungewöhnlichen Zeiten, Benutzer, die mehrmals nacheinander wegen Passwortfehlern abgewiesen werden, ungewöhnliche Aktionen etc.)
+Im Fall von Fernzugriff, prüfen Sie auch die SSH/VPN logs darauf hin, wer wann ins Netz eingeloggt ist, und gleichen Sie das mit den Gewohnheiten der berechtigten Personen ab. Von abgewiesenen Login-Versuchen sollten Sie sich allerdings bei SSH/VPN nicht ins Bockshorn jagen lassen: Jeder nach aussen offene Port ist solchen Angriffen ausgesetzt. Würden Sie einen Standardport (22) verwenden, würde Ihr log vermutlich -zig Login-Versuche pro Minute verzeichnen, bei einem nicht-standard-Port immer noch mehrere pro Tag.
+
+Besonders sorgfältige Sicherheitsverantwortliche sichern daher Tunnels durch eine zweite Stufe ab, indem etwa der Tunnel gezielt nur dann geöffnet wird, wenn eine berechtigte Person ihn benötigt. Man kann das mit einer zweiten Kommunikationsebene erreichen, zum Beispiel mit einer SMS oder E-Mail an den Router, der den Tunnel freigibt etc. Lassen Sie sich ggf. beraten.
+
+## Beispielkonfiguration
+
+Hier zur Demonstration eine Beispielkonfiguration für Zugriff auf einen Webelexis-Server
+
+### SSHD - Der SSH Server
+
+Auf dem Server-Computer benötigen Sie einen SSH Server, auch sshd genannt (ssh daemon). Dieser ist bei den meisten Server-Betriebssystemen vorinstalliert oder leicht installierbar. Entscheidend ist die Konfigurationsdatei `/etc/ssh/sshd.config`. Hier nur die interessanten Stellen:
+
+~~~bash
+# Irgendein nicht-standard-Port 
+Port  39876
+# Niemand soll direkt als Administrator einloggen können.
+PermitRootLogin no
+# Speicherort für die öffentlichen Schlüssel der zugelassenen User
+AuthorizedKeysFile     %h/.ssh/authorized_keys
+# Zugriff mit Passwort verbieten
+PasswordAuthentication no
+# Zugriff mit Schlüsselpaar erlauben
+RSAAuthentication yes
+PubkeyAuthentication yes
+~~~
+
+Den Rest können Sie auf den Standardwerten belassen.
+
+Dann müssen Sie auf dem Router den entsprechenden Port (hier 39876) öffnen und zum SSH Server weiterleiten.
+
+### ssh - Der SSH client
+
+Auf Linux- und Mac Computern heisst das entsprechende Programm einfach 'ssh', auf Windows können Sie z.B. 'putty' verwenden. Als Erstes benötigen wir ein Schlüsselpaar.
+
+`ssh-keygen -t rsa`
+
+Wählen Sie als Speicherort z.B. .ssh/webelexiskey
+
+Um den öffentlichen Schlüssel zum Server zu übermitteln, starten Sie den sshd server am Besten ein letztes Mal mit der Option `PasswordAuthentication yes`und führen dann folgendes Programm aus:
+
+`ssh-copy-id -i ~/.ssh/webelexiskey IhrName@IhrPraxisServer.ch`
+
+(Es wird nur der öffentliche Schlüssel zum Server übertragen. Der private Schlüssel bleibt immer auf dem Computer, der ihn erstellt hat, und wird durch Verschlüsselung und begrenzte Zugriffssrecht geschützt)
+
+Nun benötigen wir noch eine Konfigurationsdatei für den SSH Client. Erstellen Sie eine Textdatei names config im Verzeichnins .ssh mit folgendem Inhalt:
+
+~~~bash
+Host praxis
+        HostName IhrPraxisServer.ch
+        User IhrName
+        Port 39876
+        LocalForward 2018 127.0.0.1:2018
+        IdentityFile /Pfad/zu/.ssh/webelexiskey
+~~~
+
+Jetzt können Sie sich einfach mit `ssh praxis` auf Ihren Praxis-Server einloggen. Der Tunnel zu Webelexis ist durch die LocalForward-Zeile bereits geöffnet. Allerdings lauscht am anderen Ende noch niemand. Das holen wir jetzt nach:
+
+### Webelexis auf dem Server starten
+
+Erstellen Sie eine Textdatei namens docker-compose.yml mit mindestens folgendem Inhalt:
+
+~~~bash
+webelexis:
+    image: rgwch/webelexis:3.0.7
+    ports: 
+      - "2018:3030"
+    volumes:
+      - /srv/public/webelexis-data:/home/node/webelexis/data
+    restart: always
+    container_name: d_webelexis
+
+~~~
+
+(Natürlich müssen Sie die "volumes" Angabe anpassen. Im Verzeichnis, auf das Volumes zeigt, muss ausserdem die Konfigurationsdatei settings.js für Webelexis sein.)
+
+Starten Sie dann mit `docker-compose up &` und warten Sie, bis Docker die enstprechende Webelexis-Version heruntergeladen, installiert und gestartet hat.
+
+Möglicherweise müssen Sie dem Docker-User entsprechende Zugriffsrechte auf die Elexis-Datenbank erteilen, z.B.
+
+~~~bash
+mysql -u root
+create user webelexis@'172.18.0.%' identified by 'supersecret';
+grant all on elexis.* to webelexis@'172.18.0.%';
+
+~~~
