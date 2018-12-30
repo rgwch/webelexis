@@ -1,5 +1,5 @@
 #! /bin/bash
-pandoc -o index.json -f markdown metadata.md anwender.md developer.md
+pandoc -o index.json -f markdown metadata.md anwender.md developer.md security.md
 
 pandoc-index index
 
