@@ -1,16 +1,18 @@
-import { DateTime } from 'services/datetime';
-import { DataSource } from './../../src/services/datasource';
+import { DateTime } from './../../src/services/datetime';
 import { BriefManager, BriefType } from './../../src/models/briefe-model';
 import { Dummysource } from './dummysource';
-import { WebelexisEvents } from './dummyevents';
-import { runInThisContext } from 'vm';
+import { WebelexisEvents as dummywe} from './dummyevents';
+import * as moment from 'moment'
 
 describe('briefe', () => {
-  const ds=new Dummysource()
-  const we=new WebelexisEvents()
-  const dt=new DateTime(null)
+  let bm:BriefManager
+  let we
+  let dt=new DateTime(null)
+  beforeAll(()=>{
+    we=new dummywe()
+    bm= new BriefManager(new Dummysource(),we,dt)
 
-  const bm: BriefManager=new BriefManager(ds,null,dt)
+  })
   it('merges a template and a brief with field resolvers', async () => {
     const brief: BriefType = {
       Betreff: "Test",
@@ -25,9 +27,10 @@ describe('briefe', () => {
       typ: "Rezept",
       MimeType: "text/plain"
     }
+    const now=moment().format("YYYYMMDD")
     const template = `
       Datum: [Datum.heute]
-      Patient: [Patient.bezeichnung1], [Patient.bezeichnung2]
+      Patient: [Patient.Bezeichnung1], [Patient.Bezeichnung2]
       Er/Sie: [Patient:mw:Herr/Frau]
       XforU: [x]
     `
@@ -37,5 +40,12 @@ describe('briefe', () => {
     }]
 
     const compiled=await bm.replaceFields(template,brief,replacers)
+    console.log(compiled)
+    expect(compiled).toBe(`
+      Datum: ${now}
+      Patient: Tausendwasser, Friedlich
+      Er/Sie: Herr
+      XforU: u
+    `)
   })
 })

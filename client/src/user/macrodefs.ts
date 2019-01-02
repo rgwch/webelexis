@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018 by G. Weirich         *
+ * Copyright (c) 2018-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -20,11 +20,11 @@ export default [
       let first = parseInt(isbdmi[1])
       let second = parseInt(isbdmi[2])
       if (first > second) {
-        const data = fm.createFindingFromString("cardial", word)
+        const data = (fm ? fm.createFindingFromString("cardial", word) : [first,second])
         return `BD: ${data[0]}/${data[1]}`
       } else {
         const bmi = Math.round(first / ((second / 100) ^ 2))
-        const data = fm.createFindingFromString("physical", word)
+        const data = (fm ? fm.createFindingFromString("physical", word) : [first,second,bmi])
         return `Gewicht: ${data[0]}, Grösse: ${data[1]}, BMI: ${data[2]}`
       }
     }
@@ -33,7 +33,7 @@ export default [
     func: (inr, word, fm: FindingsManager) => {
       const userdefs = fm.getDefinitions()
       if (inr && userdefs.coagulation) {
-        const data = fm.createFindingFromString("coagulation", word)
+        const data = (fm ? fm.createFindingFromString("coagulation", word) : word)
         if (userdefs.coagulation.verbose) {
           return userdefs.coagulation.verbose(data)
         }

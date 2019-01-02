@@ -28,7 +28,7 @@ function loadTestModules() {
 
   const testContext = require.context(
     // directory:
-    './spec',
+    './unit',
     // recursive:
     true,
     // tests in ./unit folder regex:

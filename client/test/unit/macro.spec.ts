@@ -11,8 +11,9 @@ describe("macros",()=>{
     eventSource=new WebelexisEvents()
   })
   it("resolves some patterns",()=>{
-    const mp=new Macroprocessor(dataSource,eventSource,null,null)
+    const mp=new Macroprocessor(eventSource,undefined, undefined, undefined)
     const encounter:EncounterType={
+      type: "konsultation",
       datum:"20181119",
       Zeit:"09:00",
       mandantid: "007",
@@ -23,6 +24,6 @@ describe("macros",()=>{
       }
     }
     const bd=mp.process(encounter, "120/80")
-    expect(bd).toBe("Blut")
+    expect(bd).toBe("BD: 120/80")
   })
 })

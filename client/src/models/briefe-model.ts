@@ -1,12 +1,11 @@
-import { PatientType } from './patient';
-import { KontaktType } from './kontakt';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
 
-
+import { PatientType } from './patient';
+import { KontaktType } from './kontakt';
 import { WebelexisEvents } from './../webelexisevents';
 import { DataService, DataSource } from 'services/datasource';
 import { autoinject } from 'aurelia-framework';
@@ -67,7 +66,7 @@ export class BriefManager {
       tmpl[fold] = await this.kontaktService.get(tmpl[flat])
       return tmpl[fold]
     } else {
-      console.log("not found %s",tmpl)
+      console.log("not found %s", tmpl)
       return undefined
     }
   }
@@ -90,6 +89,8 @@ export class BriefManager {
       template = template.replace("[" + f.field + "]", f.replace)
 
     }
+    const stepOne = template.replace(/\[Datum.heute\]/g, this.dt.DateToElexisDate(new Date()))
+    console.log("stepOne: "+stepOne)
     let destinator
     let concerning
     try {
@@ -98,12 +99,12 @@ export class BriefManager {
     } catch (err) {
       console.log(err)
     }
-    const getEntity=(desc: string): ElexisType=> {
-      let entity: ElexisType = undefined
+    const getEntity = (desc: string): KontaktType => {
+      let entity: KontaktType = undefined
       switch (desc.toLowerCase()) {
         case "adressat":
         case "addressee": entity = destinator; break;
-        case "patient": 
+        case "patient":
         case "concern": entity = concerning; break;
         // case "datum": entity = this.dt.DateObjectToLocalDate(new Date())
         default:
@@ -111,24 +112,36 @@ export class BriefManager {
       }
       return entity
     }
-    const compiled = template.replace(fieldmatcher, field => {
+    const stepTwo = stepOne.replace(fieldmatcher, field => {
       const full = field.substring(1, field.length - 1)
       const parts = full.split(":")
-      let value = parts[0]
       if (parts.length == 3) { // [patient:mw:er/sie], [adressat:mwn:er/sie/unpers]
+        console.log("parts :",parts)
         const entity = getEntity(parts[0])
-        const v1 = parts[2].split("/")
-      }
-      const [element, attribute] = value.split(".")
-      let replacement: string = ""
-      if (element == "datum") {
-        replacement = this.dt.DateObjectToLocalDate(new Date())
-      } else {
-        const entity = getEntity(element)
-        if (entity) {
-          replacement = entity[attribute]
+        if (entity.geschlecht) {
+          if (parts[1] == 'mw') {
+            const v1 = parts[2].split("/")
+            if (entity.geschlecht.toLowerCase() == "m") {
+              return v1[0]
+            } else {
+              return v1[1]
+            }
+          }
         }
       }
+      return field
+    })
+    console.log("Step 2 "+stepTwo)
+    const stepThree = stepOne.replace(fieldmatcher, field => {
+      const value = field.substring(1, field.length - 1)
+      const [element, attribute] = value.split(".")
+      let replacement: string = ""
+
+      const entity = getEntity(element)
+      if (entity) {
+        replacement = entity[attribute]
+      }
+
       if (replacement) {
         if (replacement.match(/[0-9]{8,8}/)) {
           replacement = this.dt.ElexisDateToLocalDate(replacement)
@@ -138,7 +151,7 @@ export class BriefManager {
         return field
       }
     })
-    return compiled
+    return stepThree
   }
 
   processField(k: KontaktType) { }

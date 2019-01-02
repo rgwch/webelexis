@@ -3,7 +3,8 @@ import { autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { checkACE } from '../../services/checkrole'
 import { Router } from 'aurelia-router';
-import { WebelexisEvents } from '../../../test/spec/dummyevents';
+import { WebelexisEvents } from 'webelexisevents';
+
 
 @autoinject
 export class TestIndex {
@@ -13,8 +14,8 @@ export class TestIndex {
 
   display={}
 
-  constructor(private ea: EventAggregator, private check: checkACE, private router:Router,
-    private we:WebelexisEvents) {
+  constructor(private ea: EventAggregator, private check: checkACE, private router:Router, 
+    private we: WebelexisEvents) {
 
   }
 
