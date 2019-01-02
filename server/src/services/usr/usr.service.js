@@ -32,17 +32,29 @@ module.exports = function (app) {
   service.get("admin").then(adm => {
     logger.info("found admin user")
   }).catch(err => {
-    const ucf=app.get("userconfig")
+    const ucf = app.get("userconfig")
+    logger.warn("No Admin user found")
     if (!ucf || !ucf.testing) {
-      const input = require('../../keyboard')
-      input("Please enter admin password: ").then(async pwd => {
-        try {
-          const adm = await service.create({ email: "admin", password: pwd, roles: ['admin'], dummy: false })
-          logger.info("created admin")
-        } catch (err) {
-          logger.error("could not create admin %s", err)
-        }
-      })
+      if (ucf && ucf["adminpwd"]) {
+        const admin = service.create({
+          email: "admin", password: ucf["adminpwd"],
+          roles: ['admin'], dummy: false
+        }).then(created => {
+          logger.warn("created Admin with configured password. Please delete Password in Config!")
+        }).catch(err => {
+          logger.error("Error creating Admin %s", err)
+        })
+      } else {
+        const input = require('../../keyboard')
+        input("Please enter admin password: ").then(async pwd => {
+          try {
+            const adm = await service.create({ email: "admin", password: pwd, roles: ['admin'], dummy: false })
+            logger.info("created admin")
+          } catch (err) {
+            logger.error("could not create admin %s", err)
+          }
+        })
+      }
     }
   })
 };
