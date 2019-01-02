@@ -82,6 +82,7 @@ export class BriefManager {
    */
   async replaceFields(template: string, brief: BriefType, fields?: Array<{ field: string, replace: string }>) {
     const fieldmatcher = /\[\w+\.\w+\]/ig
+    const complexmatcher = /\[\w+:\w+:.+\/.+\]/ig
     for (const f of fields) {
       if (!f.replace) {
         f.replace = ""
@@ -89,8 +90,8 @@ export class BriefManager {
       template = template.replace("[" + f.field + "]", f.replace)
 
     }
-    const stepOne = template.replace(/\[Datum.heute\]/g, this.dt.DateToElexisDate(new Date()))
-    console.log("stepOne: "+stepOne)
+    const stepOne = template.replace(/\[Datum.heute\]/g, this.dt.DateObjectToLocalDate(new Date()))
+    console.log("stepOne: " + stepOne)
     let destinator
     let concerning
     try {
@@ -112,27 +113,24 @@ export class BriefManager {
       }
       return entity
     }
-    const stepTwo = stepOne.replace(fieldmatcher, field => {
+    // [patient:mw:er/sie], [adressat:mwn:er/sie/unpers]
+    const stepTwo = stepOne.replace(complexmatcher, field => {
       const full = field.substring(1, field.length - 1)
       const parts = full.split(":")
-      if (parts.length == 3) { // [patient:mw:er/sie], [adressat:mwn:er/sie/unpers]
-        console.log("parts :",parts)
-        const entity = getEntity(parts[0])
-        if (entity.geschlecht) {
-          if (parts[1] == 'mw') {
-            const v1 = parts[2].split("/")
-            if (entity.geschlecht.toLowerCase() == "m") {
-              return v1[0]
-            } else {
-              return v1[1]
-            }
-          }
+      console.log("parts :", parts)
+      const entity = getEntity(parts[0])
+      if (parts[1] == 'mw') {
+        const v1 = parts[2].split("/")
+        if (entity.geschlecht && entity.geschlecht.toLowerCase() == "m") {
+          return v1[0]
+        } else {
+          return v1[1]
         }
       }
       return field
     })
-    console.log("Step 2 "+stepTwo)
-    const stepThree = stepOne.replace(fieldmatcher, field => {
+    console.log("Step 2 " + stepTwo)
+    const stepThree = stepTwo.replace(fieldmatcher, field => {
       const value = field.substring(1, field.length - 1)
       const [element, attribute] = value.split(".")
       let replacement: string = ""

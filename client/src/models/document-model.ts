@@ -1,11 +1,11 @@
 import { ElexisType, UUID } from "./elexistype";
 import { Patient } from "./patient";
 import { Kontakt } from "./kontakt";
-import { WebelexisEvents } from "../../test/spec/dummyevents";
 import { DataSource } from "services/datasource";
 import { autoinject } from "aurelia-framework";
 import { DateTime } from '../services/datetime'
 import hash from 'string-hash'
+import { WebelexisEvents } from "webelexisevents";
 
 /**
  * A Document is an (arbitrary) entity to store and retrieve by name and keywords. 

@@ -32,5 +32,9 @@ export default{
   "medication":{
     "name":"Medikation",
     "view": PLATFORM.moduleName("./medi")
+  },
+  "brief":{
+    "name": "Brief",
+    "view": PLATFORM.moduleName("./brief_")
   }
 }
