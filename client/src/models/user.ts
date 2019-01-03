@@ -56,6 +56,9 @@ export class UserManager {
     }
   }
 
+  async save(usr: UserType){
+    return await this.userService.update(usr.id,usr)
+  }
   async hasACE(usr: UserType, acename: string) {
     const key = "ace:" + (usr ? usr.email : "guest") + "." + acename
     let r = this.cache.get(key)
