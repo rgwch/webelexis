@@ -14,8 +14,8 @@ template
           .form-row
             label.col-2(for="roles") Rollen
             .col-10(id="roles")  
-              span(style="margin-right:8px;padding-right:4px" repeat.for="role of roles | keys") 
+              span(style="margin-right:8px;padding-right:4px" repeat.for="role of allRoles | keys") 
                 input(type="checkbox" value.bind="role" checked.bind="hasrole[role]")
-                span(style="padding-left:4px;" innerhtml.bind="roles[role]")
+                span(style="padding-left:4px;" innerhtml.bind="allRoles[role]")
           button.btn-default.btn-primary(type="button" click.delegate="accept()") Ändern 
               
