@@ -10,13 +10,13 @@
 
 
 module.exports = {
-  guest: "guest",       // a person not known to the system
-  patient: "patient",   // Someone who can see their own data
-  user: "user",         // a person known to the system
-  privacy: "privacy",   // a person bound to patient privacy
-  mpa: "mpa",           // assistant of the practioner
-  agenda: "agenda",     // can see agenda
-  billing: "billing",   // person who can create billings
-  doc: "doc",           // doctor
-  admin: "admin"        // Administrator
+  guest: "Gast",          // a person not known to the system
+  patient: "Patient",     // Someone who can see their own data
+  user: "Anwender",       // a person known to the system
+  privacy: "privacy",     // a person bound to patient privacy
+  mpa: "Mpa",             // assistant of the practioner
+  agenda: "Agenda",       // can see agenda
+  billing: "Abrechnung",  // person who can create billings
+  doc: "Arzt",            // doctor
+  admin: "admin"          // Administrator
 }

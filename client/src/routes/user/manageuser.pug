@@ -13,5 +13,6 @@ template
             +inp('email','user.email','E-Mail')
           div(repeat.for="role of roles | keys") 
             p(innerhtml.bind="roles[role]")
+              input(type="checkbox")
 
               
