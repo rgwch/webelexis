@@ -4,11 +4,14 @@ mixin inp(id,v,title)
 
 template
  require(from="components/commonviewer")
- 
-  div(css.bind="$parent.style")
+ div(css.bind="$parent.style")
     .row(style="height:85vh")
       common-viewer.col-4(cv_cfg.bind="vc")
-      .col-4
+      .col-8
         .form
           .form-row
             +inp('email','user.email','E-Mail')
+          div(repeat.for="role of roles | keys") 
+            p(innerhtml.bind="roles[role]")
+
+              
