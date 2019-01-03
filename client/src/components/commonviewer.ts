@@ -9,13 +9,14 @@ import { autoinject, bindable } from 'aurelia-framework'
 import { EventAggregator } from 'aurelia-event-aggregator'
 import { EventBinding, Keyhandler } from '../services/keyhandler'
 import { WebelexisEvents } from '../webelexisevents'
-import {BindingSignaler} from 'aurelia-templating-resources'
-import {FlexformConfig} from './flexform'
+import { BindingSignaler } from 'aurelia-templating-resources'
+import { FlexformConfig } from './flexform'
 
 /**
-  CommonViewer: Loosely adapted from the Elexis class with the same name: A display to uniformely retrieve, filter and display a list of objects of a subtype of "Service".
+  CommonViewer: Loosely adapted from the Elexis class with the same name: A component to uniformely retrieve, filter and display a list of objects of a subtype of "Service".
   First, create a ViewerConfiguration with the desired parameters, then create a CommonViewer and transmit the ViewerConfiguration via Aurelia-template binding.
   If the ViewerConfiguration contains a createDef, the Viewer will present a "New Item" button to display a Dialog box to create a new Object of its type.
+  If the user selects an Element in the list, an event is sent, depending on the 'selectMsg' setting.
 */
 export interface ViewerConfiguration {
   // datatype to handle. Name must match the according DataService
@@ -23,43 +24,44 @@ export interface ViewerConfiguration {
   // Title of the View
   title: string;
 
+  selectMsg?: string   // undefined for a WebelexisEvent, or a message for the EventAggregator
   // filter fields to create at the top of the viewer
   searchFields: Array<
-  {
-    name: string,       // name of field in the storage
-    label: string,      // display of the field in the UI
-    asPrefix?: boolean, // if true, add a '%' to the contents
-    value?: string      // receives user input
-  }>,
+    {
+      name: string,       // name of field in the storage
+      label: string,      // display of the field in the UI
+      asPrefix?: boolean, // if true, add a '%' to the contents
+      value?: string      // receives user input
+    }>,
   // optional array of switches to add to the filters
   switches?: Array<
-  {
-    label: string,      // tooltip of the switch
-    imgURL?: string,    // URL of an image for the switch
-    falseBefore?: (query: any) => any,  // functions to modify query before sending
-    trueBefore?: (query: any) => any,
-    falseAfter?: (result: any) => any,  // functions to modify the result after receiving
-    trueAfter?: (result: any) => any,
-    value?: boolean     // value of the switch
-  }>,
+    {
+      label: string,      // tooltip of the switch
+      imgURL?: string,    // URL of an image for the switch
+      falseBefore?: (query: any) => any,  // functions to modify query before sending
+      trueBefore?: (query: any) => any,
+      falseAfter?: (result: any) => any,  // functions to modify the result after receiving
+      trueAfter?: (result: any) => any,
+      value?: boolean     // value of the switch
+    }>,
   // function to create a label for each object of the list
   getLabel: (obj) => string
   // Show "new object" Button and create Dialog with FlexFormConfig if pushed
   createDef?: FlexformConfig
-  handleError?: (err)=>void
+  handleError?: (err) => void
 }
 
 @autoinject
 export class CommonViewer {
   @bindable cv_cfg: ViewerConfiguration
   items
-  selectedItem:string=""  // referenced in view
+  selectedItem: string = ""  // referenced in view
   private dataService: DataService
-  private newobj={}
+  private newobj = {}
 
   constructor(private ea: EventAggregator,
     private kh: Keyhandler, private dispatcher: WebelexisEvents,
-    private dataSource: DataSource, private signaler:BindingSignaler) { }
+    private dataSource: DataSource, private signaler: BindingSignaler) { }
 
   attached() {
     if (!this.cv_cfg.switches) {
@@ -75,11 +77,11 @@ export class CommonViewer {
     this.dataService = this.dataSource.getService(this.cv_cfg.dataType)
 
     // react on updated elements
-    this.dataService.on("updated",msg=>{
+    this.dataService.on("updated", msg => {
       this.doFilter()
     })
     // react on new elements
-    this.dataService.on("created",msg=>{
+    this.dataService.on("created", msg => {
       this.doFilter()
     })
 
@@ -132,20 +134,30 @@ export class CommonViewer {
         });
       }
       this.items = result
-    }).catch(err=>{
-      if(this.cv_cfg.handleError){
+    }).catch(err => {
+      if (this.cv_cfg.handleError) {
         this.cv_cfg.handleError(err)
-      }else{
+      } else {
         alert(err.message)
       }
     })
   }
 
+  /**
+   * The user selected an item. If vc_cvg.selectMsg is set, let the EventAggregator publish
+   * an event with that name. If not, send a WebelexisEvent for the newly selected item
+   * (i.e: Select globally).
+   * @param item the object the user selected.
+   */
   select(item) {
     // send event in app
-    this.dispatcher.selectItem(item)
+    if (this.cv_cfg.selectMsg) {
+      this.ea.publish(this.cv_cfg.selectMsg,item)
+    } else {
+      this.dispatcher.selectItem(item)
+    }
     // display selected status in viewer elements
-    this.selectedItem=item.id
+    this.selectedItem = item.id
     this.signaler.signal('selected')
   }
 
@@ -157,17 +169,17 @@ export class CommonViewer {
     return "height:" + (window.innerHeight - 100) + "px;overflow:auto"
   }
 */
-/**
- * create a new Element
- */
-  newElem(){
-    this.dataService.create(this.newobj).then(ne=>{
-      ne.type=this.cv_cfg.dataType
+  /**
+   * create a new Element
+   */
+  newElem() {
+    this.dataService.create(this.newobj).then(ne => {
+      ne.type = this.cv_cfg.dataType
       this.dispatcher.selectItem(ne)
     })
   }
 
-  drag(event){
+  drag(event) {
     const obj = this.items.data.find(el => event.target.id.endsWith(el.id))
     event.dataTransfer.setData("text/plain", event.target.id)
     event.dataTransfer.setData("webelexis/object", JSON.stringify(obj))
@@ -179,11 +191,11 @@ export class CommonViewer {
 /*
   set item class according to selection Status (needs signal 'selected')
 */
-export class selectionClassValueConverter{
-  toView(item,sel){
-    if(sel == item.id){
+export class selectionClassValueConverter {
+  toView(item, sel) {
+    if (sel == item.id) {
       return "highlight"
-    }else{
+    } else {
       return "entry"
     }
   }

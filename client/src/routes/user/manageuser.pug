@@ -1,0 +1,14 @@
+mixin inp(id,v,title)
+  label.col-2(for= id) #{title}
+  input.form-control.col-10(id= id value.bind= v)
+
+template
+ require(from="components/commonviewer")
+ 
+  div(css.bind="$parent.style")
+    .row(style="height:85vh")
+      common-viewer.col-4(cv_cfg.bind="vc")
+      .col-4
+        .form
+          .form-row
+            +inp('email','user.email','E-Mail')

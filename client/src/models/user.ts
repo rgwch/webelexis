@@ -42,6 +42,8 @@ export class UserManager {
     this.cache=new LRU(100)
   }
 
+  async fetchUsers(){
+  }
   hasRole(usr: UserType, role: string): boolean {
     if (role == global.roles.guest) {
       return true

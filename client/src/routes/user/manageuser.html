@@ -1,10 +1,12 @@
 <template>
-  <div class="sheet" css.bind="$parent.style">
-    <div class="header">
-      Anwender verwalten
+  <require from="components/commonviewer"></require>
+  <div css.bind="$parent.style">
+    <div style="height:85vh" class="row">
+      <common-viewer class="col-4" cv_cfg.bind="vc"></common-viewer>
+      <div class="col-8">
+        
+      </div>
     </div>
-    <div class="body">
 
-    </div>
   </div>
 </template>
