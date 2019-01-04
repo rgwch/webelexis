@@ -37,7 +37,8 @@ module.exports={
     host: "172.121.16.3",
     database: "elexis",
     user: "elexisuser",
-    password: "topsecret"
+    password: "topsecret",
+    automodify: true
   }
 }
 ```

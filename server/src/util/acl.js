@@ -62,22 +62,27 @@ const hasRight = (usr, acename) => {
     usr = {}
   }
   if (!usr.roles) {
-    usr.roles = [sysroles.guest.id]
+    usr.roles = []
   }
   // if no ACE is requested, it's allowed
   if (!acename) {
     return true
   }
-  // id the user has the admin role, it's allowed
-  if (usr.roles.find(r => r == sysroles.admin.id)) {
-    return true
-  }
-  // if no ace qith the requested name exists, it' allowed
+  // if no ace with the requested name exists, it' allowed
   const ace = acls.get(acename)
   if (!ace) {
     return true
   }
-  // Check if one of the roles of the user ha the requested ACE
+
+  // id the user has the admin role, it's allowed
+  if (usr.roles.find(r => r == sysroles.admin.id)) {
+    return true
+  }
+  // Everyone has at least the guest role
+  if (!usr.roles.find(r => r == sysroles.guest.id)) {
+    usr.roles.push(sysroles.guest.id)
+  }
+  // Check if one of the roles of the user has the requested ACE
   // or an antecestor of the requested ACE
   for (const roleid of usr.roles) {
     const acl = mapper[roleid]
