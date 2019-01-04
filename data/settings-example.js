@@ -13,6 +13,9 @@ module.exports={
   sitename: "Praxis Webelexis",
   /* Admin's mail is needed for registering new users and for lost password retrieval */
   admin: "someone@webelexis.ch",
+  /* If the user database is empty, create an admin and assign this pasword. Make sure to remove the line
+     after the first start. */
+  adminpwd: "topsecret",
   /* A list of mandators and metadata for them. Metadata are uses in templates. You can define whatever you want
      and refer to it e.g. in 'briefe' templates. See data/sample-docbase/templates/rezept.pug for an example. */
   mandators: {
