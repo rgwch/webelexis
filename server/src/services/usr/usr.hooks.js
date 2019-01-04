@@ -15,32 +15,40 @@ const {
  * try to add a matching elexis Kontakt
  * @param {} context
  */
-const addElexisUser=async context=>{
-    if(context.result.elexisuser_id){
-      const userService=context.app.service('users')
-      const user=await userService.get(context.result.elexisuser_id)
-      if(user){
-        context.result.elexiskontakt=user
-      }
-    }else if(context.result.elexis_id){
-      const kontaktService=context.app.service('kontakt')
-      const kontakt=await kontaktService.get(context.result.elexis_id)
-      if(kontakt){
-        context.result.elexiskontakt=kontakt
-      }
+const addElexisUser = async context => {
+  if (context.result.elexisuser_id) {
+    const userService = context.app.service('users')
+    const user = await userService.get(context.result.elexisuser_id)
+    if (user) {
+      context.result.elexiskontakt = user
     }
-    return context
+  } else if (context.result.elexis_id) {
+    const kontaktService = context.app.service('kontakt')
+    const kontakt = await kontaktService.get(context.result.elexis_id)
+    if (kontakt) {
+      context.result.elexiskontakt = kontakt
+    }
+  }
+  return context
 }
 
+const getSelf = async ctx => {
+  if (ctx.params.user) {
+    if (ctx.id == ctx.params.user.id) {
+      ctx.result = ctx.params.user
+    }
+  }
+  return ctx
+}
 module.exports = {
   before: {
     all: [],
-    find: [ authenticate('jwt') ],
-    get: [ authenticate('jwt') ],
-    create: [ hashPassword() ],
-    update: [ hashPassword(),  authenticate('jwt') ],
-    patch: [ hashPassword(),  authenticate('jwt') ],
-    remove: [ authenticate('jwt') ]
+    find: [authenticate('jwt')],
+    get: [authenticate('jwt')],
+    create: [hashPassword()],
+    update: [hashPassword(), authenticate('jwt')],
+    patch: [hashPassword(), authenticate('jwt')],
+    remove: [authenticate('jwt')]
   },
 
   after: {

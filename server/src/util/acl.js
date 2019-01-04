@@ -25,7 +25,7 @@
  */
 
 const acls = new Map()
-const roles = require('../../config/roles')
+const sysroles = require('../../config/roles')
 const logger = require('../logger')
 const mapper = require('../../config/aclmapper')
 
@@ -51,33 +51,54 @@ const declareACE = (ace) => {
   }
 }
 
+/**
+ * Check if an action is allowed
+ * @param {*} usr The user in question
+ * @param {*} acename the action requested
+ */
 const hasRight = (usr, acename) => {
+  // if no usr is given, or they have no roles, it's a guest
   if (!usr) {
-    usr = {
-      roles: [roles.guest]
-    }
+    usr = {}
   }
+  if (!usr.roles) {
+    usr.roles = [sysroles.guest.id]
+  }
+  // if no ACE is requested, it's allowed
   if (!acename) {
     return true
   }
-  if (usr.roles.find(r => r == roles.admin)) {
+  // id the user has the admin role, it's allowed
+  if (usr.roles.find(r => r == sysroles.admin.id)) {
     return true
   }
+  // if no ace qith the requested name exists, it' allowed
   const ace = acls.get(acename)
   if (!ace) {
     return true
   }
-  for (const role of usr.roles) {
-    const acl = mapper[role]
+  // Check if one of the roles of the user ha the requested ACE
+  // or an antecestor of the requested ACE
+  for (const roleid of usr.roles) {
+    const acl = mapper[roleid]
+    // if the mapper contains acl for the given role, and the acl
+    // containts the requested right, ok
     if (acl && acl.find(r => r == ace.name)) {
       return true
     }
-    if (ace.parent && hasRight(usr, ace.parent.name)){
+    // else if the ace has a parent, check that parent
+    if (ace.parent && hasRight(usr, ace.parent.name)) {
       return true;
     }
   }
+  // if nothing matched, forbid it
   return false
 }
+/**
+ * Check if the user has a right and throw an error if not.
+ * @param {*} usr
+ * @param {*} ace
+ */
 const needsRight = (usr, ace) => {
   if (!hasRight(usr, ace)) {
     logger.warn("%s has insufficient rights for %s", usr, ace)

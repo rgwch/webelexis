@@ -10,13 +10,49 @@
 
 
 module.exports = {
-  guest: "Gast",          // a person not known to the system
-  patient: "Patient",     // Someone who can see their own data
-  user: "Anwender",       // a person known to the system
-  privacy: "privacy",     // a person bound to patient privacy
-  mpa: "Mpa",             // assistant of the practioner
-  agenda: "Agenda",       // can see agenda
-  billing: "Abrechnung",  // person who can create billings
-  doc: "Arzt",            // doctor
-  admin: "admin"          // Administrator
+  guest: {
+    id: "guest",
+    label: "Gast",
+    descr: "a person not known to the system"
+  },
+  Patient: {
+    id: "pat",
+    label: "Patient",
+    descr: "Someone who can see their own data only"
+  },
+  user: {
+    id: "user",
+    label: "Anwender",
+    descr: "a person known to the system"
+  },
+  privacy: {
+    id: "priv",
+    label: "Geheimnisträger",
+    descr: "a person bound by a privacy agreement or privacy law"
+  },
+  mpa: {
+    id: "assist",
+    label: "MPA",
+    descr: "a person working with the practice"
+  },
+  agenda: {
+    id: "appnt",
+    label: "Agenda",
+    descr: "someone who may manage appointments"
+  },
+  billing: {
+    id: "billing",
+    label: "Abrechnung",
+    descr: "someone who may see and handle billings"
+  },
+  doc: {
+    id: "doc",
+    label: "Arzt",
+    descr: "A doctor"
+  },
+  admin: {
+    id: "admin",
+    label: "Administrator",
+    descr: "An administrator"
+  }
 }

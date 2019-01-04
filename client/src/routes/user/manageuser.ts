@@ -50,6 +50,9 @@ export class Manageuser {
     })
     this.allRoles = env.metadata.roles
   }
+  label(role){
+    return this.allRoles[role].label
+  }
   accept(){
     const roles=[]
     for(const role of Object.keys(this.hasrole)){
