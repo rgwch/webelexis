@@ -57,7 +57,8 @@ export class UserManager {
   }
 
   async save(usr: UserType){
-    return await this.userService.update(usr.id,usr)
+    const saved= await this.userService.patch(usr.email,usr)
+    return saved
   }
   async hasACE(usr: UserType, acename: string) {
     const key = "ace:" + (usr ? usr.email : "guest") + "." + acename

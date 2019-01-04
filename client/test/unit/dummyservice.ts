@@ -10,6 +10,9 @@ export class DummyService implements DataService{
   create(data: any) {
     throw new Error("Method not implemented.");
   }
+  patch(index: any, obj: any) {
+    throw new Error("Method not implemented.");
+  }
   update(index: any, obj: any) {
     throw new Error("Method not implemented.");
   }

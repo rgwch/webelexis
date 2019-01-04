@@ -21,6 +21,8 @@ export interface DataService {
   create(data,params?): any
   // update an object with id
   update(index, obj): any
+  // Update only given attributes of an existing object
+  patch(index,obj):any 
   // delete an object (or several objects)
   remove(index, params?): any
   // send an event concerning an object

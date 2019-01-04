@@ -17,6 +17,9 @@ export class Manageuser {
       {
         attribute: "email",
         label: "E-Mail"
+      },{
+        attribute: "password",
+        label: "Initialpasswort"
       }
     ]
   }
@@ -38,6 +41,7 @@ export class Manageuser {
   constructor(private userManager: UserManager, private ea: EventAggregator) {
     this.ea.subscribe(this.eamessage, user => {
       this.user = user
+      this.hasrole={}
       if (this.user && this.user.roles) {
         for (const role of this.user.roles) {
           this.hasrole[role] = true
