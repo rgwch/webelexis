@@ -44,7 +44,7 @@ export class App {
   constructor(private ds: DataSource, private we: WebelexisEvents, private i18n: I18N) {
     // this.log.setLevel(LogManager.logLevel.info)
     this.log.info("getting metadata from "+env.baseURL)
-    fetch(env.baseURL+"/metadata").then(response=>{
+    fetch(env.baseURL+"metadata").then(response=>{
       return response.json()
     }).then(json=>{
       env["metadata"]=json
