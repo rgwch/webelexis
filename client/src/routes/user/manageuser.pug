@@ -18,4 +18,5 @@ template
                 input(type="checkbox" value.bind="role" checked.bind="hasrole[role]")
                 span(style="padding-left:4px;" innerhtml.bind="allRoles[role]")
           button.btn-default.btn-primary(type="button" click.delegate="accept()") Ändern 
-              
+          button.btn-secondary(click.delegate="delete()") Löschen    
+          
