@@ -46,8 +46,8 @@ export class FeathersDS implements IDataSource {
    * the user, but extended inactivity will.)
    * @param username optional e-mail
    * @param password optional password
-   * @returns the logged in 'usr' object with all properties except the password
-   * @throws authentication errors
+   * @returns the logged in 'usr' object with all properties except the password. 
+   * or undefined if it could not log in.
    */
   async login(username?: string, password?: string) {
 
@@ -67,7 +67,7 @@ export class FeathersDS implements IDataSource {
       return user
     } catch (err) {
       console.log(err)
-      throw (err)
+      return undefined
     }
   }
   

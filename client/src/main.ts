@@ -1,3 +1,4 @@
+import { WebelexisEvents } from './../test/unit/dummyevents';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -14,6 +15,7 @@ let selectedLanguage = navigator['languages'][0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 
 import environment from './environment';
+import { UserType } from 'models/user';
 
 LogManager.addAppender(new ConsoleAppender())
 if (environment.debug) {
@@ -64,6 +66,13 @@ export function configure(aurelia: Aurelia) {
 
   const datasource = aurelia.container.get(FeathersDS)
   aurelia.container.registerInstance(DataSource, datasource)
-
-  aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
+  const webelexisEvents = aurelia.container.get(WebelexisEvents)
+  aurelia.container.registerInstance(WebelexisEvents,webelexisEvents)
+  datasource.login().then((usr: UserType) => {
+    if(usr){
+      usr["type"] = "usr"
+      webelexisEvents.selectItem(usr)
+    }
+    aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
+  })
 }

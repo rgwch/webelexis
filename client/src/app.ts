@@ -52,13 +52,7 @@ export class App {
     }).catch(err => {
       alert(this.i18n.tr("errmsg.connect"))
     })
-    this.ds.login().then((usr: UserType) => {
-      const user = new User(usr)
-      usr["type"] = "usr"
-      this.we.selectItem(usr)
-    }).catch(err => {
-      console.log("invalid stored token")
-    })
+   
   }
 
   @computedFrom('actPatient')
