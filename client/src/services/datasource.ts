@@ -1,3 +1,4 @@
+import { UserType } from './../models/user';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018 by G. Weirich    *
@@ -41,7 +42,7 @@ export interface IDataSource {
   // get the data type of a given DataService
   dataType(service: DataService): string
   // authenticate
-  login(username?:string,password?:string): Promise<any>
+  login(username?:string,password?:string): Promise<UserType>
   // de-authenticate
   logout(): Promise<any>
 }

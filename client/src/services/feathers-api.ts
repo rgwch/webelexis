@@ -10,6 +10,7 @@ import * as feathers from '@feathersjs/client';
 import * as auth from '@feathersjs/authentication-client'
 import env from '../environment'
 import { autoinject } from 'aurelia-framework';
+import { UserType } from 'models/user';
 
 /**
  * A DataSource implementation based on FeathersJS
@@ -49,7 +50,7 @@ export class FeathersDS implements IDataSource {
    * @returns the logged in 'usr' object with all properties except the password. 
    * or undefined if it could not log in.
    */
-  async login(username?: string, password?: string) {
+  async login(username?: string, password?: string) : Promise<UserType>{
 
     try {
       let jwt

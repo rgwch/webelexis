@@ -59,20 +59,12 @@ export function configure(aurelia: Aurelia) {
     })
     */
     .plugin(PLATFORM.moduleName('aurelia-store'), { initialState: webelexisState })
- 
+
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
 
   const datasource = aurelia.container.get(FeathersDS)
   aurelia.container.registerInstance(DataSource, datasource)
-  const webelexisEvents = aurelia.container.get(WebelexisEvents)
-  aurelia.container.registerInstance(WebelexisEvents,webelexisEvents)
-  datasource.login().then((usr: UserType) => {
-    if(usr){
-      usr["type"] = "usr"
-      webelexisEvents.selectItem(usr)
-    }
-    aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
-  })
+  aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }

@@ -19,6 +19,7 @@ import env from 'environment'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'styles.scss'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import { Session } from 'services/session';
 
 
 /**
@@ -41,7 +42,7 @@ export class App {
   leftPanel
   actPatient
 
-  constructor(private ds: DataSource, private we: WebelexisEvents, private i18n: I18N) {
+  constructor(private i18n: I18N, private session: Session) {
     // this.log.setLevel(LogManager.logLevel.info)
     this.log.info("getting metadata from " + env.baseURL)
     fetch(env.baseURL + "metadata").then(response => {
@@ -52,7 +53,7 @@ export class App {
     }).catch(err => {
       alert(this.i18n.tr("errmsg.connect"))
     })
-   
+
   }
 
   @computedFrom('actPatient')
@@ -162,27 +163,26 @@ export class App {
         }
       }
     ])
-    cfg.addPipelineStep('authorize',AuthorizeStep)
+    cfg.addPipelineStep('authorize', AuthorizeStep)
     this.log.info("router configuration ok")
     this.router = router;
   }
 }
 
 @autoinject
-@connectTo(store => store.state.pipe(<any>pluck("usr")))
-
 class AuthorizeStep {
-  state
+  constructor(private session:Session){}
   run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
-    let actUser = this.state
-    if (navInstruction.config.settings && navInstruction.config.settings.loginRequired) {
-      if (actUser) {
-        return next()
+    return this.session.getUser().then(actUser=>{
+      if (navInstruction.config.settings && navInstruction.config.settings.loginRequired) {
+        if (actUser) {
+          return next()
+        } else {
+          return next.cancel(new Redirect('user/login'))
+        }
       } else {
-        return next.cancel(new Redirect('user/login'))
+        return next()
       }
-    } else {
-      return next()
-    }
+    })
   }
 }
