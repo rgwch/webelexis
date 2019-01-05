@@ -48,6 +48,8 @@ module.exports={
     mysql -h host -u username -ppasswort elexis <modify_elexis.sql  # Natürlich nur beim ersten Mal
     sudo docker run -p 80:3030 --name webelexis -v `pwd`/data:/home/node/webelexis/data rgwch/webelexis:latest
 
+Achtung: Webelexis wird beim ersten Start (wenn in settings.js automodify auf true gesetzt ist), einige Datenbankanpassungen vornehmen, die in [server/vorbereitung.md](server/vorbereitung.md) näher beschrieben sind. Wenn automodify auf 'false' gesetzt ist, wird Webelexis keine Änderungen vornehmen, aber den Start verweigern, falls die Datenbank noch nicht angepasst ist.   
+
 ### - Dann einen Browser auf `http://localhost` richten.
 
 (bzw. wo auch immer der Docker-Container erreichbar ist)

@@ -7,7 +7,7 @@
 import { WebelexisEvents } from './webelexisevents';
 import { UserType, User } from './models/user';
 import { DataSource } from './services/datasource';
-import { Router, RouterConfiguration } from "aurelia-router";
+import { Router, RouterConfiguration, NavigationInstruction, Next, Redirect } from "aurelia-router";
 import { LogManager, autoinject, computedFrom, PLATFORM } from 'aurelia-framework'
 import 'bootstrap'
 import { connectTo } from 'aurelia-store'
@@ -31,7 +31,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
     actUser: store => store.state.pipe(<any>pluck("usr")),
     actDate: store => store.state.pipe(<any>pluck("date")),
     actPatient: store => store.state.pipe(<any>pluck('patient')),
-    leftPanel: store=>store.state.pipe(<any>pluck('leftPanel'))
+    leftPanel: store => store.state.pipe(<any>pluck('leftPanel'))
   }
 })
 @autoinject
@@ -40,16 +40,16 @@ export class App {
   log = LogManager.getLogger('app.ts')
   leftPanel
   actPatient
- 
+
   constructor(private ds: DataSource, private we: WebelexisEvents, private i18n: I18N) {
     // this.log.setLevel(LogManager.logLevel.info)
-    this.log.info("getting metadata from "+env.baseURL)
-    fetch(env.baseURL+"metadata").then(response=>{
+    this.log.info("getting metadata from " + env.baseURL)
+    fetch(env.baseURL + "metadata").then(response => {
       return response.json()
-    }).then(json=>{
-      env["metadata"]=json
-      this.router.title=env.metadata["sitename"]
-    }).catch(err=>{
+    }).then(json => {
+      env["metadata"] = json
+      this.router.title = env.metadata["sitename"]
+    }).catch(err => {
       alert(this.i18n.tr("errmsg.connect"))
     })
     this.ds.login().then((usr: UserType) => {
@@ -81,12 +81,13 @@ export class App {
       {
         route: ['', "dispatch/:sub?"],
         name: "dispatch",
-        // title: env.metadata["sitename"],
+        title: env.metadata["sitename"],
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName('./routes/dispatch/left') },
           details: { moduleId: PLATFORM.moduleName('./routes/dispatch/right') }
         },
-        nav: false
+        nav: false,
+        settings: { loginRequired: true }
       }, {
         route: "/user/:vi?",
         name: "user",
@@ -167,7 +168,27 @@ export class App {
         }
       }
     ])
+    cfg.addPipelineStep('authorize',AuthorizeStep)
     this.log.info("router configuration ok")
     this.router = router;
+  }
+}
+
+@autoinject
+@connectTo(store => store.state.pipe(<any>pluck("usr")))
+
+class AuthorizeStep {
+  state
+  run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
+    let actUser = this.state
+    if (navInstruction.config.settings && navInstruction.config.settings.loginRequired) {
+      if (actUser) {
+        return next()
+      } else {
+        return next.cancel(new Redirect('user/login'))
+      }
+    } else {
+      return next()
+    }
   }
 }
