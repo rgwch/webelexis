@@ -5,19 +5,26 @@
     <div class="header">
       <div class="form-row">
         <div class="form-group">
-          <searchfield t="[searchtext]select.search" result.two-way="searchexpr"></searchfield>
+          <searchfield
+            t="[searchtext]select.search"
+            result.two-way="searchexpr"
+          ></searchfield>
         </div>
         <button class="form-group btn" type="button" click.delegate="showTemplates()">
-            <i class="fa fa-asterisk createbutton"></i>
-          </button>
+          <i class="fa fa-asterisk createbutton"></i>
+        </button>
         <div class="form-group">
-          <img class="trash noselect" css.bind="trashstyle" src="/trash.svg" dragover.trigger="dragTrash($event)"
-            dragleave.trigger="dragTrashLeave($event)" drop.trigger="dropTrash($event)">
+          <img
+            class="trash noselect"
+            css.bind="trashstyle"
+            src="/trash.svg"
+            dragover.trigger="dragTrash($event)"
+            dragleave.trigger="dragTrashLeave($event)"
+            drop.trigger="dropTrash($event)"
+          />
         </div>
       </div>
     </div>
-    <div class="body" style="height:85vh;overflow:auto">
-     
-    </div>
+    <div class="body" style="height:85vh;overflow:auto"></div>
   </div>
 </template>

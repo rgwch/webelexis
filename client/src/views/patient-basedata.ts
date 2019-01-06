@@ -4,39 +4,42 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import {connectTo} from 'aurelia-store'
-import { autoinject, computedFrom } from 'aurelia-framework'
-import { pluck } from 'rxjs/operators'
-import {FlexformConfig, FlexFormValueConverter} from '../components/flexform'
-import { I18N } from 'aurelia-i18n';
-import {Patient} from '../models/patient'
-import { DataSource, DataService } from '../services/datasource';
-import { StickerManager } from '../models/stickers.model';
+import { autoinject, computedFrom } from "aurelia-framework";
+import { I18N } from "aurelia-i18n";
+import { connectTo } from "aurelia-store";
+import { pluck } from "rxjs/operators";
+import { FlexformConfig, FlexFormValueConverter } from "../components/flexform";
+import { Patient } from "../models/patient";
+import { StickerManager } from "../models/stickers.model";
+import { DataService, DataSource } from "../services/datasource";
 
 /**
  * Display and modify data/details for the currently selected patient
  */
 @autoinject
-@connectTo(store=>store.state.pipe(<any>pluck("patient")))
+@connectTo(store => store.state.pipe( pluck("patient") as any))
 export class PatientBasedata {
-  state
-  def:FlexformConfig
-  patientService:DataService
+  public state;
+  private def: FlexformConfig;
+  private patientService: DataService;
 
-  constructor(private i18:I18N, private ds:DataSource, private sm:StickerManager){
-    this.def=Patient.getDefinition();
-    this.patientService=ds.getService('patient')
-    this.patientService.on('updated',(obj)=>{
-      this.state=obj
-    })
+  constructor(
+    private i18: I18N,
+    private ds: DataSource,
+    private sm: StickerManager
+  ) {
+    this.def = Patient.getDefinition();
+    this.patientService = ds.getService("patient");
+    this.patientService.on("updated", obj => {
+      this.state = obj;
+    });
   }
 
-  stickerName(sticker){
-    return this.sm.getSticker(sticker).Name
+  protected stickerName(sticker) {
+    return this.sm.getSticker(sticker).Name;
   }
 
-  imageData(sticker){
-    return this.sm.getImage(sticker)
+  protected imageData(sticker) {
+    return this.sm.getImage(sticker);
   }
-
 }

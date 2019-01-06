@@ -12,8 +12,8 @@ $highlightcolor: orange;
 $form-background: aquamarine;
 
 /* Buttons for termin actions */
-.agendabutton{
-  margin-right:2px;
+.agendabutton {
+  margin-right: 2px;
 }
 
 /* general border */
@@ -23,79 +23,77 @@ $form-background: aquamarine;
   border-radius: 5px;
 }
 
-.compactlist{
-    padding-top: 0px;
-    padding-bottom: 1px;
-    margin-top: 0px;
-    margin-bottom: 1px;
-    font-size: smaller;
-    cursor: pointer;
+.compactlist {
+  padding-top: 0px;
+  padding-bottom: 1px;
+  margin-top: 0px;
+  margin-bottom: 1px;
+  font-size: smaller;
+  cursor: pointer;
 }
 
-.highlight-item{
+.highlight-item {
   @extend .compactlist;
   background-color: $highlightcolor;
 }
-.compactlist:hover{
-    font-weight:bold;
+.compactlist:hover {
+  font-weight: bold;
 }
 /* Make something not-selectable */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
 
 /* CommonViewer and Sheet */
-common-viewer, .sheet{
-
-  .header{
+common-viewer,
+.sheet {
+  .header {
     background-color: $form-background;
-    padding:10px;
+    padding: 10px;
     border-color: $bordercolor;
     border-radius: 10px 10px 0 0;
     border-style: solid solid none solid;
   }
-  .body{
+  .body {
     background-color: $fillcolor;
     height: 100%;
     overflow: auto;
     border-style: none solid solid solid;
     border-radius: 0 0 10px 10px;
     border-color: $bordercolor;
-
   }
-  .entry{
+  .entry {
     @extend .compactlist;
     color: black;
   }
-  
-  .highlight{
+
+  .highlight {
     @extend .entry;
     background-color: $highlightcolor;
   }
-  img{
+  img {
     width: 30px;
     height: 30px;
   }
 }
 
 /* Button to create new elements */
-.createbutton{
+.createbutton {
   color: green;
 }
 
-
-.detailcaption{
+.detailcaption {
   color: $captioncolor;
 }
 
 /* FlexForm */
-flex-form form{
+flex-form form {
   background-color: $form-background;
   padding: 10px;
   border-radius: 10px;
@@ -103,12 +101,12 @@ flex-form form{
   border-style: solid;
 }
 
-h1{
+h1 {
   font-size: 36px;
 }
 
 /* Images used for navigation elements */
-img.nav{
+img.nav {
   width: 20px;
   height: 25px;
   //vertical-align: bottom;
@@ -116,25 +114,23 @@ img.nav{
   float: "left";
 }
 
-
-.schmaler{
-  margin-left:10px;
-  margin-right:10px;
-  padding-left:10px;
-  padding-right:10px;
+.schmaler {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /* The endless scroll scrolling component */
-.scroller{
+.scroller {
   height: 100%;
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-
-.termin{
-  a{
+.termin {
+  a {
     color: black;
   }
   background-color: $fillcolor;
@@ -142,29 +138,26 @@ img.nav{
   text-overflow: ellipsis;
 }
 
-
 .nav .menuitem {
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.menu{
+.menu {
   border-style: solid;
   border-width: 1px;
   border-color: blue;
-  .menuitem{
-    cursor:pointer;
-
+  .menuitem {
+    cursor: pointer;
   }
-  .menuitem:hover{
-    color:white;
-    background-color: black
+  .menuitem:hover {
+    color: white;
+    background-color: black;
   }
-  .separator{
-    padding-top:0;
-    padding-bottom:0;
-    margin-top:3px;
-    margin-bottom:3px;
-    font-style:bold;
+  .separator {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-style: bold;
   }
 }
-

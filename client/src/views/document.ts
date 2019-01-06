@@ -4,18 +4,23 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { WebelexisEvents } from '../webelexisevents';
-import { Patient } from '../models/patient';
-import { bindable, computedFrom, autoinject, observable } from 'aurelia-framework';
-import { DocType, DocManager } from '../models/document-model'
-import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { DataSource, DataService } from '../services/datasource';
-import { State } from '../state';
-import { pluck } from 'rxjs/operators'
-import { connectTo } from 'aurelia-store'
-import { ElexisType } from '../models/elexistype';
-import { DialogService } from 'aurelia-dialog';
-import { DocumentData } from '../dialogs/document-data'
+import { DialogService } from "aurelia-dialog";
+import { EventAggregator, Subscription } from "aurelia-event-aggregator";
+import {
+  autoinject,
+  bindable,
+  computedFrom,
+  observable
+} from "aurelia-framework";
+import { connectTo } from "aurelia-store";
+import { pluck } from "rxjs/operators";
+import { DocumentData } from "../dialogs/document-data";
+import { DocManager, DocType } from "../models/document-model";
+import { ElexisType } from "../models/elexistype";
+import { Patient } from "../models/patient";
+import { DataService, DataSource } from "../services/datasource";
+import { State } from "../state";
+import { WebelexisEvents } from "../webelexisevents";
 
 /**
  * Abstraction for Documents of different kinds
@@ -23,82 +28,51 @@ import { DocumentData } from '../dialogs/document-data'
 @autoinject
 @connectTo<State>({
   selector: {
-    actPatient: store => store.state.pipe(<any>pluck('patient')),
-    obj: store => store.state.pipe(<any>pluck('documents'))
+    actPatient: store => store.state.pipe( pluck("patient") as any),
+    obj: store => store.state.pipe(pluck("documents") as any)
   }
 })
 export class Document {
-  @observable obj: DocType
+  @observable
+  public obj: DocType;
 
-  templates: Array<DocType>
-  private docService: DataService
-  private tmplService: DataService
-  htmlText: string
-  @observable actPatient
-  setsubject: any
+  private templates: DocType[];
+  private docService: DataService;
+  private tmplService: DataService;
+  private htmlText: string;
+  @observable
+  private actPatient;
+  private setsubject: any;
 
-
-  actPatientChanged(newvalue: ElexisType, oldvalue: ElexisType) {
-    this.obj.concern = newvalue
-   
+  constructor(
+    private ea: EventAggregator,
+    private ds: DataSource,
+    private dispatcher: WebelexisEvents,
+    private dlgs: DialogService,
+    private dm: DocManager
+  ) {
+    this.docService = this.ds.getService("documents");
+    this.tmplService = this.ds.getService("templates");
+    this.dispatcher.selectItem(this.obj);
   }
 
-  objChanged(newValue, oldValue) {
-    if (newValue && newValue.contents) {
-      this.htmlText = newValue.contents
-    }
-  }
-
-  @computedFrom('obj.concern', 'obj.subject')
-  get title() {
-    let t = ""
-    if (this.obj) {
-      if (this.obj.concern) {
-        t = Patient.getLabel(this.obj.concern) + " - "
-      } else {
-        t = "Kein Patient ausgewählt - "
-      }
-      if (this.obj.subject) {
-        t += this.obj.subject
-      } else {
-        t += " - Kein Dokumenttitel gesetzt"
-      }
-    } else {
-      t = "Kein Patient gewählt - kein Titel gesetzt"
-    }
-    return t;
-  }
-
-  constructor(private ea: EventAggregator, private ds: DataSource,
-    private dispatcher: WebelexisEvents, private dlgs: DialogService,
-    private dm:DocManager) {
-    this.docService = this.ds.getService('documents')
-    this.tmplService = this.ds.getService('templates')
-    this.dispatcher.selectItem(this.obj)
-  }
-
-
-  attached() {
+  public attached() {
     this.tmplService.find().then(templates => {
-      this.templates = templates.data
-    })
-
+      this.templates = templates.data;
+    });
   }
 
-  detached() {
-
-  }
-
-  
   /**
    * Display a modal dialog (bootstrap modal) to enter/accept a subject line for the document.
    */
-  doSave() {
-    this.dlgs.open({ viewModel: DocumentData, model: this.obj }).whenClosed(result => {
-      if (!result.wasCancelled) {
-        console.log(result.output)
-      }
-    })
+  protected doSave() {
+    this.dlgs
+      .open({ viewModel: DocumentData, model: this.obj })
+      .whenClosed(result => {
+        if (!result.wasCancelled) {
+          console.log(result.output);
+        }
+      });
     /*
     $('#subjectinput').val(this.obj.subject)
     $('#subjectdlg').modal('show')
@@ -133,19 +107,47 @@ export class Document {
     */
   }
 
- 
-  doSaveTemplate() {
-    console.log("save template")
-    delete this.obj.concern
-    delete this.obj.id
-    delete this.obj["_id"]
-    return this.doSave()
+  protected doSaveTemplate() {
+    // console.log("save template")
+    delete this.obj.concern;
+    delete this.obj.id;
+    delete this.obj["_id"];
+    return this.doSave();
   }
 
-  doDelete() {
-    console.log("delete")
+  protected doDelete() {
+    // console.log("delete")
     if (this.obj.id) {
-      this.docService.remove(this.obj.id)
+      this.docService.remove(this.obj.id);
     }
+  }
+  private actPatientChanged(newvalue: ElexisType, oldvalue: ElexisType) {
+    this.obj.concern = newvalue;
+  }
+
+  private objChanged(newValue, oldValue) {
+    if (newValue && newValue.contents) {
+      this.htmlText = newValue.contents;
+    }
+  }
+
+  @computedFrom("obj.concern", "obj.subject")
+  protected get title() {
+    let t = "";
+    if (this.obj) {
+      if (this.obj.concern) {
+        t = Patient.getLabel(this.obj.concern) + " - ";
+      } else {
+        t = "Kein Patient ausgewählt - ";
+      }
+      if (this.obj.subject) {
+        t += this.obj.subject;
+      } else {
+        t += " - Kein Dokumenttitel gesetzt";
+      }
+    } else {
+      t = "Kein Patient gewählt - kein Titel gesetzt";
+    }
+    return t;
   }
 }

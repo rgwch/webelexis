@@ -3,23 +3,22 @@
  * Copyright (c) 2018 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
-import { User } from './models/user';
-import {ElexisType} from './models/elexistype'
-export interface State{
-  user: User,
-  termin: ElexisType,
-  patient: ElexisType,
-  document: ElexisType
-  date: Date,
-  leftPanel: boolean
+import { ElexisType } from "./models/elexistype";
+import { User } from "./models/user";
+export interface State {
+  user: User;
+  termin: ElexisType;
+  patient: ElexisType;
+  document: ElexisType;
+  date: Date;
+  leftPanel: boolean;
 }
 
-export const webelexisState:State={
+export const webelexisState: State = {
   user: undefined,
   termin: undefined,
   patient: undefined,
   leftPanel: true,
   document: {},
-  date: new Date()
-}
-
+  date: new Date(),
+};

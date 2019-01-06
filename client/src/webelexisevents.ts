@@ -4,10 +4,10 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import {Store} from 'aurelia-store'
-import {State} from './state'
-import { autoinject } from 'aurelia-framework';
-import { ElexisType } from './models/elexistype';
+import { autoinject } from "aurelia-framework";
+import { Store } from "aurelia-store";
+import { ElexisType } from "./models/elexistype";
+import { State } from "./state";
 
 /**
  * This (together with aurelia-store) is the web variant of the ElexisEventDispatcher
@@ -16,69 +16,73 @@ import { ElexisType } from './models/elexistype';
  * to subscribe for change events, subscribe to the 'aurelia-store'
  */
 @autoinject
-export class WebelexisEvents{
-  private state
-  private setDateAction= (state:State, date:Date)=>{
-    const newState=Object.assign({},state)
-    newState.date=date
-    return newState
+export class WebelexisEvents {
+  private state;
+
+  constructor(private store: Store<State>) {
+    this.store.registerAction("SetDate", this.setDateAction);
+    this.store.registerAction("SelectItem", this.selectItemAction);
+    this.store.registerAction("Logout", this.logoutAction);
+    this.store.registerAction("leftPanel", this.toggleLeftPanelAction);
+    this.store.registerAction("deselect", this.deselectType);
+    this.store.state.subscribe(state => (this.state = state));
   }
-  private toggleLeftPanelAction=(state:State)=>{
-    const newState=Object.assign({},state)
-    newState.leftPanel=!state.leftPanel
-    return newState
+
+  public setDate(date) {
+    this.store.dispatch(this.setDateAction, date);
   }
-  private selectItemAction=(state:State, item:ElexisType)=>{
-    if(!item.type){
-      throw new Error("type information missing at selectItemAction")
+
+  public selectItem(item: ElexisType) {
+    this.store.dispatch(this.selectItemAction, item);
+  }
+
+  public deselect(type: string) {
+    this.store.dispatch(this.deselectType, type);
+  }
+
+  public toggleLeftPanel() {
+    this.store.dispatch(this.toggleLeftPanelAction);
+  }
+
+  public getSelectedItem(type: string) {
+    if (!type) {
+      throw new Error("type information missing at getSelecedItem");
     }
-    const newState=Object.assign({},state)
-    newState[item.type]=item
-    return newState
-  }
-  private logoutAction=(state)=>{
-    const newState=Object.assign({},state)
-    delete newState.usr
-    return newState
+    return this.state[type];
   }
 
-  private deselectType=(state:State,type:string)=>{
-    const newState=Object.assign({},state)
-    delete newState[type]
-    return newState
+  public logout() {
+    this.store.dispatch(this.logoutAction);
   }
-  constructor(private store:Store<State>){
-    this.store.registerAction("SetDate",this.setDateAction)
-    this.store.registerAction("SelectItem",this.selectItemAction)
-    this.store.registerAction("Logout",this.logoutAction)
-    this.store.registerAction("leftPanel",this.toggleLeftPanelAction)
-    this.store.registerAction("deselect",this.deselectType)
-    this.store.state.subscribe(state=>this.state=state)
-  }
-  setDate(date){
-    this.store.dispatch(this.setDateAction,date)
-  }
+  private setDateAction = (state: State, date: Date) => {
+    const newState = Object.assign({}, state);
+    newState.date = date;
+    return newState;
+  };
+  private toggleLeftPanelAction = (state: State) => {
+    const newState = Object.assign({}, state);
+    newState.leftPanel = !state.leftPanel;
+    return newState;
+  };
 
-  selectItem(item:ElexisType){
-    this.store.dispatch(this.selectItemAction,item)
-  }
-
-  deselect(type:string){
-    this.store.dispatch(this.deselectType,type)
-  }
-
-  toggleLeftPanel(){
-    this.store.dispatch(this.toggleLeftPanelAction)
-  }
-
-  getSelectedItem(type:string){
-    if(!type){
-      throw new Error("type information missing at getSelecedItem")
+  private selectItemAction = (state: State, item: ElexisType) => {
+    if (!item.type) {
+      throw new Error("type information missing at selectItemAction");
     }
-    return this.state[type]
-  }
+    const newState = Object.assign({}, state);
+    newState[item.type] = item;
+    return newState;
+  };
 
-  logout(){
-    this.store.dispatch(this.logoutAction)
-  }
+  private logoutAction = state => {
+    const newState = Object.assign({}, state);
+    delete newState.usr;
+    return newState;
+  };
+
+  private deselectType = (state: State, type: string) => {
+    const newState = Object.assign({}, state);
+    delete newState[type];
+    return newState;
+  };
 }

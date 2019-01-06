@@ -4,21 +4,24 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { autoinject, } from "aurelia-framework";
 import { DialogService } from "aurelia-dialog";
-import { ShowTemplates } from './../dialogs/show-templates';
+import { autoinject } from "aurelia-framework";
+import { ShowTemplates } from "./../dialogs/show-templates";
 
 @autoinject
-export class Letters{
-  constructor(private dlgs:DialogService){}
-  searchexpr=""
-  template
+export class Letters {
+  protected searchexpr = "";
+  private template;
 
-  showTemplates(){
-    this.dlgs.open({viewModel: ShowTemplates,model: this.template}).whenClosed(result=>{
-      if(!result.wasCancelled){
-        this.template=result.output
-      }
-    })
+  constructor(private dlgs: DialogService) {}
+
+  protected showTemplates() {
+    this.dlgs
+      .open({ viewModel: ShowTemplates, model: this.template })
+      .whenClosed(result => {
+        if (!result.wasCancelled) {
+          this.template = result.output;
+        }
+      });
   }
-} 
+}

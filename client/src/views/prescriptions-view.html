@@ -8,11 +8,20 @@
     <div class="header" ref="page_header">
       <div class="row">
         <div class="col">
-          <searchfield t="[searchtext]select.search" result.two-way="searchexpr"></searchfield>
+          <searchfield
+            t="[searchtext]select.search"
+            result.two-way="searchexpr"
+          ></searchfield>
         </div>
         <div class="col">
-          <img class="trash noselect" css.bind="trashstyle" src="/trash.svg" dragover.trigger="dragTrash($event)"
-            dragleave.trigger="dragTrashLeave($event)" drop.trigger="dropTrash($event)">
+          <img
+            class="trash noselect"
+            css.bind="trashstyle"
+            src="/trash.svg"
+            dragover.trigger="dragTrash($event)"
+            dragleave.trigger="dragTrashLeave($event)"
+            drop.trigger="dropTrash($event)"
+          />
         </div>
       </div>
     </div>
@@ -22,20 +31,40 @@
         <div class="card col" id="card_fixmedi" css="height:${part}px">
           <div class="card-header noselect">
             <span>Fixmedikation</span>
-            <img class="clickable" src="/medical-report.svg" alt="Zum Rezept" click.delegate="addToRp(fixmedi,mod.FIXMEDI)" title="zum Rezept">
+            <img
+              class="clickable"
+              src="/medical-report.svg"
+              alt="Zum Rezept"
+              click.delegate="addToRp(fixmedi,mod.FIXMEDI)"
+              title="zum Rezept"
+            />
           </div>
           <div class="card-body" css="height:${client}px">
-            <medication list.bind="fixmedi" modality="${mod.FIXMEDI}" h="${client}px"></medication>
+            <medication
+              list.bind="fixmedi"
+              modality="${mod.FIXMEDI}"
+              h="${client}px"
+            ></medication>
           </div>
         </div>
         <!-- Reservemedikation -->
         <div class="card col" id="card_reservemedi" css="height:${part}px">
           <div class="card-header">
             <span class="noselect">Reservemedikation</span>
-            <img class="clickable" src="/medical-report.svg" alt="Zum Rezept" click.delegate="addToRp(reservemedi,mod.RESERVE)" title="zum Rezept">
+            <img
+              class="clickable"
+              src="/medical-report.svg"
+              alt="Zum Rezept"
+              click.delegate="addToRp(reservemedi,mod.RESERVE)"
+              title="zum Rezept"
+            />
           </div>
           <div class="card-body">
-            <medication list.bind="reservemedi" modality="${mod.RESERVE}" h="${client}px"></medication>
+            <medication
+              list.bind="reservemedi"
+              modality="${mod.RESERVE}"
+              h="${client}px"
+            ></medication>
           </div>
         </div>
       </div>
@@ -47,25 +76,41 @@
             <new-item-button click.delegate="createRezept()"></new-item-button>
           </div>
           <div class="card-body">
-
             <div css="overflow:auto;height:${client}px">
-              <div class.bind="rpd | selectionClass:actrpd & signal:'selected'" repeat.for="rpd of rpdefs"
-                click.delegate="selectRezept(rpd)">
+              <div
+                class.bind="rpd | selectionClass:actrpd & signal:'selected'"
+                repeat.for="rpd of rpdefs"
+                click.delegate="selectRezept(rpd)"
+              >
                 <span class="noselect">${rpd.rezept.datum | dateFormat:"date"}</span>
               </div>
             </div>
           </div>
-
         </div>
         <!-- Momentan ausgewähltes Rezept -->
         <div class="card col-9" id="card_rezept">
           <div class="card-header noselect">
             <span>Rezept</span>
-            <img class="clickable" src="/printer.svg" alt="print" click.delegate="toPdf(actrezept)" title="Druckvorschau">
+            <img
+              class="clickable"
+              src="/printer.svg"
+              alt="print"
+              click.delegate="toPdf(actrezept)"
+              title="Druckvorschau"
+            />
           </div>
           <div class="card-body">
-            <medication list.bind="actrpd.prescriptions" modality="${mod.RECIPE}" h="${client-20}px"></medication>
-            <input type="text" value.bind="actrpd.rezept.RpZusatz" style="width:100%;font-size: smaller" blur.trigger="pm.saveRezept(actrpd.rezept)">
+            <medication
+              list.bind="actrpd.prescriptions"
+              modality="${mod.RECIPE}"
+              h="${client-20}px"
+            ></medication>
+            <input
+              type="text"
+              value.bind="actrpd.rezept.RpZusatz"
+              style="width:100%;font-size: smaller"
+              blur.trigger="pm.saveRezept(actrpd.rezept)"
+            />
           </div>
         </div>
       </div>
@@ -75,7 +120,11 @@
           <span class="noselect">Nicht (mehr) regelmässig</span>
         </div>
         <div class="card-body">
-          <medication list.bind="symptommedi" modality="${mod.SYMPTOMATIC}" h="${client}px"></medication>
+          <medication
+            list.bind="symptommedi"
+            modality="${mod.SYMPTOMATIC}"
+            h="${client}px"
+          ></medication>
         </div>
       </div>
     </div>

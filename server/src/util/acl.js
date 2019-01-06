@@ -68,7 +68,7 @@ const hasRight = (usr, acename) => {
   if (!acename) {
     return true
   }
-  // if no ace with the requested name exists, it' allowed
+  // if no ace with the requested name exists, it's allowed
   const ace = acls.get(acename)
   if (!ace) {
     return true
