@@ -29,7 +29,7 @@ exports.config = {
   directConnect: true,
 
   capabilities: {
-    'browserName': 'chromium',
+    'browserName': 'chrome',
     'chromeOptions': {
       'args': [
         '--show-fps-counter',

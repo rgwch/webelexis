@@ -4,34 +4,35 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { ViewerConfiguration } from '../../components/commonviewer'
-import { autoinject } from 'aurelia-framework'
-import { Patient } from '../../models/patient';
-import { Router } from 'aurelia-router';
+import { autoinject } from "aurelia-framework";
+import { Router } from "aurelia-router";
+import { ViewerConfiguration } from "../../components/commonviewer";
+import { Patient } from "../../models/patient";
 
 @autoinject
 export class PatientView {
-  isLocked=false
-  cv: ViewerConfiguration = {
-    title: "Patient Auswahl",
-    dataType: 'patient',
-    searchFields: [{
-      name: "$find",
-      label: "Name, Vorname oder Geburtsdatum",
-      asPrefix: false,
-      value: ""
-    }],
+  public isLocked = false;
+  public cv: ViewerConfiguration = {
     createDef: Patient.getDefinition(),
-    getLabel: (obj) => Patient.getLabel(obj),
-    handleError: (err)=>{
-      if(err.code==401){
-        this.router.navigateToRoute('user')
-      }else{
-        console.log(err)
-        alert("Server error")
+    dataType: "patient",
+    getLabel: obj => Patient.getLabel(obj),
+    handleError: err => {
+      if (err.code === 401) {
+        this.router.navigateToRoute("user");
+      } else {
+        console.log(err);
+        alert("Server error");
       }
-    }
-
-  }
-  constructor(private router:Router){}
+    },
+    searchFields: [
+      {
+        asPrefix: false,
+        label: "Name, Vorname oder Geburtsdatum",
+        name: "$find",
+        value: ""
+      }
+    ],
+    title: "Patient Auswahl"
+  };
+  constructor(private router: Router) {}
 }
