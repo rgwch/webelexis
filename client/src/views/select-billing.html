@@ -7,7 +7,7 @@
     </div>
     <div class="body" style="height:35vh;overflow:auto">
       <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">
-        <span draggable="true" dragstart.trigger="drag($event)" id="${el.type+'!'+el.id}">
+        <span draggable="true" dragstart.trigger="drag($event)" id="${el.codesystem+'!'+el.id}">
           <b>${getCode(el)}</b> ${getText(el)}
         </span></div>
     </div>
@@ -22,7 +22,7 @@
           * ${getLabel(bl)}
         </span>
         <div show.bind="bl.openState">
-          <div draggable="true" dragstart.trigger="drag($event)" id="${el.type+'!'+el.id}" repeat.for="el of bl.resolved">
+          <div draggable="true" dragstart.trigger="drag($event)" id="${el.codesystem+'!'+el.id}" repeat.for="el of bl.resolved">
             ${getCode(el)} ${getText(el)}
           </div>
         </div>

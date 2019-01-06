@@ -22,7 +22,6 @@ const do_prepare = obj => {
   if (!obj.id) {
     obj.id = uuid()
   }
-  obj.deleted = "0"
   delete obj.type
   return obj
 }

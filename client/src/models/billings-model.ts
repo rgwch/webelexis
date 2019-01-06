@@ -5,7 +5,7 @@
  ********************************************/
 import { EncounterType } from './encounter';
 import { DataSource, DataService } from './../services/datasource';
-import { ElexisType,UUID } from './elexistype';
+import { ElexisType, UUID } from './elexistype';
 import { autoinject } from 'aurelia-framework';
 
 export interface BillingType extends ElexisType {
@@ -56,17 +56,21 @@ export class BillingsManager {
     }
   }
 
-  async createBilling(billable, encounter: EncounterType, count: number, others: Array<BillingModel>):Promise<BillingType> {
+  async createBilling(billable, encounter: EncounterType, count: number, others: Array<BillingModel>): Promise<BillingType> {
     billable.encounter_id = encounter.id
     const existing = others.find(elem => elem.isBillingOf(billable))
-    if (existing) {
-      existing.increase(count)
-      return await this.billingService.update(existing.getBilling().id, existing.getBilling())
-    } else {
-      billable.count = count.toString()
-      const created:BillingType = await this.billingService.create(billable)
-      others.push(new BillingModel(created))
-      return created
+    try {
+      if (existing) {
+        existing.increase(count)
+        return await this.billingService.update(existing.getBilling().id, existing.getBilling())
+      } else {
+        billable.count = count.toString()
+        const created: BillingType = await this.billingService.create(billable)
+        others.push(new BillingModel(created))
+        return created
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
   async setCount(item, count) {
@@ -78,7 +82,13 @@ export class BillingsManager {
     return await this.billingService.update(item.getBilling().id, item.getBilling())
   }
   async removeBilling(billing: BillingModel) {
-    return await this.billingService.remove(billing.getBilling().id)
+    try {
+      const b = billing.getBilling()
+      const removed = await this.billingService.remove(b.id)
+      return removed
+    } catch (err) {
+      console.log(err)
+    }
   }
   async removeAllBillings(kons: EncounterType) {
     return await this.billingService.remove(null, { query: { behandlung: kons.id } })
@@ -97,7 +107,7 @@ export class BillingModel {
     return this.obj
   }
   isBillingOf = (billable) => {
-    return (this.code == billable.code && this.obj.klasse == billable.type)
+    return (this.code == billable.code && this.obj.klasse == billable.codesystem)
   }
   getCount(): number {
     return parseInt(this.obj.zahl)

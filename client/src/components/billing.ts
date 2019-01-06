@@ -97,6 +97,8 @@ export class Billing {
       this.bm.getBillable(data).then(billable => {
         this.bm.createBilling(billable, this.kons, 1, this.billings).then(billing => {
           this.loadBillings()
+        }).catch(err=>{
+          alert("could not create Billing "+err)
         })
       })
     }

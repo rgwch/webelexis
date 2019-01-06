@@ -26,7 +26,7 @@ class Service {
     const result = await tarmedService.find({ query: query })
     return result.data.map(c => {
       c.uid = c.id
-      c.type = tarmed_type;
+      c.codesystem = tarmed_type;
       c.encounter_id = kons.id;
       c.count = 1;
       return c
@@ -42,7 +42,7 @@ class Service {
     return result.data.map(c => {
       c.uid = c.id
       c.code = c.PHAR;
-      c.type = article_type;
+      c.codesystem = article_type;
       c.encounter_id = kons.id
       c.count = 1
       return c
@@ -107,10 +107,10 @@ class Service {
   }
 
   decodeService(code) {
-    const [type, uid] = code.split("!")
+    const [codesystem, uid] = code.split("!")
     let service
     let ptyp
-    switch (type) {
+    switch (codesystem) {
       case article_type:
       case 'article':
         service = this.options.app.service('article')
@@ -123,7 +123,7 @@ class Service {
         break;
       default:
         ptyp = "unknown"
-        throw ("unsupported billable class " + type)
+        throw ("unsupported billable class " + codesystem)
     }
     return [service, uid, ptyp]
   }
@@ -137,7 +137,7 @@ class Service {
     const [service, uid, type] = this.decodeService(id)
     try {
       const billable = await service.get(uid, params)
-      billable.type = type
+      billable.codesystem = type
       return billable
     } catch (err) {
       if (err.name == "NotFound") {
@@ -146,7 +146,7 @@ class Service {
           if(test.data && test.data.length>0){
             const billable=test.data[0]
             billable.uid = billable.id
-            billable.type = tarmed_type;
+            billable.codesystem = tarmed_type;
             billable.count = 1;
             return billable
           }else{

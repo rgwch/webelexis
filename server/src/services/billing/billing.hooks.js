@@ -18,7 +18,7 @@ const typemap={
  * @param {*} ctx
  */
 const adapter = async ctx => {
-  const type = typemap[ctx.data.type]
+  const type = typemap[ctx.data.codesystem]
   const adaptername = `./${type}-adapter`
   const adapter = require(adaptername)
   const billing = await adapter.createBilling(ctx.data, ctx.app)
@@ -53,6 +53,11 @@ const adapter = async ctx => {
   return ctx
 }
 
+const check=ctx=>{
+  if(ctx.data){
+    console.log(ctx.data)
+  }
+}
 module.exports = {
   before: {
     all: [authenticate('jwt')],
@@ -61,7 +66,7 @@ module.exports = {
     create: [adapter],
     update: [],
     patch: [],
-    remove: []
+    remove: [check]
   },
 
   after: {
@@ -71,7 +76,7 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [check]
   },
 
   error: {
