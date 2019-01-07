@@ -1,16 +1,16 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018 by G. Weirich         *
+ * Copyright (c) 2018-2019 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { IDataSource, DataService } from './datasource'
-import * as io from 'socket.io-client';
-import * as feathers from '@feathersjs/client';
-import * as auth from '@feathersjs/authentication-client'
-import env from '../environment'
-import { autoinject } from 'aurelia-framework';
-import { UserType } from 'models/user';
+import * as auth from "@feathersjs/authentication-client";
+import * as feathers from "@feathersjs/client";
+import { autoinject } from "aurelia-framework";
+import { UserType } from "models/user";
+import * as io from "socket.io-client";
+import env from "../environment";
+import { DataService, IDataSource } from "./datasource";
 
 /**
  * A DataSource implementation based on FeathersJS
@@ -18,26 +18,28 @@ import { UserType } from 'models/user';
  */
 @autoinject
 export class FeathersDS implements IDataSource {
-  private client
-  private socket
-  private authenticator
+  private client;
+  private socket;
+  private authenticator;
 
   constructor() {
     const socket = io.connect(env.baseURL);
 
     this.client = feathers()
       .configure(feathers.socketio(socket))
-      .configure(auth({
-        storage: window.localStorage
-      }))
+      .configure(
+        auth({
+          storage: window.localStorage
+        })
+      );
   }
 
-  getService(name: string): DataService {
-    return this.client.service(name)
+  public getService(name: string): DataService {
+    return this.client.service(name);
   }
 
-  dataType(service: DataService) {
-    return service.path
+  public dataType(service: DataService) {
+    return service.path;
   }
 
   /**
@@ -47,35 +49,34 @@ export class FeathersDS implements IDataSource {
    * the user, but extended inactivity will.)
    * @param username optional e-mail
    * @param password optional password
-   * @returns the logged in 'usr' object with all properties except the password. 
+   * @returns the logged in 'usr' object with all properties except the password.
    * or undefined if it could not log in.
    */
-  async login(username?: string, password?: string) : Promise<UserType>{
-
+  public async login(username?: string, password?: string): Promise<UserType> {
     try {
-      let jwt
+      let jwt;
       if (username && password) {
         jwt = await this.client.authenticate({
-          strategy: "local",
           email: username,
-          password: password
-        })
+          password,
+          strategy: "local"
+        });
       } else {
-        jwt = await this.client.authenticate()
+        jwt = await this.client.authenticate();
       }
-      const verified = await this.client.passport.verifyJWT(jwt.accessToken)
-      const user = await this.client.service('usr').get(verified.userId)
-      return user
+      const verified = await this.client.passport.verifyJWT(jwt.accessToken);
+      const user = await this.client.service("usr").get(verified.userId);
+      return user;
     } catch (err) {
-      console.log(err)
-      return undefined
+      console.log(err);
+      return undefined;
     }
   }
-  
+
   /**
    * Invalidates the JWT token
    */
-  logout() {
-    return this.client.logout()
+  public logout() {
+    return this.client.logout();
   }
 }

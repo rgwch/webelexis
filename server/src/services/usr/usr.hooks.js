@@ -32,14 +32,6 @@ const addElexisUser = async context => {
   return context
 }
 
-const getSelf = async ctx => {
-  if (ctx.params.user) {
-    if (ctx.id == ctx.params.user.id) {
-      ctx.result = ctx.params.user
-    }
-  }
-  return ctx
-}
 module.exports = {
   before: {
     all: [],

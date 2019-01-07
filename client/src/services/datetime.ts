@@ -1,44 +1,45 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { I18N } from 'aurelia-i18n'
-import { inject } from 'aurelia-framework'
-import * as moment from 'moment'
+import { inject } from "aurelia-framework";
+import { I18N } from "aurelia-i18n";
+import * as moment from "moment";
 
 @inject(I18N)
 export class DateTime {
-
-  constructor(private i18) {
-  }
+  constructor(private i18) {}
 
   public DateToElexisDate(date: Date): string {
-    return moment(date).format("YYYYMMDD")
+    return moment(date).format("YYYYMMDD");
   }
 
   public DateToElexisDateTime(date: Date): string {
-    return moment(date).format("YYYYMMDDHHmmSS")
+    return moment(date).format("YYYYMMDDHHmmSS");
   }
   public ElexisDateToLocalDate(yyyymmdd: string): string {
     if (yyyymmdd) {
-      return moment(yyyymmdd, "YYYYMMDD").format(this.i18.tr('adapters.date_format'))
+      return moment(yyyymmdd, "YYYYMMDD").format(
+        this.i18.tr("adapters.date_format")
+      );
     } else {
-      return moment().format(this.i18.tr('adapters.date_format'))
-
+      return moment().format(this.i18.tr("adapters.date_format"));
     }
   }
 
   public ElexisDateTimeToLocalDate(yyyymmddhhmmss: string): string {
     if (yyyymmddhhmmss) {
-      return moment(yyyymmddhhmmss, "YYYYMMDDHHmmSS").format(this.i18.tr('adapters.date_format'))
+      return moment(yyyymmddhhmmss, "YYYYMMDDHHmmSS").format(
+        this.i18.tr("adapters.date_format")
+      );
     } else {
-      return moment().format(this.i18.tr('adapters.date_format'))
+      return moment().format(this.i18.tr("adapters.date_format"));
     }
   }
   public DateObjectToLocalDate(date: Date): string {
-    return moment(date).format(this.i18.tr('adapters.date_format'))
+    return moment(date).format(this.i18.tr("adapters.date_format"));
   }
   /*
   public toDate(mom: string):string {
@@ -47,17 +48,17 @@ export class DateTime {
   */
 
   public minutesToTimeString(minutes: number): string {
-    let hours: number = Math.floor(minutes / 60)
-    let rest: number = minutes - (hours * 60)
-    let mins: string = rest.toString()
-    let hoursS: string = hours.toString()
+    const hours: number = Math.floor(minutes / 60);
+    const rest: number = minutes - hours * 60;
+    let mins: string = rest.toString();
+    let hoursS: string = hours.toString();
     if (hoursS.length < 2) {
-      hoursS = "0" + hours
+      hoursS = "0" + hours;
     }
     if (mins.length < 2) {
-      mins = "0" + mins
+      mins = "0" + mins;
     }
 
-    return hoursS + ":" + mins
+    return hoursS + ":" + mins;
   }
 }

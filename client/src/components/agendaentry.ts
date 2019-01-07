@@ -1,144 +1,153 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { WebelexisEvents } from '../webelexisevents';
-import { bindable, autoinject, computedFrom } from 'aurelia-framework'
-import { TerminType, TerminModel, Statics } from '../models/termine-model'
-import { Kontakt } from '../models/kontakt'
-import { DateTime } from '../services/datetime'
-import * as _ from 'lodash'
-import { TerminManager } from '../models/termine-model';
-import { EventAggregator } from 'aurelia-event-aggregator';
-import { RightPanel } from '../routes/dispatch/right';
-import { LeftPanel } from '../routes/dispatch/left';
+import { EventAggregator } from "aurelia-event-aggregator";
+import { autoinject, bindable, computedFrom } from "aurelia-framework";
+import * as _ from "lodash";
+import { Statics, TerminModel, TerminType } from "../models/termine-model";
+import { TerminManager } from "../models/termine-model";
+import { LeftPanel } from "../routes/dispatch/left";
+import { RightPanel } from "../routes/dispatch/right";
+import { DateTime } from "../services/datetime";
+import { WebelexisEvents } from "../webelexisevents";
 
 /*
  We use local styles here to avoid pollution of the global namespace
  */
-import 'styles/blind.css'
-import 'styles/slider.css'
+import "styles/blind.css";
+import "styles/slider.css";
 
 /**
  * A single Agenda entry. Type can be 'free', 'reserved' or any one of the user defined types.
  */
 @autoinject
 export class AgendaEntry {
-  @bindable entry: TerminModel
-  @bindable index: number
-  showmenu = false
-  maxLen = 50;
-  detailVisible: boolean = false
-  termintypen = []
-  terminstaten = []
-  selectedTyp
-  selectedState
+  @bindable
+  public entry: TerminModel;
+  @bindable
+  public index: number;
+  protected showmenu = false;
+  protected maxLen = 50;
+  protected detailVisible: boolean = false;
+  protected termintypen = [];
+  protected terminstaten = [];
+  protected selectedTyp;
+  protected selectedState;
 
-  constructor(private dt: DateTime, private tm: TerminManager,
-    private ea: EventAggregator, private we: WebelexisEvents) {
-  }
-  
-  bind(context) {
-    this.termintypen = Statics.terminTypes
-    this.terminstaten = Statics.terminStates
+  constructor(
+    private dt: DateTime,
+    private tm: TerminManager,
+    private ea: EventAggregator,
+    private we: WebelexisEvents
+  ) {}
+
+  public bind(context) {
+    this.termintypen = Statics.terminTypes;
+    this.terminstaten = Statics.terminStates;
   }
 
-  showDetail() {
-    this.detailVisible = !this.detailVisible
+  public showDetail() {
+    this.detailVisible = !this.detailVisible;
   }
 
-  select(view, list) {
-    const patient = this.entry.obj.kontakt
-    patient.type = "patient"
-    this.we.selectItem(patient)
+  protected select(view, list) {
+    const patient = this.entry.obj.kontakt;
+    patient.type = "patient";
+    this.we.selectItem(patient);
     if (list) {
-      this.ea.publish(LeftPanel.message, list)
+      this.ea.publish(LeftPanel.message, list);
     }
-    this.ea.publish(RightPanel.message, view)
+    this.ea.publish(RightPanel.message, view);
   }
 
-  get typecss() {
-    let style = `background-color:${this.entry.getTypColor()};`
-    return style
+  protected get typecss() {
+    const style = `background-color:${this.entry.getTypColor()};`;
+    return style;
   }
 
-  get statecss() {
-    let style = `background-color:${this.entry.getStateColor()};`
-    return style
+  protected get statecss() {
+    const style = `background-color:${this.entry.getStateColor()};`;
+    return style;
   }
-  getTimes() {
-    let ret: string = this.entry.getStartTime().format("HH:mm")
-    let end = this.entry.getEndTime().format("HH:mm")
-    return ret + "-" + end
+  protected getTimes() {
+    const ret: string = this.entry.getStartTime().format("HH:mm");
+    const end = this.entry.getEndTime().format("HH:mm");
+    return ret + "-" + end;
   }
-  getLabel() {
-    return this.entry.getLabel()
-  }
-
-  rawContents() {
-    return this.entry.rawContents()
+  protected getLabel() {
+    return this.entry.getLabel();
   }
 
-  save() {
-    this.tm.save(this.entry).then(saved=>{
-      if(saved.id!==this.entry.obj.id){
-        alert("error while saving")
-      }
-    }).catch(err=>{
-      alert("exception while saving: "+err)
-    })
+  protected rawContents() {
+    return this.entry.rawContents();
   }
-  changeState() {
-    const actState = this.entry.obj.TerminStatus
-    let index = _.findIndex(Statics.terminStates, e => e === actState)
+
+  protected save() {
+    this.tm
+      .save(this.entry)
+      .then(saved => {
+        if (saved.id !== this.entry.obj.id) {
+          alert("error while saving");
+        }
+      })
+      .catch(err => {
+        alert("exception while saving: " + err);
+      });
+  }
+  protected changeState() {
+    const actState = this.entry.obj.TerminStatus;
+    let index = _.findIndex(Statics.terminStates, e => e === actState);
     if (index > Statics.terminStates.length) {
       index = 0;
     } else {
       index++;
     }
-    this.entry.obj.TerminStatus = Statics.terminStates[index]
+    this.entry.obj.TerminStatus = Statics.terminStates[index];
   }
-  toggleMenu() {
-    this.showmenu = !this.showmenu
+  protected toggleMenu() {
+    this.showmenu = !this.showmenu;
   }
 
-  get menu() {
+  protected get menu() {
     if (this.entry.obj.TerminTyp == Statics.terminTypes[0]) {
-      return []
+      return [];
     } else if (this.entry.obj.TerminTyp == Statics.terminTypes[1]) {
-      return []
+      return [];
     } else {
-      return Statics.terminStates
+      return Statics.terminStates;
     }
   }
   /**
    * from UI button: Reduce duration of appointmen
    */
-  shorten(){
-    const raw=this.entry.obj.Dauer/2
-    this.entry.obj.Dauer=5*Math.floor(raw/5)
-    
-    this.tm.save(this.entry)
+  protected shorten() {
+    const raw = this.entry.obj.Dauer / 2;
+    this.entry.obj.Dauer = 5 * Math.floor(raw / 5);
+
+    this.tm.save(this.entry);
   }
   /**
    * from UI button: Enlarge duration of appointment
    */
-  enlarge(){
-    this.tm.getNext(this.entry).then(nxt=>{
-      if(nxt){
-        const maxDuration=nxt.getBeginMinutes()-this.entry.getBeginMinutes()
-        this.entry.setDuration(Math.min(this.entry.getDuration()*2,maxDuration))
-        this.tm.save(this.entry)
+  protected enlarge() {
+    this.tm.getNext(this.entry).then(nxt => {
+      if (nxt) {
+        const maxDuration =
+          nxt.getBeginMinutes() - this.entry.getBeginMinutes();
+        this.entry.setDuration(
+          Math.min(this.entry.getDuration() * 2, maxDuration)
+        );
+        this.tm.save(this.entry);
       }
-    })
-  
+    });
   }
   /**
    * from UI button: delete appointment
    */
-  delete(){
-   this.tm.delete(this.entry) 
+  protected delete() {
+    this.tm.delete(this.entry);
   }
 }

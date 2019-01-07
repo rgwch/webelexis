@@ -17,15 +17,15 @@ export default [
       { title: "Grösse", unit: "cm", manual: true, chart: "none" },
       { title: "bmi", chart: "right", color: "red" }
     ],
-    create: (val: string | Array<string>) => {
+    create: (val: string | string[]) => {
       const [weight, height] = Array.isArray(val) ? val : val.split("/")
-      const bmi = Math.round(parseFloat(weight) / ((parseFloat(height) / 100) ^ 2))
+      const bmi = Math.round(parseFloat(weight) / Math.pow(parseFloat(height) / 100, 2))
       return [weight, height, bmi]
     },
-    verbose: (row): string => {
+    verbose: (row: string[]): string => {
       return `Grösse: ${row[1]}cm, Gewicht: ${row[0]}Kg, BMI: ${row[2]}`
     },
-    compact: (row): string => `${row[1]} cm/${row[0]} Kg: BMI ${row[2]}`
+    compact: (row: string[]): string => `${row[1]} cm/${row[0]} Kg: BMI ${row[2]}`
 
   }, {
     name: "cardial",
