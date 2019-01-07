@@ -12,7 +12,7 @@ const uuid = require('uuid/v4')
  * To apply before create and update operations
  * @param {*} obj
  */
-const do_prepare = obj => {
+const do_prepare = (obj,method) => {
   if (obj.hasOwnProperty("LASTUPDATE")) {
     obj.LASTUPDATE = new Date().getTime()
     delete obj.lastupdate
@@ -21,6 +21,9 @@ const do_prepare = obj => {
   }
   if (!obj.id) {
     obj.id = uuid()
+  }
+  if(method=='create'){
+    obj.deleted="0"
   }
   delete obj.type
   return obj
@@ -31,10 +34,10 @@ module.exports = ctx => {
   if (ctx.data) {
     if (Array.isArray(ctx.data)) {
       for (const item of ctx.data) {
-        do_prepare(item)
+        do_prepare(item,ctx.method)
       }
     } else {
-      ctx.data = do_prepare(ctx.data)
+      ctx.data = do_prepare(ctx.data,ctx.method)
     }
   }
 }

@@ -13,7 +13,7 @@ const acl = require('./hooks/acl')
 
 module.exports = {
   before: {
-    all: [logger(),acl],
+    all: [logger(), acl],
     find: [treatDeleted()],
     get: [],
     create: [cleanup],
