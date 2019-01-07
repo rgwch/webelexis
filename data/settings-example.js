@@ -16,7 +16,7 @@ module.exports={
   /* If the user database is empty, create an admin and assign this pasword. Make sure to remove the line
      after the first start. */
   adminpwd: "topsecret",
-  /* A list of mandators and metadata for them. Metadata are uses in templates. You can define whatever you want
+  /* A list of mandators and metadata for them. Metadata are used in templates. You can define whatever you want
      and refer to it e.g. in 'briefe' templates. See data/sample-docbase/templates/rezept.pug for an example. */
   mandators: {
     default: {
@@ -41,7 +41,7 @@ module.exports={
     /* set automodify to true to let webelexis modify the elexis database */
     automodify: false
   },
-  /* We need an SMTP hot to send mails for lost password retrieval */
+  /* We need an SMTP host to send mails for lost password retrieval */
   smtp:{
     host: "some.smpt.host",
     port: 587,

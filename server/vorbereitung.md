@@ -67,7 +67,10 @@ Nach einem Upgrade von NodeJS oder Java muss oft node-java neu installiert werde
 
     npm install java
 
-In server/config/default.json die Verbindungsdaten zu einer für Webelexis angepassten Elexis-Datenbank (s. oben) eingeben
+In data/settings.js die Verbindungsdaten zu einer für Webelexis angepassten Elexis-Datenbank (s. oben) eingeben.
+
+In server/config/default.json bzw. production.json das authentication secret gegen etwas austauschen, was nicht hier im Internet steht.
+
 
 Damit die Unit-Tests gelingen, irgendeinen Test-Patienten in "unittest" umbenennen (s.o.)Vorname und sonstige Personalien sind egal.
 
