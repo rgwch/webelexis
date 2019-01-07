@@ -26,22 +26,10 @@ Siehe [hier](server/vorbereitung.md) für den Server und [hier](client/vorbereit
 
 **ACHTUNG**: Nur hinter einer Firewall oder an einer Test-Datenbank ohne echte Patientendaten testen.
 
-### - Einen Ordner 'data' erstellen, und darin eine Datei 'settings.js' mit folgenden Einträgen:
+### - Einen Ordner 'data' erstellen, und darin eine Datei 'settings.js' erstellen.
 
-```
-module.exports={
-  testing: true,
-  sitename: "Praxis Webelexis",
-  admin: "someone@webelexis.ch",
-  elexisdb: {
-    host: "172.121.16.3",
-    database: "elexis",
-    user: "elexisuser",
-    password: "topsecret",
-    automodify: true
-  }
-}
-```
+Beginnen Sie mit einer Kopie von [settings-exaple.js](data/settings-example.js) und ändern Sie die Einträge passend für Ihr System.
+
 
 ### - Dann im Terminal:
 
