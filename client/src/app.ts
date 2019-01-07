@@ -9,7 +9,7 @@ import {
   autoinject,
   computedFrom,
   LogManager,
-  PLATFORM,
+  PLATFORM
 } from "aurelia-framework";
 import { I18N } from "aurelia-i18n";
 import {
@@ -17,7 +17,7 @@ import {
   Next,
   Redirect,
   Router,
-  RouterConfiguration,
+  RouterConfiguration
 } from "aurelia-router";
 import { connectTo } from "aurelia-store";
 import "bootstrap";
@@ -42,8 +42,8 @@ import { WebelexisEvents } from "./webelexisevents";
     actUser: store => store.state.pipe(pluck("usr") as any),
     actDate: store => store.state.pipe(pluck("date") as any),
     actPatient: store => store.state.pipe(pluck("patient") as any),
-    leftPanel: store => store.state.pipe(pluck("leftPanel") as any),
-  },
+    leftPanel: store => store.state.pipe(pluck("leftPanel") as any)
+  }
 })
 @autoinject
 export class App {
@@ -53,18 +53,19 @@ export class App {
   private log = LogManager.getLogger("app.ts");
   private actPatient;
 
-  constructor(private i18n: I18N, private session: Session) {
-    // this.log.setLevel(LogManager.logLevel.info)
+  constructor(private i18n: I18N, private session: Session) {}
+
+  public activate() {
     this.log.info("getting metadata from " + env.baseURL);
-    fetch(env.baseURL + "metadata")
+    return fetch(env.baseURL + "metadata")
       .then(response => {
         return response.json();
       })
       .then(json => {
         env["metadata"] = json;
-        this.router.title = env.metadata["sitename"];
       })
       .catch(err => {
+        this.log.error("activate" + err);
         alert(this.i18n.tr("errmsg.connect"));
       });
   }
@@ -83,7 +84,8 @@ export class App {
   }
 
   public configureRouter(cfg: RouterConfiguration, router: Router) {
-    cfg.title = "";
+    cfg.title = env.metadata["sitename"] || "Webelexis";
+
     cfg.map([
       {
         name: "dispatch",
@@ -93,8 +95,8 @@ export class App {
         title: env.metadata["sitename"],
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/dispatch/left") },
-          details: { moduleId: PLATFORM.moduleName("./routes/dispatch/right") },
-        },
+          details: { moduleId: PLATFORM.moduleName("./routes/dispatch/right") }
+        }
       },
       {
         name: "user",
@@ -102,8 +104,8 @@ export class App {
         title: this.i18n.tr("nav.account"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/user/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/user/detail") },
-        },
+          details: { moduleId: PLATFORM.moduleName("./routes/user/detail") }
+        }
       },
       {
         name: "test",
@@ -112,8 +114,8 @@ export class App {
         title: "test",
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/test/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/test/detail") },
-        },
+          details: { moduleId: PLATFORM.moduleName("./routes/test/detail") }
+        }
       },
       {
         name: "agenda",
@@ -122,8 +124,8 @@ export class App {
         title: this.i18n.tr("nav.agenda"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/patient/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/agenda/index") },
-        },
+          details: { moduleId: PLATFORM.moduleName("./routes/agenda/index") }
+        }
       },
       /*
       {
@@ -140,8 +142,8 @@ export class App {
         title: this.i18n.tr("nav.patdetails"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/patient/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/patient/detail") },
-        },
+          details: { moduleId: PLATFORM.moduleName("./routes/patient/detail") }
+        }
       },
       {
         name: "patneu",
@@ -149,18 +151,18 @@ export class App {
         title: this.i18n.tr("nav.newpat"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/patient/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/patient/detail") },
-        },
+          details: { moduleId: PLATFORM.moduleName("./routes/patient/detail") }
+        }
       },
       {
         route: "/konsultation",
         name: "konsultation",
         title: this.i18n.tr("nav.encounters"),
         viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/patient/index") },
+          default: { moduleId: PLATFORM.moduleName("./routes/patient/index") }
           // details: { moduleId: PLATFORM.moduleName('./routes/konsultation/index') }
         },
-        nav: true,
+        nav: true
       },
       {
         route: "/artikel",
@@ -168,9 +170,9 @@ export class App {
         title: this.i18n.tr("nav.articles"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/artikel/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/artikel/detail") },
+          details: { moduleId: PLATFORM.moduleName("./routes/artikel/detail") }
         },
-        nav: true,
+        nav: true
       },
       {
         route: "/documents",
@@ -178,9 +180,9 @@ export class App {
         title: this.i18n.tr("nav.documents"),
         viewPorts: {
           default: { moduleId: PLATFORM.moduleName("./routes/documents/list") },
-          details: { moduleId: PLATFORM.moduleName("views/document") },
-        },
-      },
+          details: { moduleId: PLATFORM.moduleName("views/document") }
+        }
+      }
     ]);
     cfg.addPipelineStep("authorize", AuthorizeStep);
     this.log.info("router configuration ok");
