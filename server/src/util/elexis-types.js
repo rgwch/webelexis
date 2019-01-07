@@ -21,14 +21,15 @@ const java = require('java')
 const moment = require('moment')
 const JSZip = require('jszip')
 const logger = require('../logger')
+const JACKSON_VERSION="2.9.8"
 
 /* generate dependencies with
    mvn dependency:copy-dependencies
    */
 const utils = "rgw-toolbox-4.2.7.jar"
-const ann = "jackson-annotations-2.9.7.jar"
-const jackson = "jackson-core-2.9.7.jar"
-const databind = "jackson-databind-2.9.7.jar"
+const ann = `jackson-annotations-${JACKSON_VERSION}.jar`
+const jackson = `jackson-core-${JACKSON_VERSION}.jar`
+const databind = `jackson-databind-${JACKSON_VERSION}.jar`
 
 const libdir = "../../lib"
 /*
