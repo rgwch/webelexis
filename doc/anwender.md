@@ -35,6 +35,9 @@ Richten Sie den Browser auf http://IhrServer. (Ich werde in diesem Handbuch imme
 
 Sie werden dann von diesem Bildschirm begrüsst:
 
+![Login-Screen](img/login_screen.jpg)
+
+Wenn dies das erste Mal ist, dass Sie das Programm nutzen, geben Sie "admin" als Benutzername ein und das Passwort, dass Sie bei der Serverinstallation festgelegt haben.
 
 
 ### Benutzerkonfiguration

@@ -8,11 +8,13 @@ Eine Selbstverständlichkeit: Fertigen Sie mindestens tägliche Backups an, und 
 
 ## Sicherheit gegen Vertraulichkeitsbruch
 
-Ein weites Feld. Ihre Patientendaten sind höchst vertraulich. Es muss absolut sicher sein, dass kein Unbefugter darauf Zugriff erhält. Unbefugt ist grundsätzlich jeder ausser Ihnen selbst und Ihrem medizinischen Praxispersonal. Grundsätzlich gibt es drei mögliche Schwachstellen: Erstens der Ort, auf dem die Daten gespeichert sind, also die Festplatte des Servers. Zweitens die Zugriffsberechtigung: Wer darf sich von wo aus einloggen? Und wie gut sind diese Logins gesichert? Und drittens der Transport der Daten durchs Netzwerk: Könne das Netzwerk irgendwo abgehört werden, so dass auch jemand Daten mitlesen kann, der gar nicht eingeloggt ist? Ich werde diese drei Bereiche im Folgenden kurz diskutieren:
+Ein weites Feld. Ihre Patientendaten sind höchst vertraulich. Es muss absolut sicher sein, dass kein Unbefugter darauf Zugriff erhält. Unbefugt ist grundsätzlich jeder ausser Ihnen selbst und Ihrem medizinischen Praxispersonal. Achtung: Auch Ihr Computersupporter ist rechtlich gesehen unbefugt, die patientenbezogenen Daten auf Ihrem Server anzusehen! 
+
+Grundsätzlich gibt es drei mögliche Schwachstellen: Erstens der Ort, auf dem die Daten gespeichert sind, also die Festplatte des Servers. Zweitens die Zugriffsberechtigung: Wer darf sich von wo aus einloggen? Und wie gut sind diese Logins gesichert? Und drittens der Transport der Daten durchs Netzwerk: Könnte das Netzwerk irgendwo abgehört werden, so dass auch jemand Daten mitlesen kann, der gar nicht eingeloggt ist? Ich werde diese drei Bereiche im Folgenden kurz diskutieren:
 
 ### Der Speicherort
 
-Ihr Server mag mit einem starken Passwort gesichert sein, aber jeder, der physischen Zugang hat oder erlangen kann, kann diese Sperre mühelos umgehen: Man kann zum Beispiel einfach mit einem eigenen Betriebssystem, auf dem man selbst Administrator ist, von einem USB-Stick oder einer CD booten. Oder man baut die Festplatte aus und schliesst sie an einem eigenen Computer an. Und Ihr Computer wird nicht ewig funktionieren. Irgendwann werden Sie ihn entsorgen, und dann sind die Daten vermutlich immer noch da, wenn Sie sich nicht die Mühe machen, alle Festplatten physisch zu zerstören. Auch Überschreiben hilft nicht: Immer mehr Computer haben SSDs anstelle rotierender Magnetscheiben, und SSDs verhalten sich beim Schreiben unvorhersehbar. Mit grösster Wahrscheinlichkeit wird ein Überschreibvorgang die Daten nicht überschreiben, sondern irgendwo anders schreiben. Man kann aber nicht sagen, wo. 
+Ihr Server mag mit einem starken Passwort gesichert sein, aber jeder, der physischen Zugang hat oder erlangen kann, kann diese Sperre mühelos umgehen: Man kann zum Beispiel einfach mit einem eigenen Betriebssystem, auf dem man selbst Administrator ist, von einem USB-Stick oder einer CD booten. Oder man baut die Festplatte aus und schliesst sie an einem eigenen Computer an. Und Ihr Computer wird nicht ewig funktionieren. Irgendwann werden Sie ihn entsorgen, und dann sind die Daten vermutlich immer noch da, wenn Sie sich nicht die Mühe machen, alle Festplatten physisch zu zerstören. Auch Überschreiben hilft nicht: Immer mehr Computer haben SSDs anstelle rotierender Magnetscheiben, und SSDs verhalten sich beim Schreiben unvorhersehbar. Mit grösster Wahrscheinlichkeit wird ein Überschreibvorgang die Daten nicht überschreiben, sondern irgendwo anders schreiben. Man kann nicht vorhersagen, wo. Die vorgeblich gelöschten Originaldaten sind dann aber immer noch da.
 
 Gegen all diese möglichen Schwachstellen gibt es eine vergleichsweise einfache Lösung: Die Partition, auf der die Daten gespeichert sind, muss verschlüsselt werden. Dann muss man sich zwar bei jedem Neustart die Mühe machen, die Passphrase einzugeben, aber dafür werden die Daten nach einem simplen Herunterfahren oder Ausschalten des Servers garantiert unlesbar für jeden, der die Passphrase nicht kennt.
 
@@ -26,7 +28,7 @@ Innerhalb der Praxis ist das relativ einfach zu lösen: Man erteilt genau jeder 
 
 #### Fernzugriff
 
-Sobald Sie auch von ausserhalb der Praxis auf die Daten zugreifen sollen, wird die Sicherungsproblematik etliche Stufen grösser. Jetzt können nicht mehr nur Leute, die physisch in der Nähe der Praxis sind, Einbruchversuche machen, sondern jeder Hacker irgendwo auf der Welt kann sein Glück versuchen. Dabei geht es primär gar nicht unbedingt um Ihre "unwichtigen" Daten. Es gibt zigtausende von automatischen Scanprogrammen, die einfach mal mit den jeweils neuesten Hackmethoden ihr Glück versuchen, und wenn es ihnen gelingt, irgendwo einzubrechen, ihre Besitzer mal nachsehen lassen, was es da wohl zu holen gibt. Sie können sich vermutlich lebhaft vorstellen, was passieren würde, wenn ein Erpresser damit droht, bei Ihnen erbeutete Patientendaten im Internet zu publizieren.
+Sobald Sie auch von ausserhalb der Praxis auf die Daten zugreifen wollen, wird die Sicherungsproblematik etliche Stufen grösser. Jetzt können nicht mehr nur Leute, die physisch in der Nähe der Praxis sind, Einbruchversuche machen, sondern jeder Hacker irgendwo auf der Welt kann sein Glück versuchen. Dabei geht es primär gar nicht unbedingt um Ihre "unwichtigen" Daten. Es gibt zigtausende von automatischen Scanprogrammen, die einfach mal mit den jeweils neuesten Hackmethoden ihr Glück versuchen, und wenn es ihnen gelingt, irgendwo einzubrechen, ihre Besitzer mal nachsehen lassen, was es da wohl zu holen gibt. Sie können sich vermutlich lebhaft vorstellen, was passieren würde, wenn ein Erpresser damit droht, bei Ihnen erbeutete Patientendaten im Internet zu publizieren.
 
 Deshalb: Im Zweifelsfall kein Fernzugriff. Stattdessen eine Firewall, die jeglichen Zugriff von aussen stoppt.
 
@@ -66,8 +68,8 @@ Port  39876
 PermitRootLogin no
 # Speicherort für die öffentlichen Schlüssel der zugelassenen User
 AuthorizedKeysFile     %h/.ssh/authorized_keys
-# Zugriff mit Passwort verbieten
-PasswordAuthentication no
+# Zugriff mit Passwort verbieten. Für die Einrichtung müssen wir das aber noch erlauben. Also provisorisch "yes", später "no".
+PasswordAuthentication yes
 # Zugriff mit Schlüsselpaar erlauben
 RSAAuthentication yes
 PubkeyAuthentication yes
@@ -79,11 +81,11 @@ Dann müssen Sie auf dem Router den entsprechenden Port (hier 39876) öffnen und
 
 ### ssh - Der SSH client
 
-Auf Linux- und Mac Computern heisst das entsprechende Programm einfach 'ssh', auf Windows können Sie z.B. 'putty' verwenden. Als Erstes benötigen wir ein Schlüsselpaar.
+Auf Linux- und Mac Computern heisst das entsprechende Programm einfach 'ssh', auf Windows können Sie z.B. 'putty' verwenden. Als Erstes benötigen wir ein Schlüsselpaar:
 
 `ssh-keygen -t rsa`
 
-Wählen Sie als Speicherort z.B. .ssh/webelexiskey
+Wählen Sie als Speicherort z.B. .ssh/webelexiskey und sichern Sie den Schlüssel mit einem Passwort - es könnte ja sein, dass Ihr Laptop mal abhanden kommt.
 
 Um den öffentlichen Schlüssel zum Server zu übermitteln, starten Sie den sshd server am Besten ein letztes Mal mit der Option `PasswordAuthentication yes`und führen dann folgendes Programm aus:
 
@@ -102,7 +104,10 @@ Host praxis
         IdentityFile /Pfad/zu/.ssh/webelexiskey
 ~~~
 
-Jetzt können Sie sich einfach mit `ssh praxis` auf Ihren Praxis-Server einloggen. Der Tunnel zu Webelexis ist durch die LocalForward-Zeile bereits geöffnet. Allerdings lauscht am anderen Ende noch niemand. Das holen wir jetzt nach:
+Jetzt können Sie sich einfach mit `ssh praxis` auf Ihren Praxis-Server einloggen. Der Tunnel zu Webelexis ist durch die LocalForward-Zeile bereits geöffnet. 
+Wenn das soweit funktioniert, ändern Sie auf der Server-Config die Zeile `PasswordAuthentication` in "no", damit nur noch der viel sicherere Zugang per Schlüssel möglich ist.
+
+Der Tunnel ist nun also offen, allerdings lauscht am anderen Ende noch niemand. Das holen wir jetzt nach:
 
 ### Webelexis auf dem Server starten
 
@@ -110,7 +115,7 @@ Erstellen Sie eine Textdatei namens docker-compose.yml mit mindestens folgendem 
 
 ~~~bash
 webelexis:
-    image: rgwch/webelexis:3.0.7
+    image: rgwch/webelexis:latest
     ports: 
       - "2018:3030"
     volumes:
@@ -132,3 +137,10 @@ create user webelexis@'172.18.0.%' identified by 'supersecret';
 grant all on elexis.* to webelexis@'172.18.0.%';
 
 ~~~
+
+### Vom Client aus auf den Praxis-Server zugreifen
+
+Jetzt sollten Sie auf dem Laptop, sobald der Tunnel mit `ssh praxis` geööfnet wurde, den Browser auf `http://localhost:2018` richten können und so Webelexis starten.
+
+(Wohlbemerkt: "localhost" gilt auch dann, wenn Sie von Fern auf die Praxis zugreiffen, da der SSH-Tunnel eine direkte Verbindung von Localhost zum Server bewirkt. Win Wurmloch, wenn Sie so wollen bzw. Science-Fiction-Fan sind.)
+

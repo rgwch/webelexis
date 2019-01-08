@@ -1,10 +1,8 @@
-import { WebelexisEvents } from "./../test/unit/dummyevents";
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-
 import { Aurelia, LogManager, PLATFORM } from "aurelia-framework";
 import { ConsoleAppender } from "aurelia-logging-console";
 import * as Backend from "i18next-xhr-backend";

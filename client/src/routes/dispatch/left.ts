@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -13,15 +13,15 @@ import defaults from '../../user/uidefaults'
 
 @autoinject
 export class LeftPanel{
-  tooliconwidth=40
-  tooliconheight=40
-  views=[v.patientenliste,v.artikelliste,v.dokumentliste,v.briefe,v.messwerte,v.leistungen]
-  active=v.patientenliste
-  parent
-  buttons
-  linked:boolean = false
-  static message="left_panel"
-  leftpanelstyle=`position:absolute;left:${defaults.buttonbarwidth}px;width:${defaults.leftpanelwidth}px;`
+  protected tooliconwidth=defaults.tooliconwidth
+  protected tooliconheight=defaults.tooliconheight
+  protected active=v.patientenliste
+  protected parent
+  protected buttons
+  protected linked:boolean = false
+  public static message="left_panel"
+  protected leftpanelstyle=`position:absolute;left:${defaults.buttonbarwidth}px;width:${defaults.leftpanelwidth}px;`
+  private views=[v.patientenliste,v.artikelliste,v.dokumentliste,v.briefe,v.messwerte,v.leistungen]
 
   constructor(private ea:EventAggregator,private sm:StickerManager){
     this.ea.subscribe(LeftPanel.message,view=>{
@@ -29,21 +29,21 @@ export class LeftPanel{
     })
   }
 
-  attached(){
+  public attached(){
     const bwidth=this.buttons.offsetWidth
     const twidth=this.parent.offsetWidth
     return this.sm.loadStickers().then(st=>{
       // console.log(st)
     })
   }
-  switchTo(view){
+  public switchTo(view){
     this.active=view
     if(this.linked && view.linksTo){
       this.ea.publish(RightPanel.message,view.linksTo)
     }
   }
 
-  link(){
+  public link(){
     this.linked=!this.linked
   }
 }

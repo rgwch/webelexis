@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -16,15 +16,15 @@ import defaults from '../../user/uidefaults'
 @connectTo(store=>store.state.pipe(<any>pluck("leftPanel")))
 @autoinject
 export class RightPanel{
-  tooliconwidth=defaults.tooliconwidth
-  tooliconheight=defaults.tooliconheight
-  views=[v.stammdaten,v.konsultationen,v.dokumente,v.artikeldetail,v.labor,v.agendagross,v.medikation]
-  active=v.stammdaten
-  expanded=false
-  parent
-  rightpanelstyle=`position:absolute;left:${defaults.buttonbarwidth+defaults.leftpanelwidth}px;right:${defaults.buttonbarwidth}px;`
-  subscription: Subscription
-  static message="right_panel"
+  protected tooliconwidth=defaults.tooliconwidth
+  protected tooliconheight=defaults.tooliconheight
+  private views=[v.stammdaten,v.konsultationen,v.dokumente,v.artikeldetail,v.labor,v.agendagross,v.medikation]
+  protected active=v.stammdaten
+  protected expanded=false
+  protected parent
+  protected rightpanelstyle=`position:absolute;left:${defaults.buttonbarwidth+defaults.leftpanelwidth}px;right:${defaults.buttonbarwidth}px;`
+  private subscription: Subscription
+  public static message="right_panel"
 
   constructor(private ea:EventAggregator, private we:WebelexisEvents){
     this.subscription=this.ea.subscribe(RightPanel.message,(view=>{
@@ -35,18 +35,18 @@ export class RightPanel{
     }))
   }
 
-  stateChanged(showNow,showBefore){
+  public stateChanged(showNow,showBefore){
     if(showNow){
       this.rightpanelstyle="position:absolute;left:440px;right:85px;"
     }else{
       this.rightpanelstyle="position:absolute;left:5px;right:85px;"
     }
   }
-  expand(mode){
+  public expand(mode){
     this.expanded=mode
   }
 
-  activate(params /*, routeConfig */) {
+  public activate(params /*, routeConfig */) {
     //routeConfig.navModel.setTitle("test")
     if (params && params.sub) {
       const actview = this.views.find(v => v.text.toLowerCase() == params.sub)
@@ -57,15 +57,15 @@ export class RightPanel{
   }
 
 
-  toggleLeftPane(){
+  public toggleLeftPane(){
     this.we.toggleLeftPanel()
   }
-  calcwidth(){
+  protected calcwidth(){
     const w=this.parent.getBoundingClientRect().width-this.tooliconwidth
     const st= `width:${w}px`
     return st
   }
-  switchTo(view){
+  private switchTo(view){
     this.active=view
   }
 }

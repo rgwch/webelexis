@@ -40,6 +40,19 @@ Webelexis-Server connects to an existing Elexis(tm) database or creates one from
 
 Webelexis-Server uses [Knex](http://knexjs.org) as a persistence layer and thus is able to work with all database systems supported by Knex. The configuration of the database is  in server/config/*.json and the decision which database to use is configured in /server/src/knex.js.
 
+## General Layout and where to start - Client
+
+Let's diskuss the startup and login first (all in the src folder):
+
+The Application's life cycle starts with main.ts. Aurelia configuration finds place and then, control proceeds to app.ts. 
+App.ts implicitely initiates a Session (by injecting the Session Singleton in the constructor). Then it loads metadata about the running system from the server and configures the router. The AuthorizeStep class at the bottom of the file is called before routing and tries to get the logged in user. If a valid JWT token is in LokalStorage, Session will retrieve that token and log the respective user in. If this doesn't succeed, AuthorizeStep redirects the router to the login-page.
+
+The Login Page (src/routes/user/login) operates in two modes: If the server runs in "testing" mode, then it has created an "admin", "user@webelexis.ch" and "guest@webelexis.ch" with the passwords "admin", "user" and "guest". In this case, the client offers to login by simply pressing a button. If the server runs in productive mode, a login page is presented.
+
+If a logged-in user was found or login succeds, the default page (routes/dispatch) is created. The page consists of a lefgt and a right part which are set individually by an aurelia compose pattern. (See rooutes/dispatch/left and routes/dispatch/right)
+
+
+
 
 ## DataSource and DataService
 

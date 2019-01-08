@@ -1,3 +1,4 @@
+import { PatientType } from './models/patient';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -51,7 +52,7 @@ export class App {
   public router: Router;
 
   private log = LogManager.getLogger("app.ts");
-  private actPatient;
+  private actPatient: PatientType;
 
   constructor(private i18n: I18N, private session: Session) {}
 
