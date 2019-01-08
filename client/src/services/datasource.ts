@@ -48,6 +48,16 @@ export interface IDataSource {
 }
 
 /**
+ * Format of a find result from DataService
+ */
+export interface IQueryResult {
+  data: any[],    // the data
+  limit: number,  // number of items in data
+  total: number,  // total number of items
+  skip: number    // skipped items for this query
+}
+
+/**
  * Dummy-Implementation of IDataSource
  */
 export class DataSource implements IDataSource {

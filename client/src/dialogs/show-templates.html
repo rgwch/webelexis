@@ -1,18 +1,19 @@
 <template>
   <ux-dialog>
-    <ux-dialog-header>
-      <h3>Select template for letter</h3>
-    </ux-dialog-header>
+    <ux-dialog-header> <h3>Select template for letter</h3> </ux-dialog-header>
     <ux-dialog-body>
       <div style="height:50vh;overflow:auto">
-        <div class="compactlist" repeat.for="tmpl of templates">
+        <div class="compactlist" repeat.for="tmpl of templates" click.delegate="select(tmpl)">
           ${tmpl.Betreff}
         </div>
       </div>
     </ux-dialog-body>
     <ux-dialog-footer>
-      <button click.trigger="dc.cancel()">Cancel</button>
-      <button click.trigger="dc.ok(template)">Ok</button>
+      <div>${selected.Betreff}</div>
+      <div>
+        <button click.trigger="dc.cancel()">Cancel</button>
+        <button click.trigger="dc.ok(selected)">Ok</button>
+      </div>
     </ux-dialog-footer>
   </ux-dialog>
 </template>
