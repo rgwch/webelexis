@@ -38,6 +38,8 @@ Beginnen Sie mit einer Kopie von [settings-exaple.js](data/settings-example.js) 
 
 Achtung: Webelexis wird beim ersten Start (wenn in settings.js automodify auf true gesetzt ist), einige Datenbankanpassungen vornehmen, die in [server/vorbereitung.md](server/vorbereitung.md) näher beschrieben sind. Wenn automodify auf 'false' gesetzt ist, wird Webelexis keine Änderungen vornehmen, aber den Start verweigern, falls die Datenbank noch nicht angepasst ist.   
 
+Wenn Sie nicht unbedingt eine spezifische Version möchten, würde ich empfehlen,immer webeleixs:latest zu wählen. Wenn sie die allerneueste aber eventuell "kaputte" Version ausporbierne möchten, wählen Sie webelexis:bleeding.
+
 ### - Dann einen Browser auf `http://localhost` richten.
 
 (bzw. wo auch immer der Docker-Container erreichbar ist)
