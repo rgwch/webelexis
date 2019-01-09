@@ -18,14 +18,20 @@ export class Session {
   public async login(user?: string, pwd?: string, persist?: boolean) {
     const usr: UserType = await this.ds.login(user, pwd);
     if (usr) {
-      this.currentUser = new User(usr);
       usr["type"] = "usr";
+      this.currentUser = new User(usr);
       this.we.selectItem(usr);
     } else {
       this.we.logout();
       this.currentUser = undefined;
     }
     return this.currentUser;
+  }
+
+  public setUser(user: UserType){
+    user.type="usr"
+    this.currentUser=new User(user)
+    this.we.selectItem(user)
   }
 
   public async logout() {

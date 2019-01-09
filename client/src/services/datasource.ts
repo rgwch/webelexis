@@ -42,7 +42,7 @@ export interface IDataSource {
   // get the data type of a given DataService
   dataType(service: DataService): string
   // authenticate
-  login(username?:string,password?:string): Promise<UserType>
+  login?(username?:string,password?:string): Promise<UserType>
   // de-authenticate
   logout(): Promise<any>
 }

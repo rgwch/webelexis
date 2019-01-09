@@ -35,6 +35,7 @@ export class UserDetail {
       email = this.username;
       pwd = this.password;
     }
+    
     this.session.login(email, pwd).then((usr: UserType) => {
       if (usr) {
         this.router.navigateToRoute("dispatch");

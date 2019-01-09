@@ -54,7 +54,7 @@ export class App {
   private log = LogManager.getLogger("app.ts");
   private actPatient: PatientType;
 
-  constructor(private i18n: I18N, private session: Session) {}
+  constructor(private i18n: I18N, private session: Session) { }
 
   public activate() {
     this.log.info("getting metadata from " + env.baseURL);
@@ -67,7 +67,7 @@ export class App {
       })
       .catch(err => {
         this.log.error("activate" + err);
-        alert(this.i18n.tr("errmsg.connect"));
+        // alert(this.i18n.tr("errmsg.connect"));
       });
   }
 
@@ -128,14 +128,6 @@ export class App {
           details: { moduleId: PLATFORM.moduleName("./routes/agenda/index") }
         }
       },
-      /*
-      {
-        name: "termin",
-        nav: true,
-        route: "/termin",
-        title: "Termin",
-        moduleId: PLATFORM.moduleName("./routes/agenda/index"),
-      },*/
       {
         name: "patient",
         nav: true,
@@ -183,6 +175,20 @@ export class App {
           default: { moduleId: PLATFORM.moduleName("./routes/documents/list") },
           details: { moduleId: PLATFORM.moduleName("views/document") }
         }
+      },{
+        route: "/fhirlogin",
+        name: "Fhir Login",
+        viewPorts:{
+          default: {moduleId: PLATFORM.moduleName('fhir/fhir-login')}
+        }
+      }, 
+      {
+        route: "/auth",
+        name: "Fhir authenticated",
+        viewPorts: {
+          default: { moduleId: PLATFORM.moduleName("fhir/fhir-ready") },
+          // details: {moduleId: PLATFORM.moduleName("fhir/fhir-ready")}
+        }
       }
     ]);
     cfg.addPipelineStep("authorize", AuthorizeStep);
@@ -193,7 +199,7 @@ export class App {
 
 @autoinject
 class AuthorizeStep {
-  constructor(private session: Session) {}
+  constructor(private session: Session) { }
   public run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
     return this.session.getUser().then(actUser => {
       if (
@@ -203,7 +209,11 @@ class AuthorizeStep {
         if (actUser) {
           return next();
         } else {
-          return next.cancel(new Redirect("user/login"));
+          if (env.transport === "fhir") {
+            return next.cancel(new Redirect("fhirlogin"))
+          } else {
+            return next.cancel(new Redirect("user"));
+          }
         }
       } else {
         return next();

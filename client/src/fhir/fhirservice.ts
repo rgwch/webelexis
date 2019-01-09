@@ -24,6 +24,13 @@ export interface IBundleResult {
 @autoinject
 export class FhirService {
   private smart = null;
+  private client={
+    client_id: env.fhir.client_id,
+    // redirect_uri: this.getBaseURL() + env.fhir.client_redirect,
+    redirect_uri: "http://localhost:9000/#/auth",
+    scope: "fhir"
+  }
+ 
 
   /**
    * retrieve server metadata (https://www.hl7.org/fhir/http.html#capabilities)
@@ -37,7 +44,12 @@ export class FhirService {
       })
       .then(resp => {
         return resp.json();
-      });
+      }).catch(err=>{
+       
+        alert("could not retrieve metadata")
+        // alert("FHIR data: "+JSON.stringify(env.fhir))
+   
+      })
   }
 
   /**
@@ -45,14 +57,11 @@ export class FhirService {
    * after successful authentication and authorization.
    * @param server_uri
    */
-  public init() {
+  public init(serverurl) {
+    // alert("FHIR data: "+JSON.stringify(env.fhir))
     FHIR.oauth2.authorize({
-      client: {
-        client_id: env.fhir.client_id,
-        redirectUri: this.getBaseURL() + env.fhir.client_redirect,
-        scope: "fhir"
-      },
-      server: env.fhir.server_url
+      client: this.client,
+      server: serverurl
     });
   }
 
@@ -81,9 +90,7 @@ export class FhirService {
    * @param factory the factory for the queried FHIRobject subtype (see src/models/*)
    * @param query a query (form depends of the queried type, see FHIR documentation)
    */
-  public async filter(
-    query
-  ): Promise<IBundleResult> {
+  public async filter(query): Promise<IBundleResult> {
     if (this.smart == null) {
       const sm = await this.getSmartclient();
     }

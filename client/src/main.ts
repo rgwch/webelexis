@@ -9,6 +9,7 @@ import * as Backend from "i18next-xhr-backend";
 import { DataSource } from "./services/datasource";
 import { FeathersDS } from "./services/feathers-api";
 import { webelexisState } from "./state";
+import env from "environment"
 let selectedLanguage = navigator.languages[0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 
@@ -65,7 +66,7 @@ export function configure(aurelia: Aurelia) {
   }
 
   let datasource: DataSource;
-  if (environment.transport === "fhir") {
+  if (env.transport === "fhir") {
     datasource = aurelia.container.get(FhirDS);
   } else {
     datasource = aurelia.container.get(FeathersDS);
