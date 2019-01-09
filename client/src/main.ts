@@ -3,7 +3,7 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { Aurelia, LogManager, PLATFORM } from "aurelia-framework";
+import { Aurelia, LogManager, noView, PLATFORM } from "aurelia-framework";
 import { ConsoleAppender } from "aurelia-logging-console";
 import * as Backend from "i18next-xhr-backend";
 import { DataSource } from "./services/datasource";
@@ -12,6 +12,7 @@ import { webelexisState } from "./state";
 let selectedLanguage = navigator.languages[0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 
+import { FhirDS } from "fhir/fhir-api";
 import environment from "./environment";
 
 LogManager.addAppender(new ConsoleAppender());
@@ -37,12 +38,12 @@ export function configure(aurelia: Aurelia) {
       instance.i18next.use(Backend);
       return instance.setup({
         backend: {
-          loadPath: "./locales/{{lng}}/{{ns}}.json",
+          loadPath: "./locales/{{lng}}/{{ns}}.json"
         },
         lng: selectedLanguage,
         attributes: ["t", "i18n"],
         fallbackLng: "de",
-        debug: true,
+        debug: true
       });
     })
     .plugin(PLATFORM.moduleName("aurelia-animator-css"))
@@ -56,14 +57,19 @@ export function configure(aurelia: Aurelia) {
     })
     */
     .plugin(PLATFORM.moduleName("aurelia-store"), {
-      initialState: webelexisState,
+      initialState: webelexisState
     });
 
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName("aurelia-testing"));
   }
 
-  const datasource = aurelia.container.get(FeathersDS);
+  let datasource: DataSource;
+  if (environment.transport === "fhir") {
+    datasource = aurelia.container.get(FhirDS);
+  } else {
+    datasource = aurelia.container.get(FeathersDS);
+  }
   aurelia.container.registerInstance(DataSource, datasource);
   aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName("app")));
 }

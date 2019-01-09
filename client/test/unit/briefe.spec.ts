@@ -17,7 +17,7 @@ describe('briefe', () => {
     const brief: BriefType = {
       Betreff: "Test",
       _Patient: {
-        ID: "007",
+        id: "007",
         Bezeichnung1: "Tausendwasser",
         Bezeichnung2: "Friedlich",
         geschlecht: "m",

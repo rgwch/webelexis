@@ -45,14 +45,14 @@ export class FhirService {
    * after successful authentication and authorization.
    * @param server_uri
    */
-  public init(serverUri: string) {
+  public init() {
     FHIR.oauth2.authorize({
       client: {
         client_id: env.fhir.client_id,
         redirectUri: this.getBaseURL() + env.fhir.client_redirect,
         scope: "fhir"
       },
-      server: serverUri
+      server: env.fhir.server_url
     });
   }
 

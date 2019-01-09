@@ -1,19 +1,24 @@
 import { ElexisType } from "models/elexistype";
 import { UserType } from "models/user";
 import { DataService, IDataSource, IQueryResult } from "services/datasource";
+import { AdapterFactory } from "./adapters/adapter-factory";
 import { FhirBundle } from "./model/fhir";
+import { FhirService } from "./fhirservice";
 
 export class FhirDS implements IDataSource {
+
+  constructor(private fhir: FhirService){}
   public getService(name: string): DataService {
-    const service = new FhirService(adapter);
+    const service = new FhirDataService(AdapterFactory.create(name));
     return service;
   }
   public dataType(service: DataService) {
     return service.path;
   }
 
-  public async login(username?: string, password?: string): Promise<UserType> {
-    throw new Error("not implemented");
+  public async login(username?: string, password?: string): Promise<UserType>{
+    this.fhir.init()
+    return null
   }
 
   public async logout() {
@@ -27,7 +32,7 @@ export interface IFhirAdapter {
   toQueryResult(bundle: FhirBundle);
 }
 
-class FhirService implements DataService {
+class FhirDataService implements DataService {
   // get transport name for this DataService's data type
   public path: string;
   constructor(private adapter: IFhirAdapter) {}
