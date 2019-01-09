@@ -76,7 +76,7 @@ export class FeathersDS implements IDataSource {
   /**
    * Invalidates the JWT token
    */
-  public logout() {
+  public async logout() {
     return this.client.logout();
   }
 }
