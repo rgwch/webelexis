@@ -32,8 +32,8 @@ export type EPISODE_STATUS="planned"|"waitlist"|"active"|"active"|"onhold"|"fini
 export interface FHIR_Address {
   use?: "home"|"work"|"old"|"temp"|"other"
   type?: "postal"|"physical"|"both"
-  text?: string // textual representation
-  line?: Array<string> // street, Number, PO Box etc
+  text?: string   // textual representation
+  line?: string[] // street, Number, PO Box etc
   city?: string
   district?: string
   state?: string
@@ -93,12 +93,12 @@ export interface FHIR_Element {
 
 }
 export interface FHIR_HumanName extends FHIR_Element {
-  use?:"usual" | "official" | "temp" | "nickname" | "anonymous" | "old" | "maiden"
+  use?: "usual" | "official" | "temp" | "nickname" | "anonymous" | "old" | "maiden"
   text?: string
-  family?: Array<string>
-  given?: Array<string>
-  prefix?: Array<string>
-  suffix?: Array<string>
+  family?: string[]
+  given?: string[]
+  prefix?: string[]
+  suffix?: string[]
   period?: FHIR_Period
 }
 export interface FHIR_Identifier {
@@ -489,19 +489,19 @@ export interface FHIR_Organization extends FHIR_Resource {
 }
 export interface FHIR_Patient extends FHIR_Resource {
   active?: boolean
-  name?:Array<FHIR_HumanName>
-  telecom?: Array<FHIR_ContactPoint>
+  name?: FHIR_HumanName[]
+  telecom?: FHIR_ContactPoint[]
   gender?: GENDER
   birthDate?: date
   deceasedBoolean? : boolean
   deceasedDateTime?: dateTime
-  address?: Array<FHIR_Address>
+  address?: FHIR_Address[]
   maritalStatus?: FHIR_CodeableConcept
   multipleBirthBoolean?: boolean
   multipleBirthInteger?: number
-  photo?: Array<FHIR_Attachment>
+  photo?: FHIR_Attachment[]
   contact?: Array<{
-    relationship: Array<FHIR_CodeableConcept>
+    relationship: FHIR_CodeableConcept[]
     name: FHIR_HumanName
     telecom: FHIR_ContactPoint
     address: FHIR_Address
@@ -513,7 +513,7 @@ export interface FHIR_Patient extends FHIR_Resource {
     language: FHIR_CodeableConcept
     preferred: boolean
   }>
-  careProvider?: Array<any>
+  careProvider?: any[]
   managingOrganization?: any
   link?: Array<{
     other: any
