@@ -18,6 +18,7 @@ export class FhirDS implements IDataSource {
 
   public async login(username?: string, password?: string): Promise<UserType>{
     this.fhir.init()
+    
     return null
   }
 
