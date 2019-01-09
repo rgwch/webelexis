@@ -4,7 +4,7 @@ Note: This is a highly experimental feature.
 
 ## Switching transport layers
 
-In aurelia_projects/environment/dev.ts and/or prod.ts change the line: 
+In `aurelia_projects/environment/dev.ts` and/or `prod.ts` change the line: 
 
       transport: "fhir"
 
@@ -20,7 +20,7 @@ matching your needs. I'd recommend to start with the default values as shown her
 
 ## Finding a FHIR server.
 
-If you want to use the experimental Elexis-Server in demo mode, just run the provided shell script run-elexis-server.sh (docker required).
+If you want to use the experimental Elexis-Server in demo mode, just run the provided shell script `run-elexis-server.sh` (docker required).
 
 In other cases ask your system administrator or Medelexis AG on how to install or find an elexis server.
 
