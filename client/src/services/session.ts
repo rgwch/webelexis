@@ -8,16 +8,20 @@ import { autoinject } from "aurelia-framework";
 import { User, UserType } from "models/user";
 import { DataSource } from "services/datasource";
 import { WebelexisEvents } from "webelexisevents";
+import env from 'environment'
 
 @autoinject
 export class Session {
   private currentUser: User;
 
   constructor(private ds: DataSource, private we: WebelexisEvents) {
-    this.currentUser = new User({
-      email: "admin@webelexis.ch",
-      roles: ["admin", "guest", "user", "mpa"]
-    })
+    // Warning: Dirty workaround ahead
+    if (env.transport === "fhir") {
+      this.currentUser = new User({
+        email: "admin@webelexis.ch",
+        roles: ["admin", "guest", "user", "mpa"]
+      })
+    }
   }
 
   public async login(user?: string, pwd?: string, persist?: boolean) {
