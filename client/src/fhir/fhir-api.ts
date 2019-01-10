@@ -14,6 +14,7 @@ import { Session } from "services/session";
 import { AdapterFactory } from "./adapters/adapter-factory";
 import { FhirService } from "./fhirservice";
 import { FhirBundle } from "./model/fhir";
+import { Http2ServerResponse } from 'http2';
 const log = LogManager.getLogger("FHIR api")
 /**
  * This is the FHIR compliant transport implementation for Webelexis (IDataSource and DataService)
@@ -22,8 +23,7 @@ const log = LogManager.getLogger("FHIR api")
 
 @autoinject
 export class FhirDS implements IDataSource {
-  private smart;
-
+  
   constructor(private fhir: FhirService) { }
   public getService(name: string): DataService {
     const service = new FhirDataService(AdapterFactory.create(name));
@@ -66,21 +66,24 @@ export interface IFhirAdapter {
   toElexisObject(fhirObject: FHIR_Resource): ElexisType;
   toFhirObject(elexisObject: ElexisType): FHIR_Resource;
   toQueryResult(bundle: FhirBundle): IQueryResult;
+  path: string
 }
 
 /**
  * Query a FHIR Server with the common format
  *   VERB [base]/[type]/[id] {?_format=[mime-type]}
- * e.g. GET/Patient/007?_format=json+fhir
+ * e.g. GET /Patient/007?_format=json+fhir
  */
 class FhirDataService implements DataService {
   // get transport name for this DataService's data type
   public path: string;
   constructor(private adapter: IFhirAdapter) { }
 
-  // retrieve an object by ID
-  public get(index: string): ElexisType {
-    return null;
+  // retrieve an object by ID (/TYPE/index)
+  public async get(index: string): Promise<ElexisType> {
+    const res:ElexisType=await this._fetch(this.adapter.path)
+
+    return res;
   }
 
   // find objects by query expression
@@ -113,4 +116,16 @@ class FhirDataService implements DataService {
   public on(topic: string, func: (obj: ElexisType) => {}) { }
   // unsubscribe some topics
   public off(topic: string, func: (obj: ElexisType) => {}) { }
+
+  private async _fetch(suburl,parms?){
+    const path=`/${suburl}?_format?json`+parms ? "&"+parms : ""
+    try{
+      const res = await fetch(env.fhir.server_url+path)
+      const decoded=await res.json()
+      return decoded as ElexisType
+    }catch(err){
+      log.error("Error while fetching %s, msg %s",path,err)
+      return undefined
+    }
+  }
 }

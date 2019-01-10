@@ -3,6 +3,8 @@ import {
   FHIR_ContactPoint,
   FHIR_HumanName
 } from "fhir/model/fhir";
+import * as moment from 'moment'
+import { GENDER } from './../model/fhir';
 
 export class Helper {
   public static getName(fhirnames: FHIR_HumanName[]) {
@@ -40,8 +42,20 @@ export class Helper {
       found = fhircomms[0];
     }
     return {
-      phone: found.phone,
-      mail: found.mail
+      mail: found.mail,
+      phone: found.phone
     };
+  }
+
+  public static getGender(fhirgender: GENDER) {
+    switch (fhirgender) {
+      case "male": return "m"
+      case "female": return "f"
+      default: return "?"
+    }
+  }
+  public static getDate(fhirdate: string) {
+    const m = moment(fhirdate)
+    return m.format("YYYYMMDD")
   }
 }

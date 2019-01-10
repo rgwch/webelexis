@@ -48,15 +48,22 @@ export class FhirLogin {
     });
   }
 
-  private async checkServer(serverUrl): Promise<boolean> {
+  /**
+   * check if the server denoted bei serverURL
+   * - exists
+   * - returns a fhir conformant answer
+   * - is able to send data in json format
+   * @param serverUrl 
+   */
+  private async checkServer(serverUrl: string): Promise<boolean> {
     if (!serverUrl || !/^https?:\/\/.+/.test(serverUrl)) {
       log.warn("no usable server url found in environment file")
       return false;
     }
     try {
       const metadata = await this.fhir.metadata(serverUrl);
-      if (metadata) {
-        if (metadata.format.includes("application/fhir+json")) {
+      if (metadata && metadata.format) {
+        if (Array.isArray(metadata.format) && metadata.format.includes("application/fhir+json")) {
           env.fhir.metadata = metadata;
           log.info("found usable FHIR server")
           return true;

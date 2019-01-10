@@ -21,7 +21,7 @@ export interface KontaktType extends ElexisType {
   istanwender?: string;
   istmandant?: string;
   istorganisation?: string;
-  geschlecht?: "m" | "f" | "w";
+  geschlecht?: "m" | "f" | "w" | "?";
   strasse?: string;
   plz?: string;
   ort?: string;

@@ -20,4 +20,5 @@ export class EmptyAdapter implements IFhirAdapter {
   public toQueryResult(bundle: FhirBundle) : IQueryResult {
     throw new Error("Method not implemented.");
   }
+  public path="Unknown"
 }

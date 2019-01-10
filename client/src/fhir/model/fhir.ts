@@ -21,7 +21,7 @@ export type code=string
 export type instant= string
 export type xhtml=string
 export type positiveInt= number
-export type GENDER="male"|"female"|"other"|"uknown"
+export type GENDER="male"|"female"|"other"|"unknown"
 export type comparator="<"|"<="|">="|">"
 export type unitOfTime="s"|"min"|"h"|"d"|"wk"|"mo"|"a"
 export type decimal=number
