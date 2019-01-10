@@ -171,7 +171,9 @@ export class App {
         route: "/fhirlogin",
         name: "Fhir Login",
         viewPorts: {
-          default: { moduleId: PLATFORM.moduleName('fhir/fhir-login') }
+          default: { moduleId: PLATFORM.moduleName('fhir/fhir-login') },
+          details: { moduleId: PLATFORM.moduleName("./routes/dispatch/right") }
+    
         }
       },
       {

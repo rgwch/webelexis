@@ -34,6 +34,8 @@ export class LeftPanel{
     const twidth=this.parent.offsetWidth
     return this.sm.loadStickers().then(st=>{
       // console.log(st)
+    }).catch(err=>{
+      console.log(err)
     })
   }
   public switchTo(view){

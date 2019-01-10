@@ -13,7 +13,12 @@ import { WebelexisEvents } from "webelexisevents";
 export class Session {
   private currentUser: User;
 
-  constructor(private ds: DataSource, private we: WebelexisEvents) {}
+  constructor(private ds: DataSource, private we: WebelexisEvents) {
+    this.currentUser = new User({
+      email: "admin@webelexis.ch",
+      roles: ["admin", "guest", "user", "mpa"]
+    })
+  }
 
   public async login(user?: string, pwd?: string, persist?: boolean) {
     const usr: UserType = await this.ds.login(user, pwd);
@@ -28,9 +33,9 @@ export class Session {
     return this.currentUser;
   }
 
-  public setUser(user: UserType){
-    user.type="usr"
-    this.currentUser=new User(user)
+  public setUser(user: UserType) {
+    user.type = "usr"
+    this.currentUser = new User(user)
     this.we.selectItem(user)
   }
 
