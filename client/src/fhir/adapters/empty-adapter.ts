@@ -9,8 +9,9 @@ import { IFhirAdapter } from "fhir/fhir-api";
 import { FhirBundle } from "fhir/model/fhir";
 import { ElexisType } from "models/elexistype";
 import { IQueryResult } from 'services/datasource';
+import { BaseAdapter } from './base-adapter';
 
-export class EmptyAdapter implements IFhirAdapter {
+export class EmptyAdapter extends BaseAdapter {
   public toElexisObject(fhir: FHIR_Resource) : ElexisType {
     throw new Error("Method not implemented.");
   }

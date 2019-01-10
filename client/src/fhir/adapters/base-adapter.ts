@@ -10,8 +10,13 @@ export abstract class BaseAdapter implements IFhirAdapter {
   private typeMapper = {
     Patient: "patient",
     patient: "Patient",
+    unknown: "Unknown",
+    Unknown: "unknown"
   }
 
+  public resourceType() {
+    return this.typeMapper[this.path]
+  }
   public toElexisObject(fhir: FHIR_Resource): ElexisType {
     return {
       id: fhir.id,
@@ -26,22 +31,53 @@ export abstract class BaseAdapter implements IFhirAdapter {
     }
   }
 
-  public toQueryResult(i: FhirBundle): IQueryResult {
-    return null
+  public toQueryResult(bundle: FhirBundle): IQueryResult {
+    if (bundle.resourceType !== "Bundle") {
+      throw new Error("invalid bundle received")
+    }
+    if (bundle.total > 0) {
+      return {
+        total: bundle.total,
+        limit: bundle.total,
+        skip: 0,
+        data: bundle.entry.map(el => {
+          const fhirobj: FHIR_Resource = el.resource
+          return this.toElexisObject(fhirobj)
+        })
+      }
+    } else {
+      return {
+        total: 0,
+        limit: 0,
+        skip: 0,
+        data: []
+      }
+    }
   }
 
+  public transformQuery(query: any): any {
+
+  }
   public getName(fhirnames: FHIR_HumanName[]) {
     let found = fhirnames.find(n => n.use === "usual");
     if (!found) {
       found = fhirnames[0];
     }
     return {
-      Bezeichnung1: found.family.join(" "),
-      Bezeichnung2: found.given.join(" "),
-      Bezeichnung3: found.suffix.join(" ")
+      Bezeichnung1: found.family,
+      Bezeichnung2: found.given ? found.given.join(" ") : "",
+      TitelSuffix: found.suffix ? found.suffix.join(" ") : "",
+      Titel: found.prefix ? found.prefix.join(" ") : ""
     };
   }
   public getAddress(fhiraddrs: FHIR_Address[], use: string) {
+    if(!fhiraddrs){
+      return {
+        place: "",
+        street: "",
+        zip: ""
+      }
+    }
     let found;
     if (use) {
       found = fhiraddrs.find(a => a.use === use);
@@ -57,6 +93,12 @@ export abstract class BaseAdapter implements IFhirAdapter {
   }
 
   public getComm(fhircomms: FHIR_ContactPoint[], use: string) {
+    if(!fhircomms){
+      return {
+        mail: "",
+        phone: ""
+      }
+    }
     let found;
     if (use) {
       found = fhircomms.find(c => c.use === use);
@@ -84,12 +126,12 @@ export abstract class BaseAdapter implements IFhirAdapter {
 
   public makeName(title, suffix, first, last) {
     const ret: FHIR_HumanName = {
-      family: [last],
-      given: [first],
-      prefix: [title],
-      suffix: [suffix],
-      text: `${last} ${first}`,
-      use: "usual"
+      family: last,
+      given: [first.split(/\s/g)],
+      prefix: [title.split(/\s/g)],
+      suffix: [suffix.split(/\s/g)],
+      text: `${title} ${last} ${first} ${suffix}`,
+      use: "official"
     }
     return ret
   }
@@ -103,8 +145,12 @@ export abstract class BaseAdapter implements IFhirAdapter {
     }
   }
 
-  public makeDate(d: string) : string{
-    const m = moment(d, "YYYYMMDD")
-    return m.toISOString()
+  public makeDate(d: string): string {
+    if (d) {
+      const m = moment(d, "YYYYMMDD")
+      return m.toISOString()
+    } else {
+      return null
+    }
   }
 }

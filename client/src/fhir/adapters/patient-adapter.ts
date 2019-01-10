@@ -2,7 +2,6 @@ import { FHIR_Resource } from './../model/fhir';
 import { IFhirAdapter } from "fhir/fhir-api";
 import { FHIR_Patient } from "fhir/model/fhir";
 import { PatientType } from "models/patient";
-import { Helper } from "./helper";
 import { ElexisType } from "models/elexistype";
 import { IQueryResult } from 'services/datasource';
 import { BaseAdapter } from './base-adapter';
@@ -17,8 +16,9 @@ export class PatientAdapter extends BaseAdapter {
       id: fhirpat.id,
       Bezeichnung1: name.Bezeichnung1,
       Bezeichnung2: name.Bezeichnung2,
-      Bezeichnung3: name.Bezeichnung3,
-      geburtsdatum: super.getDate(fhirpat.gender),
+      Titel: name.Titel,
+      TitelSuffix: name.TitelSuffix,
+      geburtsdatum: super.getDate(fhirpat.birthDate),
       geschlecht: gender,
       strasse: addr.street,
       plz: addr.zip,
@@ -41,8 +41,13 @@ export class PatientAdapter extends BaseAdapter {
     return ret
   }
 
-  public toQueryResult(bundle): IQueryResult {
-    return null
+  public transformQuery(q) {
+    const ret: any = {}
+    ret.name = q.$find
+    if (q.geburtsdatum) {
+      ret.birthdate = super.makeDate(q.geburtsdatum)
+    }
+    return ret
   }
-  public path = "Patient"
+  public path = "patient"
 }

@@ -64,7 +64,7 @@ export interface FhirBundle {
     relation: string
     url: string
   }>
-  entry: Array<FHIR_ResourceEntry>
+  entry: FHIR_ResourceEntry[]
 }
 export interface FHIR_CodeableConcept {
   coding: Array<FHIR_Coding>
@@ -95,7 +95,7 @@ export interface FHIR_Element {
 export interface FHIR_HumanName extends FHIR_Element {
   use?: "usual" | "official" | "temp" | "nickname" | "anonymous" | "old" | "maiden"
   text?: string
-  family?: string[]
+  family?: string
   given?: string[]
   prefix?: string[]
   suffix?: string[]

@@ -1,4 +1,3 @@
-import { FHIR_Resource } from './model/fhir';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2019 by G. Weirich    *
@@ -13,8 +12,7 @@ import { DataService, IDataSource, IQueryResult } from "services/datasource";
 import { Session } from "services/session";
 import { AdapterFactory } from "./adapters/adapter-factory";
 import { FhirService } from "./fhirservice";
-import { FhirBundle } from "./model/fhir";
-import { Http2ServerResponse } from 'http2';
+import { FhirBundle, FHIR_Resource } from "./model/fhir";
 const log = LogManager.getLogger("FHIR api")
 /**
  * This is the FHIR compliant transport implementation for Webelexis (IDataSource and DataService)
@@ -24,9 +22,14 @@ const log = LogManager.getLogger("FHIR api")
 @autoinject
 export class FhirDS implements IDataSource {
 
+  private services: Map<string, DataService> = new Map()
+
   constructor(private fhir: FhirService) { }
   public getService(name: string): DataService {
-    const service = new FhirDataService(AdapterFactory.create(name));
+    let service = this.services.get(name)
+    if (!service) {
+      service = new FhirDataService(AdapterFactory.create(name), this.fhir);
+    }
     return service;
   }
   public dataType(service: DataService) {
@@ -66,40 +69,83 @@ export interface IFhirAdapter {
   toElexisObject(fhirObject: FHIR_Resource): ElexisType;
   toFhirObject(elexisObject: ElexisType): FHIR_Resource;
   toQueryResult(bundle: FhirBundle): IQueryResult;
+  transformQuery(query: any): any
   path: string
+  resourceType(): string
 }
 
 /**
- * Query a FHIR Server with the common format
- *   VERB [base]/[type]/[id] {?_format=[mime-type]}
- * e.g. GET /Patient/007?_format=json+fhir
+ * Query a FHIR Server with fhirclient api
  */
 class FhirDataService implements DataService {
   // get transport name for this DataService's data type
   public path: string;
-  constructor(private adapter: IFhirAdapter) { }
+  private _smartclient
+  private async smart() {
+    if (!this._smartclient) {
+      this._smartclient = await this.fhir.getSmartclient()
+    }
+    return this._smartclient
 
-  // retrieve an object by ID (/TYPE/index)
+  }
+  constructor(private adapter: IFhirAdapter, private fhir: FhirService) { }
+
+  // retrieve an object by id
   public async get(index: string): Promise<ElexisType> {
-    const res: ElexisType = await this._fetch(this.adapter.path)
+    const smart = await this.smart()
+    const fhir = await smart.api.read({ type: this.adapter.resourceType(), id: index })
+    const res = this.adapter.toElexisObject(fhir)
     return res;
   }
 
   // find objects by query expression
   public async find(params?): Promise<IQueryResult> {
-    const result = await this._fetch(this.adapter.path, params.query)
-    return this.adapter.toQueryResult(result);
+    const smart = await this.smart()
+    try {
+      const query = {
+        type: this.adapter.resourceType(),
+        query: params ? this.adapter.transformQuery(params.query) : {}
+      }
+      const result = await smart.api.search(query)
+      if (result.status === "success") {
+        return this.adapter.toQueryResult(result.data);
+      } else {
+        throw new Error(result)
+      }
+    } catch (err) {
+      log.error("Resourcetype %s not found or error %s", this.adapter.resourceType(), err)
+      return {
+        data: [],
+        total: 0,
+        skip: 0,
+        limit: 50
+      }
+    }
   }
 
   // create an object
-  public create(data: ElexisType, params?): ElexisType {
-    const fhirtype=this.adapter.toFhirObject(data)
-    return null
+  public create(data: ElexisType, params?): Promise<ElexisType> {
+    const fhirObj = this.adapter.toFhirObject(data)
+    const entry = {
+      resource: fhirObj
+    }
+    return new Promise<ElexisType>((resolve, reject) => {
+      this.smart().then(smart => {
+        smart.api.create(entry,
+          created => {
+            resolve(this.adapter.toElexisObject(created))
+          },
+          error => {
+            reject(error)
+          })
+      })
+
+    })
   }
 
   // update an object with id
   public update(index, obj): ElexisType {
-    return null;
+    return;
   }
 
   // Update only given attributes of an existing object
@@ -118,15 +164,4 @@ class FhirDataService implements DataService {
   // unsubscribe some topics
   public off(topic: string, func: (obj: ElexisType) => {}) { }
 
-  private async _fetch(suburl, parms?) {
-    const path = `/${suburl}?_format?json` + parms ? "&" + parms : ""
-    try {
-      const res = await fetch(env.fhir.server_url + path)
-      const decoded = await res.json()
-      return decoded
-    } catch (err) {
-      log.error("Error while fetching %s, msg %s", path, err)
-      return undefined
-    }
-  }
 }
