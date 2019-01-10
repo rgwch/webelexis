@@ -1,10 +1,8 @@
-/************************************************************
- * This file is part of Webelexis(tm)
- * Copyright (c) 2018-2019 by G. Weirich
- *
- * Webelexis is licensed under the terms of the included
- * LICENSE file.
- *************************************************************/
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
 
 import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
@@ -13,7 +11,7 @@ import { autoinject } from "aurelia-framework";
 export class SelectServer {
   private url: string;
 
-  constructor(private controller: DialogController) {}
+  constructor(protected controller: DialogController) {}
 
   public activate(params) {
     this.url = params.url;

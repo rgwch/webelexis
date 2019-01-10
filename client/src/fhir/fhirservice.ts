@@ -1,10 +1,9 @@
-/************************************************************
- * This file is part of Webelexis(tm)
- * Copyright (c) 2018 by G. Weirich
- *
- * Webelexis is licensed under the terms of the included
- * LICENSE file.
- *************************************************************/
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { autoinject, noView } from "aurelia-framework";
 import env from "environment"
 import "fhirclient";
@@ -24,10 +23,10 @@ export interface IBundleResult {
 @autoinject
 export class FhirService {
   private smart = null;
-  private client={
+  private client= {
     client_id: env.fhir.client_id,
-    // redirect_uri: this.getBaseURL() + env.fhir.client_redirect,
-    redirect_uri: "http://localhost:9000/#/auth",
+    redirect_uri: this.getBaseURL() + env.fhir.client_redirect,
+    // redirect_uri: "http://localhost:9000/#/auth",
     scope: "fhir"
   }
  
@@ -54,7 +53,8 @@ export class FhirService {
 
   /**
    * Initialize a Smart-On-FHIR session. The oauth2-Framework will redirect to the client_redirect address
-   * after successful authentication and authorization.
+   * after successful authentication and authorization. By default, it's redirected to /#/auth which leads
+   * to the component ./fhir_ready.
    * @param server_uri
    */
   public init(serverurl) {

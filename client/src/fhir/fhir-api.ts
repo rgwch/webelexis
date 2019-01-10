@@ -1,18 +1,24 @@
-import { ElexisType } from "models/elexistype";
-import { UserType, User } from "models/user";
-import { DataService, IDataSource, IQueryResult } from "services/datasource";
-import { AdapterFactory } from "./adapters/adapter-factory";
-import { FhirBundle } from "./model/fhir";
-import { FhirService } from "./fhirservice";
-import { Session } from "services/session";
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { autoinject } from "aurelia-framework";
-import env from 'environment'
+import env from "environment";
+import { ElexisType } from "models/elexistype";
+import { User, UserType } from "models/user";
+import { DataService, IDataSource, IQueryResult } from "services/datasource";
+import { Session } from "services/session";
+import { AdapterFactory } from "./adapters/adapter-factory";
+import { FhirService } from "./fhirservice";
+import { FhirBundle } from "./model/fhir";
 
 @autoinject
 export class FhirDS implements IDataSource {
-  private smart
+  private smart;
 
-  constructor(private fhir: FhirService) { }
+  constructor(private fhir: FhirService) {}
   public getService(name: string): DataService {
     const service = new FhirDataService(AdapterFactory.create(name));
     return service;
@@ -22,8 +28,8 @@ export class FhirDS implements IDataSource {
   }
 
   public async login(username?: string, password?: string): Promise<UserType> {
-    sessionStorage.removeItem("ch.webelexis.logintoken")
-    return undefined
+    sessionStorage.removeItem("ch.webelexis.logintoken");
+    return undefined;
     /*
     this.fhir.init(env.fhir.server_url)
 
@@ -45,7 +51,7 @@ export class FhirDS implements IDataSource {
       }, 200)
     })
   */
-    return null
+    return null;
   }
 
   public async logout() {
@@ -62,7 +68,7 @@ export interface IFhirAdapter {
 class FhirDataService implements DataService {
   // get transport name for this DataService's data type
   public path: string;
-  constructor(private adapter: IFhirAdapter) { }
+  constructor(private adapter: IFhirAdapter) {}
 
   // retrieve an object by ID
   public get(index: string): ElexisType {
@@ -94,9 +100,9 @@ class FhirDataService implements DataService {
     return null;
   }
   // send an event concerning an object
-  public emit(topic: string, msg: any) { }
+  public emit(topic: string, msg: any) {}
   // subscribe on events concerning this DataService's data type
-  public on(topic: string, func: (obj: ElexisType) => {}) { }
+  public on(topic: string, func: (obj: ElexisType) => {}) {}
   // unsubscribe some topics
-  public off(topic: string, func: (obj: ElexisType) => {}) { }
+  public off(topic: string, func: (obj: ElexisType) => {}) {}
 }

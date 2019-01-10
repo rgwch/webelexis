@@ -4,8 +4,8 @@ export default {
   fhir: {
     client_id: "ch.webelexis.aurelia.v3",
     client_redirect: "#/auth",
-    server_url: "http://localhost:8380/fhir",
-    metadata: {}
+    metadata: {},
+    server_url: "http://localhost:8380/fhir"
   },
   metadata: {
     aclmapping: { guest: [] },
@@ -14,5 +14,5 @@ export default {
     sitename: "Webelexis"
   },
   testing: true,
-  transport: "feathers"
+  transport: "fhir"  // "fhir" or "feathers"
 };

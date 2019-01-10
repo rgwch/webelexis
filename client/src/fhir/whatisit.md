@@ -4,7 +4,7 @@ Note: This is a highly experimental feature.
 
 ## Switching transport layers
 
-In `aurelia_projects/environment/dev.ts` and/or `prod.ts` change the line: 
+In `aurelia_projects/environment/dev.ts` and/or `prod.ts` change or add the line: 
 
       transport: "fhir"
 

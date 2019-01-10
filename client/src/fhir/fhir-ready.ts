@@ -1,37 +1,40 @@
-import { FhirService } from './fhirservice';
-/************************************************************
- * This file is part of Webelexis(tm)
- * Copyright (c) 2018 by G. Weirich
- * 
- * Webelexis is licensed under the terms of the included
- * LICENSE file.
- *************************************************************/
-import { autoinject, noView } from 'aurelia-framework'
-import { Router } from 'aurelia-router';
-import { Session } from 'services/session';
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
 
+import { autoinject, noView } from "aurelia-framework";
+import { Router } from "aurelia-router";
+import { Session } from "services/session";
+import { FhirService } from "./fhirservice";
+
+/**
+ * After successful OAuth authentication, thie OAuth Server calls (by configuration) this
+ * route. Wenn activatet, get the details of the current user and create a session with that
+ * user. After that, we can navigate to the normal start of the WebApp ("dispatch").
+ */
 @autoinject
 @noView
 export class Ready {
-  private loggedin = "no";
+  constructor(
+    private fhir: FhirService,
+    private router: Router,
+    private session: Session
+  ) {}
 
-  constructor(private fhir: FhirService, private router:Router, private session:Session) { 
-    console.log("auth/ready constructed")
-  }
-
-  async activate(){
+  public async activate() {
     try {
-      let result = await this.fhir.getSmartclient();
-      sessionStorage.setItem("ch.webelexis.logintoken",result)
-      alert("we are logged in!")
+      const result = await this.fhir.getSmartclient();
+      sessionStorage.setItem("ch.webelexis.logintoken", result);
+      alert("we are logged in!");
       this.session.setUser({
         email: "admin@webelexis.ch",
-        roles: ["admin","guest","user","mpa"]
-      })
-      this.router.navigateToRoute("dispatch")
+        roles: ["admin", "guest", "user", "mpa"]
+      });
+      this.router.navigateToRoute("dispatch");
     } catch (err) {
-      alert("SmartClient failed "+err)
-
+      alert("SmartClient failed " + err);
     }
   }
 }
