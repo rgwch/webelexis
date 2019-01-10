@@ -18,7 +18,8 @@ Die schlanke, flinke Ergänzug zu Elexis
 
 ## Installationsanleitungen
 
-Siehe [hier](server/vorbereitung.md) für den Server und [hier](client/vorbereitung.md) für den Client.
+Siehe [hier](server/vorbereitung.md) für den Server und [hier](client/vorbereitung.md) für den Client. Falls Sie Webelexis
+mit einem FHIR-Server verbinden wollen, z.B. [Elexis-Server](https://github.com/elexis/elexis-server), lesen Sie im [FHIR-Unterverzeichnis](client/src/fhir/whatisit.md) nach (dieses feature ist allerdings im prä-alpha-Stadium). 
 
 ## Kurzanleitung für die Docker-Version
 
