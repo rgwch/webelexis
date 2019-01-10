@@ -14,5 +14,5 @@ export default {
     sitename: "Webelexis"
   },
   testing: true,
-  transport: "fhir"  // "fhir" or "feathers"
+  transport: "fhir" // "fhir" or "feathers"
 };

@@ -1,3 +1,4 @@
+import { FHIR_Resource } from './../model/fhir';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2019 by G. Weirich    *
@@ -7,15 +8,16 @@
 import { IFhirAdapter } from "fhir/fhir-api";
 import { FhirBundle } from "fhir/model/fhir";
 import { ElexisType } from "models/elexistype";
+import { IQueryResult } from 'services/datasource';
 
 export class EmptyAdapter implements IFhirAdapter {
-  public toElexisObject(fhir: any) {
+  public toElexisObject(fhir: FHIR_Resource) : ElexisType {
     throw new Error("Method not implemented.");
   }
-  public toFhirObject(obj: ElexisType) {
+  public toFhirObject(obj: ElexisType): FHIR_Resource {
     throw new Error("Method not implemented.");
   }
-  public toQueryResult(bundle: FhirBundle) {
+  public toQueryResult(bundle: FhirBundle) : IQueryResult {
     throw new Error("Method not implemented.");
   }
 }

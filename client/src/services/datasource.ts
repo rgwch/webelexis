@@ -1,4 +1,5 @@
 import { UserType } from './../models/user';
+import { metadata } from 'aurelia-metadata';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018 by G. Weirich    *
@@ -45,6 +46,8 @@ export interface IDataSource {
   login?(username?:string,password?:string): Promise<UserType>
   // de-authenticate
   logout(): Promise<any>
+  // give metadata about the server
+  metadata(): Promise<any>
 }
 
 /**
@@ -77,4 +80,7 @@ export class DataSource implements IDataSource {
     return Promise.reject("No DataSource is configured");
   }
 
+  metadata(){
+    return Promise.reject("No DataSource is configured");
+  }
 }

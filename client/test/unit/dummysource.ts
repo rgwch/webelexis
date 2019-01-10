@@ -15,6 +15,8 @@ export class Dummysource implements DataSource{
   logout(): Promise<never> {
     throw new Error("Method not implemented.");
   }
-
+  metadata(): Promise<never>{
+    throw new Error("Method not implemented.");
+  }
 
 }

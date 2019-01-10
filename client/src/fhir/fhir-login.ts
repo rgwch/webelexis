@@ -5,17 +5,18 @@
  ********************************************/
 
 import { DialogService } from "aurelia-dialog";
-import { inlineView } from "aurelia-framework";
+import { inlineView, LogManager } from "aurelia-framework";
 import env from "environment";
 import { Session } from "services/session";
 import { FhirService } from "./fhirservice";
 import { SelectServer } from "./select-server";
+const log = LogManager.getLogger("fhir-login")
 
 @inlineView(`<template>
 <button click.delegate="login()">Fhir Login</button>
 </template>`)
 export class FhirLogin {
-  constructor(private fhir: FhirService, private dialog: DialogService) {}
+  constructor(private fhir: FhirService, private dialog: DialogService) { }
 
   /**
    * check if we have the correct server adress (We think it's correct if it answers correctly to a
@@ -23,7 +24,7 @@ export class FhirLogin {
    * and ask the user to enter the correct address.
    */
   public login() {
-    // console.log("login");
+    log.info("Try to login to FHIR Server %s", env.fhir.server_url)
     this.checkServer(env.fhir.server_url).then(valid => {
       if (valid) {
         this.fhir.init(env.fhir.server_url);
@@ -49,14 +50,21 @@ export class FhirLogin {
 
   private async checkServer(serverUrl): Promise<boolean> {
     if (!serverUrl || !/^https?:\/\/.+/.test(serverUrl)) {
+      log.warn("no usable server url found in environment file")
       return false;
     }
     try {
       const metadata = await this.fhir.metadata(serverUrl);
       if (metadata) {
-        env.fhir.metadata = metadata;
-        return true;
+        if (metadata.format.includes("application/fhir+json")) {
+          env.fhir.metadata = metadata;
+          log.info("found usable FHIR server")
+          return true;
+        }
       }
+      log.error("no valid metadata found on server at %s",serverUrl)
+      return false
+
     } catch (err) {
       return false;
     }

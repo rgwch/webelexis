@@ -54,21 +54,13 @@ export class App {
   private log = LogManager.getLogger("app.ts");
   private actPatient: PatientType;
 
-  constructor(private i18n: I18N, private session: Session) { }
+  constructor(private i18n: I18N, private session: Session, private ds: DataSource) { }
 
+  /**
+   * When activationg the main view: Wait for metadata of the configured server
+   */
   public activate() {
-    this.log.info("getting metadata from " + env.baseURL);
-    return fetch(env.baseURL + "metadata")
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        env["metadata"] = json;
-      })
-      .catch(err => {
-        this.log.error("activate" + err);
-        // alert(this.i18n.tr("errmsg.connect"));
-      });
+    return this.ds.metadata()
   }
 
   @computedFrom("actPatient")
@@ -175,13 +167,13 @@ export class App {
           default: { moduleId: PLATFORM.moduleName("./routes/documents/list") },
           details: { moduleId: PLATFORM.moduleName("views/document") }
         }
-      },{
+      }, {
         route: "/fhirlogin",
         name: "Fhir Login",
-        viewPorts:{
-          default: {moduleId: PLATFORM.moduleName('fhir/fhir-login')}
+        viewPorts: {
+          default: { moduleId: PLATFORM.moduleName('fhir/fhir-login') }
         }
-      }, 
+      },
       {
         route: "/auth",
         name: "Fhir authenticated",
