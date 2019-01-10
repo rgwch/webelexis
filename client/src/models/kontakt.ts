@@ -27,6 +27,8 @@ export interface KontaktType extends ElexisType {
   ort?: string;
   telefon1?: string;
   telefon2?: string;
+  Titel?: string
+  TitelSuffix?: string
   natel?: string;
   email?: string;
 }
