@@ -25,10 +25,12 @@ export class FhirDS implements IDataSource {
   private services: Map<string, DataService> = new Map()
 
   constructor(private fhir: FhirService) { }
+
   public getService(name: string): DataService {
     let service = this.services.get(name)
     if (!service) {
       service = new FhirDataService(AdapterFactory.create(name), this.fhir);
+      this.services.set(name,service)
     }
     return service;
   }
