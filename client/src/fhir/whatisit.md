@@ -42,3 +42,5 @@ the *fhir* scope is selected. In the "credentials"-page, select *no authenticati
 ## Launching and connecting Webelexis with the Elexis Server
 
 Navigate to [http://localhost:9000](http://localhost:9000)
+
+Webelexis should present you a "Login" Button, and if you press that, redirect you to the Elexis-Server OAuth page, where you have to enter your credentials including a Token from the Google Authenticator (For username and password, try "Administrator/admin" if you use the demo server). After that, you are logged in and Webelexis redirects you to its main page.
