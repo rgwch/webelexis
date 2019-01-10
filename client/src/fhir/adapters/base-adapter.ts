@@ -7,13 +7,23 @@ import * as moment from 'moment'
 
 export abstract class BaseAdapter implements IFhirAdapter {
   public path = ""
+  private typeMapper = {
+    Patient: "patient",
+    patient: "Patient",
+  }
 
   public toElexisObject(fhir: FHIR_Resource): ElexisType {
-    return null
+    return {
+      id: fhir.id,
+      type: fhir.resourceType
+    }
   }
 
   public toFhirObject(eo: ElexisType): FHIR_Resource {
-    return null
+    return {
+      id: eo.id,
+      resourceType: this.typeMapper[eo.type]
+    }
   }
 
   public toQueryResult(i: FhirBundle): IQueryResult {
@@ -82,5 +92,19 @@ export abstract class BaseAdapter implements IFhirAdapter {
       use: "usual"
     }
     return ret
+  }
+
+  public makeGender(g: string): GENDER {
+    switch (g) {
+      case "m": return "male"
+      case "f":
+      case "w": return "female"
+      default: return "unknown"
+    }
+  }
+
+  public makeDate(d: string) : string{
+    const m = moment(d, "YYYYMMDD")
+    return m.toISOString()
   }
 }

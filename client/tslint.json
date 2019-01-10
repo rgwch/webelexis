@@ -8,6 +8,7 @@
     "no-string-literal": false,
     "max-classes-per-file": false,
     "trailing-comma": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "interface-name": false
   }
 }

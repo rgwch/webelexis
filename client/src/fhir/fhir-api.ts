@@ -23,7 +23,7 @@ const log = LogManager.getLogger("FHIR api")
 
 @autoinject
 export class FhirDS implements IDataSource {
-  
+
   constructor(private fhir: FhirService) { }
   public getService(name: string): DataService {
     const service = new FhirDataService(AdapterFactory.create(name));
@@ -51,7 +51,7 @@ export class FhirDS implements IDataSource {
     try {
       const result: any = await fetch(env.fhir.server_url + "/metadata?_format=json")
       const m = await result.json()
-      env.metadata=m
+      env.metadata = m
       return m
     } catch (err) {
       log.error("Could not retrieve server metadata %s", err)
@@ -81,19 +81,20 @@ class FhirDataService implements DataService {
 
   // retrieve an object by ID (/TYPE/index)
   public async get(index: string): Promise<ElexisType> {
-    const res:ElexisType=await this._fetch(this.adapter.path)
-
+    const res: ElexisType = await this._fetch(this.adapter.path)
     return res;
   }
 
   // find objects by query expression
-  public find(params?): IQueryResult {
-    return null;
+  public async find(params?): Promise<IQueryResult> {
+    const result = await this._fetch(this.adapter.path, params.query)
+    return this.adapter.toQueryResult(result);
   }
 
   // create an object
   public create(data: ElexisType, params?): ElexisType {
-    return null;
+    const fhirtype=this.adapter.toFhirObject(data)
+    return null
   }
 
   // update an object with id
@@ -117,14 +118,14 @@ class FhirDataService implements DataService {
   // unsubscribe some topics
   public off(topic: string, func: (obj: ElexisType) => {}) { }
 
-  private async _fetch(suburl,parms?){
-    const path=`/${suburl}?_format?json`+parms ? "&"+parms : ""
-    try{
-      const res = await fetch(env.fhir.server_url+path)
-      const decoded=await res.json()
-      return decoded as ElexisType
-    }catch(err){
-      log.error("Error while fetching %s, msg %s",path,err)
+  private async _fetch(suburl, parms?) {
+    const path = `/${suburl}?_format?json` + parms ? "&" + parms : ""
+    try {
+      const res = await fetch(env.fhir.server_url + path)
+      const decoded = await res.json()
+      return decoded
+    } catch (err) {
+      log.error("Error while fetching %s, msg %s", path, err)
       return undefined
     }
   }

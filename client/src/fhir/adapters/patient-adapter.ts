@@ -35,7 +35,8 @@ export class PatientAdapter extends BaseAdapter {
     const ret: FHIR_Patient = Object.assign(base, {
       active: true,
       name: super.makeName(obj.Titel, obj.TitelSuffix, obj.Bezeichnung2, obj.Bezeichnung1),
-
+      gender: super.makeGender(obj.geschlecht),
+      birthDate: super.makeDate(obj.geburtsdatum)
     })
     return ret
   }
