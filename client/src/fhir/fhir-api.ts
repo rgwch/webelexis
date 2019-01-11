@@ -30,7 +30,7 @@ export class FhirDS implements IDataSource {
     let service = this.services.get(name)
     if (!service) {
       service = new FhirDataService(AdapterFactory.create(name), this.fhir);
-      this.services.set(name,service)
+      this.services.set(name, service)
     }
     return service;
   }
@@ -68,11 +68,11 @@ export class FhirDS implements IDataSource {
  * Convert between FHIR Types and ElexisTypes
  */
 export interface IFhirAdapter {
+  path: string
   toElexisObject(fhirObject: FHIR_Resource): ElexisType;
   toFhirObject(elexisObject: ElexisType): FHIR_Resource;
   toQueryResult(bundle: FhirBundle): IQueryResult;
   transformQuery(query: any): any
-  path: string
   resourceType(): string
 }
 
@@ -82,14 +82,8 @@ export interface IFhirAdapter {
 class FhirDataService implements DataService {
   // get transport name for this DataService's data type
   public path: string;
-  private _smartclient
-  private async smart() {
-    if (!this._smartclient) {
-      this._smartclient = await this.fhir.getSmartclient()
-    }
-    return this._smartclient
+  private _smartclient;
 
-  }
   constructor(private adapter: IFhirAdapter, private fhir: FhirService) { }
 
   // retrieve an object by id
@@ -105,8 +99,8 @@ class FhirDataService implements DataService {
     const smart = await this.smart()
     try {
       const query = {
-        type: this.adapter.resourceType(),
-        query: params ? this.adapter.transformQuery(params.query) : {}
+        query: params ? this.adapter.transformQuery(params.query) : {},
+        type: this.adapter.resourceType()
       }
       const result = await smart.api.search(query)
       if (result.status === "success") {
@@ -166,4 +160,11 @@ class FhirDataService implements DataService {
   // unsubscribe some topics
   public off(topic: string, func: (obj: ElexisType) => {}) { }
 
+  private async smart() {
+    if (!this._smartclient) {
+      this._smartclient = await this.fhir.getSmartclient()
+    }
+    return this._smartclient
+
+  }
 }

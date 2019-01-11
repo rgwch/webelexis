@@ -11,7 +11,7 @@ import { UserType } from "models/user";
 import * as io from "socket.io-client";
 import env from "../environment";
 import { DataService, IDataSource } from "./datasource";
-const log=LogManager.getLogger("feathers-api")
+const log = LogManager.getLogger("feathers-api")
 
 /**
  * A DataSource implementation based on FeathersJS
@@ -69,7 +69,7 @@ export class FeathersDS implements IDataSource {
       const user = await this.client.service("usr").get(verified.userId);
       return user;
     } catch (err) {
-      console.log(err);
+      log.error("Error whole authenticating " + err)
       return undefined;
     }
   }

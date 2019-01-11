@@ -114,6 +114,16 @@ export class App {
         moduleId: PLATFORM.moduleName("fhir/fhir-ready"),
         name: "Fhir authenticated",
         route: "/auth"
+      },
+      {
+        moduleId: PLATFORM.moduleName("routes/login/stage1"),
+        name: "default-login",
+        route: "/login"
+      },
+      {
+        moduleId: PLATFORM.moduleName("routes/login/stage2"),
+        name: "default_loggedin",
+        route: "/loggedin"
       }
     ]);
     cfg.addPipelineStep("authorize", AuthorizeStep);
