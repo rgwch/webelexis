@@ -69,7 +69,7 @@ export class FeathersDS implements IDataSource {
       const user = await this.client.service("usr").get(verified.userId);
       return user;
     } catch (err) {
-      log.error("Error whole authenticating " + err)
+      log.error("Error while authenticating " + err)
       return undefined;
     }
   }

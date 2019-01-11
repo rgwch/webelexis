@@ -18,7 +18,8 @@ import {
   Next,
   Redirect,
   Router,
-  RouterConfiguration
+  RouterConfiguration,
+  RedirectToRoute
 } from "aurelia-router";
 import { connectTo } from "aurelia-store";
 import "bootstrap";
@@ -147,7 +148,7 @@ class AuthorizeStep {
           if (env.transport === "fhir") {
             return next.cancel(new Redirect("fhirlogin"));
           } else {
-            return next.cancel(new Redirect("user"));
+            return next.cancel(new RedirectToRoute("default-login"));
           }
         }
       } else {

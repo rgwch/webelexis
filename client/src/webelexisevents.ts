@@ -8,6 +8,7 @@ import { autoinject } from "aurelia-framework";
 import { Store } from "aurelia-store";
 import { ElexisType } from "./models/elexistype";
 import { State } from "./state";
+import { DISPLAY } from "routes/dispatch";
 
 /**
  * This (together with aurelia-store) is the web variant of the ElexisEventDispatcher
@@ -23,7 +24,7 @@ export class WebelexisEvents {
     this.store.registerAction("SetDate", this.setDateAction);
     this.store.registerAction("SelectItem", this.selectItemAction);
     this.store.registerAction("Logout", this.logoutAction);
-    this.store.registerAction("leftPanel", this.toggleLeftPanelAction);
+    this.store.registerAction("setPanels", this.togglePanelsAction);
     this.store.registerAction("deselect", this.deselectType);
     this.store.state.subscribe(state => (this.state = state));
   }
@@ -40,8 +41,8 @@ export class WebelexisEvents {
     this.store.dispatch(this.deselectType, type);
   }
 
-  public toggleLeftPanel() {
-    this.store.dispatch(this.toggleLeftPanelAction);
+  public togglePanels(mode: DISPLAY) {
+    this.store.dispatch(this.togglePanelsAction, mode);
   }
 
   public getSelectedItem(type: string) {
@@ -59,9 +60,9 @@ export class WebelexisEvents {
     newState.date = date;
     return newState;
   };
-  private toggleLeftPanelAction = (state: State) => {
+  private togglePanelsAction = (state: State, mode: DISPLAY) => {
     const newState = Object.assign({}, state);
-    newState.leftPanel = !state.leftPanel;
+    newState.panels = mode;
     return newState;
   };
 

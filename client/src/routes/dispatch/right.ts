@@ -58,7 +58,7 @@ export class RightPanel{
 
 
   public toggleLeftPane(){
-    this.we.toggleLeftPanel()
+    // this.we.toggleLeftPanel()
   }
   protected calcwidth(){
     const w=this.parent.getBoundingClientRect().width-this.tooliconwidth

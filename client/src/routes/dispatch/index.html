@@ -6,9 +6,9 @@
       style="position:absolute;left:5px;top:20px"
       ref="buttons"
     >
-      <button class="btn" click.trigger="link()">
-        <i class="fa fa-exchange-alt" show.bind="!linked"></i>
-        <i class="fa fa-times" show.bind="linked"></i>
+      <button class="btn" click.trigger="toggleLeft()">
+          <i class="fa fa-angle-double-right" show.bind="state != 0"></i>
+          <i class="fa fa-angle-double-left" show.bind="state == 0"></i>
       </button>
       <button class="btn" repeat.for="vi of leftViews" click.trigger="switchLeft(vi)">
         <img
@@ -33,9 +33,9 @@
         class="btn-group-vertical bordered"
         style="position:absolute;right:5px;top:20px;"
       >
-        <button class="btn" click.delegate="toggleLeftPane($parent)">
-          <i class="fa fa-angle-double-left" show.bind="state"></i>
-          <i class="fa fa-angle-double-right" hide.bind="state"></i>
+        <button class="btn" click.delegate="toggleRight()">
+          <i class="fa fa-angle-double-left" show.bind="state != 1"></i>
+          <i class="fa fa-angle-double-right" show.bind="state == 1"></i>
         </button>
         <button class="btn" repeat.for="vi of rightViews" click.trigger="switchRight(vi)">
           <img
