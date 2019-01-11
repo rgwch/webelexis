@@ -12,6 +12,7 @@ import { LeistungsblockManager } from "models/leistungsblock-model";
 import { DataService, DataSource } from "services/datasource";
 import { BillingType } from "../models/billings-model";
 import { BillingModel } from "../models/billings-model";
+import { SWITCH_PANELS } from './../routes/dispatch/index';
 
 @autoinject
 export class Billing {
@@ -26,9 +27,9 @@ export class Billing {
   private billingService: DataService;
   // private billingdiv;
   // private contextmenu;
-   private currentItem: BillingModel;
+  private currentItem: BillingModel;
 
-   constructor(
+  constructor(
     private bm: BillingsManager,
     private lbm: LeistungsblockManager,
     private ds: DataSource,
@@ -112,7 +113,7 @@ export class Billing {
    * If the user click on the amount field -> show billings view
    */
   protected billingsView() {
-    this.ea.publish("left_panel", "leistungen");
+    this.ea.publish(SWITCH_PANELS, { left: "leistungen" });
   }
 
   private modifyNumber() {

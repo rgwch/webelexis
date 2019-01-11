@@ -26,6 +26,7 @@ import { DocManager, DocType } from "../models/document-model";
 import { PatientType } from "./../models/patient";
 import { WebelexisEvents } from "./../webelexisevents";
 import "./prescription-view.scss";
+import { SWITCH_PANELS } from './../routes/dispatch/index';
 
 // import * as html2pdf from 'html2pdf.js'
 
@@ -64,7 +65,7 @@ export class Prescriptions {
     private dm: DocManager,
     private patm: PatientManager,
     private we: WebelexisEvents
-  ) {}
+  ) { }
 
   public attached() {
     this.total =
@@ -206,7 +207,7 @@ export class Prescriptions {
       const anzahl = item.ANZAHL || "1";
       table += `<tr><td>${anzahl}</td><td>${
         item._Artikel.DSCR
-      }${remark}</td><td>${item.Dosis || ""}</td></tr>`;
+        }${remark}</td><td>${item.Dosis || ""}</td></tr>`;
     }
     table += "</table>";
     const fields = [
@@ -271,7 +272,7 @@ export class Prescriptions {
     }
   }
   private makePrescription() {
-    this.ea.publish("left_panel", "rezept");
+    this.ea.publish(SWITCH_PANELS, { left: "rezept" });
     this.ea.publish("rpPrinter", "Hello, World");
   }
 }

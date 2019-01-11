@@ -8,11 +8,10 @@ import { pluck } from "rxjs/operators";
 export enum DISPLAY {
   left, right, both
 }
+export const SWITCH_PANELS = "switch_panels"
 
 @connectTo(store => store.state.pipe(pluck("panels") as any))
 export class Dispatcher {
-  public static message = "switch_panels";
-
 
   protected rightpanels: Element;
 
@@ -51,12 +50,12 @@ export class Dispatcher {
   private state
 
   constructor(private ea: EventAggregator, private sm: StickerManager, private we: WebelexisEvents) {
-    this.ea.subscribe(Dispatcher.message, views => {
+    this.ea.subscribe(SWITCH_PANELS, views => {
       if (views.left) {
-        this.leftView = views.left;
+        this.leftView = v[views.left];
       }
       if (views.right) {
-        this.rightView = views.right;
+        this.rightView = v[views.right];
       }
     });
   }

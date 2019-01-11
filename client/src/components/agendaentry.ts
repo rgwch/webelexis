@@ -9,10 +9,10 @@ import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import * as _ from "lodash";
 import { Statics, TerminModel, TerminType } from "../models/termine-model";
 import { TerminManager } from "../models/termine-model";
-import { LeftPanel } from "../routes/dispatch/left";
-import { RightPanel } from "../routes/dispatch/right";
 import { DateTime } from "../services/datetime";
 import { WebelexisEvents } from "../webelexisevents";
+import { SWITCH_PANELS, DISPLAY } from './../routes/dispatch/index';
+
 
 /*
  We use local styles here to avoid pollution of the global namespace
@@ -42,7 +42,7 @@ export class AgendaEntry {
     private tm: TerminManager,
     private ea: EventAggregator,
     private we: WebelexisEvents
-  ) {}
+  ) { }
 
   public bind(context) {
     this.termintypen = Statics.terminTypes;
@@ -58,9 +58,10 @@ export class AgendaEntry {
     patient.type = "patient";
     this.we.selectItem(patient);
     if (list) {
-      this.ea.publish(LeftPanel.message, list);
+      this.ea.publish(SWITCH_PANELS, { left: list, right: view });
+    } else {
+      this.ea.publish(SWITCH_PANELS, { right: view });
     }
-    this.ea.publish(RightPanel.message, view);
   }
 
   protected get typecss() {
