@@ -1,4 +1,4 @@
-import { PatientType } from './models/patient';
+import { PatientType } from "./models/patient";
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -54,13 +54,17 @@ export class App {
   private log = LogManager.getLogger("app.ts");
   private actPatient: PatientType;
 
-  constructor(private i18n: I18N, private session: Session, private ds: DataSource) { }
+  constructor(
+    private i18n: I18N,
+    private session: Session,
+    private ds: DataSource
+  ) {}
 
   /**
    * When activationg the main view: Wait for metadata of the configured server
    */
   public activate() {
-    return this.ds.metadata()
+    return this.ds.metadata();
   }
 
   @computedFrom("actPatient")
@@ -81,108 +85,35 @@ export class App {
 
     cfg.map([
       {
+        moduleId: PLATFORM.moduleName("./routes/dispatch/index"),
         name: "dispatch",
         nav: false,
         route: ["", "dispatch/:sub?"],
         settings: { loginRequired: true },
-        title: env.metadata["sitename"],
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/dispatch/left") },
-          details: { moduleId: PLATFORM.moduleName("./routes/dispatch/right") }
-        }
+        title: env.metadata["sitename"]
       },
       {
+        moduleId: PLATFORM.moduleName("./routes/user/index"),
         name: "user",
         route: "/user/:vi?",
-        title: this.i18n.tr("nav.account"),
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/user/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/user/detail") }
-        }
+        title: this.i18n.tr("nav.account")
       },
       {
+        moduleId: PLATFORM.moduleName("./routes/test/index"),
         name: "test",
         nav: false,
         route: "/test/:vi?",
-        title: "test",
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/test/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/test/detail") }
-        }
+        title: "test"
       },
       {
-        name: "agenda",
-        nav: true,
-        route: "/agenda",
-        title: this.i18n.tr("nav.agenda"),
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/patient/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/agenda/index") }
-        }
-      },
-      {
-        name: "patient",
-        nav: true,
-        route: "/patient",
-        title: this.i18n.tr("nav.patdetails"),
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/patient/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/patient/detail") }
-        }
-      },
-      {
-        name: "patneu",
-        route: "patient/neu",
-        title: this.i18n.tr("nav.newpat"),
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/patient/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/patient/detail") }
-        }
-      },
-      {
-        route: "/konsultation",
-        name: "konsultation",
-        title: this.i18n.tr("nav.encounters"),
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/patient/index") }
-          // details: { moduleId: PLATFORM.moduleName('./routes/konsultation/index') }
-        },
-        nav: true
-      },
-      {
-        route: "/artikel",
-        name: "artikel",
-        title: this.i18n.tr("nav.articles"),
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/artikel/index") },
-          details: { moduleId: PLATFORM.moduleName("./routes/artikel/detail") }
-        },
-        nav: true
-      },
-      {
-        route: "/documents",
-        name: "documents",
-        title: this.i18n.tr("nav.documents"),
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("./routes/documents/list") },
-          details: { moduleId: PLATFORM.moduleName("views/document") }
-        }
-      }, {
-        route: "/fhirlogin",
+        moduleId: PLATFORM.moduleName("fhir/fhir-login"),
         name: "Fhir Login",
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName('fhir/fhir-login') },
-          details: { moduleId: PLATFORM.moduleName("./routes/dispatch/right") }
-    
-        }
+        route: "/fhirlogin"
       },
       {
-        route: "/auth",
+        moduleId: PLATFORM.moduleName("fhir/fhir-ready"),
         name: "Fhir authenticated",
-        viewPorts: {
-          default: { moduleId: PLATFORM.moduleName("fhir/fhir-ready") },
-          // details: {moduleId: PLATFORM.moduleName("fhir/fhir-ready")}
-        }
+        route: "/auth"
       }
     ]);
     cfg.addPipelineStep("authorize", AuthorizeStep);
@@ -193,7 +124,7 @@ export class App {
 
 @autoinject
 class AuthorizeStep {
-  constructor(private session: Session) { }
+  constructor(private session: Session) {}
   public run(navInstruction: NavigationInstruction, next: Next): Promise<any> {
     return this.session.getUser().then(actUser => {
       if (
@@ -204,7 +135,7 @@ class AuthorizeStep {
           return next();
         } else {
           if (env.transport === "fhir") {
-            return next.cancel(new Redirect("fhirlogin"))
+            return next.cancel(new Redirect("fhirlogin"));
           } else {
             return next.cancel(new Redirect("user"));
           }

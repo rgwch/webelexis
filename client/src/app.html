@@ -2,7 +2,12 @@
   <div class="container-fluid">
     <!-- Display login/logout icon depending of the login state -->
     <a style="float:right" route-href="route: user">
-      <i class="fas fa-sign-out-alt" data-toggle="tootltip" title.bind="actUser.email"   if.bind="actUser"></i>
+      <i
+        class="fas fa-sign-out-alt"
+        data-toggle="tootltip"
+        title.bind="actUser.email"
+        if.bind="actUser"
+      ></i>
       <i else class="fas fa-sign-in-alt" data-toggle="tootltip" title="login"></i>
     </a>
     <!-- Display label of the currently selected patient -->
@@ -10,13 +15,6 @@
 
     <!-- if we ever need a menu bar: navbar router.bind="router"></navbar -->
     <!-- Display the main view -->
-    <div role="main">
-      <div id="left-part" show.bind="leftPanel">
-        <router-view name="default" swap-order="after"></router-view>
-      </div>
-      <div id="right-part">
-        <router-view name="details"></router-view>
-      </div>
-    </div>
+    <div role="main"><router-view name="default" swap-order="after"></router-view></div>
   </div>
 </template>

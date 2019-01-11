@@ -20,6 +20,7 @@ export class LeftPanel{
   protected buttons
   protected linked:boolean = false
   public static message="left_panel"
+  
   protected leftpanelstyle=`position:absolute;left:${defaults.buttonbarwidth}px;width:${defaults.leftpanelwidth}px;`
   private views=[v.patientenliste,v.artikelliste,v.dokumentliste,v.briefe,v.messwerte,v.leistungen]
 

@@ -16,12 +16,12 @@ export class Session {
 
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     // Warning: Dirty workaround ahead
-    if (env.transport === "fhir") {
+   // if (env.transport === "fhir") {
       this.currentUser = new User({
         email: "admin@webelexis.ch",
         roles: ["admin", "guest", "user", "mpa"]
       })
-    }
+   // }
   }
 
   public async login(user?: string, pwd?: string, persist?: boolean) {
