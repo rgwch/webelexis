@@ -1,0 +1,52 @@
+<template>
+  <div>
+    <!-- Left part -->
+    <div
+      class="btn-group-vertical bordered"
+      style="position:absolute;left:5px;top:20px"
+      ref="buttons"
+    >
+      <button class="btn" click.trigger="link()">
+        <i class="fa fa-exchange-alt" show.bind="!linked"></i>
+        <i class="fa fa-times" show.bind="linked"></i>
+      </button>
+      <button class="btn" repeat.for="vi of leftViews" click.trigger="switchLeft(vi)">
+        <img
+          src.one-time="vi.icon"
+          data-toggle="tooltip"
+          title.one-time="vi.text"
+          width.one-time="tooliconwidth"
+          height.one-time="tooliconheight"
+        />
+      </button>
+    </div>
+    <!-- /btn-group-vertical -->
+    <div style.bind="leftpanelstyle">
+      <compose view-model.bind="leftView['view']"></compose>
+    </div>
+    <!-- Right part -->
+    <div rev="rightpanels">
+      <div style.bind="rightpanelstyle">
+        <compose view-model.bind="rightView['view']"></compose>
+      </div>
+      <div
+        class="btn-group-vertical bordered"
+        style="position:absolute;right:5px;top:20px;"
+      >
+        <button class="btn" click.delegate="toggleLeftPane($parent)">
+          <i class="fa fa-angle-double-left" show.bind="state"></i>
+          <i class="fa fa-angle-double-right" hide.bind="state"></i>
+        </button>
+        <button class="btn" repeat.for="vi of rightViews" click.trigger="switchRight(vi)">
+          <img
+            src.one-time="vi.icon"
+            data-toggle="tooltip"
+            title.one-time="vi.text"
+            width.one-time="tooliconwidth"
+            height.one-time="tooliconheight"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
