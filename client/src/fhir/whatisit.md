@@ -44,3 +44,7 @@ the *fhir* scope is selected. In the "credentials"-page, select *no authenticati
 Navigate to [http://localhost:9000](http://localhost:9000)
 
 Webelexis should present you a "Login" Button, and if you press that, redirect you to the Elexis-Server OAuth page, where you have to enter your credentials including a Token from the Google Authenticator (For username and password, try "Administrator/admin" if you use the demo server). After that, you are logged in and Webelexis redirects you to its main page.
+
+## Using the patient list
+
+Try entering "Duck" or "Donald" (without the quotes) into the searchbox in the left panel and press return or click the glass. Please not: In Elexis-Server, searches are case sensitive, so "duck" won't find anything.
