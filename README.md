@@ -1,6 +1,6 @@
 # Webelexis
 
-Die schlanke, flinke Ergänzug zu Elexis
+Die schlanke, flinke Ergänzung zu Elexis
 
 * Läuft im Browser
 * läuft auf Mobilgeräten
@@ -29,7 +29,7 @@ mit einem FHIR-Server verbinden wollen, z.B. [Elexis-Server](https://github.com/
 
 ### - Einen Ordner 'data' erstellen, und darin eine Datei 'settings.js' erstellen.
 
-Beginnen Sie mit einer Kopie von [settings-exaple.js](data/settings-example.js) und ändern Sie die Einträge passend für Ihr System.
+Beginnen Sie mit einer Kopie von [settings-example.js](data/settings-example.js) und ändern Sie die Einträge passend für Ihr System.
 
 
 ### - Dann im Terminal:
