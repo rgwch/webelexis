@@ -15,6 +15,7 @@ import { TerminManager, Statics, TerminType } from './../../models/termine-model
 import { pluck } from "rxjs/operators";
 import { Patient, PatientType } from "../../models/patient";
 import { DataSource, DataService } from "services/datasource";
+import './agendastyles.scss'
 
 @autoinject
 @connectTo<State>({

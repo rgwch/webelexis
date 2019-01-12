@@ -7,6 +7,9 @@
 import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
 
+/**
+ * Modal Dialog to enter a Server Address
+ */
 @autoinject
 export class SelectServer {
   private url: string;

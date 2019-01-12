@@ -48,3 +48,46 @@ Webelexis should present you a "Login" Button, and if you press that, redirect y
 ## Using the patient list
 
 Try entering "Duck" or "Donald" (without the quotes) into the searchbox in the left panel and press return or click the glass. Please note: In Elexis-Server, searches are case sensitive, so "duck" won't find anything.
+
+# Developer notes
+
+## Concept
+
+The framework reads environemt.ts to decide, which of the pluggable transport systems to use. environment.ts, in turn, is a copy of aurelia_project/environments/dev.ts or prod.ts, depending on the run environment. So never modify environment.ts, since it will be overwritten with every new build. Instead, modify the files in aurelia_project.
+
+Upon launch, the login process is directed (in AuthorizeStep of app.ts) either to fhir/fhir-login or to routes/login/stage1, depending of the entry in environment.ts.
+
+If the trasport is set to fhir, it's the responsibility of adapter-classes to convert between FHIR entities and Webelexis Objects.
+
+Fhir-Entities are based on `FHIR_Resource` (see fhir/model/fhir.ts) while Webelexis Objects are based on `ElexisType` (see models/*).
+
+When Webelexis needs to handle an object of a given type, the fhir/fhir-api/FhirDS (which is an IDataSource) checks, if a DataService for that type exists. If it does, it returns that DataService, which, in turn, can handle CRUD requests on objetcs of that type.
+
+If no such DataService exists, FhirDS creates one, using a matching implementation of fhir/fhir-api/IFhirAdapter. If no matching Adapter is found, it creates and returns a fhir/adapters/empty-adapter/EmptyAdapter. This will do nothing on write requests, return empty Arrays on search and undefined on get.
+
+
+## Implementation
+
+To enable handling of a given type (say, 'PatientType') for FHIR transport, you'll need the following steps:
+
+* identify a corresponding FHIR_Resource, which is fhir/model/fhir/FHIR_Patient in this example)
+
+* create a 'case' branch in fhit/adapters/adapter-factory/AdapterFactory for that type. Name of the branch must be the Webelexis-Servicename for the datatype, 'patient' in this example.
+
+* create an adapter-class, in this example: fhir/adapters(patient-adapter/PatientAdapter. The Adapter must implement IFhirAdapter, but, for convenience, it can simpli extend fhir/adapters/base-adapter/BaseAdapter which contains some utility methods for frequently needed tasks.
+
+An IFhirAdapter must implement the following methods:
+
+*  toElexisObject(fhirObject: FHIR_Resource): ElexisType - Take a FHIR-Resource and return a corresponding ElexisType
+
+*   toFhirObject(elexisObject: ElexisType): FHIR_Resource - Take an ElexisType and return a corresponding FHIR_Resource
+
+*  toQueryResult(bundle: FhirBundle): IQueryResult - Take a FHIR Result bundle and create an IQueryReesult from its entries
+
+*  transformQuery(query: any): any - Take a Webelexis Query and convert it to a FHIR conformant query (which is mostly simple a translation of field names)
+
+*  resourceType(): string - return the FHiR resourceType (as defined in FHIR_Resource)
+
+* path: string - the service path / name for the Webelexis Service handling that type
+
+

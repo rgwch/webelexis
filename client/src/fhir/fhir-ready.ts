@@ -9,8 +9,9 @@ import { Router } from "aurelia-router";
 import { Session } from "services/session";
 import { FhirService } from "./fhirservice";
 const log = LogManager.getLogger("OAuth login step 2")
+
 /**
- * After successful OAuth authentication, thie OAuth Server calls (by configuration) this
+ * After successful OAuth authentication, the OAuth Server calls (by configuration) this
  * route. Wenn activatet, get the details of the current user and create a session with that
  * user. After that, we can navigate to the normal start of the WebApp ("dispatch").
  */

@@ -31,8 +31,8 @@ export class FhirLogin {
       } else {
         this.dialog
           .open({
-            viewModel: SelectServer,
-            model: { url: env.fhir ? env.fhir.server_url || "" : "" }
+            model: { url: env.fhir ? env.fhir.server_url || "" : "" },
+            viewModel: SelectServer
           })
           .whenClosed(async response => {
             if (response.wasCancelled) {
@@ -49,11 +49,11 @@ export class FhirLogin {
   }
 
   /**
-   * check if the server denoted bei serverURL
-   * - exists
-   * - returns a fhir conformant answer
-   * - is able to send data in json format
-   * @param serverUrl 
+   * check if the server denoted bei serverURL:
+   * - exists,
+   * - returns a fhir conformant answer,
+   * - is able to send data in json format.
+   * @param serverUrl
    */
   private async checkServer(serverUrl: string): Promise<boolean> {
     if (!serverUrl || !/^https?:\/\/.+/.test(serverUrl)) {

@@ -4,10 +4,11 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { autoinject, noView } from "aurelia-framework";
+import { autoinject, LogManager } from "aurelia-framework";
 import env from "environment"
 import "fhirclient";
 import { ElexisType } from "models/elexistype";
+const log = LogManager.getLogger("Fhir-Service")
 declare const FHIR;
 
 export interface IBundleResult {
@@ -23,31 +24,29 @@ export interface IBundleResult {
 @autoinject
 export class FhirService {
   private smart = null;
-  private client= {
+  private client = {
     client_id: env.fhir.client_id,
     redirect_uri: this.getBaseURL() + env.fhir.client_redirect,
-    // redirect_uri: "http://localhost:9000/#/auth",
     scope: "fhir"
   }
- 
 
   /**
    * retrieve server metadata (https://www.hl7.org/fhir/http.html#capabilities)
    * @param server_uri
    */
   public metadata(serverUri): Promise<any> {
-    console.log("metadata for " + serverUri);
+    log.info("metadata for " + serverUri);
     return fetch(serverUri + "/metadata?_format=application/fhir+json")
       .then(response => {
         return response;
       })
       .then(resp => {
         return resp.json();
-      }).catch(err=>{
-       
+      }).catch(err => {
+
         alert("could not retrieve metadata")
         // alert("FHIR data: "+JSON.stringify(env.fhir))
-   
+
       })
   }
 
@@ -81,24 +80,6 @@ export class FhirService {
         }
       );
     });
-  }
-
-  /**
-   * search the FHIR server for a given datatype and convert the result to an
-   * array of FHIRobjects
-   *
-   * @param factory the factory for the queried FHIRobject subtype (see src/models/*)
-   * @param query a query (form depends of the queried type, see FHIR documentation)
-   */
-  public async filter(query): Promise<IBundleResult> {
-    if (this.smart == null) {
-      const sm = await this.getSmartclient();
-    }
-    return this.smart.api
-      .search({ type: "Patient", query })
-      .then(results => {
-        return results
-      });
   }
 
   private getBaseURL() {

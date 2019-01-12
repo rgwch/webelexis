@@ -7,29 +7,29 @@ import { PLATFORM } from 'aurelia-framework';
 import global from 'user/global'
 
 export default {
-  leistungen: {
-    text: "Leistungen",
-    icon: "/hand.svg",
-    view: PLATFORM.moduleName("views/select-billing"),
-    role: global.roles.billing
-  },
-  stammdaten: {
-    text: "Stammdaten",
-    icon: "/id-card.svg", 
-    view: PLATFORM.moduleName("views/patient-basedata"),
-    role: global.roles.privacy
+  dokumente: {
+    icon: "/file.svg", 
+    role: global.roles.user,
+    text: "Dokumente",
+    view: PLATFORM.moduleName("views/document")
   },
   konsultationen: {
-    text: "Konsultationen",
     icon: "/folder.svg", 
-    view: PLATFORM.moduleName("views/encounters"),
-    role: global.roles.privacy
+    role: global.roles.privacy,
+    text: "Konsultationen",
+    view: PLATFORM.moduleName("views/encounters")
   },
-  dokumente: {
-    text: "Dokumente",
-    icon: "/file.svg", 
-    view: PLATFORM.moduleName("views/document"),
-    role: global.roles.user
+  leistungen: {
+    icon: "/hand.svg",
+    role: global.roles.billing,
+    text: "Leistungen",
+    view: PLATFORM.moduleName("views/select-billing")
+  },
+  stammdaten: {
+    icon: "/id-card.svg", 
+    role: global.roles.privacy,
+    text: "Stammdaten",
+    view: PLATFORM.moduleName("views/patient-basedata")
   },
   medikamente: {
     text: "Medikamente",

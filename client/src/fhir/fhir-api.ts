@@ -7,16 +7,15 @@
 import { autoinject, LogManager } from "aurelia-framework";
 import env from "environment";
 import { ElexisType } from "models/elexistype";
-import { User, UserType } from "models/user";
+import { UserType } from "models/user";
 import { DataService, IDataSource, IQueryResult } from "services/datasource";
-import { Session } from "services/session";
 import { AdapterFactory } from "./adapters/adapter-factory";
 import { FhirService } from "./fhirservice";
 import { FhirBundle, FHIR_Resource } from "./model/fhir";
 const log = LogManager.getLogger("FHIR api")
+
 /**
  * This is the FHIR compliant transport implementation for Webelexis (IDataSource and DataService)
- * 
  */
 
 @autoinject
@@ -26,6 +25,10 @@ export class FhirDS implements IDataSource {
 
   constructor(private fhir: FhirService) { }
 
+  /**
+   * retrieve or create a DataService
+   * @param name Webelexis-Servicepath for the datatype to handle
+   */
   public getService(name: string): DataService {
     let service = this.services.get(name)
     if (!service) {
@@ -34,6 +37,10 @@ export class FhirDS implements IDataSource {
     }
     return service;
   }
+  /**
+   * return the servicepath-name of a given service
+   * @param service the service to query
+   */
   public dataType(service: DataService) {
     return service.path;
   }
@@ -41,7 +48,6 @@ export class FhirDS implements IDataSource {
   /**
    * We can't really login to a FHIR Server like this, since the Smartclient uses an OAuth scheme to
    * authenticate. So we just return undefined to tell the session manager we're not logged in.
-   * TODO: Login management needs rethink/rewrite
    */
   public async login(): Promise<UserType> {
     sessionStorage.removeItem("ch.webelexis.logintoken");
@@ -52,6 +58,9 @@ export class FhirDS implements IDataSource {
     //
   }
 
+  /**
+   * Retrieve Metadata of the FHIR Server. If successful, Metadata are stored in the global env.metadata
+   */
   public async metadata() {
     try {
       const result: any = await fetch(env.fhir.server_url + "/metadata?_format=json")
@@ -112,9 +121,9 @@ class FhirDataService implements DataService {
       log.error("Resourcetype %s not found or error %s", this.adapter.resourceType(), err)
       return {
         data: [],
-        total: 0,
+        limit: 50,
         skip: 0,
-        limit: 50
+        total: 0,
       }
     }
   }
@@ -128,7 +137,7 @@ class FhirDataService implements DataService {
     return new Promise<ElexisType>((resolve, reject) => {
       this.smart().then(smart => {
         smart.api.create(entry,
-          created => {
+          (created: FHIR_Resource) => {
             resolve(this.adapter.toElexisObject(created))
           },
           error => {
@@ -153,13 +162,23 @@ class FhirDataService implements DataService {
   public remove(index, params?): ElexisType {
     return null;
   }
+
+  /**
+   * The following three methods are part of the bidirectional data handling of Webelexis.
+   * Since FHIR has no corresponding concept, we just leave them empty here. A possible 
+   * imlementation could use caching and polling of objects and generating events here accordingly.
+   */
   // send an event concerning an object
-  public emit(topic: string, msg: any) { }
+  public emit(topic: string, msg: any) {}
   // subscribe on events concerning this DataService's data type
   public on(topic: string, func: (obj: ElexisType) => {}) { }
   // unsubscribe some topics
   public off(topic: string, func: (obj: ElexisType) => {}) { }
 
+  /**
+   * Get the SmartClient. Probably the login and authoritation process is not yet finished when we
+   * need this the first time, so we must return a Promise.
+   */
   private async smart() {
     if (!this._smartclient) {
       this._smartclient = await this.fhir.getSmartclient()

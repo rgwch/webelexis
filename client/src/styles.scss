@@ -11,10 +11,6 @@ $strokecolor: blue;
 $highlightcolor: orange;
 $form-background: aquamarine;
 
-/* Buttons for termin actions */
-.agendabutton {
-  margin-right: 2px;
-}
 
 /* general border */
 .bordered {
@@ -129,14 +125,7 @@ img.nav {
   overflow-x: hidden;
 }
 
-.termin {
-  a {
-    color: black;
-  }
-  background-color: $fillcolor;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+
 
 .nav .menuitem {
   cursor: pointer;

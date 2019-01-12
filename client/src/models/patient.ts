@@ -80,6 +80,7 @@ export class Patient {
 
     return final;
   }
+
   public static getDefinition(): FlexformConfig {
     const i18 = Patient.i18;
     return {
