@@ -47,4 +47,4 @@ Webelexis should present you a "Login" Button, and if you press that, redirect y
 
 ## Using the patient list
 
-Try entering "Duck" or "Donald" (without the quotes) into the searchbox in the left panel and press return or click the glass. Please not: In Elexis-Server, searches are case sensitive, so "duck" won't find anything.
+Try entering "Duck" or "Donald" (without the quotes) into the searchbox in the left panel and press return or click the glass. Please note: In Elexis-Server, searches are case sensitive, so "duck" won't find anything.
