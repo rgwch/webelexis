@@ -1,6 +1,6 @@
 # Running Webelexis as FHIR client
 
-Note: This is a highly experimental feature. 
+Note: This is a highly experimental feature. FHIR is rather aimed at exchanging medical data and not for running an EMR-System. So it supports only a subset of the features needed by an EMR Client. Functionality highly depends on the development of Elexis-Server and its ability to handle non-standard-requests.
 
 ## Switching transport layers
 
