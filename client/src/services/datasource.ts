@@ -43,7 +43,7 @@ export interface IDataSource {
   // get the data type of a given DataService
   dataType(service: DataService): string
   // authenticate
-  login?(username?:string,password?:string): Promise<UserType>
+  login?(username?: string,password?: string): Promise<UserType>
   // de-authenticate
   logout(): Promise<any>
   // give metadata about the server
@@ -64,23 +64,23 @@ export interface IQueryResult {
  * Dummy-Implementation of IDataSource
  */
 export class DataSource implements IDataSource {
-  getService(name: string): DataService {
+  public getService(name: string): DataService {
     throw new Error("No DataSource is configured");
   }
 
-  dataType(service: DataService): string {
+  public dataType(service: DataService): string {
     throw new Error("No DataSource is configured");
   }
 
-  login(un?,pw?){
+  public login(un?: string, pw?: string): Promise<UserType> {
     return Promise.reject("No DataSource is configured");
   }
 
-  logout(){
+  public logout(){
     return Promise.reject("No DataSource is configured");
   }
 
-  metadata(){
+  public metadata(): Promise<any> {
     return Promise.reject("No DataSource is configured");
   }
 }

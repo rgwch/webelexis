@@ -1,4 +1,3 @@
-import { PatientType } from "./models/patient";
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2018 by G. Weirich    *
@@ -29,10 +28,9 @@ import { pluck } from "rxjs/operators";
 import { Session } from "services/session";
 import "styles.scss";
 import { Patient } from "./models/patient";
-import { User, UserType } from "./models/user";
 import { DataSource } from "./services/datasource";
 import { State } from "./state";
-import { WebelexisEvents } from "./webelexisevents";
+import { PatientType } from "./models/patient";
 
 /**
  * Starting point for the UI. Gets called from main.ts#configure()
@@ -41,15 +39,14 @@ import { WebelexisEvents } from "./webelexisevents";
  */
 @connectTo<State>({
   selector: {
-    actUser: store => store.state.pipe(pluck("usr") as any),
     actDate: store => store.state.pipe(pluck("date") as any),
     actPatient: store => store.state.pipe(pluck("patient") as any),
+    actUser: store => store.state.pipe(pluck("usr") as any),
     leftPanel: store => store.state.pipe(pluck("leftPanel") as any)
   }
 })
 @autoinject
 export class App {
-  public leftPanel;
   public router: Router;
 
   private log = LogManager.getLogger("app.ts");

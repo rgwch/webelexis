@@ -1,0 +1,10 @@
+.smoothright {
+  position: absolute;
+  transition-property: left;
+  transition-duration: 0.2s;
+}
+.smoothleft {
+  position: absolute;
+  transition-property: width;
+  transition-duration: 0.2s;
+}

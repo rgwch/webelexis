@@ -5,6 +5,8 @@ import defaults from "../../user/uidefaults";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { connectTo } from "aurelia-store";
 import { pluck } from "rxjs/operators";
+import './slide.css'
+
 export enum DISPLAY {
   left, right, both
 }
@@ -42,10 +44,10 @@ export class Dispatcher {
   protected rightExpanded = false;
   protected leftExpanded = false;
 
-  private leftSmall = `position:absolute;left:${defaults.buttonbarwidth}px; width:${defaults.leftpanelwidth}px;`;
-  private panelWide = `position:absolute;left:${defaults.buttonbarwidth}px; right:${defaults.buttonbarwidth}px;`;
-  private rightSmall = `position:absolute;left:${defaults.buttonbarwidth +
-    defaults.leftpanelwidth+5}px;right:${defaults.buttonbarwidth}px;`;
+  private leftSmall = `left:${defaults.buttonbarwidth}px; width:${defaults.leftpanelwidth}px;`;
+  private panelWide = `left:${defaults.buttonbarwidth}px; right:${defaults.buttonbarwidth}px;`;
+  private rightSmall = `left:${defaults.buttonbarwidth +
+    defaults.leftpanelwidth + 5}px;right:${defaults.buttonbarwidth}px;`;
 
   private state
 
@@ -74,16 +76,16 @@ export class Dispatcher {
   public stateChanged(showNow: DISPLAY, showBefore: DISPLAY) {
     switch (showNow) {
       case DISPLAY.left:
-        this.leftpanelstyle = "display:block;" + this.panelWide
-        this.rightpanelstyle = "display:none;"
+        this.leftpanelstyle = this.panelWide+"width: 80%;"
+        this.rightpanelstyle = "display: none;"
         break;
       case DISPLAY.right:
-        this.leftpanelstyle = "display:none"
-        this.rightpanelstyle = "display:block;" + this.panelWide
+        this.rightpanelstyle = this.panelWide
+        this.leftpanelstyle = "display: none"
         break;
       default:
-        this.leftpanelstyle = "display:block;" + this.leftSmall
-        this.rightpanelstyle = "display:block;" + this.rightSmall
+        this.leftpanelstyle = this.leftSmall
+        this.rightpanelstyle = this.rightSmall
     }
     /*
     if (showNow) {

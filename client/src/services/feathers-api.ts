@@ -6,12 +6,12 @@
 
 import * as auth from "@feathersjs/authentication-client";
 import * as feathers from "@feathersjs/client";
-import { autoinject,LogManager } from "aurelia-framework";
+import { autoinject, LogManager } from "aurelia-framework";
 import { UserType } from "models/user";
 import * as io from "socket.io-client";
 import env from "../environment";
 import { DataService, IDataSource } from "./datasource";
-const log = LogManager.getLogger("feathers-api")
+const log = LogManager.getLogger("feathers-api");
 
 /**
  * A DataSource implementation based on FeathersJS
@@ -69,7 +69,7 @@ export class FeathersDS implements IDataSource {
       const user = await this.client.service("usr").get(verified.userId);
       return user;
     } catch (err) {
-      log.error("Error while authenticating " + err)
+      log.error("Error while authenticating " + err);
       return undefined;
     }
   }
@@ -81,7 +81,7 @@ export class FeathersDS implements IDataSource {
     return this.client.logout();
   }
 
-  public async metadata(){
+  public metadata() {
     log.info("getting metadata from " + env.baseURL);
     return fetch(env.baseURL + "metadata")
       .then(response => {
@@ -89,10 +89,12 @@ export class FeathersDS implements IDataSource {
       })
       .then(json => {
         env["metadata"] = json;
+        return json;
       })
       .catch(err => {
         log.error("can't fetch metadata: " + err);
         // alert(this.i18n.tr("errmsg.connect"));
+        return env.metadata
       });
   }
 }

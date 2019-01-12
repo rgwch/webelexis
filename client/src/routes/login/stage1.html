@@ -1,7 +1,80 @@
 <template>
-  <form>
-    <input type="text" value.bind="username">
-    <input type="password" value.bind="password">
-    <button type="btn" click.delegate="doLogin()">Login</button>
-  </form>
+  <div class="sheet">
+    <div class="header"><span class="detailcaption">Login</span></div>
+    <div class="body" if.bind="testmode">
+      <h2>Eingeloggt: ${state.email || "niemand"}</h2>
+      <p>
+        In dieser Demo-Version können Sie sich einfach durch Klick auf einen der
+        untenstehenden Buttons mit der betreffenden Rolle einloggen.
+      </p>
+      <div class="card">
+        <div class="card-header">Einloggen als...</div>
+        <div class="card-body">
+          <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" style="padding-right: 10px;">
+              <button
+                class="btn btn-success"
+                click.trigger="loginAs('admin@webelexis.ch','admin')"
+                disabled.bind="state.email.length>0"
+              >
+                Admin
+              </button>
+              <button
+                class="btn btn-success"
+                click.trigger="loginAs('user@webelexis.ch','user')"
+                disabled.bind="state.email.length > 0"
+              >
+                User
+              </button>
+              <button
+                class="btn btn-success"
+                click.trigger="loginAs('guest@some.where','gast')"
+                disabled.bind="state.email.length > 0"
+              >
+                Gast
+              </button>
+            </div>
+            <div class="btn-group">
+              <button
+                class="btn btn-primary"
+                click.trigger="logout()"
+                disabled.bind="state.email.length == 0"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body" else>
+      <div if.bind="state.email.length>0">
+        Sie sind angemeldet als <b>${state.email}</b><br />
+        <button type="button" class="btn btn.primary" click.trigger="logout()">
+          Logout
+        </button>
+      </div>
+      <div else>
+        <div class="form-group">
+          <label for="username" t="dlg.username"></label>
+          <input type="email" class="form-control" id="username" value.bind="username" />
+          <small class="form-text text-muted"
+            >Ihre E-Mail ist gleichzeitig Ihr Username</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="password" t="dlg.password"></label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            value.bind="password"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary" click.trigger="doLogin()">
+          Login
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
