@@ -76,7 +76,7 @@ export class Dispatcher {
   public stateChanged(showNow: DISPLAY, showBefore: DISPLAY) {
     switch (showNow) {
       case DISPLAY.left:
-        this.leftpanelstyle = this.panelWide+"width: 80%;"
+        this.leftpanelstyle = this.panelWide + "width: 80%;"
         this.rightpanelstyle = "display: none;"
         break;
       case DISPLAY.right:
