@@ -43,7 +43,7 @@ module.exports = function (app) {
         table.string("LieferantID",40)  // distributor
         table.string("Maxbestand",4)    // Max number in local store
         table.string("Minbestand",4)    // order threshhold in store
-        table.string("Istbestand,4")    // currently in store
+        table.string("Istbestand",4)    // currently in store
         table.string("Verkaufseinheit",4) // Number of items per package
         table.string("Anbruch",4)       // parts of packages in store
         table.string("PRODNO",10)       // -> oddb_product.xml
