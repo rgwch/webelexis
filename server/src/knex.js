@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -16,7 +16,7 @@ const fs = require("fs")
 const path = require("path")
 
 module.exports = function(app) {
-  // undocument exactly one of the following three lines
+  // uncomment exactly one of the following three lines
   const { client, connection } = app.get("mysql")
   // const { client, connection } = app.get('postgresql');
   // const {client,connection} = app.get("sqlite");
@@ -66,6 +66,11 @@ module.exports = function(app) {
       }
     })
     .catch(err => {
+      /*
+        Probably we get an error because the table "config" doesn not exist at all - in
+        that case, we're running from scratch. So ER_NO_SUCH_TABLE is not a fatal error.
+        All other errors are treated as fatal connection failures.
+      */
       if (err.code != "ER_NO_SUCH_TABLE") {
         logger.error("Can't connect do database: %s ", err)
         process.exit(42)
