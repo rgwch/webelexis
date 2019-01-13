@@ -1,0 +1,3 @@
+drop table artikelstamm_ch;
+create table artikelstamm_ch like art;
+insert into artikelstamm_ch select * from art;
