@@ -39,7 +39,7 @@ Beginnen Sie mit einer Kopie von [settings-example.js](data/settings-example.js)
 
 Achtung: Webelexis wird beim ersten Start (wenn in settings.js automodify auf true gesetzt ist), einige Datenbankanpassungen vornehmen, die in [server/vorbereitung.md](server/vorbereitung.md) näher beschrieben sind. Wenn automodify auf 'false' gesetzt ist, wird Webelexis keine Änderungen vornehmen, aber den Start verweigern, falls die Datenbank noch nicht angepasst ist.   
 
-Wenn Sie nicht unbedingt eine spezifische Version möchten, würde ich empfehlen,immer webeleixs:latest zu wählen. Wenn sie die allerneueste aber eventuell "kaputte" Version ausporbierne möchten, wählen Sie webelexis:bleeding.
+Wenn Sie nicht unbedingt eine spezifische Version möchten, würde ich empfehlen,immer webelexis:latest zu wählen. Wenn sie die allerneueste aber eventuell "kaputte" Version ausprobieren möchten, wählen Sie webelexis:bleeding.
 
 ### - Dann einen Browser auf `http://localhost` richten.
 
@@ -48,6 +48,10 @@ Wenn Sie nicht unbedingt eine spezifische Version möchten, würde ich empfehlen
 ## Run from scratch
 
 Webelexis kann auch auf einer leeren Datenbank gestartet werden (mysql oder sqlite). Es erstellt dann selber die Webelexis-Datenstrukturen. Diese Datenbank ist dann aber nicht garantiert kompatibel zu Elexis, sollte also nur für reine Webelexis-Umgebungen verwendet werden. Wann immer gemischter Betrieb vorgesehen ist (das ist das empfohlene Setup), sollte zuerst Elexis und dann Webelexis initialisiert werden.
+
+## Deployment auf einem Apache-Server
+
+
 
 ## Technische Grundlage Webelexis 3
 

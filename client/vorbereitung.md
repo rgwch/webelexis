@@ -2,6 +2,7 @@
 
 Es wird empfohlen, zuerst den Webelexis-Server aufzusetzen (s. [dort](../server/vorbereitung.md))
 
+Sicherstellen, dass `aurelia_project/environments/dev.ts:transport` auf dem gewünschten "Transportmittel" steht. Setzen Sie "feathers" für den Webelexis-eigenen Server (empfohlen) oder "fhir" für den FHIR-Server bzw. Elexis-Server (experimentell).
 
 * git installieren. falls nicht sowieso schon vorhanden
 
