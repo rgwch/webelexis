@@ -41,7 +41,7 @@ module.exports = function (app) {
         table.string("REZEPTID", 40)
         table.string('DateFrom', 14)
         table.string('DateUntil', 14)
-        table.String('ANZAHL', 3)
+        table.string('ANZAHL', 3)
         table.binary('ExtInfo')
         table.string('artikelid',40)
         table.string('Artikel')
@@ -50,8 +50,10 @@ module.exports = function (app) {
         table.string('prescDate', 8)
         table.string('prescriptor', 40)
       })
-        .then(() => logger.info(`created ${prescTableName} table`))
-        .catch(e => logger.error(`Error creating ${prescTableName} table`.e))
+        .then(() =>
+        logger.info(`created ${prescTableName} table`))
+        .catch(e =>
+          logger.error(`Error creating ${prescTableName} table`.e))
     }
   })
   return db;
