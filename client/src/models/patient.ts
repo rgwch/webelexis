@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -21,6 +21,13 @@ export interface PatientType extends KontaktType {}
 export class PatientManager {
   constructor(private dt: DateTime) {}
 
+  /**
+   * create a standardized human readable 'concerning' line from patient data
+   * (usage e.g. in directory names for documents concerning a patient - better
+   * readable than an id). gives something like maier_hans_22.04.1980 or
+   * x_unknown_x
+   * @param pat {PatientType}
+   */
   public createConcern(pat: PatientType) {
     const n1 = pat.Bezeichnung1;
     const n2 = pat.Bezeichnung2;
@@ -81,6 +88,9 @@ export class Patient {
     return final;
   }
 
+  /**
+   * create a field definition for detail display in FlexForm or in a new item dialog.
+   */
   public static getDefinition(): FlexformConfig {
     const i18 = Patient.i18;
     return {
@@ -179,6 +189,12 @@ export class Patient {
 
   public static loadContactOptions(obj: PatientType) {}
 
+  /**
+   * Verify that val is a string of 2 to 80 chars length, containing
+   * only "normal" characters.
+   * @param val 
+   * @param obj 
+   */
   public static char80(val, obj) {
     if (typeof val == "string") {
       if (/^[^;\.+"\*%=§<>|,]{2,80}$/i.test(val)) {
@@ -188,6 +204,11 @@ export class Patient {
     return false;
   }
 
+  /**
+   * Check that a date is valid and not in the future
+   * @param val 
+   * @param obj 
+   */
   public static checkdate(val, obj) {
     const m = moment(val);
     if (m.isValid()) {
@@ -197,67 +218,24 @@ export class Patient {
     }
     return false;
   }
+  /**
+   * convert a database-style date to a local-style date
+   * @param val 
+   */
   public static dateModelToView(val) {
-    const m = moment(val);
+    const m = moment(val, "YYYYMMDD");
     const format = Patient.i18.tr("adapters.date_format");
     const ret = m.format(format);
     return ret;
   }
 
+  /**
+   * convert a local-style date to a database-style date
+   * @param val 
+   */
   public static viewToDateModel(val) {
     const m = moment(val, "D.M.YYYY");
     const ret = m.format("YYYYMMDD");
     return ret;
   }
 }
-/*
-class ContactRenderer implements FlexformListRenderer {
-
- public  toString: (line: any) => string;
-  fetchElements = (obientType) => {
-  [] const ret: Array<FHIR_ContactPoint> = [];
-    if (obj["Telefon1"]) {
-      ret.push({
-        system: "phone",
-        value: obj["Telefon1"],
-        use: "home",
-        rank: 2
-      });
-    }
-    if (obj["Telefon2"]) {
-      ret.push({
-        system: "phone",
-        value: obj["Telefon2"],
-        use: "work",
-        rank: 3
-      });
-    }
-    if (obj["NatelNr"]) {
-      ret.push({
-        system: "phone",
-        value: obj["NatelNr"],
-        use: "mobile",
-        rank: 1
-      });
-    }
-    if (obj["EMail"]) {
-      ret.push({
-        system: "email",
-        value: obj["Email"],
-        use: "home",
-        rank: 4
-      });
-    }
-    if (obj["fax"]) {
-      ret.push({
-        system: "fax",
-        value: obj["fax"],
-        use: "old",
-        rank: 100
-    public   });
-    }
-    return ret;
-  };
-  
-}
-*/

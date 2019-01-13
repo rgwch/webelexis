@@ -28,6 +28,8 @@ Thumbs.db
 node_modules
 package-lock.json
 
+src/environment.ts 
+
 # Compiled files
 scripts
 dist

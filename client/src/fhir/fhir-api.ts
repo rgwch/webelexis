@@ -130,6 +130,7 @@ class FhirDataService implements DataService {
 
   // create an object
   public create(data: ElexisType, params?): Promise<ElexisType> {
+    data.type = this.adapter.path
     const fhirObj = this.adapter.toFhirObject(data)
     const entry = {
       resource: fhirObj

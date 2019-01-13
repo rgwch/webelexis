@@ -1,7 +1,6 @@
 export default {
-  debug: false,
-  testing: false,
-  baseURL: window.location.href,
+  baseURL: "http://localhost:3030/",
+  debug: true,
   fhir: {
     client_id: "ch.webelexis.aurelia.v3",
     client_redirect: "#/auth",
@@ -14,7 +13,6 @@ export default {
     roles: { guest: "guest", admin: "admin" },
     sitename: "Webelexis"
   },
-  transport: "feathers" // "fhir" or "feathers"
+  testing: true,
+  transport: "fhir" // "fhir" or "feathers"
 };
-  
-

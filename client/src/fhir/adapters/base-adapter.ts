@@ -20,7 +20,7 @@ export abstract class BaseAdapter implements IFhirAdapter {
   public toElexisObject(fhir: FHIR_Resource): ElexisType {
     return {
       id: fhir.id,
-      type: fhir.resourceType
+      type: "not set"
     }
   }
 
@@ -55,9 +55,7 @@ export abstract class BaseAdapter implements IFhirAdapter {
     }
   }
 
-  public transformQuery(query: any): any {
-
-  }
+  public transformQuery(query: any): any {}
   public getName(fhirnames: FHIR_HumanName[]) {
     let found = fhirnames.find(n => n.use === "usual");
     if (!found) {
@@ -66,8 +64,8 @@ export abstract class BaseAdapter implements IFhirAdapter {
     return {
       Bezeichnung1: found.family,
       Bezeichnung2: found.given ? found.given.join(" ") : "",
-      TitelSuffix: found.suffix ? found.suffix.join(" ") : "",
-      Titel: found.prefix ? found.prefix.join(" ") : ""
+      Titel: found.prefix ? found.prefix.join(" ") : "",
+      TitelSuffix: found.suffix ? found.suffix.join(" ") : ""
     };
   }
   public getAddress(fhiraddrs: FHIR_Address[], use: string) {
@@ -127,9 +125,9 @@ export abstract class BaseAdapter implements IFhirAdapter {
   public makeName(title, suffix, first, last) {
     const ret: FHIR_HumanName = {
       family: last,
-      given: [first.split(/\s/g)],
-      prefix: [title.split(/\s/g)],
-      suffix: [suffix.split(/\s/g)],
+      given: first ? [first.split(/\s/g)] : [""],
+      prefix: title ? [title.split(/\s/g)] : [""],
+      suffix: suffix ? [suffix.split(/\s/g)] : [""],
       text: `${title} ${last} ${first} ${suffix}`,
       use: "official"
     }
