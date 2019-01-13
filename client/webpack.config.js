@@ -113,6 +113,7 @@ module.exports = ({production, server, extractCss, coverage, analyze, karma} = {
     }),
     new HtmlWebpackPlugin({
       template: 'index.ejs',
+      filename: "static/index.html",
       metadata: {
         // available in index.ejs //
         title, server, baseUrl
