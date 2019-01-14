@@ -12,8 +12,12 @@ export class PatientAdapter extends BaseAdapter {
   public toElexisObject(fhirpat: FHIR_Patient): ElexisType {
     const name = super.getName(fhirpat.name);
     const addr = super.getAddress(fhirpat.address, "home");
-    const comm = super.getComm(fhirpat.telecom, "home");
+    const mobile = super.getComm(fhirpat.telecom, "mobile", "phone");
+    const tel1 = super.getComm(fhirpat.telecom, "home", "phone");
+    const tel2 = super.getComm(fhirpat.telecom, "work", "phone");
+    const email = super.getComm(fhirpat.telecom, null, "email");
     const gender = super.getGender(fhirpat.gender);
+    const comment = this.getComment(fhirpat);
     const ret: PatientType = {
       id: fhirpat.id,
       Bezeichnung1: name.Bezeichnung1,
@@ -25,8 +29,11 @@ export class PatientAdapter extends BaseAdapter {
       Strasse: addr.street,
       plz: addr.zip,
       Ort: addr.place,
-      Telefon1: comm.phone,
-      Email: comm.mail,
+      Telefon1: tel1,
+      Telefon2: tel2,
+      Email: email,
+      NatelNr: mobile,
+      bemerkung: comment,
       type: this.path
     };
     return ret;
@@ -49,6 +56,14 @@ export class PatientAdapter extends BaseAdapter {
     });
     this.makeComment(ret, obj)
     return ret;
+  }
+
+  public getComment(pat: FHIR_Patient) {
+    let found;
+    if (pat.extension) {
+      found = pat.extension.find(c => c.url === "www.elexis.info/extensions/patient/notes");
+    }
+    return (found) ? found.valueString : null;
   }
 
   public makeComment(ret: FHIR_Patient, obj: PatientType) {
