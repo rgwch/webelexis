@@ -23,7 +23,7 @@
         table.string('deleted',1)
         table.string('Origin',40)
         table.string('Zeit',6)
-        table.integer("LASTUPDATE")
+        table.bigint("LASTUPDATE")
         table.binary('ExtInfo')
         table.string('unit')
         table.string('analysetime',24)
@@ -42,7 +42,7 @@
     if(!exists){
       db.schema.createTable(itemsTable,table=>{
         table.string('id',40).primary().unique().notNullable()
-        table.integer("LASTUPDATE")
+        table.bigint("LASTUPDATE")
         table.string('deleted',1)
         table.string('laborid',40)
         table.string('RefMann')

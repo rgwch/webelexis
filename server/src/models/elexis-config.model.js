@@ -13,9 +13,9 @@ module.exports = function (app) {
     ["PatientNummer","0"],
     ["RechnungsNr","0"],
     ["dbversion", "4.0"],
-    ["WebelexisVersion",app.get("version")],
-    ["ElexisVersion","3.5.0"]
-
+    ["webelexis",app.get("version")],
+    ["ElexisVersion","3.5.0"],
+ 
   ]
 
   db.schema.hasTable(tableName).then(exists => {
@@ -25,7 +25,7 @@ module.exports = function (app) {
         table.string('param')
         table.string('wert');
         table.string("deleted",1),
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
       })
         .then(async () => {
           logger.info(`Created ${tableName} table`)

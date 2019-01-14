@@ -10,7 +10,7 @@ describe('\'prescriptions\' service', () => {
   });
   it('loads and updates current medication from unittest',async ()=>{
     const patService=app.service('patient')
-    const list=await patService.find({query: {bezeichnung1:"unittest"}})
+    const list=await patService.find({query: {TitelSuffix:"unittest"}})
     const testperson=list.data[0]
     const medis=await service.find({query: {current: testperson.id}})
     medis.should.be.ok

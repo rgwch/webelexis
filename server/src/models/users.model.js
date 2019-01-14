@@ -19,7 +19,7 @@ module.exports = function (app) {
         table.string('id',40).primary().unique().notNullable();
         table.string('DELETED',1)
         table.string("KONTAKT_ID",40)
-        table.integer("LASTUPDATE")
+        table.bigint("LASTUPDATE")
         table.string("HASHED_PASSWORD",64)
         table.string("SALT",64)
         table.string("IS_ACTIVE",1)

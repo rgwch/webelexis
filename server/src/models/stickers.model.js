@@ -18,7 +18,7 @@ module.exports = function (app) {
         table.string('foreground', 6)
         table.string('background', 6)
         table.string('classes')
-        table.integer('LASTUPDATE');
+        table.bigint('LASTUPDATE');
       })
         .then(() => logger.info(`Created ${etikettenTable} table`))
         .catch(e => logger.error(`Error creating ${etikettenTable} table`, e));
@@ -30,7 +30,7 @@ module.exports = function (app) {
       db.schema.createTable(linkTable, table => {
         table.string('obj', 40)
         table.string('etikette', 40)
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
       })
         .then(() => logger.info(`Created ${linkTable} table`))
         .catch(e => logger.error(`Error creating ${linkTable} table`, e));
@@ -45,7 +45,7 @@ module.exports = function (app) {
         table.string('Datum', 8)
         table.string('Title')
         table.binary('Bild')
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
         table.string("Prefix")
       }).then(() => logger.info(`Created ${imageTable} table`))
         .catch(e => logger.error(`Error creating ${imageTable} table`, e));

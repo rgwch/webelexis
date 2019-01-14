@@ -14,7 +14,7 @@ module.exports = function (app) {
       db.schema.createTable(tableName, table => {
         table.string('id',40).primary().unique().notNullable();
         table.string("deleted",1)
-        table.integer("LASTUPDATE")
+        table.bigint("LASTUPDATE")
         table.string('behandlung',40)
         table.string('leistg_txt')
         table.string('leistg_code',40)

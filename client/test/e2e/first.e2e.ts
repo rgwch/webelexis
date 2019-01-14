@@ -10,7 +10,7 @@ describe('Webelexis', () => {
     browser.sleep(5000)
   })
 
-  it('finds patient with name "unittest"', async () => {
+  it('finds patient with TitelSuffix "unittest"', async () => {
     await login()
     await browser.sleep(2000)
     const inp = element(by.id('$find_search'))

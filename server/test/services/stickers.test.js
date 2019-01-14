@@ -5,7 +5,7 @@ require('chai').should()
 describe('\'stickers\' service', () => {
   const service = app.service('stickers');
 
-  it('registered the service', () => {  
+  it('registered the service', () => {
     assert.ok(service, 'Registered the service');
   });
 
@@ -24,9 +24,9 @@ describe('\'stickers\' service', () => {
 
   it("retrieves sticker ids for a patient",async ()=>{
     const patService=app.service('patient')
-    const pats=await patService.find({query:{Bezeichnung1: "unittest"}})
+    const pats=await patService.find({query:{TitelSuffix: "unittest"}})
     const pat=pats.data[0]
-  
+
     const stickers=await service.find({query:{forPatient:pat.id}})
     stickers.should.be.ok
 

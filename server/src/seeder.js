@@ -9,15 +9,14 @@ const roles = require('../config/roles')
 
 /**
  * In testing-mode, Seeder creates data to initialize the NeDB-databases.
- * In the Elexis-Database a Patient with a last name of "unittest" must
+ * In the Elexis-Database a Patient with a TitelSuffix field of "unittest" must
  * exist, otherwise seeder will throw an error.
  */
 
 module.exports = async function (app) {
-  // Find patient with name 'unittest' and exit if not found
+  // Find patient with TitelSuffix 'unittest' and exit if not found
   const pats = app.service('patient')
-  //const allpats= await pats.find({query:{Bezeichnung2: {$like: "ar%"}}})
-  const testpat = await pats.find({ query: { Bezeichnung1: "unittest" } })
+  const testpat = await pats.find({ query: { TitelSuffix: "unittest" } })
   if (!testpat || !testpat.data || testpat.data.length < 1) {
     logger.error("No Patient with name 'unittest' found. See src/seeder.js")
     throw new Error("No Patient with name 'unittest' found. See src/seeder.js")

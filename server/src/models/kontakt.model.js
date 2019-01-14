@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 const logger = require('../logger')
@@ -36,7 +36,7 @@ function createTable(db, tableName) {
     table.text('bemerkung')
     table.binary('diagnosen')
     table.string('deleted', 1)
-    table.integer('LASTUPDATE')
+    table.bigint('LASTUPDATE')
     table.string('TitelSuffix')
   })
 }
@@ -44,13 +44,14 @@ function createTable(db, tableName) {
 function insertPatient(db, tableName) {
   return db(tableName).insert({
     id: "007007007",
-    Bezeichnung1: "unittest",
-    Bezeichnung2: "Elektra",
+    Bezeichnung1: "Testperson",
+    Bezeichnung2: "Armeswesen",
     geschlecht: "f",
     istpatient: "1",
     istperson: "1",
     geburtsdatum: "19700506",
     deleted: "0",
+    TitelSuffix: "unittest",
     lastupdate: new Date().getTime()
   })
 }
@@ -62,9 +63,11 @@ module.exports = function (app) {
     if (!exists) {
       createTable(db, tableName).then(() => {
         logger.info(`Created ${tableName} table`)
-        insertPatient()
+        insertPatient(db,tableName)
       }).then(() => {
         logger.info("added unittest patient")
+      }).catch(err=>{
+        logger.error(`Error creating ${tableName}`,err )
       })
     }
   }).catch(err => {

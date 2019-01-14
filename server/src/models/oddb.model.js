@@ -1,9 +1,12 @@
-/* eslint-disable no-console */
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
 
-// oddb-model.js - A KnexJS
-// 
-// See http://knexjs.org/
-// for more of what you can do here.
+/* eslint-disable no-console */
+const logger = require('../logger')
+
 module.exports = function (app) {
   const db = app.get('knexClient');
   const tableName = 'oddb';
@@ -13,11 +16,11 @@ module.exports = function (app) {
         table.increments('id');
         table.string('text');
       })
-        .then(() => console.log(`Created ${tableName} table`))
-        .catch(e => console.error(`Error creating ${tableName} table`, e));
+        .then(() => logger.info(`Created ${tableName} table`))
+        .catch(e => logger.error(`Error creating ${tableName} table`, e));
     }
   });
-  
+
 
   return db;
 };

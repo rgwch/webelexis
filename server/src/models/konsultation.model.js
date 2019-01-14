@@ -20,7 +20,7 @@ module.exports = function (app) {
         table.string('leistungen')
         table.binary('eintrag')
         table.string('deleted',1)
-        table.integer('LASTUPDATE')
+        table.bigint('lastupdate')
         table.string('Zeit',8)
 
       })

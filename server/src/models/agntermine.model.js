@@ -30,7 +30,7 @@ module.exports = async function (app) {
         table.string('deleted', 1)
         table.text("Extension")
         table.string('linkgroup')
-        table.integer('lastupdate')
+        table.bigint('lastupdate')
         table.text('StatusHistory')
         table.string('priority', 1)
         table.string('caseType', 1)

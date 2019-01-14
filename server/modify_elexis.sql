@@ -5,7 +5,8 @@ alter table agntermine
   modify ErstelltVon varchar(80);
 
 alter table artikel modify id varchar(40),
-	modify lieferantid varchar(40);
+	modify lieferantid varchar(40),
+  modify extid varchar(40);
 
 alter table artikel_details modify ARTICLE_ID varchar(40);
 
@@ -386,7 +387,8 @@ alter table tarmed
   change ID id varchar(40);
 
 alter table tarmed_extension
-  modify Code varchar(40);
+  modify Code varchar(40),
+  modify id varchar(40);
 
 alter table traces
   modify workstation varchar(80);
@@ -420,3 +422,5 @@ alter table xid
 alter table zahlungen
   modify id varchar(40),
   modify rechnungsid varchar(40);
+
+insert into config(param,wert) values("webelexis","3.0.5")

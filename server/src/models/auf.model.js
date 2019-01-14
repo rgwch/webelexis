@@ -24,7 +24,7 @@ module.exports = function (app) {
         table.string('BriefID',40)
         table.string('DatumAUZ',8)
         table.string('deleted',1)
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
       })
         .then(() => logger.info(`Created ${tableName} table`))
         .catch(e => logger.error(`Error creating ${tableName} table`, e));

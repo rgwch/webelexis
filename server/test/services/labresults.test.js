@@ -12,7 +12,7 @@ describe('\'labresults\' service', () => {
 
   it('retrieves results from unittest',async ()=>{
     const patService=app.service('patient')
-    const pats=await patService.find({query:{Bezeichnung1: "unittest"}})
+    const pats=await patService.find({query:{TitelSuffix: "unittest"}})
     const pat=pats.data[0]
     const results=await labService.find({query: {patientId: pat.id}})
     results.should.be.ok
@@ -20,7 +20,7 @@ describe('\'labresults\' service', () => {
   })
   it('skips 2 and limits to 10',async ()=>{
     const patService=app.service('patient')
-    const pats=await patService.find({query:{Bezeichnung1: "unittest"}})
+    const pats=await patService.find({query:{TitelSuffix: "unittest"}})
     const pat=pats.data[0]
     const results= await labService.find({query:{patientId: pat.id,$skip:2,$limit:10}})
     results.should.be.ok

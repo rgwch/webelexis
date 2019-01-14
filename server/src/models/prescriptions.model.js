@@ -22,7 +22,7 @@ module.exports = function (app) {
         table.string('RpZusatz',80)
         table.string('BriefID', 40)
         table.string('deleted', 1)
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
       })
         .then(() => logger.info(`Created ${rpTableName} table`))
         .catch(e => logger.error(`Error creating ${rpTableName} table`, e));
@@ -34,7 +34,7 @@ module.exports = function (app) {
       db.schema.createTable(prescTableName, table => {
         table.string('id', 40).primary().unique().notNullable()
         table.string('deleted', 1)
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
         table.string('Dosis')
         table.string('Bemerkung')
         table.string('patientid', 40)

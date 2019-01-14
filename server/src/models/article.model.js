@@ -9,6 +9,7 @@ const logger = require('../logger')
 module.exports = function (app) {
   const db = app.get('knexClient');
   const tableName = 'artikelstamm_ch';
+  const legacyName = 'artikel';
 
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
@@ -55,6 +56,36 @@ module.exports = function (app) {
     }
   });
 
+  db.schema.hasTable(legacyName).then(exists=>{
+    if(!exists){
+      db.schema.createTable(legacyName,table=>{
+        table.string("id",40).primary()
+        table.string("subid",20)
+        table.string("lieferantid",40)
+        table.string("Name")
+        table.string("Name_intern")
+        table.string("maxbestand",4)
+        table.string("minbestand",4)
+        table.string("istbestand",4)
+        table.string("ek_preis",8)
+        table.string("vk_preis",8)
+        table.string("typ",15)
+        table.string("codeclass",10)
+        table.string("extid",40)
+        table.binary("extinfo")
+        table.string("Klasse",80)
+        table.string("deleted",1)
+        table.string("EAN",15)
+        table.bigint("lastupdate")
+        table.string("ValidFrom",8)
+        table.string("ValidTo",8)
+        table.string("ATC_Code")
+      })
+      .then(() => logger.info(`Created ${legacyName} table`))
+      .catch(e => logger.error(`Error creating ${legacyName} table`, e));
+
+    }
+  })
 
   return db;
 };

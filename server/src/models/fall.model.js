@@ -27,7 +27,7 @@ module.exports = function (app) {
         table.binary('EXTINFO')
         table.string('status')
         table.string('deleted',1)
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
       })
         .then(() => logger.info(`Created ${tableName} table`))
         .catch(e => logger.error(`Error creating ${tableName} table`, e));

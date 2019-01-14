@@ -11,7 +11,7 @@ module.exports = function (app) {
         table.string('name',30)
         table.binary('leistungen')
         table.string('deleted',1)
-        table.integer('LASTUPDATE')
+        table.bigint('LASTUPDATE')
         table.string('Macro',30)
         table.string('codeelements')
       })

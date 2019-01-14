@@ -30,7 +30,7 @@ export class Detail {
       const actview = this.views.find(v => v.name.toLowerCase() == params.vi)
       this.active = actview
     }
-    return this.patService.find({ query: { Bezeichnung1: "unittest" } }).then(p => {
+    return this.patService.find({ query: { TitelSuffix: "unittest" } }).then(p => {
       if (!p || !p.data || p.data.length < 1) {
         alert("No Patient for testing found")
       }

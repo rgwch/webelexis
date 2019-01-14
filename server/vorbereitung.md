@@ -21,22 +21,22 @@ Das SQL-Script modify_elexis.sql (anwenden z.B. mit `use elexis; source modify_e
 *Achtung*: Wenn Sie diese Datenbankanpassung unterlassen, werden sporadisch 'seltsame' Fehler auftreten.
 Zum Beispiel werden möglicherweise Objekte verwechselt (weil die id in 24 statt 40 Felder gespeichert wird und somit eventuell nicht mehr eindeutig ist)
 
-Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, und der, der es wieder einspielt, Superuser-Rechte haben: 
+Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, und der, der es wieder einspielt, Superuser-Rechte haben:
 
     create user backupadmin@'localhost' identified by 'supersecret';
     grant SUPER on *.* to backupadmin@'localhost';
 
-Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Datenbank ein Patient namens 'unittest' existieren. Beispiel:
+Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Datenbank ein Patient mit TitelSuffix 'unittest' existieren. Beispiel:
 
     use elexis;
-    update kontakt set Bezeichnung1="unittest" where Bezeichnung1 like "Test%" and istPatient="1" and deleted="0" limit 1;`
+    update kontakt set TitelSuffix="unittest" where Bezeichnung1 like "Test%" and istPatient="1" and deleted="0" limit 1;`
 
 
 ### Lucinda installieren
 
-Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/lucinda/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore. 
+Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/lucinda/) als Dokumentenverwaltungssystem. Das hat viele Vorteile gegenüber Omnivore.
 
-Installation und Konfiguration von Lucinda ist vergleichsweise simpel. 
+Installation und Konfiguration von Lucinda ist vergleichsweise simpel.
 
 
 ### Nodejs installieren
@@ -72,7 +72,7 @@ In data/settings.js die Verbindungsdaten zu einer für Webelexis angepassten Ele
 In server/config/default.json bzw. production.json das authentication secret gegen etwas austauschen, was nicht hier im Internet steht.
 
 
-Damit die Unit-Tests gelingen, irgendeinen Test-Patienten in "unittest" umbenennen (s.o.)Vorname und sonstige Personalien sind egal.
+Damit die Unit-Tests gelingen, irgendeinen Test-Patienten als "unittest" markieren (s.o.).
 
     npm test
 
@@ -87,7 +87,7 @@ Dann Server mit `npm start` laufen lassen.
     npm install -g aurelia-cli
     au run
 
-Dann einen Browser auf localhost:9000 richten.    
+Dann einen Browser auf localhost:9000 richten.
 
 # Alternative: Docker
 
