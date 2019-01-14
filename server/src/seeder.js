@@ -18,8 +18,8 @@ module.exports = async function (app) {
   const pats = app.service('patient')
   const testpat = await pats.find({ query: { TitelSuffix: "unittest" } })
   if (!testpat || !testpat.data || testpat.data.length < 1) {
-    logger.error("No Patient with name 'unittest' found. See src/seeder.js")
-    throw new Error("No Patient with name 'unittest' found. See src/seeder.js")
+    logger.error("No Patient with TitelSuffix 'unittest' found. See src/seeder.js")
+    throw new Error("No Patient with TitelSuffix 'unittest' found. See src/seeder.js")
   }
   const pat = testpat.data[0]
   logger.info("found patient 'unittest'")

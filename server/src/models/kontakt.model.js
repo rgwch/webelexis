@@ -63,7 +63,7 @@ module.exports = function (app) {
     if (!exists) {
       createTable(db, tableName).then(() => {
         logger.info(`Created ${tableName} table`)
-        insertPatient(db,tableName)
+        return insertPatient(db,tableName)
       }).then(() => {
         logger.info("added unittest patient")
       }).catch(err=>{

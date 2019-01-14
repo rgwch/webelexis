@@ -61,7 +61,7 @@ export class LeistungsblockManager {
     return elems
   }
 
-  private async createBillings(lb: LeistungsblockType, kons: EncounterType, others: BillingModel[]) {
+  public async createBillings(lb: LeistungsblockType, kons: EncounterType, others: BillingModel[]) {
     const elemente = lb.billables || lb.elements
     const billables = await Promise.all(elemente.map(el => {
       return this.bm.getBillable(el.system + "!" + el.code)
