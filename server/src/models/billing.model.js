@@ -4,36 +4,76 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const logger = require('../logger')
+const logger = require("../logger")
 
-module.exports = function (app) {
-  const db = app.get('knexClient');
-  const tableName = 'leistungen';
+module.exports = function(app) {
+  const db = app.get("knexClient")
+  const tableName = "leistungen"
+  const buyprices = "ek_preise"
+  const sellprices = "vk_preise"
   db.schema.hasTable(tableName).then(exists => {
-    if(!exists) {
-      db.schema.createTable(tableName, table => {
-        table.string('id',40).primary().unique().notNullable();
-        table.string("deleted",1)
-        table.bigint("LASTUPDATE")
-        table.string('behandlung',40)
-        table.string('leistg_txt')
-        table.string('leistg_code',40)
-        table.string("klasse",80)
-        table.string("zahl",3)
-        table.string('ek_kosten',6)
-        table.string('VK_TP',8)
-        table.string('VK_SCALE',8)
-        table.string('vk_preis',6)
-        table.string('SCALE',4)
-        table.string('SCALE2',4)
-        table.string('userID',40)
-        table.binary('DETAIL')
-      })
+    if (!exists) {
+      db.schema
+        .createTable(tableName, table => {
+          table
+            .string("id", 40)
+            .primary()
+            .unique()
+            .notNullable()
+          table.string("deleted", 1)
+          table.bigint("LASTUPDATE")
+          table.string("behandlung", 40)
+          table.string("leistg_txt")
+          table.string("leistg_code", 40)
+          table.string("klasse", 80)
+          table.string("zahl", 3)
+          table.string("ek_kosten", 6)
+          table.string("VK_TP", 8)
+          table.string("VK_SCALE", 8)
+          table.string("vk_preis", 6)
+          table.string("SCALE", 4)
+          table.string("SCALE2", 4)
+          table.string("userID", 40)
+          table.binary("DETAIL")
+        })
         .then(() => logger.info(`Created ${tableName} table`))
-        .catch(e => logger.error(`Error creating ${tableName} table`, e));
+        .catch(e => logger.error(`Error creating ${tableName} table`, e))
     }
-  });
+  })
 
+  db.schema.hasTable(buyprices).then(has => {
+    if (!has) {
+      db.schema
+        .createTable(buyprices, table => {
+          table.string("typ", 80)
+          table.string("id", 40)
+          table.string("datum_von", 8)
+          table.string("datum_bis", 8)
+          table.string("MULTIPLIKATOR", 8)
+          table.bigint("LASTUPDATE")
+          table.string("deleted", 1)
+        })
+        .then(() => logger.info(`Created ${buyprices} table`))
+        .catch(e => logger.error(`Error creating ${buyprices} table`, e))
+    }
+  })
 
-  return db;
-};
+  db.schema.hasTable(sellprices).then(has => {
+    if (!has) {
+      db.schema
+        .createTable(sellprices, table => {
+          table.string("typ", 80)
+          table.string("id", 40)
+          table.string("datum_von", 8)
+          table.string("datum_bis", 8)
+          table.string("MULTIPLIKATOR", 8)
+          table.bigint("LASTUPDATE")
+          table.string("deleted", 1)
+        })
+        .then(() => logger.info(`Created ${sellprices} table`))
+        .catch(e => logger.error(`Error creating ${sellprices} table`, e))
+    }
+  })
+
+  return db
+}

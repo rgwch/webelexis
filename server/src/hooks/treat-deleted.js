@@ -9,19 +9,17 @@
  * Except elexis-userconfig (table has no 'deleted' field)
  * @param {*} options
  */
-module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
+module.exports = function(options = {}) {
   return context => {
-    if (context.path !== 'elexis-userconfig') {
+    if (context.path !== "elexis-userconfig") {
       if (context.params.query) {
         if (!context.params.query.deleted) {
           context.params.query.deleted = "0"
-
         }
-
       } else {
         context.params.query = { deleted: "0" }
       }
     }
-    return context;
-  };
-};
+    return context
+  }
+}

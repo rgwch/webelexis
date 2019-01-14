@@ -27,7 +27,7 @@ const adapter = async ctx => {
   const encounter = await encounterService.get(ctx.data.encounter_id)
   const caseService = ctx.app.service('fall')
   const fall = await caseService.get(encounter.fallid)
-  let billingsystem = fall.extjson.billing
+  let billingsystem = fall.extjson ? fall.extjson.billing : undefined
   if (!billingsystem) {
     billingsystem = fall.gesetz
     if (!billingsystem) {
@@ -49,6 +49,7 @@ const adapter = async ctx => {
   billing.vk_preis = Math.round(tp*scale)
   billing.id=uuid()
   billing.lastupdate=new Date().getTime()
+  billing.deleted="0"
   ctx.data = billing
   return ctx
 }
@@ -61,22 +62,22 @@ const check=ctx=>{
 module.exports = {
   before: {
     all: [authenticate('jwt')],
-    find: [],
+    find: [check],
     get: [],
     create: [adapter],
     update: [],
     patch: [],
-    remove: [check]
+    remove: []
   },
 
   after: {
     all: [],
-    find: [],
+    find: [check],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: [check]
+    remove: []
   },
 
   error: {

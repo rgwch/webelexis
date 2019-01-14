@@ -210,6 +210,7 @@ alter table diagnosen modify id varchar(40);
 alter table eigenleistungen change ID id varchar(40);
 
 alter table ek_preise modify id varchar(40);
+alter table ek_preise add deleted char(1);
 
 alter table elexisbefunde modify id varchar(40),
 	modify patientid varchar(40);
@@ -414,6 +415,7 @@ alter table verrechnetcopy
 
 alter table vk_preise
   modify id varchar(40);
+alter table vk_preise add deleted char(1);
 
 alter table xid
   change ID id varchar(40),
