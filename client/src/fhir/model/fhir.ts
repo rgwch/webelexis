@@ -13,21 +13,23 @@
  * uri: xs:anyURI
  */
 export type date= string
-export type time=string
-export type dateTime=string
-export type uri=string
-export type id=string
-export type code=string
-export type instant= string
-export type xhtml=string
-export type positiveInt= number
-export type GENDER="male"|"female"|"other"|"unknown"
-export type comparator="<"|"<="|">="|">"
-export type unitOfTime="s"|"min"|"h"|"d"|"wk"|"mo"|"a"
-export type decimal=number
+export type time = string
+export type dateTime = string
+export type uri = string
+export type id = string
+export type code = string
+export type instant = string
+export type xhtml = string
+export type positiveInt = number
+export type GENDER = "male"|"female"|"other"|"unknown"
+export type comparator = "<"|"<="|">="|">"
+export type unitOfTime = "s"|"min"|"h"|"d"|"wk"|"mo"|"a"
+export type decimal = number
 export type ENCOUNTER_STATUS = "planned" | "arrived" | "in-progress" | "onleave" | "finished" | "cancelled"
 export type ENCOUNTER_CLASS = "inpatient" | "outpatient" | "ambulatory" | "emergency"
-export type EPISODE_STATUS="planned"|"waitlist"|"active"|"active"|"onhold"|"finished"|"cancelled"
+export type EPISODE_STATUS = "planned"|"waitlist"|"active"|"active"|"onhold"|"finished"|"cancelled"
+
+/* tslint:disable class-name */
 
 export interface FHIR_Address {
   use?: "home"|"work"|"old"|"temp"|"other"
@@ -44,10 +46,10 @@ export interface FHIR_Address {
 export interface FHIR_Attachment {
   contentType: string
   language: string
-  data: Array<number>
+  data: number[]
   url: uri
   size: number
-  hash: Array<number>
+  hash: number[]
   title: string
   creation: string
 }
@@ -67,7 +69,7 @@ export interface FhirBundle {
   entry: FHIR_ResourceEntry[]
 }
 export interface FHIR_CodeableConcept {
-  coding: Array<FHIR_Coding>
+  coding: FHIR_Coding[]
   text: string
 }
 export interface FHIR_Coding {
@@ -116,7 +118,7 @@ export interface FHIR_Meta {
   tag?: FHIR_Coding
 }
 
-export interface FHIR_Narrative{
+export interface FHIR_Narrative {
   status: "generated"|"extensions"|"additional"|"empty"
   div: xhtml
 }
@@ -144,16 +146,16 @@ export interface FHIR_Reference {
   display: string
 }
 export interface FHIR_Resource extends FHIR_Element {
-  resourceType:string
-  id:id
+  resourceType: string
+  id: id
   text?: FHIR_Narrative
   meta?: FHIR_Meta
   implicitRules?: uri
   language?: code
-  identifier?: Array<FHIR_Identifier>
-  contained?:FHIR_Resource
+  identifier?: FHIR_Identifier[]
+  contained?: FHIR_Resource
 }
-export interface FHIR_SampledData{
+export interface FHIR_SampledData {
   origin: FHIR_Quantity
   period: number
   factor: number
@@ -163,7 +165,7 @@ export interface FHIR_SampledData{
   data: string
 }
 export interface FHIR_Timing extends FHIR_Element {
-  event: Array<dateTime>
+  event: dateTime[]
   repeat: {
     boundsQuantity: FHIR_Quantity
     boundsRange: FHIR_Range
@@ -198,7 +200,7 @@ export interface FHIR_Appointment extends FHIR_Resource {
   slot: FHIR_Reference
   comment: string
   participant: Array<{
-    type?: Array<FHIR_CodeableConcept>
+    type?: FHIR_CodeableConcept[]
     actor: FHIR_Reference
     required: "required"|"optional"|"information-only"
     status: "accepted"|"declined"|"tentative"|"needs-action"
@@ -216,7 +218,7 @@ export interface FHIR_Condition extends FHIR_Resource {
   severity: FHIR_CodeableConcept
   onsetDateTime: dateTime
   abatementDateTime: dateTime
-  stage:{
+  stage: {
     summary: FHIR_CodeableConcept
     assessment: FHIR_Reference
   }
@@ -224,7 +226,7 @@ export interface FHIR_Condition extends FHIR_Resource {
     code: FHIR_CodeableConcept
     detail: FHIR_Reference
   }>
-  bodySite: Array<FHIR_CodeableConcept>
+  bodySite: FHIR_CodeableConcept[]
   notes: string
 }
 export interface FHIR_DocumentReference extends FHIR_Resource {
@@ -232,7 +234,7 @@ export interface FHIR_DocumentReference extends FHIR_Resource {
   subject: FHIR_Reference
   type: FHIR_CodeableConcept
   class: FHIR_CodeableConcept
-  author: Array<FHIR_Reference>
+  author: FHIR_Reference[]
   custodian: FHIR_Reference
   authenticator: FHIR_Reference
   created: dateTime
@@ -244,14 +246,14 @@ export interface FHIR_DocumentReference extends FHIR_Resource {
     target: FHIR_Reference
   }>
   description: string
-  securityLabel: Array<FHIR_CodeableConcept>
+  securityLabel: FHIR_CodeableConcept[]
   content: Array<{
     attachment: FHIR_Attachment
-    format: Array<FHIR_Coding>
+    format: FHIR_Coding[]
   }>
-  context:{
+  context: {
     encounter: FHIR_Reference
-    event: Array<FHIR_CodeableConcept>
+    event: FHIR_CodeableConcept[]
     period: FHIR_Period
     facilityType: FHIR_CodeableConcept
     practiceSetting: FHIR_CodeableConcept
@@ -270,21 +272,21 @@ export interface FHIR_Encounter extends FHIR_Resource {
     period: FHIR_Period
   }>
   class: ENCOUNTER_CLASS
-  type: Array<FHIR_CodeableConcept>
+  type: FHIR_CodeableConcept[]
   priority: FHIR_CodeableConcept
   patient: FHIR_Reference
-  episodeOfCare: Array<FHIR_Reference>
-  incomingReferral: Array<FHIR_Reference>
+  episodeOfCare: FHIR_Reference[]
+  incomingReferral: FHIR_Reference[]
   participant: Array<{
-    type: Array<FHIR_CodeableConcept>
+    type: FHIR_CodeableConcept[]
     period: FHIR_Period
     individual: FHIR_Reference
   }>
   appointment: FHIR_Reference
   period: FHIR_Period
   length: FHIR_Quantity
-  reason: Array<FHIR_CodeableConcept>
-  indication: Array<FHIR_Reference>    // reference to Condition/Procedure
+  reason: FHIR_CodeableConcept[]
+  indication: FHIR_Reference[]    // reference to Condition/Procedure
   // hospitalization related properties omitted
   location: Array<{
     location: FHIR_Reference
@@ -301,15 +303,15 @@ export interface FHIR_EpisodeOfCare extends FHIR_Resource {
     status: EPISODE_STATUS
     period: FHIR_Period
   }>
-  type: Array<FHIR_CodeableConcept>
-  condition: Array<FHIR_Reference>
+  type: FHIR_CodeableConcept[]
+  condition: FHIR_Reference[]
   patient: FHIR_Reference
   managingOrganization: FHIR_Reference
   period: FHIR_Period
   referralRequest: FHIR_Reference
   careManager: FHIR_Reference
   careTeam: Array<{
-    role: Array<FHIR_CodeableConcept>
+    role: FHIR_CodeableConcept[]
     period: FHIR_Period
     member: FHIR_Reference
   }>
@@ -324,7 +326,7 @@ export interface FHIR_Flag extends FHIR_Resource {
   code: FHIR_CodeableConcept
 }
 export interface FHIR_Medication extends FHIR_Resource {
-  code: Array<FHIR_CodeableConcept>
+  code: FHIR_CodeableConcept[]
   isBrand?: boolean
   manufacturer?: FHIR_Reference
   product?: {
@@ -338,7 +340,7 @@ export interface FHIR_Medication extends FHIR_Resource {
     lotNumber: string
     expirationDate: dateTime
   }>
-  package?:{
+  package?: {
     container: FHIR_CodeableConcept
     content: Array<{
       item: FHIR_Reference
@@ -353,8 +355,8 @@ export interface FHIR_MedicationAdministration extends FHIR_Resource {
   encounter: FHIR_Reference
   prescription: FHIR_Reference
   wasNotGiven: boolean
-  reasonNotGiven: Array<FHIR_CodeableConcept>
-  reasonGiven: Array<FHIR_CodeableConcept>
+  reasonNotGiven: FHIR_CodeableConcept[]
+  reasonGiven: FHIR_CodeableConcept[]
   effectiveTimeDateTime: dateTime
   medicationCodeableConcept: FHIR_CodeableConcept
   medicationReference: FHIR_Reference
@@ -399,21 +401,21 @@ export interface FHIR_MedicationOrder extends FHIR_Resource {
     rateRange: FHIR_Range
     maxDosePerPeriod: FHIR_Ratio
   }>
-  dispenseRequest:{
+  dispenseRequest: {
     medicationReference: FHIR_Reference
     validityPeriod: FHIR_Period
     numberOfRepeatsAllowed: number
     quantity: FHIR_Quantity
     expectedSupplyDuration: FHIR_Quantity
   }
-  substitution:{
+  substitution: {
     type: FHIR_CodeableConcept
     reson: FHIR_CodeableConcept
   }
   priorPrescription: FHIR_Reference
 }
-export interface FHIR_Observation extends FHIR_Resource{
-  status:"registered"|"preliminary"|"final"|"amended"|string
+export interface FHIR_Observation extends FHIR_Resource {
+  status: "registered"|"preliminary"|"final"|"amended"|string
   category: FHIR_CodeableConcept
   code: FHIR_CodeableConcept
   subject: FHIR_Reference
@@ -424,23 +426,23 @@ export interface FHIR_Observation extends FHIR_Resource{
   performer: FHIR_Reference
   valueQuantity?: FHIR_Quantity
   valueCodeableConcept?: FHIR_CodeableConcept
-  valueString?:string
+  valueString?: string
   valueRange?: FHIR_Range
   valueRatio?: FHIR_Ratio
-  valueSampledData?:FHIR_SampledData
+  valueSampledData?: FHIR_SampledData
   valueAttachment?: FHIR_Attachment
-  valueTime?:time
-  valueDateDime?:dateTime
-  valuePeriod?:FHIR_Period
-  dataAbsentReason:FHIR_CodeableConcept
-  interpretation:FHIR_CodeableConcept
+  valueTime?: time
+  valueDateDime?: dateTime
+  valuePeriod?: FHIR_Period
+  dataAbsentReason: FHIR_CodeableConcept
+  interpretation: FHIR_CodeableConcept
   comments: string
   bodySite: FHIR_CodeableConcept
-  method:FHIR_CodeableConcept
+  method: FHIR_CodeableConcept
   specimen: FHIR_Reference
   referenceRange: Array<{
     low: FHIR_Quantity
-    high:FHIR_Quantity
+    high: FHIR_Quantity
     meaning: FHIR_CodeableConcept
     age: FHIR_Range
     text: string
@@ -449,22 +451,22 @@ export interface FHIR_Observation extends FHIR_Resource{
     type: "has-member"|"derived-from"|"sequel-to"|"replaces"|"qualified-by"|"interfered-by"
     target: FHIR_Reference
   }>
-  component:Array<{
+  component: Array<{
     code: FHIR_CodeableConcept
     valueQuantity?: FHIR_Quantity
     valueCodeableConcept?: FHIR_CodeableConcept
-    valueString?:string
+    valueString?: string
     valueRange?: FHIR_Range
     valueRatio?: FHIR_Ratio
-    valueSampledData?:FHIR_SampledData
+    valueSampledData?: FHIR_SampledData
     valueAttachment?: FHIR_Attachment
-    valueTime?:time
-    valueDateDime?:dateTime
-    valuePeriod?:FHIR_Period
-    dataAbsentReason:FHIR_CodeableConcept
+    valueTime?: time
+    valueDateDime?: dateTime
+    valuePeriod?: FHIR_Period
+    dataAbsentReason: FHIR_CodeableConcept
     referenceRange: Array<{
       low: FHIR_Quantity
-      high:FHIR_Quantity
+      high: FHIR_Quantity
       meaning: FHIR_CodeableConcept
       age: FHIR_Range
       text: string
@@ -476,13 +478,13 @@ export interface FHIR_Organization extends FHIR_Resource {
   active: boolean
   type: FHIR_CodeableConcept
   name: string
-  telecom: Array<FHIR_ContactPoint>
-  address: Array<FHIR_Address>
+  telecom: FHIR_ContactPoint[]
+  address: FHIR_Address[]
   partOf: FHIR_Reference
   contact: Array<{
     purpose: FHIR_CodeableConcept
     name: FHIR_HumanName
-    telecom: Array<FHIR_ContactPoint>
+    telecom: FHIR_ContactPoint[]
     address: FHIR_Address
   }>
 }
@@ -492,7 +494,7 @@ export interface FHIR_Patient extends FHIR_Resource {
   telecom?: FHIR_ContactPoint[]
   gender?: GENDER
   birthDate?: date
-  deceasedBoolean? : boolean
+  deceasedBoolean?: boolean
   deceasedDateTime?: dateTime
   address?: FHIR_Address[]
   maritalStatus?: FHIR_CodeableConcept
@@ -522,34 +524,34 @@ export interface FHIR_Patient extends FHIR_Resource {
 export interface FHIR_Practitioner extends FHIR_Resource {
   active: boolean
   name: FHIR_HumanName
-  telecom: Array<FHIR_ContactPoint>
-  address: Array<FHIR_Address>
+  telecom: FHIR_ContactPoint[]
+  address: FHIR_Address[]
   gender: GENDER
   birthDate: date
-  photo: Array<FHIR_Attachment>
+  photo: FHIR_Attachment[]
   practitionerRole: Array<{
     managingOrganization: FHIR_Reference
     role: FHIR_CodeableConcept
-    specialty: Array<FHIR_CodeableConcept>
+    specialty: FHIR_CodeableConcept[]
     period: FHIR_Period
     location: FHIR_Reference
-    healthcareService: Array<FHIR_Reference>
+    healthcareService: FHIR_Reference[]
   }>
   qualification: Array<{
-    identifier: Array<FHIR_Identifier>
+    identifier: FHIR_Identifier[]
     code: FHIR_CodeableConcept
     period: FHIR_Period
     issuer: FHIR_Reference
   }>
-  communication: Array<FHIR_CodeableConcept>
+  communication: FHIR_CodeableConcept[]
 }
-export interface FHIR_Schedule extends FHIR_Resource{
+export interface FHIR_Schedule extends FHIR_Resource {
   type?: FHIR_CodeableConcept
   actor: FHIR_Reference
-  planningHorizon?:FHIR_Period
+  planningHorizon?: FHIR_Period
   comment?: string
 }
-export interface FHIR_Slot extends FHIR_Resource{
+export interface FHIR_Slot extends FHIR_Resource {
   type?: FHIR_CodeableConcept
   schedule?: FHIR_Reference
   freeBusyType: "busy"|"free"|"busy-unavailable"|"busy-tentative"
