@@ -22,15 +22,16 @@ export interface KontaktType extends ElexisType {
   istmandant?: string;
   istorganisation?: string;
   geschlecht?: "m" | "f" | "w" | "?";
-  strasse?: string;
+  Strasse?: string;
   plz?: string;
-  ort?: string;
-  telefon1?: string;
-  telefon2?: string;
+  Ort?: string;
+  Telefon1?: string;
+  Telefon2?: string;
   Titel?: string
   TitelSuffix?: string
-  natel?: string;
-  email?: string;
+  NatelNr?: string;
+  Email?: string;
+  bemerkung?: string;
 }
 
 export class Kontakt {

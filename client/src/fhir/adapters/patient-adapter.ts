@@ -22,11 +22,11 @@ export class PatientAdapter extends BaseAdapter {
       TitelSuffix: name.TitelSuffix,
       geburtsdatum: super.getDate(fhirpat.birthDate),
       geschlecht: gender,
-      strasse: addr.street,
+      Strasse: addr.street,
       plz: addr.zip,
-      ort: addr.place,
-      telefon1: comm.phone,
-      email: comm.mail,
+      Ort: addr.place,
+      Telefon1: comm.phone,
+      Email: comm.mail,
       type: this.path
     };
     return ret;
@@ -43,9 +43,22 @@ export class PatientAdapter extends BaseAdapter {
         obj.Bezeichnung1
       ),
       gender: super.makeGender(obj.geschlecht),
-      birthDate: super.makeDate(obj.geburtsdatum)
+      birthDate: super.makeDate(obj.geburtsdatum),
+      telecom: super.makeComm(obj),
+      address: super.makeAddress(obj)
     });
+    this.makeComment(ret, obj)
     return ret;
+  }
+
+  public makeComment(ret: FHIR_Patient, obj: PatientType) {
+    if (obj.bemerkung) {
+      ret.extension = []
+      ret.extension.push({
+        url: "www.elexis.info/extensions/patient/notes",
+        valueString: obj.bemerkung
+      })
+    }
   }
 
   public transformQuery(q) {

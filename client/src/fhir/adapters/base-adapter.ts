@@ -1,5 +1,6 @@
 import { FhirBundle } from 'fhir/model/fhir';
 import { ElexisType } from 'models/elexistype';
+import { KontaktType } from 'models/kontakt';
 import { IFhirAdapter } from 'fhir/fhir-api';
 import { FHIR_Resource, FHIR_HumanName, GENDER, FHIR_Address, FHIR_ContactPoint } from './../model/fhir';
 import { IQueryResult } from 'services/datasource';
@@ -151,4 +152,50 @@ export abstract class BaseAdapter implements IFhirAdapter {
       return null
     }
   }
+
+  public makeAddress(contact: KontaktType): FHIR_Address[] {
+    const ret = []
+    ret.push({
+      use: "home",
+      city: contact.Ort,
+      postalCode: contact.plz,
+      line: [
+        contact.Strasse
+      ]
+    })
+    return ret
+  }
+
+  public makeComm(contact: KontaktType): FHIR_ContactPoint[] {
+    const ret = []
+    if (contact.Email) {
+      ret.push({
+        system: "email",
+        value: contact.Email
+      })
+    }
+    if (contact.Telefon1) {
+      ret.push({
+        system: "phone",
+        use: "work",
+        value: contact.Telefon1
+      })
+    }
+    if (contact.Telefon2) {
+      ret.push({
+        system: "phone",
+        use: "home",
+        value: contact.Telefon2
+      })
+    }
+    if (contact.NatelNr) {
+      ret.push({
+        system: "phone",
+        use: "mobile",
+        value: contact.NatelNr
+      })
+    }
+    return ret
+  }
+
 }
