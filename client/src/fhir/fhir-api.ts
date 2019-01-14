@@ -149,18 +149,33 @@ class FhirDataService implements DataService {
     })
   }
 
-  // update an object with id
-  public update(index, obj): ElexisType {
+  /**
+   * Update/replace an object in the store
+   * @param id the index of the object to update/replace
+   * @param obj the new version of the object
+   * @returns the object as written to the store
+   */
+  public update(id: string, obj: ElexisType): ElexisType {
     return;
   }
 
-  // Update only given attributes of an existing object
-  public patch(index, obj): ElexisType {
+  /**
+   * modify an Object
+   * @param id id of the object to modify
+   * @param obj an object with the properties to change
+   * @returns the modified object
+   */
+  public patch(id: string, obj: any): ElexisType {
     return null;
   }
 
-  // delete an object (or several objects)
-  public remove(index, params?): ElexisType {
+  /**
+   * delete an object (or several objects)
+   * @param id id of the object to remove. if id is null, params must contain a query expression to
+   * identify the objects to delete
+   * @params optional object containing a query expression
+   */
+  public remove(id: string, params?: any): ElexisType {
     return null;
   }
 
