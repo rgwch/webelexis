@@ -7,7 +7,6 @@
 import { DialogService } from "aurelia-dialog";
 import { inlineView, LogManager } from "aurelia-framework";
 import env from "environment";
-import { Session } from "services/session";
 import { FhirService } from "./fhirservice";
 import { SelectServer } from "./select-server";
 const log = LogManager.getLogger("fhir-login")

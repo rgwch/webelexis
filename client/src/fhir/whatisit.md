@@ -72,9 +72,9 @@ To enable handling of a given type (say, 'PatientType') for FHIR transport, you'
 
 * identify a corresponding FHIR_Resource, which is fhir/model/fhir/FHIR_Patient in this example)
 
-* create a 'case' branch in fhit/adapters/adapter-factory/AdapterFactory for that type. Name of the branch must be the Webelexis-Servicename for the datatype, 'patient' in this example.
+* create a 'case' branch in fhir/adapters/adapter-factory/AdapterFactory for that type. Name of the branch must be the Webelexis-Servicename for the datatype, 'patient' in this example.
 
-* create an adapter-class, in this example: fhir/adapters(patient-adapter/PatientAdapter. The Adapter must implement IFhirAdapter, but, for convenience, it can simpli extend fhir/adapters/base-adapter/BaseAdapter which contains some utility methods for frequently needed tasks.
+* create an adapter-class, in this example: fhir/adapters(patient-adapter/PatientAdapter. The Adapter must implement IFhirAdapter, but, for convenience, it can simply extend fhir/adapters/base-adapter/BaseAdapter which contains some utility methods for frequently needed tasks.
 
 An IFhirAdapter must implement the following methods:
 
@@ -82,7 +82,7 @@ An IFhirAdapter must implement the following methods:
 
 *   toFhirObject(elexisObject: ElexisType): FHIR_Resource - Take an ElexisType and return a corresponding FHIR_Resource
 
-*  toQueryResult(bundle: FhirBundle): IQueryResult - Take a FHIR Result bundle and create an IQueryReesult from its entries
+*  toQueryResult(bundle: FhirBundle): IQueryResult - Take a FHIR Result bundle and create an IQueryResult from its entries
 
 *  transformQuery(query: any): any - Take a Webelexis Query and convert it to a FHIR conformant query (which is mostly simple a translation of field names)
 

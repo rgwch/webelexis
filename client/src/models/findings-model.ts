@@ -13,32 +13,32 @@ import defs from '../user/finding-defs'
 import * as _ from 'lodash'
 
 const log = LogManager.getLogger("findings-model")
-let definitions: any = {}
+const definitions: any = {}
 
-for (const def of <Array<FindingDef>>defs) {
+for (const def of defs as FindingDef[]) {
   definitions[def.name] = def
 }
 
 /**
-  * A finding definition is used to define, how to generate and display data for external measurements.
-  * All findings tu use in the system must be defined in src/user/finding-defs.ts.
-  */
- export type FindingDef = {
+ * A finding definition is used to define, how to generate and display data for external measurements.
+ * All findings tu use in the system must be defined in src/user/finding-defs.ts.
+ */
+export interface FindingDef {
   // a unique name, e.g "circulation"
   name: string
   // a translatable title, e.g. "Kreislauf"
   title: string
   // list of elements, e.g. ["systolic:mmHg","diastolic:mmHg","Pulse:1/min"]
   elements: Array<{
-    title:string,     // e.g. "systolisch"
+    title: string,     // e.g. "systolisch"
     unit?: string,     // e.g. "mmHg"
     manual?: boolean,  // show in manual input box?
-    chart?: "none"|"left"|"right"   // display in chart?
+    chart?: "none" | "left" | "right"   // display in chart?
     color?: string,    // html-colordef
-    range?: [number,number]  // acceptable range
+    range?: [number, number]  // acceptable range
   }>
   // a function to create a new entry from a string
-  create?: (value: string | Array<string>) => Array<string>
+  create?: (value: string | string[]) => string[]
   // a function to display an entry in verbose form
   verbose?: (row: Array<string | number>) => string
   // a function to display an entry in compact form
@@ -53,10 +53,10 @@ export interface FindingType extends ElexisType {
   patientid: string,
   name: string,            // e.g. 'physical'
   measurements: Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
-  {
-    date: Date,
-    values: Array<string | number>
-  }
+    {
+      date: Date,
+      values: Array<string | number>
+    }
   >
 }
 
@@ -170,15 +170,15 @@ export class FindingsManager {
     }
   }
 
-  createFindingFromString(name,value){
-      const actPat = this.we.getSelectedItem('patient')
-      const actUser = this.we.getSelectedItem('usr')
-      const item=definitions[name]
-      const processed=item.create(value)
-      this.addFinding(name,actPat.id, processed).then(added=>{
-  
-      })
-      return processed;
+  createFindingFromString(name, value) {
+    const actPat = this.we.getSelectedItem('patient')
+    const actUser = this.we.getSelectedItem('usr')
+    const item = definitions[name]
+    const processed = item.create(value)
+    this.addFinding(name, actPat.id, processed).then(added => {
+
+    })
+    return processed;
   }
   /**
    * remove a measrument from a finding

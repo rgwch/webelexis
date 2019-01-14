@@ -12,7 +12,7 @@ const log = LogManager.getLogger("OAuth login step 2")
 
 /**
  * After successful OAuth authentication, the OAuth Server calls (by configuration) this
- * route. Wenn activatet, get the details of the current user and create a session with that
+ * route. Wenn activated, get the details of the current user and create a session with that
  * user. After that, we can navigate to the normal start of the WebApp ("dispatch").
  */
 @autoinject
@@ -30,7 +30,8 @@ export class Ready {
       const result = await this.fhir.getSmartclient();
       log.info("Loaded Smart client")
       sessionStorage.setItem("ch.webelexis.logintoken", result);
-      alert("we are logged in!");
+      // alert("we are logged in!");
+      // TODO: Set correct user
       this.session.setUser({
         email: "admin@webelexis.ch",
         roles: ["admin", "guest", "user", "mpa"]

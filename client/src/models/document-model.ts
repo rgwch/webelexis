@@ -8,7 +8,7 @@ import hash from 'string-hash'
 import { WebelexisEvents } from "webelexisevents";
 
 /**
- * A Document is an (arbitrary) entity to store and retrieve by name and keywords. 
+ * A Document is an (arbitrary) entity to store and retrieve by name and keywords.
  */
 export interface DocType extends ElexisType {
   date: string
@@ -22,12 +22,12 @@ export interface DocType extends ElexisType {
 
 @autoinject
 export class DocManager {
-  docService
+  private docService
 
   constructor(private we: WebelexisEvents, private ds: DataSource, private dt: DateTime) {
     this.docService = this.ds.getService('lucinda')
   }
-  store(doc: DocType) : Promise<any>{
+  public store(doc: DocType): Promise<any> {
     if (!doc.date) {
       doc.date = this.dt.DateToElexisDate(new Date())
     }
