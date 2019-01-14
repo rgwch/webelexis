@@ -85,10 +85,9 @@ export interface FHIR_ContactPoint {
   period?: FHIR_Period
 }
 export interface FHIR_Element {
-  id?: id
   extension?: Array<{
     url: uri
-    valueX: any
+    valueString?: string
   }>
 
 }
@@ -144,7 +143,7 @@ export interface FHIR_Reference {
   reference: uri
   display: string
 }
-export interface FHIR_Resource {
+export interface FHIR_Resource extends FHIR_Element {
   resourceType:string
   id:id
   text?: FHIR_Narrative
