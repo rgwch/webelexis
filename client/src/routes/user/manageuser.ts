@@ -10,9 +10,8 @@ import { forOfStatement } from "babel-types";
 @useView(PLATFORM.moduleName('./manageuser.pug'))
 
 export class Manageuser {
-  eamessage = "usermgr:selected"
-  ffs: FlexformConfig={
-    title: ()=>"User",
+  private eamessage = "usermgr:selected"
+  private ffs: FlexformConfig={
     attributes: [
       {
         attribute: "email",
@@ -21,9 +20,10 @@ export class Manageuser {
         attribute: "password",
         label: "Initialpasswort"
       }
-    ]
+    ],
+    title: () => "User"
   }
-  vc: ViewerConfiguration = {
+  private vc: ViewerConfiguration = {
     dataType: 'usr',
     selectMsg: this.eamessage,
     title: 'Anwender',

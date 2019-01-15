@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { WebelexisEvents } from "./../../webelexisevents";
 import v from "./views";
 import { StickerManager } from "../../models/stickers.model";
@@ -14,10 +20,18 @@ export enum DISPLAY {
 }
 export const SWITCH_PANELS = "switch_panels";
 
+/**
+ * Main screen of the application. The view features two slots to insert views according to the
+ * current program state. Display is managed with two controls:
+ * - An EventAggregator-Message SWITCH_PANELS controle, which display to show on the left and
+ * on the right.
+ * - The Webelexis-State "panels" controls, if the left, the right or both panels are to show.
+ */
 @connectTo(store => store.state.pipe(pluck("panels") as any))
 export class Dispatcher {
   protected rightpanels: Element;
 
+  /* predefined views for the left panel */
   protected leftViews = [
     v.patientenliste,
     v.artikelliste,
@@ -26,7 +40,10 @@ export class Dispatcher {
     v.messwerte,
     v.leistungen
   ];
+  // currently set left panel
   protected leftView = v.patientenliste;
+
+  /* predefined views for the right panel */
   protected rightViews = [
     v.stammdaten,
     v.konsultationen,
@@ -36,15 +53,18 @@ export class Dispatcher {
     v.agendagross,
     v.medikation
   ];
+  // currentli set right panel
   protected rightView = v.stammdaten;
+
+  // size of the menu buttons.
   protected tooliconwidth = defaults.tooliconwidth;
   protected tooliconheight = defaults.tooliconheight;
 
-  protected leftpanelstyle;
-  protected rightpanelstyle;
-  protected rightExpanded = false;
-  protected leftExpanded = false;
+  // currently applied style for the panels
+  protected leftpanelstyle: string;
+  protected rightpanelstyle: string;
 
+  /* predefined styles for severel display conditions */
   private leftSmall = `left:${defaults.buttonbarwidth}px; width:${
     defaults.leftpanelwidth
   }px;`;
@@ -77,6 +97,12 @@ export class Dispatcher {
       // console.log(st)
     });
   }
+  /**
+   * if the route is activated with a parameter (e.g. /#/dispatch/artikel),
+   * then that view is mounted on the right panel. Otherwise, v.stammdaten
+   * is set.
+   * @param params supplied by the framework
+   */
   public activate(params /*, routeConfig */) {
     if (params && params.sub) {
       const actview = this.rightViews.find(
@@ -88,6 +114,11 @@ export class Dispatcher {
     }
   }
 
+  /**
+   * WebelexisEvent to change display mode
+   * @param showNow new mode
+   * @param showBefore previous mode (can be undefined)
+   */
   public stateChanged(showNow: DISPLAY, showBefore: DISPLAY) {
     switch (showNow) {
       case DISPLAY.left:
@@ -102,30 +133,37 @@ export class Dispatcher {
         this.leftpanelstyle = this.leftSmall;
         this.rightpanelstyle = this.rightSmall;
     }
-    /*
-    if (showNow) {
-      this.rightpanelstyle = "position:absolute;left:440px;right:85px;";
-    } else {
-      this.rightpanelstyle = "position:absolute;left:5px;right:85px;";
-    }
-    */
   }
 
+  /**
+   * enlarge or shrink the left panel (click action)
+   */
   protected toggleLeft() {
     this.we.togglePanels(
       this.state === DISPLAY.left ? DISPLAY.both : DISPLAY.left
     );
   }
 
+  /**
+   * enlarge or shrink the right panel (click action)
+   */
   protected toggleRight() {
     this.we.togglePanels(
       this.state === DISPLAY.right ? DISPLAY.both : DISPLAY.right
     );
   }
+  /**
+   * set the left view (menu click action)
+   * @param view 
+   */
   protected switchLeft(view) {
     this.leftView = view;
   }
 
+  /**
+   * set the right view (menu click action)
+   * @param view
+   */
   protected switchRight(view) {
     this.rightView = view;
   }

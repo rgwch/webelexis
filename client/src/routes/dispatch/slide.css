@@ -1,3 +1,6 @@
+/*
+  Allow a somewhat smoother slide in and out of the panels
+*/
 .smoothright {
   position: absolute;
   transition-property: left;
