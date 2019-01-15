@@ -10,13 +10,18 @@ import { forOfStatement } from "babel-types";
 @useView(PLATFORM.moduleName('./manageuser.pug'))
 
 export class Manageuser {
+  protected user: UserType
+  protected allRoles
+  protected hasrole = {}
+
   private eamessage = "usermgr:selected"
-  private ffs: FlexformConfig={
+  private ffs: FlexformConfig = {
     attributes: [
       {
         attribute: "email",
         label: "E-Mail"
-      },{
+      },
+      {
         attribute: "password",
         label: "Initialpasswort"
       }
@@ -24,24 +29,22 @@ export class Manageuser {
     title: () => "User"
   }
   private vc: ViewerConfiguration = {
+    createDef: this.ffs,
     dataType: 'usr',
+    getLabel: obj => obj.email,
+    searchFields: [{
+      asPrefix: true,
+      label: "Username",
+      name: "email"
+    }],
     selectMsg: this.eamessage,
     title: 'Anwender',
-    getLabel: obj => obj.email,
-    createDef: this.ffs,
-    searchFields: [{
-      name: "email",
-      label: "Username",
-      asPrefix: true
-    }]
   }
-  user: UserType
-  allRoles
-  hasrole={}
+
   constructor(private userManager: UserManager, private ea: EventAggregator) {
     this.ea.subscribe(this.eamessage, user => {
       this.user = user
-      this.hasrole={}
+      this.hasrole = {}
       if (this.user && this.user.roles) {
         for (const role of this.user.roles) {
           this.hasrole[role] = true
@@ -50,27 +53,27 @@ export class Manageuser {
     })
     this.allRoles = env.metadata.roles
   }
-  label(role){
+  public label(role) {
     return this.allRoles[role].label
   }
-  accept(){
-    const roles=[]
-    for(const role of Object.keys(this.hasrole)){
-      if(this.hasrole[role]==true){
+  public accept() {
+    const roles = []
+    for (const role of Object.keys(this.hasrole)) {
+      if (this.hasrole[role] === true) {
         roles.push(role)
       }
     }
-    this.user.roles=roles
-    this.userManager.save(this.user).then(saved=>{
+    this.user.roles = roles
+    this.userManager.save(this.user).then(saved => {
       alert("ok")
-    }).catch(err=>{
-      console.log(err)
-      alert("error when saving "+this.user.email)
+    }).catch(err => {
+      // console.log(err)
+      alert("error when saving " + this.user.email)
     })
   }
 }
 export class KeysValueConverter {
-  toView(obj) {
+  public toView(obj) {
     return Reflect.ownKeys(obj);
   }
 }

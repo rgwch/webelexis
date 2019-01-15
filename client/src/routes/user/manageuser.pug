@@ -4,7 +4,7 @@ mixin inp(id,v,title)
 
 template
  require(from="components/commonviewer")
- div(css.bind="$parent.style")
+ div
     .row(style="height:85vh")
       common-viewer.col-4(cv_cfg.bind="vc")
       .col-8

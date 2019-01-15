@@ -1,5 +1,5 @@
 
-export class LostPassword{
+export class LostPassword {
   email
 
   send(){

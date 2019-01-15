@@ -15,7 +15,7 @@ export class TestIndex {
   protected loggedOutViews = [v.login, v.lostpwd];
   protected views;
   protected state: State;
-  protected actView;
+  protected actView = v.details.view;
 
   private display = {};
 
@@ -37,7 +37,7 @@ export class TestIndex {
         });
       }
     }
-    this.actView = v.details
+    this.actView = v.details.view
   }
 
   protected home() {

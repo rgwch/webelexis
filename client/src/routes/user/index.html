@@ -1,11 +1,11 @@
 <template>
   <div class="row" ref="parent">
-    <div class="col btn-group-vertical bordered" style="position:absolute;left:5px;top:20px" ref="buttons">
+    <div class="col-3 btn-group-vertical bordered" ref="buttons">
       <button class="btn" click.trigger="home()"><span class="fa fa-home"> Hauptseite</span></button>
       <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)" if.bind="vi.show">${vi.name}
       </button>
     </div>
-    <div class="col">
+    <div class="col-9">
       <compose view-model.bind="actView"></compose>
     </div>
   </div>

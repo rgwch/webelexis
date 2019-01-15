@@ -1,26 +1,25 @@
 import { PLATFORM } from "aurelia-pal";
 
-export default{
+export default {
+  details: {
+    name: "Anwenderdaten",
+    view: PLATFORM.moduleName('./userdetails')
+  },
   login: {
     name: "Login",
     view: PLATFORM.moduleName('./login')
   },
   logout: {
     name: "Logout",
-    view: PLATFORM.moduleName('./login')  
+    view: PLATFORM.moduleName('./login')
   },
-  details:{
-    name: "Anwenderdaten",
-    view: PLATFORM.moduleName('./userdetails')
-  },
-  lostpwd:{
+  lostpwd: {
     name: "Passwort vergessen",
     view: PLATFORM.moduleName('./lostpassword')
   },
-  manageusers:{
+  manageusers: {
+    acl: "usr.update",
     name: "Anwender verwalten",
-    view: PLATFORM.moduleName('./manageuser'),
-    acl: "usr.update"
+    view: PLATFORM.moduleName('./manageuser')
   }
-
 }

@@ -2,7 +2,7 @@ mixin inp(id,v,title)
   label.col-2(for= id) #{title}
   input.form-control.col-10(id= id value.bind= v)
 template
-  .sheet(css.bind="$parent.style")
+  .sheet
     .header Kontodetails
     .body
       form
