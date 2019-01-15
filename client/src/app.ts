@@ -34,8 +34,7 @@ import { PatientType } from "./models/patient";
 
 /**
  * Starting point for the UI. Gets called from main.ts#configure()
- * Here, the Router configuration takes place. The constructor tries to
- * log in the current user
+ * Here, the Router configuration takes place.
  */
 @connectTo<State>({
   selector: {
@@ -52,11 +51,7 @@ export class App {
   private log = LogManager.getLogger("app.ts");
   private actPatient: PatientType;
 
-  constructor(
-    private i18n: I18N,
-    private session: Session,
-    private ds: DataSource
-  ) {}
+  constructor(private i18n: I18N, private ds: DataSource) {}
 
   /**
    * When activationg the main view: Wait for metadata of the configured server
