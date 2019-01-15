@@ -155,8 +155,21 @@ class FhirDataService implements DataService {
    * @param obj the new version of the object
    * @returns the object as written to the store
    */
-  public update(id: string, obj: ElexisType): ElexisType {
-    return;
+  public async update(id: string, obj: ElexisType): Promise<ElexisType> {
+    const smart = await this.smart();
+    const fhirObj = this.adapter.toFhirObject(obj)
+    const data = JSON.stringify(fhirObj)
+    const query = {
+      data,
+      id: fhirObj.id,
+      type: fhirObj.resourceType
+    }
+    const result = await smart.api.update(query)
+    if (result.status === "success") {
+        return this.adapter.toElexisObject(result.data);
+      } else {
+        throw new Error(result)
+      }
   }
 
   /**
