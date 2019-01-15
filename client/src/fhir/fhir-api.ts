@@ -175,7 +175,7 @@ class FhirDataService implements DataService {
   /**
    * modify an Object
    * @param id id of the object to modify
-   * @param obj an object with the properties to change
+   * @param obj an object with only the properties to change
    * @returns the modified object
    */
   public patch(id: string, obj: any): ElexisType {
@@ -206,7 +206,7 @@ class FhirDataService implements DataService {
 
   /**
    * Get the SmartClient. Probably the login and authoritation process is not yet finished when we
-   * need this the first time, so we must return a Promise.
+   * need this for the first time, so we must return a Promise.
    */
   private async smart() {
     if (!this._smartclient) {
