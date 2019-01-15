@@ -63,7 +63,7 @@ function getColors(app, mode, user) {
 
   const config = app.service("elexis-userconfig")
 
-  return config.find({ query: { user: user, param: { $like: `agenda/farben/${mode}/%` } } }).then(raw => {
+  return config.find({ query: { userid: user, param: { $like: `agenda/farben/${mode}/%` } } }).then(raw => {
     let ret = {}
     raw.data.forEach(col => {
       let path = col.Param.split("/")
