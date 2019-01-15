@@ -12,10 +12,11 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('userID',40)
-        table.string('param',80);
-        table.string('value');
-        table.bigint('lastupdate')
+        table.string('UserID',40)
+        table.string('Param',80);
+        table.string('Value');
+        table.bigint('LASTUPDATE')
+        table.string("deleted",1)
       })
         .then(() => logger.info(`Created ${tableName} table`))
         .catch(e => logger.error(`Error creating ${tableName} table`, e));
