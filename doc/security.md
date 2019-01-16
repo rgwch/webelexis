@@ -133,8 +133,8 @@ Möglicherweise müssen Sie dem Docker-User entsprechende Zugriffsrechte auf die
 
 ~~~bash
 mysql -u root
-create user webelexis@'172.18.0.%' identified by 'supersecret';
-grant all on elexis.* to webelexis@'172.18.0.%';
+create user webelexis@'d_webelexis.dockerfiles_default' identified by 'supersecret';
+grant all on elexis.* to webelexis@'d_webelexis.dockerfiles_default';
 
 ~~~
 
@@ -142,5 +142,5 @@ grant all on elexis.* to webelexis@'172.18.0.%';
 
 Jetzt sollten Sie auf dem Laptop, sobald der Tunnel mit `ssh praxis` geööfnet wurde, den Browser auf `http://localhost:2018` richten können und so Webelexis starten.
 
-(Wohlbemerkt: "localhost" gilt auch dann, wenn Sie von Fern auf die Praxis zugreiffen, da der SSH-Tunnel eine direkte Verbindung von Localhost zum Server bewirkt. Win Wurmloch, wenn Sie so wollen bzw. Science-Fiction-Fan sind.)
+(Wohlbemerkt: "localhost" gilt auch dann, wenn Sie von Fern auf die Praxis zugreifen, da der SSH-Tunnel eine direkte Verbindung von Localhost zum Server bewirkt. Ein Wurmloch, wenn Sie so wollen bzw. Science-Fiction-Fan sind.)
 
