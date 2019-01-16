@@ -16,10 +16,19 @@ const roles = require('../config/roles')
 module.exports = async function (app) {
   // Find patient with TitelSuffix 'unittest' and exit if not found
   const pats = app.service('patient')
+
   const testpat = await pats.find({ query: { TitelSuffix: "unittest" } })
   if (!testpat || !testpat.data || testpat.data.length < 1) {
     logger.error("No Patient with TitelSuffix 'unittest' found. See src/seeder.js")
-    throw new Error("No Patient with TitelSuffix 'unittest' found. See src/seeder.js")
+    const candidates = await pats.find({ query: { Bezeichnung1: { $like: "test%" } } });
+    if (candidates && candidates.data.length > 0) {
+      const tp = candidates.data[0]
+      tp.TitelSuffix = "unittest"
+      const okay = await pats.update(tp.id, tp)
+      logger.info(`chose ${okay.Bezeichnung1} ${okay.Bezeichnung2} as unittest`)
+    } else {
+      throw new Error("No Patient with TitelSuffix 'unittest' and none with Name like 'test%' found. See src/seeder.js")
+    }
   }
   const pat = testpat.data[0]
   logger.info("found patient 'unittest'")

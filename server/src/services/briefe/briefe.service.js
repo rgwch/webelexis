@@ -64,7 +64,7 @@ module.exports = function (app) {
         const brief = briefe.data[0]
         if (brief.Path != `templates/${name}.html`) {
           brief.Path = `templates/${name}.html`
-          return service.update(brief)
+          return service.update(brief.id,brief)
         }
       } else {
         const brief = {

@@ -68,15 +68,15 @@ class Service {
     try {
       let pnr = await config.get('PatientNummer')
     } catch (err) {
-      await config.set("PatientNummer", "1")
+        await config.update("PatientNummer", {wert: "1"})
     }
     const lastPatNr = (parseInt(await config.get('PatientNummer')) + 1).toString()
     config.update('PatientNummer', { wert: lastPatNr })
     return lastPatNr
   }
   async update(id, data, params) {
-    if (!data.PatientNr || data.PatientNr == 0) {
-      data.PatientNr = await this.nextPatientNr()
+    if (!data.patientnr || data.patientnr == 0) {
+      data.patientnr = await this.nextPatientNr()
     }
     const kontakt = this.options.app.service("kontakt")
     return kontakt.update(id, data, params)

@@ -15,13 +15,12 @@ module.exports = function (app) {
     ["dbversion", "4.0"],
     ["webelexis",app.get("version")],
     ["ElexisVersion","3.5.0"],
- 
+
   ]
 
   db.schema.hasTable(tableName).then(exists => {
     if (!exists) {
       db.schema.createTable(tableName, table => {
-        table.string('id',40)
         table.string('param')
         table.string('wert');
         table.string("deleted",1),
