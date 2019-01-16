@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { autoinject, useView, PLATFORM } from "aurelia-framework";
 import { UserManager, UserType } from "models/user";
 import { CommonViewer, ViewerConfiguration } from 'components/commonviewer'
@@ -38,7 +44,7 @@ export class Manageuser {
       name: "email"
     }],
     selectMsg: this.eamessage,
-    title: 'Anwender',
+    title: '',
   }
 
   constructor(private userManager: UserManager, private ea: EventAggregator) {

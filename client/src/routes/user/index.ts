@@ -1,3 +1,10 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+import { Session } from 'services/session';
 import { State } from "state";
 import v from "./views";
 import { autoinject } from "aurelia-framework";
@@ -11,18 +18,17 @@ import { pluck } from "rxjs/operators";
 @autoinject
 @connectTo(store => store.state.pipe( pluck("usr") as any))
 export class TestIndex {
-  protected loggedInViews = [v.logout, v.details, v.manageusers];
-  protected loggedOutViews = [v.login, v.lostpwd];
+  protected loggedInViews = [v.details, v.manageusers];
+  protected loggedOutViews = [v.lostpwd];
   protected views;
   protected state: State;
   protected actView = v.details.view;
 
-  private display = {};
-
   constructor(
     private ea: EventAggregator,
     private check: checkACE,
-    private router: Router
+    private router: Router,
+    private session: Session
   ) {}
 
   public attached() {
@@ -44,7 +50,13 @@ export class TestIndex {
     this.router.navigateToRoute("dispatch");
   }
 
+  protected logout(){
+    this.session.logout().then(loggedOut=>{
+      this.router.navigateToRoute("dispatch")
+    })
+  }
+
   protected switchTo(view) {
-    this.ea.publish("testdetail", view);
+    this.actView=view.view
   }
 }

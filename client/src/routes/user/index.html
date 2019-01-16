@@ -1,9 +1,10 @@
 <template>
-  <div class="row" ref="parent">
-    <div class="col-3 btn-group-vertical bordered" ref="buttons">
+  <div class="row align-items-start">
+    <div class="col-3 btn-group-vertical bordered">
       <button class="btn" click.trigger="home()"><span class="fa fa-home"> Hauptseite</span></button>
       <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)" if.bind="vi.show">${vi.name}
       </button>
+      <button class="btn" click.delegate="logout()"><span class="fas fa-sign-out-alt">Abmelden</span></button>
     </div>
     <div class="col-9">
       <compose view-model.bind="actView"></compose>
