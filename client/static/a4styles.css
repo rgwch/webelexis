@@ -1,5 +1,5 @@
 @page{
-  size: 210mm 280mm;
+  size: 210mm 297mm;
 }
 body {
   /* Definition der Schriftart und -grösse für den ganzen Text */
@@ -7,8 +7,8 @@ body {
   font-style: normal;
   font-size: 14px;
   text-align: left;
-  width: 148mm;
-  height: 209mm;
+  width: 210mm;
+  height: 297mm;
   margin-left: 10mm;
   margin-right: 15mm;
   /* border: solid blue 1px;  */
