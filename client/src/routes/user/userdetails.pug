@@ -10,4 +10,6 @@ template
           +inp('email','user.email',"E-Mail")
         .form-row
           +inp('name','user.name',"Name")
+        .form-row
+          +inp('label','user.label',"Kürzel")  
         button(class="btn" value="ändern" click.trigger="update()") Speichern

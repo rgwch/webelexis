@@ -125,8 +125,8 @@ export class AgendaEntry {
    * from UI button: Reduce duration of appointmen
    */
   protected shorten() {
-    const raw = this.entry.obj.Dauer / 2;
-    this.entry.obj.Dauer = 5 * Math.floor(raw / 5);
+    const raw = parseInt(this.entry.obj.Dauer, 10) / 2;
+    this.entry.obj.Dauer = (5 * Math.floor(raw / 5)).toString();
 
     this.tm.save(this.entry);
   }

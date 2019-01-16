@@ -1,7 +1,7 @@
 export default{
-  tooliconwidth: 40,
-  tooliconheight: 40,
-  border:5,
+  border: 5,
   buttonbarwidth: 85,
-  leftpanelwidth: 350
+  leftpanelwidth: 350,
+  tooliconheight: 40,
+  tooliconwidth: 40
 }

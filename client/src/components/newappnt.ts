@@ -62,8 +62,8 @@ export class NewAppointment {
   newTermin() {
     const user=this.we.getSelectedItem('usr')  || {label: "wlx"}
     const ip=env.metadata.ip || "?"
-    this.termin.obj.Beginn=this.slider
-    this.termin.obj.Dauer=30
+    this.termin.obj.Beginn=this.slider.toString()
+    this.termin.obj.Dauer="30"
     this.termin.obj.TerminTyp=this.terminTyp
     this.termin.obj.TerminStatus=this.terminStatus
     this.termin.obj.PatID=this.kontakt.id

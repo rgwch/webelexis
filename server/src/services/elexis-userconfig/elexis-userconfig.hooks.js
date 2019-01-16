@@ -1,9 +1,16 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
+ /**
+  * Process a query term like "userid:parameter".
+  * Find a User (from user_) with that id, retrieve
+  * the matching Elexis Kontakt and convert the query
+  * accordingly
+  * @param {*} options
+  */
 const decomposeId = function (options = {}) {
   return async (context) => {
     let splid = context.id.split(":")
@@ -16,7 +23,7 @@ const decomposeId = function (options = {}) {
         }
       })
       context.result=found
-      
+
       if(found.total>0){
         context.result=found.data[0].Value
       }else{
