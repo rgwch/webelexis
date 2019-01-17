@@ -1,3 +1,17 @@
 <template>
-
+  <require from="components/pickdate"></require>
+  <span class="detailcaption">Konsultationen nach Datum</span>
+  <div class="sheet">
+    <div class="header">
+      <pickdate pickerdate.two-way="dateFrom" message="ebd_from"></pickdate>
+      <pickdate pickerdate.two-way="dateUntil" message="ebd_until"></pickdate>
+    </div>
+    <div class="body">
+      <ul class="list-group">
+        <li class="list-group-item" repeat.for="enc of encounters">
+          ${enc}
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>

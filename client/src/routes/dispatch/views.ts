@@ -88,5 +88,10 @@ export default {
     role: global.roles.privacy,
     text: "Stammdaten",
     view: PLATFORM.moduleName("views/patient-basedata")
+  },
+  tagesliste: {
+    icon: "/calendar.svg",
+    text: "Tagesliste",
+    view: PLATFORM.moduleName("views/encounters-by-date")
   }
 };

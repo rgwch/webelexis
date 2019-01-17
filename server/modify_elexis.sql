@@ -204,7 +204,6 @@ alter table dbimage change ID id varchar(40);
 alter table default_signatures
   change ID id varchar(40);
 
-
 alter table diagnosen modify id varchar(40);
 
 alter table eigenleistungen change ID id varchar(40);

@@ -38,7 +38,8 @@ export class Dispatcher {
     v.dokumentliste,
     v.briefe,
     v.messwerte,
-    v.leistungen
+    v.leistungen,
+    v.tagesliste
   ];
   // currently set left panel
   protected leftView = v.patientenliste;
