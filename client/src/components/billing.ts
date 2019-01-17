@@ -7,7 +7,7 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, bindable } from "aurelia-framework";
 import { BillingsManager } from "models/billings-model";
-import { EncounterType } from "models/encounter";
+import { EncounterType } from "models/encounter-model";
 import { LeistungsblockManager } from "models/leistungsblock-model";
 import { DataService, DataSource } from "services/datasource";
 import { BillingType } from "../models/billings-model";

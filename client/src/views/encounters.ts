@@ -10,7 +10,7 @@
 import { bindable } from "aurelia-framework";
 import { autoinject, observable } from "aurelia-framework";
 import { connectTo } from "aurelia-store";
-import { EncounterType } from "models/encounter";
+import { EncounterType } from "models/encounter-model";
 import * as moment from "moment";
 import { pluck } from "rxjs/operators";
 import { CaseManager } from "../models/case";

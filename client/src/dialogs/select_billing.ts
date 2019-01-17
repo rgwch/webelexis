@@ -1,7 +1,7 @@
 import { DataSource, DataService } from './../services/datasource';
 import { DialogController } from 'aurelia-dialog';
 import { autoinject, useView, PLATFORM, observable } from "aurelia-framework";
-import { EncounterType } from 'models/encounter';
+import { EncounterType } from 'models/encounter-model';
 
 @autoinject
 export class SelectBilling {

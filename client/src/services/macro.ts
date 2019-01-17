@@ -6,7 +6,7 @@
 
 import { autoinject } from "aurelia-framework";
 import { BillingsManager } from "models/billings-model";
-import { EncounterType } from "models/encounter";
+import { EncounterType } from "models/encounter-model";
 import { FindingsManager } from "models/findings-model";
 import macros from "../user/macrodefs";
 import { WebelexisEvents } from "../webelexisevents";

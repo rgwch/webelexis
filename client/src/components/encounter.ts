@@ -7,7 +7,7 @@
 /**
  * Display an elexis encounter. Decode Samdas to html accordingly
  */
-import { EncounterType } from '../models/encounter';
+import { EncounterType } from '../models/encounter-model';
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import { DateTime } from '../services/datetime';
 import { EventAggregator } from 'aurelia-event-aggregator';
@@ -18,19 +18,19 @@ import { WebelexisEvents } from 'webelexisevents';
 
 @autoinject
 export class Encounter {
-  @bindable obj: EncounterType
-  isEditing: boolean = false
-  konsultationService: DataService
+  @bindable public obj: EncounterType
+  protected isEditing: boolean = false
+  private konsultationService: DataService
 
   constructor(private dt: DateTime, private ea: EventAggregator, private ds: DataSource,
-    private mp: Macroprocessor, private we: WebelexisEvents) {
+              private mp: Macroprocessor, private we: WebelexisEvents) {
     this.konsultationService = this.ds.getService('konsultation')
   }
 
-  makros = text => {
+  protected makros = text => {
     return this.mp.process(this.obj, text)
   }
-  toggleEdit() {
+  protected toggleEdit() {
     if (this.isEditing) {
       this.isEditing = false
       this.we.deselect('konsultation')
@@ -42,7 +42,7 @@ export class Encounter {
     }
   }
 
-  deleteKons() {
+  protected deleteKons() {
     const text = this.obj.eintrag.html
     if (!text || text.replace(/<.*?>/g, "").length == 0) {
       this.konsultationService.remove(this.obj.id)
@@ -50,9 +50,10 @@ export class Encounter {
       alert("Eine Konsultation kann nur gelöscht werden, wenn sie keinen Text mehr enthält.")
     }
   }
-  getGuarantor() {
+  protected getGuarantor() {
 
   }
+
   @computedFrom('obj')
   get datum() {
     return this.dt.ElexisDateToLocalDate(this.obj.datum)

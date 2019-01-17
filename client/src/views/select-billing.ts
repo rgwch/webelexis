@@ -1,5 +1,5 @@
 import { autoinject, observable} from "aurelia-framework";
-import { EncounterType } from "models/encounter";
+import { EncounterType } from "models/encounter-model";
 import { LeistungsblockManager } from "models/leistungsblock-model";
 import { DataService, DataSource } from "./../services/datasource";
 import { WebelexisEvents } from "./../webelexisevents";

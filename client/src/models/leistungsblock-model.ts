@@ -2,7 +2,7 @@ import { DataService } from 'services/datasource';
 import { DataSource } from 'services/datasource';
 import { autoinject } from "aurelia-framework";
 import { ElexisType, UUID } from "./elexistype";
-import { EncounterType } from './encounter';
+import { EncounterType } from './encounter-model';
 import { BillingsManager, BillingModel } from './billings-model';
 
 type Blockdef = {

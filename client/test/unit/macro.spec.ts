@@ -1,7 +1,7 @@
 import  {Macroprocessor} from '../../src/services/macro'
 import { Dummysource } from './dummysource';
 import { WebelexisEvents } from './dummyevents';
-import { EncounterType } from 'models/encounter';
+import { EncounterType } from 'models/encounter-model';
 
 describe("macros",()=>{
   let dataSource

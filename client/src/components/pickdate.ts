@@ -62,12 +62,11 @@ export class PickDate {
       // field: this.pikhome,
       i18n: _self.calendarNames,
       onSelect() {
-        // console.log("selected " + this.getDate())
         _self.actDate = moment(this.getDate()).format("dd, DD.MM.YYYY");
         _self.actMoment = moment(this.getDate());
         _self.ea.publish(_self.message, {
+          newDate: this.getDate(),
           oldDate: new Date(),
-          newDate: this.getDate()
         });
         this.hide();
       },

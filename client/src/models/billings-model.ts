@@ -3,7 +3,7 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { EncounterType } from './encounter';
+import { EncounterType } from './encounter-model';
 import { DataSource, DataService } from './../services/datasource';
 import { ElexisType, UUID } from './elexistype';
 import { autoinject } from 'aurelia-framework';
