@@ -1,20 +1,26 @@
 import { DataService } from "services/datasource";
-import { ElexisType } from "./elexistype";
+import { ElexisType, UUID } from "./elexistype";
 
 export class ObjectManager {
-  //protected dataService: DataService
 
-  constructor(protected dataService: DataService) {
-    
-  }
+  constructor(protected dataService: DataService) { }
 
   public async save(el: ElexisType) {
+    for (const attr in el) {
+      if (el.hasOwnProperty(attr)) {
+        if (attr.startsWith("_")) {
+          delete el[attr]
+        }
+      }
+    }
     if (el.id) {
-      return this.dataService.update(el.id, el);
+      return await this.dataService.update(el.id, el);
     } else {
-      return this.dataService.create(el);
+      return await this.dataService.create(el);
     }
   }
-  // protected dataService = () => this.data
 
+  public async fetch(id: UUID) {
+    return await this.dataService.get(id)
+  }
 }

@@ -18,8 +18,9 @@ const i18 = Container.instance.get(I18N);
  * An Elexis "Fall"
  */
 export interface CaseType extends ElexisType {
-  guarantor: UUID;
-  patient: UUID;
+  garantid: UUID;
+  patientid: UUID;
+  kostentrid: UUID;
   bezeichnung: string;
   grund: "Krankheit" | "Unfall" | "Mutterschaft";
   gesetz: string;
@@ -64,8 +65,8 @@ export class CaseManager extends ObjectManager{
   }
   public async getPatient(fall: CaseType) {
     if (!fall._Patient) {
-      if (fall.patient) {
-        fall._Patient = await this.patientService.get(fall.patient);
+      if (fall.patientid) {
+        fall._Patient = await this.patientService.get(fall.patientid);
       }
     }
     return fall._Patient;

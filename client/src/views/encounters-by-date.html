@@ -8,8 +8,8 @@
     </div>
     <div class="body">
       <ul class="list-group">
-        <li class="list-group-item" repeat.for="enc of encounters">
-          ${em.getLabel(enc)}
+        <li class="list-group-item" repeat.for="enc of encounters" innerhtml.bind="patLabel(enc.patient)">
+          // ${enc.datetime}<br />P: ${patLabel(enc.patient)}
         </li>
       </ul>
     </div>

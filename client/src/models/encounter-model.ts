@@ -37,11 +37,9 @@ export interface EncounterType extends ElexisType {
 
 @autoinject
 export class EncounterManager extends ObjectManager{
-  private encounterService: DataService;
 
-  constructor(private dt: DateTime, private cm: CaseManager, private da:DataSource) {
+  constructor(private dt: DateTime, private cm: CaseManager, private da: DataSource) {
     super(da.getService("konsultation"))
-    // this.encounterService = ds.getService("konsultation");
   }
 
   public fetchFor(
@@ -53,7 +51,7 @@ export class EncounterManager extends ObjectManager{
     const until = moment(dateUntil).format("YYYYMMDD");
 
     console.log(`fetching ${from} to ${until}`);
-    return this.encounterService
+    return this.dataService
       .find({
         query: {
           $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }]
