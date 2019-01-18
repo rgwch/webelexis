@@ -121,7 +121,7 @@ export class Billing {
     this.showmenu = false;
     const nn = prompt("Neue Zahl", this.currentItem.getBilling().zahl);
     if (nn) {
-      this.bm.setCount(item, nn).then(r => {
+      this.bm.setCount(item, parseFloat(nn)).then(r => {
         this.loadBillings();
       });
     }

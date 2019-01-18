@@ -1,133 +1,153 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { EncounterType } from './encounter-model';
-import { DataSource, DataService } from './../services/datasource';
-import { ElexisType, UUID } from './elexistype';
-import { autoinject } from 'aurelia-framework';
+import { EncounterType } from "./encounter-model";
+import { DataSource, DataService } from "./../services/datasource";
+import { ElexisType, UUID } from "./elexistype";
+import { autoinject } from "aurelia-framework";
 
 export interface BillingType extends ElexisType {
-  code?: string
-  behandlung: UUID
-  leistg_txt: string
-  leistg_code: string
-  klasse: string
-  zahl: string
-  vk_preis: string
+  code?: string;
+  behandlung: UUID;
+  leistg_txt: string;
+  leistg_code: string;
+  klasse: string;
+  zahl: string;
+  vk_preis: string;
 }
 
 @autoinject
 export class BillingsManager {
-  billingService: DataService
-  billableService: DataService
-  billableCache = new Map()
+  private billingService: DataService;
+  private billableService: DataService;
+  private billableCache = new Map();
 
   constructor(private ds: DataSource) {
-    this.billingService = this.ds.getService('billing')
-    this.billableService = this.ds.getService('billable')
+    this.billingService = this.ds.getService("billing");
+    this.billableService = this.ds.getService("billable");
   }
 
-  async getBillings(kons: EncounterType) {
-    const ret = await this.billingService.find({ query: { behandlung: kons.id } })
-    return ret.data.map(b => new BillingModel(b))
+  public async getBillings(kons: EncounterType) {
+    const ret = await this.billingService.find({
+      query: { behandlung: kons.id }
+    });
+    return ret.data.map(b => new BillingModel(b));
   }
   /**
    * get a billable from a code. Note: The code must have the form:
    * system!code, e.g. tarmed!00.0010
-   * @param code 
+   * @param code
    */
-  async getBillable(code: string) {
+  public async getBillable(code: string) {
     if (code.indexOf("!") == -1) {
-      throw Error("bad code format for getBillable")
+      throw Error("bad code format for getBillable");
     }
     if (this.billableCache.has(code)) {
-      return this.billableCache.get(code)
+      return this.billableCache.get(code);
     } else {
       try {
-        const billable = await this.billableService.get(code)
-        this.billableCache.set(code, billable)
-        return billable
+        const billable = await this.billableService.get(code);
+        this.billableCache.set(code, billable);
+        return billable;
       } catch (err) {
-        alert(err)
-        return undefined
+        alert(err);
+        return undefined;
       }
     }
   }
 
-  async createBilling(billable, encounter: EncounterType, count: number, others: Array<BillingModel>): Promise<BillingType> {
-    billable.encounter_id = encounter.id
-    const existing = others.find(elem => elem.isBillingOf(billable))
+  public async createBilling(
+    billable,
+    encounter: EncounterType,
+    count: number,
+    others: BillingModel[]
+  ): Promise<BillingType> {
+    billable.encounter_id = encounter.id;
+    const existing = others.find(elem => elem.isBillingOf(billable));
     try {
       if (existing) {
-        existing.increase(count)
-        return await this.billingService.update(existing.getBilling().id, existing.getBilling())
+        existing.increase(count);
+        return await this.billingService.update(
+          existing.getBilling().id,
+          existing.getBilling()
+        );
       } else {
-        billable.count = count.toString()
-        const created: BillingType = await this.billingService.create(billable)
-        others.push(new BillingModel(created))
-        return created
+        billable.count = count.toString();
+        const created: BillingType = await this.billingService.create(billable);
+        others.push(new BillingModel(created));
+        return created;
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
-  async setCount(item, count) {
-    item.getBilling().zahl = count.toString()
-    return await this.billingService.update(item.getBilling().id, item.getBilling())
+  public async setCount(item: BillingModel, count: number) {
+    item.getBilling().zahl = count.toString();
+    return await this.billingService.update(
+      item.getBilling().id,
+      item.getBilling()
+    );
   }
-  async increaseCount(item: BillingModel) {
-    item.increase()
-    return await this.billingService.update(item.getBilling().id, item.getBilling())
+  public async increaseCount(item: BillingModel) {
+    item.increase();
+    return await this.billingService.update(
+      item.getBilling().id,
+      item.getBilling()
+    );
   }
-  async removeBilling(billing: BillingModel) {
+  public async removeBilling(billing: BillingModel) {
     try {
-      const b = billing.getBilling()
-      const removed = await this.billingService.remove(b.id)
-      return removed
+      const b = billing.getBilling();
+      const removed = await this.billingService.remove(b.id);
+      return removed;
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
-  async removeAllBillings(kons: EncounterType) {
-    return await this.billingService.remove(null, { query: { behandlung: kons.id } })
+  public async removeAllBillings(kons: EncounterType) {
+    return await this.billingService.remove(null, {
+      query: { behandlung: kons.id }
+    });
   }
 }
 
 export class BillingModel {
-  code: string
+  public code: string;
   constructor(private obj: BillingType) {
-    this.code = this.obj.code || this.obj.leistg_code.split(/\s*-\s*/)[0]
+    this.code = this.obj.code || this.obj.leistg_code.split(/\s*-\s*/)[0];
   }
-  getLabel() {
-    return this.obj.zahl + " " + this.code + " " + this.obj.leistg_txt
+  public getLabel() {
+    return this.obj.zahl + " " + this.code + " " + this.obj.leistg_txt;
   }
-  getBilling() {
-    return this.obj
+  public getBilling() {
+    return this.obj;
   }
-  isBillingOf = (billable) => {
-    return (this.code == billable.code && this.obj.klasse == billable.codesystem)
-  }
-  getCount(): number {
-    return parseInt(this.obj.zahl)
+  public isBillingOf = billable => {
+    return (
+      this.code === billable.code && this.obj.klasse === billable.codesystem
+    );
+  };
+  public getCount(): number {
+    return parseInt(this.obj.zahl, 10);
   }
 
-  increase(num?: number) {
+  public increase(num?: number) {
     if (!num) {
-      num = 1
+      num = 1;
     }
     this.obj.zahl = (this.getCount() + num).toString();
   }
-  compare = (other) => {
+  public compare = other => {
     if (this.code && other && other.code) {
-      return this.code.localeCompare(other.code)
+      return this.code.localeCompare(other.code);
     } else if (this.code) {
-      return 1
+      return 1;
     } else if (other && other.code) {
-      return -1
+      return -1;
     } else {
-      return 0
+      return 0;
     }
-  }
+  };
 }

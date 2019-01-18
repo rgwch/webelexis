@@ -1,62 +1,90 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { DateTime } from './../services/datetime';
-import { CaseType } from './case';
-import { PatientType } from './patient';
-import { KontaktType } from './kontakt';
-import { autoinject, Container } from 'aurelia-framework';
-import { DataSource, DataService } from '../services/datasource';
-import { I18N } from 'aurelia-i18n';
-import { ElexisType, UUID } from './elexistype';
+import { DateTime } from "./../services/datetime";
+import { CaseType } from "./case";
+import { PatientType } from "./patient";
+import { KontaktType } from "./kontakt";
+import { autoinject, Container } from "aurelia-framework";
+import { DataSource, DataService } from "../services/datasource";
+import { I18N } from "aurelia-i18n";
+import { ElexisType, UUID } from "./elexistype";
 
-const i18 = Container.instance.get(I18N)
+const i18 = Container.instance.get(I18N);
 /**
  * An Elexis "Fall"
  */
 export interface CaseType extends ElexisType {
-  guarantor: KontaktType | UUID
-  patient: PatientType | UUID
-  bezeichnung: string
-  grund: "Krankheit" | "Unfall" | "Mutterschaft"
-  gesetz: string
-  datumvon: string
-  datumbis?: string
-  extinfo?: any
-  extjson?: any
+  guarantor: UUID;
+  patient: UUID;
+  bezeichnung: string;
+  grund: "Krankheit" | "Unfall" | "Mutterschaft";
+  gesetz: string;
+  datumvon: string;
+  datumbis?: string;
+  extinfo?: any;
+  extjson?: any;
+  _Patient?: PatientType;
 }
 
 @autoinject
-export class CaseManager {   // sic!
-  private caseService: DataService
+export class CaseManager {
+  // sic!
+  private caseService: DataService;
+  private patientService: DataService;
 
   constructor(private ds: DataSource, private dt: DateTime) {
-    this.caseService = ds.getService('fall')
+    this.caseService = ds.getService("fall");
+    this.patientService = ds.getService("patient");
   }
 
+  /**
+   * Fetch all cases for a given patient
+   * @param id UUID of the patient
+   */
   public async loadCasesFor(id: UUID) {
-    const result = await this.caseService.find({ query: { patientid: id } })
+    const result = await this.caseService.find({ query: { patientid: id } });
     if (result && result.data) {
-      return result.data
+      return result.data;
     }
   }
 
-  public getLabel(obj: CaseType) {
-    const beginDate = this.dt.ElexisDateToLocalDate(obj.datumvon)
-    let gesetz = obj.gesetz
-    if (!gesetz) {
-      if (obj.extjson) {
-        gesetz = obj.extjson.billing
+  public async fetch(id: UUID) {
+    return await this.caseService.get(id);
+  }
+  public async save(fall: CaseType) {
+    delete fall._Patient;
+    if (fall.id) {
+      return await this.caseService.update(fall.id, fall);
+    } else {
+      return await this.caseService.create(fall);
+    }
+  }
+  public async getPatient(fall: CaseType) {
+    if (!fall._Patient) {
+      if (fall.patient) {
+        fall._Patient = await this.patientService.get(fall.patient);
       }
     }
-    return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung}`
+    return fall._Patient;
+  }
+  public getLabel(obj: CaseType) {
+    const beginDate = this.dt.ElexisDateToLocalDate(obj.datumvon);
+    let gesetz = obj.gesetz;
+    if (!gesetz) {
+      if (obj.extjson) {
+        gesetz = obj.extjson.billing;
+      }
+    }
+    return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${
+      obj.bezeichnung
+    }`;
   }
 }
 
 @autoinject
 export class CaseModel {
-  constructor(private obj: CaseType) { }
-
+  constructor(private obj: CaseType) {}
 }
