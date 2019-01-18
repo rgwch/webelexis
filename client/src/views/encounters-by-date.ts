@@ -13,12 +13,13 @@ import { EncounterType, EncounterManager } from "models/encounter-model";
 import { EventAggregator } from "aurelia-event-aggregator";
 import "./encounters-by-date.scss";
 import { BillingModel } from "models/billings-model";
+const DATEFMT = "YYYY-MM-DD"
 
 @autoinject
 export class EncountersByDate {
   protected enc;
-  protected dateFrom = moment().format("YYYY-DD-MM")
-  protected dateUntil = this.dateFrom
+  protected dateFrom = moment().format(DATEFMT)
+  protected dateUntil = moment().format(DATEFMT)
   protected total: number
   protected count: number
 
@@ -31,14 +32,14 @@ export class EncountersByDate {
     this.ea.subscribe(
       "ebd_from",
       (date: { newDate: string; oldDate: string }) => {
-        this.dateFrom = moment(date.newDate).format("YYYY-MM-DD");
+        this.dateFrom = moment(date.newDate).format(DATEFMT);
         this.fetch().then(encs => {
           this.encounters = encs;
         });
       }
     );
     this.ea.subscribe("ebd_until", date => {
-      this.dateUntil = moment(date.newDate).format("YYYY-MM-DD");
+      this.dateUntil = moment(date.newDate).format(DATEFMT);
       this.fetch().then(encs => {
         this.encounters = encs;
       });
