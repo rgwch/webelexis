@@ -11,6 +11,7 @@ import { autoinject, Container } from "aurelia-framework";
 import { DataSource, DataService } from "../services/datasource";
 import { I18N } from "aurelia-i18n";
 import { ElexisType, UUID } from "./elexistype";
+import { ObjectManager } from "./object-manager";
 
 const i18 = Container.instance.get(I18N);
 /**
@@ -30,13 +31,12 @@ export interface CaseType extends ElexisType {
 }
 
 @autoinject
-export class CaseManager {
+export class CaseManager extends ObjectManager{
   // sic!
-  private caseService: DataService;
   private patientService: DataService;
 
   constructor(private ds: DataSource, private dt: DateTime) {
-    this.caseService = ds.getService("fall");
+    super(ds.getService("fall"));
     this.patientService = ds.getService("patient");
   }
 
@@ -45,21 +45,21 @@ export class CaseManager {
    * @param id UUID of the patient
    */
   public async loadCasesFor(id: UUID) {
-    const result = await this.caseService.find({ query: { patientid: id } });
+    const result = await this.dataService.find({ query: { patientid: id } });
     if (result && result.data) {
       return result.data;
     }
   }
 
   public async fetch(id: UUID) {
-    return await this.caseService.get(id);
+    return await this.dataService.get(id);
   }
   public async save(fall: CaseType) {
     delete fall._Patient;
     if (fall.id) {
-      return await this.caseService.update(fall.id, fall);
+      return await this.dataService.update(fall.id, fall);
     } else {
-      return await this.caseService.create(fall);
+      return await this.dataService.create(fall);
     }
   }
   public async getPatient(fall: CaseType) {
