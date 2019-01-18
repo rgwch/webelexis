@@ -1,53 +1,69 @@
-import { PatientType } from './../models/patient';
-import { CaseType } from './../models/case';
-import { Patient } from 'models/patient';
+import { PatientType } from "./../models/patient";
+import { CaseType } from "./../models/case";
+import { Patient } from "models/patient";
 import { autoinject, observable } from "aurelia-framework";
 import { DataSource, DataService } from "services/datasource";
 import * as moment from "moment";
 import { EncounterType, EncounterManager } from "models/encounter-model";
 import { EventAggregator } from "aurelia-event-aggregator";
+import "./encounters-by-date.scss";
+import { BillingModel } from "models/billings-model";
 
 @autoinject
 export class EncountersByDate {
   protected enc;
   protected dateFrom = "2019-01-01";
   protected dateUntil = "2019-01-31";
+  protected total: number
+  protected count: number
 
   protected encounters: Array<{
-    datetime: string
-    fall: CaseType
-    patient: PatientType
+    datetime: string;
+    fall: CaseType;
+    patient: PatientType;
   }> = [];
   constructor(private em: EncounterManager, private ea: EventAggregator) {
     this.ea.subscribe(
       "ebd_from",
       (date: { newDate: string; oldDate: string }) => {
         this.dateFrom = moment(date.newDate).format("YYYY-MM-DD");
-        this.fetch();
+        this.fetch().then(encs => {
+          this.encounters = encs;
+        });
       }
     );
     this.ea.subscribe("ebd_until", date => {
       this.dateUntil = moment(date.newDate).format("YYYY-MM-DD");
-      this.fetch();
+      this.fetch().then(encs => {
+        this.encounters = encs;
+      });
     });
   }
 
   protected async patLabel(enc) {
-    const pat = await this.em.getPatient(enc)
-    return Patient.getLabel(pat)
+    const pat = await this.em.getPatient(enc);
+    return Patient.getLabel(pat);
   }
   private async fetch() {
-    const raw = await this.em.fetchFor(this.dateFrom, this.dateUntil, "")
-    const processed = []
+    const raw = await this.em.fetchFor(this.dateFrom, this.dateUntil, "");
+    const processed = [];
+    this.total = 0
+    this.count = 0
     for (const encraw of raw) {
-      const patient = await this.em.getPatient(encraw)
-      const fall = await this.em.getCase(encraw)
-      const encprocessed={
+      const patient = await this.em.getPatient(encraw);
+      const fall = await this.em.getCase(encraw);
+      const billings: BillingModel[] = await this.em.getBillings(encraw);
+      const sum = billings.reduce((prev, curr) => prev + curr.getAmount(), 0);
+      this.total += sum
+      this.count += 1
+      const encprocessed = {
         datetime: encraw.datum,
-        fall, patient
-      }
-      processed.push(encprocessed)
+        fall,
+        patient,
+        sum
+      };
+      processed.push(encprocessed);
     }
-    this.encounters = []
+    return processed;
   }
 }

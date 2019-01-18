@@ -1,15 +1,20 @@
-import { DataService } from "services/datasource";
+import { DataService, DataSource } from "services/datasource";
 import { ElexisType, UUID } from "./elexistype";
+import { Container } from "aurelia-framework";
 
 export class ObjectManager {
+  protected dataService: DataService;
 
-  constructor(protected dataService: DataService) { }
+  constructor(serviceName: string) {
+    const source: DataSource = Container.instance.get(DataSource);
+    this.dataService = source.getService(serviceName);
+  }
 
   public async save(el: ElexisType) {
     for (const attr in el) {
       if (el.hasOwnProperty(attr)) {
         if (attr.startsWith("_")) {
-          delete el[attr]
+          delete el[attr];
         }
       }
     }
@@ -21,6 +26,6 @@ export class ObjectManager {
   }
 
   public async fetch(id: UUID) {
-    return await this.dataService.get(id)
+    return await this.dataService.get(id);
   }
 }

@@ -15,6 +15,7 @@ import { DataSource, DataService } from "services/datasource";
 import { deepEqual } from "assert";
 import { PatientType, Patient } from "./patient";
 import { ObjectManager } from "./object-manager";
+import { BillingModel, BillingsManager } from "./billings-model";
 
 /**
  * An Elexis "Konsultation"
@@ -38,8 +39,8 @@ export interface EncounterType extends ElexisType {
 @autoinject
 export class EncounterManager extends ObjectManager{
 
-  constructor(private dt: DateTime, private cm: CaseManager, private da: DataSource) {
-    super(da.getService("konsultation"))
+  constructor(private dt: DateTime, private cm: CaseManager, private bm: BillingsManager) {
+    super("konsultation")
   }
 
   public fetchFor(
@@ -50,7 +51,6 @@ export class EncounterManager extends ObjectManager{
     const from = moment(dateFrom).format("YYYYMMDD");
     const until = moment(dateUntil).format("YYYYMMDD");
 
-    console.log(`fetching ${from} to ${until}`);
     return this.dataService
       .find({
         query: {
@@ -94,4 +94,7 @@ export class EncounterManager extends ObjectManager{
     return this.dt.ElexisDateToLocalDate(enc.datum) + "," + enc.Zeit;
   }
 
+  public getBillings(enc: EncounterType): Promise<BillingModel[]>{
+    return this.bm.getBillings(enc)
+  }
 }

@@ -33,11 +33,11 @@ export interface CaseType extends ElexisType {
 
 @autoinject
 export class CaseManager extends ObjectManager{
-  // sic!
+
   private patientService: DataService;
 
-  constructor(private ds: DataSource, private dt: DateTime) {
-    super(ds.getService("fall"));
+  constructor(ds: DataSource, private dt: DateTime) {
+    super('fall');
     this.patientService = ds.getService("patient");
   }
 

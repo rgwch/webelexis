@@ -29,7 +29,11 @@ export class BillingsManager {
     this.billableService = this.ds.getService("billable");
   }
 
-  public async getBillings(kons: EncounterType) {
+  /**
+   * Fetch all billings for a given encounter
+   * @param kons 
+   */
+  public async getBillings(kons: EncounterType): Promise<BillingModel[]> {
     const ret = await this.billingService.find({
       query: { behandlung: kons.id }
     });
@@ -133,6 +137,9 @@ export class BillingModel {
     return parseInt(this.obj.zahl, 10);
   }
 
+  public getAmount(): number {
+    return this.getCount() * parseFloat(this.obj.vk_preis)
+  }
   public increase(num?: number) {
     if (!num) {
       num = 1;

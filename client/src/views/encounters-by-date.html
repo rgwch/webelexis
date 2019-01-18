@@ -1,15 +1,20 @@
 <template>
   <require from="components/pickdate"></require>
+  <require from="services/date-format"></require>
+  <require from="services/number-format"></require>
   <span class="detailcaption">Konsultationen nach Datum</span>
   <div class="sheet">
     <div class="header">
       <pickdate pickerdate.two-way="dateFrom" message="ebd_from"></pickdate>
       <pickdate pickerdate.two-way="dateUntil" message="ebd_until"></pickdate>
+      <span class="price">Zahl: ${count}; Total: ${total | numberFormat:"cents"}</span>
     </div>
-    <div class="body">
+    <div class="body" style="height:85vh">
       <ul class="list-group">
-        <li class="list-group-item" repeat.for="enc of encounters" innerhtml.bind="patLabel(enc.patient)">
-          // ${enc.datetime}<br />P: ${patLabel(enc.patient)}
+        <li class="list-group-item" repeat.for="enc of encounters">
+          <span class="date">${enc.datetime | dateFormat:"date"}</span>
+          <span class="name">${enc.patient.Bezeichnung1} ${enc.patient.Bezeichnung2}</span>
+          <div class="price">${enc.sum | numberFormat:"cents"}</div>
         </li>
       </ul>
     </div>
