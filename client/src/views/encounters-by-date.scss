@@ -9,8 +9,14 @@
 .name{
   color: blue;
   font-size: normal;
+  cursor: pointer;
+  
 }
 
+.name:hover{
+  font-weight: 400;
+  color: red;
+}
 .price{
   color:black;
   font-size: normal;
