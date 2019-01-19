@@ -7,10 +7,10 @@ import * as moment from 'moment'
 describe('briefe', () => {
   let bm:BriefManager
   let we
-  let dt=new DateTime(null)
+  let dt = new DateTime(null)
   beforeAll(()=>{
-    we=new dummywe()
-    bm= new BriefManager(new Dummysource(),we,dt)
+    we = new dummywe()
+    bm = new BriefManager(we,dt)
 
   })
   it('merges a template and a brief with field resolvers', async () => {

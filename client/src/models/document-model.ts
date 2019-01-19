@@ -1,11 +1,11 @@
 import { ElexisType, UUID } from "./elexistype";
 import { Patient } from "./patient";
 import { Kontakt } from "./kontakt";
-import { DataSource } from "services/datasource";
 import { autoinject } from "aurelia-framework";
 import { DateTime } from '../services/datetime'
 import hash from 'string-hash'
 import { WebelexisEvents } from "webelexisevents";
+import { ObjectManager } from "./object-manager";
 
 /**
  * A Document is an (arbitrary) entity to store and retrieve by name and keywords.
@@ -21,11 +21,10 @@ export interface DocType extends ElexisType {
 }
 
 @autoinject
-export class DocManager {
-  private docService
+export class DocManager extends ObjectManager{
 
-  constructor(private we: WebelexisEvents, private ds: DataSource, private dt: DateTime) {
-    this.docService = this.ds.getService('lucinda')
+  constructor(private we: WebelexisEvents, private dt: DateTime) {
+    super('lucinda')
   }
   public store(doc: DocType): Promise<any> {
     if (!doc.date) {
@@ -35,6 +34,6 @@ export class DocManager {
       doc.filename = hash(doc.payload)
     }
     doc.payload = btoa(doc.payload)
-    return this.docService.create(doc)
+    return this.dataService.create(doc)
   }
 }

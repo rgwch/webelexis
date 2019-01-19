@@ -4,10 +4,11 @@ import { Container } from "aurelia-framework";
 
 export class ObjectManager {
   protected dataService: DataService;
+  protected dataSource: DataSource
 
   constructor(serviceName: string) {
-    const source: DataSource = Container.instance.get(DataSource);
-    this.dataService = source.getService(serviceName);
+    this.dataSource = Container.instance.get(DataSource);
+    this.dataService = this.dataSource.getService(serviceName);
   }
 
   public async save(el: ElexisType) {
