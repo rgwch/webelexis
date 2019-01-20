@@ -58,7 +58,7 @@ export class BriefManager extends ObjectManager {
     brief: BriefType,
     template: string,
     fields?: Array<{ field: string; replace: string }>
-  ) {
+  ) : Promise<string> {
     if (!template.endsWith("_webelexis")) {
       template += "_webelexis"
     }
@@ -88,8 +88,8 @@ export class BriefManager extends ObjectManager {
     brief: BriefType,
     fields?: Array<{ field: string; replace: string }>
   ) {
-    const fieldmatcher = /\[\w+\.\w+\]/gi;
-    const complexmatcher = /\[\w+:\w+:.+\/.+\]/gi;
+    const fieldmatcher = /\[\w+?\.\w+?\]/gi;
+    const complexmatcher = /\[\w+?:\w+?:.+?\/.+?\]/gi;
 
     for (const f of fields) {
       if (!f.replace) {

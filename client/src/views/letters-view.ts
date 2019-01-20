@@ -21,7 +21,7 @@ export class Letters {
     private bm: BriefManager,
     private dt: DateTime,
     private we: WebelexisEvents
-  ) {}
+  ) { }
 
   protected showTemplates() {
     this.dlgs
@@ -44,6 +44,19 @@ export class Letters {
       typ: "Allg.",
 
     };
-    const html = this.bm.generate(brief, tmpl.Betreff, []);
+    this.bm.generate(brief, tmpl.Betreff, []).then(html => {
+      const win = window.open("", "_new");
+      if (!win) {
+        alert(
+          "Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf"
+        );
+      } else {
+        win.document.write(html);
+        // Allow freshly opened window to load css and render
+        setTimeout(() => {
+          win.print();
+        }, 50);
+      }
+    })
   }
 }

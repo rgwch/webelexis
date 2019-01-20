@@ -25,6 +25,12 @@ export default {
     text: "Artikel",
     view: PLATFORM.moduleName("../artikel/index")
   },
+  auf:{
+    icon: "/envelope.svg",
+    role: global.roles.mpa,
+    text: "Arbeitsunfähigkeit",
+    view: PLATFORM.moduleName("views/auf")
+  },
   briefe: {
     icon: "/envelope.svg",
     text: "Briefe",

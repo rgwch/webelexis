@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -54,7 +54,9 @@ export class App {
   constructor(private i18n: I18N, private ds: DataSource) {}
 
   /**
-   * When activationg the main view: Wait for metadata of the configured server
+   * When activating the main view: Wait for metadata of the configured server.
+   * (The 'activate' callback will finish only after the Promise from metadata() is resolved
+   * or rejected)
    */
   public activate() {
     return this.ds.metadata();

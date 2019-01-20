@@ -29,4 +29,8 @@ export class ObjectManager {
   public async fetch(id: UUID) {
     return await this.dataService.get(id);
   }
+
+  public async remove(el: ElexisType) {
+    return await this.dataService.remove(el.id)
+  }
 }

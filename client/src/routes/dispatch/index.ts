@@ -52,7 +52,8 @@ export class Dispatcher {
     v.artikeldetail,
     v.labor,
     v.agendagross,
-    v.medikation
+    v.medikation,
+    v.auf
   ];
   // currentli set right panel
   protected rightView = v.stammdaten;
