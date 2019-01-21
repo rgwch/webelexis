@@ -5,7 +5,7 @@
  ********************************************/
 
 /**
- * Display an elexis encounter. 
+ * Display an elexis encounter.
  */
 import { EncounterType, EncounterManager } from '../models/encounter-model';
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
@@ -21,7 +21,8 @@ export class Encounter {
   protected isEditing: boolean = false
 
   constructor(private dt: DateTime, private ea: EventAggregator,
-    private mp: Macroprocessor, private we: WebelexisEvents, private em: EncounterManager) {
+              private mp: Macroprocessor, private we: WebelexisEvents, 
+              private em: EncounterManager) {
   }
 
   protected makros = text => {
@@ -30,13 +31,13 @@ export class Encounter {
   protected toggleEdit() {
     if (this.isEditing) {
       this.isEditing = false
-      this.we.deselect('konsultation')
+      // this.we.deselect('konsultation')
       this.em.save(this.obj)
     } else {
       this.isEditing = true
       this.obj.type = "konsultation"
       this.we.selectItem(this.obj)
-      const fall = this.em.getCase(this.obj).then(fall => {
+      this.em.getCase(this.obj).then(fall => {
         fall.type = "fall"
         this.we.selectItem(fall)
       })
@@ -45,15 +46,13 @@ export class Encounter {
 
   protected deleteKons() {
     const text = this.obj.eintrag.html
-    if (!text || text.replace(/<.*?>/g, "").length == 0) {
+    if (!text || text.replace(/<.*?>/g, "").length === 0) {
       this.em.remove(this.obj)
     } else {
       alert("Eine Konsultation kann nur gelöscht werden, wenn sie keinen Text mehr enthält.")
     }
   }
-  protected getGuarantor() {
-
-  }
+  protected getGuarantor() {}
 
   @computedFrom('obj')
   get datum() {

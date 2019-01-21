@@ -84,21 +84,24 @@ export default [
       const second = days[2]
       const firstPrefix = first.substr(0, 1)
       const firstLen = parseInt(first.substr(1), 10)
-      const from = moment()
+      let from = moment()
       if (firstPrefix == "-") {
         from.subtract(firstLen, 'days')
       } else {
         from.add(firstLen,'days')
       }
-      const until = moment()
-      if (second){
+      let until = moment()
+      if (second) {
         const secPrefix = second.substr(0, 1)
         const secLen = parseInt(second.substr(1), 10)
-        if(secPrefix === "-") {
+        if (secPrefix === "-") {
           until.subtract(secLen, 'days')
         } else {
           until.add(secLen, 'days')
         }
+      } else {
+        until = from.clone()
+        from = moment()
       }
 
       const ds: DataSource = Container.instance.get(DataSource)

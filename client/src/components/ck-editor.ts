@@ -3,7 +3,7 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { bindable, bindingMode, customElement, inlineView } from 'aurelia-framework';
+import { bindable, bindingMode, customElement, inlineView, autoinject } from 'aurelia-framework';
 import { HighlightSpanKind } from 'typescript';
 
 declare const CKEDITOR
@@ -14,6 +14,7 @@ declare const CKEDITOR
 </template>
 `)
 @customElement('ck-editor')
+@autoinject
 export class CKEditor {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) public value;
   @bindable public callback
@@ -21,13 +22,9 @@ export class CKEditor {
   public textArea: HTMLTextAreaElement;
   private editor
 
-  private element: any;
-
-  public static = [Element];
-  constructor(element) {
+  constructor(private element: Element) {
     this.element = element;
   }
-
 
 /*
   valueChanged(newv, oldv) {
@@ -42,8 +39,11 @@ export class CKEditor {
     this.editor.on('change', (e) => {
       this.value = e.editor.getData();
     });
+    this.editor.on('blur',evt=>{
+      console.log("blur")
+    })
     this.editor.on('key', evt => {
-      if (evt.data.domEvent.$.key == '$') {
+      if (evt.data.domEvent.$.key === '$') {
         const ed = evt.editor
         const sel = ed.getSelection()
         const range = sel.getRanges()[0]
@@ -51,7 +51,7 @@ export class CKEditor {
         const text = range.endContainer.$.data
         let off = 0
         const idx = text.lastIndexOf(' ') // -1 if at beginning of line
-        if (idx == -1) {
+        if (idx === -1) {
           off = 1
         }
         const word = text.substring(idx + 1, ipos)
@@ -69,7 +69,6 @@ export class CKEditor {
     })
     this.editor.setData(this.value)
   }
-
 
   public updateValue() {
     this.value = this.textArea.value;
