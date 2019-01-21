@@ -105,17 +105,30 @@ module.exports={
   testing: true,
   sitename: "Praxis Webelexis",
   admin: "someone@webelexis.ch",
-  docbase:"/home/node/webelexis/data/sample-docbase",
+  adminpwd: "oh so secret",
+  docbase:" "../data/sample-docbase"",
+   mandators: {
+    default: {
+      name: "Dr. med. Dok Tor",
+      street: "Hinterdorf 17",
+      place: "9999 Webelexikon",
+      phone: "555 55 55",
+      email: "chefe@webelexis.org",
+      zsr: "G088113",
+      gln: "123456789012"
+    }
+  },
   elexisdb: {
     host: "172.121.16.3",
     database: "elexis",
     user: "elexisuser",
-    password: "topsecret"
+    password: "topsecret",
+    automodify: true
   }
 }
 ```
 
-(Wobei Sie natürlich die Angaben anpasen müssen)
+(Wobei Sie natürlich die Angaben anpassen müssen)
 
 ## 3. Webelexis starten
 
