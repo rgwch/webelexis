@@ -29,6 +29,15 @@ export class DateTime {
     }
   }
 
+  public localDateToElexisDate(ddmmyy: string) {
+    return moment(ddmmyy, this.i18.tr("adapters.date_format")).format(
+      "YYYYMMDD"
+    );
+  }
+
+  public isValidLocalDate(dmy){
+    return (moment(dmy, "D.M.YYYY")).isValid()
+  }
   public ElexisDateTimeToLocalDate(yyyymmddhhmmss: string): string {
     if (yyyymmddhhmmss) {
       return moment(yyyymmddhhmmss, "YYYYMMDDHHmmSS").format(

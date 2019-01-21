@@ -29,6 +29,15 @@
 .compactlist:hover {
   font-weight: bold;
 }
+
+[contenteditable]:hover, [contenteditable]:focus {
+  background: #FFFFD3;
+}
+
+[contenteditable]:focus {
+  padding: 5px;
+}
+
 /* Make something not-selectable */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
