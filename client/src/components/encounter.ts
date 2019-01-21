@@ -23,11 +23,15 @@ export class Encounter {
   constructor(private dt: DateTime, private ea: EventAggregator,
               private mp: Macroprocessor, private we: WebelexisEvents, 
               private em: EncounterManager) {
+                this.ea.subscribe("ck_save", msg => {
+                  this.em.save(this.obj)
+                })
   }
 
   protected makros = text => {
     return this.mp.process(this.obj, text)
   }
+
   protected toggleEdit() {
     if (this.isEditing) {
       this.isEditing = false

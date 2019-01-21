@@ -5,6 +5,7 @@
  ********************************************/
 import { bindable, bindingMode, customElement, inlineView, autoinject } from 'aurelia-framework';
 import { HighlightSpanKind } from 'typescript';
+import { EventAggregator } from 'aurelia-event-aggregator';
 
 declare const CKEDITOR
 
@@ -19,28 +20,21 @@ export class CKEditor {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) public value;
   @bindable public callback
   @bindable public name;
+  @bindable public message;
   public textArea: HTMLTextAreaElement;
   private editor
 
-  constructor(private element: Element) {
+  constructor(private element: Element, private ea: EventAggregator) {
     this.element = element;
   }
-
-/*
-  valueChanged(newv, oldv) {
-    if (this.editor && newv) {
-      this.editor.insertHtml("x")
-    }
-  }
-*/
 
   public attached() {
     this.editor = CKEDITOR.replace(this.textArea);
     this.editor.on('change', (e) => {
       this.value = e.editor.getData();
     });
-    this.editor.on('blur',evt=>{
-      console.log("blur")
+    this.editor.on('blur', evt => {
+      this.ea.publish(this.message, "blur")
     })
     this.editor.on('key', evt => {
       if (evt.data.domEvent.$.key === '$') {

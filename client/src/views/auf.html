@@ -10,12 +10,19 @@
     <div class="body">
       <div class="compactlist" repeat.for="auf of elems">
         <i class="fa fa-lock" style="margin-right:10px;"></i>
+        <span contenteditable="true">
+          ${auf.datumvon | dateFormat:"date"} - ${auf.datumbis | dateFormat:"date"}:
+          ${auf.prozent}%, ${auf.Grund} &nbsp;(${auf.DatumAUZ | dateFormat:"date"})
+        </span>
+      </div>
+      <!-- div class="compactlist" repeat.for="auf of elems">
+        <i class="fa fa-lock" style="margin-right:10px;"></i>
         <span id="${$index}_from">${auf.datumvon | dateFormat:"date"}</span> -
         <span id="${$index}_until">${auf.datumbis | dateFormat:"date"}</span>
         <span id="${$index}_percent">${auf.prozent}%</span>,
         <span id="${$index}_reason">${auf.Grund}</span>
         &nbsp;(${auf.DatumAUZ | dateFormat:"date"})
-      </div>
+      </div -->
     </div>
   </div>
 </template>
