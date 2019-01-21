@@ -50,9 +50,9 @@ Empfehlung: Node >10 und NPM>5 (Die verwendete Node-Version muss zwingend Featur
 
 Folgende Libraries müssen besorgt und nach server/lib kopiert werden:
 
-* jackson-annotations-2.7.0.jar
-* jackson-core-2.7.4.jar
-* jackson-databind-2.7.4.jar
+* jackson-annotations-2.9.8.jar
+* jackson-core-2.9.8.jar
+* jackson-databind-2.9.8.jar
 * rgw-toolbox-4.2.7.jar
 
 Man kann das automatisieren, wenn man Maven >=3.3 installiert hat: Einfach ins Verzeichnis server/lib gehen, und dort `./fetch.sh` eingeben.
