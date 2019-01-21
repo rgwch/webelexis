@@ -46,6 +46,24 @@ export class BriefManager extends ObjectManager {
   }
 
   /**
+   * Print-perview a letter
+   */
+  public print(html: string) {
+    const win = window.open("", "_new");
+    if (!win) {
+      alert(
+        "Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf"
+      );
+    } else {
+      win.document.write(html);
+      // Allow freshly opened window to load css and render
+      setTimeout(() => {
+        win.print();
+      }, 50);
+    }
+  }
+
+  /**
    * Generate a letter (which means: merge a template with a number of field definitions and system constants)
    * @param brief: BriefType
    * @param template: string - Name of the Template to use. The system will attach the suffix _webelexis to the name
@@ -58,9 +76,9 @@ export class BriefManager extends ObjectManager {
     brief: BriefType,
     template: string,
     fields?: Array<{ field: string; replace: string }>
-  ) : Promise<string> {
+  ): Promise<string> {
     if (!template.endsWith("_webelexis")) {
-      template += "_webelexis"
+      template += "_webelexis";
     }
     const tmpls = await this.dataService.find({
       query: { Betreff: template, typ: "Vorlagen" }
