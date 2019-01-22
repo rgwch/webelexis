@@ -37,7 +37,7 @@ export default [
         const data = fm
           ? fm.createFindingFromString("physical", word)
           : [first, second, bmi];
-        return `Gewicht: ${data[0]}, Grösse: ${data[1]}, BMI: ${data[2]}`;
+        return `Gewicht: ${data[0]}Kg, Grösse: ${data[1]}cm, BMI: ${data[2]}`;
       }
     }
   },
@@ -85,7 +85,7 @@ export default [
       const firstPrefix = first.substr(0, 1)
       const firstLen = parseInt(first.substr(1), 10)
       let from = moment()
-      if (firstPrefix == "-") {
+      if (firstPrefix === "-") {
         from.subtract(firstLen, 'days')
       } else {
         from.add(firstLen,'days')
