@@ -1,3 +1,4 @@
+import { select } from 'd3-selection';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2019 by G. Weirich         *
@@ -118,8 +119,9 @@ export class AUF {
    * Print either the currently selected certificate or a list of all selected certificates
    */
   protected print() {
-    const selected : ElexisType[] = this.elems.filter(e => e.selected);
-    if (selected.length === 1) {
+    const selected: ElexisType[] = this.elems.filter(e => e.selected);
+    if (selected.length < 2) {
+      const out = (selected.length === 1 ? selected[0] : this.elems[0])
       const brief: BriefType = {
         Betreff: "AUF-Zeugnis",
         Datum: this.dt.DateToElexisDate(new Date()),
@@ -128,12 +130,35 @@ export class AUF {
         _Patient: this.actPatient,
         patientid: this.actPatient ? this.actPatient.id : undefined
       };
-      selected[0].type = "auf"
-      this.we.selectItem(selected[0])
-      this.bm.generate(brief, "auf-Zeugnis", []).then(html => {
+      out.type = "auf"
+      this.we.selectItem(out)
+      this.bm.generate(brief, "auf-zeugnis", []).then(html => {
         this.bm.print(html);
       });
+    } else {
+      const brief: BriefType = {
+        Betreff: "AUF-Liste",
+        Datum: this.dt.DateToElexisDate(new Date()),
+        typ: "AUF-Zeugnis",
+        MimeType: "text/html",
+        _Patient: this.actPatient,
+        patientid: this.actPatient ? this.actPatient.id : undefined
+      };
+      let list = "<ul>"
+      for (const au of selected as any[]) {
+        list += `<li>${this.dt.ElexisDateToLocalDate(au.datumvon)} -`
+          + `${this.dt.ElexisDateToLocalDate(au.datumbis)}: ${au.prozent}% (${au.Grund})`
+        if (au.AUFZusatz) {
+          list += `; ${au.AUFZusatz}`
+        }
+        list += "</li>"
+      }
+      list += "</ul>"
+      this.bm.generate(brief, "auf-liste", [{ field: "liste", replace: list }]).then(html => {
+        this.bm.print(html)
+      })
     }
+
   }
 
   /**
