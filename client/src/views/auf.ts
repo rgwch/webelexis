@@ -18,6 +18,9 @@ import { ValidateEvent } from "aurelia-validation";
 import { FromViewBindingBehavior } from "aurelia-templating-resources";
 import { BriefType, BriefManager } from "models/briefe-model";
 
+/**
+ * Handling of "Arbeitsunfähigkeiten" (work disability certificates; AUF)
+ */
 @autoinject
 @connectTo<State>({
   selector: {
@@ -41,6 +44,11 @@ export class AUF {
   public actPatientChanged(newpat: PatientType, oldpat?: PatientType) {
     this.fetch(newpat);
   }
+  /**
+   * User pressed a key in the contenteditable
+   * @param event the keypressevent
+   * @param auf the auf on which the event happened
+   */
   protected key(event, auf) {
     const el = event.target;
     if (event.which === 13) {
@@ -63,6 +71,11 @@ export class AUF {
     }
     return true;
   }
+
+  /**
+   * Load all certificates of the given patient
+   * @param pat 
+   */
   protected async fetch(pat: PatientType) {
     if (pat) {
       const aufs = await this.aufService.find({ query: { patientid: pat.id } });
@@ -77,6 +90,9 @@ export class AUF {
     }
   }
 
+  /**
+   * Create a new certificate
+   */
   protected newAUF() {
     const fall: CaseType = this.we.getSelectedItem("fall");
     const today = this.dt.DateToElexisDate(new Date());
@@ -97,6 +113,10 @@ export class AUF {
       this.fetch(this.actPatient);
     });
   }
+
+  /**
+   * Print either the currently selected certificate or a list of all selected certificates
+   */
   protected print() {
     const selected : ElexisType[] = this.elems.filter(e => e.selected);
     if (selected.length === 1) {
@@ -116,6 +136,10 @@ export class AUF {
     }
   }
 
+  /**
+   * Check if the input line can be interpreted as content of a certificate
+   * @param line 
+   */
   private splitLine(line) {
     const [begin, end, percent, reason, date, ...zusatz] = line.split(
       /[\s-:,]+/
