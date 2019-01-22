@@ -50,9 +50,9 @@ Empfehlung: Node >10 und NPM>5 (Die verwendete Node-Version muss zwingend Featur
 
 Folgende Libraries müssen besorgt und nach server/lib kopiert werden:
 
-* jackson-annotations-2.7.0.jar
-* jackson-core-2.7.4.jar
-* jackson-databind-2.7.4.jar
+* jackson-annotations-2.9.8.jar
+* jackson-core-2.9.8.jar
+* jackson-databind-2.9.8.jar
 * rgw-toolbox-4.2.7.jar
 
 Man kann das automatisieren, wenn man Maven >=3.3 installiert hat: Einfach ins Verzeichnis server/lib gehen, und dort `./fetch.sh` eingeben.
@@ -105,17 +105,30 @@ module.exports={
   testing: true,
   sitename: "Praxis Webelexis",
   admin: "someone@webelexis.ch",
-  docbase:"/home/node/webelexis/data/sample-docbase",
+  adminpwd: "oh so secret",
+  docbase:" "../data/sample-docbase"",
+   mandators: {
+    default: {
+      name: "Dr. med. Dok Tor",
+      street: "Hinterdorf 17",
+      place: "9999 Webelexikon",
+      phone: "555 55 55",
+      email: "chefe@webelexis.org",
+      zsr: "G088113",
+      gln: "123456789012"
+    }
+  },
   elexisdb: {
     host: "172.121.16.3",
     database: "elexis",
     user: "elexisuser",
-    password: "topsecret"
+    password: "topsecret",
+    automodify: true
   }
 }
 ```
 
-(Wobei Sie natürlich die Angaben anpasen müssen)
+(Wobei Sie natürlich die Angaben anpassen müssen)
 
 ## 3. Webelexis starten
 
