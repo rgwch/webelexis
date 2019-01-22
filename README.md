@@ -14,7 +14,7 @@ Die schlanke, flinke Ergänzung zu Elexis
 [Patientenliste](http://www.screencast.com/t/dZygwPdHG09e), 
 [Medikation](https://youtu.be/ylgkfbbEv5E),
 [Agenda](https://youtu.be/k0_RfUutVSc), 
-[Konsultation](http://www.screencast.com/t/5EnOY5EUd)
+[Konsultation, Makros](https://www.youtube.com/watch?v=uuUfb1l7gt0)
 
 ## Installationsanleitungen
 
