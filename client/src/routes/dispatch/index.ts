@@ -39,7 +39,8 @@ export class Dispatcher {
     v.briefe,
     v.messwerte,
     v.leistungen,
-    v.tagesliste
+    v.tagesliste,
+    v.auf
   ];
   // currently set left panel
   protected leftView = v.patientenliste;
@@ -52,8 +53,7 @@ export class Dispatcher {
     v.artikeldetail,
     v.labor,
     v.agendagross,
-    v.medikation,
-    v.auf
+    v.medikation
   ];
   // currentli set right panel
   protected rightView = v.stammdaten;
