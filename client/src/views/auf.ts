@@ -16,6 +16,7 @@ import { pluck } from "rxjs/operators";
 import { ElexisType } from "models/elexistype";
 import { ValidateEvent } from "aurelia-validation";
 import { FromViewBindingBehavior } from "aurelia-templating-resources";
+import { BriefType, BriefManager } from "models/briefe-model";
 
 @autoinject
 @connectTo<State>({
@@ -31,7 +32,8 @@ export class AUF {
   constructor(
     ds: DataSource,
     private we: WebelexisEvents,
-    private dt: DateTime
+    private dt: DateTime,
+    private bm: BriefManager
   ) {
     this.aufService = ds.getService("auf");
   }
@@ -84,7 +86,7 @@ export class AUF {
       prozent: "0",
       datumvon: today,
       datumbis: today,
-      Grund: fall ? fall.grund : undefined,
+      Grund: fall ? fall.grund : "Krankheit",
       AUFZusatz: "",
       BriefID: undefined,
       DatumAUZ: today
@@ -95,6 +97,24 @@ export class AUF {
       this.fetch(this.actPatient);
     });
   }
+  protected print() {
+    const selected : ElexisType[] = this.elems.filter(e => e.selected);
+    if (selected.length === 1) {
+      const brief: BriefType = {
+        Betreff: "AUF-Zeugnis",
+        Datum: this.dt.DateToElexisDate(new Date()),
+        typ: "AUF-Zeugnis",
+        MimeType: "text/html",
+        _Patient: this.actPatient,
+        patientid: this.actPatient ? this.actPatient.id : undefined
+      };
+      selected[0].type = "auf"
+      this.we.selectItem(selected[0])
+      this.bm.generate(brief, "auf-Zeugnis", []).then(html => {
+        this.bm.print(html);
+      });
+    }
+  }
 
   private splitLine(line) {
     const [begin, end, percent, reason, date, ...zusatz] = line.split(
@@ -102,11 +122,15 @@ export class AUF {
     );
     const proc = parseInt(percent, 10);
     if (
-      begin && this.dt.isValidLocalDate(begin) &&
-      end && this.dt.isValidLocalDate(end) &&
-      proc && proc >= 0 &&
+      begin &&
+      this.dt.isValidLocalDate(begin) &&
+      end &&
+      this.dt.isValidLocalDate(end) &&
+      proc &&
+      proc >= 0 &&
       proc <= 100 &&
-      date && this.dt.isValidLocalDate(date.substr(1, date.length - 2))
+      date &&
+      this.dt.isValidLocalDate(date.substr(1, date.length - 2))
     ) {
       return [begin, end, percent, reason, date, zusatz.join(" ")];
     } else {

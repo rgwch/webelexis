@@ -151,7 +151,7 @@ export class BriefManager extends ObjectManager {
       const parts = full.split(":");
       // console.log("parts :", parts)
       const entity = getEntity(parts[0]);
-      if (parts[1] == "mw") {
+      if (parts[1] === "mw") {
         const v1 = parts[2].split("/");
         if (entity.geschlecht && entity.geschlecht.toLowerCase() == "m") {
           return v1[0];
@@ -170,6 +170,8 @@ export class BriefManager extends ObjectManager {
       const entity = getEntity(element);
       if (entity) {
         replacement = entity[attribute];
+      } else {
+        replacement = ""
       }
 
       if (replacement) {
@@ -178,7 +180,7 @@ export class BriefManager extends ObjectManager {
         }
         return replacement;
       } else {
-        return field;
+        return "" // field;
       }
     });
     return stepThree;

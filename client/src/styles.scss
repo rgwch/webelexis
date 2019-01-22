@@ -13,6 +13,14 @@
   border-radius: 5px;
 }
 
+.clickable {
+  cursor: pointer;
+  margin-left: 20px;
+}
+.clickable:hover {
+  transform: scale(1.5);
+}
+
 .compactlist {
   padding-top: 0px;
   padding-bottom: 1px;

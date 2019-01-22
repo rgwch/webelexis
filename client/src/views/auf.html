@@ -6,13 +6,21 @@
   <div class="sheet">
     <div class="header">
       <new-item-button click.delegate="newAUF()"></new-item-button>
+      <img
+        class="clickable"
+        src="/printer.svg"
+        alt="print"
+        click.delegate="print()"
+        title="Druckvorschau"
+      />
     </div>
     <div class="body">
       <div class="compactlist" repeat.for="auf of elems">
+        <input type="checkbox" checked.bind="auf.selected" />
         <span contenteditable="true" keydown.trigger="key($event,auf)">
           ${auf.datumvon | dateFormat:"date"} - ${auf.datumbis | dateFormat:"date"}:
           ${auf.prozent}%, ${auf.Grund} &nbsp;(${auf.DatumAUZ | dateFormat:"date"})
-           ${auf.AUFZusatz}
+          ${auf.AUFZusatz}
         </span>
       </div>
       <!-- div class="compactlist" repeat.for="auf of elems">

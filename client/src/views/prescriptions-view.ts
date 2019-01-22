@@ -25,7 +25,6 @@ import { ADD_MESSAGE, REMOVE_MESSAGE } from "../components/medication";
 import { DocManager, DocType } from "../models/document-model";
 import { PatientType } from "./../models/patient";
 import { WebelexisEvents } from "./../webelexisevents";
-import "./prescription-view.scss";
 import { SWITCH_PANELS } from './../routes/dispatch/index';
 
 // import * as html2pdf from 'html2pdf.js'

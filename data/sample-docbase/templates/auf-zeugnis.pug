@@ -28,7 +28,8 @@ block content
         td #{mandator.gln}
   .payload
 
-    .concern  [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]
-    .contents.
-      Steht wegen [fall.grund] in meiner Behandlung. [patient:mw:Er/Sie] ist vom [auf.anfang] bis zum [auf.ende] zu [auf.prozent] arbeitsunfähig.
-
+    .concernleft  [Patient.Bezeichnung1] [Patient.Bezeichnung2], [Patient.geburtsdatum]
+    .contents
+      p.
+        Steht wegen [auf.Grund] in meiner Behandlung. [patient:mw:Er/Sie] war/ist vom [auf.datumvon] bis zum [auf.datumbis] zu [auf.prozent]% arbeitsunfähig.
+      p [auf.AUFZusatz]
