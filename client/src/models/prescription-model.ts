@@ -1,3 +1,10 @@
+import { RpDef } from './prescription-model';
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { WebelexisEvents } from './../webelexisevents';
 import { autoinject } from 'aurelia-framework'
 import { DataSource, DataService } from 'services/datasource';
@@ -14,10 +21,12 @@ export class Modalities {
   public static SYMPTOMATIC = "5"
 }
 
-// const ELEXISDATETIME = "yyyyLLddHHmmss"
 const ELEXISDATETIME = "YYYYMMDDHHmmss"
 const ELEXISDATE = "YYYYMMDD"
 
+/**
+ * An Elexis "Rezept"
+ */
 export interface RezeptType extends ElexisType {
   patientid: UUID
   mandantid: UUID
@@ -27,14 +36,23 @@ export interface RezeptType extends ElexisType {
   BriefID: UUID
   prescriptions: PrescriptionType[]
 }
+/**
+ * Internal representation of a "Rezept"
+ */
 export interface RpDef {
   rezept: RezeptType,
   prescriptions: PrescriptionType[]
 }
 
+/**
+ * An Elexis "Artikel"
+ */
 export interface ArticleType extends ElexisType {
   DSCR: string
 }
+/**
+ * An Elexis "Prescription"
+ */
 export interface PrescriptionType extends ElexisType {
   Dosis?: string
   Bemerkung?: string
@@ -70,7 +88,7 @@ export class PrescriptionManager {
    * Fetch medication of current patient
    * @param patientid 
    */
-  fetchCurrent(patientid: UUID) {
+  public fetchCurrent(patientid: UUID) {
     return this.prescriptionLoader.find({ query: { current: patientid } }).then(result => {
       const ret = {
         fix: [],
@@ -113,7 +131,7 @@ export class PrescriptionManager {
    * @param presc 
    * @param modality 
    */
-  async cloneAs(presc: PrescriptionType, modality: string) {
+  public async cloneAs(presc: PrescriptionType, modality: string) {
     const ret = Object.assign({}, presc, { prescType: modality })
     ret.DateFrom = moment().subtract(10, 'minutes').format(ELEXISDATETIME)
     ret.prescDate = moment().subtract(10, 'minutes').format(ELEXISDATE)
@@ -127,7 +145,7 @@ export class PrescriptionManager {
   /**
    * Create a new "rezept"
    */
-  createRezept() {
+  public createRezept() {
     const rp = {
       patientid: this.we.getSelectedItem('patient').id,
       mandantid: this.we.getSelectedItem('usr').id,
@@ -141,17 +159,17 @@ export class PrescriptionManager {
     })
   }
 
-  saveRezept(rezept:RezeptType){
+  public saveRezept(rezept:RezeptType){
     return this.rezepteLoader.update(rezept.id,rezept).then(updated=>{
       return updated
     })
   }
   /**
-   * Fetch a prescription from an "extended id" 
-   * @param data an 'extended id': <datatype::id> 
+   * Fetch a prescription from a "scoped id" 
+   * @param data a 'scoped id': <datatype::id> 
    * 
    */
-  async fetch(data: string) {
+  public async fetch(data: string) {
     const [datatype, dataid] = data.split("::")
     let prescription: PrescriptionType
     if (datatype == "prescription") {
@@ -165,10 +183,10 @@ export class PrescriptionManager {
 
   /**
    * Set the mode of a Prescription (fix, reserve)
-   * @param data extended id: <datatype::id>
+   * @param data scoped id: <datatype::id>
    * @param mode fixmedi|reservemedi|rezept|symptommedi
    */
-  async setMode(data: string, params?: any): Promise<PrescriptionType> {
+  public async setMode(data: string, params?: any): Promise<PrescriptionType> {
     const now = moment().subtract(10, 'minutes')
     const nowFormatted = now.format(ELEXISDATETIME)
     let prescription = await this.fetch(data)
@@ -203,7 +221,7 @@ export class PrescriptionManager {
     return prescription
   }
 
-  getLabel(presc: PrescriptionType): string {
+  public getLabel(presc: PrescriptionType): string {
     const from = this.dt.ElexisDateTimeToLocalDate(presc.DateFrom)
     const label = presc.Artikel ? presc.Artikel["DSCR"] || "--" : "?"
     let ret = `${label} (${from}`
@@ -217,7 +235,11 @@ export class PrescriptionManager {
     return ret
   }
 
-  save(obj: PrescriptionType) {
+  /**
+   * Save a modified prescription
+   * @param obj 
+   */
+  public save(obj: PrescriptionType) : Promise<PrescriptionType>{
     return this.prescriptionLoader.update(obj.id, obj).then((updated: PrescriptionType) => {
       return updated
     }).catch(err => {
@@ -225,7 +247,11 @@ export class PrescriptionManager {
     })
   }
 
-  async createFromArticle(article: ArticleType): Promise<PrescriptionType> {
+  /**
+   * Create a Prrscription from an Article
+   * @param article 
+   */
+  public async createFromArticle(article: ArticleType): Promise<PrescriptionType> {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,
       DateFrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),
@@ -238,7 +264,12 @@ export class PrescriptionManager {
     created._Artikel = article
     return created
   }
-  async delete(data: string) {
+
+  /**
+   * Delete a prescription
+   * @param data a scoped id
+   */
+  public async delete(data: string): Promise<PrescriptionType> {
     const [datatype, dataid] = data.split("::")
     if (datatype == "prescription") {
       const removed = await this.prescriptionLoader.remove(dataid)
