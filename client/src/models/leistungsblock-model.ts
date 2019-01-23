@@ -10,6 +10,7 @@ type Blockdef = {
   code: string
   text?: string
 }
+
 export interface LeistungsblockType extends ElexisType {
   name: string
   billables?: Blockdef[]

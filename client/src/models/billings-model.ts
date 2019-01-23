@@ -62,6 +62,14 @@ export class BillingsManager {
     }
   }
 
+  /**
+   * Create a Billing from a Billable. If the same Billable has been billed already on the same
+   * encounter: Only increase count accordingly.
+   * @param billable The Billable
+   * @param encounter The encouter where the billing should be applied
+   * @param count Number of times to apply the billing
+   * @param others Other Billings already existing oj the encounter
+   */
   public async createBilling(
     billable,
     encounter: EncounterType,
@@ -87,6 +95,12 @@ export class BillingsManager {
       console.log(err);
     }
   }
+
+  /**
+   * Set the count of a Billing
+   * @param item 
+   * @param count 
+   */
   public async setCount(item: BillingModel, count: number) {
     item.getBilling().zahl = count.toString();
     return await this.billingService.update(
@@ -94,6 +108,10 @@ export class BillingsManager {
       item.getBilling()
     );
   }
+  /**
+   * Increase the coubt of a Billing
+   * @param item 
+   */
   public async increaseCount(item: BillingModel) {
     item.increase();
     return await this.billingService.update(
@@ -101,6 +119,11 @@ export class BillingsManager {
       item.getBilling()
     );
   }
+
+  /**
+   * Remove a Billing from an encounter 
+   * @param billing 
+   */
   public async removeBilling(billing: BillingModel) {
     try {
       const b = billing.getBilling();
@@ -110,6 +133,11 @@ export class BillingsManager {
       console.log(err);
     }
   }
+
+  /**
+   * remove all billings from an encounter
+   * @param kons 
+   */
   public async removeAllBillings(kons: EncounterType) {
     return await this.billingService.remove(null, {
       query: { behandlung: kons.id }
@@ -117,6 +145,9 @@ export class BillingsManager {
   }
 }
 
+/**
+ * Syntactic sugar around BillingType
+ */
 export class BillingModel {
   public code: string;
   constructor(private obj: BillingType) {

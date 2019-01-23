@@ -22,9 +22,9 @@ export interface TerminType extends ElexisType {
   id?: UUID;
   PatID?: UUID;
   Bereich?: string;
-  Tag: string;
-  Beginn: string;
-  Dauer: string;
+  Tag: string;        // YYYYMMDD
+  Beginn: string;     // minutes from 00:00
+  Dauer: string;      // minutes
   Grund?: string;
   TerminTyp: string;
   TerminStatus: string;
@@ -151,6 +151,9 @@ export class TerminManager {
   }
 }
 
+/**
+ * Syntactic sugar around TerminType
+ */
 export class TerminModel {
   public obj: TerminType;
 

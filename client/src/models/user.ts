@@ -1,7 +1,7 @@
 import { KontaktType } from './kontakt';
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -42,9 +42,15 @@ export class UserManager {
     this.cache=new LRU(100)
   }
 
-  async fetchUsers(){
+  public async fetchUsers(){
   }
-  hasRole(usr: UserType, role: string): boolean {
+  /**
+   * Check if a user has a given role
+   * note: usually, you'd rather use hasACE()
+   * @param usr 
+   * @param role 
+   */
+  public hasRole(usr: UserType, role: string): boolean {
     if (role == global.roles.guest) {
       return true
     } else if (usr && usr.roles.indexOf(global.roles.admin) != -1) {
@@ -56,11 +62,17 @@ export class UserManager {
     }
   }
 
-  async save(usr: UserType){
+  public async save(usr: UserType){
     const saved= await this.userService.patch(usr.email,usr)
     return saved
   }
-  async hasACE(usr: UserType, acename: string) {
+
+  /**
+   * Check if a user has a given ACE
+   * @param usr 
+   * @param acename 
+   */
+  public async hasACE(usr: UserType, acename: string): Promise<boolean>{
     const key = "ace:" + (usr ? usr.email : "guest") + "." + acename
     let r = this.cache.get(key)
     if (r) {
@@ -72,7 +84,12 @@ export class UserManager {
     }
   }
 
-  getElexisKontakt(usr: UserType): Promise<KontaktType> {
+  /**
+   * Retrieve the Elexis-Kontakt linked to a user (if any)
+   * @param usr 
+   * @returns a Promise resolving on the Kontakt or rejecting if no such Kontakt exists
+   */
+  public getElexisKontakt(usr: UserType): Promise<KontaktType> {
     if (usr.elexiskontakt) {
       return Promise.resolve(usr.elexiskontakt)
     } else if (usr.elexisuser_id) {
