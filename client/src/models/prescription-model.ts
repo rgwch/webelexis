@@ -6,15 +6,15 @@ import { DateTime as edt } from '../services/datetime'
 import * as moment from 'moment'
 
 export class Modalities {
-  static FIXMEDI = "0"
-  static RESERVE = "1"
-  static RECIPE = "2"
-  static SELFDISPENSED = "3"
-  static DONTKNOW = "4"
-  static SYMPTOMATIC = "5"
+  public static FIXMEDI = "0"
+  public static RESERVE = "1"
+  public static RECIPE = "2"
+  public static SELFDISPENSED = "3"
+  public static DONTKNOW = "4"
+  public static SYMPTOMATIC = "5"
 }
 
-//const ELEXISDATETIME = "yyyyLLddHHmmss"
+// const ELEXISDATETIME = "yyyyLLddHHmmss"
 const ELEXISDATETIME = "YYYYMMDDHHmmss"
 const ELEXISDATE = "YYYYMMDD"
 
@@ -25,7 +25,7 @@ export interface RezeptType extends ElexisType {
   rptext: string
   RpZusatz: string
   BriefID: UUID
-  prescriptions: Array<PrescriptionType>
+  prescriptions: PrescriptionType[]
 }
 export interface RpDef {
   rezept: RezeptType,
