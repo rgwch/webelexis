@@ -1,7 +1,6 @@
-import { RpDef } from './prescription-model';
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -10,6 +9,7 @@ import { autoinject } from 'aurelia-framework'
 import { DataSource, DataService } from 'services/datasource';
 import { ElexisType, UUID } from './elexistype';
 import { DateTime as edt } from '../services/datetime'
+import { RpDef } from './prescription-model';
 import * as moment from 'moment'
 
 export class Modalities {
