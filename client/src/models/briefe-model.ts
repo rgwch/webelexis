@@ -13,6 +13,9 @@ import { ElexisType, UUID } from "./elexistype";
 import { DateTime } from "services/datetime";
 import { ObjectManager } from "./object-manager";
 
+/**
+ * An Elexis "Brief" (which is an outgoing document)
+ */
 export interface BriefType extends ElexisType {
   Betreff: string;
   Datum: string;
