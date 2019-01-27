@@ -21,8 +21,7 @@ import {
   RedirectToRoute
 } from "aurelia-router";
 import { connectTo } from "aurelia-store";
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import env from "environment";
 import { pluck } from "rxjs/operators";
 import { Session } from "services/session";
