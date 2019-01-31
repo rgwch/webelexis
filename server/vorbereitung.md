@@ -41,14 +41,14 @@ Installation und Konfiguration von Lucinda ist vergleichsweise simpel.
 
 ### Nodejs installieren
 
-Empfehlung: Node >10 und NPM>5 (Die verwendete Node-Version muss zwingend Features wie Promises und async/await, sowie fsPromises bieten).
+Empfehlung: Node >=10 und NPM>=5 (Die verwendete Node-Version muss zwingend Features wie Promises und async/await, sowie fsPromises bieten).
 
 ### Webelexis clonen und installieren
 
     git clone https://github.com/rgwch/webelexis
     cd webelexis
 
-Folgende Libraries müssen besorgt und nach server/lib kopiert werden:
+Folgende Java-Libraries müssen besorgt und nach server/lib kopiert werden:
 
 * jackson-annotations-2.9.8.jar
 * jackson-core-2.9.8.jar
