@@ -1,16 +1,16 @@
 /***************************************
  * This file is part of Webelexis(tm)
- * Copyright (c) 2016-2018 by G. Weirich.
+ * Copyright (c) 2016-2019 by G. Weirich.
  * All rights reserved.
  ***************************************/
 
 /**
  * Class for access to some elements specific to Elexis:
  *
- * VersionedResource is a binary format that holds several (practically unlimited) versions of a Text, each marked
- * with a version number and a user-supplied remark.
+ * VersionedResource is a binary format that holds several (practically unlimited) versions
+ * of a Text, each marked with a version number and a user-supplied remark.
  *
- * ExtInfo is a compressed Java Hashtable to store fields not available in the database
+ * ExtInfo is a compressed Java Hashtable to store fields not available in the database.
  *
  * Both data types are highly java specific, and so instead of decrypting them "manually", we simply call
  * appropriate java methods via node-java.
@@ -19,7 +19,6 @@
 
 const java = require('java')
 const moment = require('moment')
-const JSZip = require('jszip')
 const logger = require('../logger')
 const JACKSON_VERSION="2.9.8"
 
@@ -32,7 +31,8 @@ const jackson = `jackson-core-${JACKSON_VERSION}.jar`
 const databind = `jackson-databind-${JACKSON_VERSION}.jar`
 
 const libdir = "../../lib"
-/*
+
+/* for reference only:
 export interface IVersionedResource {
   text: string,
   remark: string,
@@ -40,6 +40,7 @@ export interface IVersionedResource {
   version: number
 }
 */
+
 class ElexisUtils {
 
   constructor() {
@@ -69,9 +70,9 @@ class ElexisUtils {
 
   /**
    * Get the head revision of a VersionedResource
-   * @param bindata: The binary data
-   * @returns string: The head revision as (Samdas-)text
-   * */
+   * @param bindata: The binary data containing the versionedResource
+   * @returns string: The head revision as IVersionedResource
+   */
   getVersionedResource(bindata) {
     if (bindata && bindata.length) {
       let array = java.newArray("byte",
@@ -101,7 +102,7 @@ class ElexisUtils {
   }
 
   /**
-   * Add a new text to a VersionedResource
+   * Add a new version to a VersionedResource
    * @param entry the existing VersionedResource (binary)
    * @param newText the text to add
    * @param remark a remark for the new version

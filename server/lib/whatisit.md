@@ -1,6 +1,6 @@
 # Java Libraries for use in webelexis server
 
-For some tasks we need java libraries (see src/util/elexis.types.ts for more information.)
+For some tasks we need java libraries (see src/util/elexis-types.ts for more information.)
 
 These are:
 
