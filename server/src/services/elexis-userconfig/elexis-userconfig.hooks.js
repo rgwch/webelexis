@@ -15,10 +15,10 @@ const decomposeId = function (options = {}) {
   return async (context) => {
     let splid = context.id.split(":")
     let user = await context.app.service('users').get(splid[0])
-    if (user && user.KONTAKT_ID) {
+    if (user && user.kontakt_id) {
       let found = await context.service.find({
         query: {
-          userid: user.KONTAKT_ID,
+          userid: user.kontakt_id,
           param: splid[1]
         }
       })
@@ -42,7 +42,7 @@ const resolveUser=function(options={}){
         let user=await context.app.service("users").get(username)
         if(user){
           delete context.params.query.user
-          context.params.query.userid=user.KONTAKT_ID
+          context.params.query.userid=user.kontakt_id
           return context
         }else{
           throw(new Error("user not found"))

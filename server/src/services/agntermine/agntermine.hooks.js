@@ -63,14 +63,14 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
     const s = context.app.service('kontakt')
     for (let i = 0; i < context.result.data.length; i++) {
       let appnt = context.result.data[i]
-      if (appnt.PatID) {
+      if (appnt.patid) {
         try {
-          let k = await s.get(appnt.PatID)
+          let k = await s.get(appnt.patid)
           appnt.kontakt = k
         } catch (Error) {
           if (Error.name === "NotFound") {
             appnt.kontakt = {
-              Bezeichnung1: appnt.PatID
+              Bezeichnung1: appnt.patid
             }
           } else {
             throw (Error)
@@ -85,9 +85,9 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
 const checkLimits = async context => {
   if (context.result.data.length == 0) {
     let q = context.params.query
-    const dt = DateTime.fromISO(q.Tag)
+    const dt = DateTime.fromISO(q.tag)
     const dayOfWeek = dt.weekday
-    let bereich = q.Bereich
+    let bereich = q.bereich
     const mq = metaqueries(context.app)
     if (!bereich || bereich.trim().length == 0) {
       const bereiche = await mq.agendaResources()
@@ -107,12 +107,12 @@ const checkLimits = async context => {
       const from = Elexis.makeMinutes(times[0])
       const until = Elexis.makeMinutes(times[1])
       const appnt = {
-        Bereich: bereich,
-        TerminTyp: types[1],
-        TerminStatus: states[0],
-        Tag: q.Tag,
-        Beginn: from.toString(),
-        Dauer: (until - from).toString()
+        bereich: bereich,
+        termintyp: types[1],
+        terminstatus: states[0],
+        tag: q.tag,
+        beginn: from.toString(),
+        dauer: (until - from).toString()
       }
       try {
         const inserted = await context.service.create(appnt)

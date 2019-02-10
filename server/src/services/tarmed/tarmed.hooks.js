@@ -4,8 +4,8 @@ const findpos = async ctx => {
     ctx.params.query.tx255 = { $like: expr + "%" }
     if (ctx.params.query.$enctr) {
       const enct = ctx.params.query.$enctr
-      ctx.params.query.GueltigVon = { $lte: enct.datum }
-      ctx.params.query.GueltigBis = { $gte: enct.datum }
+      ctx.params.query.gueltigvon = { $lte: enct.datum }
+      ctx.params.query.gueltigbis = { $gte: enct.datum }
       ctx.params.query.$or = [{Law: "KVG"}, {Law: "UVG"}]
       delete ctx.params.query.$enctr
     }

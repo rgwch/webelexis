@@ -38,9 +38,9 @@ const doQuery = function (options = {}) { // eslint-disable-line no-unused-vars
           expr = expr + "%"
         }
         context.params.query.$or = [
-          { "Bezeichnung1": { $like: expr } },
-          { "Bezeichnung2": { $like: expr } },
-          { "Bezeichnung3": { $like: expr } }
+          { "bezeichnung1": { $like: expr } },
+          { "bezeichnung2": { $like: expr } },
+          { "bezeichnung3": { $like: expr } }
         ]
       }
       delete context.params.query.$find
@@ -57,7 +57,7 @@ const doSort = context => {
   const query = context.app.service('kontakt').createQuery({
     query: context.params.query
   })
-  query.orderByRaw('Bezeichnung1,Bezeichnung2,geburtsdatum')
+  query.orderByRaw('bezeichnung1,bezeichnung2,geburtsdatum')
   context.params.knex = query
   return context
 }

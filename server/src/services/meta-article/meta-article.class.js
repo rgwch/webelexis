@@ -29,18 +29,18 @@ class Service {
           id: a.id,
           lastupdate: a.lastupdate,
           type: "X",
-          BB: "0",
-          GTIN: a.EAN,
-          PHAR: a.subid,
-          DSCR: a.Name,
-          ADDDSCR: a.Name_intern,
-          ATC: a.ATC_code,
-          PEXF: a.ek_preis,
-          PPUB: a.vk_preis,
-          LieferantID: a.lieferantid,
-          Maxbestand: a.maxbestand,
-          Minbestand: a.minbestand,
-          Istbestand: a.istbestand
+          bb: "0",
+          gtin: a.ean,
+          phar: a.subid,
+          dscr: a.name,
+          adddscr: a.name_intern,
+          atc: a.atc_code,
+          pexf: a.ek_preis,
+          ppub: a.vk_preis,
+          lieferantid: a.lieferantid,
+          maxbestand: a.maxbestand,
+          minbestand: a.minbestand,
+          istbestand: a.istbestand
         }
       } else {
         art = await this.knex('artikelstamm_ch').where("id", id || clazz)

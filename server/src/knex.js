@@ -14,6 +14,7 @@ const knex = require("knex")
 const logger = require("./logger")
 const fs = require("fs")
 const path = require("path")
+const normalize=require('./normalize_db')
 
 module.exports = function(app) {
   // uncomment exactly one of the following three lines
@@ -31,12 +32,16 @@ module.exports = function(app) {
   db("config")
     .select("wert")
     .where("param", "webelexis")
-    .then(result => {
+    .then(async result => {
       if (result && result.length > 0) {
         logger.info("Found Webelexis Version %s", result[0].wert)
+        if(result[0].wert<"3.0.6"){
+          await normalize(app)
+        }
       } else {
         const conf = app.get("userconfig")
         if (automodify) {
+          await normalize(app)
           logger.warn("webelexis config entry not found")
           const script = fs.readFileSync("./modify_elexis.sql", "utf-8")
           const statements = script.split(";")

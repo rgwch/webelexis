@@ -62,17 +62,17 @@ module.exports = function (app) {
     return service.find({ query: { Betreff: name + "_webelexis" } }).then(briefe => {
       if (briefe.data.length > 0) {
         const brief = briefe.data[0]
-        if (brief.Path != `templates/${name}.html`) {
-          brief.Path = `templates/${name}.html`
+        if (brief.path != `templates/${name}.html`) {
+          brief.path = `templates/${name}.html`
           return service.update(brief.id,brief)
         }
       } else {
         const brief = {
-          Betreff: name + "_webelexis",
+          betreff: name + "_webelexis",
           typ: "Vorlagen",
-          Path: `templates/${name}.html`,
-          MimeType: "text/html",
-          Datum: DateTime.local().toFormat('yyyyLLddhhmmss')
+          path: `templates/${name}.html`,
+          mimetype: "text/html",
+          datum: DateTime.local().toFormat('yyyyLLddhhmmss')
         }
         return service.create(brief)
       }

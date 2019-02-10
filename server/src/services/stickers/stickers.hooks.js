@@ -1,5 +1,4 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const treatDeleted = require('../../hooks/treat-deleted');
 
 /**
  * special queries: forPatient: id
@@ -34,7 +33,7 @@ const addImage = async context => {
 module.exports = {
   before: {
     all: [authenticate('jwt')],
-    find: [special, treatDeleted()],
+    find: [special],
     get: [],
     create: [],
     update: [],

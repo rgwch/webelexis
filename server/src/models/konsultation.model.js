@@ -21,7 +21,7 @@ module.exports = function (app) {
         table.binary('eintrag')
         table.string('deleted',1)
         table.bigint('lastupdate')
-        table.string('Zeit',8)
+        table.string('zeit',8)
 
       })
         .then(() => logger.info(`Created ${tableName} table`))

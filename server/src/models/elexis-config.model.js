@@ -24,7 +24,7 @@ module.exports = function (app) {
         table.string('param')
         table.string('wert');
         table.string("deleted",1),
-        table.bigint('LASTUPDATE')
+        table.bigint('lastupdate')
       })
         .then(async () => {
           logger.info(`Created ${tableName} table`)

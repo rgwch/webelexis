@@ -29,7 +29,7 @@ const retrieve = async ctx => {
 const store = async ctx => {
   const cfg = ctx.app.get('userconfig')
   const base = cfg['docbase'] || require('os').homedir()
-  const dir = path.dirname(ctx.data.Path)
+  const dir = path.dirname(ctx.data.path)
   if (dir.length > 0 && dir != ".") {
     const fullpath = path.join(base, dir)
     try {

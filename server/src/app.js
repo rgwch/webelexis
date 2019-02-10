@@ -15,6 +15,7 @@ const helmet = require('helmet');
 const logger = require('./logger');
 const authentication = require('./authentication')
 const knex = require('./knex');
+const normalize=require('./normalize_db')
 const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
@@ -62,7 +63,7 @@ app.use(express.notFound());
 app.use(express.errorHandler({ logger }));
 
 app.hooks(appHooks);
-
+app.configure(normalize);
 // If in testing mode: Seed databases
 if (app.get("userconfig").testing) {
   logger.info("runnung in testing mode")

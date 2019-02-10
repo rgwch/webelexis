@@ -263,6 +263,9 @@ alter table icd10
   modify parent varchar(40);
 
 alter table kontakt
+  change ID id varchar(40),
+  change istPerson istperson char(1),
+  change istPatient istpatient char(1),
   change telefon2 Telefon2 varchar(254);
 
 alter table kontakt_adress_joint modify id varchar(40),

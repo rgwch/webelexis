@@ -15,9 +15,9 @@ module.exports = function (app) {
       db.schema.createTable(tableName, table => {
         table.string('id',40).primary().unique().notNullable();
         table.string('deleted',1);
-        table.bigint("LASTUPDATE")
-        table.string('Betreff')
-        table.string('Datum',24)
+        table.bigint("lastupdate")
+        table.string('betreff')
+        table.string('datum',24)
         table.string('modifiziert',24)
         table.string('gedruckt',8)
         table.string('absenderid',40)
@@ -25,7 +25,7 @@ module.exports = function (app) {
         table.string('behandlungsid',40)
         table.string('patientid',40)
         table.string('typ',30)
-        table.string('MimeType',80)
+        table.string('mimetype',80)
         table.string('path')
         table.string('note')
       })

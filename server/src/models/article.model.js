@@ -17,39 +17,39 @@ module.exports = function (app) {
         table.string('id',40).primary();
         table.string('deleted',1)
         table.bigint('lastupdate')
-        table.string("TYPE",1)          // 3,N,P,X
-        table.string("BB",1)            // Blackbox 0,2,9
-        table.string("CUMM_VERSION",4)
-        table.string("GTIN",14)         // EAN  -> oddb_product.xml
-        table.string("PHAR",7)          // Pharmacode
-        table.string("DSCR",100)        // Title (DSCRD or DSCRF) -> oddb_product.xml
-        table.string("ADDDSCR",50)      // Sort title -> oddb_article.xml
-        table.string("ATC",10)          // ATC Code -> oddb_product.xml
-        table.string("COMP_GLN",13)     // manufacturers EAN
-        table.string("COMP_NAME")       // manufacturer
-        table.string("PEXF",10)         // Ex Factory price -> oddb_article.xml
-        table.string("PPUP",10)         // selling price  -> oddb_article.xml
-        table.string("PKG_SIZE",6)      // package size -> oddb_product.xml
-        table.string("SL_ENTRY",1)      // Is in "Spezialitätenliste"?
-        table.string("IKSCAT",1)        // Category  (A,B,C,D,E, or Null)
-        table.string("LIMITATION",1)    // has limitations?
-        table.string("LIMITATION_TXT")  // Text of limitation
-        table.string("GENERIC_TYPE",1)  // Is generic/generic original?
-        table.string("HAS_GENERIC",1)   // A generic exists
-        table.string("LPPV",1)          // Special use medicament, not paid by insurance
-        table.string("DEDUCTIBLE",6)    // Null, 10,20 (% KVG share) -> oddb_article.xml
-        table.string("NARCOTIC",1)      // Is narcotic substance? (BTMG) -> oddb_article.xml
-        table.string("NARCOTIC_CAS")
-        table.string("VACCINE",1)       // Is vaccine?
-        table.string("LieferantID",40)  // distributor
-        table.string("Maxbestand",4)    // Max number in local store
-        table.string("Minbestand",4)    // order threshhold in store
-        table.string("Istbestand",4)    // currently in store
-        table.string("Verkaufseinheit",4) // Number of items per package
-        table.string("Anbruch",4)       // parts of packages in store
-        table.string("PRODNO",10)       // -> oddb_product.xml
-        table.string("SUBSTANCE")       // -> oddb_product.xml
-        table.binary("ExtInfo")
+        table.string("type",1)          // 3,N,P,X
+        table.string("bb",1)            // Blackbox 0,2,9
+        table.string("cumm_version",4)
+        table.string("gtin",14)         // EAN  -> oddb_product.xml
+        table.string("phar",7)          // Pharmacode
+        table.string("dscr",100)        // Title (DSCRD or DSCRF) -> oddb_product.xml
+        table.string("adddscr",50)      // Sort title -> oddb_article.xml
+        table.string("atc",10)          // ATC Code -> oddb_product.xml
+        table.string("comp_gln",13)     // manufacturers EAN
+        table.string("comp_name")       // manufacturer
+        table.string("pexf",10)         // Ex Factory price -> oddb_article.xml
+        table.string("ppub",10)         // selling price  -> oddb_article.xml
+        table.string("pkg_size",6)      // package size -> oddb_product.xml
+        table.string("sl_entry",1)      // Is in "Spezialitätenliste"?
+        table.string("ikscat",1)        // Category  (A,B,C,D,E, or Null)
+        table.string("limitation",1)    // has limitations?
+        table.string("limitation_txt")  // Text of limitation
+        table.string("generic_type",1)  // Is generic/generic original?
+        table.string("has_generic",1)   // A generic exists
+        table.string("lppv",1)          // Special use medicament, not paid by insurance
+        table.string("deductible",6)    // Null, 10,20 (% KVG share) -> oddb_article.xml
+        table.string("narcotic",1)      // Is narcotic substance? (BTMG) -> oddb_article.xml
+        table.string("narcotic_cas")
+        table.string("vaccine",1)       // Is vaccine?
+        table.string("lieferantid",40)  // distributor
+        table.string("maxbestand",4)    // Max number in local store
+        table.string("minbestand",4)    // order threshhold in store
+        table.string("istbestand",4)    // currently in store
+        table.string("verkaufseinheit",4) // Number of items per package
+        table.string("anbruch",4)       // parts of packages in store
+        table.string("prodno",10)       // -> oddb_product.xml
+        table.string("substance")       // -> oddb_product.xml
+        table.binary("extinfo")
       })
         .then(() => logger.info(`Created ${tableName} table`))
         .catch(e => logger.error(`Error creating ${tableName} table`, e));
@@ -62,8 +62,8 @@ module.exports = function (app) {
         table.string("id",40).primary()
         table.string("subid",20)
         table.string("lieferantid",40)
-        table.string("Name")
-        table.string("Name_intern")
+        table.string("name")
+        table.string("name_intern")
         table.string("maxbestand",4)
         table.string("minbestand",4)
         table.string("istbestand",4)
@@ -73,13 +73,13 @@ module.exports = function (app) {
         table.string("codeclass",10)
         table.string("extid",40)
         table.binary("extinfo")
-        table.string("Klasse",80)
+        table.string("klasse",80)
         table.string("deleted",1)
-        table.string("EAN",15)
+        table.string("ean",15)
         table.bigint("lastupdate")
-        table.string("ValidFrom",8)
-        table.string("ValidTo",8)
-        table.string("ATC_Code")
+        table.string("validfrom",8)
+        table.string("validto",8)
+        table.string("atc_code")
       })
       .then(() => logger.info(`Created ${legacyName} table`))
       .catch(e => logger.error(`Error creating ${legacyName} table`, e));

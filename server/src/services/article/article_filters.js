@@ -15,7 +15,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
         context.params.query.deleted="0"
       }
       if(this.blackbox && (context.params.query.blackbox === undefined)){
-        context.params.query.BB="0"
+        context.params.query.bb="0"
       }
       if(this.generics && (context.params.query.generic_type === undefined)){
         context.params.query.$or=[

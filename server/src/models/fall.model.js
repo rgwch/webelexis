@@ -24,10 +24,10 @@ module.exports = function (app) {
         table.string('bezeichnung',30)
         table.string('grund')
         table.string('gesetz',20)
-        table.binary('EXTINFO')
+        table.binary('extinfo')
         table.string('status')
         table.string('deleted',1)
-        table.bigint('LASTUPDATE')
+        table.bigint('lastupdate')
       })
         .then(() => logger.info(`Created ${tableName} table`))
         .catch(e => logger.error(`Error creating ${tableName} table`, e));

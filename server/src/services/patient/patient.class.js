@@ -46,8 +46,8 @@ class Service {
       istpatient: "1",
       istperson: "1",
     }, data)
-    if (!newPatient.PatientNr || newPatient.PatientNr == 0) {
-      newPatient.PatientNr = await this.nextPatientNr()
+    if (!newPatient.patientnr || newPatient.patientnr == 0) {
+      newPatient.patientnr = await this.nextPatientNr()
     }
     const pat = await kontakt.create(newPatient)
     const fall = await faelle.create({

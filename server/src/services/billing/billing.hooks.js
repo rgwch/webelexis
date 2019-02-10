@@ -36,16 +36,16 @@ const adapter = async ctx => {
   }
   const now = DateTime.local().toFormat("yyyyLLdd")
   const knex = ctx.app.get('knexClient')
-  let mul = await knex('vk_preise').select('MULTIPLIKATOR')
+  let mul = await knex('vk_preise').select('multiplikator')
     .where('typ', billingsystem)
     .andWhere('datum_von', '<=', now)
     .andWhere('datum_bis', '>=', now)
   if (!mul || mul.length < 1) {
-    mul = [{ MULTIPLIKATOR: "1.0" }]
+    mul = [{ multiplikator: "1.0" }]
   }
-  billing.VK_SCALE = mul[0].MULTIPLIKATOR
-  const tp=parseFloat(billing.VK_TP)
-  const scale=parseFloat(billing.VK_SCALE)
+  billing.vk_scale = mul[0].multiplikator
+  const tp=parseFloat(billing.vk_tp)
+  const scale=parseFloat(billing.vk_scale)
   billing.vk_preis = Math.round(tp*scale)
   billing.id=uuid()
   billing.lastupdate=new Date().getTime()

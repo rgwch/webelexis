@@ -19,9 +19,9 @@ class Service {
             "li.kuerzel",
             "rs.resultat",
             "rs.refmale", "rs.reffemale",
-            "li.RefMann",
-            "li.RefFrauOrTx",
-            "li.Einheit",
+            "li.refmann",
+            "li.reffrauortx",
+            "li.einheit",
             "rs.unit",
             "gruppe", "prio"])
 
@@ -43,18 +43,18 @@ class Service {
         const s = found[0].geschlecht.toLowerCase()
         const raw = found[1].map(r => {
           if (s === 'm') {
-            r.reference = r.refmale ? r.refmale : r.RefMann
+            r.reference = r.refmale ? r.refmale : r.refmann
           } else {
-            r.reference = r.reffemale ? r.reffemale : r.RefFrauOrTx
+            r.reference = r.reffemale ? r.reffemale : r.reffrauortx
           }
           delete r.refmale
           delete r.reffemale
-          delete r.RefMann
-          delete r.RefFrauOrTx
+          delete r.refmann
+          delete r.reffrauortx
           if (!r.unit) {
-            r.unit = r.Einheit
+            r.unit = r.einheit
           }
-          delete r.Einheit
+          delete r.einheit
           return r
         })
         const result={

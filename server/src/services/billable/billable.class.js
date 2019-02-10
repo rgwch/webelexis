@@ -41,7 +41,7 @@ class Service {
     const result = await articleService.find({ query: query })
     return result.data.map(c => {
       c.uid = c.id
-      c.code = c.PHAR;
+      c.code = c.phar;
       c.codesystem = article_type;
       c.encounter_id = kons.id
       c.count = 1

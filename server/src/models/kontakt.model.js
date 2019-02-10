@@ -17,41 +17,42 @@ function createTable(db, tableName) {
     table.string('land', 3)
     table.string('geburtsdatum', 8)
     table.string('geschlecht', 1)
-    table.string('Titel')
-    table.string('Bezeichnung1').index()
-    table.string('Bezeichnung2').index()
-    table.string('Bezeichnung3')
-    table.string('Strasse')
+    table.string('titel')
+    table.string('bezeichnung1').index()
+    table.string('bezeichnung2').index()
+    table.string('bezeichnung3')
+    table.string('strasse')
     table.string('plz', 10)
-    table.string('Ort')
-    table.string("Telefon1")
-    table.string('Telefon2')
+    table.string('ort')
+    table.string("telefon1")
+    table.string('telefon2')
     table.string('fax')
-    table.string('NatelNr')
-    table.string('Email')
-    table.string('Website')
+    table.string('natelnr')
+    table.string('email')
+    table.string('website')
     table.string('gruppe')
     table.string('patientnr', 50)
     table.text('anschrift')
     table.text('bemerkung')
     table.binary('diagnosen')
     table.string('deleted', 1)
-    table.bigint('LASTUPDATE')
-    table.string('TitelSuffix')
+    table.bigint('lastupdate')
+    table.string('titelsuffix')
+    table.binary('extinfo')
   })
 }
 
 function insertPatient(db, tableName) {
   return db(tableName).insert({
     id: "007007007",
-    Bezeichnung1: "Testperson",
-    Bezeichnung2: "Armeswesen",
+    bezeichnung1: "Testperson",
+    bezeichnung2: "Armeswesen",
     geschlecht: "f",
     istpatient: "1",
     istperson: "1",
     geburtsdatum: "19700506",
     deleted: "0",
-    TitelSuffix: "unittest",
+    titelsuffix: "unittest",
     lastupdate: new Date().getTime()
   })
 }
@@ -68,6 +69,14 @@ module.exports = function (app) {
         logger.info("added unittest patient")
       }).catch(err=>{
         logger.error(`Error creating ${tableName}`,err )
+      })
+    }else{
+      db.schema.table(tableName,function(table){
+        table.renameColumn('ID','id')
+      }).then(result=>{
+        console.log(result)
+      }).catch(err=>{
+        console.log(err)
       })
     }
   }).catch(err => {

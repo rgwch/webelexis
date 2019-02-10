@@ -18,16 +18,16 @@ module.exports = function (app) {
         table.string('id',40).primary().unique().notNullable();
         table.string("deleted",1)
         table.bigint("lastupdate")
-        table.string('Parent',32)
-        table.string('DigniQuali',4)
-        table.string('DigniQuanti',5)
-        table.string('Sparte',4)
-        table.string('GueltigVon',8)
-        table.string('GueltigBis',8)
-        table.string('Nickname',25)
+        table.string('parent',32)
+        table.string('digniquali',4)
+        table.string('digniquanti',5)
+        table.string('sparte',4)
+        table.string('gueltigvon',8)
+        table.string('gueltigbis',8)
+        table.string('nickname',25)
         table.string('tx255')
         table.string('code',25)
-        table.string('Law',3)
+        table.string('law',3)
         table.string('ischapter',1)
       })
         .then(() => logger.info(`Created ${tableName} table`))
@@ -38,7 +38,7 @@ module.exports = function (app) {
   db.schema.hasTable(extensionName).then(exists=>{
     if(!exists){
       db.schema.createTable(extensionName, table=>{
-        table.string("Code",40)
+        table.string("code",40)
         table.binary("limits")
         table.text("med_interpret",2048)
         table.text("text_interpret",2048)

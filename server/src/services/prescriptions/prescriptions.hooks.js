@@ -9,7 +9,7 @@ const { DateTime } = require('luxon')
 const logger = require('../../logger')
 const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "ExtInfo" })
 const flatiron = require('../../hooks/flatiron')([{
-  id: "REZEPTID",
+  id: "rezeptid",
   obj: "_Rezept",
   service: "rezepte"
 }])
@@ -36,8 +36,8 @@ const current = ctx => {
 }
 
 const doAddArticle = async (ctx, art) => {
-  const artid = art.Artikel
-  const rpid = art.REZEPTID
+  const artid = art.artikel
+  const rpid = art.rezeptid
   try {
     if (artid) {
       art._Artikel = await ctx.articleService.get(artid)
@@ -46,7 +46,7 @@ const doAddArticle = async (ctx, art) => {
     }
   } catch (err) {
     logger.warn("prescription-hooks#doAddArticle: Article not found " + JSON.stringify(art))
-    art._Artikel = { DSCR: "doAddArticle: nicht gefunden" }
+    art._Artikel = { dscr: "doAddArticle: nicht gefunden" }
   }
   return art
 }
@@ -69,8 +69,8 @@ const findArticle = async ctx => {
 const do_createCheck = obj => {
   delete obj._Artikel
   delete obj._Rezept
-  if (obj.DateUntil == "null") {
-    obj.DateUntil = null
+  if (obj.dateuntil == "null") {
+    obj.dateuntil = null
   }
   return obj
 }

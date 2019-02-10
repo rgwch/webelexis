@@ -1,10 +1,10 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-const uuid = require('uuid/v4')
+const uuid = require("uuid/v4")
 
 /**
  * Avoid duplicate lastupdate fields, generate lastupdate value, make sure, deleted is '0',
@@ -12,32 +12,28 @@ const uuid = require('uuid/v4')
  * To apply before create and update operations
  * @param {*} obj
  */
-const do_prepare = (obj,method) => {
-  if (obj.hasOwnProperty("LASTUPDATE")) {
-    obj.LASTUPDATE = new Date().getTime()
-    delete obj.lastupdate
-  } else {
+const do_prepare = (obj, method) => {
+  if (obj.hasOwnProperty("lastupdate")) {
     obj.lastupdate = new Date().getTime()
   }
   if (!obj.id) {
     obj.id = uuid()
   }
-  if(method=='create'){
-    obj.deleted="0"
+  if (method == "create") {
+    obj.deleted = "0"
   }
   delete obj.type
   return obj
 }
 
-
 module.exports = ctx => {
   if (ctx.data) {
     if (Array.isArray(ctx.data)) {
       for (const item of ctx.data) {
-        do_prepare(item,ctx.method)
+        do_prepare(item, ctx.method)
       }
     } else {
-      ctx.data = do_prepare(ctx.data,ctx.method)
+      ctx.data = do_prepare(ctx.data, ctx.method)
     }
   }
 }

@@ -5,7 +5,6 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const treatDeleted = require('../../hooks/treat-deleted');
 const handleExtInfo=require('../../hooks/handle-extinfo')
 
 
@@ -23,7 +22,7 @@ const addContact = function (options = {}) { // eslint-disable-line no-unused-va
 module.exports = {
   before: {
     all: [],
-    find: [treatDeleted()],
+    find: [],
     get: [/* authenticate('jwt') */],
     create: [],
     update: [],
