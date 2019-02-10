@@ -5,7 +5,6 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const treatDeleted = require('../../hooks/treat-deleted');
 
 module.exports = {
   before: {

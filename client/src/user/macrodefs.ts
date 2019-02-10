@@ -9,7 +9,7 @@ import * as moment from 'moment'
 import { DataSource } from './../services/datasource';
 import { Container } from 'aurelia-framework';
 import { WebelexisEvents } from './../webelexisevents';
-import { BriefManager } from "models/briefe-model";
+import { BriefManager, BriefType } from "models/briefe-model";
 
 /**
  * Use this file to declare all text replacements / macros
@@ -118,10 +118,10 @@ export default [
         prozent: "100",
         datumvon: from.format(dbformat),
         datumbis: until.format(dbformat),
-        Grund: (fall ? fall.grund : undefined ),
-        AUFZusatz: "",
-        BriefID: undefined,
-        DatumAUZ: today
+        grund: (fall ? fall.grund : undefined ),
+        aufzusatz: "",
+        briefid: undefined,
+        datumauz: today
       }
       aufService.create(auftemplate).then(created => {
         created.type = "auf"
