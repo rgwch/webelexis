@@ -19,10 +19,10 @@ const addImage = async context => {
   const knex = context.app.get('knexClient')
   if (context.result.data) {
     for (const sticker of context.result.data) {
-      const imageId = sticker.Image
+      const imageId = sticker.image
       const image = await knex('dbimage').where("id", imageId)
       if (image && image.length > 0) {
-        const imgdata = Buffer.from(image[0].Bild)
+        const imgdata = Buffer.from(image[0].bild)
         sticker.imagedata = imgdata.toString('base64')
       }
     }

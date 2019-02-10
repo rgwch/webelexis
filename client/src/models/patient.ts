@@ -15,7 +15,9 @@ import { StickerManager } from "./stickers.model";
 /**
  * An Elexis "Patient"
  */
-export interface PatientType extends KontaktType {}
+export interface PatientType extends KontaktType {
+  patientnr?: string
+}
 
 @autoinject
 export class PatientManager {
@@ -48,8 +50,8 @@ export class Patient {
   public static i18 = Container.instance.get(I18N);
   public static sm: StickerManager = Container.instance.get(StickerManager);
 
-  public static getLabel(obj: any): string {
-    let ret = obj.Bezeichnung1 + " " + obj.Bezeichnung2;
+  public static getLabel(obj: PatientType): string {
+    let ret = obj.bezeichnung1 + " " + obj.bezeichnung2;
     if (obj.geschlecht) {
       ret += ` (${obj.geschlecht})`;
     }
@@ -76,7 +78,8 @@ export class Patient {
       for (const name of obj.stickers) {
         const imgdata = Patient.sm.getImage(name);
         if (imgdata) {
-          images += `<img src="data:image/png;base64,${imgdata}" alt="${name}" style="height:1em;width:1em;padding-left:2px;"
+          images += `<img src="data:image/png;base64,${imgdata}" 
+          alt="${name}" style="height:1em;width:1em;padding-left:2px;"
          data-toggle="tooltip" title="${name}">`;
         }
       }

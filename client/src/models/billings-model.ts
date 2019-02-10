@@ -45,7 +45,7 @@ export class BillingsManager {
    * @param code
    */
   public async getBillable(code: string) {
-    if (code.indexOf("!") == -1) {
+    if (code.indexOf("!") === -1) {
       throw Error("bad code format for getBillable");
     }
     if (this.billableCache.has(code)) {

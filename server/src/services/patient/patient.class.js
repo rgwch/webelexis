@@ -22,7 +22,7 @@ class Service {
     for (const pat of pats.data) {
       const sid = await stickers.find({ query: { forPatient: pat.id } })
       if (sid && sid.length > 0) {
-        pat.stickers = sid.map(s => s.Name)
+        pat.stickers = sid.map(s => s.name)
       } else {
         pat.stickers = []
       }

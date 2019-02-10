@@ -17,7 +17,7 @@ import { pluck } from "rxjs/operators";
 import { DocumentData } from "../dialogs/document-data";
 import { DocManager, DocType } from "../models/document-model";
 import { ElexisType } from "../models/elexistype";
-import { Patient } from "../models/patient";
+import { Patient, PatientType } from "../models/patient";
 import { DataService, DataSource } from "../services/datasource";
 import { State } from "../state";
 import { WebelexisEvents } from "../webelexisevents";
@@ -121,7 +121,7 @@ export class Document {
       this.docService.remove(this.obj.id);
     }
   }
-  private actPatientChanged(newvalue: ElexisType, oldvalue: ElexisType) {
+  private actPatientChanged(newvalue: PatientType, oldvalue: PatientType) {
     this.obj.concern = newvalue;
   }
 
@@ -135,8 +135,8 @@ export class Document {
   protected get title() {
     let t = "";
     if (this.obj) {
-      if (this.obj.concern) {
-        t = Patient.getLabel(this.obj.concern) + " - ";
+      if (this.obj.concern ) {
+        t = Patient.getLabel(this.obj.concern as PatientType) + " - ";
       } else {
         t = "Kein Patient ausgewählt - ";
       }

@@ -1,6 +1,6 @@
 import { ElexisType, UUID } from "./elexistype";
-import { Patient } from "./patient";
-import { Kontakt } from "./kontakt";
+import { PatientType } from "./patient";
+import { KontaktType } from "./kontakt";
 import { autoinject } from "aurelia-framework";
 import { DateTime } from '../services/datetime'
 import hash from 'string-hash'
@@ -12,8 +12,8 @@ import { ObjectManager } from "./object-manager";
  */
 export interface DocType extends ElexisType {
   date: string
-  concern?: Patient | UUID
-  origin?: Kontakt | UUID
+  concern?: PatientType | UUID
+  origin?: KontaktType | UUID
   filename?: string
   subject?: string    // title or indication of the document
   payload: string

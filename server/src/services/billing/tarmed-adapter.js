@@ -19,8 +19,8 @@ module.exports.createBilling = async (tm, app) => {
   let al = 0.0
   if (Array.isArray(ext) && ext.length>0) {
     const limits = util.getExtInfo(ext[0].limits)
-    tl = parseFloat(limits.tp_tl)
-    al = parseFloat(limits.tp_al)
+    tl = parseFloat(limits.TP_TL)
+    al = parseFloat(limits.TP_AL)
   }
   const billing = {
     leistg_txt: tm.tx255,

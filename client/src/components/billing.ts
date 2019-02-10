@@ -86,7 +86,7 @@ export class Billing {
   }
 
   protected updateBillings = (updated: BillingType) => {
-    if (updated.behandlung == this.kons.id) {
+    if (updated.behandlung === this.kons.id) {
       this.loadBillings();
     }
   };
