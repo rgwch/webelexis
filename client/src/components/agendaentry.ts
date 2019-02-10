@@ -99,23 +99,23 @@ export class AgendaEntry {
       });
   }
   protected changeState() {
-    const actState = this.entry.obj.TerminStatus;
+    const actState = this.entry.obj.terminstatus;
     let index = _.findIndex(Statics.terminStates, e => e === actState);
     if (index > Statics.terminStates.length) {
       index = 0;
     } else {
       index++;
     }
-    this.entry.obj.TerminStatus = Statics.terminStates[index];
+    this.entry.obj.terminstatus = Statics.terminStates[index];
   }
   protected toggleMenu() {
     this.showmenu = !this.showmenu;
   }
 
   protected get menu() {
-    if (this.entry.obj.TerminTyp == Statics.terminTypes[0]) {
+    if (this.entry.obj.termintyp == Statics.terminTypes[0]) {
       return [];
-    } else if (this.entry.obj.TerminTyp == Statics.terminTypes[1]) {
+    } else if (this.entry.obj.termintyp == Statics.terminTypes[1]) {
       return [];
     } else {
       return Statics.terminStates;
@@ -125,8 +125,8 @@ export class AgendaEntry {
    * from UI button: Reduce duration of appointmen
    */
   protected shorten() {
-    const raw = parseInt(this.entry.obj.Dauer, 10) / 2;
-    this.entry.obj.Dauer = (5 * Math.floor(raw / 5)).toString();
+    const raw = parseInt(this.entry.obj.dauer, 10) / 2;
+    this.entry.obj.dauer = (5 * Math.floor(raw / 5)).toString();
 
     this.tm.save(this.entry);
   }

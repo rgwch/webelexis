@@ -13,24 +13,24 @@ import { ElexisType, UUID } from "./elexistype";
  */
 export interface KontaktType extends ElexisType {
   id: UUID;
-  Bezeichnung1: string;
-  Bezeichnung2?: string;
-  Bezeichnung3?: string;
+  bezeichnung1: string;
+  bezeichnung2?: string;
+  bezeichnung3?: string;
   geburtsdatum?: string;
   istperson?: string;
   istanwender?: string;
   istmandant?: string;
   istorganisation?: string;
   geschlecht?: "m" | "f" | "w" | "?";
-  Strasse?: string;
+  strasse?: string;
   plz?: string;
-  Ort?: string;
-  Telefon1?: string;
-  Telefon2?: string;
-  Titel?: string
-  TitelSuffix?: string
-  NatelNr?: string;
-  Email?: string;
+  ort?: string;
+  telefon1?: string;
+  telefon2?: string;
+  titel?: string
+  titelsuffix?: string
+  natelnr?: string;
+  email?: string;
   bemerkung?: string;
 }
 
@@ -41,7 +41,7 @@ export class Kontakt {
     if (d.length === 8) {
       d = Kontakt.dt.ElexisDateToLocalDate(d);
     }
-    let ret = raw.Bezeichnung1 + " " + (raw.Bezeichnung2 || "");
+    let ret = raw.bezeichnung1 + " " + (raw.bezeichnung2 || "");
     if (raw.geschlecht) {
       ret += `(${raw.geschlecht})`;
     }

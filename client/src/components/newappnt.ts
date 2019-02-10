@@ -62,12 +62,12 @@ export class NewAppointment {
   newTermin() {
     const user=this.we.getSelectedItem('usr')  || {label: "wlx"}
     const ip=env.metadata.ip || "?"
-    this.termin.obj.Beginn=this.slider.toString()
-    this.termin.obj.Dauer="30"
-    this.termin.obj.TerminTyp=this.terminTyp
-    this.termin.obj.TerminStatus=this.terminStatus
-    this.termin.obj.PatID=this.kontakt.id
-    this.termin.obj.ErstelltVon=user.label+"@"+ip
+    this.termin.obj.beginn=this.slider.toString()
+    this.termin.obj.dauer="30"
+    this.termin.obj.termintyp=this.terminTyp
+    this.termin.obj.terminstatus=this.terminStatus
+    this.termin.obj.patid=this.kontakt.id
+    this.termin.obj.erstelltvon=user.label+"@"+ip // TODO
     this.tm.save(this.termin)
   }
 }

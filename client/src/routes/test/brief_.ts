@@ -12,16 +12,16 @@ export class BriefTest {
   public attached() {
     const pat = this.we.getSelectedItem("patient");
     const brief: BriefType = {
-      Betreff: "Testbrief",
-      Datum: "20190102",
+      betreff: "Testbrief",
+      datum: "20190102",
       typ: "Allg.",
-      MimeType: "text/html",
+      mimetype: "text/html",
       patientid: pat.id
     };
     this.bm.generate(brief, "testdoc", []).then(result => {
       this.mann = result;
       brief._Patient.geschlecht = "w";
-      brief._Patient.Bezeichnung2 = "Rossalina";
+      brief._Patient.bezeichnung2 = "Rossalina";
 
       this.bm.generate(brief, "testdoc", []).then(res2 => {
         this.frau = res2

@@ -29,8 +29,8 @@ export class PatientManager {
    * @param pat {PatientType}
    */
   public createConcern(pat: PatientType) {
-    const n1 = pat.Bezeichnung1;
-    const n2 = pat.Bezeichnung2;
+    const n1 = pat.bezeichnung1;
+    const n2 = pat.bezeichnung2;
     const n3 = pat.geburtsdatum;
     let ret = n1 ? n1.substr(0, Math.min(3, n1.length)) : "x";
     ret += "/";
@@ -98,7 +98,7 @@ export class Patient {
       compact: true,
       attributes: [
         {
-          attribute: "Bezeichnung1",
+          attribute: "bezeichnung1",
           label: i18.tr("contact.lastname"),
           datatype: "string",
           validation: Patient.char80,
@@ -106,7 +106,7 @@ export class Patient {
           sizehint: 4
         },
         {
-          attribute: "Bezeichnung2",
+          attribute: "bezeichnung2",
           label: i18.tr("contact.firstname"),
           datatype: "string",
           validation: Patient.char80,
@@ -131,7 +131,7 @@ export class Patient {
           sizehint: 2
         },
         {
-          attribute: "Strasse",
+          attribute: "strasse",
           label: i18.tr("address.street"),
           datatype: "string",
           sizehint: 12
@@ -143,7 +143,7 @@ export class Patient {
           sizehint: 3
         },
         {
-          attribute: "Ort",
+          attribute: "ort",
           label: i18.tr("address.place"),
           datatype: "string",
           sizehint: 9
@@ -154,25 +154,25 @@ export class Patient {
           sizehint: 12
         }, */,
         {
-          attribute: "Telefon1",
+          attribute: "telefon1",
           label: i18.tr("contact.phone1"),
           datatype: "string",
           sizehint: 4
         },
         {
-          attribute: "Telefon2",
+          attribute: "telefon2",
           label: i18.tr("contact.phone2"),
           datatype: "string",
           sizehint: 4
         },
         {
-          attribute: "NatelNr",
+          attribute: "natelnr",
           label: i18.tr("contact.mobile"),
           datatype: "string",
           sizehint: 4
         },
         {
-          attribute: "Email",
+          attribute: "email",
           label: i18.tr("contact.email"),
           datatype: "string",
           sizehint: 6

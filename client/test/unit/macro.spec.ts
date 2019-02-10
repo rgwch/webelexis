@@ -15,7 +15,7 @@ describe("macros",()=>{
     const encounter:EncounterType={
       type: "konsultation",
       datum:"20181119",
-      Zeit:"09:00",
+      zeit:"09:00",
       mandantid: "007",
       fallid:"007",
       eintrag: {

@@ -15,17 +15,17 @@ describe('briefe', () => {
   })
   it('merges a template and a brief with field resolvers', async () => {
     const brief: BriefType = {
-      Betreff: "Test",
+      betreff: "Test",
       _Patient: {
         id: "007",
-        Bezeichnung1: "Tausendwasser",
-        Bezeichnung2: "Friedlich",
+        bezeichnung1: "Tausendwasser",
+        bezeichnung2: "Friedlich",
         geschlecht: "m",
         geburtsdatum: "19210401"
       },
-      Datum: "20181229",
+      datum: "20181229",
       typ: "Rezept",
-      MimeType: "text/plain"
+      mimetype: "text/plain"
     }
     const now=moment().format("YYYYMMDD")
     const template = `

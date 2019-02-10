@@ -66,7 +66,7 @@ export class App {
     if (!this.actPatient) {
       return this.i18n.tr("info.nopatselected"); // "kein Patient ausgewählt"
     } else {
-      if (this.actPatient.Bezeichnung1) {
+      if (this.actPatient.bezeichnung1) {
         return Patient.getLabel(this.actPatient);
       } else {
         return "?";

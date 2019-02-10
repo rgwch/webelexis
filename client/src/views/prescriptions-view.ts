@@ -131,9 +131,9 @@ export class Prescriptions {
       mod == Modalities.RECIPE ||
       mod == Modalities.RESERVE
     ) {
-      obj.prescType = Modalities.SYMPTOMATIC;
-      delete obj.REZEPTID;
-      obj.DateUntil = this.dt.DateToElexisDate(new Date());
+      obj.presctype = Modalities.SYMPTOMATIC;
+      delete obj.rezeptid;
+      obj.dateuntil = this.dt.DateToElexisDate(new Date());
       this.pm.save(obj).then(result => {
         this.ea.publish(REMOVE_MESSAGE, {
           obj,
@@ -202,21 +202,21 @@ export class Prescriptions {
   private toPdf() {
     let table = "<table>";
     for (const item of this.actrpd.prescriptions) {
-      const remark = item.Bemerkung ? "<br />" + item.Bemerkung : "";
-      const anzahl = item.ANZAHL || "1";
+      const remark = item.bemerkung ? "<br />" + item.bemerkung : "";
+      const anzahl = item.anzahl || "1";
       table += `<tr><td>${anzahl}</td><td>${
-        item._Artikel.DSCR
-        }${remark}</td><td>${item.Dosis || ""}</td></tr>`;
+        item._Artikel.dscr
+        }${remark}</td><td>${item.dosis || ""}</td></tr>`;
     }
     table += "</table>";
     const fields = [
       { field: "liste", replace: table },
-      { field: "zusatz", replace: this.actrpd.rezept.RpZusatz }
+      { field: "zusatz", replace: this.actrpd.rezept.rpzusatz }
     ];
     const rp: BriefType = {
-      Betreff: "Rezept",
-      Datum: this.dt.DateToElexisDate(new Date()),
-      MimeType: "text/html",
+      betreff: "Rezept",
+      datum: this.dt.DateToElexisDate(new Date()),
+      mimetype: "text/html",
       patientid: this.actPatient.id,
       typ: "Rezept"
     };
@@ -241,7 +241,7 @@ export class Prescriptions {
         const wlxdoc: DocType = {
           category: "Ausgang",
           concern: this.patm.createConcern(this.actPatient),
-          date: rp.Datum,
+          date: rp.datum,
           payload: html,
           subject: "Rezept"
         };

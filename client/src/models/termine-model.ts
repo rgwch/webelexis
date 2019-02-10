@@ -20,16 +20,16 @@ import { ElexisType, UUID } from "./elexistype";
  */
 export interface TerminType extends ElexisType {
   id?: UUID;
-  PatID?: UUID;
-  Bereich?: string;
-  Tag: string;        // YYYYMMDD
-  Beginn: string;     // minutes from 00:00
-  Dauer: string;      // minutes
-  Grund?: string;
-  TerminTyp: string;
-  TerminStatus: string;
+  patid?: UUID;
+  bereich?: string;
+  tag: string;        // YYYYMMDD
+  beginn: string;     // minutes from 00:00
+  dauer: string;      // minutes
+  grund?: string;
+  termintyp: string;
+  terminstatus: string;
   kontakt?: KontaktType;
-  ErstelltVon: string;
+  erstelltvon: string;
 }
 
 export class Statics {
@@ -73,7 +73,7 @@ export class TerminManager {
   }
 
   public async save(t: TerminModel) {
-    if (t.obj.TerminTyp != Statics.terminTypes[0]) {
+    if (t.obj.termintyp != Statics.terminTypes[0]) {
       if (t.obj.id) {
         return await this.terminService.update(t.obj.id, t.obj);
       } else {
@@ -89,14 +89,14 @@ export class TerminManager {
   public async getNext(t: TerminModel): Promise<TerminModel> {
     const found = await this.terminService.find({
       query: {
-        Bereich: t.obj.Bereich,
-        Tag: t.obj.Tag
+        Bereich: t.obj.bereich,
+        Tag: t.obj.tag
       }
     });
     if (found.data && Array.isArray(found.data)) {
       const a = found.data;
       for (let i = 0; i < a.length - 1; i++) {
-        if (a[i].Beginn === t.obj.Beginn) {
+        if (a[i].Beginn === t.obj.beginn) {
           return new TerminModel(a[i + 1]);
         }
       }
@@ -161,44 +161,44 @@ export class TerminModel {
     this.obj = obj;
   }
   public getKontakt = (): KontaktType =>
-    this.obj.kontakt || ({ Bezeichnung1: "-" } as KontaktType);
+    this.obj.kontakt || ({ bezeichnung1: "-" } as KontaktType);
   public getLabel = (): string => Kontakt.getLabel(this.getKontakt());
-  public getTyp = (): string => this.obj.TerminTyp;
-  public getState = (): string => this.obj.TerminStatus;
+  public getTyp = (): string => this.obj.termintyp;
+  public getState = (): string => this.obj.terminstatus;
   public isReserved = (): boolean =>
-    this.obj.TerminTyp == Statics.terminTypes[1];
-  public isFree = (): boolean => this.obj.TerminTyp == Statics.terminTypes[0];
+    this.obj.termintyp == Statics.terminTypes[1];
+  public isFree = (): boolean => this.obj.termintyp == Statics.terminTypes[0];
   public isAppointment = (): boolean => !this.isFree() && !this.isReserved();
-  public getBeginMinutes = (): number => parseInt(this.obj.Beginn, 10);
-  public getDuration = (): number => parseInt(this.obj.Dauer, 10);
+  public getBeginMinutes = (): number => parseInt(this.obj.beginn, 10);
+  public getDuration = (): number => parseInt(this.obj.dauer, 10);
   public getEndMinutes = (): number =>
     this.getBeginMinutes() + this.getDuration();
 
   public setTyp(typ: string): boolean {
-    this.obj.TerminTyp = typ;
+    this.obj.termintyp = typ;
     return true;
   }
 
   public setStartTime(st: moment.Moment) {
-    this.obj.Tag = st.format("YYYYMMDD");
-    this.obj.Beginn = (60 * st.hours() + st.minutes()).toString();
+    this.obj.tag = st.format("YYYYMMDD");
+    this.obj.beginn = (60 * st.hours() + st.minutes()).toString();
   }
 
   public setDuration(d: number) {
-    this.obj.Dauer = d.toString();
+    this.obj.dauer = d.toString();
   }
   public getTypColor(): string {
-    const tc = Statics.terminTypColors[this.obj.TerminTyp] || "aaaaaa";
+    const tc = Statics.terminTypColors[this.obj.termintyp] || "aaaaaa";
     return "#" + tc;
   }
   public getStateColor(): string {
     let ts: string;
-    if (this.obj.TerminTyp === Statics.terminTypes[0]) {
-      ts = Statics.terminTypColors[this.obj.TerminTyp];
-    } else if (this.obj.TerminTyp === Statics.terminTypes[1]) {
-      ts = Statics.terminTypColors[this.obj.TerminTyp];
+    if (this.obj.termintyp === Statics.terminTypes[0]) {
+      ts = Statics.terminTypColors[this.obj.termintyp];
+    } else if (this.obj.termintyp === Statics.terminTypes[1]) {
+      ts = Statics.terminTypColors[this.obj.termintyp];
     } else {
-      ts = Statics.terminStateColors[this.obj.TerminStatus] || "bbbbbb";
+      ts = Statics.terminStateColors[this.obj.terminstatus] || "bbbbbb";
     }
     return "#" + ts;
   }
@@ -207,14 +207,14 @@ export class TerminModel {
     return JSON.stringify(this.obj, null, 2);
   }
   public getStartTime(): moment.Moment {
-    const day = moment(this.obj.Tag, "YYYYMMDD");
-    day.add(parseInt(this.obj.Beginn, 10), "minutes");
+    const day = moment(this.obj.tag, "YYYYMMDD");
+    day.add(parseInt(this.obj.beginn, 10), "minutes");
     return day;
   }
 
   public getEndTime(): moment.Moment {
     const start = moment(this.getStartTime());
-    start.add(parseInt(this.obj.Dauer, 10), "minutes");
+    start.add(parseInt(this.obj.dauer, 10), "minutes");
     return start;
   }
 }

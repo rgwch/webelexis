@@ -26,7 +26,7 @@ export class SelectKontakt{
   }
 
   makeLabel(k:KontaktType){
-    return k.Bezeichnung1+" "+k.Bezeichnung2
+    return k.bezeichnung1+" "+k.bezeichnung2
   }
 
   select(k){

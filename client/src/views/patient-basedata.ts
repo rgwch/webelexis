@@ -36,7 +36,7 @@ export class PatientBasedata {
   }
 
   protected stickerName(sticker) {
-    return this.sm.getSticker(sticker).Name;
+    return this.sm.getSticker(sticker).name;
   }
 
   protected imageData(sticker) {

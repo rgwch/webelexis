@@ -69,10 +69,10 @@ export abstract class BaseAdapter implements IFhirAdapter {
       found = fhirnames[0];
     }
     return {
-      Bezeichnung1: found.family,
-      Bezeichnung2: found.given ? found.given.join(" ") : "",
-      Titel: found.prefix ? found.prefix.join(" ") : "",
-      TitelSuffix: found.suffix ? found.suffix.join(" ") : ""
+      bezeichnung1: found.family,
+      bezeichnung2: found.given ? found.given.join(" ") : "",
+      titel: found.prefix ? found.prefix.join(" ") : "",
+      titelsuffix: found.suffix ? found.suffix.join(" ") : ""
     };
   }
   public getAddress(fhiraddrs: FHIR_Address[], use: string) {
@@ -162,40 +162,40 @@ export abstract class BaseAdapter implements IFhirAdapter {
     const ret = [];
     ret.push({
       use: "home",
-      city: contact.Ort,
+      city: contact.ort,
       postalCode: contact.plz,
-      line: [contact.Strasse]
+      line: [contact.strasse]
     });
     return ret;
   }
 
   public makeComm(contact: KontaktType): FHIR_ContactPoint[] {
     const ret = [];
-    if (contact.Email) {
+    if (contact.email) {
       ret.push({
         system: "email",
-        value: contact.Email
+        value: contact.email
       });
     }
-    if (contact.Telefon1) {
+    if (contact.telefon1) {
       ret.push({
         system: "phone",
         use: "work",
-        value: contact.Telefon1
+        value: contact.telefon1
       });
     }
-    if (contact.Telefon2) {
+    if (contact.telefon2) {
       ret.push({
         system: "phone",
         use: "home",
-        value: contact.Telefon2
+        value: contact.telefon2
       });
     }
-    if (contact.NatelNr) {
+    if (contact.natelnr) {
       ret.push({
         system: "phone",
         use: "mobile",
-        value: contact.NatelNr
+        value: contact.natelnr
       });
     }
     return ret;

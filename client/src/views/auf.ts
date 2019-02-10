@@ -123,10 +123,10 @@ export class AUF {
     if (selected.length < 2) {
       const out = (selected.length === 1 ? selected[0] : this.elems[0])
       const brief: BriefType = {
-        Betreff: "AUF-Zeugnis",
-        Datum: this.dt.DateToElexisDate(new Date()),
+        betreff: "AUF-Zeugnis",
+        datum: this.dt.DateToElexisDate(new Date()),
         typ: "AUF-Zeugnis",
-        MimeType: "text/html",
+        mimetype: "text/html",
         _Patient: this.actPatient,
         patientid: this.actPatient ? this.actPatient.id : undefined
       };
@@ -137,10 +137,10 @@ export class AUF {
       });
     } else {
       const brief: BriefType = {
-        Betreff: "AUF-Liste",
-        Datum: this.dt.DateToElexisDate(new Date()),
+        betreff: "AUF-Liste",
+        datum: this.dt.DateToElexisDate(new Date()),
         typ: "AUF-Zeugnis",
-        MimeType: "text/html",
+        mimetype: "text/html",
         _Patient: this.actPatient,
         patientid: this.actPatient ? this.actPatient.id : undefined
       };

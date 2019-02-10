@@ -22,7 +22,7 @@ import { BillingModel, BillingsManager } from "./billings-model";
  */
 export interface EncounterType extends ElexisType {
   datum: string; // YYYYMMDD
-  Zeit: string; // HH:mm:ss
+  zeit: string; // HH:mm:ss
   mandantid: UUID; // UUIDv4 (36) or ElexisID (25)
   fallid: UUID; // UUIDv4 (36) or ElexisID (25)
   rechnungsid?: UUID; // UUIDv4 (36) or ElexisID (25)
@@ -91,7 +91,7 @@ export class EncounterManager extends ObjectManager{
   }
 
   public getLabel(enc: EncounterType) {
-    return this.dt.ElexisDateToLocalDate(enc.datum) + "," + enc.Zeit;
+    return this.dt.ElexisDateToLocalDate(enc.datum) + "," + enc.zeit;
   }
 
   public getBillings(enc: EncounterType): Promise<BillingModel[]>{

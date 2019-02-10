@@ -59,26 +59,26 @@ export class Medication {
     let lbl = ""
     const o = obj
     if (o) {
-      if (o.ANZAHL) {
-        lbl += o.ANZAHL.toString() + " "
+      if (o.anzahl) {
+        lbl += o.anzahl.toString() + " "
       }
-      if (o._Artikel && o._Artikel["DSCR"]) {
-        lbl += o._Artikel["DSCR"]
+      if (o._Artikel && o._Artikel["dscr"]) {
+        lbl += o._Artikel["dscr"]
       } else {
         lbl += "?"
       }
-      if (o.Dosis) {
-        lbl += " " + o.Dosis
+      if (o.dosis) {
+        lbl += " " + o.dosis
       }
-      if (o.Bemerkung) {
-        lbl += " (" + o.Bemerkung + ")"
+      if (o.bemerkung) {
+        lbl += " (" + o.bemerkung + ")"
       }
       if (this.modality != Modalities.RECIPE) {
-        if (o.DateFrom) {
-          lbl += " [" + this.dt.ElexisDateToLocalDate(o.DateFrom)
-          if (o.DateUntil) {
-            if (o.DateUntil != o.DateFrom) {
-              lbl += "-" + this.dt.ElexisDateToLocalDate(o.DateUntil)
+        if (o.datefrom) {
+          lbl += " [" + this.dt.ElexisDateToLocalDate(o.datefrom)
+          if (o.dateuntil) {
+            if (o.dateuntil != o.datefrom) {
+              lbl += "-" + this.dt.ElexisDateToLocalDate(o.dateuntil)
             }
           }
           lbl += "]"
@@ -142,15 +142,15 @@ export class Medication {
     if (this.modality == Modalities.RECIPE) {
       let rezept = this.we.getSelectedItem('rezepte')
       obj._Rezept = rezept
-      obj.REZEPTID = rezept.id
-      if (!obj.ANZAHL) {
-        obj.ANZAHL = "1"
+      obj.rezeptid = rezept.id
+      if (!obj.anzahl) {
+        obj.anzahl = "1"
       }
       this.pm.cloneAs(obj, Modalities.RECIPE).then(result => {
         this.list.push(obj)
       })
     } else {
-      obj.prescType = this.modality
+      obj.presctype = this.modality
       this.pm.save(obj).then(result => {
         this.ea.publish(REMOVE_MESSAGE, { obj, source: this.modality, origin: fromModality })
         this.list.push(obj)

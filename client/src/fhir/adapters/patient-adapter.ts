@@ -20,19 +20,19 @@ export class PatientAdapter extends BaseAdapter {
     const comment = this.getComment(fhirpat);
     const ret: PatientType = {
       id: fhirpat.id,
-      Bezeichnung1: name.Bezeichnung1,
-      Bezeichnung2: name.Bezeichnung2,
-      Titel: name.Titel,
-      TitelSuffix: name.TitelSuffix,
+      bezeichnung1: name.bezeichnung1,
+      bezeichnung2: name.bezeichnung2,
+      titel: name.titel,
+      titelsuffix: name.titelsuffix,
       geburtsdatum: super.getDate(fhirpat.birthDate),
       geschlecht: gender,
-      Strasse: addr.street,
+      strasse: addr.street,
       plz: addr.zip,
-      Ort: addr.place,
-      Telefon1: tel1,
-      Telefon2: tel2,
-      Email: email,
-      NatelNr: mobile,
+      ort: addr.place,
+      telefon1: tel1,
+      telefon2: tel2,
+      email: email,
+      natelnr: mobile,
       bemerkung: comment,
       type: this.path
     };
@@ -44,10 +44,10 @@ export class PatientAdapter extends BaseAdapter {
     const ret: FHIR_Patient = Object.assign(base, {
       active: true,
       name: super.makeName(
-        obj.Titel,
-        obj.TitelSuffix,
-        obj.Bezeichnung2,
-        obj.Bezeichnung1
+        obj.titel,
+        obj.titelsuffix,
+        obj.bezeichnung2,
+        obj.bezeichnung1
       ),
       gender: super.makeGender(obj.geschlecht),
       birthDate: super.makeDate(obj.geburtsdatum),

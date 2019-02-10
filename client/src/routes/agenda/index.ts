@@ -70,8 +70,8 @@ export class Agenda {
   }
 
   public terminEvents = (obj: TerminType) => {
-    if (moment(obj.Tag).isSame(moment(this.actDate))) {
-      if (this.bereich === obj.Bereich) {
+    if (moment(obj.tag).isSame(moment(this.actDate))) {
+      if (this.bereich === obj.bereich) {
         this.setDay(this.actDate, this.bereich);
       }
     }

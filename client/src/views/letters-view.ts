@@ -36,15 +36,15 @@ export class Letters {
   private doCreateLetter(tmpl: BriefType) {
     const pat = this.we.getSelectedItem('patient')
     const brief: BriefType = {
-      Betreff: this.templatename,
-      Datum: this.dt.DateToElexisDate(new Date()),
-      MimeType: "text/html",
+      betreff: this.templatename,
+      datum: this.dt.DateToElexisDate(new Date()),
+      mimetype: "text/html",
       patientid: pat ? pat.id : undefined,
       _Patient: pat ? pat : undefined,
       typ: "Allg.",
 
     };
-    this.bm.generate(brief, tmpl.Betreff, []).then(html => {
+    this.bm.generate(brief, tmpl.betreff, []).then(html => {
       const win = window.open("", "_new");
       if (!win) {
         alert(

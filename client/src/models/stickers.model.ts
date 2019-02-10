@@ -13,7 +13,7 @@ import { autoinject } from 'aurelia-framework';
  * The Elexis 'Sticker' or 'Etikette' is some sort of badge or label for an object.
  */
 export interface StickerType extends ElexisType {
-  Name: string
+  name: string
   importance: string
   imagedata: Int8Array
   foreground: string

@@ -17,8 +17,8 @@ import { ObjectManager } from "./object-manager";
  * An Elexis "Brief" (which is an outgoing document)
  */
 export interface BriefType extends ElexisType {
-  Betreff: string;
-  Datum: string;
+  betreff: string;
+  datum: string;
   modifiziert?: string;
   gedruckt?: string;
   absenderid?: UUID;
@@ -34,8 +34,8 @@ export interface BriefType extends ElexisType {
     | "Labor"
     | "Bestellung"
     | "Rechnung";
-  MimeType: string;
-  Path?: string;
+  mimetype: string;
+  path?: string;
   note?: string;
 }
 

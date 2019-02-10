@@ -32,8 +32,8 @@ export interface RezeptType extends ElexisType {
   mandantid: UUID
   datum: string // 8
   rptext: string
-  RpZusatz: string
-  BriefID: UUID
+  rpzusatz: string
+  briefid: UUID
   prescriptions: PrescriptionType[]
 }
 /**
@@ -48,26 +48,26 @@ export interface RpDef {
  * An Elexis "Artikel"
  */
 export interface ArticleType extends ElexisType {
-  DSCR: string
+  dscr: string
 }
 /**
  * An Elexis "Prescription"
  */
 export interface PrescriptionType extends ElexisType {
-  Dosis?: string
-  Bemerkung?: string
+  dosis?: string
+  bemerkung?: string
   patientid: UUID
-  REZEPTID?: UUID
+  rezeptid?: UUID
   _Rezept?: ElexisType
-  DateFrom: string  // YYYYMMDDHHmmss
-  DateUntil?: string
-  ANZAHL?: string
-  Artikel?: UUID
+  datefrom: string  // YYYYMMDDHHmmss
+  dateuntil?: string
+  anzahl?: string
+  artikel?: UUID
   _Artikel?: ArticleType
   artikelid?: UUID
-  prescType?: string
-  sortOrder?: string
-  prescDate: string // YYYYMMDD
+  presctype?: string
+  sortorder?: string
+  prescdate: string // YYYYMMDD
   prescriptor: UUID
 }
 
@@ -133,8 +133,8 @@ export class PrescriptionManager {
    */
   public async cloneAs(presc: PrescriptionType, modality: string) {
     const ret = Object.assign({}, presc, { prescType: modality })
-    ret.DateFrom = moment().subtract(10, 'minutes').format(ELEXISDATETIME)
-    ret.prescDate = moment().subtract(10, 'minutes').format(ELEXISDATE)
+    ret.datefrom = moment().subtract(10, 'minutes').format(ELEXISDATETIME)
+    ret.prescdate = moment().subtract(10, 'minutes').format(ELEXISDATE)
     delete ret.id
     const created = await this.prescriptionLoader.create(ret)
     created._Artikel = ret._Artikel
@@ -193,41 +193,41 @@ export class PrescriptionManager {
 
     switch (params.mode) {
       case "fixmedi":
-        prescription.prescType = Modalities.FIXMEDI;
-        prescription.DateUntil = null
+        prescription.presctype = Modalities.FIXMEDI;
+        prescription.dateuntil = null
         break;
       case "reservemedi":
-        prescription.prescType = Modalities.RESERVE;
-        prescription.DateUntil = null
+        prescription.presctype = Modalities.RESERVE;
+        prescription.dateuntil = null
         break;
       case "rezept":
         const copy = Object.assign({}, prescription)
         delete copy.id
         prescription = await this.prescriptionLoader.create(copy)
-        prescription.prescType = Modalities.RECIPE
-        prescription.DateUntil = null
-        prescription.REZEPTID = params.rezeptid
-        prescription.Artikel = copy.Artikel
+        prescription.presctype = Modalities.RECIPE
+        prescription.dateuntil = null
+        prescription.rezeptid = params.rezeptid
+        prescription.artikel = copy.artikel
         break;
-      case "symptommedi": prescription.prescType = Modalities.SYMPTOMATIC;
-        prescription.DateUntil = nowFormatted
+      case "symptommedi": prescription.presctype = Modalities.SYMPTOMATIC;
+        prescription.dateuntil = nowFormatted
         break;
-      default: prescription.prescType = Modalities.SYMPTOMATIC
+      default: prescription.presctype = Modalities.SYMPTOMATIC
     }
-    prescription.DateFrom = nowFormatted
-    prescription.prescDate = this.dt.DateToElexisDate(new Date())
+    prescription.datefrom = nowFormatted
+    prescription.prescdate = this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
     // console.log(prescription.prescType+" -> "+updated.prescType)
     return prescription
   }
 
   public getLabel(presc: PrescriptionType): string {
-    const from = this.dt.ElexisDateTimeToLocalDate(presc.DateFrom)
-    const label = presc.Artikel ? presc.Artikel["DSCR"] || "--" : "?"
+    const from = this.dt.ElexisDateTimeToLocalDate(presc.datefrom)
+    const label = presc.artikel ? presc.artikel["DSCR"] || "--" : "?"
     let ret = `${label} (${from}`
 
-    if (presc.DateUntil && presc.DateUntil.substr(0, 8) !== presc.DateFrom.substr(0, 8)) {
-      const until = this.dt.ElexisDateTimeToLocalDate(presc.DateUntil)
+    if (presc.dateuntil && presc.dateuntil.substr(0, 8) !== presc.datefrom.substr(0, 8)) {
+      const until = this.dt.ElexisDateTimeToLocalDate(presc.dateuntil)
       ret += " - " + until + ")"
     } else {
       ret += ")"
@@ -254,9 +254,9 @@ export class PrescriptionManager {
   public async createFromArticle(article: ArticleType): Promise<PrescriptionType> {
     const presc: PrescriptionType = {
       patientid: this.we.getSelectedItem('patient').id,
-      DateFrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),
-      Artikel: "ch.artikelstamm.elexis.common.ArtikelstammItem::" + article.id,
-      prescDate: this.dt.DateToElexisDate(new Date()),
+      datefrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),
+      artikel: "ch.artikelstamm.elexis.common.ArtikelstammItem::" + article.id,
+      prescdate: this.dt.DateToElexisDate(new Date()),
       prescriptor: this.we.getSelectedItem('usr').id
     }
     const created = await this.prescriptionLoader.create(presc)

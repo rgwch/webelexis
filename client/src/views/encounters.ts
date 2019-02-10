@@ -109,7 +109,7 @@ export class Encounters {
         }
       }
       const kons: EncounterType = {
-        Zeit: moment().format("HH:mm:ss"),
+        zeit: moment().format("HH:mm:ss"),
         datum: moment().format("YYYYMMDD"),
         eintrag: {
           html: "<p></p>",
