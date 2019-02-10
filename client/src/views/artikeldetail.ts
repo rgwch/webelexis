@@ -28,44 +28,44 @@ export class ArtikelDetail {
     // tslint-disable-next-line object-literal-sort-keys
     attributes: [
       {
-        attribute: "DSCR",
+        attribute: "dscr",
         label: this.i18.tr("article.name"),
         sizehint: 12,
       },
       {
-        attribute: "PEXF",
+        attribute: "pexf",
         datatype: this.money,
         label: this.i18.tr("article.buy"),
         sizehint: this.smallcols,
       },
       {
-        attribute: "PPUB",
+        attribute: "ppub",
         datatype: this.money,
         label: this.i18.tr("article.sell"),
         sizehint: this.smallcols,
       },
       {
-        attribute: "PKG_SIZE",
+        attribute: "pkg_size",
         label: this.i18.tr("article.size"),
         sizehint: this.smallcols,
       },
       {
-        attribute: "Istbestand",
+        attribute: "istbestand",
         label: this.i18.tr("article.instore"),
         sizehint: this.smallcols,
       },
       {
-        attribute: "Maxbestand",
+        attribute: "maxbestand",
         label: this.i18.tr("article.maxstore"),
         sizehint: this.smallcols,
       },
       {
-        attribute: "Minbestand",
+        attribute: "minbestand",
         label: this.i18.tr("article.minstore"),
         sizehint: this.smallcols,
       },
       {
-        attribute: "Anbruch",
+        attribute: "anbruch",
         label: this.i18.tr("article.opened"),
         sizehint: this.smallcols,
       },

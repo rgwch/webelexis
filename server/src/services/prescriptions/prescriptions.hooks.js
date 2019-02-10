@@ -26,7 +26,7 @@ const current = ctx => {
     ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
     // ctx.params.query.DateFrom = { $lte: now }
-    ctx.params.query.$or = [{ DateFrom: null }, { DateFrom: { $lte: now } }]
+    ctx.params.query.$or = [{ datefrom: null }, { datefrom: { $lte: now } }]
     ctx.params.query.$sort = {
       prescDate: -1
     }

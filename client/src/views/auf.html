@@ -19,8 +19,8 @@
         <input type="checkbox" checked.bind="auf.selected" />
         <span contenteditable="true" keydown.trigger="key($event,auf)">
           ${auf.datumvon | dateFormat:"date"} - ${auf.datumbis | dateFormat:"date"}:
-          ${auf.prozent}%, ${auf.Grund} &nbsp;(${auf.DatumAUZ | dateFormat:"date"})
-          ${auf.AUFZusatz}
+          ${auf.prozent}%, ${auf.grund} &nbsp;(${auf.datumauz | dateFormat:"date"})
+          ${auf.aufzusatz}
         </span>
       </div>
     </div>

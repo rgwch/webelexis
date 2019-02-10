@@ -1,4 +1,3 @@
-import { select } from 'd3-selection';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2019 by G. Weirich         *
@@ -60,7 +59,7 @@ export class AUF {
         auf.datumbis = this.dt.localDateToElexisDate(end);
         auf.prozent = parseInt(percent, 10).toString();
         auf.grund = reason;
-        auf.AUFZusatz = zusatz;
+        auf.aufzusatz = zusatz;
         this.aufService.update(auf.id, auf).then(updated => {
           el.blur();
         });
@@ -83,7 +82,7 @@ export class AUF {
       this.elems = aufs.data.sort((a, b) => {
         const dd = b.datumvon.localeCompare(a.datumvon);
         if (dd === 0) {
-          return b.DatumAUZ.localeCompare(a.DatumAUZ);
+          return b.datumauz.localeCompare(a.datumauz);
         } else {
           return dd;
         }
@@ -103,10 +102,10 @@ export class AUF {
       prozent: "0",
       datumvon: today,
       datumbis: today,
-      Grund: fall ? fall.grund : "Krankheit",
-      AUFZusatz: "",
-      BriefID: undefined,
-      DatumAUZ: today
+      grund: fall ? fall.grund : "Krankheit",
+      aufzusatz: "",
+      briefid: undefined,
+      datumauz: today
     };
     this.aufService.create(auftemplate).then(created => {
       created.type = "auf";
@@ -147,9 +146,9 @@ export class AUF {
       let list = "<ul>"
       for (const au of selected as any[]) {
         list += `<li>${this.dt.ElexisDateToLocalDate(au.datumvon)} -`
-          + `${this.dt.ElexisDateToLocalDate(au.datumbis)}: ${au.prozent}% (${au.Grund})`
-        if (au.AUFZusatz) {
-          list += `; ${au.AUFZusatz}`
+          + `${this.dt.ElexisDateToLocalDate(au.datumbis)}: ${au.prozent}% (${au.grund})`
+        if (au.aufzusatz) {
+          list += `; ${au.aufzusatz}`
         }
         list += "</li>"
       }

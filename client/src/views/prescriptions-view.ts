@@ -127,9 +127,9 @@ export class Prescriptions {
     const mod = event.dataTransfer.getData("webelexis/modality");
     // console.log("trash: " + obj + ", " + mod);
     if (
-      mod == Modalities.FIXMEDI ||
-      mod == Modalities.RECIPE ||
-      mod == Modalities.RESERVE
+      mod === Modalities.FIXMEDI ||
+      mod === Modalities.RECIPE ||
+      mod === Modalities.RESERVE
     ) {
       obj.presctype = Modalities.SYMPTOMATIC;
       delete obj.rezeptid;
@@ -167,8 +167,8 @@ export class Prescriptions {
         if (a._Artikel && b._Artikel) {
           const aa = a._Artikel;
           const ba = b._Artikel;
-          if (aa.DSCR && ba.DSCR) {
-            return aa.DSCR.localeCompare(ba.DSCR);
+          if (aa.dscr && ba.dscr) {
+            return aa.dscr.localeCompare(ba.dscr);
           } else {
             return 0;
           }
@@ -178,13 +178,13 @@ export class Prescriptions {
       const compacted = [];
       for (let i = 0; i < rest.length; i++) {
         const r = rest[i];
-        if (r._Artikel && r._Artikel.DSCR) {
-          if (r._Artikel.DSCR === sign._Artikel.DSCR) {
-            if (r.DateFrom < sign.DateFrom) {
-              sign.DateFrom = r.DateFrom;
+        if (r._Artikel && r._Artikel.dscr) {
+          if (r._Artikel.dscr === sign._Artikel.dscr) {
+            if (r.datefrom < sign.datefrom) {
+              sign.datefrom = r.datefrom;
             }
-            if (r.DateUntil > sign.DateUntil) {
-              sign.DateUntil = r.DateUntil;
+            if (r.dateuntil > sign.dateuntil) {
+              sign.dateuntil = r.dateuntil;
             }
           } else {
             compacted.push(sign);
@@ -281,7 +281,7 @@ export class Prescriptions {
 */
 export class SelectionClassValueConverter {
   public toView(item: RpDef, selected: RpDef) {
-    if (selected && selected.rezept.id == item.rezept.id) {
+    if (selected && selected.rezept.id === item.rezept.id) {
       return "highlight-item";
     } else {
       return "compactlist";
