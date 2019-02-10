@@ -13,15 +13,15 @@ const retrieve = async ctx => {
   const meta = ctx.result
   const cfg = ctx.app.get('userconfig')
   const base = cfg['docbase'] || require('os').homedir()
-  if (meta.Path) {
-    const readpath = path.join(base, meta.Path)
+  if (meta.path) {
+    const readpath = path.join(base, meta.path)
     logger.debug("trying to read " + path.resolve(readpath))
     const dox = await fs.readFile(readpath, { encoding: 'utf-8' })
     meta.contents = dox
   } else {
     const db = ctx.service.Model
     const dox = await db('heap').select('inhalt').where({ id: meta.id, deleted: "0" })
-    meta.contents = dox
+    meta.contents = dox.length>0 ? dox.join("") : ""
   }
   return ctx
 }

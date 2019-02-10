@@ -84,7 +84,7 @@ export class BriefManager extends ObjectManager {
       template += "_webelexis";
     }
     const tmpls = await this.dataService.find({
-      query: { Betreff: template, typ: "Vorlagen" }
+      query: { betreff: template, typ: "Vorlagen" }
     });
     if (tmpls.data.length > 0) {
       const tmpl = await this.dataService.get(tmpls.data[0].id);
@@ -156,7 +156,7 @@ export class BriefManager extends ObjectManager {
       const entity = getEntity(parts[0]);
       if (parts[1] === "mw") {
         const v1 = parts[2].split("/");
-        if (entity.geschlecht && entity.geschlecht.toLowerCase() == "m") {
+        if (entity.geschlecht && entity.geschlecht.toLowerCase() === "m") {
           return v1[0];
         } else {
           return v1[1];
