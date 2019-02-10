@@ -8,28 +8,24 @@ module.exports = async app => {
         try {
           await knex.schema.table(tableName, table => {
             table.renameColumn(key, key.toLocaleLowerCase())
-            logger.info("changed "+tableName+"."+key)
+            logger.info("changed " + tableName + "." + key)
           })
         } catch (err) {
           logger.error(err)
         }
       }
     }
+    return "ok"
   }
 
   const knex = app.get("knexClient")
   const query = "SELECT table_name FROM information_schema.tables WHERE table_schema = ?"
   const bindings = [knex.client.database()]
-  return knex.raw(query, bindings).then(function(results) {
-    const tableNames = results[0].map(row => {
-      return modify(row.TABLE_NAME)
-    })
-    return Promise.all(tableNames)
-      .then()
-      .catch(err => {
-        logger.error(err)
-      })
-  }).catch(err=>{
-    logger.error(err)
-  })
+  const results = await knex.raw(query, bindings)
+  for (const row of results[0]) {
+    const name = row.TABLE_NAME || row.table_name
+    logger.info("modifying " + name)
+    logger.info(await modify(name))
+  }
+  return true
 }

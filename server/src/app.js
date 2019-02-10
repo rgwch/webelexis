@@ -63,7 +63,6 @@ app.use(express.notFound());
 app.use(express.errorHandler({ logger }));
 
 app.hooks(appHooks);
-app.configure(normalize);
 // If in testing mode: Seed databases
 if (app.get("userconfig").testing) {
   logger.info("runnung in testing mode")
