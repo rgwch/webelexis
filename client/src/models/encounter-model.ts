@@ -63,7 +63,7 @@ export class EncounterManager extends ObjectManager{
           const d2 = b.datum;
           let dx = d1.localeCompare(d2);
           if (dx === 0) {
-            dx = a.Zeit.localeCompare(b.Zeit);
+            dx = a.zeit.localeCompare(b.zeit);
           }
           return dx;
         });

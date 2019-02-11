@@ -10,6 +10,7 @@ import { DataSource } from "./services/datasource";
 import { FeathersDS } from "./services/feathers-api";
 import { webelexisState } from "./state";
 import env from "environment"
+import 'bootstrap'
 let selectedLanguage = navigator.languages[0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 

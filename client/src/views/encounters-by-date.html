@@ -13,7 +13,7 @@
       <ul class="list-group">
         <li class="list-group-item" repeat.for="enc of encounters">
           <span class="date">${enc.datetime | dateFormat:"date"}</span>
-          <span class="name" click.delegate="selectPat(enc.patient)">${enc.patient.Bezeichnung1} ${enc.patient.Bezeichnung2}</span>
+          <span class="name" click.delegate="selectPat(enc.patient)">${enc.patient.bezeichnung1} ${enc.patient.bezeichnung2}</span>
           <div class="price">${enc.sum | numberFormat:"cents"}</div>
         </li>
       </ul>
