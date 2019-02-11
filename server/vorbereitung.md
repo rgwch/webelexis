@@ -12,14 +12,16 @@ Daher muss auf dem Server Java (und zwar das JDK) >=8.0 installiert sein. Ob Ora
 
 In der Elexis-Datenbank herrscht ein buntes Durcheinander von Gross/Kleinschreibung, und die ID-Felder sind für Standard-UUIDs zu kurz. Ausserdem fehlen manche benötigten Felder.
 
-Das SQL-Script modify_elexis.sql (anwenden z.B. mit `use elexis; source modify_elexis.sql`) erledigt die für Webelexis nötigen Anpassungen. Die Datenbank bleibt dennoch kompatibel mit Elexis-Ungrad und Elexis 3.6. Achtung: Das Script modifiziert nur diejenigen Tabellen, die auf meiner Datenbank vorhanden sind. Das sind so ziemlich alle, die vom Kern und von OpenSource Plugins erstellt wurden. Andere Tabellen müssen ggf. zusätzlich manuell angepasst werden:
+*Achtung*: Bei der ersten Verbindung mit einer existierenden Elexis-Datenbank wird Webelexis die Datenbank folgendermassen verändern:
 
-* Id-Felder heissen immer id (klein geschrieben) und sind VARCHAR(40).
-* Dementsprechend müssen auch foreign key Felder auf VARCHAR(40) erweitert werden, der Feldname kann aber unverändert bleiben.
-* Alle Tabellen haben `deleted char(1)` und `lastupdate bigint` Felder.
+* Alle Feldnamen sind klein geschrieben.
+* Alle Id-Felder heissen id und sind VARCHAR(40).
+* Alle Tabellen haben ein 'deleted CHAR(1)' und ein 'lastupdate BIGINT' Feld.
 
-*Achtung*: Wenn Sie diese Datenbankanpassung unterlassen, werden sporadisch 'seltsame' Fehler auftreten.
-Zum Beispiel werden möglicherweise Objekte verwechselt (weil die id in 24 statt 40 Felder gespeichert wird und somit eventuell nicht mehr eindeutig ist)
+Die Datenbank sollte dennoch kompatibel mit Elexis-Ungrad und Elexis 3.5 - 3.7 bleiben, aber dennoch kann dafür keine Garantie übernommen werden. Testen Sie Webelexis ausschliesslich an einer Kopie Ihrer produktiven Datenbank und machen Sie regelmässig Backups.
+
+Das Script modifiziert natürlich nur diejenigen Tabellen, die beim ersten Start in der Datenbank vorhanden sind. Später erstellte Tabellen müssen ggf. zusätzlich manuell angepasst werden (Oder man löscht den Eintrag "webelexis" in der Tabelle config, was für Webelexis das Signal ist, die Datenbank-Anpassung erneut durchlaufen zu lassen. Es schadet nicht, wenn sie mehrfach durchläuft.)
+
 
 Nicht nur für Webelexis: vor dem Backup muss der User, der das Backup zieht, und der, der es wieder einspielt, Superuser-Rechte haben:
 
