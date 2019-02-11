@@ -4,19 +4,19 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { CaseType } from "./../models/case";
-import { DateTime } from "./../services/datetime";
-import { WebelexisEvents } from "./../webelexisevents";
-import { PatientType } from "./../models/patient";
-import { State } from "./../state";
-import { connectTo } from "aurelia-store";
-import { autoinject } from "aurelia-framework";
-import { DataSource, DataService } from "services/datasource";
-import { pluck } from "rxjs/operators";
-import { ElexisType } from "models/elexistype";
-import { ValidateEvent } from "aurelia-validation";
-import { FromViewBindingBehavior } from "aurelia-templating-resources";
-import { BriefType, BriefManager } from "models/briefe-model";
+import { CaseType } from "./../models/case"
+import { DateTime } from "./../services/datetime"
+import { WebelexisEvents } from "./../webelexisevents"
+import { PatientType } from "./../models/patient"
+import { State } from "./../state"
+import { connectTo } from "aurelia-store"
+import { autoinject } from "aurelia-framework"
+import { DataSource, DataService } from "services/datasource"
+import { pluck } from "rxjs/operators"
+import { ElexisType } from "models/elexistype"
+import { ValidateEvent } from "aurelia-validation"
+import { FromViewBindingBehavior } from "aurelia-templating-resources"
+import { BriefType, BriefManager } from "models/briefe-model"
 
 /**
  * Handling of "Arbeitsunfähigkeiten" (work disability certificates; AUF)
@@ -28,9 +28,9 @@ import { BriefType, BriefManager } from "models/briefe-model";
   }
 })
 export class AUF {
-  protected actPatient: PatientType;
-  protected elems = [];
-  private aufService: DataService;
+  protected actPatient: PatientType
+  protected elems = []
+  private aufService: DataService
 
   constructor(
     ds: DataSource,
@@ -38,11 +38,11 @@ export class AUF {
     private dt: DateTime,
     private bm: BriefManager
   ) {
-    this.aufService = ds.getService("auf");
+    this.aufService = ds.getService("auf")
   }
 
   public actPatientChanged(newpat: PatientType, oldpat?: PatientType) {
-    this.fetch(newpat);
+    this.fetch(newpat)
   }
   /**
    * User pressed a key in the contenteditable
@@ -50,43 +50,55 @@ export class AUF {
    * @param auf the auf on which the event happened
    */
   protected key(event, auf) {
-    const el = event.target;
+    const el = event.target
     if (event.which === 13) {
-      const text = el.innerText;
-      const [begin, end, percent, reason, date, zusatz] = this.splitLine(text);
+      const text = el.innerText
+      const [begin, end, percent, reason, date, zusatz] = this.splitLine(text)
       if (begin) {
-        auf.datumvon = this.dt.localDateToElexisDate(begin);
-        auf.datumbis = this.dt.localDateToElexisDate(end);
-        auf.prozent = parseInt(percent, 10).toString();
-        auf.grund = reason;
-        auf.aufzusatz = zusatz;
+        auf.datumvon = this.dt.localDateToElexisDate(begin)
+        auf.datumbis = this.dt.localDateToElexisDate(end)
+        auf.prozent = parseInt(percent, 10).toString()
+        auf.grund = reason
+        auf.aufzusatz = zusatz
         this.aufService.update(auf.id, auf).then(updated => {
-          el.blur();
-        });
+          el.blur()
+        })
       }
-      event.preventDefault();
+      event.preventDefault()
     } else if (event.which === 27) {
-      document.execCommand("undo");
-      el.blur();
+      document.execCommand("undo")
+      el.blur()
     }
-    return true;
+    return true
   }
 
   /**
    * Load all certificates of the given patient
-   * @param pat 
+   * @param pat
    */
   protected async fetch(pat: PatientType) {
     if (pat) {
-      const aufs = await this.aufService.find({ query: { patientid: pat.id } });
+      const aufs = await this.aufService.find({ query: { patientid: pat.id } })
       this.elems = aufs.data.sort((a, b) => {
-        const dd = b.datumvon.localeCompare(a.datumvon);
-        if (dd === 0) {
-          return b.datumauz.localeCompare(a.datumauz);
-        } else {
-          return dd;
+        if (!a.datumvon) {
+          return -1
         }
-      });
+        if (!b.datumvon) {
+          return 1
+        }
+        const dd = b.datumvon.localeCompare(a.datumvon)
+        if (dd === 0) {
+          if (!a.datumauz) {
+            return -1
+          }
+          if (!b.datumauz) {
+            return 1
+          }
+          return b.datumauz.localeCompare(a.datumauz)
+        } else {
+          return dd
+        }
+      })
     }
   }
 
@@ -94,8 +106,8 @@ export class AUF {
    * Create a new certificate
    */
   protected newAUF() {
-    const fall: CaseType = this.we.getSelectedItem("fall");
-    const today = this.dt.DateToElexisDate(new Date());
+    const fall: CaseType = this.we.getSelectedItem("fall")
+    const today = this.dt.DateToElexisDate(new Date())
     const auftemplate = {
       patientid: this.actPatient.id,
       fallid: fall ? fall.id : undefined,
@@ -106,21 +118,21 @@ export class AUF {
       aufzusatz: "",
       briefid: undefined,
       datumauz: today
-    };
+    }
     this.aufService.create(auftemplate).then(created => {
-      created.type = "auf";
-      this.we.selectItem(created);
-      this.fetch(this.actPatient);
-    });
+      created.type = "auf"
+      this.we.selectItem(created)
+      this.fetch(this.actPatient)
+    })
   }
 
   /**
    * Print either the currently selected certificate or a list of all selected certificates
    */
   protected print() {
-    const selected: ElexisType[] = this.elems.filter(e => e.selected);
+    const selected: ElexisType[] = this.elems.filter(e => e.selected)
     if (selected.length < 2) {
-      const out = (selected.length === 1 ? selected[0] : this.elems[0])
+      const out = selected.length === 1 ? selected[0] : this.elems[0]
       const brief: BriefType = {
         betreff: "AUF-Zeugnis",
         datum: this.dt.DateToElexisDate(new Date()),
@@ -128,12 +140,12 @@ export class AUF {
         mimetype: "text/html",
         _Patient: this.actPatient,
         patientid: this.actPatient ? this.actPatient.id : undefined
-      };
+      }
       out.type = "auf"
       this.we.selectItem(out)
       this.bm.generate(brief, "auf-zeugnis", []).then(html => {
-        this.bm.print(html);
-      });
+        this.bm.print(html)
+      })
     } else {
       const brief: BriefType = {
         betreff: "AUF-Liste",
@@ -142,33 +154,33 @@ export class AUF {
         mimetype: "text/html",
         _Patient: this.actPatient,
         patientid: this.actPatient ? this.actPatient.id : undefined
-      };
+      }
       let list = "<ul>"
       for (const au of selected as any[]) {
-        list += `<li>${this.dt.ElexisDateToLocalDate(au.datumvon)} -`
-          + `${this.dt.ElexisDateToLocalDate(au.datumbis)}: ${au.prozent}% (${au.grund})`
+        list +=
+          `<li>${this.dt.ElexisDateToLocalDate(au.datumvon)} -` +
+          `${this.dt.ElexisDateToLocalDate(au.datumbis)}: ${au.prozent}% (${au.grund})`
         if (au.aufzusatz) {
           list += `; ${au.aufzusatz}`
         }
         list += "</li>"
       }
       list += "</ul>"
-      this.bm.generate(brief, "auf-liste", [{ field: "liste", replace: list }]).then(html => {
-        this.bm.print(html)
-      })
+      this.bm
+        .generate(brief, "auf-liste", [{ field: "liste", replace: list }])
+        .then(html => {
+          this.bm.print(html)
+        })
     }
-
   }
 
   /**
    * Check if the input line can be interpreted as content of a certificate
-   * @param line 
+   * @param line
    */
   private splitLine(line) {
-    const [begin, end, percent, reason, date, ...zusatz] = line.split(
-      /[\s-:,]+/
-    );
-    const proc = parseInt(percent, 10);
+    const [begin, end, percent, reason, date, ...zusatz] = line.split(/[\s-:,]+/)
+    const proc = parseInt(percent, 10)
     if (
       begin &&
       this.dt.isValidLocalDate(begin) &&
@@ -180,10 +192,10 @@ export class AUF {
       date &&
       this.dt.isValidLocalDate(date.substr(1, date.length - 2))
     ) {
-      return [begin, end, percent, reason, date, zusatz.join(" ")];
+      return [begin, end, percent, reason, date, zusatz.join(" ")]
     } else {
-      alert("Eingabe nicht interpretierbar");
-      return [];
+      alert("Eingabe nicht interpretierbar")
+      return []
     }
   }
 }
@@ -194,9 +206,9 @@ export class AUF {
 export class SelectionClassValueConverter {
   public toView(item: ElexisType, selected: ElexisType) {
     if (selected && selected.id === item.id) {
-      return "highlight-item";
+      return "highlight-item"
     } else {
-      return "compactlist";
+      return "compactlist"
     }
   }
 }
