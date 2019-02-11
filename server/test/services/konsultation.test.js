@@ -68,7 +68,8 @@ describe('\'konsultation\' service', () => {
     const until="20181231"
     const konsen = await service.find({ query: { $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }] } })
     konsen.should.be.ok
-    konsen.data.should.be.an(Array)
+    konsen.data.should.be.ok
+    konsen.data.should.be.an('array')
     konsen.data.length.should.be.gt(0)
   })
   it("creates, updates and deletes an Encounter", async () => {

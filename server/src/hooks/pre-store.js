@@ -7,15 +7,14 @@
 const uuid = require("uuid/v4")
 
 /**
- * Avoid duplicate lastupdate fields, generate lastupdate value, make sure, deleted is '0',
+ * Generate lastupdate value, make sure, deleted is '0',
  * make sure, the object has an unique id, remove type information.
  * To apply before create and update operations
  * @param {*} obj
  */
 const do_prepare = (obj, method) => {
-  if (obj.hasOwnProperty("lastupdate")) {
-    obj.lastupdate = new Date().getTime()
-  }
+
+  obj.lastupdate = new Date().getTime();
   if (!obj.id) {
     obj.id = uuid()
   }

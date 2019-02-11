@@ -25,7 +25,7 @@ const decomposeId = function (options = {}) {
       context.result=found
 
       if(found.total>0){
-        context.result=found.data[0].Value
+        context.result=found.data[0].value
       }else{
         context.result=""
       }

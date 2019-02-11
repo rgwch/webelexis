@@ -56,14 +56,18 @@ describe('\'patient\' service', () => {
     foundpat.id.length.should.equal(36)
     foundpat.geburtsdatum = "19700506"
     foundpat.geschlecht = "m"
-    foundpat.lastupdate.should.be.closeTo(new Date().getTime(), 2000)
+    const lu=foundpat.lastupdate
+    const jetzt=new Date().getTime();
+
+    (jetzt-lu).should.be.lt(3000)
+    // foundpat.lastupdate.should.be.closeTo(new Date().getTime(), 3000)
     const updated = await service.update(foundpat.id, foundpat)
     const del = await service.remove(foundpat.id)
     del.should.be.ok
     del.geschlecht.should.equal("m")
     del.geburtsdatum.should.equal("19700506")
     del.id.should.equal(foundpat.id)
-    del.lastupdate.should.be.closeTo(new Date().getTime(), 1000)
+    del.lastupdate.should.be.closeTo(new Date().getTime(), 3000)
     const config = app.service("elexis-config")
     const lastPatNr = (parseInt(await config.get('PatientNummer')) - 1).toString()
     config.update('PatientNummer', { wert: lastPatNr })
