@@ -41,7 +41,7 @@ describe('\'fall\' service', () => {
     }
     const created=await service.create(fall)
     created.id.should.be.ok
-    created.should.have.property('LASTUPDATE')
+    created.should.have.property('lastupdate')
     //created.lastupdate.should.be.ok
     created.deleted.should.equal("0")
     const removed = await service.remove(created.id)

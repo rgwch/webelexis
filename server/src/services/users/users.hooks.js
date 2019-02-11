@@ -11,7 +11,7 @@ const handleExtInfo=require('../../hooks/handle-extinfo')
 const addContact = function (options = {}) { // eslint-disable-line no-unused-vars
   return async context => {
     const s = context.app.service('kontakt')
-    let k = await s.get(context.result.KONTAKT_ID, context.params)
+    let k = await s.get(context.result.kontakt_id, context.params)
     if(k){
       context.result.kontakt = k
     }

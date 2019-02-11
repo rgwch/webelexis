@@ -20,8 +20,8 @@ describe('\'article\' service', () => {
   it("loads articles like 'ab%'",()=>{
     return service.find({query:{dscr:{$like: "ab%"}}}).then(result=>{
       result.should.be.ok
-      //result.data.every(article=>article.BB==="0").should.be.true
-      result.data.every(article=>article.DSCR.toLowerCase().startsWith("ab")).should.be.true
+      //result.data.every(article=>article.bb==="0").should.be.true
+      result.data.every(article=>article.dscr.toLowerCase().startsWith("ab")).should.be.true
       return "ok"
     })
   })

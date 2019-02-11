@@ -1,11 +1,11 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const chai = require('chai')
-const should = chai.should()
+chai.should()
 const assert = require('assert');
 const app = require('../../src/app');
 
@@ -22,9 +22,9 @@ describe('\'patient\' service', () => {
     return service.find({ query: { $find: "ab%" } }).then(result => {
       result.should.be.ok
       result.data.every(elem => {
-        return elem.Bezeichnung1.toLowerCase().startsWith("ab") ||
-          elem.Bezeichnung2.toLowerCase().startsWith("ab") ||
-          elem.Bezeichnung3.toLowerCase().startsWith("ab")
+        return elem.bezeichnung1.toLowerCase().startsWith("ab") ||
+          elem.bezeichnung2.toLowerCase().startsWith("ab") ||
+          elem.bezeichnung3.toLowerCase().startsWith("ab")
       }).should.be.true
     })
   })
@@ -47,23 +47,23 @@ describe('\'patient\' service', () => {
     })
   })
   it("creates, updates and deletes a new patient", async () => {
-    const pat = await service.create({ "Bezeichnung1": "Meier", "Bezeichnung2": "Huber" })
+    const pat = await service.create({ "bezeichnung1": "Meier", "bezeichnung2": "Huber" })
     pat.should.be.ok
-    const found = await service.find({ query: { Bezeichnung1: "Meier", Bezeichnung2: "Huber" } })
+    const found = await service.find({ query: { bezeichnung1: "Meier", bezeichnung2: "Huber" } })
     found.should.be.ok
     found.data.length.should.be.above(0)
     const foundpat = found.data[0]
     foundpat.id.length.should.equal(36)
     foundpat.geburtsdatum = "19700506"
     foundpat.geschlecht = "m"
-    foundpat.LASTUPDATE.should.be.closeTo(new Date().getTime(), 2000)
+    foundpat.lastupdate.should.be.closeTo(new Date().getTime(), 2000)
     const updated = await service.update(foundpat.id, foundpat)
     const del = await service.remove(foundpat.id)
     del.should.be.ok
     del.geschlecht.should.equal("m")
     del.geburtsdatum.should.equal("19700506")
     del.id.should.equal(foundpat.id)
-    del.LASTUPDATE.should.be.closeTo(new Date().getTime(), 1000)
+    del.lastupdate.should.be.closeTo(new Date().getTime(), 1000)
     const config = app.service("elexis-config")
     const lastPatNr = (parseInt(await config.get('PatientNummer')) - 1).toString()
     config.update('PatientNummer', { wert: lastPatNr })

@@ -27,26 +27,26 @@ describe('\'termin\' service', () => {
         assert.ok(service, 'Registered the service');
     });
     it("loads and sort all appointments from 11.12.2017", async () => {
-        const termine = await service.find({ query: { "Tag": "20171211" } })
+        const termine = await service.find({ query: { "tag": "20171211" } })
         termine.data.length.should.be.above(2)
         let check = termine.data.every(elem => {
-            return elem.Tag === "20171211"
+            return elem.tag === "20171211"
         }
         )
         assert.ok(check)
-        let begins = termine.data.map(t => parseInt(t.Beginn))
+        let begins = termine.data.map(t => parseInt(t.beginn))
         for (let i = 0; i < termine.data.length - 1; i++) {
             (begins[i] <= begins[i + 1]).should.be.true
         }
 
     })
     it("loads the first appointment of 11.12.2017", async function() {
-        let allApps = await service.find({ query: { "Tag": "20171211" } })
+        let allApps = await service.find({ query: { "tag": "20171211" } })
         let id = allApps.data[0].id
         let firstAppnt = await service.get(id)
         firstAppnt.should.not.be.undefined
-        firstAppnt.Tag.should.be.equal("20171211")
-        firstAppnt.TerminTyp.should.be.equal("Reserviert")
+        firstAppnt.tag.should.be.equal("20171211")
+        firstAppnt.termintyp.should.be.equal("Reserviert")
     })
     it("loads a list of appointment types", async function() {
         let types = await service.get("types")
@@ -83,15 +83,15 @@ describe('\'termin\' service', () => {
     })
     it("cleans an entry before create, update or patch",async ()=>{
       let dummy={
-        PatID:"007",
-        Bereich:"somewhere",
-        Tag: "20181010",
-        Beginn: "700",
-        Dauer: "10",
-        Grund: "Keine Ahnung",
-        TerminTyp: "DummyTermin",
-        TerminStatus: "unnötig",
-        ErstelltVon:"unittest",
+        patid:"007",
+        bereich:"somewhere",
+        tag: "20181010",
+        beginn: "700",
+        dauer: "10",
+        grund: "Keine Ahnung",
+        termintyp: "DummyTermin",
+        terminstatus: "unnötig",
+        erstelltvon:"unittest",
         falsch: "should be eliminated"
       }
       let created=await service.create(dummy)
