@@ -427,4 +427,29 @@ alter table zahlungen
   modify id varchar(40),
   modify rechnungsid varchar(40);
 
+CREATE OR REPLACE VIEW RIGHTS_PER_ROLE AS SELECT
+	r.id AS role_id, ri.id AS right_id
+FROM
+	role r
+	LEFT JOIN role_right_joint rrj
+		ON r.id = rrj.role_id
+	LEFT JOIN right_ ri
+		ON rrj.id = ri.id
+ORDER BY r.id;
+
+CREATE OR REPLACE VIEW rights_per_user AS SELECT
+	u.id AS user_id, ri.id AS right_id, ri.name AS right_name
+FROM
+	user_ u
+	LEFT JOIN user_role_joint urj
+		ON u.id = urj.user_id
+	LEFT JOIN role r
+		ON urj.id = r.id
+	LEFT JOIN role_right_joint rrj
+		ON r.id = rrj.role_id
+	LEFT JOIN right_ ri
+		ON rrj.id = ri.id
+ORDER BY u.id;
+
+        
 insert into config(param,wert) values("webelexis","3.0.5")
