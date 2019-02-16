@@ -73,7 +73,7 @@ export class TerminManager {
   }
 
   public async save(t: TerminModel) {
-    if (t.obj.termintyp != Statics.terminTypes[0]) {
+    if (t.obj.termintyp !== Statics.terminTypes[0]) {
       if (t.obj.id) {
         return await this.terminService.update(t.obj.id, t.obj);
       } else {
@@ -96,7 +96,7 @@ export class TerminManager {
     if (found.data && Array.isArray(found.data)) {
       const a = found.data;
       for (let i = 0; i < a.length - 1; i++) {
-        if (a[i].Beginn === t.obj.beginn) {
+        if (a[i].beginn === t.obj.beginn) {
           return new TerminModel(a[i + 1]);
         }
       }
@@ -111,7 +111,7 @@ export class TerminManager {
     if (resource) {
       try {
         const found = await this.terminService.find({
-          query: { Tag: day.format("YYYYMMDD"), Bereich: resource }
+          query: { Tag: day.format("YYYYMMDD"), bereich: resource }
         });
         if (found.data && found.data.length > 0) {
           const ret = [];
@@ -119,17 +119,17 @@ export class TerminManager {
           for (let i = 0; i < found.data.length - 1; i++) {
             const first = found.data[i];
             const second = found.data[i + 1];
-            const firstEnd = parseInt(first.Beginn) + parseInt(first.Dauer);
-            const secondBegin = parseInt(second.Beginn);
+            const firstEnd = parseInt(first.beginn) + parseInt(first.dauer);
+            const secondBegin = parseInt(second.beginn);
             ret.push(first);
             if (secondBegin - firstEnd > 1) {
               const gap = {
-                Tag: template.Tag,
-                Bereich: template.Bereich,
-                TerminTyp: Statics.terminTypes[0],
-                TerminStatus: Statics.terminStates[0],
-                Beginn: firstEnd.toString(),
-                Dauer: (secondBegin - firstEnd).toString()
+                tag: template.Tag,
+                bereich: template.bereich,
+                termintyp: Statics.terminTypes[0],
+                terminstatus: Statics.terminStates[0],
+                beginn: firstEnd.toString(),
+                dauer: (secondBegin - firstEnd).toString()
               };
               ret.push(gap);
             }
@@ -141,7 +141,7 @@ export class TerminManager {
           return [];
         }
       } catch (err) {
-        if (err.code && err.code == 401) {
+        if (err.code && err.code === 401) {
           this.router.navigateToRoute("user");
         }
       }
@@ -166,8 +166,8 @@ export class TerminModel {
   public getTyp = (): string => this.obj.termintyp;
   public getState = (): string => this.obj.terminstatus;
   public isReserved = (): boolean =>
-    this.obj.termintyp == Statics.terminTypes[1];
-  public isFree = (): boolean => this.obj.termintyp == Statics.terminTypes[0];
+    this.obj.termintyp === Statics.terminTypes[1];
+  public isFree = (): boolean => this.obj.termintyp === Statics.terminTypes[0];
   public isAppointment = (): boolean => !this.isFree() && !this.isReserved();
   public getBeginMinutes = (): number => parseInt(this.obj.beginn, 10);
   public getDuration = (): number => parseInt(this.obj.dauer, 10);
