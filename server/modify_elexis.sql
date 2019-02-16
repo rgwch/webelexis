@@ -381,16 +381,22 @@ alter table role_right_joint
   change ID id varchar(40),
   modify ROLE_ID varchar(40);
 
+
+alter table  stock_entry drop foreign key fk_stock_entry_stock_id;
+
 alter table stock
-  change ID id varchar(40),
+  change ID id varchar(40) collate latin1_german1_ci,
   modify OWNER varchar(40),
   modify RESPONSIBLE varchar(40);
 
 alter table stock_entry
   change ID id varchar(40),
-  modify STOCK varchar(40),
+  modify STOCK varchar(40) collate latin1_german1_ci,
   modify ARTICLE_ID varchar(40),
   modify PROVIDER varchar(40);
+
+ALTER TABLE stock_entry
+	ADD CONSTRAINT fk_stock_entry_stock_id FOREIGN KEY (stock) REFERENCES stock (id);
 
 alter table tarmed
   change ID id varchar(40);
