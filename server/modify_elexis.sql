@@ -427,7 +427,7 @@ alter table zahlungen
   modify id varchar(40),
   modify rechnungsid varchar(40);
 
-CREATE OR REPLACE VIEW RIGHTS_PER_ROLE AS SELECT
+CREATE OR REPLACE VIEW rights_per_role AS SELECT
 	r.id AS role_id, ri.id AS right_id
 FROM
 	role r
@@ -451,5 +451,5 @@ FROM
 		ON rrj.id = ri.id
 ORDER BY u.id;
 
-        
+
 insert into config(param,wert) values("webelexis","3.0.5")
