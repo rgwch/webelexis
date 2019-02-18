@@ -2,10 +2,9 @@ FROM node:alpine
 EXPOSE 3030
 
 WORKDIR /home/node
-
 RUN apk add --no-cache openjdk8 \
   && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git \
-  && npm install -g aurelia-cli \
+  && npm install -g aurelia-cli@0.34.0 \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
   && git clone https://github.com/rgwch/webelexis \
   && cd webelexis/client \

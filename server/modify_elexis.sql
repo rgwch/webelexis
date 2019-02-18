@@ -46,15 +46,16 @@ alter table behdl_dg_joint change ID id varchar(40),
 alter table bestellung_entry
   drop foreign key fk_bestellung_entry_bestellung_id,
   modify id varchar(40),
-  modify bestellung varchar(80) not null collate latin1_german1_ci,
+  modify bestellung varchar(80) not null collate utf8_general_ci,
 	modify ARTICLE_ID varchar(40),
 	modify stock varchar(40),
 	modify PROVIDER varchar(40);
 
-alter table bestellungen modify id varchar(80) collate latin1_german1_ci;
+alter table bestellungen modify id varchar(80) collate utf8_general_ci;
 
-ALTER TABLE bestellung_entry
-	ADD CONSTRAINT fk_bestellung_entry_bestellung_id FOREIGN KEY (bestellung) REFERENCES bestellungen (id);
+#ALTER TABLE bestellung_entry
+#	ADD CONSTRAINT fk_bestellung_entry_bestellung_id
+# FOREIGN KEY (bestellung) REFERENCES bestellungen (id);
 
 
 alter table bildanzeige modify id varchar(40),
@@ -271,7 +272,7 @@ alter table icd10
 alter table zusatzadresse drop foreign key fk_zusatzadresse_kontakt_id;
 
 alter table kontakt
-  modify id varchar(40) collate latin1_german1_ci,
+  modify id varchar(40) collate utf8_general_ci,
   modify telefon2 varchar(254);
 
 alter table kontakt_adress_joint modify id varchar(40),
@@ -385,18 +386,19 @@ alter table role_right_joint
 alter table  stock_entry drop foreign key fk_stock_entry_stock_id;
 
 alter table stock
-  change ID id varchar(40) collate latin1_german1_ci,
+  change ID id varchar(40) collate utf8_general_ci,
   modify OWNER varchar(40),
   modify RESPONSIBLE varchar(40);
 
 alter table stock_entry
   change ID id varchar(40),
-  modify STOCK varchar(40) collate latin1_german1_ci,
+  modify STOCK varchar(40) not null collate utf8_general_ci,
   modify ARTICLE_ID varchar(40),
   modify PROVIDER varchar(40);
 
-ALTER TABLE stock_entry
-	ADD CONSTRAINT fk_stock_entry_stock_id FOREIGN KEY (stock) REFERENCES stock (id);
+# ALTER TABLE stock_entry
+#	ADD CONSTRAINT fk_stock_entry_stock_id FOREIGN KEY (stock)
+# REFERENCES stock (id);
 
 alter table tarmed
   change ID id varchar(40);
@@ -441,10 +443,11 @@ alter table zahlungen
 
 alter table zusatzadresse
   modify id varchar(40),
-  modify kontakt_id varchar(40) collate latin1_german1_ci;
+  modify kontakt_id varchar(40) collate utf8_general_ci;
 
-ALTER TABLE zusatzadresse ADD CONSTRAINT fk_zusatzadresse_kontakt_id
-  FOREIGN KEY (kontakt_id) REFERENCES kontakt(id);
+# ALTER TABLE zusatzadresse ADD CONSTRAINT
+# fk_zusatzadresse_kontakt_id
+#  FOREIGN KEY (kontakt_id) REFERENCES kontakt(id);
 
 CREATE OR REPLACE VIEW rights_per_role AS SELECT
 	r.id AS role_id, ri.id AS right_id

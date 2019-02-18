@@ -18,6 +18,10 @@ Die schlanke, flinke Ergänzung zu Elexis
 
 ## Installationsanleitungen
 
+Wenn Sie Webelexis einfach mal ausprobieren möchten, machen Sie das am einfachsten via Elexis-OOB.
+
+Ansonsten:
+
 Siehe [hier](server/vorbereitung.md) für den Server und [hier](client/vorbereitung.md) für den Client. Falls Sie Webelexis
 mit einem FHIR-Server verbinden wollen, z.B. [Elexis-Server](https://github.com/elexis/elexis-server), lesen Sie im [FHIR-Unterverzeichnis](client/src/fhir/whatisit.md) nach (dieses feature ist allerdings im prä-alpha-Stadium). 
 

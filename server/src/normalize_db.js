@@ -26,9 +26,10 @@ module.exports = async app => {
     const name = row.TABLE_NAME || row.table_name
     logger.info("modifying " + name)
     if(name !== name.toLocaleLowerCase()){
-      await knex.schema.renameTable(name,name.toLocaleLowerCase())
+      await knex.schema.renameTable(name, name+"_temp")
+      await knex.schema.renameTable(name+"_temp",name.toLocaleLowerCase())
     }
-    logger.info(await modify(name))
+    await modify(name.toLocaleLowerCase())
   }
   return true
 }
