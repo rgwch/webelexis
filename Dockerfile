@@ -2,7 +2,6 @@ FROM node:alpine
 EXPOSE 3030
 
 WORKDIR /home/node
-# https://github.com/aurelia/dialog/issues/132
 RUN apk add --no-cache openjdk8 \
   && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git \
   && npm install -g aurelia-cli@0.34.0 \
