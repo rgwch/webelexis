@@ -98,10 +98,10 @@ export class PrescriptionManager {
       }
       const rps = new Map()
       for (const prescription of result.data) {
-        if (!prescription.prescType) {
-          prescription.prescType = "-1"
+        if (!prescription.presctype) {
+          prescription.presctype = "-1"
         }
-        switch (prescription.prescType) {
+        switch (prescription.presctype) {
           case Modalities.FIXMEDI: ret.fix.push(prescription); break;
           case Modalities.RESERVE: ret.reserve.push(prescription); break;
           case Modalities.SYMPTOMATIC: ret.symptom.push(prescription); break;
@@ -132,7 +132,7 @@ export class PrescriptionManager {
    * @param modality 
    */
   public async cloneAs(presc: PrescriptionType, modality: string) {
-    const ret = Object.assign({}, presc, { prescType: modality })
+    const ret = Object.assign({}, presc, { presctype: modality })
     ret.datefrom = moment().subtract(10, 'minutes').format(ELEXISDATETIME)
     ret.prescdate = moment().subtract(10, 'minutes').format(ELEXISDATE)
     delete ret.id
@@ -217,7 +217,7 @@ export class PrescriptionManager {
     prescription.datefrom = nowFormatted
     prescription.prescdate = this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
-    // console.log(prescription.prescType+" -> "+updated.prescType)
+    // console.log(prescriptionpresctype+" -> "+updated.presctype)
     return prescription
   }
 
