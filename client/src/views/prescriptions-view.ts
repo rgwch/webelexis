@@ -105,7 +105,7 @@ export class Prescriptions {
   }
 
   protected dragTrash(event) {
-    if (event.dataTransfer.types.find(el => el == "webelexis/modality")) {
+    if (event.dataTransfer.types.find(el => el === "webelexis/modality")) {
       event.preventDefault();
       this.trashstyle = "margin-left:18px;transform: scale(1.5);";
     }
