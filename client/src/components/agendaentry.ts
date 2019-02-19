@@ -113,9 +113,9 @@ export class AgendaEntry {
   }
 
   protected get menu() {
-    if (this.entry.obj.termintyp == Statics.terminTypes[0]) {
+    if (this.entry.obj.termintyp === Statics.terminTypes[0]) {
       return [];
-    } else if (this.entry.obj.termintyp == Statics.terminTypes[1]) {
+    } else if (this.entry.obj.termintyp === Statics.terminTypes[1]) {
       return [];
     } else {
       return Statics.terminStates;

@@ -19,26 +19,26 @@ import env from 'environment'
 
 @autoinject
 export class NewAppointment {
-  @bindable termin: TerminModel
-  time: string
-  @observable slider: number
+  @bindable public termin: TerminModel
+  public time: string
+  @observable public slider: number
 
-  termintypen = []
-  terminstaten = []
-  terminTyp
-  terminStatus
-  kontakt: KontaktType
-  patlabel: string
+  protected termintypen = []
+  protected terminstaten = []
+  protected terminTyp
+  protected terminStatus
+  protected kontakt: KontaktType
+  protected patlabel: string
 
   constructor(private dt: DateTime, private we: WebelexisEvents,
-    private dlgs: DialogService, private i18: I18N, private tm:TerminManager) { }
+              private dlgs: DialogService, private i18: I18N, private tm: TerminManager) { }
 
-  sliderChanged(minutes: number) {
+  public sliderChanged(minutes: number) {
     this.time = this.dt.minutesToTimeString(minutes)
   }
 
-  attached() {
-    //this.duration=this.termin.obj.Dauer
+  public attached() {
+    // this.duration=this.termin.obj.dauer
     this.termintypen = Statics.terminTypes
     this.terminstaten = Statics.terminStates
     this.terminTyp = this.termintypen[2]
@@ -48,28 +48,25 @@ export class NewAppointment {
     this.patlabel = this.kontakt ? Patient.getLabel(this.kontakt) : this.i18.tr('info.nopatselected')
   }
 
-  selectPatient() {
+  protected selectPatient() {
     this.dlgs.open({ viewModel: SelectPatient, model: this.kontakt, lock: false }).whenClosed(response => {
       if (!response.wasCancelled) {
         console.log(this.kontakt)
       } else {
-
+        console.log(response.output);
       }
-      console.log(response.output);
     });
   }
 
-  newTermin() {
-    const user=this.we.getSelectedItem('usr')  || {label: "wlx"}
-    const ip=env.metadata.ip || "?"
-    this.termin.obj.beginn=this.slider.toString()
-    this.termin.obj.dauer="30"
-    this.termin.obj.termintyp=this.terminTyp
-    this.termin.obj.terminstatus=this.terminStatus
-    this.termin.obj.patid=this.kontakt.id
-    this.termin.obj.erstelltvon=user.label+"@"+ip // TODO
+  protected newTermin() {
+    const user = this.we.getSelectedItem('usr')  || {label: "wlx"}
+    const ip = env.metadata.ip || "?"
+    this.termin.obj.beginn = this.slider.toString()
+    this.termin.obj.dauer = "30"
+    this.termin.obj.termintyp = this.terminTyp
+    this.termin.obj.terminstatus = this.terminStatus
+    this.termin.obj.patid = this.kontakt.id
+    this.termin.obj.erstelltvon = user.label + "@" + ip // TODO
     this.tm.save(this.termin)
   }
 }
-
-
