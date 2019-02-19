@@ -53,9 +53,6 @@ Wenn Sie nicht unbedingt eine spezifische Version möchten, würde ich empfehlen
 
 Webelexis kann auch auf einer leeren Datenbank gestartet werden (mysql oder sqlite). Es erstellt dann selber die Webelexis-Datenstrukturen. Diese Datenbank ist dann aber nicht garantiert kompatibel zu Elexis, sollte also nur für reine Webelexis-Umgebungen verwendet werden. Wann immer gemischter Betrieb vorgesehen ist (das ist das empfohlene Setup), sollte zuerst Elexis und dann Webelexis initialisiert werden.
 
-## Deployment auf einem Apache-Server
-
-
 
 ## Technische Grundlage Webelexis 3
 

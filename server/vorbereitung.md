@@ -14,6 +14,7 @@ In der Elexis-Datenbank herrscht ein buntes Durcheinander von Gross/Kleinschreib
 
 *Achtung*: Bei der ersten Verbindung mit einer existierenden Elexis-Datenbank wird Webelexis die Datenbank folgendermassen verändern:
 
+* Alle Tabellennamen sind klein geschrieben.
 * Alle Feldnamen sind klein geschrieben.
 * Alle Id-Felder heissen id und sind VARCHAR(40).
 * Alle Tabellen haben ein 'deleted CHAR(1)' und ein 'lastupdate BIGINT' Feld.
