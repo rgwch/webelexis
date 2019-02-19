@@ -6,7 +6,7 @@
 
 const filters = require('./article_filters')
 const filter = filters({ blackbox: true, generics: false })
-const handleExtinfo = require('../../hooks/handle-extinfo')({extinfo: "ExtInfo"})
+const handleExtinfo = require('../../hooks/handle-extinfo')({extinfo: "extinfo"})
 
 const scopes = {
   "ch.artikelstamm.elexis.common.ArtikelstammItem": "artikelstamm_ch",

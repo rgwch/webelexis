@@ -1,13 +1,13 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { DateTime } = require('luxon')
 const logger = require('../../logger')
-const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "ExtInfo" })
+const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "extinfo" })
 const flatiron = require('../../hooks/flatiron')([{
   id: "rezeptid",
   obj: "_Rezept",

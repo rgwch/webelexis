@@ -21,8 +21,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [handleExtInfo({extinfo: "EXTINFO"})],
-    get: [handleExtInfo({extinfo: "EXTINFO"})],
+    find: [handleExtInfo({extinfo: "extinfo"})],
+    get: [handleExtInfo({extinfo: "extinfo"})],
     create: [],
     update: [],
     patch: [],

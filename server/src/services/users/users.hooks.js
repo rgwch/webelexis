@@ -33,7 +33,7 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [addContact(), handleExtInfo({extinfo: "EXTINFO"})],
+    get: [addContact(), handleExtInfo({extinfo: "extinfo"})],
     create: [],
     update: [],
     patch: [],
