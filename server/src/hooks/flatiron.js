@@ -48,7 +48,7 @@ const fold = async (app, obj, fieldlist) => {
       try {
         obj[field.obj] = await rel.get(obj[field.id])
       } catch (err) {
-        logger.error("flatiron %s / %s / %s",JSON.stringify(obj), JSON.stringify(fieldlist), err)
+        logger.warn("flatiron %s / %s / %s",JSON.stringify(obj), JSON.stringify(fieldlist), err)
       }
     }
   }
