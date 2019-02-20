@@ -20,10 +20,12 @@ const addImage = async context => {
   if (context.result.data) {
     for (const sticker of context.result.data) {
       const imageId = sticker.image
-      const image = await knex('dbimage').where("id", imageId)
-      if (image && image.length > 0) {
-        const imgdata = Buffer.from(image[0].bild)
-        sticker.imagedata = imgdata.toString('base64')
+      if (imageId) {
+        const image = await knex('dbimage').where("id", imageId)
+        if (image && image.length > 0) {
+          const imgdata = Buffer.from(image[0].bild)
+          sticker.imagedata = imgdata.toString('base64')
+        }
       }
     }
   }
