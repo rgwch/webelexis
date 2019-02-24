@@ -73,8 +73,9 @@ export class Billing {
       this.bm.getBillable(data).then(billable => {
         this.bm
           .createBilling(billable, this.kons, 1, this.billings)
-          .then(billing => {
-            this.loadBillings();
+          .then(async billing => {
+            // console.log(JSON.stringify(billing))
+            await this.loadBillings();
           })
           .catch(err => {
             alert("could not create Billing " + err);
@@ -92,7 +93,7 @@ export class Billing {
   };
 
   protected loadBillings() {
-    this.bm.getBillings(this.kons).then(result => {
+    return this.bm.getBillings(this.kons).then(result => {
       this.billings = result.sort((a, b) => a.compare(b));
       this.recalc();
     });
