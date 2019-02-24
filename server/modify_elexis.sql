@@ -228,7 +228,7 @@ alter table esrrecords modify id varchar(40),
 
 
 alter table etiketten modify id varchar(40),
-	modify Image varchar(40);
+	modify image varchar(40);
 
 alter table etiketten_objclass_link modify sticker varchar(40);
 
