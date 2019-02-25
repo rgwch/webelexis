@@ -13,7 +13,7 @@ import { BindingSignaler } from "aurelia-templating-resources";
 import { FlexformConfig } from "./flexform";
 import { ElexisType } from "models/elexistype";
 
-/**
+/***
   CommonViewer: Loosely adapted from the Elexis class with the same name: A component to uniformely
   retrieve, filter and display a list of objects of a subtype of "Service".
   First, create a ViewerConfiguration with the desired parameters, then create a CommonViewer
@@ -70,7 +70,7 @@ export class CommonViewer {
     private dispatcher: WebelexisEvents,
     private dataSource: DataSource,
     private signaler: BindingSignaler
-  ) {}
+  ) { }
 
   public attached() {
     if (!this.cv_cfg.switches) {
@@ -103,7 +103,7 @@ export class CommonViewer {
   public doFilter() {
     let query = {};
     this.cv_cfg.searchFields.forEach(field => {
-      if (field.value && field.value != "") {
+      if (field.value && field.value !== "") {
         if (field.asPrefix) {
           query[field.name] = { $like: field.value + "%" };
         } else {

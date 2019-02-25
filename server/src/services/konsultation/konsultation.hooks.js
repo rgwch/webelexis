@@ -10,21 +10,10 @@ const util = new ElexisUtils()
 const Samdas = require('@rgwch/samdastools')
 const logger = require('../../logger')
 
-/*
-const withPatientId=function (options={}){
-  return async context=>{
-    if(context.params.query && context.params.query.patientId){
-      let pid=context.params.query.patientId
-      delete context.params.query.patientId
-      const query=context.service.createQuery(context.params).join('faelle','behandlungen.fallid','=','faelle.id')
-        .where({"faelle.patientid":pid}).orderBy('behandlungen.datum','desc')
-      context.params.knex=query
-    }
-    return context
-  }
-}
-*/
-
+/**
+ * Find ecnounters by patient id
+ * @param {*} context
+ */
 const withPatientId = async context => {
   if (context.params.query && context.params.query.patientId) {
     const pid = context.params.query.patientId

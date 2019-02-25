@@ -33,9 +33,11 @@ export class CKEditor {
     this.editor.on('change', (e) => {
       this.value = e.editor.getData();
     });
+    /*
     this.editor.on('blur', evt => {
       this.ea.publish(this.message, "blur")
     })
+    */
     this.editor.on('key', evt => {
       if (evt.data.domEvent.$.key === '$') {
         const ed = evt.editor

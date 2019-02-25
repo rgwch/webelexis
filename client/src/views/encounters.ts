@@ -109,7 +109,6 @@ export class Encounters {
         }
       }
       const kons: EncounterType = {
-        zeit: moment().format("HH:mm:ss"),
         datum: moment().format("YYYYMMDD"),
         eintrag: {
           html: "<p></p>",
@@ -117,18 +116,19 @@ export class Encounters {
           timestamp: moment().format("DD.MM.YYYY, HH:mm:ss")
         },
         fallid: this.actCase.id,
-        mandantid: defaults.mandator || mandator
+        mandantid: (defaults.mandator || mandator),
+        zeit: moment().format("HH:mm:ss")
       };
       this.konsultationService
         .create(kons)
         .then()
         .catch(err => {
-          if (err.code == 400) {
+          if (err.code === 400) {
             alert(
               "The database could not handle the request. Please make sure that the server is running and that the database has the necessary modifications for webelexis."
             );
           } else {
-            alert("Could not save");
+            alert("Could not save " + err);
           }
         });
     }
@@ -175,7 +175,7 @@ export class Encounters {
   private fetchData() {
     let isLoading: boolean;
     if (isLoading) {
-      console.log("busy");
+      // console.log("busy");
       return;
     }
     if (
@@ -199,7 +199,6 @@ export class Encounters {
       }
       const elms = [];
       if (expr.$limit > 0) {
-        // console.log(`Lastitem: ${this.encounters.data.length}, total: ${this.encounters.total}, loading: ` + JSON.stringify(expr))
         elms.push(
           this.konsultationService.find({ query: expr }).then(result => {
             this.encounters.data = this.encounters.data.concat(result.data);
