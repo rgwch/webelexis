@@ -125,7 +125,7 @@ alter table ch_elexis_icpc_episodes_diagnoses_link
 alter table ch_elexis_impfplan_vaccinations
   modify id varchar(40),
   modify patientid varchar(40),
-  modify vaccinationType varchar(40);
+  modify vaccinationtype varchar(40);
 
 alter table ch_elexis_impfplan_vaccination_types
   modify id varchar(40);

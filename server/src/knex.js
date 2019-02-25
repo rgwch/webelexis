@@ -35,10 +35,10 @@ module.exports = function (app) {
     .then(async result => {
       if (result && result.length > 0) {
         logger.info("Found Webelexis Version %s", result[0].wert)
-        if (result[0].wert <"3.0.6") {
+        if (result[0].wert < "3.0.6") {
           return normalize(app).then(() => {
-            return db('config').where("param", "webelexis").update("wert", "3.0.6").then(res=>{
-                console.log(res)
+            return db('config').where("param", "webelexis").update("wert", "3.0.6").then(res => {
+              console.log(res)
             })
           }).catch(err => {
             logger.error("Fehler beim DB update " + err)
@@ -46,38 +46,33 @@ module.exports = function (app) {
         }
       } else {
         const conf = app.get("userconfig")
-        if (automodify) {
-          normalize(app).then(() => {
+        return normalize(app).then(() => {
+          return db("config")
+            .insert({ param: "webelexis", wert: "3.0.6" })
+        }).then(() => {
+          logger.warn("webelexis config entry not found")
+          const script = fs.readFileSync("./modify_elexis.sql", "utf-8")
+          const statements = script.split(";")
+          const execs = []
+          for (const stm of statements) {
+            execs.push(
+              db.raw(stm.replace(/[\n\r]/, "")).catch(err => {
+                logger.warn("statement failed: %s", err)
+              })
+            )
+          }
+          return Promise.all(execs).then(res => {
+            const version = app.get("version")
             return db("config")
-              .insert({ param: "webelexis", wert: "3.0.6" })
-          }).then(() => {
-            logger.warn("webelexis config entry not found")
-            const script = fs.readFileSync("./modify_elexis.sql", "utf-8")
-            const statements = script.split(";")
-            const execs = []
-            for (const stm of statements) {
-              execs.push(
-                db.raw(stm.replace(/[\n\r]/, "")).catch(err => {
-                  logger.warn("statement failed: %s", err)
-                })
-              )
-            }
-            return Promise.all(execs).then(res => {
-              const version = app.get("version")
-              return db("config")
-                .insert({ param: "webelexis", wert: version })
-                .then(r => {
-                  logger.info("script finished")
-                })
-            })
-          }).catch(err => {
-            logger.error("could not update version %s", err)
+              .insert({ param: "webelexis", wert: version })
+              .then(r => {
+                logger.info("script finished")
+              })
           })
+        }).catch(err => {
+          logger.error("could not update version %s", err)
+        })
 
-        } else {
-          logger.error("please run modify_elexis.sql first or set automodify to 'true")
-          process.exit(41)
-        }
       }
     })
     .catch(err => {
