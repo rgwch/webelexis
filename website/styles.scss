@@ -8,3 +8,20 @@
     width: 1280px;
     height:1024px;
 }
+
+.box{
+  border-color: $bordercolor;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 1px;
+  background-color: fade-out(lighten($titlecolor,40%),0.8);
+  .title{
+    font-size:20pt;
+    color: $titlecolor;
+  }
+  .contents{
+    font-size: 10px;
+    color: black;
+    hyphens: auto;
+  }
+}
