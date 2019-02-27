@@ -172,7 +172,7 @@ export class BriefManager extends ObjectManager {
 
       const entity = getEntity(element);
       if (entity) {
-        replacement = entity[attribute];
+        replacement = entity[attribute.toLowerCase()];
       } else {
         replacement = ""
       }
