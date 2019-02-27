@@ -10,18 +10,33 @@
 }
 
 .box{
+  position: absolute;
   border-color: $bordercolor;
   border-style: solid;
   border-radius: 10px;
   border-width: 1px;
-  background-color: fade-out(lighten($titlecolor,40%),0.8);
+  background-color: fade-out($boxcolor,0.8);
+  padding:10px;
   .title{
-    font-size:20pt;
+    text-align: center;
+    font-size:18pt;
     color: $titlecolor;
+    background-color: $boxcolor;
   }
   .contents{
     font-size: 10px;
-    color: black;
+    color:$boxtextcolor;
     hyphens: auto;
+    padding: 5px;
+  }
+  a{
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 5px;
+    text-decoration: none;
+    color:$boxtextcolor;
+    &:hover{
+      color: orange;
+    }
   }
 }
