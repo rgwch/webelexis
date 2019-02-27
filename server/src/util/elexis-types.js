@@ -20,7 +20,9 @@
 const java = require('java')
 const moment = require('moment')
 const logger = require('../logger')
-const JACKSON_VERSION="2.9.8"
+const crypto = require('crypto')
+const JACKSON_VERSION = "2.9.8"
+
 
 /* generate dependencies with
    mvn dependency:copy-dependencies
@@ -266,6 +268,23 @@ class ElexisUtils {
 
   elexisTimeStamp(date) {
     return (Math.round(date.getTime() / 60000)).toString()
+  }
+
+  /**
+   * Create a Password hash compatible to Elexis's Password hash
+   * @param {string} pwd The plaintext password
+   * @param {string} salt should be 8 bytes, can be null, then we'll autogenerate one
+   */
+  hashPassword(pwd, salt) {
+    if (!salt) {
+      salt = crypto.randomBytes(8)
+    } else {
+      salt = Buffer.from(salt, 'hex')
+    }
+    const key = crypto.pbkdf2Sync(pwd, salt, 20000, 20, "sha1")
+    const hashed = key.toString("hex")
+    return { salt: salt.toString('hex'), hashed }
+
   }
 }
 
