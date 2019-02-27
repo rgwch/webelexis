@@ -23,7 +23,7 @@ const stylesTask = cb => {
 
 const pugTask = () => {
   return gulp
-    .src(["*.pug", "partials/*.pug", "!layout.pug"])
+    .src(["*.pug", "partials/*", "!layout.pug"])
     .pipe(pug())
     .pipe(gulp.dest(dest))
     .pipe(browserSync.reload({ stream: true }))
