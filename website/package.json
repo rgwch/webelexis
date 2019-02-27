@@ -1,14 +1,21 @@
 {
-  "name": "website",
-  "version": "1.0.0",
-  "description": "",
+  "name": "webelexis_website",
+  "version": "0.1.0",
+  "description": "Die Website von Webelexis",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "python -m SimpleHTTPServer",
-    "watch": "watch 'pug index.html .'",
-    "run": "pug index.html && npm run serve & npm run watch"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "rgwch",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "clean-css": "^4.2.1",
+    "gulp": "^4.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-pug": "^4.0.1",
+    "gulp-sass": "^4.0.2",
+    "node-sass": "^4.11.0",
+    "rimraf": "^2.6.3"
+  }
 }
