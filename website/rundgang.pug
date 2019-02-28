@@ -1,7 +1,7 @@
 extends layout
 
 block contents
-    span(style="float:right") 
+    span(style="float:right")
         include partials/logo.pug
     h1 Erste Schritte
     p Wenn Sie sich mit Ihrem Benutzernamen und Passwort eingeloggt haben, sollten Sie diesen Bildschirm sehen:
@@ -16,11 +16,11 @@ block contents
         li Abrechnungspositionen
         li Konsultationen nach Datum auflisten
         li Zeugnisse und andere "rechtlich relevante" Dokumente
-        li Patienten Details
+        li Personalien 
         li Konsultationen
         li Briefvorlagen
         li Artikeldetails
-        li Laborwerte 
+        li Laborwerte
         li Medikationsfenster
 
     p In der jetzigen Version ist noch nicht alles implementiert, und die Buttons können sich auch noch ändern. Nehmen Sie dies einfach als Anhalspunkt. Jetzt wollen wir eine Standard-Konsultation durchgehen. Wählen Sie links den ersten Patienten aus und gehen Sie rechts auf den Knopf 10, Konsultationen (Wenn Sie die Maus über einem Button ruhen lassen, wird nach einiger Zeit ein Tooltip die Bedeutung des Buttons zeigen).
@@ -28,8 +28,8 @@ block contents
     img(src="rundgang_02.png")
 
     p Um eine neue Konsultation zu erstellen, müssen Sie zunächst in der Liste bei [1] den Fall auswählen, dem sie zugeordnet werden soll. Durch den fall wird festgelegt, welches Abrechnungssystem anzuwenden ist. Näheres zum Elexis-Fall-Konzept finden Sie im [Elexis Handbuch](https://wiki.elexis.info/Deutsches_Handbuch_3.1#F.C3.A4lle). In Webelexis werden keine Fälle verwaltet, sondern nur ausgewählt. Eine neue Komsultation erstellen Sie mit dem grünen Stern-Button bei [2], welcher nur aktiv ist, wenn in [1] ein Fall ausgewählt wurde.
-    p Das Schloss-Symbol [3] öffnet einen Konsultationseintrag zum Editieren. 
+    p Das Schloss-Symbol [3] öffnet einen Konsultationseintrag zum Editieren.
     p Das lokale Menü bei [4] enthält Operationen, die auf die aktuelle Konsultation angewendet werden können (Datum ändern, löschen etc.)
     p Das Unterfenster bei [5] sammelt Verrechnungspositionen, deren Summe bei [6] angezeigt wird. Klick auf [6] öffnet links das Fenster mit den Abrechnungspositionen.
     p Im nächsten Schritt werden wir die Konsultation befüllen und verrechnen.
-    a(href="rundgang2.html") Weiter-&gt; 
+    a(href="rundgang2.html") Weiter-&gt;
