@@ -1,0 +1,15 @@
+extends layout
+block contents
+  span(style="position:absolute;left:800px;")
+    include partials/logo.pug
+  .container
+    h1 Erste Schritte - Teil 3
+    p(style="width:800px") Zum Abschluss des Rundgangs werden nun noch AUF-Zeugnisse und Rezepte drucken. Dazu wähle ich eine Patientin, bei der einige Arbeitsunfähigen vorhanden sind. Erstellen Sie eine neue Konsultation und schreiben Sie irgendwo: 'auf-2+3$'. Das ist wieder ein Makro, das besagt: "Arbeitsunfähikeit 2 Tage zurück bis 3 Tage ab heute". Man hätte auch 'auf+3$' schreiben können, dann wäre eine Arbeitsunfähigkeit ab heute für drei Tage erstellt worden.
+    img(src="rundgang_06.png")
+    p Wenn Sie direkt auf das Druckesrsymbol in der Arbeitsunfähigkeiten-View klicken, wird ein Zeugnis mit der letzten AUF erstellt:
+    img(src="rundgang_07.png")
+    p Die dazu verwendete Druckvorlage kann selbstverständlich beliebig geändert werden. Um eine andere als die letzte AUF zu wählen, kann man sie einfach markeiren und dann das Druckersymbol wählen.
+    p Wenn man mehrere Arbeitsunfähigkeits-Einträge selektiert, wird eine Liste der selektierten Arbeitsunfähigkeiten erstellt:
+    img(src="rundgang_08.png")
+
+
