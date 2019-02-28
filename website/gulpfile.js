@@ -11,14 +11,14 @@ const copy = () => {
   return gulp.src("img/*").pipe(gulp.dest(dest))
 }
 
-const stylesTask = cb => {
-  gulp
+const stylesTask = () => {
+  return gulp
     .src("*.scss")
     .pipe(sass())
     .pipe(minifyCss())
     .pipe(gulp.dest(dest))
     .pipe(browserSync.reload({ stream: true }))
-  cb()
+
 }
 
 const pugTask = () => {
@@ -48,8 +48,19 @@ const watch = cb => {
   cb()
 }
 
-module.exports = {
-  default: gulp.series(gulp.parallel(stylesTask, pugTask, copy), watch, run),
-  watch: watch,
-  clean: clean
+const move = () => {
+  return gulp.src("target/**/*")
+    .pipe(gulp.dest(process.env.WEBSITE))
 }
+
+module.exports = {
+  develop: gulp.series(gulp.parallel(stylesTask, pugTask, copy), watch, run),
+  deploy: gulp.series(gulp.parallel(stylesTask,pugTask,copy), move),
+  watch: watch,
+  clean: clean,
+  styles: stylesTask,
+  pug: pugTask,
+  copy: copy
+}
+
+module.exports.default=module.exports.develop
