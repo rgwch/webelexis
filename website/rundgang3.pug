@@ -4,17 +4,31 @@ block contents
     include partials/logo.pug
   .container
     h1 Erste Schritte - Teil 3
-    p(style="width:800px") Zum Abschluss des Rundgangs werden nun noch AUF-Zeugnisse und Rezepte drucken. Dazu wähle ich eine Patientin, bei der einige Arbeitsunfähigen vorhanden sind. Erstellen Sie eine neue Konsultation und schreiben Sie irgendwo: 'auf-2+3$'. Das ist wieder ein Makro, das besagt: "Arbeitsunfähikeit 2 Tage zurück bis 3 Tage ab heute". Man hätte auch 'auf+3$' schreiben können, dann wäre eine Arbeitsunfähigkeit ab heute für drei Tage erstellt worden.
+    p(style="width:800px") Zum Abschluss des Rundgangs werden wir nun noch AUF-Zeugnisse und Rezepte drucken. Dazu wähle ich eine Patientin, bei der einige Arbeitsunfähigen vorhanden sind. Erstellen Sie eine neue Konsultation und schreiben Sie irgendwo: 
+    span(style="font-weight: 700;") auf-2+3$
+    br 
+    p Das ist wieder ein Makro, das besagt: "Arbeitsunfähigkeit 2 Tage zurück bis 3 Tage ab heute". Man hätte auch 'auf+3$' schreiben können, dann wäre eine Arbeitsunfähigkeit ab heute für drei Tage erstellt worden.
     img(src="rundgang_06.png" width="1024px;")
-    p Wenn Sie direkt auf das Druckesrsymbol in der Arbeitsunfähigkeiten-View klicken, wird ein Zeugnis mit der letzten AUF erstellt:
+    p Wenn Sie direkt auf das Druckersymbol in der Arbeitsunfähigkeiten-View klicken, wird ein Zeugnis mit der letzten AUF erstellt:
     img(src="rundgang_07.png" width="1024px;")
     p Wie das Druckdialog-Fenster geau aussieht, hängt vom Betriebssystem und dem Browser ab. Dieses hier ist Chromium unter Ubuntu Linux.
     p Die verwendete Druckvorlage kann selbstverständlich beliebig geändert werden (Webelexis-Serverseitig). Um eine andere als die letzte AUF zu wählen, kann man sie einfach markieren und dann das Druckersymbol wählen.
     p Wenn man mehrere Arbeitsunfähigkeits-Einträge selektiert, wird eine Liste der selektierten Arbeitsunfähigkeiten erstellt:
     img(src="rundgang_08.png" width="1024px;")
     hr
-    p Um ein Rezept zu rucken, öffnen Sie die Rezepte-View:
+    p Um ein Rezept zu rucken, öffnen Sie die Medikations-View:
     img(src="rundgang_09.png" width="1024px")
-    
+    p Dies ist eine ziemlich umfangreiche View. Grundsätzlich umfasst die Medikation folgende Elemente:
+    ul
+      li Fixmedikation - Das sind Medikamente, die regelmässig eingenommen werden (sollen).
+      li Reservemedikation - Medikamente, die bei Bedarf zusätzlich eingenommen werden können.
+      li Rezepte  - Eine Liste tatsächlich rezeptierter Medikamente
+      li Nicht (mehr) Regelmässig. Hier werden alle Medikamente erfasst, die beim aktuellen Patienten irgendwann einmal rezeptiert oder abgegeben wurden, aber derzeit weder in der Fixmedikation noch in der Reservemedikation gelistet sind.
+    p Um ein Medikament aus einem Bereich in einen anderen zu versetzen, ziehen Sie es einfach mit der Maus im Fenster umher, beispielsweise von "nicht mehr aktuell" in "Fixmedikation". Um ein Medikament aus der Fixmedikation oder der Reservemedikation zu entfernen, ziehen Sie es aufs Papierkorb-Symbol. Es erscheint dann automatisch wieder unter "Nicht (mehr) aktuell". Von dort kann man es nicht entfernen.
+    p Um ein Rezept anzuschauen oder nochmals zu drucken, klicken Sie es einfach unter "Rezepte" an. Um ein neues Rezept zu erstellen, klicken Sie den grünen Stern unter "Rezepte". Um ein Medikament dem aktuellen Rezept hinzuzufügen, ziehen Sie es aus dem entsprechenden Bereich, oder links aus der "Artikel Auswahl" ins Rezept. 
+    p Um ein Rezept zu drucken, Klicken Sie aufs Druckersymbol:
+    img(src="rundgang_10.png")
+
+    hr
     p Damit sind wir am vorläufigen Ende des Rundgangs angekommen. Wie Sie sehen, ist Webelexis kein Ersatz für Elexis, sondern eine unkomplizierte Ergänzung. Da das Programm derzeit in permanenter Entwicklung ist, kann ess sein, dass sich schon einiges geändert hat, wenn Sie dies lesen - bei Interesse: Bleiben Sie dran.
 
