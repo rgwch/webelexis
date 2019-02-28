@@ -3,7 +3,7 @@
   drop.trigger="dragDrop($event)" ref="dropzone" dragleave.trigger="dragLeave($event)">
     <div class="compactlist" repeat.for="fm of list">
       <span if.bind="$index == opened  && modality==2">
-        <input type="text" style="width:4em;" id="anzahl" value.bind="fm.ANZAHL" blur.trigger="save(fm)" 
+        <input type="text" style="width:4em;" id="anzahl" value.bind="fm.anzahl" blur.trigger="save(fm)" 
           keydown.trigger="checkkey($event)"
           focus.bind="numberFocus">
       </span>

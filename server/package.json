@@ -1,7 +1,7 @@
 {
   "name": "webelexis-server",
   "description": "A service oriented server for elexis",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "homepage": "http://www.webelexis.ch",
   "license": "MIT",
   "repository": "https://github.com/rgwch/webelexis",
@@ -52,7 +52,7 @@
     "feathers-solr": "^1.1.14",
     "get-uri": "^2.0.3",
     "helmet": "^3.15.0",
-    "java": "^0.10.0",
+    "java": "^0.11.0",
     "jshint": "^2.10.1",
     "jszip": "^3.1.5",
     "knex": "^0.15.2",
