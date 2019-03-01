@@ -34,3 +34,5 @@ data/sample-docbase/*.html
 data/sample-docbase/templates/*.html
 data/sample-docbase/*.pdf
 
+package-lock.json
+client/aurelia_project/environments/brumm.ts
