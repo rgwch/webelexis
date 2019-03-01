@@ -4,9 +4,9 @@ block contents
     include partials/logo.pug
   .container
     h1 Erste Schritte - Teil 3
-    p(style="width:800px") Zum Abschluss des Rundgangs werden wir nun noch AUF-Zeugnisse und Rezepte drucken. Dazu wähle ich eine Patientin, bei der einige Arbeitsunfähigen vorhanden sind. Erstellen Sie eine neue Konsultation und schreiben Sie irgendwo: 
+    p(style="width:800px") Zum Abschluss des Rundgangs werden wir nun noch AUF-Zeugnisse und Rezepte drucken. Dazu wähle ich eine Patientin, bei der einige Arbeitsunfähigen vorhanden sind. Erstellen Sie eine neue Konsultation und schreiben Sie irgendwo:
     span(style="font-weight: 700;") auf-2+3$
-    br 
+    br
     p Das ist wieder ein Makro, das besagt: "Arbeitsunfähigkeit 2 Tage zurück bis 3 Tage ab heute". Man hätte auch 'auf+3$' schreiben können, dann wäre eine Arbeitsunfähigkeit ab heute für drei Tage erstellt worden.
     img(src="rundgang_06.png" width="1024px;")
     p Wenn Sie direkt auf das Druckersymbol in der Arbeitsunfähigkeiten-View klicken, wird ein Zeugnis mit der letzten AUF erstellt:
@@ -25,12 +25,12 @@ block contents
       li Rezepte  - Eine Liste tatsächlich rezeptierter Medikamente
       li Nicht (mehr) regelmässig - Hier werden alle Medikamente erfasst, die beim aktuellen Patienten irgendwann einmal rezeptiert oder abgegeben wurden, aber derzeit weder in der Fixmedikation noch in der Reservemedikation gelistet sind.
     p Um ein Medikament aus einem Bereich in einen anderen zu versetzen, ziehen Sie es einfach mit der Maus im Fenster umher, beispielsweise von "nicht mehr aktuell" in "Fixmedikation". Um ein Medikament aus der Fixmedikation oder der Reservemedikation zu entfernen, ziehen Sie es aufs Papierkorb-Symbol. Es erscheint dann automatisch wieder unter "Nicht (mehr) aktuell". Von dort kann man es nicht entfernen.
-    p Um ein Rezept anzuschauen oder nochmals zu drucken, klicken Sie es einfach unter "Rezepte" an. Um ein neues Rezept zu erstellen, klicken Sie den grünen Stern unter "Rezepte". Um ein Medikament dem aktuellen Rezept hinzuzufügen, ziehen Sie es aus dem entsprechenden Bereich, oder links aus der "Artikel Auswahl" ins Rezept. 
+    p Um ein Rezept anzuschauen oder nochmals zu drucken, klicken Sie es einfach unter "Rezepte" an. Um ein neues Rezept zu erstellen, klicken Sie den grünen Stern unter "Rezepte". Um ein Medikament dem aktuellen Rezept hinzuzufügen, ziehen Sie es aus dem entsprechenden Bereich, oder links aus der "Artikel Auswahl" ins Rezept.
     p Um ein Rezept zu drucken, Klicken Sie aufs Druckersymbol:
     img(src="rundgang_10.png")
 
     hr
     p Damit sind wir am vorläufigen Ende des Rundgangs angekommen. Wie Sie sehen, ist Webelexis kein Ersatz für Elexis, sondern eine unkomplizierte Ergänzung. Da das Programm derzeit in permanenter Entwicklung ist, kann es sein, dass sich schon einiges geändert hat, wenn Sie dies lesen - bei Interesse: Bleiben Sie dran.
     p
-      a(href="/") Zur Startseite
+      a(href= base) Zur Startseite
 
