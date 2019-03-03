@@ -1,13 +1,19 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { Session } from "services/session";
 import { autoinject } from "aurelia-framework";
 import { DataSource } from "services/datasource";
 import { Router } from "aurelia-router";
 import { pluck } from "rxjs/operators";
 import { connectTo } from "aurelia-store";
-import { UserType } from "models/user";
+import { UserType } from "models/user-model";
 
 @autoinject
-@connectTo(store => store.state.pipe(pluck("usr") as any))
+@connectTo(store => store.state.pipe(pluck("user") as any))
 export class Login {
   protected username: string;
   protected password: string;

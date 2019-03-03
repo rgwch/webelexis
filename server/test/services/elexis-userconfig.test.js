@@ -17,12 +17,12 @@ describe('\'elexis-userconfig\' service', () => {
     assert.ok(service, 'Registered the service');
   });
   it('loads a configuration variable',()=>{
-    return service.get("gerry:agenda/farben/typ/besuch").then(color=>{
+    return service.get("test:agenda/farben/typ/besuch").then(color=>{
       color.should.not.be.undefined
     })
   })
   it('returns the empty string on an inexistent configuration variable',()=>{
-    return service.get("gerry:this/doesnt/exist").then(bad=>{
+    return service.get("test:this/doesnt/exist").then(bad=>{
       bad.should.equal("")
     })
   })
@@ -30,7 +30,7 @@ describe('\'elexis-userconfig\' service', () => {
     return service.get("voldesort:agenda/farben/typ/besuch").should.be.rejected
   })
   it('finds a bunch of settings',()=>{
-    return service.find({query: {user:"gerry",param:{$like:"agenda/farben/typ%"}}}).then(colors=>{
+    return service.find({query: {user:"test",param:{$like:"agenda/farben/typ%"}}}).then(colors=>{
       (colors!=undefined).should.be.ok
     })
   })

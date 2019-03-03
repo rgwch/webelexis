@@ -59,7 +59,7 @@ export class NewAppointment {
   }
 
   protected newTermin() {
-    const user = this.we.getSelectedItem('usr')  || {label: "wlx"}
+    const user = this.we.getSelectedItem('user')  || {label: "wlx"}
     const ip = env.metadata.ip || "?"
     this.termin.obj.beginn = this.slider.toString()
     this.termin.obj.dauer = "30"

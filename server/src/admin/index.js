@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const logger = require('../logger')
 const Mailer = require('../mailer')
 const defaults = require('../../config/elexisdefaults')
@@ -10,7 +16,7 @@ module.exports = function (app) {
   app.get("/lostpwd/:mail", (request, reply) => {
     const mail = request.params.mail
     logger.info("Password reset requested " + mail)
-    const userService = app.service('usr')
+    const userService = app.service('user')
     userService.get(mail).then(user => {
       const token = {
         uuid: uuid(),
@@ -31,7 +37,7 @@ module.exports = function (app) {
   app.get("/resetpwd/:mail/:uuid", async (request, response) => {
     const mail = request.params.mail
     const uid = request.params.uuid
-    const userService = app.service('usr')
+    const userService = app.service('user')
     const user = await userService.get(mail)
     const now = new Date().getTime()
     const ts = user.token.ts
@@ -57,7 +63,7 @@ module.exports = function (app) {
     const uname = request.body.uname
     const password = request.body.password
     const repeat = request.body.password2
-    const userService = app.service('usr')
+    const userService = app.service('user')
     const user = await userService.get(uname)
     const ts = user.token.ts
     const now = new Date().getTime()

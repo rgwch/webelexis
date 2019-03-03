@@ -1,10 +1,9 @@
-import { UserType } from './../models/user';
-import { metadata } from 'aurelia-metadata';
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018 by G. Weirich    *
+ * Copyright (c) 2018-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
+import { UserType } from './../models/user-model';
 
 
 /**
@@ -20,19 +19,19 @@ export interface DataService {
   // find objects by query expression
   find(params?): any
   // create an object
-  create(data,params?): any
+  create(data, params?): any
   // update an object with id
   update(index, obj): any
   // Update only given attributes of an existing object
-  patch(index,obj):any 
+  patch(index, obj): any
   // delete an object (or several objects)
   remove(index, params?): any
   // send an event concerning an object
-  emit(topic,msg)
+  emit(topic, msg)
   // subscribe on events concerning this DataService's data type
-  on(topic,func)
+  on(topic, func)
   // unsubscribe some topics
-  off(topic,func)
+  off(topic, func)
   // get transport name for this DataService's data type
   path: string
 }
@@ -43,7 +42,7 @@ export interface IDataSource {
   // get the data type of a given DataService
   dataType(service: DataService): string
   // authenticate
-  login?(username?: string,password?: string): Promise<UserType>
+  login?(username?: string, password?: string): Promise<UserType>
   // de-authenticate
   logout(): Promise<any>
   // give metadata about the server
@@ -76,7 +75,7 @@ export class DataSource implements IDataSource {
     return Promise.reject("No DataSource is configured");
   }
 
-  public logout(){
+  public logout() {
     return Promise.reject("No DataSource is configured");
   }
 

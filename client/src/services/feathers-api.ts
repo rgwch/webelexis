@@ -7,7 +7,7 @@
 import * as auth from "@feathersjs/authentication-client";
 import * as feathers from "@feathersjs/client";
 import { autoinject, LogManager } from "aurelia-framework";
-import { UserType } from "models/user";
+import { UserType } from "models/user-model";
 import * as io from "socket.io-client";
 import env from "../environment";
 import { DataService, IDataSource } from "./datasource";
@@ -50,7 +50,7 @@ export class FeathersDS implements IDataSource {
    * the user, but extended inactivity will.)
    * @param username optional e-mail
    * @param password optional password
-   * @returns the logged in 'usr' object with all properties except the password.
+   * @returns the logged in 'user' object with all properties except the password.
    * or undefined if it could not log in.
    */
   public async login(username?: string, password?: string): Promise<UserType> {
@@ -66,7 +66,7 @@ export class FeathersDS implements IDataSource {
         jwt = await this.client.authenticate();
       }
       const verified = await this.client.passport.verifyJWT(jwt.accessToken);
-      const user = await this.client.service("usr").get(verified.userId);
+      const user = await this.client.service("user").get(verified.userId);
       return user;
     } catch (err) {
       log.error("Error while authenticating " + err);

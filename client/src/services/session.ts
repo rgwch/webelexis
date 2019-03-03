@@ -5,31 +5,31 @@
  ********************************************/
 
 import { autoinject } from "aurelia-framework";
-import { User, UserType } from "models/user";
+import { UserType } from "models/user-model";
 import { DataSource } from "services/datasource";
 import { WebelexisEvents } from "webelexisevents";
 import env from 'environment'
 
 @autoinject
 export class Session {
-  private currentUser: User;
+  private currentUser: UserType;
 
   constructor(private ds: DataSource, private we: WebelexisEvents) {
     // Warning: Dirty workaround ahead
-   /* if (env.transport === "fhir") {
-      this.currentUser = new User({
-        email: "admin@webelexis.ch",
-        roles: ["admin", "guest", "user", "mpa"]
-      })
-     } */
+    /* if (env.transport === "fhir") {
+       this.currentUser = new User({
+         email: "admin@webelexis.ch",
+         roles: ["admin", "guest", "user", "mpa"]
+       })
+      } */
   }
 
-  public async login(user?: string, pwd?: string, persist?: boolean) {
-    const usr: UserType = await this.ds.login(user, pwd);
-    if (usr) {
-      usr["type"] = "usr";
-      this.currentUser = new User(usr);
-      this.we.selectItem(usr);
+  public async login(username?: string, pwd?: string, persist?: boolean) {
+    const user: UserType = await this.ds.login(username, pwd);
+    if (user) {
+      user["type"] = "user";
+      this.we.selectItem(user);
+      this.currentUser = user;
     } else {
       this.we.logout();
       this.currentUser = undefined;
@@ -38,8 +38,8 @@ export class Session {
   }
 
   public setUser(user: UserType) {
-    user.type = "usr"
-    this.currentUser = new User(user)
+    user.type = "user"
+    this.currentUser = user
     this.we.selectItem(user)
   }
 
@@ -49,7 +49,7 @@ export class Session {
     return this.ds.logout();
   }
 
-  public async getUser() {
+  public async getUser(): Promise<UserType> {
     if (!this.currentUser) {
       return await this.login();
     }

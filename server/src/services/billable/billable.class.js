@@ -60,7 +60,7 @@ class Service {
     if (!fall) {
       logger.warn("case not found " + caseID)
     }
-    const law = fall.gesetz || fall.extjson ? (fall.extjson.Gesetz || fall.extjson.billing || "null") : "KVG"
+    const law = fall.gesetz || (fall.extjson ? (fall.extjson.Gesetz || fall.extjson.billing || "KVG") : "KVG")
     return law
   }
 

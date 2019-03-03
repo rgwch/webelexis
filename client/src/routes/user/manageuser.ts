@@ -5,7 +5,7 @@
  ********************************************/
 
 import { autoinject, useView, PLATFORM } from "aurelia-framework";
-import { UserManager, UserType } from "models/user";
+import { UserManager, UserType } from "models/user-model";
 import { CommonViewer, ViewerConfiguration } from 'components/commonviewer'
 import { EventAggregator } from "aurelia-event-aggregator";
 import env from 'environment'
@@ -36,7 +36,7 @@ export class Manageuser {
   }
   private vc: ViewerConfiguration = {
     createDef: this.ffs,
-    dataType: 'usr',
+    dataType: 'user',
     getLabel: obj => obj.email,
     searchFields: [{
       asPrefix: true,
@@ -74,7 +74,7 @@ export class Manageuser {
       alert("ok")
     }).catch(err => {
       // console.log(err)
-      alert("error when saving " + this.user.email)
+      alert("error when saving " + this.user.id)
     })
   }
 }

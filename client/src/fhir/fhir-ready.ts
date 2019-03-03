@@ -33,7 +33,7 @@ export class Ready {
       // alert("we are logged in!");
       // TODO: Set correct user
       this.session.setUser({
-        email: "admin@webelexis.ch",
+        id: "admin@webelexis.ch",
         roles: ["admin", "guest", "user", "mpa"]
       });
       this.router.navigateToRoute("dispatch");

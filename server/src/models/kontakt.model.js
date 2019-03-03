@@ -64,19 +64,11 @@ module.exports = function (app) {
     if (!exists) {
       createTable(db, tableName).then(() => {
         logger.info(`Created ${tableName} table`)
-        return insertPatient(db,tableName)
+        return insertPatient(db, tableName)
       }).then(() => {
         logger.info("added unittest patient")
-      }).catch(err=>{
-        logger.error(`Error creating ${tableName}`,err )
-      })
-    }else{
-      db.schema.table(tableName,function(table){
-        table.renameColumn('ID','id')
-      }).then(result=>{
-        console.log(result)
-      }).catch(err=>{
-        console.log(err)
+      }).catch(err => {
+        logger.error(`Error creating ${tableName}`, err)
       })
     }
   }).catch(err => {

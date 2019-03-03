@@ -1,4 +1,3 @@
-import { KontaktType } from './kontakt';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2019 by G. Weirich    *
@@ -6,12 +5,14 @@ import { KontaktType } from './kontakt';
  ********************************************/
 
 import { ElexisType, UUID } from './elexistype';
-import { autoinject, computedFrom } from "aurelia-framework";
-import { DataSource, DataService } from 'services/datasource';
+import { autoinject } from "aurelia-framework";
+import { DataService } from 'services/datasource';
+import { ObjectManager } from './object-manager';
+import { KontaktType } from './kontakt';
+
 import global from '../user/global'
 import * as LRU from 'lru-cache'
 
-import env from 'environment'
 
 /**
  * A Webelexis User (which is deliberately not an Elexis-User, but can be linked
@@ -20,30 +21,27 @@ import env from 'environment'
  * properties are optional.
  */
 export interface UserType extends ElexisType {
-  email: string
-  label?: string
-  realname?: string
-  elexis_id?: UUID
-  elexisuser_id?: UUID
-  elexiskontakt?: KontaktType
+  kontakt_id?: UUID,
+  _Kontakt?: KontaktType,
+  is_active?: string,
+  is_administrator?: string,
+  extjson?: any,
+  allow_external?: string,
   roles: string[]
 }
 
 @autoinject
-export class UserManager {
-  private userService: DataService
+export class UserManager extends ObjectManager {
   private kontaktService: DataService
   private adminService: DataService
   private cache
-  constructor(private ds: DataSource) {
-    this.userService = ds.getService('usr')
-    this.kontaktService = ds.getService('kontakt')
-    this.adminService = ds.getService('admin')
-    this.cache=new LRU(100)
+  constructor() {
+    super('user')
+    this.kontaktService = this.dataSource.getService('kontakt')
+    this.adminService = this.dataSource.getService('admin')
+    this.cache = new LRU(100)
   }
 
-  public async fetchUsers(){
-  }
   /**
    * Check if a user has a given role
    * note: usually, you'd rather use hasACE()
@@ -62,18 +60,13 @@ export class UserManager {
     }
   }
 
-  public async save(usr: UserType){
-    const saved= await this.userService.patch(usr.email,usr)
-    return saved
-  }
-
   /**
    * Check if a user has a given ACE
    * @param usr 
    * @param acename 
    */
-  public async hasACE(usr: UserType, acename: string): Promise<boolean>{
-    const key = "ace:" + (usr ? usr.email : "guest") + "." + acename
+  public async hasACE(usr: UserType, acename: string): Promise<boolean> {
+    const key = "ace:" + (usr ? usr.id : "guest") + "." + acename
     let r = this.cache.get(key)
     if (r) {
       return r
@@ -89,42 +82,16 @@ export class UserManager {
    * @param usr 
    * @returns a Promise resolving on the Kontakt or rejecting if no such Kontakt exists
    */
-  public getElexisKontakt(usr: UserType): Promise<KontaktType> {
-    if (usr.elexiskontakt) {
-      return Promise.resolve(usr.elexiskontakt)
-    } else if (usr.elexisuser_id) {
-      return this.kontaktService.get(usr.elexisuser_id)
+  public async getElexisKontakt(usr: UserType): Promise<KontaktType> {
+    if (usr._Kontakt) {
+      return usr._Kontakt
+    } else if (usr.kontakt_id) {
+      usr._Kontakt = await this.kontaktService.get(usr.kontakt_id)
+      return usr._Kontakt
     } else {
       return Promise.reject()
     }
   }
 }
 
-@autoinject
-export class User {
-  obj: UserType
 
-  @computedFrom('obj')
-  get label() {
-    return this.obj.label
-  }
-
-  @computedFrom('obj')
-  get email() {
-    return this.obj.email
-  }
-  constructor(data: UserType) {
-    this.obj = data
-  }
-
-  get roles(): Array<string> {
-    return this.obj.roles
-  }
-
-  async getElexisUser() {
-
-  }
-  hasRole(role: string): boolean {
-    return (this.obj.roles.indexOf(role) != -1)
-  }
-}

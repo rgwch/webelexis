@@ -12,7 +12,7 @@ import { connectTo } from "aurelia-store"
 import { pluck } from "rxjs/operators"
 import { DateTime } from "../services/datetime"
 import { Router } from "aurelia-router"
-import { UserType } from "./user"
+import { UserType } from "./user-model"
 import { ElexisType, UUID } from "./elexistype"
 const log = LogManager.getLogger("findings-model")
 
@@ -42,7 +42,7 @@ export class Statics {
 }
 
 @autoinject
-@connectTo(store => store.state.pipe(pluck("usr") as any))
+@connectTo(store => store.state.pipe(pluck("user") as any))
 export class TerminManager {
   private terminService: DataService
 
@@ -59,10 +59,10 @@ export class TerminManager {
   public async loadDefaultsFor(user: UserType) {
     Statics.agendaResources = await this.terminService.get("resources")
     Statics.terminTypColors = await this.terminService.get("typecolors", {
-      query: { user: user.label }
+      query: { user: user.id }
     })
     Statics.terminStateColors = await this.terminService.get("statecolors", {
-      query: { user: user.label }
+      query: { user: user.id }
     })
     Statics.terminTypes = await this.terminService.get("types")
     Statics.terminStates = await this.terminService.get("states")

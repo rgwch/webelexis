@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -16,7 +16,7 @@ module.exports = {
     descr: "a person not known to the system"
   },
   Patient: {
-    id: "pat",
+    id: "patient",
     label: "Patient",
     descr: "Someone who can see their own data only"
   },
@@ -31,7 +31,7 @@ module.exports = {
     descr: "a person bound by a privacy agreement or privacy law"
   },
   mpa: {
-    id: "assist",
+    id: "assistant",
     label: "MPA",
     descr: "a person working with the practice"
   },
@@ -46,9 +46,14 @@ module.exports = {
     descr: "someone who may see and handle billings"
   },
   doc: {
-    id: "doc",
+    id: "doctor",
     label: "Arzt",
     descr: "A doctor"
+  },
+  executive:{
+    id: "executive_doctor",
+    Label: "Leitender Arzt",
+    desc: "A doctor with administrative functions"
   },
   admin: {
     id: "admin",

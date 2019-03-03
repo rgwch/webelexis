@@ -18,7 +18,7 @@ import {
 import { pluck } from "rxjs/operators";
 import { Patient, PatientType } from "../../models/patient";
 import { DataSource, DataService } from "services/datasource";
-import { UserType } from "./../../models/user";
+import { UserType } from "./../../models/user-model";
 import "./agendastyles.scss";
 
 @autoinject
@@ -26,7 +26,7 @@ import "./agendastyles.scss";
   selector: {
     actDate: store => store.state.pipe(pluck("date") as any),
     actPatient: store => store.state.pipe(pluck("patient") as any),
-    actUser: store => store.state.pipe(pluck("usr") as any)
+    actUser: store => store.state.pipe(pluck("user") as any)
   }
 })
 export class Agenda {

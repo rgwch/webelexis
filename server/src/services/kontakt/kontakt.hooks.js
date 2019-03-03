@@ -66,7 +66,7 @@ const doSort = context => {
 module.exports = {
   before: {
     all: [],
-    find: [treatDeleted(), doQuery(), doSort],
+    find: [doQuery(), doSort],
     get: [],
     create: [],
     update: [],

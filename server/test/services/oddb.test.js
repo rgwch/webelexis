@@ -2,7 +2,7 @@ const assert = require('assert');
 const app = require('../../src/app');
 const path=require('path')
 
-describe('\'oddb\' service', () => {
+xdescribe('\'oddb\' service', () => {
   const service = app.service('oddb');
 
   it('registered the service', () => {

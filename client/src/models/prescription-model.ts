@@ -148,7 +148,7 @@ export class PrescriptionManager {
   public createRezept() {
     const rp = {
       patientid: this.we.getSelectedItem('patient').id,
-      mandantid: this.we.getSelectedItem('usr').id,
+      mandantid: this.we.getSelectedItem('user').id,
       datum: moment().format(ELEXISDATE)
     }
 
@@ -257,7 +257,7 @@ export class PrescriptionManager {
       datefrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),
       artikel: "ch.artikelstamm.elexis.common.ArtikelstammItem::" + article.id,
       prescdate: this.dt.DateToElexisDate(new Date()),
-      prescriptor: this.we.getSelectedItem('usr').id
+      prescriptor: this.we.getSelectedItem('user').id
     }
     const created = await this.prescriptionLoader.create(presc)
     console.log("created from article:" + JSON.stringify(created))

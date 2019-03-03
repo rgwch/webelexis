@@ -55,30 +55,30 @@ module.exports = async function (app) {
   }
 */
   // create three users: admin, guest, user
-  const usr = app.service('usr')
-  const guest = {
+  const user = app.service('user')
+  const _guest = {
     email: "guest@some.where",
     label: "jemand",
     password: "gast",
     roles: [roles.guest.id],
     dummy: true
   }
-  const admin = {
+  const _admin = {
     email: "admin@webelexis.ch",
     label: "admin",
     password: "admin",
     roles: [roles.admin.id],
     dummy: true
   }
-  const user = {
+  const _user = {
     email: "user@webelexis.ch",
     label: "Gerry",
     password: "user",
     roles: [roles.user.id, roles.guest.id, roles.doc.id, roles.mpa.id, roles.agenda.id, roles.billing.id],
     dummy: true
   }
-  usr.remove(null, { query: { dummy: true } }).then(removed => {
-    Promise.all([usr.create(guest), usr.create(admin), usr.create(user)]).then(result => {
+  user.remove(null, { query: { dummy: true } }).then(removed => {
+    Promise.all([user.create(_guest), user.create(_admin), user.create(_user)]).then(result => {
       logger.info("created dummy users")
     }).catch(err => {
       logger.error("could not create user: %s", err)
@@ -90,7 +90,7 @@ module.exports = async function (app) {
     macro.create({
       name: "dummies",
       creator: "humblebumple",
-      allowed: ["users"],
+      allowed: ["user"],
       macros: {
         kons: "*S:*\n*O:*\n*B:*\n*P:*",
         gw: "Gewicht"

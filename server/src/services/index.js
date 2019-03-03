@@ -6,10 +6,9 @@
 
 const elexisConfig = require('./elexis-config/elexis-config.service.js');
 const admin = require('./admin/admin.service.js');
-const users = require('./users/users.service.js');
+const user = require('./user/user.service.js');
 const kontakt = require('./kontakt/kontakt.service.js');
 const agntermine = require('./agntermine/agntermine.service.js');
-const usr = require('./usr/usr.service.js');
 const patient = require('./patient/patient.service.js');
 const fall = require('./fall/fall.service.js');
 const konsultation = require('./konsultation/konsultation.service.js');
@@ -47,16 +46,14 @@ module.exports = function (app) {
  app.configure(elexisConfig);
  generateACLs('elexis-config')
  app.configure(admin);
- app.configure(users);
- generateACLs('users')
+ app.configure(user);
+ generateACLs('user')
  app.configure(kontakt);
  generateACLs('kontakt')
  app.configure(patient);
  generateACLs('patient')
  app.configure(agntermine);
  generateACLs('termin');
- app.configure(usr);
- generateACLs('usr')
  app.configure(fall);
  app.configure(konsultation);
  app.configure(article);

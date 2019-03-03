@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2018-2019 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { PLATFORM } from 'aurelia-framework';
 
 export default {
@@ -10,7 +16,7 @@ export default {
     view: PLATFORM.moduleName('./lostpassword')
   },
   manageusers: {
-    acl: "usr.update",
+    acl: "user.update",
     name: "Anwender verwalten",
     view: PLATFORM.moduleName('./manageuser')
   }

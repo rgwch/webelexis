@@ -8,15 +8,19 @@ const authentication = require("@feathersjs/authentication")
 const jwt = require("@feathersjs/authentication-jwt")
 const local = require("@feathersjs/authentication-local")
 const crypto = require("crypto")
+const CustomVerifier = require('./util/user-verifier')
 const os = require("os")
 const fs = require("fs")
+const log = require('./logger')
 
-module.exports = function(app) {
+
+module.exports = function (app) {
+  
   const config = app.get("authentication")
   // In testing mode keep the JWT token valid
   if (app.get("userconfig").testing) {
     config.secret = "not_so_secret"
-    config.jwt.expiresIn="7d"
+    config.jwt.expiresIn = "7d"
   } else {
     // in production mode create a new secret with every launch
     // thus invalidating all existing JWT tokens.
@@ -30,10 +34,11 @@ module.exports = function(app) {
 
     config.secret = secret_of_the_day
   }
+ 
   // Set up authentication with the secret
   app.configure(authentication(config))
   app.configure(jwt())
-  app.configure(local())
+  app.configure(local({ Verifier: CustomVerifier }))
 
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used

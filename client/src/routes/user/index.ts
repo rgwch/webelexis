@@ -16,7 +16,7 @@ import { connectTo } from "aurelia-store";
 import { pluck } from "rxjs/operators";
 
 @autoinject
-@connectTo(store => store.state.pipe( pluck("usr") as any))
+@connectTo(store => store.state.pipe( pluck("user") as any))
 export class TestIndex {
   protected loggedInViews = [v.details, v.manageusers];
   protected loggedOutViews = [v.lostpwd];

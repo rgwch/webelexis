@@ -7,7 +7,7 @@
 import { autoinject, LogManager } from "aurelia-framework";
 import env from "environment";
 import { ElexisType } from "models/elexistype";
-import { UserType } from "models/user";
+import { UserType } from "models/user-model";
 import { DataService, IDataSource, IQueryResult } from "services/datasource";
 import { AdapterFactory } from "./adapters/adapter-factory";
 import { FhirService } from "./fhirservice";

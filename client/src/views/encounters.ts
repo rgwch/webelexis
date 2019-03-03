@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -14,7 +14,7 @@ import { EncounterType } from "models/encounter-model";
 import * as moment from "moment";
 import { pluck } from "rxjs/operators";
 import { CaseManager } from "../models/case";
-import { UserType } from "../models/user";
+import { UserType } from "../models/user-model";
 import { DataService, DataSource } from "../services/datasource";
 import { State } from "../state";
 import defaults from "../user/global";
@@ -101,18 +101,18 @@ export class Encounters {
   protected newEncounter() {
     if (this.actCase != null) {
       const fall = this.actCase;
-      const user: UserType = this.we.getSelectedItem("usr");
+      const user: UserType = this.we.getSelectedItem("user");
       let mandator = user.id;
-      if (user.elexiskontakt) {
-        if (user.elexiskontakt.istmandant == "1") {
-          mandator = user.elexiskontakt.id;
+      if (user._Kontakt) {
+        if (user._Kontakt.istmandant == "1") {
+          mandator = user._Kontakt.id;
         }
       }
       const kons: EncounterType = {
         datum: moment().format("YYYYMMDD"),
         eintrag: {
           html: "<p></p>",
-          remark: user.label,
+          remark: user.id,
           timestamp: moment().format("DD.MM.YYYY, HH:mm:ss")
         },
         fallid: this.actCase.id,

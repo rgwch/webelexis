@@ -35,7 +35,7 @@
       "local"
     ],
     "path": "/authentication",
-    "service": "usr",
+    "service": "user",
     "jwt": {
       "header": {
         "typ": "access"
@@ -48,8 +48,8 @@
     },
     "local": {
       "entity": "user",
-      "usernameField": "email",
-      "passwordField": "password"
+      "usernameField": "id",
+      "passwordField": "hashed_password"
     }
   },
   "nedb": "../../data"

@@ -5,23 +5,24 @@
  ********************************************/
 
 const chai = require('chai')
-const should = chai.should()
+chai.should()
 const assert = require('assert');
 const app = require('../../src/app');
 
-xdescribe('\'users\' service', () => {
+describe('\'user\' service', () => {
   it('registered the service', () => {
-    const service = app.service('users');
+    const service = app.service('user');
 
     assert.ok(service, 'Registered the service');
   });
-  it('loads user with username gerry', () => {
-    const service = app.service('users');
+  it('loads user with username test', () => {
+    const service = app.service('user');
 
-    return service.get('gerry').then(result => {
-      result.IS_ACTIVE.should.be.equal("1")
-      result.kontakt.should.exist
-      result.kontakt.Bezeichnung1.should.be.equal("Weirich")
+    return service.get('test').then(result => {
+      result.is_active.should.be.equal("1")
+      result.should.have.property("_Kontakt")
+      result.roles.should.exist
+      Array.isArray(result.roles).should.be.ok
     })
   })
 });

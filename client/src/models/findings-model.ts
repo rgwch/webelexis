@@ -11,6 +11,7 @@ import { DataService, DataSource } from "../services/datasource";
 import { WebelexisEvents } from '../webelexisevents'
 import defs from '../user/finding-defs'
 import * as _ from 'lodash'
+import { UserType } from "./user-model";
 
 const log = LogManager.getLogger("findings-model")
 const definitions: any = {}
@@ -172,7 +173,7 @@ export class FindingsManager {
 
   createFindingFromString(name, value) {
     const actPat = this.we.getSelectedItem('patient')
-    const actUser = this.we.getSelectedItem('usr')
+    const actUser: UserType = this.we.getSelectedItem('user')
     const item = definitions[name]
     const processed = item.create(value)
     this.addFinding(name, actPat.id, processed).then(added => {

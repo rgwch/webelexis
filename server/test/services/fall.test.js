@@ -16,7 +16,7 @@ describe('\'fall\' service', () => {
   it('registered the service', () => {
     assert.ok(service, 'Registered the service');
   });
-  it("fetches all cases of first patient with first name or last name like 'test%'.",(done)=>{
+  xit("fetches all cases of first patient with first name or last name like 'test%'.",(done)=>{
     const patientService=app.service('patient')
     patientService.find({query:{$find: "test"}}).then(pats=>{
       pats.should.be.ok

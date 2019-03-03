@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018 by G. Weirich         *
+ * Copyright (c) 2018-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -77,7 +77,7 @@ export class WebelexisEvents {
 
   private logoutAction = state => {
     const newState = Object.assign({}, state);
-    delete newState.usr;
+    delete newState.user;
     return newState;
   };
 

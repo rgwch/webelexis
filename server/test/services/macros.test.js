@@ -8,7 +8,7 @@ chai.should()
 const macroset={
   name: "_unittest",
   creator: "özelditz",
-  allowed: ["users"],
+  allowed: ["user"],
   macros: {
     kons: "*S:*\n*O:*\n*B:*\n*P:*",
     gw:"Gewicht"

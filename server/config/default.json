@@ -1,6 +1,6 @@
 {
-  "version": "3.0.6",
-  "testing": true,
+  "version": "3.0.7",
+  "testing": false,
   "host": "localhost",
   "port": 3030,
   "public": "../../client/dist/",
@@ -32,7 +32,7 @@
       "filename": "../../data/webelexis.db"
     }
   },
-  "lucinda":{
+  "lucinda": {
     "url": "http://localhost:2016/lucinda/2.0/"
   },
   "solr": {
@@ -53,7 +53,7 @@
       "local"
     ],
     "path": "/authentication",
-    "service": "usr",
+    "service": "user",
     "jwt": {
       "header": {
         "typ": "access"

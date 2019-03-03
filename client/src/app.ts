@@ -39,7 +39,7 @@ import { PatientType } from "./models/patient";
   selector: {
     actDate: store => store.state.pipe(pluck("date") as any),
     actPatient: store => store.state.pipe(pluck("patient") as any),
-    actUser: store => store.state.pipe(pluck("usr") as any),
+    actUser: store => store.state.pipe(pluck("user") as any),
     leftPanel: store => store.state.pipe(pluck("leftPanel") as any)
   }
 })

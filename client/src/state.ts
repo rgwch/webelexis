@@ -1,14 +1,14 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018 by G. Weirich         *
+ * Copyright (c) 2018-2019 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
 import { ElexisType } from "./models/elexistype";
-import { User } from "./models/user";
+import { UserType } from "./models/user-model";
 import { DISPLAY } from './routes/dispatch/index';
 
 export interface State {
-  user: User;
+  user: UserType;
   termin: ElexisType;
   patient: ElexisType;
   document: ElexisType;
