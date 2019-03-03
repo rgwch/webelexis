@@ -7,6 +7,17 @@
       {
         "type": "node",
         "request": "launch",
+        "name": "call metrics",
+        "program": "${workspaceFolder}/server/test/callmetrics.js",
+        "cwd": "${workspaceFolder}/server",
+        "env":{
+          "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
+        },
+        "internalConsoleOptions": "openOnSessionStart"
+      },
+      {
+        "type": "node",
+        "request": "launch",
         "name": "Load oddb",
         "program": "${workspaceFolder}/server/src/util/load-oddb.js"
       },
@@ -32,11 +43,7 @@
         "--recursive",
         "${workspaceFolder}/server/test"
       ],
-      "cwd": "${workspaceFolder}/server",
-      "env":{
-        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
-      },
-      "internalConsoleOptions": "openOnSessionStart"
+
     },
         {
             "type": "node",

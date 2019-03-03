@@ -57,7 +57,7 @@ export class UserManager extends ObjectManager {
       return (usr.roles.indexOf(role) != -1)
     } else {
       return false
-    }
+    } 
   }
 
   /**
@@ -74,7 +74,7 @@ export class UserManager extends ObjectManager {
       r = await this.adminService.get("can:" + acename)
       this.cache.set(key, r)
       return r
-    }
+    } 
   }
 
   /**
