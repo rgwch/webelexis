@@ -81,9 +81,12 @@ export class Encounters {
     // console.log("new: "+(newValue ? newValue.id: "empty"))
     // console.log("old: "+(oldValue ? oldValue.id: "empty"))
     if (!oldValue || newValue.id !== oldValue.id) {
-      this.actCase = null;
-      this.searchexpr = "";
-      this.refresh();
+      this.caseManager.loadCasesFor(newValue.id).then(result=>{
+        this.cases=result
+        this.actCase = null;
+        this.searchexpr = "";
+        this.refresh();  
+      })
     }
   }
 
@@ -169,9 +172,39 @@ export class Encounters {
     });
   }
 
+  isLoading
+  private async fetchData() {
+    if (this.isLoading) {
+      console.log("busy")
+    } else {
+      this.isLoading = true
+
+      const starttime = new Date().getTime();
+      const expr: any = {
+        $limit: numberToFetch,
+        $skip: this.encounters.data.length,
+        patientId: this.actPatient.id
+      }
+      if (this.actCase != null) {
+        expr.fallid = this.actCase.id;
+      }
+      if (this.searchexpr && this.searchexpr.length > 1) {
+        expr.$find = this.searchexpr;
+      }
+      const encounters = await this.konsultationService.find({ query: expr })
+      this.encounters.data = this.encounters.data.concat(encounters.data);
+      this.encounters.total = encounters.total;
+      const endtime = new Date().getTime()
+      const duration = (endtime - starttime) / 1000
+      console.log("Load Time: " + duration)
+      this.isLoading = false
+    }
+  }
+
   /**
    * Fetch new data.
    */
+  /*
   private fetchData() {
     let isLoading: boolean;
     if (isLoading) {
@@ -223,4 +256,5 @@ export class Encounters {
       return Promise.resolve(true);
     }
   }
+  */
 }

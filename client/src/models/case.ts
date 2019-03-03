@@ -52,9 +52,6 @@ export class CaseManager extends ObjectManager{
     }
   }
 
-  public async fetch(id: UUID) {
-    return await this.dataService.get(id);
-  }
   public async save(fall: CaseType) {
     delete fall._Patient;
     if (fall.id) {

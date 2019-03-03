@@ -9,12 +9,13 @@ const logger = require('./hooks/logger');
 const cleanup = require('./hooks/pre-store')
 const treatDeleted = require('./hooks/treat-deleted');
 const softDelete = require('./hooks/softdelete')
+const timings = require('./hooks/timings')
 const acl = require('./hooks/acl')
 
 module.exports = {
   before: {
     all: [logger(), acl],
-    find: [treatDeleted()],
+    find: [treatDeleted(), timings()],
     get: [],
     create: [cleanup],
     update: [cleanup],
@@ -24,7 +25,7 @@ module.exports = {
 
   after: {
     all: [logger()],
-    find: [],
+    find: [timings()],
     get: [],
     create: [],
     update: [],

@@ -12,7 +12,7 @@ const winston=require('winston')
 */
 
 const logger=winston.createLogger({
-    level:'warn',
+    level:'info',
 
     format: winston.format.combine(
       winston.format.colorize(),
