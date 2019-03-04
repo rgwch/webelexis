@@ -15,7 +15,7 @@ const acl = require('./hooks/acl')
 module.exports = {
   before: {
     all: [logger(), acl],
-    find: [treatDeleted(), timings()],
+    find: [treatDeleted()],
     get: [],
     create: [cleanup],
     update: [cleanup],
@@ -25,7 +25,7 @@ module.exports = {
 
   after: {
     all: [logger()],
-    find: [timings()],
+    find: [],
     get: [],
     create: [],
     update: [],

@@ -12,7 +12,7 @@ module.exports = ctx => {
     const method = ctx.method
     const user = ctx.params.user
     const neededACE = servicename + "." + method
-    if (servicename == 'user' && method == 'get' && user && ctx.id == user.email) {
+    if (servicename == 'user' && method == 'get' && user && ctx.id == user.id) {
       ctx.result = user
     } else {
       needsRight(user, neededACE)
