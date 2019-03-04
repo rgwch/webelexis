@@ -43,6 +43,9 @@ module.exports = function (options = defaultOptions) {
       for (const obj of items) {
         if (obj[options.extinfo]) {
           obj.extjson = util.getExtInfo(obj[options.extinfo])
+          if(obj.extjson){
+            delete obj[options.extinfo]
+          }
         }
       }
     } else if (context.method == "create" || context.method == "update") {

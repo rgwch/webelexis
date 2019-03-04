@@ -37,7 +37,7 @@ module.exports = function (app) {
   db.schema.hasTable(roleTable).then(exists => {
     if (!exists) {
       db.schema.createTable(roleTable, table => {
-        table.string('id', 40).primary().unique().notNullable();
+        table.string('id', 40).primary().notNullable();
         table.string('deleted', 1)
         table.string("issystemrole", 1)
         table.bigint("lastupdate")

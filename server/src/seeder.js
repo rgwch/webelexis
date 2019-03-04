@@ -17,15 +17,15 @@ module.exports = async function (app) {
   // Find patient with TitelSuffix 'unittest' and exit if not found
   const pats = app.service('patient')
 
-  const testpat = await pats.find({ query: { TitelSuffix: "unittest" } })
+  const testpat = await pats.find({ query: { titelsuffix: "unittest" } })
   if (!testpat || !testpat.data || testpat.data.length < 1) {
     logger.error("No Patient with TitelSuffix 'unittest' found. See src/seeder.js")
-    const candidates = await pats.find({ query: { Bezeichnung1: { $like: "test%" } } });
+    const candidates = await pats.find({ query: { bezeichnung1: { $like: "test%" } } });
     if (candidates && candidates.data.length > 0) {
       const tp = candidates.data[0]
-      tp.TitelSuffix = "unittest"
+      tp.titelsuffix = "unittest"
       const okay = await pats.update(tp.id, tp)
-      logger.info(`chose ${okay.Bezeichnung1} ${okay.Bezeichnung2} as unittest`)
+      logger.info(`chose ${okay.bezeichnung1} ${okay.bezeichnung2} as unittest`)
     } else {
       throw new Error("No Patient with TitelSuffix 'unittest' and none with Name like 'test%' found. See src/seeder.js")
     }
@@ -57,27 +57,25 @@ module.exports = async function (app) {
   // create three users: admin, guest, user
   const user = app.service('user')
   const _guest = {
-    email: "guest@some.where",
-    label: "jemand",
-    password: "gast",
+    id: "guest",
+    hashed_password: "gast",
     roles: [roles.guest.id],
-    dummy: true
+    is_active: "0"
   }
   const _admin = {
-    email: "admin@webelexis.ch",
-    label: "admin",
-    password: "admin",
+    id: "admin",
+    hashed_password: "admin",
     roles: [roles.admin.id],
-    dummy: true
+    is_active: "0"
   }
   const _user = {
-    email: "user@webelexis.ch",
-    label: "Gerry",
-    password: "user",
+    id: "user@webelexis.ch",
+    hashed_password: "user",
     roles: [roles.user.id, roles.guest.id, roles.doc.id, roles.mpa.id, roles.agenda.id, roles.billing.id],
-    dummy: true
+    is_active: "0"
   }
-  user.remove(null, { query: { dummy: true } }).then(removed => {
+  
+  user.remove(null, { query: { is_active: "0" } }).then(removed => {
     Promise.all([user.create(_guest), user.create(_admin), user.create(_user)]).then(result => {
       logger.info("created dummy users")
     }).catch(err => {
