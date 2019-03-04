@@ -12,10 +12,11 @@ module.exports = function () {
     // You can customize the mssage (and logger) to your needs
     logger.debug(`${context.type} app.service('${context.path}').${context.method}()`);
 
+    /* This slows down things EXTREMELY
     if(typeof context.toJSON === 'function') {
       logger.debug('Hook Context', JSON.stringify(context, null, '  '));
     }
-
+    */
     if (context.error) {
       logger.error(context.error);
     }

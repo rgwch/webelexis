@@ -47,7 +47,7 @@ module.exports = {
   },
 
   after: {
-    all: [protect(['hashed_password','salt'])],
+    all: [protect('hashed_password','salt')],
     find: [],
     get: [addKontakt, addRoles, handleExtInfo({ extinfo: "extinfo" })],
     create: [],

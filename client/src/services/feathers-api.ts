@@ -20,9 +20,7 @@ const log = LogManager.getLogger("feathers-api");
 @autoinject
 export class FeathersDS implements IDataSource {
   private client;
-  private socket;
-  private authenticator;
-
+  
   constructor() {
     const socket = io.connect(env.baseURL);
 
@@ -58,7 +56,7 @@ export class FeathersDS implements IDataSource {
       let jwt;
       if (username && password) {
         jwt = await this.client.authenticate({
-          email: username,
+          id: username,
           password,
           strategy: "local"
         });
