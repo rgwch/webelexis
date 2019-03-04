@@ -2,6 +2,9 @@ $titlecolor: blue;
 $bordercolor: lighten($titlecolor,20%);
 $boxcolor: lighten($bordercolor,20%);
 $boxtextcolor: black;
+* {
+  box-sizing: border-box;
+}
 
 h1{
     color: darken($titlecolor,20%);
@@ -11,8 +14,16 @@ h1{
 }
 
 h2{
-    color: darken($titlecolor,40%);
+    color: darken($titlecolor,30%);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14pt;
     font-weight: 600;
+}
+
+h3{
+  color: darken($titlecolor,40%);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-weight: 400;
+  text-decoration: underline;
 }
