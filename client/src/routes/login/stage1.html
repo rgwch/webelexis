@@ -2,7 +2,7 @@
   <div class="sheet">
     <div class="header"><span class="detailcaption">Login</span></div>
     <div class="body" if.bind="testmode">
-      <h2>Eingeloggt: ${state.email || "niemand"}</h2>
+      <h2>Eingeloggt: ${state.id || "niemand"}</h2>
       <p>
         In dieser Demo-Version können Sie sich einfach durch Klick auf einen der
         untenstehenden Buttons mit der betreffenden Rolle einloggen.
@@ -38,7 +38,7 @@
               <button
                 class="btn btn-primary"
                 click.trigger="logout()"
-                disabled.bind="state.email.length == 0"
+                disabled.bind="state.id.length == 0"
               >
                 Logout
               </button>
