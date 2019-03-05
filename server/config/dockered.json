@@ -49,7 +49,7 @@
     "local": {
       "entity": "user",
       "usernameField": "id",
-      "passwordField": "hashed_password"
+      "passwordField": "password"
     }
   },
   "nedb": "../../data"
