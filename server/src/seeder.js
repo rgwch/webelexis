@@ -57,13 +57,13 @@ module.exports = async function (app) {
   // create three users: admin, guest, user
   const user = app.service('user')
   const _guest = {
-    id: "guest",
+    id: "guest@webelexis.ch",
     hashed_password: "gast",
     roles: [roles.guest.id],
     is_active: "0"
   }
   const _admin = {
-    id: "admin",
+    id: "admin@webelexis.ch",
     hashed_password: "admin",
     roles: [roles.admin.id],
     is_active: "0"

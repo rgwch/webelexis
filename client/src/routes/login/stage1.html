@@ -15,21 +15,21 @@
               <button
                 class="btn btn-success"
                 click.trigger="loginAs('admin@webelexis.ch','admin')"
-                disabled.bind="state.email.length>0"
+                disabled.bind="state.id.length>0"
               >
                 Admin
               </button>
               <button
                 class="btn btn-success"
                 click.trigger="loginAs('user@webelexis.ch','user')"
-                disabled.bind="state.email.length > 0"
+                disabled.bind="state.id.length > 0"
               >
                 User
               </button>
               <button
                 class="btn btn-success"
-                click.trigger="loginAs('guest@some.where','gast')"
-                disabled.bind="state.email.length > 0"
+                click.trigger="loginAs('guest@webelexis.ch','gast')"
+                disabled.bind="state.id.length > 0"
               >
                 Gast
               </button>
@@ -48,8 +48,8 @@
       </div>
     </div>
     <div class="body" else>
-      <div if.bind="state.email.length>0">
-        Sie sind angemeldet als <b>${state.email}</b><br />
+      <div if.bind="state.id.length>0">
+        Sie sind angemeldet als <b>${state.id}</b><br />
         <button type="button" class="btn btn.primary" click.trigger="logout()">
           Logout
         </button>
@@ -57,10 +57,7 @@
       <form else>
         <div class="form-group">
           <label for="username" t="dlg.username"></label>
-          <input type="email" class="form-control" id="username" value.bind="username" />
-          <small class="form-text text-muted"
-            >Ihre E-Mail ist gleichzeitig Ihr Username</small
-          >
+          <input type="input" class="form-control" id="username" value.bind="username" />
         </div>
         <div class="form-group">
           <label for="password" t="dlg.password"></label>

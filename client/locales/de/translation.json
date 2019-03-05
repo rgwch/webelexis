@@ -96,7 +96,7 @@
     "docsave": "Dokument speichern",
     "subject": "Titel",
     "addressee": "Adressat",
-    "username": "E-Mail",
+    "username": "Username / E-Mail",
     "password": "Passwort"
   },
   "errmsg":{
