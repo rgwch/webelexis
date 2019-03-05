@@ -53,7 +53,12 @@ const applyRoles = async ctx => {
 
 const removeRoles = async ctx => {
   const db = ctx.service.Model
-  await db("user_role_joint").where("user_id", ctx.data.id)
+  const users = ctx.result
+  for (const user of users) {
+      const dlt= db("user_role_joint").where("user_id",user.id).del()
+      console.log(dlt.toString())
+      await dlt
+  }
   return ctx
 }
 module.exports = {
@@ -74,7 +79,7 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [removeRoles]
   },
 
   error: {
