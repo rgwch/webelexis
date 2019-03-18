@@ -47,5 +47,6 @@ module.exports = {
   schedule:{
     minDuration: 30,
     terminTyp: "Internet",
+    maxPerDay: 4
   }
 }
