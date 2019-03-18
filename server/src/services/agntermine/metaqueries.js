@@ -21,6 +21,11 @@ function getList(config, def) {
   })
 }
 
+/**
+ * Get the available slots for a resource
+ * @param {service} config
+ * @param {string} bereich  the resource
+ */
 function getdaydefaults(config, bereich) {
   return config.get("agenda/tagesvorgaben/" + bereich).then(raw => {
     const timedef = raw.trim().substring(7).split("~#<A")
@@ -37,6 +42,11 @@ function getdaydefaults(config, bereich) {
   })
 }
 
+/**
+ * Get the preset durations for each appointment type of a resource
+ * @param {service} config
+ * @param {string} bereich
+ */
 function getTimedefaults(config, bereich) {
   return config.get("agenda/zeitvorgaben/" + bereich).then(raw => {
     const timedef = raw.trim().split("::")

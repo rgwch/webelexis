@@ -42,6 +42,7 @@ const generateACLs=servicename=>{
   const a7=new ACE(servicename+".get",a6)
   declareACE([a1,a2,a3,a4,a5,a6,a7])
 }
+const schedule = require('./schedule/schedule.service.js');
 module.exports = function (app) {
  app.configure(elexisConfig);
  generateACLs('elexis-config')
@@ -75,4 +76,5 @@ module.exports = function (app) {
  app.configure(oddb);
  app.configure(metaArticle);
  app.configure(briefe);
+ app.configure(schedule);
 };

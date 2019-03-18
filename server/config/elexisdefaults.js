@@ -36,12 +36,16 @@ module.exports = {
       geplant: "ff8000",
       eingetroffen: "ff0000",
       fertig: "008000",
-      abgeagt: "e5e5e5"
+      abgesagt: "e5e5e5"
     },
     timedefaults: {
       Reserviert: 30,
       Frei: 30,
       Normal: 30
     }
+  },
+  schedule:{
+    minDuration: 30,
+    terminTyp: "Internet",
   }
 }
