@@ -46,7 +46,13 @@ describe('schedule', () => {
       const dd2=gapf.dedup([a,c,b,[20,22]])
       dd2.length.should.equal(2)
     })
+
+    it("finds gaps in an array od intervals",()=>{
+      const gaps=gapf.findgaps([b,d,e,i,[19,21]])
+      gaps.length.should.equal(2)
+    })
   })
+
 
   describe('schedule service',()=>{
     it('registered the service', () => {
