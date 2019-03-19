@@ -38,6 +38,7 @@ class Service {
       for (const gap of gaps) {
         while (gap[1] - gap[0] >= minDuration) {
           const slot = {
+            tag: date,
             beginn: gap[0],
             dauer: minDuration,
             bereich: resource,
