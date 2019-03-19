@@ -36,7 +36,7 @@ class Service {
       }
       const gaps = gapf.findgaps(unavail)
       for (const gap of gaps) {
-        if (gap[1] - gap[0] >= minDuration) {
+        while (gap[1] - gap[0] >= minDuration) {
           const slot = {
             beginn: gap[0],
             dauer: minDuration,
@@ -45,8 +45,13 @@ class Service {
             terminStatus: appntStates[1]
           }
           freeslots.push(slot)
+          gap[0]+=minDuration
         }
       }
+    }
+    while(freeslots.length>defaults.maxPerDay){
+      const k=Math.round(Math.random()*freeslots.length-1)
+      freeslots.splice(k,1)
     }
     return freeslots;
 

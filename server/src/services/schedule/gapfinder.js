@@ -1,12 +1,12 @@
 /**
  * Find gaps in an unsorted Array of intervals
- * @param {Array<[from,to]>} arr 
+ * @param {Array<[from,to]>} arr
  */
 class Gapfinder {
 
     /**
      * Find gaps in an array of intervals
-     * @param {Array<[from,to]>} arr 
+     * @param {Array<[from,to]>} arr
      * @returns a new array with the gaps (if any)
      */
     findgaps(arr) {
@@ -18,7 +18,7 @@ class Gapfinder {
             if(a[1]<b[0]){
                 ret.push([a[1],b[0]])
             }
-        }   
+        }
         return ret
     }
 
@@ -60,17 +60,17 @@ class Gapfinder {
 
     /**
      * check if two intervals overlap
-     * @param {[from,to]} a 
-     * @param {[from,to]} b 
+     * @param {[from,to]} a
+     * @param {[from,to]} b
      */
     overlaps(a, b) {
-        if (a[0] > b[0] && a[0] < b[1]) {
+        if (a[0] >= b[0] && a[0] < b[1]) {
             return true
         }
-        if (a[1] > b[0] && a[1] < b[1]) {
+        if (a[1] > b[0] && a[1] <= b[1]) {
             return true
         }
-        if (a[0] > b[0] && a[1] < b[1]) {
+        if (a[0] >= b[0] && a[1] <= b[1]) {
             return true
         }
         if (a[0] < b[0] && a[1] > b[0]) {

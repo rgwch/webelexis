@@ -17,6 +17,7 @@ describe('schedule', () => {
     const i=[10,15]
 
     it('checks overlaps',()=>{
+      gapf.overlaps(a,a).should.be.true
       gapf.overlaps(a,b).should.be.false
       gapf.overlaps(b,a).should.be.false
       gapf.overlaps(a,c).should.be.false
@@ -43,8 +44,8 @@ describe('schedule', () => {
       const dedupl=gapf.dedup([a,d,c,g,b,f,f,g,h,i])
       dedupl.length.should.equal(1)
       dedupl[0].should.eql([2,15])
-      const dd2=gapf.dedup([a,c,b,[20,22]])
-      dd2.length.should.equal(2)
+      const dd2=gapf.dedup([a,c,b,f,[20,22]])
+      dd2.length.should.equal(3)
     })
 
     it("finds gaps in an array od intervals",()=>{
