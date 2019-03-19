@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  .container
+  h3.h3 Freie Termine am #{tdate}
+  ul.list-group
+    each slot in slots
+      li.list-group-item=slot
+  p Bitte wählen Sie den gewünschten Termin.

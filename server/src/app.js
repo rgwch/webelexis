@@ -15,7 +15,7 @@ const helmet = require('helmet');
 const logger = require('./logger');
 const authentication = require('./authentication')
 const knex = require('./knex');
-const normalize=require('./normalize_db')
+const normalize = require('./normalize_db')
 const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
@@ -25,15 +25,16 @@ const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
-const admin=require('./admin')
+const admin = require('./admin')
+const terminRouter = require('./routes/schedule')
 
 const app = express(feathers());
-app.set('views',path.join(__dirname,'../views'))
-app.set('view engine','pug')
+app.set('views', path.join(__dirname, '../views'))
+app.set('view engine', 'pug')
 
 // Load app configuration
 app.configure(configuration());
-app.set("userconfig",require('../../data/settings'))
+app.set("userconfig", require('../../data/settings'))
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
@@ -45,7 +46,8 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 
 // Host the public folder
 app.use('/', express.static(app.get('public')));
-app.use('/static',express.static(path.join(__dirname,'../public')))
+app.use('/static', express.static(path.join(__dirname, '../public')))
+app.use("/termin", terminRouter)
 
 // Set up Plugins and providers
 app.configure(express.rest())
@@ -75,7 +77,7 @@ if (app.get("userconfig").testing) {
   logger.info("runnung in testing mode")
   const seeder = require('./seeder')
   seeder(app).catch(err => { console.log("reject " + err) })
-}else{
+} else {
   logger.info("running in production mode")
 }
 module.exports = app;
