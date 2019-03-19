@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    .container
+        .card
+            .card.header
+                h2.card-title Fehler
+            .card-body
+                .p Es konnte kein Patient mit diesen Daten gefunden werden. Bitte teilen Sie uns ggf. Ihre E-Mail Adresse mit.
+
+                button.btn.btn-primary(onclick="window.location.replace('/termin/list')")  Zurück
