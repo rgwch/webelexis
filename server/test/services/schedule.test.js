@@ -15,7 +15,7 @@ describe('schedule', () => {
     const g=[6,8]
     const h=[3,5]
     const i=[10,15]
-   
+
     it('checks overlaps',()=>{
       gapf.overlaps(a,b).should.be.false
       gapf.overlaps(b,a).should.be.false
@@ -57,18 +57,18 @@ describe('schedule', () => {
   describe('schedule service',()=>{
     it('registered the service', () => {
       const service = app.service('schedule');
-  
+
       assert.ok(service, 'Registered the service');
     });
-    xit("loads appointments", async () => {
+    it("loads appointments", async () => {
       const sched = app.service('schedule')
       const agn = app.service('termin')
       const resources = await agn.get('resources')
       const found = await sched.find({ query: { date: "20190110", resource: resources[0] } })
-      found.should.be.an(Array)
+      found.should.be.an('Array')
     })
 
   })
- 
+
 });
 
