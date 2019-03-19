@@ -10,7 +10,7 @@ block content
           each slot in slots
 
             .form-check
-              input.form-check-input(type="radio" name="appnts" value=slot.id id=slot.id)
+              input.form-check-input(type="radio" name="appnts" value=slot.appnt id=slot.id)
               label.form-check-label(for=slot) #{slot.human}
           p.my-4 Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Bitte beachten Sie, dass eine Terminvergabe mit diesem Tool nur möglich ist, wenn Sie bereits mit diesen Daten in unserer Patientenkartei erfasst sind.
           .form-row

@@ -18,7 +18,8 @@ router.get("/list", async (req, res) => {
   const slots = f1.map(slot => {
     return {
       human: elexis.makeTime(slot.beginn),
-      id: today.toFormat("yyyyLLdd") + slot.beginn.toString
+      id: today.toFormat("yyyyLLdd") + slot.beginn.toString,
+      appnt: JSON.stringify(slot)
     }
   })
   res.render("termin", {
@@ -31,8 +32,23 @@ router.post("/set", async (req, res) => {
   const appnt = req.body.appnts
   const email = req.body.email
   const bdate = req.body.bdate
-  if(!appnt || !email || !bdate){
+  const parsed_bdate = DateTime.fromFormat(bdate,"dd.LL.yyyy")
+  const dbform = parsed_bdate.toFormat("yyyyLLdd")
+  if (!appnt || !email || !bdate) {
     res.render("missingdata")
+  } else {
+    const app = require('../app')
+    const patients = app.service('patient')
+    const filtered = await patients.find({ query: { email: email, geburtsdatum: dbform } })
+    if (filtered.data.length != 1) {
+      res.render("baddata")
+    }else{
+      const pat=filtered.data[0]
+      const termin=JSON.parse(appnt)
+      termin.patid=pat.id
+      const terminService=app.service('termin')
+      const ack=await terminService.create(termin)
+    }
   }
 })
 module.exports = router
