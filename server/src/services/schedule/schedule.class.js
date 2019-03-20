@@ -43,7 +43,7 @@ class Service {
             dauer: minDuration,
             bereich: resource,
             termintyp: defaults.terminTyp,
-            terminStatus: appntStates[1]
+            terminstatus: appntStates[1]
           }
           freeslots.push(slot)
           gap[0]+=minDuration
