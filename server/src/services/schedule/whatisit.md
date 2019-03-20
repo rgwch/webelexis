@@ -1,1 +1,1 @@
-This service manages auto-scheduling for patients
+This service manages self-scheduling for patients
