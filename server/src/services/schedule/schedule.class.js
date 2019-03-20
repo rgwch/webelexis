@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2019 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const defaults = require('../../../config/elexisdefaults').schedule
 const { DateTime } = require('luxon')
 const ElexisUtils = require('../../util/elexis-types')
@@ -12,6 +18,15 @@ class Service {
   }
 
 
+  /**
+   * Find free time slots on a given day for a given resource. Some properties are set in confog/elexisdefaults:
+   *   schedule:{
+   *     minDuration: 30,         // minimal duration of a slot to be conisered as free
+   *     terminTyp: "Internet",   // type of appointment to create
+   *     maxPerDay: 4
+   *    }
+   * @param {*} params 
+   */
   async find(params) {
     const appntService = this.options.app.service('termin')
     const date = params.query.date
