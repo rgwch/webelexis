@@ -5,10 +5,10 @@ const ElexisUtils = require('../util/elexis-types')
 const elexis = new ElexisUtils()
 
 
-router.get("/list", async (req, res) => {
+router.get("/list/:date?", async (req, res) => {
   const app = require("../app")
   const service = app.service('schedule')
-  const today = DateTime.local()
+  const today = req.params.date ? DateTime.fromFormat(req.params.date,"yyyyLLdd") : DateTime.local()
   const f1 = await service.find({
     query: {
       date: today.toFormat("yyyyLLdd"),
@@ -22,9 +22,13 @@ router.get("/list", async (req, res) => {
       appnt: JSON.stringify(slot)
     }
   })
+  const wday=today.weekday
+  const tdate=["Mo","Di","Mi","Do","Fr","Sa","So"][wday-1]+", "+today.toFormat("dd.LL.yyyy")
+  const nextDay=today.plus({day:1}).toFormat("yyyyLLdd")
+  const prevDay=today.minus({day:1}).toFormat("yyyyLLdd")
   res.render("termin", {
     title: "Termin",
-    slots, tdate: today.toFormat("dd.LL.yyyy")
+    slots, tdate, nextDay, prevDay
   })
 })
 
@@ -62,7 +66,8 @@ router.post("/set", async (req, res) => {
     termin.patid = pat.id
     const terminService = app.service('termin')
     const ack = await terminService.create(termin)
-    res.render("terminok",{appnt: ack})
+    const human=DateTime.fromFormat(termin.tag,"yyyyLLdd").toFormat("dd.LL.yyyy")+", "+elexis.makeTime(parseInt(termin.beginn))+" Uhr"
+    res.render("terminok",{appnt: ack, human })
   }
 })
 module.exports = router

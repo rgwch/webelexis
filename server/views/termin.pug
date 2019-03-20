@@ -4,7 +4,12 @@ block content
   .container
     .card
       .card-header
-        h3.card-title Freie Termine am #{tdate}
+        .card-title
+          a(href="/termin/list/"+prevDay)
+            img(src="/static/arrow-left.svg" width="40px;")
+          span.h3.mx-4 Freie Termine am #{tdate}
+          a(href="/termin/list/"+nextDay)
+            img(src="/static/arrow-left.svg" width="40px" style="transform:scaleX(-1)")
       .card-body
         form.form(action="/termin/set" method="post")
           each slot in slots
@@ -17,7 +22,7 @@ block content
             | Wir verwenden diese Daten ausschliesslich zum Verwalten des Termins und um Sie beispielsweise bei Verschiebungen
             | zu kontaktieren. Keinerlei Daten werden weitergegeben oder für andere Zwecke verwendet.
           p Wenn Sie dies nicht wünschen, verlassen Sie einfach diese Sweite ohne auf 'Absenden' zu klicken, dann wird nichts gespeichert.
-            | Sie können jederzeit auch telefonisch einen Termin vereinbaren.  
+            | Sie können jederzeit auch telefonisch einen Termin vereinbaren.
           .form-row
             .col
               input.form-control(type="email" name="email" id="email" placeholder="E-Mail Adresse")
