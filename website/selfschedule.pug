@@ -14,10 +14,10 @@ block contents
     p Die Konfiguration findet in <em>server/config/elexisdefaults.js</em> statt. Der Abschnitt 'schedule' enthält einige Parameter für die Selbstbedienung:
 
     ul.list-group
-        li.list-group-item minDuration: Mindestzeit in Minuten, die ein freier Bereich lang sein muss, um für die Selbstbedienung in Frage zu kommen.
+        li.list-group-item minDuration: Mindestzeit in Minuten, die ein freier Zeitraum lang sein muss, um für die Selbstbedienung in Frage zu kommen.
         li.list-group-item terminTyp: TerminTyp, der für Termine vergeben werden soll, die per Selbstbedienung erstellt werden. Es sollte ein Typ sein, der auch in der Agenda-Konfiguration in Elexis vorgesehen ist.
         li.list-group-item resource: Der Agenda-Bereich, der für die Selbstbedienung geöffnet werden soll. Das muss einer der Bereiche sein, die auch in der Elexis-Konfiguration der Agenda erstellt wurden. Die Selbstbedienung übernimmt zum Beispiel die Tagesarbeitszeiten bzw. -Sperrzeiten von diesem Bereich 
-        li.list-group.item maxPerDay: maximale Zahl von Terminen pro Tag, die per Selbstbedienung angeboten werden. Es empfiehlt sich, nicht den ganzen Tag freizugeben, da dich Wahrscheinlichkeit, dass selbst eingetragene Termine nicht wahrgenommen werden, erfahrungsgemäss grösser ist, als bei telefonisch oder persönlich gegebenen Terminen. Wenn Sie nicht auf allzu vielen verpassten Terminen sitzen bleiben wollen, würde ich hier eine Zahl zwischen 2 und 6 eingeben.
+        li.list-group.item maxPerDay: maximale Zahl von Terminen pro Tag, die per Selbstbedienung angeboten werden. Es empfiehlt sich, nicht den ganzen Tag freizugeben, da die Wahrscheinlichkeit, dass selbst eingetragene Termine nicht wahrgenommen werden, erfahrungsgemäss grösser ist, als bei telefonisch oder persönlich vereinbarten Terminen. Wenn Sie nicht auf allzu vielen verpassten Terminen sitzen bleiben wollen, würde ich hier eine Zahl zwischen 2 und 6 eingeben. Webelexis wird aus den freien Zeiträumen nach dem Zufallsprinzip eine entsprechende Anzahl auswählen.
 
     h2 Bedienung
     p Die Bedienung ist trivial. Sie werden mit folgender Seite begrüsst:
