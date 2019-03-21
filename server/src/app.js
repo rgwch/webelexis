@@ -33,7 +33,8 @@ const http = require('http')
  */
 http.createServer((req,res)=>{
   const host=req.headers.host.split(":")
-  const newloc=`http://${host[0]}:3030/termin/list`
+  const port=process.env.EXTERNAL_PORT || 3030
+  const newloc=`http://${host[0]}:${port}/termin/list`
   res.writeHead(302,{Location: newloc})
   res.end()
 }).listen(4040)
