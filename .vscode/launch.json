@@ -56,7 +56,8 @@
       "outputCapture": "std",
       "cwd": "${workspaceFolder}/server",
       "env": {
-        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
+        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config",
+        "EXTERNAL_PORT": 2019
       }
     }
   ]
