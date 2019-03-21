@@ -16,6 +16,8 @@ module.exports={
   /* If the user database is empty, create an admin and assign this pasword. Make sure to remove the line
      after the first start. */
   adminpwd: "topsecret",
+  /* create a proxy server at :4040 for appointment-self-service requests */
+  self_service: true,
   /* A list of mandators and metadata for them. Metadata are used in templates. You can define whatever you want
      and refer to it e.g. in 'briefe' templates. See data/sample-docbase/templates/rezept.pug for an example. */
   mandators: {

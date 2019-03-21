@@ -15,7 +15,6 @@ const helmet = require('helmet');
 const logger = require('./logger');
 const authentication = require('./authentication')
 const knex = require('./knex');
-const normalize = require('./normalize_db')
 const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
@@ -27,10 +26,22 @@ const appHooks = require('./app.hooks');
 const channels = require('./channels');
 const admin = require('./admin')
 const terminRouter = require('./routes/schedule')
+const http = require('http')
+
+/**
+ * create dummy server for self-service
+ */
+http.createServer((req,res)=>{
+  const host=req.headers.host.split(":")
+  const newloc=`http://${host[0]}:3030/termin/list`
+  res.writeHead(302,{Location: newloc})
+  res.end()
+}).listen(4040)
 
 const app = express(feathers());
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'pug')
+
 
 // Load app configuration
 app.configure(configuration());
@@ -74,7 +85,7 @@ app.hooks(appHooks);
 
 // If in testing mode: Seed databases
 if (app.get("userconfig").testing) {
-  logger.info("runnung in testing mode")
+  logger.info("running in testing mode")
   const seeder = require('./seeder')
   seeder(app).catch(err => { console.log("reject " + err) })
 } else {
