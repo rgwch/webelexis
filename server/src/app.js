@@ -35,6 +35,7 @@ http.createServer((req,res)=>{
   const host=req.headers.host.split(":")
   const port=process.env.EXTERNAL_PORT || 3030
   const newloc=`http://${host[0]}:${port}/termin/list`
+  console.log("redirecting to "+newloc)
   res.writeHead(302,{Location: newloc})
   res.end()
 }).listen(4040)
