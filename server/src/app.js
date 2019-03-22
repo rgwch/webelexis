@@ -25,21 +25,6 @@ const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
 const admin = require('./admin')
-const terminRouter = require('./routes/schedule')
-const http = require('http')
-
-/**
- * create dummy server for self-service
- */
-http.createServer((req,res)=>{
-  console.log("redirecting to " + process.env.EXTERNAL_PORT)
-  const host=req.headers.host.split(":")
-  const port=process.env.EXTERNAL_PORT || 3030
-  const newloc=`http://${host[0]}:${port}/termin/list`
-  console.log("redirecting to "+newloc)
-  res.writeHead(302,{Location: newloc})
-  res.end()
-}).listen(4040)
 
 const app = express(feathers());
 app.set('views', path.join(__dirname, '../views'))
@@ -61,7 +46,6 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
 app.use('/static', express.static(path.join(__dirname, '../public')))
-app.use("/termin", terminRouter)
 
 // Set up Plugins and providers
 app.configure(express.rest())

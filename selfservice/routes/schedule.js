@@ -7,23 +7,23 @@
 const express = require("express")
 const router = express.Router()
 const { DateTime } = require('luxon')
-const ElexisUtils = require('../util/elexis-types')
-const elexis = new ElexisUtils()
-const defaults = require('../../config/elexisdefaults').schedule
 
 router.get("/list/:date?", async (req, res) => {
-  const app = require("../app")
-  const service = app.service('schedule')
-  const today = req.params.date ? DateTime.fromFormat(req.params.date, "yyyyLLdd") : DateTime.local()
-  const f1 = await service.find({
+
+  const terminService = req.app.get('terminService')
+  const today = req.params.date ? DateTime.fromFormat(req.params.date, "yyyyLLdd") : DateTime.local().set({ hour: 0, minute: 0, second: 0 })
+  const resource = await terminService.get("resource")
+  const f1 = await terminService.find({
     query: {
       date: today.toFormat("yyyyLLdd"),
-      resource: defaults.resource
+      resource
     }
   })
   const slots = f1.map(slot => {
+    const minutes = parseInt(slot.beginn)
+    const appnt = today.plus({ minutes })
     return {
-      human: elexis.makeTime(slot.beginn),
+      human: appnt.toFormat("HH:mm"),
       id: today.toFormat("yyyyLLdd") + slot.beginn.toString,
       appnt: JSON.stringify(slot)
     }
@@ -59,21 +59,21 @@ router.post("/set", (req, res, next) => {
 router.post("/set", async (req, res) => {
   const appnt = req.body.appnts
   const email = req.body.email
-  const app = require('../app')
-  const patients = app.service('patient')
-  const filtered = await patients.find({ query: { email: email, geburtsdatum: req.body.bdate } })
-  if (filtered.data.length != 1) {
-    res.render("baddata", {
-      errmsg: "Es konnte kein Patient mit diesen Daten gefunden werden. Bitte teilen Sie uns ggf. Ihre E-Mail Adresse mit. Selbstverständlich können Sie auch telefonisch einen Termin vereinbaren."
-    })
-  } else {
-    const pat = filtered.data[0]
-    const termin = JSON.parse(appnt)
-    termin.patid = pat.id
-    const terminService = app.service('termin')
-    const ack = await terminService.create(termin)
-    const human = DateTime.fromFormat(termin.tag, "yyyyLLdd").toFormat("dd.LL.yyyy") + ", " + elexis.makeTime(parseInt(termin.beginn)) + " Uhr"
-    res.render("terminok", { appnt: ack, human })
+  const dob = req.body.bdate
+  const terminService = req.app.get("terminService")
+  try {
+    const termin = await terminService.create({ appnt, email, dob })
+    const dt = DateTime.fromFormat(termin.tag, "yyyyLLdd")
+    const human = dt.plus({ "minutes": parseInt(termin.beginn) }).toFormat("dd.LL.yyyy, HH:mm ")+"Uhr"
+    res.render("terminok", { appnt: termin, human })
+  } catch (err) {
+    if (err.message === "PATIENT_NOT_FOUND") {
+      res.render("baddata", {
+        errmsg: "Es konnte kein Patient mit diesen Daten gefunden werden. Bitte teilen Sie uns ggf. Ihre E-Mail Adresse mit. Selbstverständlich können Sie auch telefonisch einen Termin vereinbaren."
+      })
+    } else {
+      res.render("baddata", { errmsg: err.message })
+    }
   }
 })
 module.exports = router

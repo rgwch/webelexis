@@ -25,7 +25,7 @@ class Service {
    *     terminTyp: "Internet",   // type of appointment to create
    *     maxPerDay: 4
    *    }
-   * @param {*} params 
+   * @param {*} params
    */
   async find(params) {
     const appntService = this.options.app.service('termin')
@@ -74,17 +74,33 @@ class Service {
   }
 
   async get(id, params) {
+    if(id=="resource"){
+      return defaults.resource
+    }
     return {
       id, text: `A new message with ID: ${id}!`
     };
   }
 
+  /**
+   * create a new Appointment
+   * @param {appnt: termin, mail: string, dob: string} data
+   * @param {any} params
+   */
   async create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    const appntService = this.options.app.service
-    return data;
+    const appntService = this.options.app.service('termin')
+    const patService=this.options.app.service('patient')
+    const patients=await patService.find({query:{email: data.email,geburtsdatum: data.dob}})
+    if(patients.data.length<1){
+      throw(new Error("PATIENT_NOT_FOUND"))
+    }
+    const termin=JSON.parse(data.appnt)
+    termin.patid=patients.data[0].id
+    const inserted=await appntService.create(termin)
+    return inserted;
   }
 
   async update(id, data, params) {
