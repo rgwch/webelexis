@@ -32,6 +32,7 @@ const http = require('http')
  * create dummy server for self-service
  */
 http.createServer((req,res)=>{
+  console.log("redirecting to " + process.env.EXTERNAL_PORT)
   const host=req.headers.host.split(":")
   const port=process.env.EXTERNAL_PORT || 3030
   const newloc=`http://${host[0]}:${port}/termin/list`
