@@ -1,5 +1,6 @@
 FROM node:alpine
 EXPOSE 3030
+EXPOSE 4040
 
 WORKDIR /home/node
 RUN apk add --no-cache openjdk8 \
@@ -10,6 +11,9 @@ RUN apk add --no-cache openjdk8 \
   && cd webelexis/client \
   && npm install \
   && au build --env prod \
+  && cd ../selfservice \
+  && npm install \
+  && npm --production prune \
   && cd ../server \
   && npm install \
   && npm install java \

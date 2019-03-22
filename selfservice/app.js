@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2019 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const io=require('socket.io-client')
 const feathers=require('@feathersjs/feathers')
 const socketio=require('@feathersjs/socketio-client')
@@ -36,7 +42,9 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.get('/', (req,res)=>{
+  res.redirect(302, "/termin/list")
+});
 app.use("/termin",terminRouter)
 
 // catch 404 and forward to error handler
