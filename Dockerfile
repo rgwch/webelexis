@@ -39,5 +39,5 @@ USER node
 
 WORKDIR /home/node/webelexis
 ENV NODE_ENV=dockered
-CMD ["pm2","start","--env", "dockered"]
+CMD ["pm2","--no-daemon","start","--env", "dockered"]
 
