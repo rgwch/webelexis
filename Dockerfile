@@ -5,13 +5,14 @@ EXPOSE 4040
 WORKDIR /home/node
 RUN apk add --no-cache openjdk8 \
   && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git \
-  && npm install -g aurelia-cli \
+  && npm install -g aurelia-cli pm2 \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
   && git clone https://github.com/rgwch/webelexis \
   && cd webelexis/client \
   && npm install \
-  && au build --env prod \
-  && cd ../selfservice \
+  && au build --env prod
+
+RUN cd ../selfservice \
   && npm install \
   && npm --production prune \
   && cd ../server \
@@ -37,7 +38,7 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
 
 USER node
 
-WORKDIR /home/node/webelexis/server
+WORKDIR /home/node/webelexis
 ENV NODE_ENV=dockered
-CMD ["npm","run","dockered"]
+CMD ["pm2","start","--env", "dockered"]
 
