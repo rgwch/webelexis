@@ -10,9 +10,8 @@ RUN apk add --no-cache openjdk8 \
   && git clone https://github.com/rgwch/webelexis \
   && cd webelexis/client \
   && npm install \
-  && au build --env prod
-
-RUN cd ../selfservice \
+  && au build --env prod \
+  && cd ../selfservice \
   && npm install \
   && npm --production prune \
   && cd ../server \
