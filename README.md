@@ -16,6 +16,7 @@ Die schlanke, flinke Ergänzung zu Elexis
 [Medikation](https://youtu.be/ylgkfbbEv5E),
 [Agenda](https://youtu.be/k0_RfUutVSc), 
 [Konsultation, Makros](https://www.youtube.com/watch?v=uuUfb1l7gt0)
+[Selbstbedienungs-Terminvergabe](http://www.youtube.com/watch?v=J9hz3tGQq94)
 
 ## Installationsanleitungen
 
