@@ -10,12 +10,34 @@
     height:800px;
 }
 
+.menu{
+  background-color: lighten(grey,30%);
+  position:fixed;
+  top:0px;
+  left:0px;
+  height: 30px;
+  width:1064px;
+  padding-top:5px;
+  margin-left:5px;
+  padding-left:5px;
+  a{
+    padding:5px;
+    border-style: groove;
+    border-width: 1px;
+    border-color: blue;
+    border-collapse: separate;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}
+
 img{
   margin: 20px;
 }
 .container{
   width: 1064px;
   background-color: lighten(grey,40%);
+  margin-top:30px;
   padding: 5px;
 }
 .box{

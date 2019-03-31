@@ -7,6 +7,7 @@ Die schlanke, flinke Ergänzung zu Elexis
 * lässt sich auch über Mobilnetze flüssig bedienen
 * kann (bei weitem) nicht alles, was Elexis kann, sondern erledigt Kernaufgaben unkompliziert.
 * Kann parallel mit Elexis im selben Netz eingesetzt werden.
+* Erlaubt optional selbständige Terminreservation für Patienten über ein Web-Interface
 
 ## Demo Videos
 
@@ -18,7 +19,7 @@ Die schlanke, flinke Ergänzung zu Elexis
 
 ## Installationsanleitungen
 
-Wenn Sie Webelexis einfach mal ausprobieren möchten, machen Sie das am einfachsten via Elexis-OOB.
+Am einfachsten gelingt die Installation und Konfiguration via [Elexis OOB](https://elexis.ch/oob/doc/#!index.md). Dies ist der empfohlene Weg, auch wenn Sie Webelexis nur rasch mal ausprobieren wollen.
 
 Ansonsten:
 

@@ -1,3 +1,12 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2019 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+/*
+ configuration for the pm2 launcher (used in the dockerized variant)
+*/ 
 module.exports = {
   apps : [{
     name: 'serv',
