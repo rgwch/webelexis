@@ -19,7 +19,7 @@ class Service {
 
 
   /**
-   * Find free time slots on a given day for a given resource. Some properties are set in confog/elexisdefaults:
+   * Find free time slots on a given day for a given resource. Some properties are set in config/elexisdefaults:
    *   schedule:{
    *     minDuration: 30,         // minimal duration of a slot to be conisered as free
    *     terminTyp: "Internet",   // type of appointment to create
@@ -30,6 +30,7 @@ class Service {
   async find(params) {
     const appntService = this.options.app.service('termin')
     const date = params.query.date
+    const present=DateTime.local().toFormat('yyyyLLdd')
     const resource = params.query.resource
     const minDuration = defaults.minDuration
     const dayDefaults = await appntService.get('daydefaults')
@@ -42,6 +43,7 @@ class Service {
       return [elexis.makeMinutes(from), elexis.makeMinutes(until)]
     }) // unavailable times for the given date and resource
 
+    // already existing appointments
     const appointments = await appntService.find({ query: { bereich: resource, tag: date } })
 
     const freeslots = []
@@ -49,7 +51,19 @@ class Service {
       for (const appnt of appointments.data) {
         unavail.push([parseInt(appnt.beginn), parseInt(appnt.beginn) + parseInt(appnt.dauer)])
       }
-      const gaps = gapf.findgaps(unavail)
+      // find gaps but not in the past
+      const gaps = gapf.findgaps(unavail).filter(g=>{
+        if(date<present){
+          return false
+        }
+        if(date===present){
+          const now=DateTime.local().get('minutes')
+          if(now<=gap[1]){
+            return false
+          }
+        }
+        return true
+      })
       for (const gap of gaps) {
         while (gap[1] - gap[0] >= minDuration) {
           const slot = {

@@ -48,7 +48,7 @@ describe('schedule', () => {
       dd2.length.should.equal(3)
     })
 
-    it("finds gaps in an array od intervals",()=>{
+    it("finds gaps in an array of intervals",()=>{
       const gaps=gapf.findgaps([b,d,e,i,[19,21]])
       gaps.length.should.equal(2)
     })
