@@ -12,12 +12,15 @@ block content
   .container
     .card
       .card-header
-        .card-title
-          a(href="/termin/list/"+prevDay)
-            img(src="/images/arrow-left.svg" width="40px;")
-          span.h3.mx-4 Freie Termine am #{tdate}
-          a(href="/termin/list/"+nextDay)
-            img(src="/images/arrow-left.svg" width="40px" style="transform:scaleX(-1)")
+        .card-title.row
+          .col-sm-3.col-md-1.text-center
+            a(href="/termin/list/"+prevDay)
+              img(src="/images/arrow-left.svg" width="40px;" alt="Tag zurück" title="Tag zurück")
+          .col-sm-6.col-md-8.text-center
+            span Freie Termine am #{tdate}
+          .col-sm-3.col-md-1.text-center
+            a(href="/termin/list/"+nextDay)
+              img(src="/images/arrow-left.svg" width="40px" style="transform:scaleX(-1)" alt="Tag vor" title="Tag vor")
       .card-body
         form.form(action="/termin/set" method="post")
           each slot in slots
@@ -25,7 +28,7 @@ block content
             .form-check
               input.form-check-input(type="radio" name="appnts" value=slot.appnt id=slot.id)
               label.form-check-label(for=slot) #{slot.human}
-          p.my-4 Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Über die Verwendung der Daten orientiert Sie die <a href="/datenschutz.html">Datenschutz-Seite</a>
+          p.my-4 Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Über die Verwendung der Daten orientiert Sie die <a href="/datenschutz">Datenschutz-Seite</a>
           p Wenn Sie dies nicht wünschen, verlassen Sie einfach diese Seite ohne auf 'Absenden' zu klicken, dann wird nichts gespeichert.
             | Sie können jederzeit auch telefonisch einen Termin vereinbaren.
           .form-row
@@ -33,4 +36,4 @@ block content
               input.form-control(type="email" name="email" id="email" placeholder="E-Mail Adresse")
             .col
               input.form-control(type="text" name="bdate" id="bdate" placeholder="Geburtsdatum (tt.mm.jjjj)")
-          input.my-4(type="submit" value="Absenden")
+          input.my-4.btn.btn-primary(type="submit" value="Absenden")

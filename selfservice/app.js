@@ -45,6 +45,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req,res)=>{
   res.redirect(302, "/termin/list")
 });
+app.get("/datenschutz",(req,res)=>{
+  res.render('datenschutz')
+})
+
 app.use("/termin",terminRouter)
 
 // catch 404 and forward to error handler
