@@ -20,7 +20,8 @@ const terminRouter=require("./routes/schedule")
 const app = express();
 const port=3030
 
-const socket=io(`http://localhost:${port}`)
+//const socket=io(`http://localhost:${port}`)
+const socket=io("http://192.168.0.1:2019")
 const client=feathers()
 client.configure(socketio(socket))
 const terminService=client.service('schedule')
