@@ -7,6 +7,14 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Selfservice",
+      "program": "${workspaceFolder}/selfservice/bin/www",
+      "outputCapture": "std",
+      "cwd": "${workspaceFolder}/selfservice",
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "call metrics",
       "program": "${workspaceFolder}/server/test/callmetrics.js",
       "cwd": "${workspaceFolder}/server",

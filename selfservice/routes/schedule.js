@@ -9,33 +9,36 @@ const router = express.Router()
 const { DateTime } = require('luxon')
 
 router.get("/list/:date?", async (req, res) => {
-
-  const terminService = req.app.get('terminService')
-  const today = req.params.date ? DateTime.fromFormat(req.params.date, "yyyyLLdd") : DateTime.local().set({ hour: 0, minute: 0, second: 0 })
-  const resource = await terminService.get("resource")
-  const f1 = await terminService.find({
-    query: {
-      date: today.toFormat("yyyyLLdd"),
-      resource
-    }
-  })
-  const slots = f1.map(slot => {
-    const minutes = parseInt(slot.beginn)
-    const appnt = today.plus({ minutes })
-    return {
-      human: appnt.toFormat("HH:mm"),
-      id: today.toFormat("yyyyLLdd") + slot.beginn.toString,
-      appnt: JSON.stringify(slot)
-    }
-  })
-  const wday = today.weekday
-  const tdate = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"][wday - 1] + ", " + today.toFormat("dd.LL.yyyy")
-  const nextDay = today.plus({ day: 1 }).toFormat("yyyyLLdd")
-  const prevDay = today.minus({ day: 1 }).toFormat("yyyyLLdd")
-  res.render("termin", {
-    title: "Termin",
-    slots, tdate, nextDay, prevDay
-  })
+  try {
+    const terminService = req.app.get('terminService')
+    const today = req.params.date ? DateTime.fromFormat(req.params.date, "yyyyLLdd") : DateTime.local().set({ hour: 0, minute: 0, second: 0 })
+    const resource = await terminService.get("resource")
+    const f1 = await terminService.find({
+      query: {
+        date: today.toFormat("yyyyLLdd"),
+        resource
+      }
+    })
+    const slots = f1.map(slot => {
+      const minutes = parseInt(slot.beginn)
+      const appnt = today.plus({ minutes })
+      return {
+        human: appnt.toFormat("HH:mm"),
+        id: today.toFormat("yyyyLLdd") + slot.beginn.toString,
+        appnt: JSON.stringify(slot)
+      }
+    })
+    const wday = today.weekday
+    const tdate = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"][wday - 1] + ", " + today.toFormat("dd.LL.yyyy")
+    const nextDay = today.plus({ day: 1 }).toFormat("yyyyLLdd")
+    const prevDay = today.minus({ day: 1 }).toFormat("yyyyLLdd")
+    res.render("termin", {
+      title: "Termin",
+      slots, tdate, nextDay, prevDay
+    })
+  } catch (err) {
+    res.render("error",{message: "Interner Fehler", error:err})
+  }
 })
 
 router.post("/set", (req, res, next) => {
@@ -64,7 +67,7 @@ router.post("/set", async (req, res) => {
   try {
     const termin = await terminService.create({ appnt, email, dob })
     const dt = DateTime.fromFormat(termin.tag, "yyyyLLdd")
-    const human = dt.plus({ "minutes": parseInt(termin.beginn) }).toFormat("dd.LL.yyyy, HH:mm ")+"Uhr"
+    const human = dt.plus({ "minutes": parseInt(termin.beginn) }).toFormat("dd.LL.yyyy, HH:mm ") + "Uhr"
     res.render("terminok", { appnt: termin, human })
   } catch (err) {
     if (err.message === "PATIENT_NOT_FOUND") {

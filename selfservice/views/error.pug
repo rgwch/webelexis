@@ -2,5 +2,8 @@ extends layout
 
 block content
   h1= message
-  h2= error.status
-  pre #{error.stack}
+  h2= error.message
+
+  p Das hätte nicht passieren sollen.
+
+  button.btn.my-4.btn-secondary(onclick="window.location.replace('/')") Zurück zum Start

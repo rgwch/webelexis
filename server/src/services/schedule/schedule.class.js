@@ -58,7 +58,7 @@ class Service {
         }
         if(date===present){
           const now=DateTime.local().get('minutes')
-          if(now<=gap[1]){
+          if(now<=gaps[1]){
             return false
           }
         }
