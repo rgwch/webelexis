@@ -13,6 +13,7 @@ router.get("/list/:date?", async (req, res) => {
     const terminService = req.app.get('terminService')
     const today = req.params.date ? DateTime.fromFormat(req.params.date, "yyyyLLdd") : DateTime.local().set({ hour: 0, minute: 0, second: 0 })
     const resource = await terminService.get("resource")
+    const sitedef = await terminService.get("site")
     const f1 = await terminService.find({
       query: {
         date: today.toFormat("yyyyLLdd"),
@@ -34,10 +35,14 @@ router.get("/list/:date?", async (req, res) => {
     const prevDay = today.minus({ day: 1 }).toFormat("yyyyLLdd")
     res.render("termin", {
       title: "Termin",
-      slots, tdate, nextDay, prevDay
+      slots, tdate, nextDay, prevDay,
+      sitename: sitedef.name,
+      address: sitedef.address,
+      phone: sitedef.phone,
+      mail: sitedef.mail
     })
   } catch (err) {
-    res.render("error",{message: "Interner Fehler", error:err})
+    res.render("error", { message: "Interner Fehler", error: err })
   }
 })
 

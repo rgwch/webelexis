@@ -5,7 +5,7 @@
  ********************************************/
 
 const logger = require('../../logger')
-const defaults = require('../../../config/elexisdefaults').agenda
+const defaults = require('../../../../data/settings').agenda
 
 /**
  *

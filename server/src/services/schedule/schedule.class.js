@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const defaults = require('../../../config/elexisdefaults').schedule
+const defaults = require('../../../../data/settings').schedule
 const { DateTime } = require('luxon')
 const ElexisUtils = require('../../util/elexis-types')
 const GapFinder = require('./gapfinder')
@@ -90,6 +90,13 @@ class Service {
   async get(id, params) {
     if(id=="resource"){
       return defaults.resource
+    }else if(id=="site"){
+      return {
+        name: defaults.sitename,
+        address: defaults.siteaddr,
+        phone: defaults.sitephone,
+        mail: defaults.sitemail
+      }
     }
     return {
       id, text: `A new message with ID: ${id}!`

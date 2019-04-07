@@ -1,16 +1,16 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 const uuid = require('uuid/v4')
 const { DateTime } = require('luxon')
-const defaults=require('../../../config/elexisdefaults').fall
 
 class Service {
 
   constructor(options) {
     this.options = options || {};
+    this.defaults = this.options.app.get("userconfig").fall
   }
 
   async find(params) {
@@ -52,9 +52,9 @@ class Service {
     const pat = await kontakt.create(newPatient)
     const fall = await faelle.create({
       "patientid": pat.id,
-      "gesetz": (defaults["fallgesetz"] || "Privat"),
+      "gesetz": (this.defaults["fallgesetz"] || "Privat"),
       "datumvon": DateTime.local().toFormat("yyyyLLdd"),
-      "grund": (defaults["fallgrund"] || "Krankheit"),
+      "grund": (this.defaults["fallgrund"] || "Krankheit"),
       "garantid": pat.id,
       "kostentrid": pat.id,
       "versnummer": " ",
@@ -68,7 +68,7 @@ class Service {
     try {
       let pnr = await config.get('PatientNummer')
     } catch (err) {
-        await config.update("PatientNummer", {wert: "1"})
+      await config.update("PatientNummer", { wert: "1" })
     }
     const lastPatNr = (parseInt(await config.get('PatientNummer')) + 1).toString()
     config.update('PatientNummer', { wert: lastPatNr })

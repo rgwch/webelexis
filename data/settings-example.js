@@ -6,7 +6,7 @@
  * For a Docker deployment, move this file to your
  * data directory.
  */
-module.exports={
+module.exports = {
   /* if testing is true, webelexis will create some testusers on startup and allow to login without a password. */
   testing: true,
   /* The name to show on the browser tab */
@@ -33,7 +33,7 @@ module.exports={
     }
   },
   /* The place to store templates and documents */
-  docbase:"data/sample-docbase",
+  docbase: "data/sample-docbase",
   /* connection to the database */
   elexisdb: {
     host: "localhost",
@@ -44,16 +44,74 @@ module.exports={
     automodify: false
   },
   /* We need an SMTP host to send mails for lost password retrieval */
-  smtp:{
+  smtp: {
     host: "some.smpt.host",
     port: 587,
     user: "smtpuser",
     pwd: "smtppassword"
   },
-  /* Definition of the document store. Can be Lucinda or Solr. Fallback is always
+  /* Definition of the document store. Fallback is always
     storage in the file system */
-  lucinda:{
+  lucinda: {
     url: "http://localhost:2016/lucinda/2.0"
+  },
+  /**
+   * Definition of default presets for appointments. Only needed if Webelexis
+   * runs from scratch i.e. without a previously installed and configured Elexos.
+   */
+  agenda: {
+    resources: ["Arzt", "MPA"],
+    daydefaults: `FS1~#<ASa=A0000-0900
+1200-2359~#<ADo=A0000-0800
+1200-1300
+1700-2359~#<AFr=A0000-0800
+1200-1300
+1700-2359~#<AMi=A0000-0800
+1300-2359~#<ADi=A0000-0900
+1300-1400
+1800-2359~#<AMo=A0000-0800
+1200-1300
+1700-2359~#<ASo=A0000-2359`,
+    termintypdefaults: ["Frei", "Reserviert", "Normal"],
+    terminstatedefaults: ["-", "geplant", "eingetroffen", "fertig", "abgesagt"],
+    typcolordefaults: {
+      Reserviert: "000000",
+      Frei: "80ff80",
+      Normal: "ff8040"
+    },
+    statecolordefaults: {
+      geplant: "ff8000",
+      eingetroffen: "ff0000",
+      fertig: "008000",
+      abgesagt: "e5e5e5"
+    },
+    timedefaults: {
+      Reserviert: 30,
+      Frei: 30,
+      Normal: 30
+    }
+  },
+  /**
+   * Settings for the self-service scheduling
+   */
+  schedule: {
+    minDuration: 30,
+    terminTyp: "Internet",
+    resource: "Arzt",
+    maxPerDay: 4,
+    sitename: "Praxis Webelexis",
+    siteaddr: "Hintergasse 17, 9999 Webelexikon",
+    sitephone: "555-55 55 55",
+    sitemail: "team@webelexis.ch"
+  },
+  /**
+   * Preset for Fall settings
+   */
+
+  "fall": {
+    "fallgesetz": "KVG",
+    "fallgrund": "Krankheit",
+    "fallbezeichnung": "Allg.",
   }
 }
 

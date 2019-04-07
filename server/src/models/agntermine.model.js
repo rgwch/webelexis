@@ -4,11 +4,12 @@
  * License and Terms see LICENSE            *
  ********************************************/
 const logger = require('../logger')
-const agendacfg = require('../../config/elexisdefaults').agenda
 
 
 module.exports = async function (app) {
   const db = app.get('knexClient');
+  const agendacfg = app.get("userconfig").agenda
+
   const tableName = 'agntermine';
   const exists = await db.schema.hasTable(tableName)
   if (!exists) {
