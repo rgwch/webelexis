@@ -3,8 +3,8 @@ EXPOSE 3030
 EXPOSE 4040
 
 WORKDIR /home/node
-RUN apk add --no-cache openjdk8 \
-  && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git nano \
+RUN apk add --no-cache openjdk8 nano \
+  && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git \
   && npm install -g aurelia-cli pm2 \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
   && git clone https://github.com/rgwch/webelexis \
