@@ -25,13 +25,23 @@ const addKontakt = async ctx => {
 /**
  * Retrieve and add the user's roles.
  */
-const addRoles = async ctx => {
-  const db = ctx.service.Model
-  const roles = await db('user_role_joint').where("user_id", ctx.id)
+const _addRoles = async (db,user)=>{
+  const roles = await db.where("user_id", user.id)
   if (!roles || !Array.isArray(roles) || roles.length == 0) {
-    ctx.result.roles = ['guest']
+    user.roles = ['guest']
   } else {
-    ctx.result.roles = roles.map(role => role.id)
+    user.roles = roles.map(role => role.id)
+  }
+  
+}
+const addRoles = async ctx => {
+  const db = ctx.service.Model('user_role_joint')
+  if(ctx.method==="find"){
+    for(const user of ctx.result.data){
+      await _addRoles(db,user)
+    }
+  }else{
+    await _addRoles(db,ctx.result)
   }
   return ctx
 }
@@ -74,7 +84,7 @@ module.exports = {
 
   after: {
     all: [protect('hashed_password', 'salt')],
-    find: [],
+    find: [addRoles],
     get: [addKontakt, addRoles, handleExtInfo({ extinfo: "extinfo" })],
     create: [],
     update: [],

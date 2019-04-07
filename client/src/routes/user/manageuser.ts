@@ -10,16 +10,19 @@ import { CommonViewer, ViewerConfiguration } from 'components/commonviewer'
 import { EventAggregator } from "aurelia-event-aggregator";
 import env from 'environment'
 import { FlexformConfig } from "components/flexform";
+import { KontaktType } from "models/kontakt";
 
 @autoinject
 @useView(PLATFORM.moduleName('./manageuser.pug'))
 
 export class Manageuser {
   protected user: UserType
+  protected person: KontaktType
   protected allRoles
   protected hasrole = {}
 
   private eamessage = "usermgr:selected"
+  
   private ffs: FlexformConfig = {
     attributes: [
       {
@@ -33,14 +36,15 @@ export class Manageuser {
     ],
     title: () => "User"
   }
+  
   private vc: ViewerConfiguration = {
-    createDef: this.ffs,
+    //createDef: this.ffs,
     dataType: 'user',
-    getLabel: obj => obj.email,
+    getLabel: obj => obj.id,
     searchFields: [{
       asPrefix: true,
       label: "Username",
-      name: "email"
+      name: "id"
     }],
     selectMsg: this.eamessage,
     title: '',
@@ -54,6 +58,9 @@ export class Manageuser {
         for (const role of this.user.roles) {
           this.hasrole[role] = true
         }
+        this.userManager.getElexisKontakt(this.user).then(k=>{
+          this.person=k
+        })
       }
     })
     this.allRoles = env.metadata.roles

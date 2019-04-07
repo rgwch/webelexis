@@ -1,6 +1,7 @@
 mixin inp(id,v,title)
-  label.col-2(for= id) #{title}
-  input.form-control.col-10(id= id value.bind= v)
+  .form-row
+    label.col-2(for= id) #{title}
+    input.form-control.col-10(id= id value.bind= v)
 
 mixin inp2(id,v,title)
   label.col-2(for= id) #{title}
@@ -15,10 +16,9 @@ template
         common-viewer.col-4(cv_cfg.bind="vc" style="height:30vh;")
         .col-8
           .form(style="padding-top:20px;padding-right:20px;")
-            .form-row
-              +inp('email','user.email','E-Mail')
-            .form-row  
-              +inp('label','user.label',"Kürzel")  
+            +inp('id','user.id','Username')
+            +inp('name','person.bezeichnung1',"Name") 
+            +inp('vorname','person.bezeichnung2',"Vorname") 
             .form-row
               label.col-2(for="roles") Rollen
               .col-10(id="roles")  
