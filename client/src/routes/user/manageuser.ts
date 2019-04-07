@@ -10,7 +10,6 @@ import { CommonViewer, ViewerConfiguration } from 'components/commonviewer'
 import { EventAggregator } from "aurelia-event-aggregator";
 import env from 'environment'
 import { FlexformConfig } from "components/flexform";
-import { forOfStatement } from "babel-types";
 
 @autoinject
 @useView(PLATFORM.moduleName('./manageuser.pug'))

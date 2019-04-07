@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2019 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 const {hasRight} = require('../../util/acl')
@@ -14,6 +14,11 @@ class Service {
     return [];
   }
 
+  /**
+   * Ask if the currently logged-in user has sufficient rights for a given task (as defined in src/services/index.js)
+   * @param {string} id can:requeste right, e.g. "can:user.update"
+   * @param {any} params 
+   */
   async get(id, params) {
     if (id.startsWith("can:")) {
       const wants = id.substr(4)

@@ -1,6 +1,6 @@
 /***************************************
  * This file is part of Webelexis(tm)
- * Copyright (c) 2016-2018 by G. Weirich.
+ * Copyright (c) 2016-2019 by G. Weirich.
  * All rights reserved.
  ***************************************/
 
@@ -74,6 +74,12 @@ const hasRight = (usr, acename) => {
     return true
   }
 
+  /**
+   * If the user is administrator, always allowed
+   */
+  if(usr.is_administrator=="1"){
+    return true
+  }
   // id the user has the admin role, it's allowed
   if (usr.roles.find(r => r == sysroles.admin.id)) {
     return true
