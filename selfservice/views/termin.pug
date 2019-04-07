@@ -5,7 +5,7 @@
    * License and Terms see LICENSE            *
    ********************************************/
    //
-   
+
 extends layout
 
 block content
@@ -36,4 +36,7 @@ block content
               input.form-control(type="email" name="email" id="email" placeholder="E-Mail Adresse")
             .col
               input.form-control(type="text" name="bdate" id="bdate" placeholder="Geburtsdatum (tt.mm.jjjj)")
+          .form-row.my-4
+            label(for="reason") Wenn Sie möchten, geben Sie bitte noch einige Stichworte zum Grund des Besuchs ein:
+            textarea#reason(name="reason" style="width:100%;" rows="5")
           input.my-4.btn.btn-primary(type="submit" value="Absenden")

@@ -105,7 +105,7 @@ class Service {
 
   /**
    * create a new Appointment
-   * @param {appnt: termin, mail: string, dob: string} data
+   * @param {appnt: termin, mail: string, dob: string, grund: string} data
    * @param {any} params
    */
   async create(data, params) {
@@ -120,6 +120,7 @@ class Service {
     }
     const termin=JSON.parse(data.appnt)
     termin.patid=patients.data[0].id
+    termin.grund=data.grund
     const inserted=await appntService.create(termin)
     return inserted;
   }
