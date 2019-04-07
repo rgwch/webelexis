@@ -60,6 +60,12 @@ export class Manageuser {
         }
         this.userManager.getElexisKontakt(this.user).then(k=>{
           this.person=k
+        }).catch(err=>{
+          this.person={
+            id:"0",
+            bezeichnung1:"unbekannt",
+            bezeichnung2:"unbekannt"
+          }
         })
       }
     })

@@ -25,23 +25,25 @@ const addKontakt = async ctx => {
 /**
  * Retrieve and add the user's roles.
  */
-const _addRoles = async (db,user)=>{
-  const roles = await db.where("user_id", user.id)
+const _addRoles = async (db, user) => {
+  const roles = await db('user_role_joint').where("user_id", user.id)
   if (!roles || !Array.isArray(roles) || roles.length == 0) {
     user.roles = ['guest']
   } else {
     user.roles = roles.map(role => role.id)
   }
-  
+  if (user.is_administrator == "1") {
+    user.roles.push("admin")
+  }
 }
 const addRoles = async ctx => {
-  const db = ctx.service.Model('user_role_joint')
-  if(ctx.method==="find"){
-    for(const user of ctx.result.data){
-      await _addRoles(db,user)
+  const db = ctx.service.Model
+  if (ctx.method === "find") {
+    for (const user of ctx.result.data) {
+      await _addRoles(db, user)
     }
-  }else{
-    await _addRoles(db,ctx.result)
+  } else {
+    await _addRoles(db, ctx.result)
   }
   return ctx
 }
@@ -65,9 +67,9 @@ const removeRoles = async ctx => {
   const db = ctx.service.Model
   const users = ctx.result
   for (const user of users) {
-      const dlt= db("user_role_joint").where("user_id",user.id).del()
-      console.log(dlt.toString())
-      await dlt
+    const dlt = db("user_role_joint").where("user_id", user.id).del()
+    console.log(dlt.toString())
+    await dlt
   }
   return ctx
 }
