@@ -7,7 +7,7 @@
 const express = require("express")
 const router = express.Router()
 const { DateTime } = require('luxon')
-let sitedef={
+let sitedef = {
   name: "Praxis Webelexis",
   address: "Hintergasse 58, 9999 Webelexikon",
   phone: "555-555 55 55",
@@ -41,14 +41,12 @@ router.get("/list/:date?", async (req, res) => {
     const prevDay = today.minus({ day: 1 }).toFormat("yyyyLLdd")
     res.render("termin", {
       title: "Termin",
-      slots, tdate, nextDay, prevDay,
-      sitename: sitedef.name,
-      address: sitedef.address,
-      phone: sitedef.phone,
-      mail: sitedef.mail
+      slots, tdate, nextDay, prevDay, sitedef
     })
   } catch (err) {
-    res.render("error", { message: "Interner Fehler", error: err })
+    res.render("error", {
+      message: "Interner Fehler", error: err, sitedef
+    })
   }
 })
 
@@ -57,7 +55,10 @@ router.post("/set", (req, res, next) => {
   const email = req.body.email
   const bdate = req.body.bdate
   if (!appnt || !email || !bdate) {
-    res.render("baddata", { errmsg: "Der Termin kann nur vereinbart werden, wenn Sie alle Felder ausfüllen. Bitte wählen Sie einen Termin aus, und geben Sie Ihre E-Mail Adresse und Ihr Geburtsdatum an." })
+    res.render("baddata", {
+      errmsg: "Der Termin kann nur vereinbart werden, wenn Sie alle Felder ausfüllen. Bitte wählen Sie einen Termin aus, und geben Sie Ihre E-Mail Adresse und Ihr Geburtsdatum an.",
+      sitedef
+    })
   } else {
     const bdate_split = bdate.split(/\s*\.\s*/)
     const bdate_parsed = DateTime.fromObject({ day: parseInt(bdate_split[0]), month: parseInt(bdate_split[1]), year: parseInt(bdate_split[2]) })
@@ -65,7 +66,10 @@ router.post("/set", (req, res, next) => {
       req.body.bdate = bdate_parsed.toFormat("yyyyLLdd")
       next()
     } else {
-      res.render("baddata", { errmsg: 'Das Geburtsdatum konnte nicht interpretiert werden. Bitte geben Sie es in der Form "Tag.Monat.Jahr" ein, wie zum Beispiel "1.4.1970"' })
+      res.render("baddata", {
+        errmsg: 'Das Geburtsdatum konnte nicht interpretiert werden. Bitte geben Sie es in der Form "Tag.Monat.Jahr" ein, wie zum Beispiel "1.4.1970"',
+        sitedef
+      })
     }
 
   }
@@ -81,14 +85,14 @@ router.post("/set", async (req, res) => {
     const termin = await terminService.create({ appnt, email, dob, grund })
     const dt = DateTime.fromFormat(termin.tag, "yyyyLLdd")
     const human = dt.plus({ "minutes": parseInt(termin.beginn) }).toFormat("dd.LL.yyyy, HH:mm ") + "Uhr"
-    res.render("terminok", { appnt: termin, human,  sitename: sitedef.name,
-      address: sitedef.address,
-      phone: sitedef.phone,
-      mail: sitedef.mail })
+    res.render("terminok", {
+      appnt: termin, human, sitedef
+    })
   } catch (err) {
     if (err.message === "PATIENT_NOT_FOUND") {
       res.render("baddata", {
-        errmsg: "Es konnte kein Patient mit diesen Daten gefunden werden. Bitte teilen Sie uns ggf. Ihre E-Mail Adresse mit. Selbstverständlich können Sie auch telefonisch einen Termin vereinbaren."
+        errmsg: "Es konnte kein Patient mit diesen Daten gefunden werden. Bitte teilen Sie uns ggf. Ihre E-Mail Adresse mit. Selbstverständlich können Sie auch telefonisch einen Termin vereinbaren.",
+        sitedef
       })
     } else {
       res.render("baddata", { errmsg: err.message })
