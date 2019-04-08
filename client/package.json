@@ -60,7 +60,7 @@
     "apply-loader": "^2.0.0",
     "aurelia-cli": "^0.34.0",
     "aurelia-protractor-plugin": "^1.0.6",
-    "aurelia-testing": "^1.0.0-beta.4.0.0",
+    "aurelia-testing": "^1.0.0",
     "aurelia-tools": "^2.0.0",
     "aurelia-webpack-plugin": "^3.0.0-rc.1",
     "copy-webpack-plugin": "^4.5.1",

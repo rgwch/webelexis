@@ -10,13 +10,13 @@ class Gapfinder {
      * @returns a new array with the gaps (if any)
      */
     findgaps(arr) {
-        const norm=this.dedup(arr)
-        const ret=[]
-        for(let i=0;i<norm.length-1;i++){
-            const a=norm[i]
-            const b=norm[i+1]
-            if(a[1]<b[0]){
-                ret.push([a[1],b[0]])
+        const norm = this.dedup(arr)
+        const ret = []
+        for (let i = 0; i < norm.length - 1; i++) {
+            const a = norm[i]
+            const b = norm[i + 1]
+            if (a[1] < b[0]) {
+                ret.push([a[1], b[0]])
             }
         }
         return ret
@@ -34,7 +34,7 @@ class Gapfinder {
         if (arr.length == 0) {
             return []
         }
-        const worker=[...arr].map(a=>[...a])
+        const worker = [...arr].map(a => [...a])
         const ordered = worker.sort((a, b) => {
             if (a[0] == b[0]) {
                 return a[1] - b[1]

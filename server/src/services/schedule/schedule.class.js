@@ -30,7 +30,7 @@ class Service {
   async find(params) {
     const appntService = this.options.app.service('termin')
     const date = params.query.date
-    const present=DateTime.local().toFormat('yyyyLLdd')
+    const present = DateTime.local().toFormat('yyyyLLdd')
     const resource = params.query.resource
     const minDuration = defaults.minDuration
     const dayDefaults = await appntService.get('daydefaults')
@@ -52,13 +52,14 @@ class Service {
         unavail.push([parseInt(appnt.beginn), parseInt(appnt.beginn) + parseInt(appnt.dauer)])
       }
       // find gaps but not in the past
-      const gaps = gapf.findgaps(unavail).filter(g=>{
-        if(date<present){
+      const gaps = gapf.findgaps(unavail).filter(g => {
+        if (date < present) {
           return false
         }
-        if(date===present){
-          const now=DateTime.local().get('minutes')
-          if(now<=g[1]){
+        if (date === present) {
+          const dt=DateTime.local()
+          const now = 60*dt.get('hour')+dt.get('minute')
+          if (now >= g[1]) {
             return false
           }
         }
@@ -75,22 +76,22 @@ class Service {
             terminstatus: appntStates[1]
           }
           freeslots.push(slot)
-          gap[0]+=minDuration
+          gap[0] += minDuration
         }
       }
     }
-    while(freeslots.length>defaults.maxPerDay){
-      const k=Math.round(Math.random()*freeslots.length-1)
-      freeslots.splice(k,1)
+    while (freeslots.length > defaults.maxPerDay) {
+      const k = Math.round(Math.random() * freeslots.length - 1)
+      freeslots.splice(k, 1)
     }
     return freeslots;
 
   }
 
   async get(id, params) {
-    if(id=="resource"){
+    if (id == "resource") {
       return defaults.resource
-    }else if(id=="site"){
+    } else if (id == "site") {
       return {
         name: defaults.sitename,
         address: defaults.siteaddr,
@@ -113,15 +114,15 @@ class Service {
       return Promise.all(data.map(current => this.create(current, params)));
     }
     const appntService = this.options.app.service('termin')
-    const patService=this.options.app.service('patient')
-    const patients=await patService.find({query:{email: data.email,geburtsdatum: data.dob}})
-    if(patients.data.length<1){
-      throw(new Error("PATIENT_NOT_FOUND"))
+    const patService = this.options.app.service('patient')
+    const patients = await patService.find({ query: { email: data.email, geburtsdatum: data.dob } })
+    if (patients.data.length < 1) {
+      throw (new Error("PATIENT_NOT_FOUND"))
     }
-    const termin=JSON.parse(data.appnt)
-    termin.patid=patients.data[0].id
-    termin.grund=data.grund
-    const inserted=await appntService.create(termin)
+    const termin = JSON.parse(data.appnt)
+    termin.patid = patients.data[0].id
+    termin.grund = data.grund
+    const inserted = await appntService.create(termin)
     return inserted;
   }
 

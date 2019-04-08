@@ -31,7 +31,7 @@ module.exports = function (config) {
       'test/karma-bundle.js': [ 'webpack' ]
     },
 
-    webpack: require('../webpack.config')({ coverage: true, karma: true }),
+    webpack: require('../webpack.config')({ coverage: false, karma: true }),
 
     /*
      * test results reporter to use
@@ -70,7 +70,7 @@ module.exports = function (config) {
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
     browsers: [
-      'Chromium'
+      'Chrome'
     ],
 
     /*
