@@ -7,13 +7,19 @@
 const express = require("express")
 const router = express.Router()
 const { DateTime } = require('luxon')
+let sitedef={
+  name: "Praxis Webelexis",
+  address: "Hintergasse 58, 9999 Webelexikon",
+  phone: "555-555 55 55",
+  mail: "invalid@invalid.invalid"
+}
 
 router.get("/list/:date?", async (req, res) => {
   try {
     const terminService = req.app.get('terminService')
     const today = req.params.date ? DateTime.fromFormat(req.params.date, "yyyyLLdd") : DateTime.local().set({ hour: 0, minute: 0, second: 0 })
     const resource = await terminService.get("resource")
-    const sitedef = await terminService.get("site")
+    sitedef = await terminService.get("site")
     const f1 = await terminService.find({
       query: {
         date: today.toFormat("yyyyLLdd"),
@@ -75,7 +81,10 @@ router.post("/set", async (req, res) => {
     const termin = await terminService.create({ appnt, email, dob, grund })
     const dt = DateTime.fromFormat(termin.tag, "yyyyLLdd")
     const human = dt.plus({ "minutes": parseInt(termin.beginn) }).toFormat("dd.LL.yyyy, HH:mm ") + "Uhr"
-    res.render("terminok", { appnt: termin, human })
+    res.render("terminok", { appnt: termin, human,  sitename: sitedef.name,
+      address: sitedef.address,
+      phone: sitedef.phone,
+      mail: sitedef.mail })
   } catch (err) {
     if (err.message === "PATIENT_NOT_FOUND") {
       res.render("baddata", {
