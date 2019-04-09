@@ -79,10 +79,10 @@ router.post("/set", async (req, res) => {
   const email = req.body.email
   const dob = req.body.bdate
   const grund = req.body.reason
-
+  const sendmail=req.body.sendmail
   const terminService = req.app.get("terminService")
   try {
-    const termin = await terminService.create({ appnt, email, dob, grund })
+    const termin = await terminService.create({ appnt, email, dob, grund, sendmail })
     const dt = DateTime.fromFormat(termin.tag, "yyyyLLdd")
     const human = dt.plus({ "minutes": parseInt(termin.beginn) }).toFormat("dd.LL.yyyy, HH:mm ") + "Uhr"
     res.render("terminok", {

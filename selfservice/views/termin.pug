@@ -27,7 +27,7 @@ block content
 
             .form-check
               input.form-check-input(type="radio" name="appnts" value=slot.appnt id=slot.id)
-              label.form-check-label(for=slot) #{slot.human}
+              label.form-check-label(for=slot style="margin-top:3px;") #{slot.human}
           p.my-4 Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Über die Verwendung der Daten orientiert Sie die <a href="/datenschutz">Datenschutz-Seite</a>
           p Wenn Sie dies nicht wünschen, verlassen Sie einfach diese Seite ohne auf 'Absenden' zu klicken, dann wird nichts gespeichert.
             | Sie können jederzeit auch telefonisch einen Termin vereinbaren.
@@ -39,4 +39,9 @@ block content
           .form-row.my-4
             label(for="reason") Wenn Sie möchten, geben Sie bitte noch einige Stichworte zum Grund des Besuchs ein:
             textarea#reason(name="reason" style="width:100%;" rows="5")
+          .form-row
+           .form-check
+             input.form-check-input#sendmail(type="checkbox" name="sendmail" value="X")
+             label.form-check-label(for="sendmail" style="margin-top:3px;margin-left:2px") Geben Sie bitte hier an, wenn Sie den Termin per Mail bestätigt haben möchten.
+
           input.my-4.btn.btn-primary(type="submit" value="Absenden")

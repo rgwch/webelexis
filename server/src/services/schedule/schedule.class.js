@@ -123,13 +123,13 @@ class Service {
     termin.patid = patients.data[0].id
     termin.grund = data.grund
     const inserted = await appntService.create(termin)
-    /* Datenschutz??
+
     const cfg = this.options.app.get('userconfig')
-    if (cfg.schedule.confirm) {
+    if (cfg.schedule.confirm && data.sendmail) {
       const mailer = new (require('../../util/mailer'))(cfg.smtp, cfg.sitename + ` <${cfg.admin}>`)
       mailer.send(data.email, "Terminbestätigung "+cfg.sitename, cfg.schedule.confirm)
     }
-    */
+
     return inserted;
   }
 
