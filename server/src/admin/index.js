@@ -5,7 +5,7 @@
  ********************************************/
 
 const logger = require('../logger')
-const Mailer = require('../mailer')
+const Mailer = require('../util/mailer')
 const defaults = require('../../../data/settings')
 const uuid = require('uuid/v4')
 const roles=require('../../config/roles')

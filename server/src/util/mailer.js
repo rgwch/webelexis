@@ -8,21 +8,25 @@
   * Utility to send mails. We need this primarly to help the user retrieve lost passwords
   */
 const nodemailer=require('nodemailer')
-const logger=require('./logger')
+const logger=require('../logger')
 
 class Mailer{
-  constructor(app, sender){
-    this.app=app
+  /**
+   * 
+   * @param {host,port,user,pwd} config 
+   * @param {*} sender 
+   */
+  constructor(config, sender){
+
     this.sender=sender
-    const settings = app.get("userconfig")
 
     this.smtp={
-      host: settings.smtp_host,
-      port: settings.smtp,
-      secure: false,
+      host: config.host,
+      port: config.port,
+      secure: true,
       auth:{
-        user: process.env.SMTPUSER,
-        pass: process.env.SMTPPASSWORD
+        user: (config.user || process.env.SMTPUSER),
+        pass: (config.pwd || process.env.SMTPPASSWORD)
       }
     }
     this.transporter=nodemailer.createTransport(this.smtp)

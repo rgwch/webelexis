@@ -57,8 +57,8 @@ class Service {
           return false
         }
         if (date === present) {
-          const dt=DateTime.local()
-          const now = 60*dt.get('hour')+dt.get('minute')
+          const dt = DateTime.local()
+          const now = 60 * dt.get('hour') + dt.get('minute')
           if (now >= g[1]) {
             return false
           }
@@ -123,6 +123,13 @@ class Service {
     termin.patid = patients.data[0].id
     termin.grund = data.grund
     const inserted = await appntService.create(termin)
+    /* Datenschutz??
+    const cfg = this.options.app.get('userconfig')
+    if (cfg.schedule.confirm) {
+      const mailer = new (require('../../util/mailer'))(cfg.smtp, cfg.sitename + ` <${cfg.admin}>`)
+      mailer.send(data.email, "Terminbestätigung "+cfg.sitename, cfg.schedule.confirm)
+    }
+    */
     return inserted;
   }
 
