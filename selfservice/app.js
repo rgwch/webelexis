@@ -47,7 +47,11 @@ app.get('/', (req,res)=>{
   res.redirect(302, "/termin/list")
 });
 app.get("/datenschutz",(req,res)=>{
-  res.render('datenschutz')
+  terminService.get("site").then(sitedef=>{
+    res.render('datenschutz',{
+      sitedef
+    })
+  })
 })
 
 app.use("/termin",terminRouter)
