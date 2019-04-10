@@ -12,9 +12,9 @@ const logger=require('../logger')
 
 class Mailer{
   /**
-   * 
-   * @param {host,port,user,pwd} config 
-   * @param {*} sender 
+   *
+   * @param {host,port,user,pwd} config
+   * @param {*} sender
    */
   constructor(config, sender){
 
@@ -40,8 +40,8 @@ class Mailer{
     }
     if(ical){
       message.icalEvent={
-        filenane: "arzttermin.ics",
-        method: "request",
+        filename: "arzttermin.ics",
+        method: "publish",
         content: ical
       }
     }

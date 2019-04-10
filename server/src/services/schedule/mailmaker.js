@@ -11,8 +11,10 @@ module.exports = function (cfg, data) {
     const wday = ['Montag', 'Dienstag', "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"][day - 1]
     const daystring=wday+", "+tstart.toFormat("dd.LL.yyyy, HH:mm")
     const body=cfg.schedule.confirm.replace("{*}",daystring)
-    cal=ical(cfg.admin)
-    cal.createEvent({
+    const atidx=cfg.admin.indexOf('@')
+    const domain=cfg.admin.substr(atidx+1)
+    cal=ical({domain,name: "Arzttermin"})
+    cal.method('publish').createEvent({
         start: tstart.toJSDate(),
         end: tstart.plus({minutes:20}).toJSDate(),
         description: "Arzttermin "+cfg.sitename,
