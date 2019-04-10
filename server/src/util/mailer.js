@@ -31,12 +31,19 @@ class Mailer{
     }
     this.transporter=nodemailer.createTransport(this.smtp)
   }
-  send(address,subject,contents){
+  send(address,subject,contents, ical){
     const message={
       from: this.sender,
       to: address,
       subject: subject,
       text: contents
+    }
+    if(ical){
+      message.icalEvent={
+        filenane: "arzttermin.ics",
+        method: "request",
+        content: ical
+      }
     }
     this.transporter.sendMail(message,(err,info)=>{
       if(err){

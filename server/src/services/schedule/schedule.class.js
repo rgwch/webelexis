@@ -126,8 +126,7 @@ class Service {
 
     const cfg = this.options.app.get('userconfig')
     if (cfg.schedule.confirm && data.sendmail) {
-      const mailer = new (require('../../util/mailer'))(cfg.smtp, cfg.sitename + ` <${cfg.admin}>`)
-      mailer.send(data.email, "Terminbestätigung "+cfg.sitename, cfg.schedule.confirm)
+      require('./mailmaker')(cfg,data)
     }
 
     return inserted;
