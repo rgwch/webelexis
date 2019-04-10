@@ -2,7 +2,7 @@ const { DateTime } = require('luxon')
 const ical=require('ical-generator')
 
 module.exports = function (cfg, data) {
-    const mailer = new (require('../../util/mailer'))(cfg.smtp, cfg.sitename + ` <${cfg.admin}>`)
+    const mailer = new (require('../../util/mailer'))(cfg.smtp, cfg.schedule.sitename + ` <${cfg.schedule.sitemail}>`)
     const termin = JSON.parse(data.appnt)
     const dt=DateTime.fromFormat(termin.tag, "yyyyLLdd")
     const minutes=parseInt(termin.beginn)
@@ -11,8 +11,8 @@ module.exports = function (cfg, data) {
     const wday = ['Montag', 'Dienstag', "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"][day - 1]
     const daystring=wday+", "+tstart.toFormat("dd.LL.yyyy, HH:mm")
     const body=cfg.schedule.confirm.replace("{*}",daystring)
-    const atidx=cfg.admin.indexOf('@')
-    const domain=cfg.admin.substr(atidx+1)
+    const atidx=cfg.schedule.sitemail.indexOf('@')
+    const domain=cfg.schedule.sitemail.substr(atidx+1)
     cal=ical({domain,name: "Arzttermin"})
     cal.method('publish').createEvent({
         start: tstart.toJSDate(),

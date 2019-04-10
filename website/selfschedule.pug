@@ -13,13 +13,18 @@ block contents
 
     h2 Einrichtung
 
-    p Die Konfiguration findet in <em>server/config/elexisdefaults.js</em> statt. Der Abschnitt 'schedule' enthält einige Parameter für die Selbstbedienung:
+    p Die Konfiguration findet in <em>data/settings.js</em> statt. Der Abschnitt 'schedule' enthält notwendige Parameter für die Selbstbedienung:
 
     ul.list-group
         li.list-group-item minDuration: Mindestzeit in Minuten, die ein freier Zeitraum lang sein muss, um für die Selbstbedienung in Frage zu kommen.
         li.list-group-item terminTyp: TerminTyp, der für Termine vergeben werden soll, die per Selbstbedienung erstellt werden. Es sollte ein Typ sein, der auch in der Agenda-Konfiguration in Elexis vorgesehen ist.
         li.list-group-item resource: Der Agenda-Bereich, der für die Selbstbedienung geöffnet werden soll. Das muss einer der Bereiche sein, die auch in der Elexis-Konfiguration der Agenda erstellt wurden. Die Selbstbedienung übernimmt zum Beispiel die Tagesarbeitszeiten bzw. -Sperrzeiten von diesem Bereich
-        li.list-group.item maxPerDay: maximale Zahl von Terminen pro Tag, die per Selbstbedienung angeboten werden. Es empfiehlt sich, nicht den ganzen Tag freizugeben, da die Wahrscheinlichkeit, dass selbst eingetragene Termine nicht wahrgenommen werden, erfahrungsgemäss grösser ist, als bei telefonisch oder persönlich vereinbarten Terminen. Wenn Sie nicht auf allzu vielen verpassten Terminen sitzen bleiben wollen, würde ich hier eine Zahl zwischen 2 und 6 eingeben. Webelexis wird aus den freien Zeiträumen nach dem Zufallsprinzip eine entsprechende Anzahl auswählen.
+        li.list-group-item maxPerDay: maximale Zahl von Terminen pro Tag, die per Selbstbedienung angeboten werden. Es empfiehlt sich, nicht den ganzen Tag freizugeben, da die Wahrscheinlichkeit, dass selbst eingetragene Termine nicht wahrgenommen werden, erfahrungsgemäss grösser ist, als bei telefonisch oder persönlich vereinbarten Terminen. Wenn Sie nicht auf allzu vielen verpassten Terminen sitzen bleiben wollen, würde ich hier eine Zahl zwischen 2 und 6 eingeben. Webelexis wird aus den freien Zeiträumen nach dem Zufallsprinzip eine entsprechende Anzahl auswählen.
+        li.list-group-item sitename: Name der Institution, wie sie am Seitenkopf und der Bestätigungsmail erscheinen soll
+        li.list-group-item siteaddr: Postadresse
+        li.list-group-item sitemail: E-Mail Adresse (wird auch für Bestätigungsmail als Absender verwendet)
+        li.list-group-item sitephone: Telefonnummer
+        li.list-gtoup-item confirm: Bestätigungsmail anbieten
 
     h2 Bedienung
     p Die Bedienung ist trivial. Sie werden mit folgender Seite begrüsst:
@@ -30,6 +35,9 @@ block contents
     p Mit dem Pfeilen neben dem Datum oben kann man jeweils einen Tag vor oder zurück blättern. Nach dem Absenden, und wenn die Patientendaten korrekt sind, kommt schon die Bestätigung:
 
     img(src="selfservice_02.png")
-    p Das war's dann auch schon. Der Termin ist in der Elexis/Webelexis-Agenda eingetragen.
+    p Das war's dann auch schon. Der Termin ist in der Elexis/Webelexis-Agenda eingetragen. Wenn eine Bestätigungsmail gewünscht wurde, landet diese kurz darauf im Posteingang:
 
+    img(src="selfservice_03.png")
+
+    p Der Termin ist als .ics - Datei angehängt, die bei vielen Kalender-Applikationen direkt importiert werden kann.
     a(href= base) Zurück
