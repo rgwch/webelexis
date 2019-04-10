@@ -11,11 +11,15 @@ extends layout
 block content
     .container
 
+         p Da Sie die entsprechende Frage bestimmt schon vermisst haben: Nein, hier gibt es keine Cookies.
+         p Aber:
          p Um mit diesem Tool einen Termin zu vereinbaren, müssen Sie Ihre E-Mail-Adresse und Ihr Geburtsdatum eingeben. Die Terminvergabe ist nur möglich, wenn Sie bei uns bereits als Patient angemeldet sind, und wenn wir Ihre E-Mail-Adresse genau so gespeichert haben, wie Sie sie hier angeben. Wenn das noch nicht der Fall ist, geben Sie uns bitte bei Ihrem nächsten Besuch die Mailadresse an.
-         p Wenn Sie einen Termin vereinbaren, dann werden die hier eingegebenen Daten zusammen mit Ihrer IP-Adresse gespeichert. Diese Speicherung dient ausschliesslich dazu, Missbrauch zu vermeiden. Alle Daten werden nach der Konsultation automatisch gelöscht. Wir geben keinerlei Daten weiter; bereits die Tatsache, dass Sie einen Termin vereinbaren, unterliegt dem Arztgeheimnis.
+         p Wenn Sie einen Termin vereinbaren, dann werden die hier eingegebenen Daten mit Ihren bereits vorhandenen Personalien in unserer Patienten-Datenbank vekrnüpft und (von aussen nicht sichtbar) als Termin gespeichert. Wir geben keinerlei Daten weiter; bereits die Tatsache, dass Sie einen Termin vereinbaren, unterliegt dem Arztgeheimnis.
+
+         p Falls Sie das Feld "Geben Sie bitte hier an, wenn Sie den Termin per Mail bestätigt haben möchten" anklicken, dann wird eine Mail mit dem Termin via Internet an die angegebene Mailadresse geschickt. Beachten Sie, dass eine solche Mail unverschlüsselt und gegen Fremdeinblick nicht besser gesichert ist, als jede andere Mail auch. Wenn Sie nicht möchten, dass Drittpersonen erfahren könnten, dass Sie einen Termin bei uns vereinbart haben, sollten Sie dieses Feld nicht ankreuzen.
 
          p(style="margin-top:20px;") Wenn Sie mit diesen Bedingungen nicht einverstanden sind, dürfen Sie dieses Tool nicht benutzen. Bitte vereinbaren Sie Ihren Termin in diesem Fall telefonisch.
          p
-          a(href="http://www.google.ch") Seite Verlassen
-         p 
+          a(href="http://www.google.ch") Seite Verlassen und zu Google gehen.
+         p
           button.btn.my-4.btn-secondary(onclick="window.location.replace('/')") Zurück zur Terminvereinbarung

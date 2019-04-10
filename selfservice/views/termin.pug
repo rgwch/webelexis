@@ -23,22 +23,22 @@ block content
               img(src="/images/arrow-left.svg" width="40px" style="transform:scaleX(-1)" alt="Tag vor" title="Tag vor")
       .card-body
         form.form(action="/termin/set" method="post")
-          each slot in slots
-
-            .form-check
-              input.form-check-input(type="radio" name="appnts" value=slot.appnt id=slot.id)
-              label.form-check-label(for=slot style="margin-top:3px;") #{slot.human}
-          p.my-4 Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Über die Verwendung der Daten orientiert Sie die <a href="/datenschutz">Datenschutz-Seite</a>
-          p Wenn Sie dies nicht wünschen, verlassen Sie einfach diese Seite ohne auf 'Absenden' zu klicken, dann wird nichts gespeichert.
-            | Sie können jederzeit auch telefonisch einen Termin vereinbaren.
           .form-row
+            .col-3
+              each slot in slots
+                .form-check
+                  input.form-check-input(type="radio" name="appnts" value=slot.appnt id=slot.id)
+                  label.form-check-label(for=slot style="margin-top:3px;") #{slot.human}
+            .col-9
+              p Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Über die Verwendung der Daten orientiert Sie die <a href="/datenschutz">Datenschutz-Seite</a>
+          .form-row.my-4
             .col
               input.form-control(type="email" name="email" id="email" placeholder="E-Mail Adresse")
             .col
               input.form-control(type="text" name="bdate" id="bdate" placeholder="Geburtsdatum (tt.mm.jjjj)")
           .form-row.my-4
             label(for="reason") Wenn Sie möchten, geben Sie bitte noch einige Stichworte zum Grund des Besuchs ein:
-            textarea#reason(name="reason" style="width:100%;" rows="5")
+            textarea#reason(name="reason" style="width:100%;" rows="4")
           .form-row
            .form-check
              input.form-check-input#sendmail(type="checkbox" name="sendmail" value="X")
