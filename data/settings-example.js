@@ -40,8 +40,6 @@ module.exports = {
     database: "elexis",
     user: "praxis",
     password: "topsecret",
-    /* set automodify to true to let webelexis modify the elexis database */
-    automodify: false
   },
   /* We need an SMTP host to send mails for lost password retrieval */
   smtp: {
