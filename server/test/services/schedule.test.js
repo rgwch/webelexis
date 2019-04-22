@@ -70,6 +70,12 @@ describe('schedule', () => {
     })
 
   })
-
+  describe('schedule mailmaker',()=>{
+    const mm=require('../../src/services/schedule/mailmaker')({},{})
+    mm.mailer={
+      send: (data,email)=>{console.log(email)}
+    }
+    
+  })
 });
 
