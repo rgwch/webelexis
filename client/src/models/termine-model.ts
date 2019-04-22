@@ -157,9 +157,15 @@ export class TerminModel {
   constructor(obj: TerminType) {
     this.obj = obj
   }
-  public getKontakt = (): KontaktType =>
-    this.obj.kontakt || ({ bezeichnung1: "-" } as KontaktType)
-  public getLabel = (): string => Kontakt.getLabel(this.getKontakt())
+  public getKontakt = (): KontaktType => this.obj.kontakt
+  public getLabel = (): string => {
+    const k = this.getKontakt()
+    if (k) {
+      return Kontakt.getLabel(k)
+    } else {
+      return this.obj.patid
+    }
+  }
   public getTyp = (): string => this.obj.termintyp
   public getState = (): string => this.obj.terminstatus
   public isReserved = (): boolean => this.obj.termintyp === Statics.terminTypes[1]

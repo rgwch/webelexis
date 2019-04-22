@@ -70,7 +70,7 @@ const addContacts = function (options = {}) { // eslint-disable-line no-unused-v
         } catch (Error) {
           if (Error.name === "NotFound") {
             appnt.kontakt = {
-              Bezeichnung1: appnt.patid
+              bezeichnung1: appnt.patid
             }
           } else {
             throw (Error)

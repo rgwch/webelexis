@@ -7,14 +7,14 @@
   <require from="pikaday/css/pikaday.css"></require>
   <div class="input-group" style="margin-right:10px;">
     <div class="input-group-prepend">
-      <span class="input-group-text" click.delegate="back()">
+      <span class="input-group-text" click.trigger="back()">
         <i class="fa fa-chevron-left"></i>
       </span>
     </div>
     <input type="text" class="form-control" ref="pikhome" value.bind="actDate"
       click.trigger="show()">
     <div class="input-group-append">
-      <span class="input-group-text" click.delegate="forward()">
+      <span class="input-group-text" click.trigger="forward()">
         <i class="fa fa-chevron-right"></i>
       </span>
     </div>
