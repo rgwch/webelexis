@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2019 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 /**
  * Find gaps in an unsorted Array of intervals
  * @param {Array<[from,to]>} arr

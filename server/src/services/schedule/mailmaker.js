@@ -1,8 +1,18 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2019 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const { DateTime } = require('luxon')
 const ical=require('ical-generator')
+const Mailer=require('../util/mailer')
 
+/**
+ * Create a mail with an ICAL event as attachment
+ */
 module.exports = function (cfg, data) {
-    const mailer = new (require('../../util/mailer'))(cfg.smtp, cfg.schedule.sitename + ` <${cfg.schedule.sitemail}>`)
+    const mailer = new Mailer(cfg.smtp, cfg.schedule.sitename + ` <${cfg.schedule.sitemail}>`)
     const termin = JSON.parse(data.appnt)
     const dt=DateTime.fromFormat(termin.tag, "yyyyLLdd").setZone('local')
     const minutes=parseInt(termin.beginn)
@@ -14,11 +24,16 @@ module.exports = function (cfg, data) {
     const atidx=cfg.schedule.sitemail.indexOf('@')
     const domain=cfg.schedule.sitemail.substr(atidx+1)
     cal=ical({domain,name: "Arzttermin"})
-    cal.method('publish').createEvent({
-        start: tstart.toLocal().toJSDate(),
-        end: tstart.plus({minutes:20}).toLocal().toJSDate(),
+    cal.method('publish').prodId({
+        company: cfg.schedule.sitename,
+        product: "Terminvereinbarung",
+        language: "DE"
+    }).createEvent({
+        start: tstart.toJSDate(),
+        end: tstart.plus({minutes:20}).toJSDate(),
         description: "Arzttermin "+cfg.sitename,
-        location: cfg.schedule.siteaddr
+        location: cfg.schedule.siteaddr,
+        timezone: "Europe/Zurich"
     })
     mailer.send(data.email, "Terminbestätigung " + cfg.sitename, body, cal.toString())
 }

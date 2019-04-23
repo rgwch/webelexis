@@ -71,11 +71,24 @@ describe('schedule', () => {
 
   })
   describe('schedule mailmaker',()=>{
-    const mm=require('../../src/services/schedule/mailmaker')({},{})
-    mm.mailer={
-      send: (data,email)=>{console.log(email)}
-    }
-    
+    const{DateTime} = require('luxon')
+    const dt=DateTime.fromFormat("20190422","yyyyLLdd")
+    const tstart=dt.plus({minutes:550})
+    console.log(tstart.toJSDate())   
+    const ical=require('ical-generator')
+    cal=ical({domain: "Test",name: "Arzttermin"})
+    cal.method('publish').prodId({
+      company: "Praxis Breite",
+      product: "Terminvereinbarung",
+      language: "DE"
+    }).createEvent({
+        start: tstart.toJSDate(),
+        end: tstart.plus({minutes:20}).toJSDate(),
+        description: "Arzttermin ",
+        location: "Hier",
+        timezone: "Europe/Zurich"
+    })
+    console.log(cal.toString())
   })
 });
 
