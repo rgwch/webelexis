@@ -6,7 +6,7 @@
 
 const { DateTime } = require('luxon')
 const ical=require('ical-generator')
-const Mailer=require('../util/mailer')
+const Mailer=require('../../util/mailer')
 
 /**
  * Create a mail with an ICAL event as attachment
