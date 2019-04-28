@@ -104,6 +104,10 @@ export class Prescriptions {
       });
   }
 
+  /**
+   * Something is dragged to the trash symbol
+   * @param event 
+   */
   protected dragTrash(event) {
     if (event.dataTransfer.types.find(el => el === "webelexis/modality")) {
       event.preventDefault();
@@ -199,6 +203,9 @@ export class Prescriptions {
     });
   }
 
+  /**
+   * User clicked on the printer symbol
+   */
   private toPdf() {
     let table = "<table>";
     for (const item of this.actrpd.prescriptions) {
@@ -261,6 +268,11 @@ export class Prescriptions {
     }
   }
 
+  /**
+   * user clicked on the "rezept" button in Fixmedikation or Reservemedikation
+   * @param list 
+   * @param from 
+   */
   private addToRp(list: PrescriptionType[], from: string) {
     for (const obj of list) {
       this.ea.publish(ADD_MESSAGE, {

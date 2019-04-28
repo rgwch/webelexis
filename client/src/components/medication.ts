@@ -89,7 +89,7 @@ export class Medication {
   }
 
   /**
-   * create  visual feedback fpr possible drop zones when dragging a prescription or an article
+   * create  visual feedback for possible drop zones when dragging a prescription or an article
    * @param mode 
    */
   mark(mode: boolean) {
@@ -169,7 +169,8 @@ export class Medication {
     if (datatype == "article") {
       const obj: ArticleType = JSON.parse(json)
       this.pm.createFromArticle(obj).then(presc => {
-        this.list.push(presc)
+        //this.list.push(presc)
+        this.addItem(presc,Modalities.DONTKNOW)
       })
 
     } else if (datatype == "prescriptions") {

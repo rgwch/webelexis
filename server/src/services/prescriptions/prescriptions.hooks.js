@@ -23,12 +23,13 @@ const flatiron = require('../../hooks/flatiron')([{
 const current = ctx => {
   if (ctx.params.query && ctx.params.query.current) {
     const now = DateTime.local().toFormat('yyyyLLddHHmmss')
+    logger.debug(`finding medication for ${ctx.params.query.current} before ${now}`)
     ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
     // ctx.params.query.DateFrom = { $lte: now }
-    ctx.params.query.$or = [{ datefrom: null }, { datefrom: { $lte: now } }]
+    // ctx.params.query.$or = [{ datefrom: null }, { datefrom: { $lte: now } }]
     ctx.params.query.$sort = {
-      prescDate: -1
+      prescdate: -1
     }
     // ctx.params.query.$or = [{ DateUntil: { $gte: now } }, { DateUntil: null }]
   }
