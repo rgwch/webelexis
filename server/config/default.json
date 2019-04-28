@@ -1,4 +1,5 @@
 {
+  "configname": "default",
   "version": "3.0.7",
   "testing": false,
   "host": "localhost",

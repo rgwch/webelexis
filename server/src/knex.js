@@ -21,9 +21,9 @@ module.exports = function (app) {
   const { client, connection } = app.get("mysql")
   // const { client, connection } = app.get('postgresql');
   // const {client,connection} = app.get("sqlite");
-  const conf = app.get("userconfig")
-  const automodify = conf.elexisdb.automodify
-  delete conf.elexisdb.automodify
+  const conf = app.get("userconfig")  // = ../data/settings.js
+  logger.info("Settingsname: " + conf.settingsname)
+  logger.info("config name: " + app.get("configname"))
   const db = knex({
     client,
     connection: conf.elexisdb || connection,

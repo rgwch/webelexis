@@ -6,10 +6,10 @@
 
 /*
  configuration for the pm2 launcher (used in the dockerized variant)
-*/ 
+*/
 module.exports = {
   apps : [{
-    name: 'serv',
+    name: 'server',
     script: 'src/index.js',
     cwd: 'server',
     instances: 1,
@@ -26,7 +26,7 @@ module.exports = {
       NODE_ENV: 'dockered'
     }
   },{
-    name: "self",
+    name: "selfservice",
     script: "bin/www",
     cwd: 'selfservice',
     instances: 1,
@@ -39,7 +39,8 @@ module.exports = {
       NODE_ENV: 'production'
     },
     env_dockered: {
-      NODE_ENV: 'dockered'
+      NODE_ENV: 'dockered',
+      NODE_APP_INSTANCE: 'dockered'
     }
 
   }],
