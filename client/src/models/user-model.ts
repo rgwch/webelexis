@@ -12,6 +12,7 @@ import { KontaktType } from './kontakt';
 
 import global from '../user/global'
 import * as LRU from 'lru-cache'
+import { thisExpression } from 'babel-types';
 
 
 /**
@@ -59,7 +60,7 @@ export class UserManager extends ObjectManager {
       return (usr.roles.indexOf(role) != -1)
     } else {
       return false
-    } 
+    }
   }
 
   /**
@@ -76,7 +77,7 @@ export class UserManager extends ObjectManager {
       r = await this.adminService.get("can:" + acename)
       this.cache.set(key, r)
       return r
-    } 
+    }
   }
 
   /**
@@ -93,6 +94,31 @@ export class UserManager extends ObjectManager {
     } else {
       return Promise.reject()
     }
+  }
+
+  /**
+   * Retrieve the associated Mandator for a User
+   * @param user
+   * @returns a Promise resolving to a KontaktType representing the responsible Mandator (which might be the User teitselves) 
+   */
+  public async getActiveMandatorFor(user: UserType): Promise<KontaktType> {
+    if (user._Mandator) {
+      return user._Mandator
+    }
+    const k = await this.getElexisKontakt(user)
+    if (k.extjson && k.extjson.Mandant) {
+      const m0 = k.extjson.Mandant.split(",")[0]
+      const ml = await this.kontaktService.find({ query: { bezeichnung3: m0 } })
+      user._Mandator = ml.data[0]
+    } else {
+      user._Mandator = user._Kontakt
+    }
+    return user._Mandator
+  }
+
+  public async getData(user: UserType, datatype: "KSK|EAN|NIF|Kanton|TarmedSpezialität") {
+    const m = await this.getActiveMandatorFor(user)
+    return m.extjson[datatype]
   }
 }
 

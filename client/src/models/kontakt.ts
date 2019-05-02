@@ -32,6 +32,7 @@ export interface KontaktType extends ElexisType {
   natelnr?: string;
   email?: string;
   bemerkung?: string;
+  extjson?: any
 }
 
 export class Kontakt {

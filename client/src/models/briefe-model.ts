@@ -12,6 +12,7 @@ import { autoinject } from "aurelia-framework";
 import { ElexisType, UUID } from "./elexistype";
 import { DateTime } from "services/datetime";
 import { ObjectManager } from "./object-manager";
+import { UserType, UserManager } from "./user-model";
 
 /**
  * An Elexis "Brief" (which is an outgoing document)
@@ -43,7 +44,7 @@ export interface BriefType extends ElexisType {
 export class BriefManager extends ObjectManager {
   private kontaktService: DataService;
 
-  constructor(private we: WebelexisEvents, private dt: DateTime) {
+  constructor(private we: WebelexisEvents, private dt: DateTime, private um: UserManager) {
     super("briefe");
     this.kontaktService = this.dataSource.getService("kontakt");
   }
@@ -124,11 +125,15 @@ export class BriefManager extends ObjectManager {
     );
     // console.log("stepOne: " + stepOne)
 
-    let destinator;
-    let concerning;
+    let destinator: KontaktType;
+    let concerning: KontaktType;
+    let user : UserType;
+    let mandator : KontaktType;
     try {
       destinator = await this.findKontakt(brief, "destid", "_Dest");
       concerning = await this.findKontakt(brief, "patientid", "_Patient");
+      user = this.we.getSelectedItem('user')
+      mandator = await this.um.getActiveMandatorFor(user)
     } catch (err) {
       console.log(err);
     }
@@ -173,6 +178,11 @@ export class BriefManager extends ObjectManager {
       const entity = getEntity(element);
       if (entity) {
         replacement = entity[attribute.toLowerCase()];
+        if(!replacement){
+          if(entity.extjson){
+            replacement=entity.extjson[attribute]
+          }
+        }
       } else {
         replacement = ""
       }
