@@ -18,6 +18,25 @@ const addKontakt = async ctx => {
   const kontaktService = ctx.app.service("kontakt")
   if (ctx.result.kontakt_id) {
     ctx.result._Kontakt = await kontaktService.get(ctx.result.kontakt_id)
+    ctx.result._Mandator=ctx.result._Kontakt
+    ctx.result._Mandators=ctx.result._Kontakt.bezeichnung3
+    const extinfo=ctx.result._Kontakt.extjson
+    if(extinfo){
+      const mandatorList=extinfo.Mandant
+      if(mandatorList){
+        ctx.result._Mandators=mandatorList
+        const mandators=mandatorList.split(",")
+        if(mandators && mandators.length>0){
+          const mainMandatorLabel=mandators[0]
+          const qq=await kontaktService.find({query: {bezeichnung3: mainMandatorLabel}})
+          if(qq && qq.data && qq.data.length){
+            // use 'get' command to decode extinfo field
+            ctx.result._Mandator=await kontaktService.get(qq.data[0].id)
+          }  
+        }
+      }
+    }
+    
   }
   return ctx
 }

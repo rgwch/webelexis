@@ -23,6 +23,8 @@ import * as LRU from 'lru-cache'
 export interface UserType extends ElexisType {
   kontakt_id?: UUID,
   _Kontakt?: KontaktType,
+  _Mandator?: KontaktType,
+  _Mandators?: string,
   is_active?: string,
   is_administrator?: string,
   extjson?: any,
