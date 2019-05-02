@@ -5,12 +5,28 @@ template
   .sheet
     .header Kontodetails
     .body
-      h2 Username: ${user.id}
-      h2 Mandant:
+      h2 Username: ${user ? user.id : ""}
+      hr
+      h3 Mandant:
       table
         tr
-          td Kürzel
-          td= user._Mandator.id
+          td Kürzel:
+          td ${mandant ? mandant.bezeichnung3 : ""}
+          td Name:
+          td ${mandant.titel} ${mandant.bezeichnung1} ${mandant.bezeichnung2}
+        tr 
+          td Spezialität:
+          td ${mandant.extjson.TarmedSpezialität}
+          td Kanton
+          td ${mandant.extjson.TarmedKanton}  
         tr
-          td Name
-          td= getLabel()  
+          td Adresse:
+          td ${mandant.strasse}, ${mandant.plz} ${mandant.ort}  
+          td Telefon:
+          td ${mandant.telefon1}; ${mandant.telefon2}; ${mandant.natelnr}
+        tr
+          td ZSR-Nr.:
+          td ${mandant.extjson.KSK}
+          td GLN:
+          td ${mandant.extjson.EAN}
+
