@@ -23,7 +23,7 @@ module.exports = function (cfg, data) {
     const body=cfg.schedule.confirm.replace("{*}",daystring)
     const atidx=cfg.schedule.sitemail.indexOf('@')
     const domain=cfg.schedule.sitemail.substr(atidx+1)
-    cal=ical({domain,name: "Arzttermin"})
+    const cal=ical({domain,name: "Arzttermin"})
     cal.method('publish').prodId({
         company: cfg.schedule.sitename,
         product: "Terminvereinbarung",

@@ -10,6 +10,9 @@ import { ShowTemplates } from "./../dialogs/show-templates";
 import { BriefManager, BriefType } from "models/briefe-model";
 import { DateTime } from "services/datetime";
 import { WebelexisEvents } from "webelexisevents";
+import { EventAggregator } from "aurelia-event-aggregator";
+import { DISPLAY, SWITCH_PANELS } from "routes/dispatch";
+import { LetterView } from "./letter-view";
 
 @autoinject
 export class Letters {
@@ -20,7 +23,8 @@ export class Letters {
     private dlgs: DialogService,
     private bm: BriefManager,
     private dt: DateTime,
-    private we: WebelexisEvents
+    private we: WebelexisEvents,
+    private ea: EventAggregator
   ) { }
 
   protected showTemplates() {
@@ -28,7 +32,7 @@ export class Letters {
       .open({ viewModel: ShowTemplates, model: this.templatename })
       .whenClosed(result => {
         if (!result.wasCancelled) {
-          this.doCreateLetter(result.output);
+          return this.doCreateLetter(result.output);
         }
       });
   }
@@ -44,7 +48,12 @@ export class Letters {
       typ: "Allg.",
 
     };
-    this.bm.generate(brief, tmpl.betreff, []).then(html => {
+    return this.bm.generate(brief, tmpl.betreff, []).then(processed => {
+      this.ea.publish(SWITCH_PANELS,{right: "brief"})
+      setTimeout(()=>{
+        this.ea.publish(LetterView.EDIT_LETTER,processed)
+      },50)
+      /*
       const win = window.open("", "_new");
       if (!win) {
         alert(
@@ -56,7 +65,7 @@ export class Letters {
         setTimeout(() => {
           win.print();
         }, 50);
-      }
-    })
+      } */
+    })   
   }
 }

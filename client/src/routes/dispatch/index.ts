@@ -23,7 +23,7 @@ export const SWITCH_PANELS = "switch_panels";
 /**
  * Main screen of the application. The view features two slots to insert views according to the
  * current program state. Display is managed with two controls:
- * - An EventAggregator-Message SWITCH_PANELS controle, which display to show on the left and
+ * - An EventAggregator-Message SWITCH_PANELS controls, which display to show on the left and
  * on the right.
  * - The Webelexis-State "panels" controls, if the left, the right or both panels are to show.
  */
@@ -50,6 +50,7 @@ export class Dispatcher {
     v.stammdaten,
     v.konsultationen,
     v.dokumente,
+    v.brief,
     v.artikeldetail,
     v.labor,
     v.agendagross,

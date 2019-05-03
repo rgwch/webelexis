@@ -38,6 +38,7 @@ export interface BriefType extends ElexisType {
   mimetype: string;
   path?: string;
   note?: string;
+  contents?: string;
 }
 
 @autoinject
@@ -49,8 +50,9 @@ export class BriefManager extends ObjectManager {
     this.kontaktService = this.dataSource.getService("kontakt");
   }
 
+  
   /**
-   * Print-perview a letter
+   * Print-preview a letter
    */
   public print(html: string) {
     const win = window.open("", "_new");
@@ -74,13 +76,13 @@ export class BriefManager extends ObjectManager {
    * to avoid name clash with templates from other document systems.
    * @param fields Array of {field: string, replace: string}
    * @throws "Template not found", if the template '${name}_webelexis' could not be loaded.
-   * @returns A Promise with a copy of the template, fields replaced with values from {brief} and {fields}.
+   * @returns A Promise with a clone of the input brief, contents filled with the processed template.
    */
   public async generate(
     brief: BriefType,
     template: string,
     fields?: Array<{ field: string; replace: string }>
-  ): Promise<string> {
+  ): Promise<BriefType> {
     if (!template.endsWith("_webelexis")) {
       template += "_webelexis";
     }
@@ -88,9 +90,10 @@ export class BriefManager extends ObjectManager {
       query: { betreff: template, typ: "Vorlagen" }
     });
     if (tmpls.data.length > 0) {
-      const tmpl = await this.dataService.get(tmpls.data[0].id);
+      const tmpl : BriefType = await this.dataService.get(tmpls.data[0].id);
       const compiled = await this.replaceFields(tmpl.contents, brief, fields);
-      return compiled;
+      return Object.assign({},brief,{contents: compiled})
+      //return compiled;
     } else {
       throw new Error("Template " + template + " not found");
     }
@@ -104,6 +107,7 @@ export class BriefManager extends ObjectManager {
    * @param template An html template with some fields to replace in the form [fieldname] or [datatype.attribute]
    * @param brief: BriefType
    * @param fields: An Array of {field: fieldname, replace: string}
+   * @returns The template with all variable fields replaced
    */
   public async replaceFields(
     template: string,

@@ -21,7 +21,7 @@ export class ShowTemplates {
 
   public attached() {
     this.briefeService
-      .find({ query: { typ: "Vorlagen", Betreff: { $like: "%_webelexis" } } })
+      .find({ query: { typ: "Vorlagen", Betreff: { $like: "%_webelexis" }} })
       .then((result: IQueryResult) => {
         this.templates = result.data;
       });

@@ -3,17 +3,15 @@ import { BriefManager, BriefType } from './../../src/models/briefe-model';
 import { Dummysource } from './dummysource';
 import { WebelexisEvents as dummywe} from './dummyevents';
 import * as moment from 'moment'
+import { DummyUserManager } from './dummyusermanager';
+import { UserManager } from 'models/user-model';
+import { WebelexisEvents } from 'webelexisevents';
 
 describe('briefe', () => {
-  let bm:BriefManager
-  let we
-  let um
   let dt = new DateTime(null)
-  beforeAll(()=>{
-    we = new dummywe()
-    bm = new BriefManager(we,dt,um)
-
-  })
+  let  we:any = new dummywe()
+  let  um = new DummyUserManager() as UserManager
+  let  bm = new BriefManager(we,dt,um)
   it('merges a template and a brief with field resolvers', async () => {
     const brief: BriefType = {
       betreff: "Test",
@@ -34,7 +32,10 @@ describe('briefe', () => {
       Patient: [Patient.Bezeichnung1], [Patient.Bezeichnung2]
       Er/Sie: [Patient:mw:Herr/Frau]
       XforU: [x]
+      Username: [Anwender.id]
+      EAN: [Mandant.EAN]
     `
+
     const replacers = [{
       field: "x",
       replace: "u"
@@ -47,6 +48,8 @@ describe('briefe', () => {
       Patient: Tausendwasser, Friedlich
       Er/Sie: Herr
       XforU: u
+      Username: dummyuser
+      EAN: 007
     `)
   })
 })

@@ -76,7 +76,7 @@ describe('schedule', () => {
     const tstart=dt.plus({minutes:550})
     console.log(tstart.toJSDate())   
     const ical=require('ical-generator')
-    cal=ical({domain: "Test",name: "Arzttermin"})
+    const cal=ical({domain: "Test",name: "Arzttermin"})
     cal.method('publish').prodId({
       company: "Praxis Breite",
       product: "Terminvereinbarung",

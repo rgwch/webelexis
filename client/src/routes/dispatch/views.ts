@@ -31,8 +31,15 @@ export default {
     text: "Arbeitsunfähigkeit",
     view: PLATFORM.moduleName("views/auf")
   },
+  brief:{
+    icon: "/envelope.svg",
+    role: global.roles.mpa,
+    text: "Brief",
+    view: PLATFORM.moduleName("views/letter-view")
+  },
   briefe: {
     icon: "/envelope.svg",
+    role: global.roles.mpa,
     text: "Briefe",
     view: PLATFORM.moduleName("views/letters-view")
   },

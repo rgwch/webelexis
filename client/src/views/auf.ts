@@ -143,8 +143,8 @@ export class AUF {
       }
       out.type = "auf"
       this.we.selectItem(out)
-      this.bm.generate(brief, "auf-zeugnis", []).then(html => {
-        this.bm.print(html)
+      this.bm.generate(brief, "auf-zeugnis", []).then(ret => {
+        this.bm.print(ret.contents)
       })
     } else {
       const brief: BriefType = {
@@ -168,8 +168,8 @@ export class AUF {
       list += "</ul>"
       this.bm
         .generate(brief, "auf-liste", [{ field: "liste", replace: list }])
-        .then(html => {
-          this.bm.print(html)
+        .then(ret => {
+          this.bm.print(ret.contents)
         })
     }
   }

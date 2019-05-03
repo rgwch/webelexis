@@ -227,34 +227,20 @@ export class Prescriptions {
       patientid: this.actPatient.id,
       typ: "Rezept"
     };
-    this.bm.generate(rp, "rezept", fields).then(html => {
+    this.bm.generate(rp, "rezept", fields).then((processed: BriefType) => {
       const win = window.open("", "_new");
       if (!win) {
         alert(
           "Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf"
         );
       } else {
-        win.document.write(html);
+        win.document.write(processed.contents);
         // Allow freshly opened window to load css and render
         setTimeout(() => {
           win.print();
         }, 50);
-        /*
-        const domdoc = win.document.body
-        const worker=new html2pdf.Worker
-        worker.from(domdoc).toPdf().thenExternal(rs=>{
-          console.log(rs)
-        })*/
-        const wlxdoc: DocType = {
-          category: "Ausgang",
-          concern: this.patm.createConcern(this.actPatient),
-          date: rp.datum,
-          payload: html,
-          subject: "Rezept"
-        };
-        this.dm.store(wlxdoc).catch(err => {
-          // alert("Fehler beim Speichern")
-        });
+    
+       this.bm.save(processed)
       }
     });
   }
