@@ -5,6 +5,12 @@ html(lang="de")
     title= sitename
     link(rel="stylesheet" href="/a4styles.css")
   body
-    main
+    heading.heading
+      p Praxis Webelexis
+        br 
+        span= mandator.street+", "
+        span= mandator.place
+    main.contents
+      span(style="position:relative;right:2em;") [Datum.heute]  
       block content
 
