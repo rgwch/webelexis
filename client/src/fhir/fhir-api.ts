@@ -54,8 +54,8 @@ export class FhirDS implements IDataSource {
     return undefined;
   }
 
-  public async logout() {
-    //
+  public async logout() : Promise<any>{
+    return Promise.reject("No DataSource is configured");
   }
 
   /**

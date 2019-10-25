@@ -38,10 +38,12 @@ export class Documents{
 
   currentPatient(query){
     const st=Container.instance.get(Store)
+    /*
     const actPat=st._state._value['patient']
     if(actPat){
       query.concern=actPat.id
     }
+    */
     return query
   }
 }

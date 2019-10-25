@@ -75,7 +75,7 @@ export class DataSource implements IDataSource {
     return Promise.reject("No DataSource is configured");
   }
 
-  public logout() {
+  public logout() : Promise<any>{
     return Promise.reject("No DataSource is configured");
   }
 
