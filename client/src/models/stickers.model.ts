@@ -4,7 +4,6 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { StickerType } from "./stickers.model"
 import { DataSource, DataService } from "./../services/datasource"
 import { ElexisType } from "./elexistype"
 import { autoinject } from "aurelia-framework"

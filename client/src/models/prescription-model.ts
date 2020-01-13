@@ -9,7 +9,6 @@ import { autoinject } from 'aurelia-framework'
 import { DataSource, DataService } from 'services/datasource';
 import { ElexisType, UUID } from './elexistype';
 import { DateTime as edt } from '../services/datetime'
-import { RpDef } from './prescription-model';
 import * as moment from 'moment'
 
 export class Modalities {

@@ -4,7 +4,6 @@
  * License and Terms see LICENSE            *
  ********************************************/
 import { DateTime } from "./../services/datetime";
-import { CaseType } from "./case";
 import { PatientType } from "./patient";
 import { KontaktType } from "./kontakt";
 import { autoinject, Container } from "aurelia-framework";
