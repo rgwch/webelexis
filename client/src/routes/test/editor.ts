@@ -5,7 +5,7 @@ import { DataSource, DataService } from '../../services/datasource';
 
 @inlineView(`
 <template>
-<require from="components/ck-editor"></require>
+<require from="components/mbd-editor"></require>
 <require from="views/findings-view"></require>
 <div class="col">
 <ck-editor value.two-way="text" callback.bind="cb"></ck-editor>
