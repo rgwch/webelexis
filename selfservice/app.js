@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2019 by G. Weirich         *
+ * Copyright (c) 2019-2020 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -21,7 +21,7 @@ const app = express();
 const port=3030
 
 const socket=io(`http://localhost:${port}`)
-// const socket=io("http://192.168.0.1:2019")
+// const socket=io("http://192.168.0.1:2020")
 const client=feathers()
 client.configure(socketio(socket))
 const terminService=client.service('schedule')

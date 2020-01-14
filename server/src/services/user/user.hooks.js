@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2019 by G. Weirich    *
+ * Copyright (c) 2016-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -32,11 +32,11 @@ const addKontakt = async ctx => {
           if(qq && qq.data && qq.data.length){
             // use 'get' command to decode extinfo field
             ctx.result._Mandator=await kontaktService.get(qq.data[0].id)
-          }  
+          }
         }
       }
     }
-    
+
   }
   return ctx
 }
