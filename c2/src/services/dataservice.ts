@@ -22,16 +22,46 @@ export interface IDataService {
    * */ 
   get(index: UUID, params?: any): Promise<IElexisType>
 
-  // find objects by query expression
-  find(params?): Promise<IElexisType[]>
-  // create an object
-  create(data, params?): Promise<IElexisType>
-  // update an object with id
-  update(index, obj): Promise<IElexisType>
-  // Update only given attributes of an existing object
-  patch(index, obj): Promise<IElexisType>
-  // delete an object (or several objects)
-  remove(index, params?): Promise<IElexisType>
+  /**
+   * find objects by query expression
+   * @param params 
+   * @returns resolve to an IQueryResult
+   */
+  find(params?): Promise<IQueryResult>
+
+  /**
+   * create an object
+   * @param data The object to create, without ID
+   * @param params 
+   * @returns resolve to the newly created object, with ID
+   */
+  
+  create(data:IElexisType, params?): Promise<IElexisType>
+
+  /**
+   * update an object with id - complete replacement
+   * @param index: UUID of the object to update
+   * @param obj: The new Object definition
+   * @returns resolve to the updated object (which is identical to obj)
+   */
+  
+  update(index:UUID, obj:IElexisType): Promise<IElexisType>
+
+  /**
+   * Update only given attributes of an existing object
+   * @param index UUID of the opject to patch
+   * @param obj data to update. All attributes not given remain unchanged
+   * @returns resove to the patched object (which is not identical to obj)
+   */
+  
+  patch(index:UUID, obj:any): Promise<IElexisType>
+
+  /**
+   * delete an object (or several objects)
+   * @param index UUID of the object to delete, or null
+   * @param params  if index is null: A query expression as in find
+   */
+  remove(index:UUID, params?): Promise<IElexisType>
 
   // send an event concerning an object
   emit(topic, msg)
@@ -39,27 +69,34 @@ export interface IDataService {
   on(topic, func)
   // unsubscribe some topics
   off(topic, func)
+
   // get transport name for this DataService's data type
   path: string
 }
 
 // dummy implementation of IDataService
 export class DataService implements IDataService{
-  get(index: string, params?: any) {
-    throw new Error("Method not implemented.");
-  }  find(params?: any) {
+  get(index: UUID, params?: any) : Promise<IElexisType>{
     throw new Error("Method not implemented.");
   }
-  create(data: any, params?: any) {
+
+  find(params?: any) : Promise<IQueryResult>{
     throw new Error("Method not implemented.");
   }
-  update(index: any, obj: any) {
+
+  create(data: IElexisType, params?: any) : Promise<IElexisType>{
     throw new Error("Method not implemented.");
   }
-  patch(index: any, obj: any) {
+
+  update(index: UUID, obj: IElexisType) : Promise<IElexisType>{
     throw new Error("Method not implemented.");
   }
-  remove(index: any, params?: any) {
+
+  patch(index: UUID, obj: any): Promise<IElexisType> {
+    throw new Error("Method not implemented.");
+  }
+
+  remove(index: UUID, params?: any) : Promise<IElexisType>{
     throw new Error("Method not implemented.");
   }
   emit(topic: any, msg: any) {
@@ -104,7 +141,7 @@ export interface IQueryResult {
  */
 export class DataSource implements IDataSource {
   public getService(name: string): IDataService {
-    return new DataServic()
+    return new DataService()
   }
 
   public dataType(service: IDataService): string {
