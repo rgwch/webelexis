@@ -1,17 +1,21 @@
+import { customElement } from 'aurelia-framework';
 import { bindable, bindingMode, inlineView } from 'aurelia-framework';
-import {Mobiledoc} from 'mobiledoc-kit'
+import {Editor} from 'mobiledoc-kit'
 
 @inlineView(`
 <template>
-  <div id="mbdeditor" ref="textarea"></div>
+  <div ref="editor"></div>
 </template>
 `)
 
+@customElement('mobiledoc-editor')
 export class MBDEditor{
-  private element: HTMLDivElement
+  private ed: HTMLDivElement
+
 
   public attached(){
-    const editor= new Mobiledoc.Editor()
-    editor.render(this.element)
+    const editor= new Editor()
+    editor.render(this.ed)
   }
+  
 }
