@@ -1,3 +1,4 @@
+import { ObjectManager } from './object-manager';
 import { IKontakt } from './kontakt-model';
 import { UUID, IElexisType } from './elexistype';
 
@@ -11,4 +12,8 @@ export interface IUser extends IKontakt{
   extjson?: any,
   allow_external?: string,
   roles: string[]
+}
+
+export class UserManager extends ObjectManager{
+  
 }

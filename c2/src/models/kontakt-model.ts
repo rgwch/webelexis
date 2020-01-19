@@ -1,3 +1,4 @@
+import { ObjectManager } from './object-manager';
 import { IElexisType, UUID } from './elexistype'
 
 export interface IKontakt extends IElexisType{
@@ -23,3 +24,6 @@ export interface IKontakt extends IElexisType{
   extjson?: any
 }
 
+export class KontaktManager extends ObjectManager{
+  
+}

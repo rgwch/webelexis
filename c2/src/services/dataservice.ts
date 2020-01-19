@@ -3,9 +3,11 @@
  * Copyright (c) 2018-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { IUserType } from './../models/user-model';
+import { IUser} from '../models/user-model';
 import {IElexisType, UUID} from '../models/elexistype'
-import * as faker from 'faker'
+import { IKontakt } from '../models/kontakt-model';
+import {Fakes} from '../services/fakes'
+
 
 /**
  * IDataSource and IDataService are the abstract concept of Webelexis' transport layer.
@@ -76,8 +78,20 @@ export interface IDataService {
 
 // dummy implementation of IDataService
 export class DataService implements IDataService{
-  get(index: UUID, params?: any) : Promise<IElexisType>{
-    throw new Error("Method not implemented.");
+  private fakeGenerator
+  constructor(name:string){
+    this.path=name
+    this.fakeGenerator=new Fakes()
+  }
+  async get(index: UUID, params?: any) : Promise<IElexisType>{
+    let  ret
+    switch(this.path){
+      case "user":
+      case "patient":
+      case "kontakt":
+        ret=  this.fakeGenerator.getKontakt(index)
+    }
+    return ret
   }
 
   find(params?: any) : Promise<IQueryResult>{
@@ -119,7 +133,7 @@ export interface IDataSource {
   // get the data type of a given DataService
   dataType(service: IDataService): string
   // authenticate
-  login?(username?: string, password?: string): Promise<IUserType>
+  login?(username?: string, password?: string): Promise<IUser>
   // de-authenticate
   logout(): Promise<any>
   // give metadata about the server
@@ -141,14 +155,14 @@ export interface IQueryResult {
  */
 export class DataSource implements IDataSource {
   public getService(name: string): IDataService {
-    return new DataService()
+    return new DataService(name)
   }
 
   public dataType(service: IDataService): string {
     throw new Error("No DataSource is configured");
   }
 
-  public login(un?: string, pw?: string): Promise<IUserType> {
+  public login(un?: string, pw?: string): Promise<IUser> {
     return Promise.reject("No DataSource is configured");
   }
 

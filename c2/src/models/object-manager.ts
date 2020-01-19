@@ -63,7 +63,7 @@ export class ObjectManager {
    * @param el 
    * @returns the deleted object
    */
-  public async remove(el: ElexisType) {
-    return await this.dataService.remove(el.id)
+  public async remove(el: IElexisType) {
+    return await this.dataService.patch(el.id,{deleted: "1"})
   }
 }
