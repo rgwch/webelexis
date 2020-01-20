@@ -8,8 +8,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.3.2",
-    "aurelia-animator-css": "^1.0.4"
+    "uuidv4": "^6.0.1"
   },
   "devDependencies": {
     "@types/jasmine": "^2.8.9",

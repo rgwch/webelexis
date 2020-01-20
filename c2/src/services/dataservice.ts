@@ -6,7 +6,7 @@
 import { IUser} from '../models/user-model';
 import {IElexisType, UUID} from '../models/elexistype'
 import { IKontakt } from '../models/kontakt-model';
-import {Fakes} from '../services/fakes'
+import { uuid } from 'uuidv4'
 
 
 /**
@@ -77,41 +77,42 @@ export interface IDataService {
 }
 
 // dummy implementation of IDataService
-export class DataService implements IDataService{
-  private fakeGenerator
-  constructor(name:string){
+export class LocalDataService implements IDataService{
+  constructor(name:string, private dataSource:LocalDataSource){
     this.path=name
-    this.fakeGenerator=new Fakes()
   }
-  async get(index: UUID, params?: any) : Promise<IElexisType>{
-    let  ret
-    switch(this.path){
-      case "user":
-      case "patient":
-      case "kontakt":
-        ret=  this.fakeGenerator.getKontakt(index)
+  get(index: UUID, params?: any) : Promise<IElexisType>{
+    return this.dataSource.fetch(this.path,index)  
+  }
+
+  async find(params?: any) : Promise<IQueryResult>{
+    const data= await this.dataSource.fetchAll(this.path)
+    const ret=<IQueryResult>{
+      data: data,
+      limit: data.length,
+      skip: 0,
+      total: data.length
     }
     return ret
   }
 
-  find(params?: any) : Promise<IQueryResult>{
-    throw new Error("Method not implemented.");
-  }
-
   create(data: IElexisType, params?: any) : Promise<IElexisType>{
-    throw new Error("Method not implemented.");
+    return this.dataSource.store(this.path,data)
   }
 
   update(index: UUID, obj: IElexisType) : Promise<IElexisType>{
-    throw new Error("Method not implemented.");
+    obj.id=index
+    return this.dataSource.store(this.path,obj)
   }
 
   patch(index: UUID, obj: any): Promise<IElexisType> {
-    throw new Error("Method not implemented.");
+    return this.dataSource.fetch(this.path,index).then(exist=>{
+      return this.dataSource.store(this.path,Object.assign({},exist,obj))
+    })
   }
 
-  remove(index: UUID, params?: any) : Promise<IElexisType>{
-    throw new Error("Method not implemented.");
+  async remove(index: UUID, params?: any) : Promise<IElexisType>{
+    return this.dataSource.delete(this.path,index)
   }
   emit(topic: any, msg: any) {
     throw new Error("Method not implemented.");
@@ -144,22 +145,56 @@ export interface IDataSource {
  * Format of a find result from IDataService
  */
 export interface IQueryResult {
-  data: any[],    // the data
+  data: IElexisType[],    // the data
   limit: number,  // number of items in data
   total: number,  // total number of items
   skip: number    // skipped items for this query
 }
 
 /**
- * Dummy-Implementation of IDataSource
+ * LocalStorage-Implementation of IDataSource
  */
-export class DataSource implements IDataSource {
+export class LocalDataSource implements IDataSource {
   public getService(name: string): IDataService {
-    return new DataService(name)
+    return new LocalDataService(name, this)
   }
 
+  public fetch(datatype: string, id: UUID) : Promise<IElexisType>{
+    return new Promise((resolve,reject)=>{
+      const bucket=JSON.parse(localStorage.getItem("webelexislocal_"+datatype) || "{}")
+      const ret=bucket[id]
+      if(ret){
+        resolve(ret)
+      }else{
+        reject("not found")
+      }
+    })
+  }
+
+  public fetchAll(datatype: string) : Promise<IElexisType[]>{
+    const bucket=JSON.parse(localStorage.getItem("webelexislocal_"+datatype) || "{}")
+    return Promise.resolve(bucket)
+  }
+
+  store(datatype: string, obj: IElexisType) : Promise<IElexisType>{
+    const bucket=JSON.parse(localStorage.getItem("webelexislocal_"+datatype) || "{}")
+    obj.id=obj.id || uuid()
+    bucket[obj.id]=obj
+    localStorage.setItem("webelexislocal_"+datatype,JSON.stringify(obj))
+    return Promise.resolve(obj)
+  }
+
+
   public dataType(service: IDataService): string {
-    throw new Error("No DataSource is configured");
+    return service.path
+  }
+
+  public delete(datatype: string, id: UUID) : Promise<IElexisType>{
+    const bucket=JSON.parse(localStorage.getItem("webelexislocal_"+datatype) || "{}")
+    const ret=bucket[id]
+    delete bucket[id]
+    localStorage.setItem("webelexislocal_"+datatype,JSON.stringify(bucket))
+    return Promise.resolve(ret)
   }
 
   public login(un?: string, pw?: string): Promise<IUser> {
