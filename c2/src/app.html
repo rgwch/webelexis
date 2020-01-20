@@ -1,3 +1,7 @@
 <template>
   <h1>${message}</h1>
+  <p>vor</p>
+  <p innerhtml.bind="viewmodel"></p>
+  <compose view-model.bind="viewmodel" model.bind="data"></compose>
+  <p>nach</p>
 </template>
