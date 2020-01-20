@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { IDataService, IDataSource, DataSource } from "services/dataservice";
+import { IDataService, IDataSource} from "services/dataservice";
 import { IElexisType, UUID } from "./elexistype";
 import { Container } from "aurelia-framework";
 
@@ -20,7 +20,7 @@ export class ObjectManager {
    * @param serviceName name of the datatype to handle
    */
   constructor(serviceName: string) {
-    this.dataSource = Container.instance.get(DataSource);
+    this.dataSource = Container.instance.get("DataSource");
     this.dataService = this.dataSource.getService(serviceName);
   }
 

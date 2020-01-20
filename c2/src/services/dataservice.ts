@@ -180,7 +180,7 @@ export class LocalDataSource implements IDataSource {
     const bucket=JSON.parse(localStorage.getItem("webelexislocal_"+datatype) || "{}")
     obj.id=obj.id || uuid()
     bucket[obj.id]=obj
-    localStorage.setItem("webelexislocal_"+datatype,JSON.stringify(obj))
+    localStorage.setItem("webelexislocal_"+datatype,JSON.stringify(bucket))
     return Promise.resolve(obj)
   }
 
