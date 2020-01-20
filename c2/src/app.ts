@@ -3,27 +3,32 @@ import { PLATFORM } from 'aurelia-pal';
 export class App {
   public message: string = 'Hello';
   viewmodel = PLATFORM.moduleName("./components/editor")
-  data={
+  private cmdinterface
+  data = {
     callback: this.input,
-    options: {
-      placeholder: "Hier tippseln",
-      focus: true,
-      mobiledoc: {
-        version: "0.3.1",
-        markups: [],
-        atoms: [],
-        cards: [],
-        sections: [
-          [1, "p", [
-            [0, [], 0, "123"]
-          ]]
-        ]
-      }
-    }
+    commands: this.commands,
+    plaintext: "Hallo Editor"
   }
 
-  public input(text){
+  public input(text) {
     console.log(text)
+
   }
+
+  public commands(func) {
+    this.cmdinterface = func
+    setTimeout(() => {
+      this.cmdinterface({ mode: "log", text: "Command works" })
+      this.cmdinterface({ mode: "insert", pos: 3, text: "inserted" })
+    }, 3000)
+    
+    setTimeout(() => {
+      this.cmdinterface({ mode: "log", text: "Command works" })
+      this.cmdinterface({ mode: "replace", text: "Replaced!" })
+    }, 4000)
+  
+  }
+
+
 
 }
