@@ -49,6 +49,6 @@ describe("Editor component", () => {
 })
 
 function modified(txt) {
-  console.log("modified")
+  
 }
 

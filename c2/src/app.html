@@ -1,9 +1,6 @@
 <template>
-  <require from="./components/editor"></require>
-  <h1>${message}</h1>
-  <p>vor</p>
-  <editor config.bind="data"></editor>
-  <!-- compose view-model.bind="viewmodel" model.bind="data"></!-- compose >
-  <p innerhtml.bind="viewmodel"></p -->
-  <p>nach</p>
+  <div class="container-fluid">
+    <navbar router.bind="router"></navbar>
+    <router-view></router-view>
+  </div>
 </template>

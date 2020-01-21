@@ -1,34 +1,21 @@
+import { I18N } from 'aurelia-i18n';
+import { autoinject } from 'aurelia-framework';
 import { PLATFORM } from 'aurelia-pal';
 
+@autoinject
 export class App {
-  public message: string = 'Hello';
-  viewmodel = PLATFORM.moduleName("./components/editor")
-  private cmdinterface
-  data = {
-    callback: this.input,
-    commands: this.commands,
-    plaintext: "Hallo Editor"
+  router
+
+  constructor(private i18n: I18N) { }
+
+  configureRouter(config, router) {
+    this.router = router
+    config.title = "Webelexis"
+    config.map([
+      { route: ['', 'login'], name: "login", moduleId: "routes/login", nav: true, title: this.i18n.tr('menu:login') },
+      { route: 'patient', name: "patient", moduleId: "routes/patient", nav: true, title: this.i18n.tr('menu:patient') },
+      { route: 'agenda', name: "agenda", moduleId: "routes/agenda", nav: true, title: this.i18n.tr('menu:agenda') }
+    ])
   }
-
-  public input(text) {
-    console.log(text)
-
-  }
-
-  public commands(func) {
-    this.cmdinterface = func
-    setTimeout(() => {
-      this.cmdinterface({ mode: "log", text: "Command works" })
-      this.cmdinterface({ mode: "insert", pos: 3, text: "inserted" })
-    }, 3000)
-    
-    setTimeout(() => {
-      this.cmdinterface({ mode: "log", text: "Command works" })
-      this.cmdinterface({ mode: "replace", text: "Replaced!" })
-    }, 4000)
-  
-  }
-
-
 
 }

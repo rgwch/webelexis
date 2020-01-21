@@ -81,8 +81,8 @@ export class Editor {
         this.editor.run(postEditor => {
           postEditor.insertText(pos.move(cmd.pos), cmd.text)
         })
-
-
+        break;
+        
       default: console.log("Bad command mode")
     }
   }
