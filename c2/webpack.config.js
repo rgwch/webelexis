@@ -174,6 +174,9 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
   },
   plugins: [
     ...when(!tests, new DuplicatePackageCheckerPlugin()),
+    new CopyWebpackPlugin([
+      {from: 'locales/', to: outDir+'/locales/'}
+    ]),
     new AureliaPlugin(),
     new ProvidePlugin({
       'Promise': ['promise-polyfill', 'default']

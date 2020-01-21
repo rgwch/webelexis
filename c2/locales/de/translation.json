@@ -7,5 +7,10 @@
     "date_format_parse": "D.M.YYYY",
     "time_format_parse": "H:m",
     "database_format_date": "YYYYMMDD"
+  },
+  "menu": {
+    "login": "Login",
+    "patient": "Patient",
+    "agenda": "Agenda"
   }
 }
