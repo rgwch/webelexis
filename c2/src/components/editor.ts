@@ -9,7 +9,8 @@ import { Editor as Mobiledoc, Range, Position } from 'mobiledoc-kit'
 export class Editor {
   private ed: HTMLDivElement
   private editor: Mobiledoc
-  @bindable public config
+  @bindable config
+  
   private options = {
     placeholder: "Hier tippseln",
     focus: true,

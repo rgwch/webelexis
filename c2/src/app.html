@@ -1,7 +1,9 @@
 <template>
+  <require from="./components/editor"></require>
   <h1>${message}</h1>
   <p>vor</p>
-  <p innerhtml.bind="viewmodel"></p>
-  <compose view-model.bind="viewmodel" model.bind="data"></compose>
+  <editor config.bind="data"></editor>
+  <!-- compose view-model.bind="viewmodel" model.bind="data"></!-- compose >
+  <p innerhtml.bind="viewmodel"></p -->
   <p>nach</p>
 </template>

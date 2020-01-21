@@ -18,7 +18,6 @@ describe('check datasource', () => {
     const dummy3 = await ds.get("123")
     expect(dummy3.id).toBe("123")
     expect(dummy3).toEqual(dummy)
-    console.log(dummy)
     done()
   })
   it('should update an existing entry', async done => {
