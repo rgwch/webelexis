@@ -69,7 +69,7 @@ export class Editor {
         if (!cmd.from) {
           r = new Range(head, post.tailPosition())
         } else {
-          r = new Range(head.move(cmd.from)), head.move(cmd.to))
+          r = new Range(head.move(cmd.from), head.move(cmd.to))
         }
         this.editor.run(postEditor => {
           postEditor.deleteRange(r)

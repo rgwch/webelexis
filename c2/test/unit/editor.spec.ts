@@ -32,9 +32,9 @@ describe("Editor component", () => {
       conductor({mode: "insert", text: "ei", pos: 3})
       const text3=view.querySelector("p").innerHTML
       expect(text3).toBe("Heleilo")
-      conductor({mode: "replace", from:3, to:7, text:"oioi"})
+      conductor({mode: "replace", from:3, to:5, text:"oioi"})
       const text4=view.querySelector("p").innerHTML
-      expect(text4).toBe("Heloioieilo")
+      expect(text4).toBe("Heloioilo")
       done()
     }).catch(e => {
       fail(e)
