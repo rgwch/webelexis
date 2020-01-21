@@ -12,9 +12,27 @@ export class App {
     this.router = router
     config.title = "Webelexis"
     config.map([
-      { route: ['', 'login'], name: "login", moduleId: "routes/login", nav: true, title: this.i18n.tr('menu:login') },
-      { route: 'patient', name: "patient", moduleId: "routes/patient", nav: true, title: this.i18n.tr('menu:patient') },
-      { route: 'agenda', name: "agenda", moduleId: "routes/agenda", nav: true, title: this.i18n.tr('menu:agenda') }
+      {
+        route: ['', 'login'],
+        name: "login",
+        moduleId: PLATFORM.moduleName("routes/login"),
+        nav: true,
+        title: this.i18n.tr('menu:login')
+      },
+      {
+        route: 'patient',
+        name: "patient",
+        moduleId: PLATFORM.moduleName("routes/patient"),
+        nav: true,
+        title: this.i18n.tr('menu:patient')
+      },
+      {
+        route: 'agenda',
+        name: "agenda",
+        moduleId: PLATFORM.moduleName("routes/agenda"),
+        nav: true,
+        title: this.i18n.tr('menu:agenda')
+      }
     ])
   }
 

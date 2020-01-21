@@ -10,7 +10,7 @@ export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'))
-    .plugin('aurelia-i18n', instance => {
+    .plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
       let aliases = ['t', 'i18n']
       TCustomAttribute.configureAliases(aliases)
       instance.i18next.use(Backend.with(aurelia.loader))
