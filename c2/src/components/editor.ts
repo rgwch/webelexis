@@ -10,7 +10,7 @@ export class Editor {
   private ed: HTMLDivElement
   private editor: Mobiledoc
   @bindable config
-  
+
   private options = {
     placeholder: "Hier tippseln",
     focus: true,
@@ -31,7 +31,7 @@ export class Editor {
     this.editor = new Mobiledoc(this.options)
     this.editor.render(this.ed)
     this.editor.postDidChange(() => this.changed())
-    this.config.commands(cmd=>this.command(cmd))
+    this.config.commands(cmd => this.command(cmd))
   }
 
   public activate(cfg) {
@@ -63,24 +63,25 @@ export class Editor {
     switch (cmd.mode) {
       case "log": console.log(cmd.text); break;
       case "replace":
-        const post=this.editor.post
+        const post = this.editor.post
         let r
-        if(!cmd.position){
-          r=new Range(post.headPosition(),post.tailPosition())
-        }else{
-
+        let head = post.headPosition()
+        if (!cmd.from) {
+          r = new Range(head, post.tailPosition())
+        } else {
+          r = new Range(head.move(cmd.from)), head.move(cmd.to))
         }
-        this.editor.run(postEditor=>{
+        this.editor.run(postEditor => {
           postEditor.deleteRange(r)
-          postEditor.insertText(r.head,cmd.text)
+          postEditor.insertText(r.head, cmd.text)
         })
         break;
       case "insert":
-        const pos=this.editor.post.headPosition()
-        this.editor.run(postEditor=>{
-          postEditor.insertText(pos.move(cmd.pos),cmd.text)
+        const pos = this.editor.post.headPosition()
+        this.editor.run(postEditor => {
+          postEditor.insertText(pos.move(cmd.pos), cmd.text)
         })
-        
+
 
       default: console.log("Bad command mode")
     }

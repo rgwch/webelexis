@@ -5,7 +5,7 @@ import { ContextReplacementPlugin } from 'webpack';
 
 describe("Editor component", () => {
   let component
-  let dirigent
+  let conductor
   const options = {
     callback: modified,
     commands: commands,
@@ -26,12 +26,15 @@ describe("Editor component", () => {
       const view = component.element
       const text=view.querySelector("p").innerHTML
       expect(text).toBe("123")
-      dirigent({mode: "replace",text:"Hello"})
+      conductor({mode: "replace",text:"Hello"})
       const text2=view.querySelector("p").innerHTML
       expect(text2).toBe("Hello")
-      dirigent({mode: "insert", text: "ei", pos: 3})
+      conductor({mode: "insert", text: "ei", pos: 3})
       const text3=view.querySelector("p").innerHTML
       expect(text3).toBe("Heleilo")
+      conductor({mode: "replace", from:3, to:7, text:"oioi"})
+      const text4=view.querySelector("p").innerHTML
+      expect(text4).toBe("Heloioieilo")
       done()
     }).catch(e => {
       fail(e)
@@ -41,7 +44,7 @@ describe("Editor component", () => {
 
   
   function commands(cmd) {
-    dirigent=cmd  
+    conductor=cmd  
   }
 })
 
