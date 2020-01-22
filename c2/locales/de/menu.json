@@ -1,5 +1,9 @@
 {
   "login": "Login",
   "patient": "Patient",
-  "agenda": "Agenda"
+  "agenda": "Agenda",
+  "konsultationen": "Konsultationen",
+  "heute": "Heute",
+  "tagwaehlen": "Tag wählen...",
+  "suchen": "Suchen..."
 }

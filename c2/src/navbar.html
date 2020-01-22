@@ -7,14 +7,22 @@
 
     <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" route-href="route: agenda" i18n="menu.agenda"></a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="agendaMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" t="menu:agenda"></a>
+          <div class="dropdown-menu" aria-labelledby="agendaMenu">
+            <a class="dropdown-item" reute-href="route:agenda" t="menu:heute"></a>
+            <a class="dropdown-item" route-href="route:agenda" t="menu:tagwaehlen"></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="route:agenda" t="menu:suchen"></a>
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" route-href="route: patient" t="menu.patient"></a>
+          <a class="nav-link" route-href="route: patient" t="menu:patient"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" route-href="route: kons" t="menu:konsultationen"></a>
         </li>
       </ul>
-
     </div>
   </nav>
 

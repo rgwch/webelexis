@@ -25,6 +25,9 @@ export function configure(aurelia: Aurelia) {
         attributes: aliases,
         lng: selectedLanguage,
         fallbacklng: 'de',
+        ns: ['menu', 'translation'],
+        defaultNs: 'translation',
+    
         debug: true
       })
     })

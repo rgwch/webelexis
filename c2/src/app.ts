@@ -32,6 +32,12 @@ export class App {
         moduleId: PLATFORM.moduleName("routes/agenda"),
         nav: true,
         title: this.i18n.tr('menu:agenda')
+      },
+      {
+        route: "kons",
+        name: "kons",
+        moduleId: PLATFORM.moduleName("routes/kons"),
+        title: this.i18n.tr('menu:kons')
       }
     ])
   }
