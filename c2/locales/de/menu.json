@@ -1,9 +1,12 @@
 {
   "login": "Login",
+  "logout": "Abmelden",
   "patient": "Patient",
   "agenda": "Agenda",
   "konsultationen": "Konsultationen",
   "heute": "Heute",
   "tagwaehlen": "Tag wählen...",
-  "suchen": "Suchen..."
+  "suchen": "Suchen...",
+  "username": "Benutzername",
+  "password": "Passwort"
 }

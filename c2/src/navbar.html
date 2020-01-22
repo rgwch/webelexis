@@ -25,6 +25,16 @@
           <a class="nav-link" route-href="route: kons" t="menu:konsultationen"></a>
         </li>
       </ul>
+      <div if.bind="username">
+        ${username}
+      </div>
+      <div else>
+        <form class="form-inline">
+        <input class="form-control mr-sm-2" type="text" t="[placeholder,aria-label]menu:username">
+        <input class="form-control mr-sm-2" type="password" t="[placeholder,aria-label]menu:password">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" t="menu:login"></button>
+      </form>
+    </div>
     </div>
   </nav>
 
