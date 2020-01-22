@@ -1,5 +1,5 @@
 {
-  "name": "c-2",
+  "name": "webelexis",
   "type": "project:application",
   "paths": {
     "root": "src",
@@ -23,7 +23,7 @@
   "platform": {
     "hmr": false,
     "open": false,
-    "port": 8080,
+    "port": 9000,
     "host": "localhost",
     "output": "dist"
   },
