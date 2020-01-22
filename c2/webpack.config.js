@@ -15,7 +15,7 @@ const when = (condition, config, negativeConfig) =>
   condition ? ensureArray(config) : ensureArray(negativeConfig);
 
 // primary config:
-const title = 'Aurelia Navigation Skeleton';
+const title = 'Webelexis';
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, 'src');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
@@ -174,9 +174,6 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
   },
   plugins: [
     ...when(!tests, new DuplicatePackageCheckerPlugin()),
-    new CopyWebpackPlugin([
-      {from: 'locales/', to: outDir+'/locales/'}
-    ]),
     new AureliaPlugin(),
     new ProvidePlugin({
       'Promise': ['promise-polyfill', 'default']
@@ -209,7 +206,9 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
       chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
     })),
     ...when(!tests, new CopyWebpackPlugin([
-      { from: 'static', to: outDir, ignore: ['.*'] }])), // ignore dot (hidden) files
+      { from: 'static', to: outDir, ignore: ['.*'] },
+      {from: 'locales/', to: outDir+'/locales/'}
+    ])), // ignore dot (hidden) files
     ...when(analyze, new BundleAnalyzerPlugin()),
     /**
      * Note that the usage of following plugin cleans the webpack output directory before build.

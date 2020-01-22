@@ -1,6 +1,6 @@
 {
-  "name": "c-2",
-  "description": "An Aurelia client application.",
+  "name": "webelexis",
+  "description": "A Web Client for Elexis(tm).",
   "version": "0.1.0",
   "repository": {
     "type": "???",
