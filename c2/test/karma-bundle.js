@@ -1,9 +1,9 @@
 import 'aurelia-polyfills';
 import 'aurelia-loader-webpack';
-import {install as installJasmineAsync} from 'jest-jasmine2/jasmine_async';
+// import {install as installJasmineAsync} from 'jest-jasmine2/jasmine_async';
 
 // enable running Promise-returning tests:
-installJasmineAsync(global);
+// installJasmineAsync(global);
 
 // disable stacktrace limit so we do not loose any error information
 Error.stackTraceLimit = Infinity;
