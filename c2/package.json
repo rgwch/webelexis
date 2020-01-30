@@ -8,6 +8,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@feathersjs/authentication-client": "^4.5.1",
+    "@feathersjs/client": "^4.5.1",
     "@fortawesome/fontawesome-free": "^5.12.0",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.3.2",
