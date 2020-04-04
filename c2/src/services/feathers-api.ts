@@ -1,17 +1,16 @@
+import { IUser } from './../models/user-model';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018-2020 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
-
-import * as feathers from "@feathersjs/client";
-import { autoinject, LogManager } from "aurelia-framework";
-import * as io from "socket.io-client";
-import env from "../environment";
-import { IDataService, IDataSource } from "./dataservice";
-const log = LogManager.getLogger("feathers-api");
-import { IUser } from './../models/user-model';
-import { IKontakt } from './../models/kontakt-model';
+import { IDataSource, IDataService } from './dataservice';
+import { autoinject } from 'aurelia-framework';
+import * as feathers from '@feathersjs/feathers'
+import * as socketio from '@feathersjs/socketio-client'
+import * as io from 'socket.io-client'
+import * as auth from '@feathersjs/authentication-client'
+import env from 'environment'
 
 
 /**
@@ -20,15 +19,13 @@ import { IKontakt } from './../models/kontakt-model';
  */
 @autoinject
 export class FeathersDS implements IDataSource {
-  private client;
+  private client
 
   constructor() {
-    const socket = io.connect(env.baseURL);
-
-    this.client = feathers()
-    this.client.configure(feathers.socketio(io))
-      .configure(feathers.socketio(socket))
-      .configure(feathers.authentication({ storageKey: 'auth' }));
+    const socket = io(env.baseURL);
+    this.client= feathers()
+    this.client.configure(socketio(socket))
+    this.client.configure(auth.default({}))
   }
 
   public getService(name: string): IDataService {
@@ -49,6 +46,7 @@ export class FeathersDS implements IDataSource {
    * @returns the logged in 'user' object with all properties except the password.
    * or undefined if it could not log in.
    */
+  /*
   public async login(username?: string, password?: string): Promise<IUser> {
     try {
       let jwt;
@@ -61,12 +59,24 @@ export class FeathersDS implements IDataSource {
       } else {
         jwt = await this.client.authenticate();
       }
-      const verified = await this.client.passport.verifyJWT(jwt.accessToken);
-      const user = await this.client.service("user").get(verified.userId);
+      // const verified = await this.client.passport.verifyJWT(jwt.accessToken);
+      const user = await this.client.service("user").get(username);
       return user;
     } catch (err) {
-      log.error("Error while authenticating " + err);
-      return undefined;
+      throw new Error("Error while authenticating " + err);
+
+    }
+  }
+*/
+  public async login(username?, password?){
+    try{
+      return await this.client.reAuthenticate()
+    }catch(err){
+      return await this.client.authenticate({
+        strategy: 'local',
+        id: username,
+        password
+      })
     }
   }
 
@@ -85,7 +95,7 @@ export class FeathersDS implements IDataSource {
   }
 
   public metadata() {
-    log.info("getting metadata from " + env.baseURL);
+    //log.info("getting metadata from " + env.baseURL);
     return fetch(env.baseURL + "metadata")
       .then(response => {
         return response.json();
@@ -95,7 +105,7 @@ export class FeathersDS implements IDataSource {
         return json;
       })
       .catch(err => {
-        log.error("can't fetch metadata: " + err);
+        //log.error("can't fetch metadata: " + err);
         // alert(this.i18n.tr("errmsg.connect"));
         return env.metadata
       });

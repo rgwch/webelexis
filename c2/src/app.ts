@@ -38,6 +38,16 @@ export class App {
         name: "kons",
         moduleId: PLATFORM.moduleName("routes/kons"),
         title: this.i18n.tr('menu:kons')
+      }, {
+        route: "article",
+        name: "art",
+        moduleId: PLATFORM.moduleName("routes/article"),
+        title: this.i18n.tr('menu:art')
+      }, {
+        route: "documents",
+        name: "doc",
+        moduleId: PLATFORM.moduleName("routes/documents"),
+        title: this.i18n.tr('menu:doc')
       }
     ])
   }

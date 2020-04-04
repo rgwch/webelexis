@@ -18,7 +18,7 @@ const log = LogManager.getLogger("feathers-api");
  * with SocketIO-Transport.
  */
 @autoinject
-export class FeathersDS implements IDataSource {
+export class xFeathersDS implements IDataSource {
   private client;
   
   constructor() {

@@ -48,23 +48,25 @@
     }
   },
   "authentication": {
-    "entity": "user",
-    "service": "user",
-    "secret": "RTOlqkqNt5Q3rERR/M+tdLQyLbU=",
-    "authStrategies": [
+    "secret": "Don't tell anybody and don't check in in source control",
+    "strategies": [
       "jwt",
       "local"
     ],
-    "jwtOptions": {
+    "path": "/authentication",
+    "service": "user",
+    "jwt": {
       "header": {
         "typ": "access"
       },
       "audience": "https://yourdomain.com",
+      "subject": "anonymous",
       "issuer": "feathers",
       "algorithm": "HS256",
       "expiresIn": "1d"
     },
     "local": {
+      "entity": "user",
       "usernameField": "id",
       "passwordField": "password"
     }
