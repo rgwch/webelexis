@@ -21,14 +21,14 @@ import { IKontakt } from './../models/kontakt-model';
 @autoinject
 export class FeathersDS implements IDataSource {
   private client;
-  
+
   constructor() {
     const socket = io.connect(env.baseURL);
 
     this.client = feathers()
     this.client.configure(feathers.socketio(io))
       .configure(feathers.socketio(socket))
-      .configure(feathers.authentication({storageKey: 'auth'}));
+      .configure(feathers.authentication({ storageKey: 'auth' }));
   }
 
   public getService(name: string): IDataService {
@@ -68,6 +68,13 @@ export class FeathersDS implements IDataSource {
       log.error("Error while authenticating " + err);
       return undefined;
     }
+  }
+
+  public async checkLogin(): Promise<IUser> {
+    const jwt = this.client.authenticate();
+    const verified = await this.client.passport.verifyJWT(jwt.accessToken);
+    const user = await this.client.service("user").get(verified.userId);
+    return user;
   }
 
   /**
