@@ -12,10 +12,10 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="agendaMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" t="menu:agenda"></a>
           <div class="dropdown-menu" aria-labelledby="agendaMenu">
-            <a class="dropdown-item" reute-href="route:agenda" t="menu:heute"></a>
+            <a class="dropdown-item" route-href="route:agenda" t="menu:heute"></a>
             <a class="dropdown-item" route-href="route:agenda" t="menu:tagwaehlen"></a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="route:agenda" t="menu:suchen"></a>
+            <a class="dropdown-item" route-href="route:agenda" t="menu:suchen"></a>
           </div>
         </li>
         <li class="nav-item">
@@ -23,6 +23,12 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" route-href="route: kons" t="menu:konsultationen"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" route-href="route: art" t="menu:artikel"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" route-href="route: doc" t="menu:dokumente"></a>
         </li>
       </ul>
       <div if.bind="username">

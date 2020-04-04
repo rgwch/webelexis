@@ -10,7 +10,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 let selectedLanguage = navigator.languages[0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
 
-export function configure(aurelia: Aurelia) {
+export async function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'))
@@ -38,5 +38,8 @@ export function configure(aurelia: Aurelia) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
 
+  await aurelia.start()
+  await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
+  
   aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
 }

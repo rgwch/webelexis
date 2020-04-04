@@ -1,9 +1,10 @@
-import { bindable, bindingMode, inlineView } from 'aurelia-framework';
+import { bindable, bindingMode, inlineView, autoinject } from 'aurelia-framework';
 const mobi=window['mobiscroll']
 
+@autoinject
 @inlineView(`
 <template>
-  <div ref="ed"></div>
+  <div ref="cal"></div>
 </template>
 `)
 export class Calendar{
@@ -20,11 +21,11 @@ export class Calendar{
         calendar: {
           type: 'month',
           size: 1
+        },
+        eventList: {
+          type: 'day',
+          size: 1
         }
-      },
-      eventList: {
-        type: 'day',
-        size: 1
       }
     })
   }
