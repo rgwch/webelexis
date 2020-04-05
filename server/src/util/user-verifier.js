@@ -2,8 +2,8 @@ const log = require('../logger')
 const ElexisUtil = require('../util/elexis-types')
 const elexisUtils = new ElexisUtil()
 
-
-class CustomVerifier {
+/*** DEPRECATED */
+class xCustomVerifier {
     constructor(app, options = {}) {
         this.app = app;
         this.options = options;

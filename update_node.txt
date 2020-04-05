@@ -1,0 +1,9 @@
+https://medium.com/flawless-app-stories/gyp-no-xcode-or-clt-version-detected-macos-catalina-anansewaa-38b536389e8d
+
+ sudo rm -rf `xcode-select --print-path`
+
+ xcode-select --install
+
+npm install java
+cd node_modules/iconv
+npx node-gyp rebuild
