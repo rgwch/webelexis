@@ -1,0 +1,8 @@
+<template>
+  <h1>${message}</h1>
+  <form submit.delegate="doLogin()">
+    <input type="text" value.bind="username">
+    <input type="password" value.bind="password">
+    <button type="submit">ok</button>
+  </form>
+</template>
