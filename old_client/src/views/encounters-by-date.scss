@@ -1,0 +1,25 @@
+@import '../stylevars';
+
+.date{
+  color: #4171a1;
+  font-size: small;
+  font-weight: 200;
+}
+
+.name{
+  color: blue;
+  font-size: normal;
+  cursor: pointer;
+  
+}
+
+.name:hover{
+  font-weight: 400;
+  color: red;
+}
+.price{
+  color:black;
+  font-size: normal;
+  font-weight: 250;
+  margin-top: 5px;
+}

@@ -1,0 +1,11 @@
+.smartlist{
+  background-color:orange;
+  color: black;
+  .item{
+    color:black;
+    padding:5px;
+    font-size:smaller;
+  }
+  .item:hover{background-color: red;}
+  
+}

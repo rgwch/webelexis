@@ -1,0 +1,29 @@
+<template>
+  <require from="components/encounter"></require>
+  <require from="components/endless-scroll"></require>
+  <require from="services/date-format"></require>
+  <require from="components/searchfield"></require>
+  <require from="components/newitem-btn"></require>
+  <span class="detailcaption">Konsultationen</span>
+  <div class="sheet">
+    <div class="header">
+      <div class="form-inline">
+        <searchfield t="[searchtext]select.search" result.two-way="searchexpr"></searchfield>
+        <select style="margin-left:20px;height:2em;" value.bind="actCase">
+          <option model.bind="null" t="select.allcases">All cases</option>
+          <option repeat.for="case of cases" model.bind="case">${caseManager.getLabel(case)}</option>
+        </select>
+        <new-item-button disabled.bind="actCase == null" click.delegate="newEncounter()"></new-item-button>
+      </div>
+    </div>
+    <div class="body" style="height:85vh;">
+      <div class="scroller" scrolltop.bind="scrollTop" scroll.trigger="scroll()">
+        <ul class="list-group" ref="encdom">
+          <li class="list-group-item" repeat.for="enc of encounters.data">
+            <encounter obj.bind="enc"></encounter>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>

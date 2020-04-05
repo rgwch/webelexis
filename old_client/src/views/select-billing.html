@@ -1,0 +1,32 @@
+<template>
+  <require from="components/searchfield"></require>
+  <span class="detailcaption">Leistungen</span>
+  <div class="sheet">
+    <div class="header">
+      <searchfield placeholder="Position" result.two-way="ls_position"></searchfield>
+    </div>
+    <div class="body" style="height:35vh;overflow:auto">
+      <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">
+        <span draggable="true" dragstart.trigger="drag($event)" id="${el.codesystem+'!'+el.id}">
+          <b>${getCode(el)}</b> ${getText(el)}
+        </span></div>
+    </div>
+  </div>
+  <div class="sheet" style="margin-top:4px">
+    <div class="header">
+      Blöcke
+    </div>
+    <div class="body" style="height:45vh;overflow:auto">
+      <div class="compactlist" repeat.for="bl of blocks" click.delegate="select(bl)">
+        <span draggable="true" dragstart.trigger="drag($event)" id="block!${bl.id}" click.delegate="changeState(bl)">
+          * ${getLabel(bl)}
+        </span>
+        <div show.bind="bl.openState">
+          <div draggable="true" dragstart.trigger="drag($event)" id="${el.codesystem+'!'+el.id}" repeat.for="el of bl.resolved">
+            ${getCode(el)} ${getText(el)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

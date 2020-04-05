@@ -1,0 +1,29 @@
+<template>
+  <require from="../components/searchfield"></require>
+  <ux-dialog  style="width:80vH;height:70vh;">
+    <ux-dialog-header>
+      <h3>Abrechnungspositionen wählen</h3>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div class="row">
+        <div class="col">
+          <searchfield placeholder="Position" result.two-way="position"></searchfield>
+          <div>
+            <div class="compactlist" repeat.for="el of billables" click.delegate="select(el)">${makeLabel(el)}</div>
+          </div>
+        </div>
+        <div class="col">
+          <h4>Gewählt
+          </h4>
+          <div>
+            <div class="compactlist" repeat.for="sel of selected" click.delegate="deselect(sel)">${makeLabel(sel)}</div>
+          </div>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="dc.cancel()">Cancel</button>
+      <button click.trigger="dc.ok(selection)">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

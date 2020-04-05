@@ -1,0 +1,164 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2018 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+@import 'stylevars';
+
+
+/* general border */
+.bordered {
+  border-color: $bordercolor;
+  border-style: solid;
+  border-radius: 5px;
+}
+
+.clickable {
+  cursor: pointer;
+  margin-left: 20px;
+}
+.clickable:hover {
+  transform: scale(1.5);
+}
+
+.compactlist {
+  padding-top: 0px;
+  padding-bottom: 1px;
+  margin-top: 0px;
+  margin-bottom: 1px;
+  font-size: smaller;
+  cursor: pointer;
+  color: black;
+}
+
+.highlight-item {
+  @extend .compactlist;
+  background-color: $highlightcolor;
+}
+.compactlist:hover {
+  color:darkblue;
+}
+
+[contenteditable]:hover, [contenteditable]:focus {
+  background: #FFFFD3;
+}
+
+[contenteditable]:focus {
+  padding: 5px;
+}
+
+/* Make something not-selectable */
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+/* CommonViewer and Sheet */
+common-viewer,
+.sheet {
+  .header {
+    background-color: $form-background;
+    padding: 10px;
+    border-color: $bordercolor;
+    border-radius: 10px 10px 0 0;
+    border-style: solid solid none solid;
+  }
+  .body {
+    background-color: $fillcolor;
+    height: 100%;
+    overflow: auto;
+    border-style: none solid solid solid;
+    border-radius: 0 0 10px 10px;
+    border-color: $bordercolor;
+  }
+  .entry {
+    @extend .compactlist;
+    color: black;
+  }
+
+  .highlight {
+    @extend .entry;
+    background-color: $highlightcolor;
+  }
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Button to create new elements */
+.createbutton {
+  color: green;
+}
+
+.detailcaption {
+  color: $captioncolor;
+}
+
+/* FlexForm */
+flex-form form {
+  background-color: $form-background;
+  padding: 10px;
+  border-radius: 10px;
+  border-color: $bordercolor;
+  border-style: solid;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+/* Images used for navigation elements */
+img.nav {
+  width: 20px;
+  height: 25px;
+  //vertical-align: bottom;
+  //padding-top: 5px;
+  float: "left";
+}
+
+.schmaler {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* The endless scroll scrolling component */
+.scroller {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+
+
+.nav .menuitem {
+  cursor: pointer;
+}
+
+.menu {
+  border-style: solid;
+  border-width: 1px;
+  border-color: blue;
+  .menuitem {
+    cursor: pointer;
+  }
+  .menuitem:hover {
+    color: white;
+    background-color: black;
+  }
+  .separator {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-style: bold;
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "adapters": {
+    "datetime_format": "DD.MM.YYYY, HH:mm",
+    "date_format": "DD.MM.YYYY",
+    "time_format": "HH:mm",
+    "datetime_format_parse": "D.M.YYYY,H:m",
+    "date_format_parse": "D.M.YYYY",
+    "time_format_parse": "H:m",
+    "database_format_date": "YYYYMMDD"
+  },
+  "address": {
+    "street": "Strasse",
+    "zip": "Plz",
+    "place": "Ort"
+  },
+  "appointment": {
+    "new_for": "Neuer Termin für:",
+    "delete": "Löschen",
+    "shorten": "Kürzen",
+    "enlarge": "Verlängern"
+  },
+  "article": {
+    "pagetitle": "Artikeldetails",
+    "name": "Name",
+    "buy": "Ex factory Preis",
+    "sell": "Publikumspreis",
+    "size": "Packungsgrösse",
+    "instore": "Lagerbestand",
+    "maxstore": "Maxbestand",
+    "minstore": "Minbestand",
+    "opened": "Anbruch"
+  },
+  "billing":{
+    "currency": "CHF",
+    "positions":"Abrechnungspositionen"
+  },
+  "calendar": {
+    "months": [
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember"
+    ],
+    "weekdays": [
+      "Sonntag",
+      "Montag",
+      "Dienstag",
+      "Mittwoch",
+      "Donnerstag",
+      "Freitag",
+      "Samstag"
+    ],
+    "weekdaysShort": [
+      "So",
+      "Mo",
+      "Di",
+      "Mi",
+      "Do",
+      "Fr",
+      "Sa"
+    ],
+    "previousMonth": "voriger Monat",
+    "nextMonth": "nächster Monat"
+  },
+  "case": {
+    "illness": "Krankheit",
+    "accident": "Unfall"
+  },
+  "contact": {
+    "data": "Personalien",
+    "firstname": "Vornamen",
+    "lastname": "Nachname",
+    "birthdate": "Geburtsdatum",
+    "gender": "Geschlecht",
+    "remark": "Bemerkung",
+    "contactpoints": "Erreichbar",
+    "phone1": "Telefon P",
+    "phone2": "Telefon G",
+    "mobile": "Mobil",
+    "email": "E-Mail"
+  },
+  "dlg": {
+    "close": "Schliessen",
+    "create": "Erstellen",
+    "newelem": "neues Element",
+    "selectpat": "Patient wählen",
+    "reallydelete": "{{item}} wirklich löschen?",
+    "docsave": "Dokument speichern",
+    "subject": "Titel",
+    "addressee": "Adressat",
+    "username": "Username / E-Mail",
+    "password": "Passwort"
+  },
+  "errmsg":{
+    "error": "Fehler",
+    "connect": "Verbindungsfehler",
+    "rights": "Ungenügende Rechte"
+  },
+  "edit": {
+    "para": "Absatz",
+    "heading1": "Überschrift 1",
+    "heading2": "Überschrift 2"
+  },
+  "info": {
+    "nopatselected": "Kein Patient ausgewählt"
+  },
+  "nav": {
+    "maintitle": "Praxis Breite",
+    "account": "Konto",
+    "agenda": "Agenda",
+    "patdetails": "Patient Details",
+    "newpat": "Neuer Patient",
+    "encounters": "Konsultation",
+    "documents": "Dokumente",
+    "lab": "Labor",
+    "articles": "Artikel",
+    "medi": "Medikamente"
+  },
+  "menu": {
+    "add": "Hinzufügen",
+    "selectall": "Alle auswählen",
+    "deselectall": "Auswahl aufheben",
+    "delete": "Löschen",
+    "graph": "Grafik",
+    "export": "Exportieren"
+  },
+  "select": {
+    "search": "Suchen",
+    "allcases": "Alle Fälle",
+    "select": "Auswahl"
+  },
+  "validation": {
+    "onlyText": "2-80 Zeichen, keine Ziffern und Sonderzeichen",
+    "invalidDate": "Ungültiges Datum"
+  }
+}

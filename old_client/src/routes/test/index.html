@@ -1,0 +1,13 @@
+<template>
+  <require from="components/mbd-editor"></require>
+  <div class="row" ref="parent">
+    <div class="btn-group-vertical bordered" style="position:absolute;left:5px;top:20px" ref="buttons">
+      <button class="btn" repeat.for="vi of views" click.trigger="switchTo(vi)">${vi.name}
+      </button>
+    </div>
+    <div style="background-color: aquamarine; left: 300px;top:100px; height: 100px;width: 200px;">
+      <p>test</p>
+      <mbd-editor style="width: 200px;height:100px"></mbd-editor>
+    </div>
+  </div>
+</template>

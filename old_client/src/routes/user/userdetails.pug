@@ -1,0 +1,33 @@
+mixin inp(id,v,title)
+  label.col-2(for= id) #{title}
+  input.form-control.col-10(readonly id= id value.bind= v)
+template
+  .sheet
+    .header Kontodetails
+    .body
+      h2 Username: ${user ? user.id : ""}
+      p Diese Daten können nicht hier geändert werden. Erstellen und modifizieren Sie Anwender und Mandanten bitte in Elexis.
+      hr
+      h3 Mandant:
+      table
+        tr
+          td Kürzel:
+          td ${mandant ? mandant.bezeichnung3 : ""}
+          td Name:
+          td ${mandant.titel} ${mandant.bezeichnung1} ${mandant.bezeichnung2}
+        tr 
+          td Spezialität:
+          td ${mandant.extjson.TarmedSpezialität}
+          td Kanton
+          td ${mandant.extjson.TarmedKanton}  
+        tr
+          td Adresse:
+          td ${mandant.strasse}, ${mandant.plz} ${mandant.ort}  
+          td Telefon:
+          td ${mandant.telefon1}; ${mandant.telefon2}; ${mandant.natelnr}
+        tr
+          td ZSR-Nr.:
+          td ${mandant.extjson.KSK}
+          td GLN:
+          td ${mandant.extjson.EAN}
+
