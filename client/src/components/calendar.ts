@@ -9,6 +9,8 @@ const mobi=window['mobiscroll']
 `)
 export class Calendar{
   @bindable setDay: (event,instance)=>boolean
+  @bindable setMonth: (event,instance)=>{}
+  @bindable eventSelected: (event,instance)=>{}
 
   constructor(private cal:Element){
 
@@ -18,7 +20,7 @@ export class Calendar{
     mobi.eventcalendar(this.cal,{
       lang: 'de',
       display: 'inline',
-      theme: 'mobiscroll',
+      theme: 'bootstrap',
       view:{
         calendar: {
           type: 'month',
@@ -29,8 +31,9 @@ export class Calendar{
           size: 1
         }
       },
-      onDayChange: this.setDay
-    
+      onDayChange: this.setDay,
+      onPageChange: this.setMonth,
+      onEventSelect: this.eventSelected
     })
   }
 

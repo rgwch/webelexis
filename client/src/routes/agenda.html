@@ -1,4 +1,12 @@
 <template>
   <require from="../components/calendar"></require>
-  <calendar set-day.bind="setDay"></calendar>
+  <div class="row">
+    <div class="col-sm-12 col-md-6">
+      <calendar set-day.bind="setDay" , set-month.bind="setMonth" event-selected.bind="eventSelected"></calendar>
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+      <p textcontent.bind="info">Hallo ${info}</p>
+    </div>
+  </div>
 </template>

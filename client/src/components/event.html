@@ -1,0 +1,53 @@
+<template>
+  <require from="./newappnt"></require>
+  <!-- left column: indication of times -->
+  <div class="col-lg-2 col-md-3 termin text-truncate" css.bind="statecss">
+    ${getTimes()}
+    <div if.bind="detailVisible && (!isStaticType())" class="slideitem au-animate">
+      <!-- selects to display and change types and states of appointments -->
+      <select value.bind="entry.obj.termintyp" style="display:block;width:100%" change.delegate="save()" )>
+        <option repeat.for="tt of termintypen">${tt}</option>
+      </select>
+      <select value.bind="entry.obj.terminstatus" style="display:block;width:100%" change.delegate="save()">
+        <option repeat.for="tt of terminstaten">${tt}</option>
+      </select>
+      <!-- Some buttons to make appointment longer, shorter, or delete it -->
+      <div class="btn-group-vertical" role-"group" hide.bind="entry.isFree()">
+        <button type="button" class="btn btn-outline-primary btn-sm" t="appointment.shorten" click.delegate="shorten()"></button>
+        <button type="button" class="btn btn-outline-primary btn-sm" t="appointment.enlarge" click.delegate="enlarge()"></button>
+        <button type="button" class="btn btn-outline-primary btn-sm" t="appointment.delete" click.delegate="delete()"></button>
+      </div>
+    </div>
+  </div>
+  <!-- Right column: Appointment concern -->
+  <div class="col-lg-10 col-md-9">
+    <div class="termin text-truncate" css.bind="typecss">
+      <a href="#" click.trigger="showDetail()" role="button">
+        <span style="width:80%;">
+          ${getLabel()} (${entry.obj.termintyp}, ${entry.obj.terminstatus}):
+          ${entry.obj.grund}
+        </span>
+      </a>
+    </div>
+    <!-- detail informations depending of appointment type-->
+    <div if.bind="detailVisible" class="slideitem au-animate" style="height:8em;">
+      <div>
+        <new-appointment termin.bind="entry" if.bind="entry.isFree()"></new-appointment>
+        <div if.bind="entry.isAppointment()">
+          <textarea value.bind="entry.obj.grund" style="width:100%;height:5em;" blur.trigger="save()"></textarea>
+          <div>
+            <div class="btn-group mb-2" role="group" aria-label="Termin Aktionen">
+              <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('stammdaten')" t="nav.patdetails"></button>
+              <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('konsultationen')"
+                t="nav.encounters"></button>
+              <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('dokumente','dokumentliste')"
+                t="nav.documents"></button>
+              <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('labor')" t="nav.lab"></button>
+              <button type="button" class="btn btn-outline-primary btn-sm mr-2" click.delegate="select('medikation')" t="nav.medi"></button>
+            </div>
+          </div>
+        </div> <!-- isAppointment() -->
+      </div>
+    </div>
+  </div>
+</template>

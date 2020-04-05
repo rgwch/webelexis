@@ -1,11 +1,10 @@
 import { IDataSource } from './services/dataservice';
-import {FeathersDS} from './services/feathers-api'
-import { AppState } from './services/app-state';
+import { FeathersDS } from './services/feathers-api'
+import { HandleState, appState } from './services/app-state';
 import { Aurelia } from 'aurelia-framework'
-import { Container } from 'aurelia-dependency-injection';
 import * as environment from '../config/environment.json';
 import { PLATFORM } from 'aurelia-pal';
-import { I18N, TCustomAttribute } from 'aurelia-i18n'
+import { TCustomAttribute } from 'aurelia-i18n'
 import Backend from "i18next-xhr-backend";
 import 'bootstrap'
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -32,7 +31,7 @@ export async function configure(aurelia: Aurelia) {
         fallbacklng: 'de',
         ns: ['menu', 'translation'],
         defaultNs: 'translation',
-    
+
         debug: true
       })
     })
@@ -42,26 +41,28 @@ export async function configure(aurelia: Aurelia) {
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
+  aurelia.use.plugin(PLATFORM.moduleName('aurelia-store'), { initialState: appState })
 
-  const appState=Container.instance.get(AppState)
-  let datasource:IDataSource
-  if(env.transport === 'fhir'){
+  let datasource: IDataSource
+  if (env.transport === 'fhir') {
 
-  }else{
-    datasource=aurelia.container.get(FeathersDS)
+  } else {
+    datasource = aurelia.container.get(FeathersDS)
   }
-  aurelia.container.registerInstance("DataSource",datasource)
+  aurelia.container.registerInstance("DataSource", datasource)
+  const handleState = aurelia.container.get(HandleState)
 
   await aurelia.start()
   await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
 
 
-  datasource.login().then(user=>{
-    appState.loggedInUser=user
+  datasource.login().then(user => {
+    handleState.logIn(user)
+  }).then(() => {
     aurelia.setRoot(PLATFORM.moduleName('app'))
-  }).catch(e=>{
+  }).catch(e => {
     console.log(e)
-    appState.loggedInUser=null
+    handleState.logIn(null)
     aurelia.setRoot(PLATFORM.moduleName('routes/login'))
   })
 

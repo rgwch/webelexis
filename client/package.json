@@ -16,12 +16,14 @@
     "aurelia-bootstrapper": "^2.3.2",
     "aurelia-dialog": "^2.0.0",
     "aurelia-i18n": "^3.1.0",
+    "aurelia-store": "^1.6.0",
     "bootstrap": "^4.4.1",
     "i18next-xhr-backend": "^3.2.2",
     "jquery": "^3.4.1",
     "mobiledoc-kit": "^0.12.4",
     "moment": "^2.24.0",
     "popper.js": "^1.16.1",
+    "rxjs": "^6.5.5",
     "uuidv4": "^6.0.7"
   },
   "devDependencies": {
