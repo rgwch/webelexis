@@ -1,63 +1,47 @@
-<template bindable="router">
+<template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <img class="navbar-brand" src="/webelexis_drop_50.jpg"></img>
-      <button class="navbar-toggler" type="button" data-toggle="collapse"
-          data-target="#navbarContent" aria-controls="navbarContent"
-          aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="patientDropdown" data-toggle="dropdown">
-                Patient
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" route-href="route: patient">Wählen</a>
-                <a class="dropdown-item" route-href="route: patneu">Neu</a>
-                <a class="dropdown-item" href="#">Details</a>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dayDropdown" data-toggle="dropdown">
-                    Tag
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" route-href="route: agenda">Agenda</a>
-                    <a class="dropdown-item" href="#">Konsultationen</a>
-                  </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="articleDropdown" data-toggle="dropdown">
-                    Artikel
-                  </a>
-                  <div class="dropdown-menu">
-                      <a class="dropdown-item" route-href="route: artikel">Komplettliste</a>
-                    <a class="dropdown-item" href="#">Lager</a>
+    <a class="navbar-brand" href="#">
+      <img src="/webelexis_drop_50.jpg">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-                  </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="documentDropdown" data-toggle="dropdown">
-                    Dokumente
-                  </a>
-                  <div class="dropdown-menu">
-                      <a class="dropdown-item" route-href="route: documents">Komplettliste</a>
-                    <a class="dropdown-item" href="#">Eingehend</a>
-                    <a class="dropdown-item" href="#">Ausgehend</a>
-                    <a class="dropdown-item" href="#">Vorlagen</a>
-                  </div>
-            </li>
-          </ul>
-          <form class="form-inline my-2 my-lg-0" if.bind="loggedIn==false">
-            <input class="form-control" type="text" placeholder="name">
-            <input class="form-control" type="password" placeholder="password">
-            <button class="btn" type="submit">Log In</button>
-          </form>
-          <div if.bind="loggedIn==true">
-            ${state}
-            <button class="btn" click.delegate="logout()">Log out</button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="agendaMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" t="menu:agenda"></a>
+          <div class="dropdown-menu" aria-labelledby="agendaMenu">
+            <a class="dropdown-item" route-href="route:agenda" t="menu:heute"></a>
+            <a class="dropdown-item" route-href="route:agenda" t="menu:tagwaehlen"></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" route-href="route:agenda" t="menu:suchen"></a>
           </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" route-href="route: patient" t="menu:patient"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" route-href="route: kons" t="menu:konsultationen"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" route-href="route: art" t="menu:artikel"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" route-href="route: doc" t="menu:dokumente"></a>
+        </li>
+      </ul>
+      <div if.bind="username">
+        ${username}
       </div>
+      <div else>
+        <form class="form-inline">
+        <input class="form-control mr-sm-2" type="text" t="[placeholder,aria-label]menu:username">
+        <input class="form-control mr-sm-2" type="password" t="[placeholder,aria-label]menu:password">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" t="menu:login"></button>
+      </form>
+    </div>
+    </div>
   </nav>
+
 </template>

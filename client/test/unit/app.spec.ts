@@ -1,7 +1,26 @@
-import {App} from '../../src/app';
+import {bootstrap} from 'aurelia-bootstrapper';
+import {StageComponent} from 'aurelia-testing';
+import {PLATFORM} from 'aurelia-pal';
 
-describe('the app', () => {
-  it('says hello', () => {
-    expect(1).toBe(1);
+describe('Stage App Component', () => {
+  let component;
+
+  beforeEach(() => {
+    component = StageComponent
+      .withResources(PLATFORM.moduleName('app'))
+      .inView('<app></app>');
+  });
+
+  afterEach(() => component.dispose());
+
+  it('should render message', done => {
+    component.create(bootstrap).then(() => {
+      const view = component.element;
+      expect(true).toBe(true);
+      done();
+    }).catch(e => {
+      fail(e);
+      done();
+    });
   });
 });

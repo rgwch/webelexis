@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 
 module.exports = function (config) {
@@ -31,7 +30,7 @@ module.exports = function (config) {
       'test/karma-bundle.js': [ 'webpack' ]
     },
 
-    webpack: require('../webpack.config')({ coverage: false, karma: true }),
+    webpack: require('../webpack.config')({ tests: true }),
 
     /*
      * test results reporter to use
@@ -39,6 +38,7 @@ module.exports = function (config) {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
+
     reporters: [ 'mocha', 'progress', 'coverage-istanbul' ],
 
     coverageIstanbulReporter: {
@@ -69,9 +69,30 @@ module.exports = function (config) {
      * start these browsers
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
+    // browsers: [
+    //   'Chrome',
+    // ],
+    /*
+     * To run in non-headless mode:
+     * 1. Comment the following lines
+     * 2. Uncomment the above "browsers" setting
+    */
     browsers: [
-      'Chrome'
+      'ChromeHeadless',
     ],
+
+    customLaunchers: {
+      'ChromeHeadless': {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-gpu',
+          '--remote-debugging-port=9222'
+        ]
+      }
+    },
+    /** **************************************************************************** */
 
     /*
      * Continuous Integration mode

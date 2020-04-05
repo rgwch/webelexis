@@ -1,60 +1,71 @@
+import { autoinject } from 'aurelia-framework';
+import { I18N } from 'aurelia-i18n';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { inject } from "aurelia-framework";
-import { I18N } from "aurelia-i18n";
 import * as moment from "moment";
 
-@inject(I18N)
+@autoinject
 export class DateTime {
-  constructor(private i18) {}
 
+  constructor(private i18:I18N){}
+
+  public ElexisDateToLocalDate(date: string){
+    return moment(date,"YYYYMMDD").format(this.i18.tr('adapters.date_format'))
+  }
+
+  /**
+   * convert a Date object to a YYYYMMDD string
+   * @param date 
+   */
   public DateToElexisDate(date: Date): string {
     return moment(date).format("YYYYMMDD");
   }
 
+  /**
+   * convert a Date object to a YYYYMMDDHHmm string
+   * @param date 
+   */
   public DateToElexisDateTime(date: Date): string {
-    return moment(date).format("YYYYMMDDHHmmSS");
+    return moment(date).format("YYYYMMDDHHmm");
   }
-  public ElexisDateToLocalDate(yyyymmdd: string): string {
+
+  /**
+   * convert a YYYYMMDD string to a Date object
+   * @param yyyymmdd 
+   */
+  public ElexisDateToDate(yyyymmdd: string): Date {
     if (yyyymmdd) {
-      return moment(yyyymmdd, "YYYYMMDD").format(
-        this.i18.tr("adapters.date_format")
-      );
+      return moment(yyyymmdd, "YYYYMMDD").toDate()
     } else {
-      return moment().format(this.i18.tr("adapters.date_format"));
+      return moment().toDate()
     }
   }
 
-  public localDateToElexisDate(ddmmyy: string) {
-    return moment(ddmmyy, this.i18.tr("adapters.date_format")).format(
-      "YYYYMMDD"
-    );
-  }
-
-  public isValidLocalDate(dmy){
-    return (moment(dmy, "D.M.YYYY")).isValid()
-  }
-  public ElexisDateTimeToLocalDate(yyyymmddhhmmss: string): string {
-    if (yyyymmddhhmmss) {
-      return moment(yyyymmddhhmmss, "YYYYMMDDHHmmSS").format(
-        this.i18.tr("adapters.date_format")
-      );
-    } else {
-      return moment().format(this.i18.tr("adapters.date_format"));
+  /**
+   * Convert a YYYYMMDDHHmm or a YYYYMMDDHHmmSS to a Date object
+   * @param yyyymmddhhmmss 
+   */
+  public ElexisDateTimeToDate(yyyymmddhhmmss: string): Date {
+    if (yyyymmddhhmmss.length == 14) {
+      return moment(yyyymmddhhmmss, "YYYYMMDDHHmmSS").toDate()
+    } else if (yyyymmddhhmmss.length == 12) {
+      return moment(yyyymmddhhmmss, "YYYYMMDDHHmm").toDate()
+    }
+    else {
+      return moment().toDate();
     }
   }
-  public DateObjectToLocalDate(date: Date): string {
-    return moment(date).format(this.i18.tr("adapters.date_format"));
+
+  public addMinutesToDate(date:Date|string, minutes:number|string){
+    const m=moment(date)
+    const n = ((typeof(minutes)=='string') ? parseInt(minutes) : minutes) as number
+    m.add(n,'minutes')
+    return m.toDate()
   }
-  /*
-  public toDate(mom: string):string {
-    return moment(mom).format(this.i18.tr('adapters.date_format'))
-  }
-  */
 
   public minutesToTimeString(minutes: number): string {
     const hours: number = Math.floor(minutes / 60);
@@ -69,5 +80,11 @@ export class DateTime {
     }
 
     return hoursS + ":" + mins;
+  }
+
+
+
+  public isValidLocalDate(dmy) {
+    return (moment(dmy, "D.M.YYYY")).isValid()
   }
 }

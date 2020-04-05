@@ -1,14 +1,5 @@
 {
-  "extends": "tslint:recommended",
   "rules": {
-    "no-empty": true,
-    "semicolon": false,
-    "arrow-parens": false,
-    "quotemark": false,
-    "no-string-literal": false,
-    "max-classes-per-file": false,
-    "trailing-comma": false,
-    "ordered-imports": false,
-    "interface-name": false
+    "no-empty": true
   }
 }

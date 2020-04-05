@@ -8,6 +8,9 @@ const elexisUtils = new ElexisUtil()
 class ElexisAuth extends LocalStrategy{
   comparePassword(user,password){
     return new Promise((resolve, reject) => {
+      if(!user || !password){
+        reject(false)
+      }
       const hashed = elexisUtils.hashPassword(password, user.salt)
       if (hashed.hashed === user.hashed_password) {
           resolve(user)

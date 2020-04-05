@@ -4,19 +4,23 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { DataService, DataSource } from "services/datasource";
-import { ElexisType, UUID } from "./elexistype";
+import { IDataService, IDataSource} from "services/dataservice";
+import { IElexisType, UUID } from "./elexistype";
 import { Container } from "aurelia-framework";
 
 /**
  * Base class for all ElexisType- subtype managers
  */
 export class ObjectManager {
-  protected dataService: DataService;
-  protected dataSource: DataSource
+  protected dataService: IDataService;
+  protected dataSource: IDataSource
 
+  /**
+   * DataSource is confugured at startup of the app
+   * @param serviceName name of the datatype to handle
+   */
   constructor(serviceName: string) {
-    this.dataSource = Container.instance.get(DataSource);
+    this.dataSource = Container.instance.get("DataSource");
     this.dataService = this.dataSource.getService(serviceName);
   }
 
@@ -26,7 +30,7 @@ export class ObjectManager {
    * bevore transmitting the object to the server.
    * @param el 
    */
-  public async save(el: ElexisType) {
+  public async save(el: IElexisType) {
     for (const attr in el) {
       if (el.hasOwnProperty(attr)) {
         if (attr.startsWith("_")) {
@@ -41,6 +45,9 @@ export class ObjectManager {
     }
   }
 
+  public async find(query){
+    return await this.dataService.find({query:query})
+  }
   /**
    * Fetch Object with given id
    * @param id 
@@ -59,7 +66,7 @@ export class ObjectManager {
    * @param el 
    * @returns the deleted object
    */
-  public async remove(el: ElexisType) {
-    return await this.dataService.remove(el.id)
+  public async remove(el: IElexisType) {
+    return await this.dataService.patch(el.id,{deleted: "1"})
   }
 }

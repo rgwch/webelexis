@@ -7,6 +7,7 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -24,7 +25,18 @@ const cssRules = [
   { loader: 'css-loader' },
 ];
 
-module.exports = ({production, server, extractCss, coverage, analyze, karma} = {}) => ({
+const sassRules = [
+  {
+    loader: "sass-loader",
+    options: {
+      sassOptions: {
+        includePaths: ['node_modules']
+      }
+    }
+  }
+];
+
+module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, host } = {}) => ({
   resolve: {
     extensions: ['.ts', '.js'],
     modules: [srcDir, 'node_modules'],
@@ -33,8 +45,7 @@ module.exports = ({production, server, extractCss, coverage, analyze, karma} = {
     alias: { 'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding') }
   },
   entry: {
-    app: ['aurelia-bootstrapper'],
-    vendor: ['bluebird'],
+    app: ['aurelia-bootstrapper']
   },
   mode: production ? 'production' : 'development',
   output: {
@@ -44,11 +55,71 @@ module.exports = ({production, server, extractCss, coverage, analyze, karma} = {
     sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
   },
+  optimization: {
+    runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
+    // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
+    // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
+    moduleIds: 'hashed',
+    // Use splitChunks to breakdown the App/Aurelia bundle down into smaller chunks
+    // https://webpack.js.org/plugins/split-chunks-plugin/
+    splitChunks: {
+      hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
+      chunks: "initial",
+      // sizes are compared against source before minification
+      maxSize: 200000, // splits chunks if bigger than 200k, adjust as required (maxSize added in webpack v4.15)
+      cacheGroups: {
+        default: false, // Disable the built-in groups default & vendors (vendors is redefined below)
+        // You can insert additional cacheGroup entries here if you want to split out specific modules
+        // This is required in order to split out vendor css from the app css when using --extractCss
+        // For example to separate font-awesome and bootstrap:
+        // fontawesome: { // separates font-awesome css from the app css (font-awesome is only css/fonts)
+        //   name: 'vendor.font-awesome',
+        //   test:  /[\\/]node_modules[\\/]font-awesome[\\/]/,
+        //   priority: 100,
+        //   enforce: true
+        // },
+        // bootstrap: { // separates bootstrap js from vendors and also bootstrap css from app css
+        //   name: 'vendor.font-awesome',
+        //   test:  /[\\/]node_modules[\\/]bootstrap[\\/]/,
+        //   priority: 90,
+        //   enforce: true
+        // },
+
+        // This is the HTTP/1.1 optimised cacheGroup configuration
+        vendors: { // picks up everything from node_modules as long as the sum of node modules is larger than minSize
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          priority: 19,
+          enforce: true, // causes maxInitialRequests to be ignored, minSize still respected if specified in cacheGroup
+          minSize: 30000 // use the default minSize
+        },
+        vendorsAsync: { // vendors async chunk, remaining asynchronously used node modules as single chunk file
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors.async',
+          chunks: 'async',
+          priority: 9,
+          reuseExistingChunk: true,
+          minSize: 10000  // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
+        },
+        commonsAsync: { // commons async chunk, remaining asynchronously used modules as single chunk file
+          name: 'commons.async',
+          minChunks: 2, // Minimum number of chunks that must share a module before splitting
+          chunks: 'async',
+          priority: 0,
+          reuseExistingChunk: true,
+          minSize: 10000  // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
+        }
+      }
+    }
+  },
   performance: { hints: false },
   devServer: {
     contentBase: outDir,
     // serve index.html for all 404 (required for push-state)
-    historyApiFallback: true
+    historyApiFallback: true,
+    hot: hmr || project.platform.hmr,
+    port: port || project.platform.port,
+    host: host
   },
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
   module: {
@@ -59,9 +130,8 @@ module.exports = ({production, server, extractCss, coverage, analyze, karma} = {
         test: /\.css$/i,
         issuer: [{ not: [{ test: /\.html$/i }] }],
         use: extractCss ? [{
-            loader: MiniCssExtractPlugin.loader
-          },
-          'css-loader'
+          loader: MiniCssExtractPlugin.loader
+        }, ...cssRules
         ] : ['style-loader', ...cssRules]
       },
       {
@@ -73,58 +143,79 @@ module.exports = ({production, server, extractCss, coverage, analyze, karma} = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: extractCss ? [{
+          loader: MiniCssExtractPlugin.loader
+        }, ...cssRules, ...sassRules
+        ]: ['style-loader', ...cssRules, ...sassRules],
         issuer: /\.[tj]s$/i
       },
       {
         test: /\.scss$/,
-        use: ['css-loader', 'sass-loader'],
+        use: [...cssRules, ...sassRules],
         issuer: /\.html?$/i
       },
       { test: /\.html$/i, loader: 'html-loader' },
-      {
-        test: /\.pug$/,
-        use: ['html-loader','pug-html-loader']
-      },
-      { test: /\.tsx?$/, loader: "ts-loader" },
-      // use Bluebird as the global Promise implementation:
-      { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
+      { test: /\.ts$/, loader: "ts-loader" },
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
       { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
       { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
       // load these fonts normally, as files:
       { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
-      ...when(coverage, {
+      { test: /environment\.json$/i, use: [
+        {loader: "app-settings-loader", options: {env: production ? 'production' : 'development' }},
+      ]},
+      ...when(tests, {
         test: /\.[jt]s$/i, loader: 'istanbul-instrumenter-loader',
-        include: srcDir, exclude: [/\.{spec,test}\.[jt]s$/i],
+        include: srcDir, exclude: [/\.(spec|test)\.[jt]s$/i],
         enforce: 'post', options: { esModules: true },
       })
     ]
   },
   plugins: [
-    ...when(!karma, new DuplicatePackageCheckerPlugin()),
+    ...when(!tests, new DuplicatePackageCheckerPlugin()),
     new AureliaPlugin(),
     new ProvidePlugin({
-      'Promise': 'bluebird'
+      'Promise': ['promise-polyfill', 'default']
     }),
     new ModuleDependenciesPlugin({
-      'aurelia-testing': [ './compile-spy', './view-spy' ]
+      'aurelia-testing': ['./compile-spy', './view-spy']
     }),
     new HtmlWebpackPlugin({
       template: 'index.ejs',
+      minify: production ? {
+        removeComments: true,
+        collapseWhitespace: true,
+        collapseInlineTagWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes: true,
+        minifyCSS: true,
+        minifyJS: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        ignoreCustomFragments: [/\${.*?}/g]
+      } : undefined,
       metadata: {
         // available in index.ejs //
-        title, server, baseUrl
+        title, baseUrl
       }
     }),
-    ...when(extractCss, new MiniCssExtractPlugin({
-      filename: production ? '[contenthash].css' : '[id].css',
-      allChunks: true
+    // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
+    ...when(extractCss, new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
+      filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[hash].bundle.css',
+      chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
     })),
-    ...when(production || server, new CopyWebpackPlugin([
-      { from: 'locales', to: outDir+'/locales'},
-      { from: 'static', to: outDir }])),
-    ...when(analyze, new BundleAnalyzerPlugin())
+    ...when(!tests, new CopyWebpackPlugin([
+      { from: 'static', to: outDir, ignore: ['.*'] },
+      {from: 'locales/', to: outDir+'/locales/'}
+    ])), // ignore dot (hidden) files
+    ...when(analyze, new BundleAnalyzerPlugin()),
+    /**
+     * Note that the usage of following plugin cleans the webpack output directory before build.
+     * In case you want to generate any file in the output path as a part of pre-build step, this plugin will likely
+     * remove those before the webpack build. In that case consider disabling the plugin, and instead use something like
+     * `del` (https://www.npmjs.com/package/del), or `rimraf` (https://www.npmjs.com/package/rimraf).
+     */
+    new CleanWebpackPlugin()
   ]
 });
