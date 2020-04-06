@@ -70,11 +70,11 @@ export class EventManager extends ObjectManager {
   }
 
   getTypeColor(ev:IEvent): string{
-    return this.terminTypColors[ev.termintyp]
+    return "#"+this.terminTypColors[ev.termintyp]
   }
 
   getStateColor(ev:IEvent): string{
-    return this.terminStateColors[ev.terminstatus]
+    return "#"+this.terminStateColors[ev.terminstatus]
   }
 
   getNextEvent(ev:IEvent): Promise<IEvent> {

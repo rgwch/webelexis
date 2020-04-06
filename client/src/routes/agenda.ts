@@ -42,7 +42,7 @@ export class Agenda {
     cal.setEvents([])
     let skip = 0
     do {
-      skip = await this.addBatch({ tag: { $gte: von, $lte: bis }, bereich: "Gerry" }, skip, cal)
+      skip = await this.addBatch({ tag: { $gte: von, $lte: bis }, termintyp: {$ne: "Reserviert"}, bereich: "Gerry" }, skip, cal)
     } while (skip)
 
   }
@@ -69,7 +69,8 @@ export class Agenda {
       return {
         start: this.dt.addMinutesToDate(ev.tag, ev.beginn),
         end: this.dt.addMinutesToDate(ev.tag, parseInt(ev.beginn) + parseInt(ev.dauer)),
-        text: this.evm.getLabel(ev),
+        text: `${this.evm.getLabel(ev)} (${ev.termintyp},${ev.terminstatus}); ${ev.grund}`,
+        color: this.evm.getStateColor(ev),
         termin: ev
       }
     }))
