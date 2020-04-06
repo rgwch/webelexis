@@ -68,4 +68,16 @@ export class EventManager extends ObjectManager {
       return "Reserviert"
     }
   }
+
+  getTypeColor(ev:IEvent): string{
+    return this.terminTypColors[ev.termintyp]
+  }
+
+  getStateColor(ev:IEvent): string{
+    return this.terminStateColors[ev.terminstatus]
+  }
+
+  getNextEvent(ev:IEvent): Promise<IEvent> {
+    return null
+  }
 }

@@ -7,3 +7,5 @@ https://medium.com/flawless-app-stories/gyp-no-xcode-or-clt-version-detected-mac
 npm install java
 cd node_modules/iconv
 npx node-gyp rebuild
+
+DO NOT use node 12. should work with 11

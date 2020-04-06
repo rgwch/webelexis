@@ -7,17 +7,16 @@
 import { EventManager, IEvent } from './../models/event-model';
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
-import * as _ from "lodash";
 import { DateTime } from "../services/datetime";
-import { appState } from './../services/app-state';
+import { HandleState } from './../services/app-state';
 
 
 
 /*
  We use local styles here to avoid pollution of the global namespace
  */
-import "styles/blind.css";
-import "styles/slider.css";
+// import "styles/blind.css";
+// import "styles/slider.css";
 
 /**
  * A single Agenda entry. Type can be 'free', 'reserved' or any one of the user defined types.
@@ -38,20 +37,21 @@ export class Event {
 
   constructor(
     private dt: DateTime,
-    private tm: EventManager,
+    private evm: EventManager,
     private ea: EventAggregator,
-    private we: appState
+    private appState: HandleState
   ) { }
 
   public bind(context) {
-    this.termintypen = this.tm.terminTypes;
-    this.terminstaten = this.tm.terminStates;
+    this.termintypen = this.evm.terminTypes;
+    this.terminstaten = this.evm.terminStates;
   }
 
   public showDetail() {
     this.detailVisible = !this.detailVisible;
   }
 
+  /*
   protected select(view, list) {
     const patient = this.entry.kontakt;
     patient.type = "patient";
@@ -62,31 +62,32 @@ export class Event {
       this.ea.publish(SWITCH_PANELS, { right: view });
     }
   }
+*/
 
   protected get typecss() {
-    const style = `background-color:${this.entry.getTypColor()};`;
+    const style = `background-color:${this.evm.getTypeColor(this.entry)};`;
     return style;
   }
 
   protected get statecss() {
-    const style = `background-color:${this.entry.getStateColor()};`;
+    const style = `background-color:${this.evm.getStateColor(this.entry)};`;
     return style;
   }
   protected getTimes() {
-    const ret: string = this.entry.getStartTime().format("HH:mm");
-    const end = this.entry.getEndTime().format("HH:mm");
+    const ret: string = this.dt.minutesToTimeString(parseInt(this.entry.beginn))
+    const end = this.dt.minutesToTimeString(parseInt(this.entry.beginn) + parseInt(this.entry.dauer))
     return ret + "-" + end;
   }
   protected getLabel() {
-    return this.tm.getLabel(this.entry);
+    return this.evm.getLabel(this.entry);
   }
 
   protected rawContents() {
-    return this.entry.rawContents();
+    return JSON.stringify(this.entry)
   }
 
   protected save() {
-    this.tm
+    this.evm
       .save(this.entry)
       .then(saved => {
         if (saved.id !== this.entry.id) {
@@ -97,6 +98,7 @@ export class Event {
         alert("exception while saving: " + err);
       });
   }
+  /*
   protected changeState() {
     const actState = this.entry.terminstatus;
     let index = _.findIndex(this.tm.terminStates, e => e === actState);
@@ -107,17 +109,18 @@ export class Event {
     }
     this.entry.terminstatus = this.tm.terminStates[index];
   }
+  */
   protected toggleMenu() {
     this.showmenu = !this.showmenu;
   }
 
   protected get menu() {
-    if (this.entry.termintyp === this.tm.terminTypes[0]) {
+    if (this.entry.termintyp === this.evm.terminTypes[0]) {
       return [];
-    } else if (this.entry.termintyp === this.tm.terminTypes[1]) {
+    } else if (this.entry.termintyp === this.evm.terminTypes[1]) {
       return [];
     } else {
-      return this.tm.terminStates;
+      return this.evm.terminStates;
     }
   }
   /**
@@ -127,20 +130,19 @@ export class Event {
     const raw = parseInt(this.entry.dauer, 10) / 2;
     this.entry.dauer = (5 * Math.floor(raw / 5)).toString();
 
-    this.tm.save(this.entry);
+    this.evm.save(this.entry);
   }
   /**
    * from UI button: Enlarge duration of appointment
    */
   protected enlarge() {
-    this.tm.getNext(this.entry).then(nxt => {
+    this.evm.getNextEvent(this.entry).then(nxt => {
       if (nxt) {
         const maxDuration =
-          nxt.getBeginMinutes() - this.entry.getBeginMinutes();
-        this.entry.setDuration(
-          Math.min(this.entry.getDuration() * 2, maxDuration)
-        );
-        this.tm.save(this.entry);
+          parseInt(nxt.beginn) - parseInt(this.entry.beginn);
+        this.entry.dauer = (Math.min(parseInt(this.entry.dauer) * 2, maxDuration)).toString()
+
+        this.evm.save(this.entry);
       }
     });
   }
@@ -148,6 +150,6 @@ export class Event {
    * from UI button: delete appointment
    */
   protected delete() {
-    this.tm.remove(this.entry);
+    this.evm.remove(this.entry);
   }
 }
