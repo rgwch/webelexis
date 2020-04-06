@@ -31,6 +31,10 @@ export class Calendar{
           size: 1
         }
       },
+      onSetDate: (event,inst)=>{
+        const dat=event.date
+          
+      },
       onDayChange: this.setDay,
       onPageChange: this.setMonth,
       onEventSelect: this.eventSelected
