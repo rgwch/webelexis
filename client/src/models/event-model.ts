@@ -3,9 +3,7 @@ import { autoinject, LogManager } from 'aurelia-framework';
 import { IKontakt, KontaktManager } from './kontakt-model';
 import { ObjectManager } from './object-manager';
 import { UUID, IElexisType, ELEXISDATE, ELEXISDATETIME } from './elexistype';
-import { connectTo } from 'aurelia-store'
-import { State, appState } from '../services/app-state'
-import { pluck } from 'rxjs/operators'
+import { AppState } from '../services/app-state'
 const log = LogManager.getLogger('EventManager')
 
 
@@ -32,24 +30,16 @@ export interface IEvent extends IElexisType {
 // @connectTo()
 @autoinject
 export class EventManager extends ObjectManager {
-  public state: State
   public terminTypes: string[] = []
   public terminStates: string[] = []
   public terminTypColors = {}
   public terminStateColors = {}
   public agendaResources = []
 
-  constructor(private km: KontaktManager) {
+  constructor(private km: KontaktManager, private appState:AppState) {
     super('termin')
   }
   
-  stateChanged(newUser, oldUser) {
-    if (newUser) {
-      this.setUser(newUser).then(() => {
-        log.info("Changed user to " + newUser.id)
-      })
-    }
-  }
   public async setUser(user: IUser) {
     this.agendaResources = await this.fetch("resources") as []
     this.terminTypColors = await this.dataService.get("typecolors", { query: { user: user.id } })

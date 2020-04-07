@@ -1,4 +1,3 @@
-
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2020 by G. Weirich    *
@@ -8,7 +7,7 @@ import { EventManager, IEvent } from './../models/event-model';
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import { DateTime } from "../services/datetime";
-import { HandleState } from './../services/app-state';
+import { AppState } from './../services/app-state';
 
 
 
@@ -39,7 +38,7 @@ export class Event {
     private dt: DateTime,
     private evm: EventManager,
     private ea: EventAggregator,
-    private appState: HandleState
+    private appState: AppState
   ) { }
 
   public bind(context) {

@@ -3,36 +3,23 @@ import { autoinject } from 'aurelia-framework';
 import { EventManager, IEvent } from './../models/event-model';
 import { DateTime } from '../services/datetime';
 import * as moment from "moment";
-import { connectTo } from 'aurelia-store'
-import { State, appState } from '../services/app-state'
-import { pluck } from 'rxjs/operators'
+import { AppState } from '../services/app-state'
 
 
-// @connectTo<State>(store => store.state.pipe(pluck('check')))
-@connectTo()
 @autoinject
 export class Agenda {
   message: string;
   info = "was"
-  constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager) {
+  constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
+      private appState:AppState) {
   }
 
-  stateChanged(n, o) {
-    if (n) {
-      if (n.loggedInUser) {
-        if (o) {
-          if (o.loggedInUser) {
-            if (n.loggedInUser.id == o.loggedInUser.id) {
-              return
-            }
-          }
-        }
-        this.evm.setUser(n.loggedInUser)
-        console.log("user changed " + n.loggedInUser.id)
-      }
+
+  attached(){
+    if(this.appState.isLoggedIn()){
+      this.evm.setUser(this.appState.loggedInUser)
     }
   }
-
   eventSelected = (event, instance) => {
     this.info = JSON.stringify(event.event)
   }
