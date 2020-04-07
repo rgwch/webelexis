@@ -1,3 +1,4 @@
+import { AppState } from './services/app-state';
 import { Router, Redirect } from 'aurelia-router';
 import { I18N } from 'aurelia-i18n';
 import { autoinject, inject } from 'aurelia-framework';
@@ -62,13 +63,16 @@ export class App {
   }
 
 }
+
+@autoinject
 class AuthorizeStep{
-  state
+
+  constructor(private appState:AppState){}
   run(nav,next){
     if(nav.config.auth=='visitor'){
       return next()
     }else{
-      if(this.state.loggedInUser && this.state.loggedInUser.roles.includes(nav.config.auth)){
+      if(this.appState.isLoggedIn() && this.appState.loggedInUser.roles.includes(nav.config.auth)){
         return next()
       }else{
         return  new Redirect("login")

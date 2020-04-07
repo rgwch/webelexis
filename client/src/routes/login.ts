@@ -1,21 +1,21 @@
+import { Router } from 'aurelia-router';
 import { Container } from 'aurelia-dependency-injection';
 import { IDataSource } from '../services/dataservice';
-import { createModuleResolutionCache } from 'typescript';
 
 export class Login {
-  message: string;
+  
   username: string
   password: string
   ds: IDataSource
 
-  constructor() {
-    this.message = 'Login';
+  constructor(private router:Router) {
     this.ds=Container.instance.get("DataSource")
   }
 
   doLogin(){
     this.ds.login(this.username,this.password).then(user=>{
       console.log("Logged In")
+      this.router.navigate("")
     }).catch(err=>{
       console.log(err)
     })

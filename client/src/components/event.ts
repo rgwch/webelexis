@@ -29,8 +29,6 @@ export class Event {
   protected showmenu = false;
   protected maxLen = 50;
   protected detailVisible: boolean = false;
-  protected termintypen = [];
-  protected terminstaten = [];
   protected selectedTyp;
   protected selectedState;
 
@@ -41,11 +39,7 @@ export class Event {
     private appState: AppState
   ) { }
 
-  public bind(context) {
-    this.termintypen = this.evm.terminTypes;
-    this.terminstaten = this.evm.terminStates;
-  }
-
+  
   public showDetail() {
     this.detailVisible = !this.detailVisible;
   }
