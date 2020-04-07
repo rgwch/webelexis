@@ -18,6 +18,5 @@ export class AppState {
 
   logOut(){
     this.loggedInUser=null
-    this.router.navigate("/login")
   }
 }
