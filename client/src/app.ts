@@ -1,7 +1,7 @@
 import { AppState } from './services/app-state';
 import { Router, Redirect } from 'aurelia-router';
 import { I18N } from 'aurelia-i18n';
-import { autoinject, inject } from 'aurelia-framework';
+import { autoinject} from 'aurelia-framework';
 import { PLATFORM } from 'aurelia-pal';
 
 
@@ -9,12 +9,14 @@ import { PLATFORM } from 'aurelia-pal';
 export class App {
   router
 
-  constructor(private i18n: I18N) { }
+  constructor(private i18n: I18N) {
+    console.log("app")
+   }
 
   configureRouter(config, router) {
     this.router = router
     config.title = "Webelexis"
-    config.addAuthorizeStep(AuthorizeStep)
+    //config.addAuthorizeStep(AuthorizeStep)
     config.map([
       {
         route: 'login',
@@ -63,7 +65,7 @@ export class App {
   }
 
 }
-
+/*
 @autoinject
 class AuthorizeStep{
 
@@ -79,4 +81,7 @@ class AuthorizeStep{
       }
     }
   }
+  
 }
+
+*/

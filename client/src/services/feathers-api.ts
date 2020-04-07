@@ -94,12 +94,6 @@ public async login(username?, password?){
     }
   }
 */
-  public async checkLogin(): Promise<IUser> {
-    const jwt = this.client.authenticate();
-    const verified = await this.client.passport.verifyJWT(jwt.accessToken);
-    const user = await this.client.service("user").get(verified.userId);
-    return user;
-  }
 
   /**
    * Invalidates the JWT token

@@ -51,17 +51,17 @@ export async function configure(aurelia: Aurelia) {
   aurelia.container.registerInstance("DataSource", datasource)
   const appState = aurelia.container.get(AppState)
 
-  await aurelia.start()
-  await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
+  aurelia.start().then(()=>aurelia.setRoot(PLATFORM.moduleName('app')))
 
 
+  /*
   datasource.login().then(async user => {
-    await appState.logIn(user)
-    await aurelia.setRoot(PLATFORM.moduleName('app'))
+    appState.logIn(user)
+    aurelia.setRoot(PLATFORM.moduleName('app'))
   }).catch(e => {
     console.log(e)
     appState.logOut()
     aurelia.setRoot(PLATFORM.moduleName('routes/login'))
   })
-
+*/
 }
