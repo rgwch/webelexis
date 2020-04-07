@@ -1,0 +1,32 @@
+event:
+  properties:
+    id:
+      type: string
+      format: uuid
+    patid:
+      type: string
+      format: uuid
+    bereich:
+      type: string
+    tag:
+      type: string
+      format: YYYYMMDD
+    beginn:
+      type: string
+    dauer:
+      type: string
+    grund:
+      type: string
+    termintyp:
+      type: string
+    terminstatus:
+      type: string
+    erstelltvon:
+      type: string
+      format: uuid
+    angelegt:
+      type: string
+      format: timestamp
+    lastedit:
+      type: string
+      format: timestamp
