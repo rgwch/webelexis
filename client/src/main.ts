@@ -41,7 +41,7 @@ export async function configure(aurelia: Aurelia) {
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
-  
+
   let datasource: IDataSource
   if (env.transport === 'fhir') {
 
@@ -55,10 +55,9 @@ export async function configure(aurelia: Aurelia) {
   await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
 
 
-  datasource.login().then(user => {
-    appState.logIn(user)
-  }).then(() => {
-    aurelia.setRoot(PLATFORM.moduleName('app'))
+  datasource.login().then(async user => {
+    await appState.logIn(user)
+    await aurelia.setRoot(PLATFORM.moduleName('app'))
   }).catch(e => {
     console.log(e)
     appState.logOut()
