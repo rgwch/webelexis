@@ -4,7 +4,7 @@ import { IKontakt, KontaktManager } from './kontakt-model';
 import { ObjectManager } from './object-manager';
 import { UUID, IElexisType, ELEXISDATE, ELEXISDATETIME } from './elexistype';
 import { connectTo } from 'aurelia-store'
-import { State, appState } from '../services/app-state'
+import { AppState } from '../services/app-state'
 import { pluck } from 'rxjs/operators'
 const log = LogManager.getLogger('EventManager')
 
@@ -32,7 +32,6 @@ export interface IEvent extends IElexisType {
 // @connectTo()
 @autoinject
 export class EventManager extends ObjectManager {
-  public state: State
   public terminTypes: string[] = []
   public terminStates: string[] = []
   public terminTypColors = {}

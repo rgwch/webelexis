@@ -1,6 +1,6 @@
 import { IDataSource } from './services/dataservice';
 import { FeathersDS } from './services/feathers-api'
-import { HandleState, appState } from './services/app-state';
+import { AppState } from './services/app-state';
 import { Aurelia } from 'aurelia-framework'
 import * as environment from '../config/environment.json';
 import { PLATFORM } from 'aurelia-pal';
@@ -41,8 +41,7 @@ export async function configure(aurelia: Aurelia) {
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
-  aurelia.use.plugin(PLATFORM.moduleName('aurelia-store'), { initialState: appState })
-
+  
   let datasource: IDataSource
   if (env.transport === 'fhir') {
 
@@ -50,19 +49,19 @@ export async function configure(aurelia: Aurelia) {
     datasource = aurelia.container.get(FeathersDS)
   }
   aurelia.container.registerInstance("DataSource", datasource)
-  const handleState = aurelia.container.get(HandleState)
+  const appState = aurelia.container.get(AppState)
 
   await aurelia.start()
   await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
 
 
   datasource.login().then(user => {
-    handleState.logIn(user)
+    appState.logIn(user)
   }).then(() => {
     aurelia.setRoot(PLATFORM.moduleName('app'))
   }).catch(e => {
     console.log(e)
-    handleState.logIn(null)
+    appState.logIn(null)
     aurelia.setRoot(PLATFORM.moduleName('routes/login'))
   })
 
