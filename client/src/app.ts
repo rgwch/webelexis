@@ -48,6 +48,11 @@ export class App {
         name: "doc",
         moduleId: PLATFORM.moduleName("routes/documents"),
         title: this.i18n.tr('menu:doc')
+      },{
+        route: "account",
+        name: "account",
+        moduleId: PLATFORM.moduleName("routes/account"),
+        title: this.i18n.tr('menu:konto')
       }
     ])
   }
