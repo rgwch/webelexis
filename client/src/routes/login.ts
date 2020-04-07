@@ -1,6 +1,5 @@
 import { Container } from 'aurelia-dependency-injection';
 import { IDataSource } from '../services/dataservice';
-import { createModuleResolutionCache } from 'typescript';
 
 export class Login {
   message: string;
