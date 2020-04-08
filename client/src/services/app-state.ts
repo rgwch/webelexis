@@ -16,8 +16,8 @@ export class AppState {
 
   }
 
-  async login() : Promise<IUser>{
-    const user=await this.ds.login()
+  async login(username?:string, password?:string) : Promise<IUser>{
+    const user=await this.ds.login(username,password)
     this.loggedInUser=user
     return user
   }
