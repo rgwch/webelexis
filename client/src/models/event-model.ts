@@ -3,9 +3,7 @@ import { autoinject, LogManager } from 'aurelia-framework';
 import { IKontakt, KontaktManager } from './kontakt-model';
 import { ObjectManager } from './object-manager';
 import { UUID, IElexisType, ELEXISDATE, ELEXISDATETIME } from './elexistype';
-import { connectTo } from 'aurelia-store'
 import { AppState } from '../services/app-state'
-import { pluck } from 'rxjs/operators'
 const log = LogManager.getLogger('EventManager')
 
 
