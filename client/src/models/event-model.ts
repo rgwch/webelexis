@@ -40,13 +40,7 @@ export class EventManager extends ObjectManager {
     super('termin')
   }
   
-  stateChanged(newUser, oldUser) {
-    if (newUser) {
-      this.setUser(newUser).then(() => {
-        log.info("Changed user to " + newUser.id)
-      })
-    }
-  }
+  
   public async setUser(user: IUser) {
     this.agendaResources = await this.fetch("resources") as []
     this.terminTypColors = await this.dataService.get("typecolors", { query: { user: user.id } })
