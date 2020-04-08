@@ -16,10 +16,24 @@ export class AppState {
 
   }
 
-  async login(username?:string, password?:string) : Promise<IUser>{
-    const user=await this.ds.login(username,password)
-    this.loggedInUser=user
-    return user
+  hasRole(role:string): boolean{
+    if(this.loggedInUser){
+      if(this.loggedInUser.roles.includes(role)){
+        return true
+      }
+    }
+    return false
+  }
+  login(username?:string, password?:string) : Promise<IUser>{
+    return this.ds.login(username,password).then(user=>{
+      this.loggedInUser=user
+      return user
+    }).catch(err=>{
+      console.log(err)
+      this.loggedInUser=null
+      return null
+    })
+    
   }
   
 

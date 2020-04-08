@@ -79,10 +79,10 @@ class Authorizer {
     if(nav.config.auth=='visitor'){
       return next()
     }else{
-      if(this.appState.loggedInUser.roles.includes(nav.config.auth)){
+      if(this.appState.hasRole(nav.config.auth)){
         return next()
       }else{
-        return new Redirect("/login")
+        return next.cancel(new Redirect('login'))
       }
     }
   }

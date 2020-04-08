@@ -53,14 +53,8 @@ export async function configure(aurelia: Aurelia) {
 
   await aurelia.start()
   await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
+  await appState.login()
+  aurelia.setRoot(PLATFORM.moduleName('app'))
 
-
-  appState.login().then(() => {
-    aurelia.setRoot(PLATFORM.moduleName('app'))
-  }).catch(e => {
-    console.log(e)
-    appState.logOut()
-    aurelia.setRoot(PLATFORM.moduleName('routes/login'))
-  })
 
 }
