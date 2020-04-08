@@ -10,12 +10,20 @@ import { IUser } from '../models/user-model';
 export class AppState {
   loggedInUser:IUser = null
   ds: IDataSource
+  subscriptions=new Array<(IUser)=>{}>()
 
   constructor(){
     this.ds=Container.instance.get("DataSource")
 
   }
 
+  isLoggedIn(){
+    return !!this.loggedInUser
+  }
+
+  subscribe(func:(newUser)=>{}){
+    this.subscriptions.push(func)
+  }
   hasRole(role:string): boolean{
     if(this.loggedInUser){
       if(this.loggedInUser.roles.includes(role)){
@@ -24,9 +32,10 @@ export class AppState {
     }
     return false
   }
-  login(username?:string, password?:string) : Promise<IUser>{
-    return this.ds.login(username,password).then(user=>{
+  login=(username?:string, password?:string) : Promise<IUser>=>{
+    return this.ds.login(username,password).then( (user:IUser)=>{
       this.loggedInUser=user
+      this.subscriptions.forEach(sub=>sub(user))
       return user
     }).catch(err=>{
       console.log(err)

@@ -11,6 +11,7 @@ export class Agenda {
   message: string;
   info = "was"
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager) {
+
   }
 
   
@@ -18,6 +19,7 @@ export class Agenda {
     this.info = JSON.stringify(event.event)
   }
   setMonth = async (event, cal) => {
+    await this.evm.setUser()
     const dat= moment(event.firstDay).startOf('month').subtract(3,'days')
     const von = this.dt.DateToElexisDate(dat.toDate())
     const bis = this.dt.DateToElexisDate(dat.add(36, 'days').toDate())
