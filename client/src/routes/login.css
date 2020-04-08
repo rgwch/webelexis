@@ -1,0 +1,9 @@
+.frame{
+  border: 2px blue solid;
+  margin-top:20px;
+  margin-left:auto;
+  margin-right:auto;
+  width:510px;
+  padding: 10px;
+
+}

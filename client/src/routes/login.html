@@ -1,8 +1,12 @@
 <template>
-  <h1>${message}</h1>
-  <form submit.delegate="doLogin()">
-    <input type="text" value.bind="username">
-    <input type="password" value.bind="password">
-    <button type="submit">ok</button>
-  </form>
+  <div class="frame"> 
+    <img class="center" src="/webelexis.png" alt="Webelexis Logo">
+    <h1 class="h1">Anmelden</h1>
+    <p>Um Webelexis benutzen zu können, müssen Sie sich anmelden. Geben Sie bitte hier Ihren Elexis-Benutzernamen und -Passwort ein.</p>
+    <form submit.delegate="doLogin()">
+      <input type="text" value.bind="username" placeholder="Benutzername">
+      <input type="password" value.bind="password" placeholder="Passwort">
+      <button type="submit">Absenden</button>
+    </form>
+  </div>
 </template>

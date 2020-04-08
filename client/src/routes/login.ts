@@ -4,6 +4,7 @@ import { autoinject } from 'aurelia-framework';
 import { AppState } from './../services/app-state';
 import { Container } from 'aurelia-dependency-injection';
 import { IDataSource } from '../services/dataservice';
+import './login.css'
 
 const log=LogManager.getLogger("login.ts")
 
