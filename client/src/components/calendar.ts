@@ -31,9 +31,9 @@ export class Calendar{
           size: 1
         }
       },
-      onSetDate: (event,inst)=>{
-        const dat=event.date
-          
+      onBeforeShow: (event,inst)=>{
+        const dat=new Date()
+        this.setMonth({firstDay: dat},inst)    
       },
       onDayChange: this.setDay,
       onPageChange: this.setMonth,

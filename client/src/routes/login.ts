@@ -1,8 +1,11 @@
+import { LogManager } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
 import { AppState } from './../services/app-state';
 import { Container } from 'aurelia-dependency-injection';
 import { IDataSource } from '../services/dataservice';
+
+const log=LogManager.getLogger("login.ts")
 
 @autoinject
 export class Login {
@@ -18,9 +21,10 @@ export class Login {
 
   doLogin(){
     this.appState.login(this.username,this.password).then(user=>{
-      console.log("Logged In")
+      log.info("Logged In "+user.id)
       this.router.navigateToRoute("agenda")
     }).catch(err=>{
+      log.warn("bad login attempt "+err)
       console.log(err)
     })
   }

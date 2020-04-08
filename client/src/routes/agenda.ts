@@ -18,8 +18,9 @@ export class Agenda {
     this.info = JSON.stringify(event.event)
   }
   setMonth = async (event, cal) => {
-    const von = this.dt.DateToElexisDate(event.firstDay)
-    const bis = this.dt.DateToElexisDate(moment(event.firstDay).add(35, 'days').toDate())
+    const dat= moment(event.firstDay).startOf('month').subtract(3,'days')
+    const von = this.dt.DateToElexisDate(dat.toDate())
+    const bis = this.dt.DateToElexisDate(dat.add(36, 'days').toDate())
     cal.setEvents([])
     let skip = 0
     do {
