@@ -10,7 +10,8 @@ import { AppState } from '../services/app-state'
 export class Agenda {
   message: string;
   info = "was"
-  constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager) {
+  constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
+    private appState:AppState) {
 
   }
 

@@ -35,7 +35,7 @@ export class EventManager extends ObjectManager {
   public terminTypColors = {}
   public terminStateColors = {}
   public agendaResources = []
-  private actUser: IUser
+  private lastUser
 
   constructor(private km: KontaktManager, private appState: AppState) {
     super('termin')
@@ -48,14 +48,15 @@ export class EventManager extends ObjectManager {
   }
 
 
-  public async setUser(user?: IUser) {
-    if (this.actUser && user && this.actUser.id === user.id) {
+  setUser=async (newUser?) => {
+    const user=this.appState.loggedInUser
+    if(user==this.lastUser){
       return
     }
-    this.actUser = user || this.actUser
+    this.lastUser=user
     this.agendaResources = await this.fetch("resources") as []
-    this.terminTypColors = await this.dataService.get("typecolors", { query: { user: this.actUser.id } })
-    this.terminStateColors = await this.dataService.get("statecolors", { query: { user: this.actUser.id } })
+    this.terminTypColors = await this.dataService.get("typecolors", { query: { user: user.id } })
+    this.terminStateColors = await this.dataService.get("statecolors", { query: { user: user.id } })
     this.terminTypes = await this.dataService.get("types") as []
     this.terminStates = await this.fetch("states") as []
   }
