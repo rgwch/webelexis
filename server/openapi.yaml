@@ -1,31 +1,78 @@
 openapi: 3.0.2
 info:
   title: Webelexis Server
-  version: 1.0.0
+  version: 0.14.0
 
 servers:
   - url: http://localhost:3030
 
 paths:
-  /termin/types:
+  /termin/statecolors:
     get:
-      summary: retrieve list of possible event /temin/types
+      summary: get colors by state
+      parameters:
+        - in: query
+          name: user
+          schema:
+            type: string
+          description: User, who's color preferences are requested
+      responses:
+        "200":
+          description: OK
+  /termin/typecolors:
+    get:
+      summary: get colors by type
+      parameters:
+        - in: query
+          name: user
+          schema:
+            type: string
+          description: User, who's color preferences are requested
+      responses:
+        "200":
+          description: OK
+
+  /termin/timedefaults:
+    get:
+      summary: retrieve default duration per event type
       responses:
         default:
-          description: An Array of strings
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
+          $ref: "#components/responses/timedefaults"
+
+  /termin/daydefaults:
+    get:
+      description: retrieve default schedulable times per weekday
+      parameters:
+        - in: query
+          name: resource
+          schema:
+            type: string
+          description: resource for which daydefaults are needed
+
+      responses:
+        default:
+          $ref: "#components/responses/daydefaults"
+
+  /termin/resources:
+    get:
+      description: list of resources to manage
+      responses:
+        default:
+          $ref: "#components/responses/stringarray"
+
+  /termin/types:
+    get:
+      summary: retrieve list of possible event types
+      responses:
+        default:
+          $ref: "#components/responses/stringarray"
 
   /termin/states:
     get:
-      summary: retrieve list of pssible event /termin/states
+      summary: retrieve list of pssible event states
       responses:
         default:
-          $ref: "#/components/stringarray"
+          $ref: "#components/responses/stringarray"
 
   /termin/{id}:
     get:
@@ -35,33 +82,43 @@ paths:
           in: path
           required: true
           schema:
-              type: string
+            type: string
       responses:
-        '200':
+        "200":
           description: returns an event object
           content:
             application/json:
               schema:
                 $ref: openapi/schemas/event.yaml
-        '404':
+        "404":
           description: not found
-
-
 
 components:
   schemas:
     event:
       $ref: openapi/schemas/event.yaml
 
-
+  responses:
     stringarray:
-      default:
-      description: An Array of strings
+      description: Array of Strings
       content:
         application/json:
           schema:
             type: array
             items:
               type: string
+    daydefaults:
+      description: Default open times per day and resource
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
 
-
+    timedefaults:
+      description: Default duration per event type
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
