@@ -45,8 +45,8 @@ export class ObjectManager {
     }
   }
 
-  public async find(query){
-    return await this.dataService.find({query:query})
+  public find(query?){
+    return this.dataService.find(query? {query:query} : {})
   }
   /**
    * Fetch Object with given id

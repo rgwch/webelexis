@@ -35,13 +35,14 @@ export async function configure(aurelia: Aurelia) {
         debug: true
       })
     })
+    .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
 
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
-  
+
   let datasource: IDataSource
   if (env.transport === 'fhir') {
 

@@ -1,3 +1,4 @@
+import { IElexisType } from './../models/elexistype';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018-2020 by G. Weirich    *
@@ -144,8 +145,8 @@ export interface IDataSource {
 /**
  * Format of a find result from IDataService
  */
-export interface IQueryResult {
-  data: IElexisType[],    // the data
+export interface IQueryResult<T extends IElexisType> {
+  data: Array<T>,    // the data
   limit: number,  // number of items in data
   total: number,  // total number of items
   skip: number    // skipped items for this query
