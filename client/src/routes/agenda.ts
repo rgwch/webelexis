@@ -9,7 +9,7 @@ import { AppState } from '../services/app-state'
 @autoinject
 export class Agenda {
   message: string;
-  info = "was"
+  selectedEvent:IEvent 
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
     private appState:AppState) {
 
@@ -17,7 +17,7 @@ export class Agenda {
 
   
   eventSelected = (event, instance) => {
-    this.info = JSON.stringify(event.event)
+    this.selectedEvent = event.event
   }
   setMonth = async (event, cal) => {
     await this.evm.setUser()
@@ -54,7 +54,7 @@ export class Agenda {
       return {
         start: this.dt.addMinutesToDate(ev.tag, ev.beginn),
         end: this.dt.addMinutesToDate(ev.tag, parseInt(ev.beginn) + parseInt(ev.dauer)),
-        text: `${this.evm.getLabel(ev)} (${ev.termintyp},${ev.terminstatus}); ${ev.grund}`,
+        text: `${this.evm.getLabel(ev)} (${ev.termintyp},${ev.terminstatus}); ${ev.grund || ""}`,
         color: this.evm.getStateColor(ev),
         termin: ev
       }

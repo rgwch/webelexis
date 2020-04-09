@@ -1,4 +1,4 @@
-.frame{
+.frame .splash{
   border: 2px blue solid;
   margin-top:20px;
   margin-left:auto;
@@ -7,3 +7,4 @@
   padding: 10px;
 
 }
+

@@ -33,7 +33,17 @@ export class KontaktManager extends ObjectManager{
   }
 
   getLabel(k:IKontakt){
-    return k.bezeichnung1+" "+k.bezeichnung2+", "+this.dt.ElexisDateToLocalDate(k.geburtsdatum)
+    let ret=k.bezeichnung1
+    if(k.bezeichnung2){
+      ret+=" "+k.bezeichnung2
+    }
+    if(k.geschlecht){
+      ret+=" ("+k.geschlecht+")"
+    }
+    if(k.geburtsdatum){
+      ret+=", "+this.dt.ElexisDateToLocalDate(k.geburtsdatum)
+    }
+    return ret
   }
 
   getGeburtsdatum(k: IKontakt){

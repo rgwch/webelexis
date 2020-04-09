@@ -19,6 +19,7 @@ export class Calendar{
   attached(){
     mobi.eventcalendar(this.cal,{
       lang: 'de',
+      noEventsText: 'Keine Termine',
       display: 'inline',
       theme: 'bootstrap',
       view:{
@@ -28,7 +29,8 @@ export class Calendar{
         },
         eventList: {
           type: 'day',
-          size: 1
+          size: 1,
+          scrollable: true
         }
       },
       onBeforeShow: (event,inst)=>{

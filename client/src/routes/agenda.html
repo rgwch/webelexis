@@ -1,12 +1,14 @@
 <template>
   <require from="../components/calendar"></require>
+  <require from="../components/current-event"></require>
+
   <div class="row">
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-6 col-lg-4">
       <calendar set-day.bind="setDay" , set-month.bind="setMonth" event-selected.bind="eventSelected"></calendar>
     </div>
 
-    <div class="col-sm-12 col-md-6">
-      <!-- div class="termin" repeat.for=""></div -->
+    <div class="col-sm-12 col-md-6 col-lg-8">
+      <current-event event.bind="selectedEvent"></current-event>
     </div>
   </div>
 </template>
