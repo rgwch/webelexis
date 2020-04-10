@@ -1,3 +1,4 @@
+import { LogManager } from 'aurelia-framework';
 import { inlineView } from 'aurelia-framework';
 import { KontaktManager } from './../models/kontakt-model';
 import { PatientManager } from '../models/patient-model';
@@ -8,13 +9,13 @@ import { IPatient } from './../models/patient-model';
 import { FlexformConfig } from '../forms/flexform';
 import * as moment from 'moment'
 
+const log=LogManager.getLogger('Personal-Data')
 
 
 @inlineView(`
 <template>
   <require from="../forms/flexform"></require>
-  <span>Flexform<span>
-  <flexform ff_cfg.bind="ffc" entity.bind="kontakt"></flexform>
+  <flex-form ff_cfg.bind="ffc" entity.bind="kontakt"></flexform>
 </template>`)
 @autoinject
 export class PersonalData {
@@ -22,9 +23,8 @@ export class PersonalData {
 
   constructor(private i18: I18N, private dt:DateTime, private km:KontaktManager) { }
 
-  kontaktChanged(newk,oldk){
-    console.log("oldk "+oldk.bezeichnung1)
-    console.log("newk "+newk.bezeichnung1)
+  kontaktChanged(newp,old){
+    log.info("Change patient from "+(old ? old.bezeichnung1 : old)+" to "+(newp ? newp.bezeichnung1 : newp))
   }
   ffc: FlexformConfig = {
     title: () => this.km.getLabel(this.kontakt),

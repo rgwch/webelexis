@@ -35,6 +35,11 @@ export class StickerManager extends ObjectManager{
     })
   }
 
+  public async loadFor(id:string){
+    const result= (await super.find({"forPatient": id})) as any
+    return result.map(x=>x.name)
+  }
+
   public getSticker(name: string): ISticker {
     return this.allStickers[name]
   }

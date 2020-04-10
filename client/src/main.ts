@@ -1,7 +1,8 @@
+import { ConsoleAppender } from 'aurelia-logging-console';
 import { IDataSource } from './services/dataservice';
 import { FeathersDS } from './services/feathers-api'
 import { AppState } from './services/app-state';
-import { Aurelia } from 'aurelia-framework'
+import { Aurelia, LogManager } from 'aurelia-framework'
 import * as environment from '../config/environment.json';
 import { PLATFORM } from 'aurelia-pal';
 import { TCustomAttribute } from 'aurelia-i18n'
@@ -36,7 +37,9 @@ export async function configure(aurelia: Aurelia) {
     })
     .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
 
-  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'debug');
+  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
+  // LogManager.addAppender(new ConsoleAppender())
+  // LogManager.setLevel(LogManager.logLevel.info)  // Chrome doesn't show "debug" level.
 
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));

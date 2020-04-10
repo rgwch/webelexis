@@ -1,3 +1,4 @@
+import { StickerManager } from './models/sticker-manager';
 import { LogManager } from 'aurelia-framework';
 import { AppState } from './services/app-state';
 import { Router, Redirect } from 'aurelia-router';
@@ -12,7 +13,11 @@ export class App {
   router: Router
 
 
-  constructor(private i18n: I18N) { }
+  constructor(private i18n: I18N, private stm:StickerManager) { }
+
+  activate(){
+    return this.stm.loadStickers()
+  }
 
   configureRouter(config, router) {
     this.router = router
@@ -47,19 +52,19 @@ export class App {
         route: "kons",
         name: "kons",
         moduleId: PLATFORM.moduleName("routes/kons"),
-        title: this.i18n.tr('menu:kons'),
+        title: this.i18n.tr('menu:konsultation'),
         auth: 'user'
       }, {
         route: "article",
         name: "art",
         moduleId: PLATFORM.moduleName("routes/article"),
-        title: this.i18n.tr('menu:art'),
+        title: this.i18n.tr('menu:artikel'),
         auth: 'user'
       }, {
         route: "documents",
         name: "doc",
         moduleId: PLATFORM.moduleName("routes/documents"),
-        title: this.i18n.tr('menu:doc'),
+        title: this.i18n.tr('menu:dokumente'),
         auth: 'user'
       }, {
         route: "account",

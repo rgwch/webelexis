@@ -22,7 +22,7 @@
   "address": {
     "street": "Strasse",
     "zip": "Plz",
-    "place": "Ort",
+    "place": "Ort"
   },
   "validation": {
     "onlyText": "Nur Buchstaben",

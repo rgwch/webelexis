@@ -3,18 +3,17 @@ import { IPatient } from './../models/patient-model';
 import { bindable } from 'aurelia-framework';
 
 const log=LogManager.getLogger("Summary View")
-log.debug("Test")
+
 
 export class Summary{
   @bindable patient:IPatient
    
   attached(){
-    log.debug("Summary: "+this.patient)
+    // log.info("Summary attached: "+this.patient)
   }
 
   patientChanged(old,newp){
-    log.debug(old ? old.bezeichnung1 : old)
-    log.debug(newp ? newp.bezeichnung1 : newp)
+    // log.info("Change patient from "+(old ? old.bezeichnung1 : old)+" to "+(newp ? newp.bezeichnung1 : newp))
   }
 
 }
