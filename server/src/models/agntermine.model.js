@@ -56,8 +56,5 @@ module.exports = async function (app) {
       logger.error(`Error creating ${tableName} table`, err);
     }
   }
-
-
-
   return db;
 };

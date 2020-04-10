@@ -7,7 +7,15 @@
   <require from="./certificates"></require>
   <require from="./documents"></require>
 
-  <stickers kontakt.bind="patient"></stickers>
-  <personal-data kontakt.bind="patient"></personal-data>
-  
+  <div class="row">
+    <div class="col-sm-12 col-md-6">
+      <stickers kontakt.bind="patient"></stickers>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <notes patient.bind="patient"></notes>
+    </div>
+    <div class="col-sm-12">
+      <personal-data kontakt.bind="patient"></personal-data>
+    </div>
+  </div>
 </template>
