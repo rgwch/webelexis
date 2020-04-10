@@ -1,6 +1,7 @@
 <template>
   <require from="../components/calendar"></require>
   <require from="../components/current-event"></require>
+  <require from="../components/summary"></require>
 
   <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-4">
@@ -9,6 +10,8 @@
 
     <div class="col-sm-12 col-md-6 col-lg-8">
       <current-event event.bind="selectedEvent"></current-event>
+      <summary patient.bind="selectedEvent.termin.kontakt"></summary>
+
     </div>
   </div>
 </template>
