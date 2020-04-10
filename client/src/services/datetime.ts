@@ -17,6 +17,11 @@ export class DateTime {
     return moment(date,"YYYYMMDD").format(this.i18.tr('adapters.date_format'))
   }
 
+  public LocalDateToElexisDate(date: string){
+    return moment(date,this.i18.tr('adapters.date_format')).format("YYYYMMDD")
+    
+  }
+
   /**
    * convert a Date object to a YYYYMMDD string
    * @param date 

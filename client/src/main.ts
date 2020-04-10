@@ -23,21 +23,20 @@ export async function configure(aurelia: Aurelia) {
       const aliases = ['t', 'i18n']
       TCustomAttribute.configureAliases(aliases)
       return instance.setup({
-        backend: {
-          loadPath: './locales/{{lng}}/{{ns}}.json'
-        },
         attributes: aliases,
-        lng: selectedLanguage,
+        lng: 'de', //selectedLanguage,
         fallbacklng: 'de',
         ns: ['menu', 'translation'],
         defaultNs: 'translation',
-
-        debug: true
+        backend: {
+          loadPath: './locales/{{lng}}/{{ns}}.json'
+        },
+        debug: environment.debug
       })
     })
     .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
 
-  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
+  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'debug');
 
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));

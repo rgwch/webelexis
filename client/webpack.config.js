@@ -207,7 +207,7 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
     })),
     ...when(!tests, new CopyWebpackPlugin([
       { from: 'static', to: outDir, ignore: ['.*'] },
-      {from: 'locales/', to: outDir+'/locales/'}
+      {from: 'locales', to: outDir+'/locales'}
     ])), // ignore dot (hidden) files
     ...when(analyze, new BundleAnalyzerPlugin()),
     /**

@@ -4,14 +4,16 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { bindable, computedFrom, valueConverter, inject, NewInstance } from 'aurelia-framework'
+import { bindable, computedFrom, valueConverter, inject, NewInstance, LogManager } from 'aurelia-framework'
 import { ValidationController, ValidationRules } from 'aurelia-validation'
 import * as _ from 'lodash/core'
+
+const log=LogManager.getLogger("FlexForm")
 
 /**
  * FlexForm: Counterpart for the CommonViewer: Generic Detail-Display. 
  * Usage: Define a FlexFormConfig and bind it
- * as 'cfg' to the flex-form custom element. Bind the Object to display as 'entity' to the flex-form.
+ * as 'ff_cfg' to the flex-form custom element. Bind the Object to display as 'entity' to the flex-form.
  */
 export interface FlexformConfig {
   title: () => string     // Title for the Form
@@ -52,6 +54,7 @@ export class FlexForm {
 
   attached() {
     this.isLocked = this.lockable
+    log.debug("attached")
   }
 
   // called whenever a new entity is loaded
@@ -59,6 +62,7 @@ export class FlexForm {
     this.original = this.original = Object.assign({}, newvalue)
     this.isDirty = false
     this.isLocked = true
+    log.debug("Entity changed from "+(oldvalue ? oldvalue.id : "empty")+" to "+(newvalue ? newvalue.id : "empty"))
   }
 
   @computedFrom('entity')

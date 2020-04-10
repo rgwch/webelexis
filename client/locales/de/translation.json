@@ -7,6 +7,25 @@
     "date_format_parse": "D.M.YYYY",
     "time_format_parse": "H:m",
     "database_format_date": "YYYYMMDD"
+  },
+  "contact": {
+    "lastname": "Name",
+    "firstname": "Vorname",
+    "gender": "Geschlecht",
+    "birthdate": "Gebursdatum",
+    "phone1": "Telefon 1",
+    "phone2": "Telefon 2",
+    "mobile": "Mobil",
+    "email": "E-Mail",
+    "remark": "Bemerkung"
+  },
+  "address": {
+    "street": "Strasse",
+    "zip": "Plz",
+    "place": "Ort",
+  },
+  "validation": {
+    "onlyText": "Nur Buchstaben",
+    "invalidDate": "Ungültiges Datum"
   }
-  
 }

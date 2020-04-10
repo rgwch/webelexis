@@ -69,7 +69,7 @@ export class App {
         auth: 'user'
       }
     ])
-    log.debug("Router configuration ok")
+    log.info("Router configuration ok")
   }
 
 }
