@@ -6,13 +6,13 @@
 
 import { ElexisType, UUID } from './elexistype';
 import { autoinject } from "aurelia-framework";
-import { DataService } from 'services/datasource';
+import { DataService } from '../services/datasource';
 import { ObjectManager } from './object-manager';
 import { KontaktType } from './kontakt';
 
 import global from '../user/global'
 import * as LRU from 'lru-cache'
-import { thisExpression } from 'babel-types';
+
 
 
 /**

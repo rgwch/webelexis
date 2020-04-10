@@ -1,4 +1,4 @@
-import { ObjectManager } from './../../../old_client/src/models/object-manager';
+import { ObjectManager } from './object-manager';
 import { ICase } from './case-manager';
 import { IPatient } from './patient-model';
 import { IElexisType, ELEXISDATE, UUID } from './elexistype';

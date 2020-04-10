@@ -1,8 +1,9 @@
+import { IEncounter } from '../models/encounter-model';
 import { bindable } from 'aurelia-framework';
 import { inlineView } from 'aurelia-framework';
 @inlineView(`
 <template>
-  <require from="./encounter></require>
+  <require from="./encounter"></require>
   <div virtual-repeat.for="encounter of encounters" infinite-scroll-next="next">
     <encounter id.bind="encounter.id"></encounter>
   </div>

@@ -1,4 +1,3 @@
-import { IElexisType } from './../models/elexistype';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018-2020 by G. Weirich    *
@@ -30,7 +29,7 @@ export interface IDataService {
    * @param params 
    * @returns resolve to an IQueryResult
    */
-  find(params?): Promise<IQueryResult>
+  find(params?): Promise<IQueryResult<any>>
 
   /**
    * create an object
@@ -86,9 +85,9 @@ export class LocalDataService implements IDataService{
     return this.dataSource.fetch(this.path,index)  
   }
 
-  async find(params?: any) : Promise<IQueryResult>{
+  async find(params?: any) : Promise<IQueryResult<any>>{
     const data= await this.dataSource.fetchAll(this.path)
-    const ret=<IQueryResult>{
+    const ret=<IQueryResult<any>>{
       data: data,
       limit: data.length,
       skip: 0,

@@ -1,4 +1,4 @@
-import { ObjectManager } from './../../../old_client/src/models/object-manager';
+import { ObjectManager } from './object-manager';
 import { IKontakt, KontaktManager } from './kontakt-model';
 import {ISticker} from './sticker-manager'
 

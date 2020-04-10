@@ -1,4 +1,4 @@
-import { ObjectManager } from './../../../old_client/src/models/object-manager';
+import { ObjectManager } from './object-manager';
 import { IElexisType } from './elexistype';
 
 export interface ICase extends IElexisType{
