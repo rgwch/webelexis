@@ -1,5 +1,9 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const check=ctx=>{
+  console.log(ctx.params)
+  return ctx
+}
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],

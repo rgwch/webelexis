@@ -21,7 +21,7 @@ export class AppState {
     return !!this.loggedInUser
   }
 
-  subscribe(func:(newUser)=>{}){
+  subscribe(func:(newUser)=>any){
     this.subscriptions.push(func)
   }
   hasRole(role:string): boolean{

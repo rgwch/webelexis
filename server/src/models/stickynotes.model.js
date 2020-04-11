@@ -11,7 +11,7 @@ module.exports = async function (app) {
   const exists = await db.schema.hasTable(tableName)
   if (!exists) {
     try {
-      db.schema.createTable(tableName, table => {
+      await db.schema.createTable(tableName, table => {
         table.string('id', 40).unique().notNullable().primary();
         table.string('deleted', 1)
         table.bigint('lastupdate');

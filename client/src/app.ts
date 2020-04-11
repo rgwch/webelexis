@@ -16,7 +16,6 @@ export class App {
   constructor(private i18n: I18N, private stm:StickerManager) { }
 
   activate(){
-    return this.stm.loadStickers()
   }
 
   configureRouter(config, router) {
@@ -74,6 +73,7 @@ export class App {
         auth: 'user'
       }
     ])
+    config.fallbackRoute('login')
     log.info("Router configuration ok")
   }
 

@@ -1,3 +1,4 @@
+import { AppState } from './../services/app-state';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2020 by G. Weirich    *
@@ -22,8 +23,11 @@ export interface ISticker extends IElexisType {
 export class StickerManager extends ObjectManager{
   private allStickers = {}
 
-  constructor() {
+  constructor(private appState:AppState) {
     super('stickers')
+    this.appState.subscribe( async newUser => {
+      await this.loadStickers()
+    })
   }
 
   public loadStickers(): Promise<any> {

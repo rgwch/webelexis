@@ -57,7 +57,9 @@ export async function configure(aurelia: Aurelia) {
   await aurelia.start()
   await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
   await appState.login()
-  aurelia.setRoot(PLATFORM.moduleName('app'))
+  aurelia.setRoot(PLATFORM.moduleName('app')).catch(err=>{
+    console.log("Acttivation failed! "+err)
+  })
 
 
 }
