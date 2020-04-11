@@ -11,7 +11,7 @@ const getUrl = pathname => url.format({
   pathname
 });
 
-xdescribe('Feathers application tests', () => {
+describe('Feathers application tests', () => {
   before(function(done) {
     this.server = app.listen(port);
     this.server.once('listening', () => done());
