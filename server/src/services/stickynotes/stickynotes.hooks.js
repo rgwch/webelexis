@@ -1,12 +1,19 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const handleZipped = require('../../hooks/handle-zipped')
+const Samdas = require('@rgwch/samdastools')
 
-const check=ctx=>{
+const check = ctx => {
   console.log(ctx.params)
+  return ctx
+}
+
+const handleSamdas = async ctx => {
+  ctx.result.data[0].html=await Samdas.toHtml(ctx.result.data[0].text)
   return ctx
 }
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],
@@ -17,8 +24,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
-    get: [],
+    find: [handleZipped('contents', 'text'), handleSamdas],
+    get: [handleZipped('contents', 'text'), handleSamdas],
     create: [],
     update: [],
     patch: [],
