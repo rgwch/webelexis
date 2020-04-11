@@ -3,7 +3,7 @@ const ElexisUtil = require('../util/elexis-types')
 const elexisUtils = new ElexisUtil()
 
 /*** DEPRECATED */
-class xCustomVerifier {
+class CustomVerifier {
     constructor(app, options = {}) {
         this.app = app;
         this.options = options;
