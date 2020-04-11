@@ -1,0 +1,31 @@
+
+$base-color: rgb(71, 170, 216);
+
+.debug{
+  background-color: blue;
+}
+
+.current{
+  background-color: aqua;
+}
+
+.stickers{
+  border: blue 1px solid;
+  background-color: cadetblue;
+  padding: 2px;
+}
+
+.sticker_{
+  padding-right: 2px;
+  margin-right: 4px;
+}
+
+.stickynotes{
+  background-color: scale-color($base-color, $lightness: 40%);
+  padding: 4px;
+  font-weight: lighter;
+  font-size: smaller;
+  border-style: inset;
+  border-width: 5px;
+  border-color: lighten(darkcyan,20%);
+}
