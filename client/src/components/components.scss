@@ -21,11 +21,17 @@ $base-color: rgb(71, 170, 216);
 }
 
 .stickynotes{
-  background-color: scale-color($base-color, $lightness: 50%, $saturation: -50%);
+  background-color: scale-color($base-color, $lightness: 80%);
+  opacity: 0.9;
   padding: 4px;
-  font-weight: lighter;
   font-size: smaller;
   border-style: inset;
-  border-width: 5px;
-  border-color: lighten(darkcyan,20%);
+  border-width: 2px;
+  border-color: lighten($base-color,20%);
+}
+
+.encounters{
+  background-color: lightgray;
+  overflow-y: auto;
+  height: 60vh;
 }

@@ -8,14 +8,31 @@
   <require from="./documents"></require>
 
   <div class="row">
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12">
       <stickers kontakt.bind="patient"></stickers>
-    </div>
-    <div class="col-sm-12 col-md-6">
-      <notes patient.bind="patient"></notes>
     </div>
     <div class="col-sm-12">
       <personal-data kontakt.bind="patient"></personal-data>
     </div>
+    <div class="col-sm-12 col-md-6">
+      <encounters patient.bind="patient"></encounters>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <div class="row">
+        <div class="col-12">
+          <notes patient.bind="patient"></notes>
+        </div>
+        <div class="col-12">
+          <medications patient.bind="patient"></medications>
+        </div>
+        <div class="col-12">
+          <cerificates patient.bind="patient"></cerificates>
+        </div>
+        <div class="col-12">
+          <documents patient.bind="patient"></documents>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
