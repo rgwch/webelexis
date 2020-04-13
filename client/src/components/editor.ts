@@ -1,9 +1,14 @@
 import { bindable, bindingMode, inlineView } from 'aurelia-framework';
 import { Editor as Mobiledoc, Range, Position } from 'mobiledoc-kit'
 
+export interface IEditorCommand {
+  mode: 'log' | 'replace' | 'insert'
+  from: number
+  data?: string
+}
 @inlineView(`
 <template>
-  <div ref="ed"></div>
+  <div ref="ed" class="editor"></div>
 </template>
 `)
 export class Editor {
@@ -14,17 +19,8 @@ export class Editor {
   private options = {
     placeholder: "Hier tippseln",
     focus: true,
-    mobiledoc: {
-      version: "0.3.1",
-      markups: [],
-      atoms: [],
-      cards: [],
-      sections: [
-        [1, "p", [
-          [0, [], 0, "123"]
-        ]]
-      ]
-    }
+    html: "<div></div>"
+
   }
 
   public attached() {
@@ -36,10 +32,10 @@ export class Editor {
 
   public activate(cfg) {
     this.config = cfg
-    if (cfg.mobiledoc) {
-      this.options.mobiledoc = cfg.mobiledoc
+    if (cfg.html) {
+      this.options.html = cfg.html
     } else if (cfg.plaintext) {
-      this.options.mobiledoc.sections[0][2][0][3] = cfg.plaintext
+      this.options.html = cfg.plaintext
     }
     setTimeout(() => {
       let pos = this.editor.post.tailPosition()
@@ -63,18 +59,24 @@ export class Editor {
     switch (cmd.mode) {
       case "log": console.log(cmd.text); break;
       case "replace":
+        this.editor.insertText(cmd.data)
+        /*
         const post = this.editor.post
-        let r
+        
+        //let range: Range = this.editor.range
+        let r;
         let head = post.headPosition()
+        let section=head.section
+        let tail=post.tailPosition()
         if (!cmd.from) {
-          r = new Range(head, post.tailPosition())
+          r = Range.create(section, 0, tail.section)
         } else {
-          r = new Range(head.move(cmd.from), head.move(cmd.to))
+          r = Range.create(head.move(cmd.from), head.move(cmd.to))
         }
         this.editor.run(postEditor => {
           postEditor.deleteRange(r)
           postEditor.insertText(r.head, cmd.text)
-        })
+        }) */
         break;
       case "insert":
         const pos = this.editor.post.headPosition()
@@ -82,8 +84,9 @@ export class Editor {
           postEditor.insertText(pos.move(cmd.pos), cmd.text)
         })
         break;
-        
+
       default: console.log("Bad command mode")
     }
   }
+
 }
