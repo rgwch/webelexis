@@ -1,6 +1,9 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const handleZipped = require('../../hooks/handle-zipped')
 const Samdas = require('@rgwch/samdastools')
+const { deflate } = require('zlib')
+const { promisify } = require('util')
+const zip = promisify(deflate)
 
 const check = ctx => {
   console.log(ctx.params)
@@ -14,8 +17,13 @@ const handleSamdas = async ctx => {
     delete ctx.result.data[0].contents
     return ctx
   } else if (ctx.method === 'create' || ctx.method === 'update') {
-    ctx.data.text=await Samdas.fromDelta(ctx.data.delta)
+    const samdas = await Samdas.fromDelta(ctx.data.delta)
     delete ctx.data.delta
+    const zipped = await zip(samdas)
+    const up=Buffer.allocUnsafe(zipped.length+4)
+    zipped.copy(up,4,0)
+    ctx.contents = zipped
+    return ctx
   }
 }
 module.exports = {
