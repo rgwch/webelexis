@@ -36,7 +36,7 @@ export class Editor {
     this.config.commands(cmd => this.command(cmd))
     this.editor.on("text-change", (delta, old, source) => {
       if (source === 'user') {
-        this.config.callback(delta)
+        this.config.callback(this.editor.getContents())
       }
     })
   }

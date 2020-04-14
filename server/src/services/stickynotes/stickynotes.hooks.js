@@ -8,18 +8,23 @@ const check = ctx => {
 }
 
 const handleSamdas = async ctx => {
-  ctx.result.data[0].delta=await Samdas.toDelta(ctx.result.data[0].text)
-  delete ctx.result.data[0].text
-  delete ctx.result.data[0].contents
-  return ctx
+  if (ctx.method === 'find') {
+    ctx.result.data[0].delta = await Samdas.toDelta(ctx.result.data[0].text)
+    delete ctx.result.data[0].text
+    delete ctx.result.data[0].contents
+    return ctx
+  } else if (ctx.method === 'create' || ctx.method === 'update') {
+    ctx.data.text=await Samdas.fromDelta(ctx.data.delta)
+    delete ctx.data.delta
+  }
 }
 module.exports = {
   before: {
     all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [],
-    update: [],
+    create: [handleSamdas],
+    update: [handleSamdas],
     patch: [],
     remove: []
   },
