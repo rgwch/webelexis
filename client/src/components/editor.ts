@@ -1,5 +1,8 @@
 import { bindable, bindingMode, inlineView } from 'aurelia-framework';
-import { Editor as Mobiledoc, Range, Position } from 'mobiledoc-kit'
+import Quill from 'quill'
+import '../../node_modules/quill/dist/quill.core.css'
+import '../../node_modules/quill/dist/quill.snow.css'
+import Delta from 'quill-delta'
 
 export interface IEditorCommand {
   mode: 'log' | 'replace' | 'insert'
@@ -8,58 +11,50 @@ export interface IEditorCommand {
 }
 @inlineView(`
 <template>
+  <div ref="tb" class="toolbar"></div>
   <div ref="ed" class="editor"></div>
 </template>
 `)
 export class Editor {
   private ed: HTMLDivElement
-  private editor: Mobiledoc
+  private tb: HTMLDivElement
+  private editor
   @bindable config
 
   private options = {
+    modules: {
+      toolbar: this.tb
+    },
+    debug: 'info',
     placeholder: "Hier tippseln",
-    focus: true,
-    html: "<div></div>"
-
+    readOnly: false,
+    theme: 'snow'
   }
 
   public attached() {
-    this.editor = new Mobiledoc(this.options)
-    this.editor.render(this.ed)
-    this.editor.postDidChange(() => this.changed())
+    this.editor = new Quill(this.ed, this.options)
     this.config.commands(cmd => this.command(cmd))
+    this.editor.on("text-change", (delta, old, source) => {
+      if (source === 'user') {
+        this.config.callback(delta)
+      }
+    })
   }
 
   public activate(cfg) {
-    this.config = cfg
-    if (cfg.html) {
-      this.options.html = cfg.html
-    } else if (cfg.plaintext) {
-      this.options.html = cfg.plaintext
-    }
-    setTimeout(() => {
-      let pos = this.editor.post.tailPosition()
-      this.editor.run(post => {
-        post.insertText(pos, " Hallo")
-      })
-    }, 2000)
 
   }
 
   public detached() {
-    this.editor.destroy()
+
   }
 
-  changed() {
-    const text = this.editor.serialize()
-    this.config.callback(text)
-  }
 
   command(cmd) {
     switch (cmd.mode) {
       case "log": console.log(cmd.text); break;
       case "replace":
-        this.editor.insertText(cmd.data)
+        this.editor.setContents(cmd.data, 'api')
         /*
         const post = this.editor.post
         

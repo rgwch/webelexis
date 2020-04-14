@@ -8,8 +8,9 @@ const check = ctx => {
 }
 
 const handleSamdas = async ctx => {
-  ctx.result.data[0].html=await Samdas.toHtml(ctx.result.data[0].text)
+  ctx.result.data[0].delta=await Samdas.toDelta(ctx.result.data[0].text)
   delete ctx.result.data[0].text
+  delete ctx.result.data[0].contents
   return ctx
 }
 module.exports = {

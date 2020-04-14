@@ -32,7 +32,7 @@ export class Notes {
   patientChanged(newp, oldp) {
     this.stm.find({ patientid: newp.id }).then((sn: IQueryResult<IStickyNote>) => {
       if (sn.total > 0) {
-        const notetext = sn.data[0].html
+        const notetext = sn.data[0].delta
         if (this.editorcommand) {
           this.editorcommand({ mode: 'replace', from: 0, data: notetext })
         }

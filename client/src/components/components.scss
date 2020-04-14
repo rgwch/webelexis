@@ -1,5 +1,6 @@
 
 $base-color: rgb(71, 170, 216);
+$border-radius: 5px;
 
 .debug{
   background-color: blue;
@@ -37,5 +38,16 @@ $base-color: rgb(71, 170, 216);
 }
 
 .editor{
-  background-color: lightgray;
+  background-color: lightblue;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+  border-style: solid;
+  border-color: blue;
+  border-width: 4px;
+}
+
+.toolbar{
+  background-color: darken($color: lightblue, $amount: 10%);
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
 }
