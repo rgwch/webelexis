@@ -12,17 +12,16 @@ const check = ctx => {
 
 const handleSamdas = async ctx => {
   if (ctx.method === 'find') {
-    ctx.result.data[0].delta = await Samdas.toDelta(ctx.result.data[0].text)
-    delete ctx.result.data[0].text
-    delete ctx.result.data[0].contents
+    if (ctx.result && ctx.result.data && ctx.result.data.length && ctx.result.data[0].contents) {
+      ctx.result.data[0].delta = await Samdas.zippedToDelta(ctx.result.data[0].contents)
+      delete ctx.result.data[0].contents
+    }
     return ctx
   } else if (ctx.method === 'create' || ctx.method === 'update') {
-    const samdas = await Samdas.fromDelta(ctx.data.delta)
-    delete ctx.data.delta
-    const zipped = await zip(samdas)
-    const up=Buffer.allocUnsafe(zipped.length+4)
-    zipped.copy(up,4,0)
-    ctx.contents = zipped
+    if (ctx.data && ctx.data.delta) {
+      ctx.data.contents = await Samdas.zippedFromDelta(ctx.data.delta)
+      delete ctx.data.delta
+    }
     return ctx
   }
 }
@@ -39,8 +38,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [handleZipped('contents', 'text'), handleSamdas],
-    get: [handleZipped('contents', 'text'), handleSamdas],
+    find: [handleSamdas],
+    get: [handleSamdas],
     create: [],
     update: [],
     patch: [],
