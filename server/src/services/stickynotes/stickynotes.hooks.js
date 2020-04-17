@@ -11,7 +11,7 @@ const check = ctx => {
 const handleSamdas = async ctx => {
   if (ctx.method === 'find') {
     if (ctx.result && ctx.result.data && ctx.result.data.length && ctx.result.data[0].contents) {
-      const unzipped=ziptool.extract(ctx.result.data[0].contents, "Data")
+      const unzipped=await ziptool.extract(ctx.result.data[0].contents, "Data")
       ctx.result.data[0].delta = await Samdas.toDelta(unzipped)
       delete ctx.result.data[0].contents
     }

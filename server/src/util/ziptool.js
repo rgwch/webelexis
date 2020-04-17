@@ -1,11 +1,13 @@
-const Zipper = require('node-zip')
 const ZIP_MARKER = 1 << 29
+const { Zip } = require('zlibt2')
+const unzipper = require('unzipper')
+
 
 exports.create = (name, data) => {
-  const zip = new Zipper()
-  zip.file(name, data)
-  const zipped = zip.generate({ base64: false, compression: 'DEFLATE' })
-  const ret=Buffer.from(zipped)
+  const zipped = new Zip()
+  zipped.addFile(Buffer.from(data), { filename: name })
+  const compressed = zipped.compress()
+  const ret = Buffer.from(compressed)
   const def = Buffer.allocUnsafe(ret.length + 4)
   const l = (ret.length & 0x1fffffff) | ZIP_MARKER
   def.writeInt32BE(l, 0)
@@ -13,26 +15,18 @@ exports.create = (name, data) => {
   return def
 }
 
-exports.extract = (zipped, name) => {
-  const raw=Buffer.from(zipped)
-  const payload=Buffer.allocUnsafe(raw.length-4)
-  raw.copy(payload,0,4)
-  const unzip = new Zipper(payload.toString("utf8"), { base64: false, CheckCRC32: true })
-  return unzip.files[name] ? unzip.files[name].asText() : ""
+exports.extract = async (zipped, name) => {
+  return await unzip(zipped, name)
 }
 
-exports.check = (fakedata)=>{
-  const zip=new Zipper()
-  zip.file("test",fakedata)
-  const data=zip.generate({base64:false, compression: 'DEFLATE'})
-  const unzip = new Zipper(data, { base64: false, CheckCRC32: false })
-  const dest= unzip.files["test"].asText()
-  return dest
+exports.check = async (fakedata) => {
+  const zipped = exports.create("test", fakedata)
+  const unzipped = await exports.extract(zipped, "test")
+  return unzipped
 }
 
-const unzipper = require('unzipper')
 
-const unzip = raw => {
+const unzip = (raw, name) => {
   if (raw) {
     const src = Buffer.from(raw)
     const buffer = Buffer.allocUnsafe(src.length - 4)
@@ -46,9 +40,12 @@ const unzip = raw => {
         })
         rs.on('end', () => resolve(ret))
         rs.on('error', () => reject)
+      }).catch(err => {
+        console.log(err)
       })
     })
   } else {
     return Promise.resolve("")
   }
 }
+
