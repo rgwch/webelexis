@@ -6,16 +6,29 @@
   <require from="./medications"></require>
   <require from="./certificates"></require>
   <require from="./documents"></require>
+  <require from="./collapse"></require>
+
 
   <div class="row">
     <div class="col-sm-12">
       <stickers kontakt.bind="patient"></stickers>
     </div>
     <div class="col-sm-12">
-      <personal-data kontakt.bind="patient"></personal-data>
+      <collapse>
+        <div slot="clptitle">${patient.bezeichnung1}</div>
+        <div slot="clpbody">
+          <personal-data kontakt.bind="patient"></personal-data>
+        </div>
+      </collapse>
     </div>
+
     <div class="col-sm-12 col-md-6">
-      <encounters patient.bind="patient"></encounters>
+      <collapse>
+        <div slot="clptitle" t="menu:konsultation">Kons</div>
+        <div slot="clpbody">
+          <encounters patient.bind="patient"></encounters>
+        </div>
+      </collapse>
     </div>
     <div class="col-sm-12 col-md-6">
       <div class="row">

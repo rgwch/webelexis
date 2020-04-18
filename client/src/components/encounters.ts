@@ -9,7 +9,6 @@ const log=LogManager.getLogger('Encounters')
 
 @inlineView(`
 <template>
-  <h2>Encounters</h2>
   <require from="./encounter"></require>
   <div class="encounters">
     <div virtual-repeat.for="encounter of encounters" infinite-scroll-next="next">
