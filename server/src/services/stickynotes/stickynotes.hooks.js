@@ -19,6 +19,7 @@ const handleSamdas = async ctx => {
   } else if (ctx.method === 'create' || ctx.method === 'update') {
     if (ctx.data && ctx.data.delta) {
       const samdas=await Samdas.fromDelta(ctx.data.delta)
+      // const processed=samdas.replace(/\n\s*/g,'').replace(/>\s+</g,"><").replace(/></g,">\r\n<")+"\r\n"
       ctx.data.contents = ziptool.create("Data", samdas)
       delete ctx.data.delta
     }

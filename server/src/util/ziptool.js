@@ -1,4 +1,4 @@
-const ZIP_MARKER = 1 << 29
+const ZIP_MARKER = 5 << 29
 const { Zip } = require('zlibt2')
 const unzipper = require('unzipper')
 
