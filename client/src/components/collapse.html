@@ -2,6 +2,7 @@
   <div class="collapse-title">
     <i class="fa fa-chevron-down mr-3" click.delegate="toggle()" show.bind="!isExpanded"></i>
     <i class="fa fa-chevron-up mr-3" click.delegate="toggle()" show.bind="isExpanded"></i>
+    <i repeat.for="a of actions" class="fa fa-${a.icon} mr-2" click.delegate="a.exec()"></i>
     <slot name="clptitle">
       <h3>Fallback header</h3>
     </slot>

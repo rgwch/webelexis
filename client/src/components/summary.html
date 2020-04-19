@@ -11,25 +11,16 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <collapse>
+      <collapse actions.bind="persActions">
         <span slot="clptitle" t.bind="label"></span>
         <div slot="clpbody">
           <personal-data kontakt.bind="patient"></personal-data>
         </div>
       </collapse>
-
-      <!-- div class="formtitle">
-        <i class="fa fa-chevron-down mr-3" click.delegate="toggleKontaktdata()" show.bind="!kontaktdata"></i>
-        <i class="fa fa-chevron-up mr-3" click.delegate="toggleKontaktdata()" show.bind="kontaktdata"></i>
-        ${label}
-      </div>
-      <div if.bind="kontaktdata">
-        <personal-data kontakt.bind="patient"></personal-data>
-      </div -->
     </div>
 
     <div class="col-sm-12 col-md-6">
-      <collapse>
+      <collapse actions.bind="konsActions">
         <span slot="clptitle" t="menu:konsultation">Kons</span>
         <div slot="clpbody">
           <encounters patient.bind="patient"></encounters>
@@ -42,13 +33,28 @@
           <notes patient.bind="patient"></notes>
         </div>
         <div class="col-12">
-          <medications patient.bind="patient"></medications>
+          <collapse>
+            <span slot="clptitle" t="menu:medikation"></span>
+            <div slot="clpbody">
+              <medications patient.bind="patient"></medications>
+            </div>
+          </collapse>
         </div>
         <div class="col-12">
-          <cerificates patient.bind="patient"></cerificates>
+          <collapse>
+            <span slot="clptitle" t="menu:zeugnisse"></span>
+            <div slot="clpbody">
+              <cerificates patient.bind="patient"></cerificates>
+            </div>
+          </collapse>
         </div>
         <div class="col-12">
-          <documents patient.bind="patient"></documents>
+          <collapse>
+            <span slot="clptitle" t="menu:dokumente"></span>
+            <div slot="clpbody">
+              <documents patient.bind="patient"></documents>
+            </div>
+          </collapse>
         </div>
       </div>
     </div>

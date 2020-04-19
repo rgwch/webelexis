@@ -1,16 +1,18 @@
 {
-  "login": "Login",
-  "logout": "Abmelden",
-  "patient": "Patient",
   "agenda": "Agenda",
-  "konsultation": "Konsultationen",
-  "heute": "Heute",
-  "tagwaehlen": "Tag wählen...",
-  "suchen": "Suchen...",
-  "username": "Benutzername",
-  "password": "Passwort",
   "artikel": "Artikel",
   "dokumente": "Dokumente",
+  "heute": "Heute",
+  "konsultation": "Konsultationen",
   "konto": "Konto",
-  "sticker": "Notizen"
+  "login": "Login",
+  "logout": "Abmelden",
+  "medikation":"Medikation",
+  "patient": "Patient",
+  "password": "Passwort",
+  "sticker": "Notizen",
+  "suchen": "Suchen...",
+  "tagwaehlen": "Tag wählen...",
+  "username": "Benutzername",
+  "zeugnisse": "Zeugnisse"  
 }

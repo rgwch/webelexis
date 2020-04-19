@@ -11,9 +11,10 @@ const log = LogManager.getLogger("Stickynotes")
 @inlineView(`
 <template>
   <require from="./editor"></require>
-  <!-- div class="stickynotes" innerhtml.bind="notetext"></div -->
-  <div class="stickers" innerhtml.bind="stickerimages"></div>
-  <editor config.bind="edconfig"></editor>
+  <div>
+    <div class="stickers" innerhtml.bind="stickerimages"></div>
+    <editor config.bind="edconfig"></editor>
+  </div>
 </template>
 `)
 @autoinject
@@ -28,7 +29,6 @@ export class Notes {
   }
 
   edconfig = {
-
     callback: this.editorChanged,
     commands: cmd => { this.editorcommand = cmd }
   }

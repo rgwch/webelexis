@@ -1,14 +1,58 @@
 
 $base-color: rgb(71, 170, 216);
+$border-color: lightblue;
 $border-radius: 5px;
 
-.debug{
-  background-color: blue;
+@mixin borders{
+  border-color: $border-color;
+  border-style: solid;
+  border-width: 1px;
+  margin: 2px;
+  padding: 4px;
+}
+
+.collapse-body{
+  @include borders;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+  
+}
+.collapse-title{
+  @include borders;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  font-size: large;
+  font-weight: bolder;
+  color: blue;
 }
 
 .current{
   background-color: aqua;
 }
+.debug{
+  background-color: yellow;
+  border: 4px solid black;
+}
+
+.editor{
+  background-color:green;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+  border-style: solid;
+  border-color: red;
+  border-width: 4px;
+}
+
+.encounters{
+  background-color: lightgray;
+  overflow-y: auto;
+  height: 60vh;
+}
+
+.green{
+  color: green;
+}
+
 
 .stickers{
   border: blue 1px solid;
@@ -31,29 +75,10 @@ $border-radius: 5px;
   border-color: lighten($base-color,20%);
 }
 
-.encounters{
-  background-color: lightgray;
-  overflow-y: auto;
-  height: 60vh;
-}
-
-.editor{
-  background-color: lightblue;
-  border-bottom-left-radius: $border-radius;
-  border-bottom-left-radius: $border-radius;
-  border-style: solid;
-  border-color: blue;
-  border-width: 4px;
-}
-
 .toolbar{
   background-color: darken($color: lightblue, $amount: 10%);
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
 }
 
-.collapse-title{
-  font-size: large;
-  font-weight: bolder;
-  color: blue;
-}
+

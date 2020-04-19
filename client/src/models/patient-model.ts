@@ -1,3 +1,4 @@
+import { I18N } from 'aurelia-i18n';
 import { ObjectManager } from './object-manager';
 import { IKontakt, KontaktManager } from './kontakt-model';
 import {ISticker} from './sticker-manager'
@@ -10,7 +11,7 @@ export interface IPatient extends IKontakt{
 
 @autoinject
 export class PatientManager extends ObjectManager{
-    constructor(private km:KontaktManager){
+    constructor(private km:KontaktManager, private i18:I18N){
       super('patient')
     }
 
@@ -21,7 +22,7 @@ export class PatientManager extends ObjectManager{
 
     getAge(pat: IPatient){
       const now=moment()
-      const bd=moment(pat.geburtsdatum,"YYYYMMDD")
+      const bd=moment(pat.geburtsdatum,this.i18.tr("adapters.database_format_date"))
       const age=now.diff(bd,'years')
       if(age<2){
         const mo=now.diff(bd,'months')
