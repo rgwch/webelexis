@@ -1,0 +1,43 @@
+@import '../stylevars';
+
+.compactlist {
+  padding-top: 0px;
+  padding-bottom: 1px;
+  padding-left: 2px;
+  margin-top: 0px;
+  margin-bottom: 1px;
+  font-size: smaller;
+  cursor: pointer;
+  color: black;
+}
+
+common-viewer{
+  .header {
+    background-color: $form-background;
+    padding: 10px;
+    border-color: $bordercolor;
+    border-radius: 10px 10px 0 0;
+    border-style: solid solid none solid;
+  }
+  .body {
+    background-color: $fillcolor;
+    height: 100%;
+    overflow: auto;
+    border-style: none solid solid solid;
+    border-radius: 0 0 10px 10px;
+    border-color: $bordercolor;
+  }
+  .entry {
+    @extend .compactlist;
+    color: black;
+  }
+
+  .highlight {
+    @extend .entry;
+    background-color: $highlightcolor;
+  }
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}

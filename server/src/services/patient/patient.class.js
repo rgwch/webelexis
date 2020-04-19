@@ -17,7 +17,7 @@ class Service {
     const stickers = this.options.app.service('stickers')
     const kontakt = this.options.app.service("kontakt")
 
-    params.query = Object.assign(params.query, { istpatient: "1", istperson: "1" })
+    params.query = Object.assign({}, params.query, { istpatient: "1", istperson: "1" })
     const pats = await kontakt.find(params);
     for (const pat of pats.data) {
       const sid = await stickers.find({ query: { forPatient: pat.id } })

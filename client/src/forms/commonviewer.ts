@@ -1,4 +1,3 @@
-import { IDataService, IDataSource } from './../services/dataservice';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2020 by G. Weirich    *
@@ -7,10 +6,11 @@ import { IDataService, IDataSource } from './../services/dataservice';
 
 import { autoinject, bindable } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
-
+import { ObjectManager } from './../models/object-manager';
 import { BindingSignaler } from "aurelia-templating-resources";
 import { FlexformConfig } from "./flexform";
 import { IElexisType } from "models/elexistype";
+import './commonviewer.scss'
 
 /***
   CommonViewer: Loosely adapted from the Elexis class with the same name: A component to uniformely
@@ -23,7 +23,7 @@ import { IElexisType } from "models/elexistype";
   'selectMsg' setting.
   */
 
-export interface ViewerConfiguration {
+export interface IViewerConfiguration {
   // datatype to handle. Name must match the according DataService
   dataType: string;
   // Title of the View
@@ -58,35 +58,39 @@ export interface ViewerConfiguration {
 @autoinject
 export class CommonViewer {
   @bindable
-  public cv_cfg: ViewerConfiguration;
+  public cv_cfg: IViewerConfiguration;
   public items;
   public selectedItem: string = ""; // referenced in view
-  private dataService: IDataService;
   private newobj: IElexisType = {};
+  private objectManager: ObjectManager
 
   constructor(
     private ea: EventAggregator,
-    private dataSource: IDataSource,
     private signaler: BindingSignaler
   ) { }
+
+  do_reload = msg => this.doFilter();
 
   public attached() {
     if (!this.cv_cfg.switches) {
       this.cv_cfg.switches = [];
     }
-    
-    this.dataService = this.dataSource.getService(this.cv_cfg.dataType);
+
+    this.objectManager = new ObjectManager(this.cv_cfg.dataType)
+    // this.dataService = this.dataSource.getService(this.cv_cfg.dataType);
 
     // react on updated elements
-    this.dataService.on("updated", msg => {
-      this.doFilter();
-    });
+    this.objectManager.on("updated", this.do_reload);
     // react on new elements
-    this.dataService.on("created", msg => {
-      this.doFilter();
-    });
+    this.objectManager.on("created", this.do_reload);
   }
 
+
+
+  public detached() {
+    this.objectManager.off("updated", this.do_reload);
+    this.objectManager.off("created", this.do_reload);
+  }
   /**
    * reload list. First, apply searchFields, second apply "before" switch functions if given
    * Then send feathers.find(). On the ruslt, apply "after" switch functions, if given,
@@ -115,8 +119,8 @@ export class CommonViewer {
       }
     });
 
-    this.dataService
-      .find({ query })
+    this.objectManager
+      .find(query)
       .then(result => {
         this.cv_cfg.switches.forEach(sw => {
           if (sw.value) {
@@ -157,7 +161,7 @@ export class CommonViewer {
     if (this.cv_cfg.selectMsg) {
       this.ea.publish(this.cv_cfg.selectMsg, item);
     } else {
-      this.dispatcher.selectItem(item);
+      // this.dispatcher.selectItem(item);
     }
     // display selected status in viewer elements
     this.selectedItem = item.id;
@@ -177,7 +181,7 @@ export class CommonViewer {
    */
   public newElem() {
     this.newobj.type = this.cv_cfg.dataType;
-    this.dataService.create(this.newobj).then((ne: IElexisType) => {
+    this.objectManager.save(this.newobj).then((ne: IElexisType) => {
       ne.type = this.cv_cfg.dataType;
       // this.dispatcher.selectItem(ne);
     });

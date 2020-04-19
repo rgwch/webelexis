@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { IDataService, IDataSource} from "services/dataservice";
+import { IDataService, IDataSource } from "services/dataservice";
 import { IElexisType, UUID } from "./elexistype";
 import { Container } from "aurelia-framework";
 
@@ -45,8 +45,9 @@ export class ObjectManager {
     }
   }
 
-  public find(query?){
-    return this.dataService.find(query? {query:query} : {})
+  public find(query?) {
+    return this.dataService.find(query ? { query: query } : {})
+    // return this.dataService.find(query)
   }
   /**
    * Fetch Object with given id
@@ -67,6 +68,14 @@ export class ObjectManager {
    * @returns the deleted object
    */
   public async remove(el: IElexisType) {
-    return await this.dataService.patch(el.id,{deleted: "1"})
+    return await this.dataService.patch(el.id, { deleted: "1" })
+  }
+
+  public on(event: string, func: (event) => void) {
+    this.dataService.on(event, func)
+  }
+
+  public off(event: string, func: (event) => void) {
+    this.dataService.off(event, func)
   }
 }
