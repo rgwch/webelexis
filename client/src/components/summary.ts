@@ -7,6 +7,7 @@ const log=LogManager.getLogger("Summary View")
 
 export class Summary{
   @bindable patient:IPatient
+  kontaktdata:boolean = false
    
   attached(){
     // log.info("Summary attached: "+this.patient)
