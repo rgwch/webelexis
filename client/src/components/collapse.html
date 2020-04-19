@@ -1,10 +1,10 @@
 <template>
   <div class="collapse-title">
-    <div click.delegate="toggle()">
-      <slot name="clptitle">
-        <h3>Fallback header</h3>
-      </slot>
-    </div>
+    <i class="fa fa-chevron-down mr-3" click.delegate="toggle()" show.bind="!isExpanded"></i>
+    <i class="fa fa-chevron-up mr-3" click.delegate="toggle()" show.bind="isExpanded"></i>
+    <slot name="clptitle">
+      <h3>Fallback header</h3>
+    </slot>
   </div>
   <div class="collapse-body" show.bind="isExpanded">
     <slot name="clpbody">
