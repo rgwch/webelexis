@@ -1,7 +1,7 @@
-import { LogManager } from 'aurelia-framework';
+import { StickerManager } from './../models/sticker-manager';
 import { StickynoteManager, IStickyNote } from './../models/stickynote-manager';
 import { IPatient } from './../models/patient-model';
-import { inlineView, bindable } from 'aurelia-framework';
+import { LogManager, autoinject, inlineView, bindable } from 'aurelia-framework';
 import { IQueryResult } from 'services/dataservice';
 import { IEditorCommand } from './editor'
 import Delta from 'quill-delta'
@@ -12,12 +12,15 @@ const log = LogManager.getLogger("Stickynotes")
 <template>
   <require from="./editor"></require>
   <!-- div class="stickynotes" innerhtml.bind="notetext"></div -->
+  <div class="stickers" innerhtml.bind="stickerimages"></div>
   <editor config.bind="edconfig"></editor>
 </template>
 `)
+@autoinject
 export class Notes {
   @bindable patient: IPatient
   actnote: IStickyNote
+  stickerimages: string
 
   editorChanged = (newText: Delta) => {
     this.actnote.delta = newText
@@ -31,10 +34,10 @@ export class Notes {
   }
   editorcommand: (cmd: IEditorCommand) => void = null
 
-  constructor(private stm: StickynoteManager) { }
+  constructor(private stm: StickynoteManager, private stickerm: StickerManager) { }
 
 
-  patientChanged(newp, oldp) {
+  patientChanged(newp: IPatient, oldp) {
     const self = this
     this.stm.find({ patientid: newp.id }).then((sn: IQueryResult<IStickyNote>) => {
       if (sn.total > 0) {
@@ -43,6 +46,12 @@ export class Notes {
         if (this.editorcommand) {
           this.editorcommand({ mode: 'replace', from: 0, data: notetext })
         }
+      }
+    })
+    this.stickerm.loadFor(newp.id).then(async stickernames => {
+      this.stickerimages = ""
+      for (const n of stickernames) {
+        this.stickerimages += await this.stickerm.getImageHtml(n)
       }
     })
   }

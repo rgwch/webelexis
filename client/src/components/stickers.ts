@@ -26,8 +26,8 @@ export class Stickers {
       newp.stickers = await this.stm.loadFor(newp.id)
     }
     if (newp.stickers) {
-      newp.stickers.forEach(stic => {
-        this.stickers.push(this.stm.getSticker(stic))
+      newp.stickers.forEach(async stic => {
+        this.stickers.push(await this.stm.getSticker(stic))
       });
     }
   }
