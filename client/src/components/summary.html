@@ -11,6 +11,7 @@
 
   <div class="row">
     <div class="col-sm-12">
+      <div class="formtitle" click.delegate="toggleKontaktdata()">${label}</div>
       <div if.bind="kontaktdata">
         <personal-data kontakt.bind="patient"></personal-data>
       </div>
