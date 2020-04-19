@@ -41,12 +41,12 @@ export class KontaktManager extends ObjectManager{
       ret+=" ("+k.geschlecht+")"
     }
     if(k.geburtsdatum){
-      ret+=", "+this.dt.ElexisDateToLocalDate(k.geburtsdatum)
+      ret+=", "+this.dt.elexisDateToLocalDate(k.geburtsdatum)
     }
     return ret
   }
 
   getGeburtsdatum(k: IKontakt){
-    return this.dt.ElexisDateToLocalDate(k.geburtsdatum)
+    return this.dt.elexisDateToLocalDate(k.geburtsdatum)
   }
 }

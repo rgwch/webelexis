@@ -1,10 +1,8 @@
-
-$base-color: rgb(71, 170, 216);
-$border-color: lightblue;
-$border-radius: 5px;
+@import '../stylevars';
+@import '../base';
 
 @mixin borders{
-  border-color: $border-color;
+  border-color: $bordercolor;
   border-style: solid;
   border-width: 1px;
   margin: 2px;
@@ -23,7 +21,7 @@ $border-radius: 5px;
   border-top-right-radius: $border-radius;
   font-size: large;
   font-weight: bolder;
-  color: blue;
+  color: $captioncolor;
 }
 
 .current{
@@ -35,7 +33,7 @@ $border-radius: 5px;
 }
 
 .editor{
-  background-color:green;
+  background-color: darken($color: $highlightcolor, $amount: 10%);
   border-bottom-left-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
   border-style: solid;
@@ -44,7 +42,7 @@ $border-radius: 5px;
 }
 
 .encounters{
-  background-color: lightgray;
+  background-color:  $form-background;
   overflow-y: auto;
   height: 60vh;
 }
@@ -55,8 +53,8 @@ $border-radius: 5px;
 
 
 .stickers{
-  border: blue 1px solid;
-  background-color: scale-color($base-color, $lightness: 80%);
+  border:$bordercolor 1px solid;
+  background-color: scale-color($form-background,$lightness: -20%);
   padding: 2px;
 }
 

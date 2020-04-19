@@ -5,7 +5,7 @@ import * as faker from 'faker/locale/de_CH'
 faker.locale="de_CH"
 
 export class Fakes{
-  private dt;
+  private dt: DateTime;
   async getKontakt(index: UUID){
     const ret=<IKontakt>{
       id: index,
@@ -13,7 +13,7 @@ export class Fakes{
       bezeichnung2: faker.name.firstName(),
       bezeichnung3: faker.name.jobDescriptor(),
       titel: faker.name.title(),
-      geburtsdatum: this.dt.DateToElexisDate(faker.date.past()),
+      geburtsdatum: this.dt.dateToElexisDate(faker.date.past()),
       istperson: "1",
       istanwedner: "0",
       geschlecht: (Math.random()>.5) ? "m": "f",

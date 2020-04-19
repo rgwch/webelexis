@@ -2,7 +2,7 @@ import { LogManager } from 'aurelia-framework';
 import { inlineView } from 'aurelia-framework';
 import { KontaktManager } from './../models/kontakt-model';
 import { PatientManager } from '../models/patient-model';
-import { DateTime } from 'services/datetime';
+import { DateTime } from '../services/datetime';
 import { I18N } from 'aurelia-i18n';
 import { bindable, autoinject } from 'aurelia-framework';
 import { IPatient } from './../models/patient-model';
@@ -50,8 +50,8 @@ export class PersonalData {
         attribute: "geburtsdatum",
         label: this.i18.tr("contact.birthdate"),
         datatype: {
-          toForm: x => this.dt.ElexisDateToLocalDate(x),
-          toData: x => this.dt.LocalDateToElexisDate(x)
+          toForm: x => this.dt.elexisDateToLocalDate(x),
+          toData: x => this.dt.localDateToElexisDate(x)
         },
         validation: this.checkdate,
         validationMessage: this.i18.tr("validation.invalidDate"),

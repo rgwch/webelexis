@@ -22,8 +22,8 @@ export class Agenda {
   setMonth = async (event, cal) => {
     await this.evm.setUser()
     const dat= moment(event.firstDay).startOf('month').subtract(3,'days')
-    const von = this.dt.DateToElexisDate(dat.toDate())
-    const bis = this.dt.DateToElexisDate(dat.add(36, 'days').toDate())
+    const von = this.dt.dateToElexisDate(dat.toDate())
+    const bis = this.dt.dateToElexisDate(dat.add(36, 'days').toDate())
     cal.setEvents([])
     let skip = 0
     do {

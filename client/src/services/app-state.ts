@@ -1,3 +1,6 @@
+import { IEncounter } from './../models/encounter-model';
+import { ICase } from './../models/case-manager';
+import { IPatient } from './../models/patient-model';
 import { Container } from 'aurelia-dependency-injection';
 import { IDataSource } from '../services/dataservice';
 import { autoinject } from 'aurelia-framework';
@@ -9,6 +12,9 @@ import { IUser } from '../models/user-model';
 @autoinject
 export class AppState {
   loggedInUser:IUser = null
+  currentPatient:IPatient=null
+  currentCase:ICase=null
+  currentEncounter:IEncounter=null
   ds: IDataSource
   subscriptions=new Array<(IUser)=>{}>()
 

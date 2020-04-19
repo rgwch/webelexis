@@ -5,7 +5,6 @@
  ********************************************/
 import { IUser} from '../models/user-model';
 import {IElexisType, UUID} from '../models/elexistype'
-import { IKontakt } from '../models/kontakt-model';
 import { uuid } from 'uuidv4'
 
 

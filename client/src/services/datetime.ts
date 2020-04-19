@@ -1,23 +1,23 @@
-import { autoinject } from 'aurelia-framework';
-import { I18N } from 'aurelia-i18n';
+
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-
 import * as moment from "moment";
+import { autoinject, noView } from 'aurelia-framework';
+import { I18N } from 'aurelia-i18n';
 
 @autoinject
 export class DateTime {
 
   constructor(private i18:I18N){}
 
-  public ElexisDateToLocalDate(date: string){
+  public elexisDateToLocalDate(date: string){
     return moment(date,"YYYYMMDD").format(this.i18.tr('adapters.date_format'))
   }
 
-  public LocalDateToElexisDate(date: string){
+  public localDateToElexisDate(date: string){
     return moment(date,this.i18.tr('adapters.date_format')).format("YYYYMMDD")
     
   }
@@ -26,7 +26,7 @@ export class DateTime {
    * convert a Date object to a YYYYMMDD string
    * @param date 
    */
-  public DateToElexisDate(date: Date): string {
+  public dateToElexisDate(date: Date): string {
     return moment(date).format("YYYYMMDD");
   }
 
@@ -34,7 +34,7 @@ export class DateTime {
    * convert a Date object to a YYYYMMDDHHmm string
    * @param date 
    */
-  public DateToElexisDateTime(date: Date): string {
+  public dateToElexisDateTime(date: Date): string {
     return moment(date).format("YYYYMMDDHHmm");
   }
 
@@ -42,7 +42,7 @@ export class DateTime {
    * convert a YYYYMMDD string to a Date object
    * @param yyyymmdd 
    */
-  public ElexisDateToDate(yyyymmdd: string): Date {
+  public elexisDateToDate(yyyymmdd: string): Date {
     if (yyyymmdd) {
       return moment(yyyymmdd, "YYYYMMDD").toDate()
     } else {
@@ -54,7 +54,7 @@ export class DateTime {
    * Convert a YYYYMMDDHHmm or a YYYYMMDDHHmmSS to a Date object
    * @param yyyymmddhhmmss 
    */
-  public ElexisDateTimeToDate(yyyymmddhhmmss: string): Date {
+  public elexisDateTimeToDate(yyyymmddhhmmss: string): Date {
     if (yyyymmddhhmmss.length == 14) {
       return moment(yyyymmddhhmmss, "YYYYMMDDHHmmSS").toDate()
     } else if (yyyymmddhhmmss.length == 12) {

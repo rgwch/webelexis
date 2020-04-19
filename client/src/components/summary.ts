@@ -12,12 +12,12 @@ export class Summary {
       exec: this.newAppnt,
       name: "new Appnt",
       icon: "calendar-alt"
-    },
+    } as IAction,
     newKonsAction:{
       exec: this.newKons,
       name: "newkons",
       icon: "plus-circle green"
-    }
+    } as IAction
   }
 
   persActions=[this.actions.newAppntAction]
