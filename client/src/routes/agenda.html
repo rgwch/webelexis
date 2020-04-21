@@ -2,9 +2,11 @@
   <require from="../components/calendar"></require>
   <require from="../components/current-event"></require>
   <require from="../components/summary"></require>
+  <require from="../forms/searchfield"></require>
 
   <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-4">
+      <search-field searchtext="Suchen..." result.two-way="searchTriggered"></search-field>
       <calendar set-day.bind="setDay" , set-month.bind="setMonth" event-selected.bind="eventSelected"></calendar>
     </div>
 

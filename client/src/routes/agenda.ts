@@ -1,5 +1,5 @@
 import { IKontakt, KontaktManager } from './../models/kontakt-model';
-import { autoinject } from 'aurelia-framework';
+import { autoinject, observable } from 'aurelia-framework';
 import { EventManager, IEvent } from './../models/event-model';
 import { DateTime } from '../services/datetime';
 import * as moment from "moment";
@@ -10,11 +10,15 @@ import { AppState } from '../services/app-state'
 export class Agenda {
   message: string;
   selectedEvent:IEvent 
+  @observable searchTriggered:string
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
     private appState:AppState) {
 
   }
 
+  searchTriggeredChanged(){
+    alert("search "+this.searchTriggered)
+  }
   
   eventSelected = (event, instance) => {
     this.selectedEvent = event.event
@@ -54,7 +58,7 @@ export class Agenda {
       return {
         start: this.dt.addMinutesToDate(ev.tag, ev.beginn),
         end: this.dt.addMinutesToDate(ev.tag, parseInt(ev.beginn) + parseInt(ev.dauer)),
-        text: `${this.evm.getLabel(ev)} (${ev.termintyp},${ev.terminstatus}); ${ev.grund || ""}`,
+        text: `${this.evm.getLabel(ev)} (<span style="color:${this.evm.getTypeColor(ev)}">${ev.termintyp}</span>,<span style="color:${this.evm.getStateColor(ev)}">${ev.terminstatus}</span>); ${ev.grund || ""}`,
         color: this.evm.getStateColor(ev),
         termin: ev
       }
