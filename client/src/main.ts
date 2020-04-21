@@ -36,6 +36,7 @@ export async function configure(aurelia: Aurelia) {
       })
     })
     .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
+    .plugin(PLATFORM.moduleName("aurelia-animator-css"));
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
   // LogManager.addAppender(new ConsoleAppender())
