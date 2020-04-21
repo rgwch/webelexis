@@ -76,9 +76,9 @@ function getColors(app, mode, user) {
   return config.find({ query: { user: user, param: { $like: `agenda/farben/${mode}/%` } } }).then(raw => {
     let ret = {}
     raw.data.forEach(col => {
-      let path = col.Param.split("/")
+      let path = col.param.split("/")
       let elem = path[path.length - 1]
-      ret[elem] = col.Value
+      ret[elem] = col.value
     })
     return ret
   }).catch(err => {

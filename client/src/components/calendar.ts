@@ -1,26 +1,38 @@
+import { observable } from 'aurelia-framework';
 
 // https://demo.mobiscroll.com/jquery/eventcalendar/listview-rendering
 
 import { bindable, bindingMode, inlineView, autoinject } from 'aurelia-framework';
-const mobi=window['mobiscroll']
+const mobi = window['mobiscroll']
 
 @autoinject
-export class Calendar{
-  @bindable setDay: (event,instance)=>boolean
-  @bindable setMonth: (event,instance)=>{}
-  @bindable eventSelected: (event,instance)=>{}
+export class Calendar {
+  @bindable setDay: (event, instance) => boolean
+  @bindable setMonth: (event, instance) => {}
+  @bindable eventSelected: (event, instance) => {}
+  @observable searchTriggered: string
 
-  constructor(private cal:Element){
+
+  instance
+
+  constructor(private cal: Element) {
 
   }
 
-  attached(){
-    mobi.eventcalendar(this.cal,{
+  searchTriggeredChanged(){
+    alert("search "+this.searchTriggered)
+  }
+  
+  attached() {
+    this.instance = mobi.eventcalendar(this.cal, {
       lang: 'de',
       noEventsText: 'Keine Termine',
+      eventsText: 'Termine',
+      eventText: 'Termin',
       display: 'inline',
+      showEventCount: true,
       theme: 'bootstrap',
-      view:{
+      view: {
         calendar: {
           type: 'month',
           size: 1
@@ -31,9 +43,9 @@ export class Calendar{
           scrollable: true
         }
       },
-      onBeforeShow: (event,inst)=>{
-        const dat=new Date()
-        this.setMonth({firstDay: dat},inst)    
+      onBeforeShow: (event, inst) => {
+        const dat = new Date()
+        this.setMonth({ firstDay: dat }, inst)
       },
       onDayChange: this.setDay,
       onPageChange: this.setMonth,
@@ -41,5 +53,13 @@ export class Calendar{
     })
   }
 
+  display(mode: string) {
+    this.instance.option({
+      view: {
+        calendar: (mode == 'day' ? undefined : { type: mode, size: 1 }),
+        eventList: { type: "day", scrollable: true }
+      }
+    })
+  }
 
 }

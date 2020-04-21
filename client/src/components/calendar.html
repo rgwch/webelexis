@@ -1,18 +1,13 @@
 <template>
-  <div class="mbsc-form">
-    <label>
-      Month
-      <input class="mbsc-segmented" type="radio" name="view" value="month" class="md-view-change" checked>
-    </label>
-    <label>
-      Week
-      <input mbsc-segmented type="radio" name="view" value="week" class="md-view-change">
-    </label>
-    <label>
-      Day
-      <input mbsc-segmented type="radio" name="view" value="day" class="md-view-change">
-    </label>
-  </div>
-  <div ref="cal"></div>
+  <require from="../forms/searchfield"></require>
+  <div>
+    <div class="btn-group mb-2" role="group" aria-label="calendar mode">
+      <button type="button" class="btn btn-secondary" t="adapters.month" click.delegate="display('month')"></button>
+      <button type="button" class="btn btn-secondary" t="adapters.week" click.delegate="display('week')"></button>
+      <button type="button" class="btn btn-secondary mr-2" t="adapters.day" click.delegate="display('day')"></button>
 
+      <search-field searchtext="Suchen..." result.two-way="searchTriggered"></search-field>
+    </div>
+    <div ref="cal" style="height:80vh;"></div>
+  </div>
 </template>

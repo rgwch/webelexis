@@ -9,29 +9,26 @@ import { AppState } from '../services/app-state'
 @autoinject
 export class Agenda {
   message: string;
-  selectedEvent:IEvent 
-  @observable searchTriggered:string
+  selectedEvent: IEvent
+
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
-    private appState:AppState) {
+    private appState: AppState) {
 
   }
 
-  searchTriggeredChanged(){
-    alert("search "+this.searchTriggered)
-  }
-  
+
   eventSelected = (event, instance) => {
     this.selectedEvent = event.event
   }
   setMonth = async (event, cal) => {
     await this.evm.setUser()
-    const dat= moment(event.firstDay).startOf('month').subtract(3,'days')
+    const dat = moment(event.firstDay).startOf('month').subtract(3, 'days')
     const von = this.dt.dateToElexisDate(dat.toDate())
     const bis = this.dt.dateToElexisDate(dat.add(36, 'days').toDate())
     cal.setEvents([])
     let skip = 0
     do {
-      skip = await this.addBatch({ tag: { $gte: von, $lte: bis }, termintyp: {$ne: "Reserviert"}, bereich: "Gerry" }, skip, cal)
+      skip = await this.addBatch({ tag: { $gte: von, $lte: bis }, termintyp: { $ne: "Reserviert" }, bereich: "Gerry" }, skip, cal)
     } while (skip)
 
   }
@@ -55,10 +52,13 @@ export class Agenda {
     query.$skip = skip
     const events = await this.evm.find(query)
     cal.addEvent(events.data.map((ev: IEvent) => {
+      const label = this.evm.getLabel(ev)
+      const typecolor = this.evm.getTypeColor(ev)
+      const statecolor = this.evm.getStateColor(ev)
       return {
         start: this.dt.addMinutesToDate(ev.tag, ev.beginn),
         end: this.dt.addMinutesToDate(ev.tag, parseInt(ev.beginn) + parseInt(ev.dauer)),
-        text: `${this.evm.getLabel(ev)} (<span style="color:${this.evm.getTypeColor(ev)}">${ev.termintyp}</span>,<span style="color:${this.evm.getStateColor(ev)}">${ev.terminstatus}</span>); ${ev.grund || ""}`,
+        text: `${label} (<span style="color:${typecolor}">${ev.termintyp}</span>,<span style="color:${statecolor}">${ev.terminstatus}</span>); ${ev.grund || ""}`,
         color: this.evm.getStateColor(ev),
         termin: ev
       }

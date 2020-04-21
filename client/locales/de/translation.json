@@ -6,7 +6,11 @@
     "datetime_format": "DD.MM.YYYY, HH:mm",
     "datetime_format_parse": "D.M.YYYY,H:m",
     "time_format": "HH:mm",
-    "time_format_parse": "H:m"
+    "time_format_parse": "H:m",
+    "month": "Monat",
+    "week": "Woche",
+    "day": "Tag",
+    "year": "Jahr"
   },
   "address": {
     "place": "Ort",
