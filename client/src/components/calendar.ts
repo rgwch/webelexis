@@ -1,12 +1,10 @@
+
+// https://demo.mobiscroll.com/jquery/eventcalendar/listview-rendering
+
 import { bindable, bindingMode, inlineView, autoinject } from 'aurelia-framework';
 const mobi=window['mobiscroll']
 
 @autoinject
-@inlineView(`
-<template>
-  <div ref="cal"></div>
-</template>
-`)
 export class Calendar{
   @bindable setDay: (event,instance)=>boolean
   @bindable setMonth: (event,instance)=>{}
