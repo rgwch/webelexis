@@ -22,9 +22,9 @@ export class Collapse {
       this.animator.animate(this.collapsible, 'opening')
 
     } else {
-      return this.animator.animate(this.collapsible, 'closing').then(() => {
+      //return this.animator.animate(this.collapsible, 'closing').then(() => {
         this.isExpanded = false        
-      })
+      //})
     }
     console.log("toggle")
   }

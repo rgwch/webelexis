@@ -1,7 +1,8 @@
 import { bindable, bindingMode, inlineView } from 'aurelia-framework';
 import Quill from 'quill'
 import '../../node_modules/quill/dist/quill.core.css'
-import '../../node_modules/quill/dist/quill.snow.css'
+// import '../../node_modules/quill/dist/quill.snow.css'
+import '../../node_modules/quill/dist/quill.bubble.css'
 import Delta from 'quill-delta'
 
 export interface IEditorCommand {
@@ -11,8 +12,8 @@ export interface IEditorCommand {
 }
 @inlineView(`
 <template>
-  <div ref="tb" class="toolbar"></div>
-  <div ref="ed" class="editor"></div>
+    <div ref="tb" class="toolbar"></div>
+    <div ref="ed" class="editor"></div>
 </template>
 `)
 export class Editor {
@@ -28,7 +29,7 @@ export class Editor {
     debug: 'info',
     placeholder: "Hier tippseln",
     readOnly: false,
-    theme: 'snow'
+    theme: 'bubble'
   }
 
   public attached() {
@@ -46,6 +47,7 @@ export class Editor {
   }
 
   public detached() {
+    this.editor.destroy()
 
   }
 

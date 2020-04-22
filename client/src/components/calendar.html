@@ -1,10 +1,10 @@
 <template>
   <require from="../forms/searchfield"></require>
-  <div>
+  <div style="height:80vh;">
     <div class="btn-group mb-2" role="group" aria-label="calendar mode">
-      <button type="button" class="btn btn-secondary" t="adapters.month" click.delegate="display('month')"></button>
-      <button type="button" class="btn btn-secondary" t="adapters.week" click.delegate="display('week')"></button>
-      <button type="button" class="btn btn-secondary mr-2" t="adapters.day" click.delegate="display('day')"></button>
+      <button type="button" class="btn btn-outline-secondary" t="adapters.month" click.delegate="display('month')"></button>
+      <button type="button" class="btn btn-outline-secondary" t="adapters.week" click.delegate="display('week')"></button>
+      <button type="button" class="btn btn-outline-secondary mr-2" t="adapters.day" click.delegate="display('day')"></button>
 
       <search-field searchtext="Suchen..." result.two-way="searchTriggered"></search-field>
     </div>
