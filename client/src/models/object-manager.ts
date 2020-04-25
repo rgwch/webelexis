@@ -24,6 +24,9 @@ export class ObjectManager {
     this.dataService = this.dataSource.getService(serviceName);
   }
 
+  protected getDataService(name:string){
+    return this.dataSource.getService(name)
+  }
   /**
    * Create or update (if exists) an object
    * Removes all client side helper attributes (starting with _)

@@ -1,11 +1,11 @@
 import { LogManager } from 'aurelia-framework';
 import { inlineView } from 'aurelia-framework';
-import { KontaktManager } from './../models/kontakt-model';
-import { PatientManager } from '../models/patient-model';
+import { KontaktManager } from '../models/kontakt-manager';
+import { PatientManager } from '../models/patient-manager';
 import { DateTime } from '../services/datetime';
 import { I18N } from 'aurelia-i18n';
 import { bindable, autoinject } from 'aurelia-framework';
-import { IPatient } from './../models/patient-model';
+import { IPatient } from '../models/patient-manager';
 import { FlexformConfig } from '../forms/flexform';
 import * as moment from 'moment'
 

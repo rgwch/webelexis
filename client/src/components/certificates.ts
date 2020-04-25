@@ -7,11 +7,11 @@
 import { ICase} from "../models/case-manager"
 import { CertificateManager, ICertificate } from './../models/auf-manager';
 import { DateTime } from "../services/datetime"
-import { IPatient } from "../models/patient-model"
+import { IPatient } from "../models/patient-manager"
 import { autoinject,bindable } from "aurelia-framework"
 import { IElexisType } from "models/elexistype"
 import { ValidateEvent } from "aurelia-validation"
-import { AppState } from './../services/app-state';
+import { AppState, SELECTABLE } from './../services/app-state';
 
 // import { BriefType, BriefManager } from "models/briefe-model"
 
@@ -94,7 +94,7 @@ export class Certificate {
    * Create a new certificate
    */
   protected newAUF() {
-    const fall: ICase = this.appState.currentCase
+    const fall: ICase = this.appState.getSelectedItem(SELECTABLE.case)
     const today = this.dt.dateToElexisDate(new Date())
     const auftemplate:ICertificate = {
       patientid: this.actPatient.id,

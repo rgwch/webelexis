@@ -1,6 +1,6 @@
 import { ObjectManager } from './object-manager';
 import { ICase } from './case-manager';
-import { IPatient } from './patient-model';
+import { IPatient } from './patient-manager';
 import { IElexisType, ELEXISDATE, UUID } from './elexistype';
 
 export interface IEncounter extends IElexisType{

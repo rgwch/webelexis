@@ -1,7 +1,7 @@
 import { LocalDataSource, LocalDataService } from '../../src/services/dataservice';
 import { IElexisType } from 'models/elexistype';
 import { Fakes } from '../../src/services/fakes'
-import { IKontakt } from 'models/kontakt-model';
+import { IKontakt } from 'models/kontakt-manager';
 
 describe('check datasource', () => {
   const faker = new Fakes()

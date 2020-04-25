@@ -1,4 +1,4 @@
-import { IUser } from '../models/user-model';
+import { IUser } from '../models/user-manager';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2018-2020 by G. Weirich         *

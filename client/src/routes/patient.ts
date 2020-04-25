@@ -1,6 +1,6 @@
-import { IPatient } from './../models/patient-model';
+import { IPatient } from '../models/patient-manager';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { PatientManager } from '../models/patient-model';
+import { PatientManager } from '../models/patient-manager';
 import { autoinject, bindable } from 'aurelia-framework';
 import { IViewerConfiguration } from './../forms/commonviewer';
 import { I18N } from 'aurelia-i18n';

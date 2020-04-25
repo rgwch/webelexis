@@ -1,5 +1,5 @@
 import { LogManager, autoinject, bindable, computedFrom } from 'aurelia-framework';
-import { IPatient, PatientManager } from './../models/patient-model';
+import { IPatient, PatientManager } from '../models/patient-manager';
 import { IAction } from './collapse';
 
 const log = LogManager.getLogger("Summary View")

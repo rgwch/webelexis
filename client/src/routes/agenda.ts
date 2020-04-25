@@ -1,6 +1,6 @@
-import { IKontakt, KontaktManager } from './../models/kontakt-model';
+import { IKontakt, KontaktManager } from '../models/kontakt-manager';
 import { autoinject, observable } from 'aurelia-framework';
-import { EventManager, IEvent } from './../models/event-model';
+import { EventManager, IEvent } from '../models/event-manager';
 import { DateTime } from '../services/datetime';
 import * as moment from "moment";
 import { AppState } from '../services/app-state'

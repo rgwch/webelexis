@@ -3,7 +3,7 @@
  * Copyright (c) 2018-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { IUser} from '../models/user-model';
+import { IUser} from '../models/user-manager';
 import {IElexisType, UUID} from '../models/elexistype'
 import { uuid } from 'uuidv4'
 

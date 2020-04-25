@@ -1,5 +1,5 @@
 import { bindable } from 'aurelia-framework';
-import { IEvent } from 'models/event-model';
+import { IEvent } from '../models/event-manager';
 import './components.scss'
 
 export class CurrentEvent{

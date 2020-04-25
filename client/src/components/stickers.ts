@@ -1,7 +1,7 @@
 import { autoinject, LogManager } from 'aurelia-framework';
 import { StickerManager } from '../models/sticker-manager';
-import { PatientManager } from '../models/patient-model';
-import { IKontakt } from './../models/kontakt-model';
+import { PatientManager } from '../models/patient-manager';
+import { IKontakt } from '../models/kontakt-manager';
 import { bindable } from 'aurelia-framework';
 import { ISticker } from 'models/sticker-manager';
 

@@ -1,6 +1,6 @@
 import { DateTime } from './datetime';
 import { UUID } from '../models/elexistype';
-import { IKontakt } from '../models/kontakt-model';
+import { IKontakt } from '../models/kontakt-manager';
 import * as faker from 'faker/locale/de_CH'
 faker.locale="de_CH"
 

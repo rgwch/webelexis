@@ -1,6 +1,6 @@
 import { StickerManager } from './../models/sticker-manager';
 import { StickynoteManager, IStickyNote } from './../models/stickynote-manager';
-import { IPatient } from './../models/patient-model';
+import { IPatient } from '../models/patient-manager';
 import { LogManager, autoinject, inlineView, bindable } from 'aurelia-framework';
 import { IQueryResult } from 'services/dataservice';
 import { IEditorCommand } from './editor'

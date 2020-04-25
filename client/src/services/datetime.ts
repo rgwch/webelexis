@@ -87,8 +87,10 @@ export class DateTime {
     return hoursS + ":" + mins;
   }
 
-
-
+  public dateToLocalDate(date:Date){
+    return moment(date).format(this.i18.tr('adapters.date_format'))
+  }
+  
   public isValidLocalDate(dmy) {
     return (moment(dmy, "D.M.YYYY")).isValid()
   }

@@ -1,6 +1,6 @@
 import { EncounterManager } from 'models/encounter-model';
 import { LogManager } from 'aurelia-framework';
-import { IPatient } from './../models/patient-model';
+import { IPatient } from '../models/patient-manager';
 import { IEncounter } from '../models/encounter-model';
 import { bindable, autoinject } from 'aurelia-framework';
 import { inlineView } from 'aurelia-framework';
