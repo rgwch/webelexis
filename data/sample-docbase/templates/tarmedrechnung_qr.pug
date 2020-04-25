@@ -1,0 +1,233 @@
+doctype html
+html(lang="de")
+  head
+    meta(charset="utf-8")
+    style.
+      @page{
+        size: a4 portrait;
+        margin-top: 5m;
+        margin-left:5mm;
+        margin-bottom:2mm;
+      }
+      /* the outermost div */
+      #container {
+        position: absolute;
+        font-size: 10pt;
+        left:0;
+        top:0;
+        width: 210mm;
+        height: 297mm;
+      }
+      /* The heading swith sender informations and practice logo*/
+      #header {
+        color: green;
+        text-align: center;
+        padding-bottom: 0;
+        padding-top: 0;
+      }
+
+      h1 {
+        font-size: 12pt;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      /* Make tables more compact */
+      table,
+      tr,
+      td {
+        padding-bottom: 0;
+        padding-top: 0;
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+
+      #datum {
+        position: absolute;
+        right: 20mm;
+        top: 24mm;
+      }
+
+      #absender {
+        position: absolute;
+        left: 10mm;
+        top: 24mm;
+        margin-right: 20px;
+      }
+
+      /* Modify the position to match your envelopes */
+      #addressfield {
+        position: absolute;
+        right: 20mm;
+        top: 45mm;
+        background-color: light-gray;
+      }
+
+      /* The summary box for the details of the Bill */
+      #rn_ident {
+      position: absolute;
+      background-color: gainsboro;
+      left: 10mm;
+      top: 70mm;
+      padding: 5px;
+     }
+
+      /* The Text for the Bill */
+      #maintext {
+        position: absolute;
+        left: 10mm;
+        top: 100mm;
+      }
+
+      /***** Do not modify or reposition the parts between here and /style   ******/
+
+      /* The payment slip must be A6 and located in the lower right edge of the page
+        It must be separated with lines or perforations from the rest of the document.
+        Only sans-serif fonts between 9 and 11pt are acceptable.             */
+
+      #payment_slip {
+        position: absolute;
+        width: 148mm;
+        height: 105mm;
+        right: 0;
+        bottom: 0;
+        border-left-color: black;
+        border-left-style:dashed;
+        border-top-style: dashed;
+        border-top-color: black;
+        border-top-width: 1px;
+        border-left-width: 1px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      /* The Text "Zahlteil QR-Rechnung" */
+      #payment_slip_title {
+        position: absolute;
+        font-size: 11pt;
+        top: 0;
+        left: 6mm;
+        height: 10mm;
+      }
+
+      /* The Text "Unterstützt: Überweisung */
+      #payment_slip_mode {
+        position: absolute;
+        font-size: 11pt;
+        top: 10mm;
+        left: 6mm;
+        height: 15mm;
+      }
+
+      /* The QR Code. Must have a free zone of at least 5mm around and should be at least 47x47mm */
+      #payment_slip_qrzone {
+        position: absolute;
+        left: 0mm;
+        top: 25mm;
+        width: 66mm;
+        height: 66mm;
+      }
+
+      /** Currency and amount */
+      #payment_slip_amount {
+        position: absolute;
+        left: 6mm;
+        top: 88mm;
+        height: 15mm;
+      }
+
+      /* Right side of the payment slip */
+      #payment_slip_details {
+        position: absolute;
+        left: 65mm;
+        top: 6mm;
+      }
+
+      /* Font for headings in the payment slip */
+      .payment_slip_heading {
+        font-size: 9pt;
+        font-weight: bold;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+
+      /* Font for Text in the payment slip */
+      .payment_slip_default {
+        font-size: 11pt;
+        padding-top: 0;
+        margin-top: 0;
+      }
+
+      .payment_slip_paddign_right{
+        padding-right: 5px;
+      }
+
+      .payment_slip_padding_left{
+        padding-left: 5px;
+      }
+
+      /* Test purposes: Print the page and measure, if the rectagle ist exactly 10x10 cm */
+      .rectangle{
+        position:absolute;
+        left:20mm;
+        top:20mm;
+        width:100mm;
+        height:100mm;
+        border-style:solid;
+        border-width:1px;
+        }
+
+
+  body
+    .container
+      .header
+        h1 Praxis [Mandant.Titel] [Mandant.Vorname] [Mandant.Name]
+        span [Mandant.Strasse] [Mandant.Plz] [Mandant.Ort]
+        hr
+
+      .datum [Mandant.Ort] [Datum.heute]
+      .absender [Mandant.Titel] [Mandant.Vorname] [Mandant.Name]
+      .addressfield [Adressat.Anschrift]
+
+      .rn_ident
+        table
+          tr
+            td Rechnungs-Nummer:
+            td [Rechnung.RnNummer]
+          tr
+            td Rechnungs-Datum:
+            td [Rechnung.RnDatum]
+          tr
+            td Behandlungen von:
+            td [Rechnung.rndatumvon]
+          tr
+            td Behandlungen bis:
+            td [Rechnung.rndatumbis]
+
+      .maintext
+        h1 Honorar-Rechnung
+        p Diese Seite ist für Ihre Unterlagen bestimmt
+
+      .payment_slip
+        .payment_slip_title
+          Zahlteil QR-Rechnung
+        .payment_slip_mode
+          p.payment_slip_heading Unterstützt
+          span.payment_slip_default Überweisung
+        .payment_slip_qrzone [QRCODE]
+        .payment_slip_amount
+          table
+            tr.payment_slip_heading
+              td.payment_slip_padding_right [CURRENCY]
+              td.payment_slip_padding_left [AMOUNT]
+        .payment_slip_details
+          p.payment_slip_heading Konto
+          p.payment_slip_default [IBAN]
+          p.payment_slip_heading Zahlungsempfänger
+          p.payment_slip_default [BILLER]
+          p.payment_slip_heading Referenznummer
+          p.payment_slip_default [ESRLINE]
+          p.payment_slip_heading Zahlungspflichtiger
+          p.payment_slip_default [ADDRESSEE]
+          p.payment_slip_heading Zahlbaer bis:
+          p.payment_slip_default [DUE]
+

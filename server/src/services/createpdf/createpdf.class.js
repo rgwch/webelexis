@@ -1,4 +1,5 @@
-/* eslint-disable no-unused-vars */
+const puppeteer=require('pdf-puppeteer')
+
 class Service {
   constructor (options) {
     this.options = options || {};
@@ -14,12 +15,17 @@ class Service {
     };
   }
 
-  async create (data, params) {
+  /** Generate a PDF from a HTML */
+  create (data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
+    return new Promise((resolve,reject)=>{
+      puppeteer(data.html,pdf=>{
+        resolve(pdf)
+      })
+    })
 
-    return data;
   }
 
   async update (id, data, params) {

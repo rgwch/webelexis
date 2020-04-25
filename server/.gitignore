@@ -110,3 +110,5 @@ $RECYCLE.BIN/
 # Others
 lib/*.jar
 data/
+
+sample_html.pdf

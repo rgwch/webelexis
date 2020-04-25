@@ -5,11 +5,19 @@
  ********************************************/
 const assert = require('assert');
 const app = require('../../src/app');
+const path=require('path')
+const fs=require('fs')
 
 describe('\'createpdf\' service', () => {
+  const service = app.service('createpdf');
   it('registered the service', () => {
-    const service = app.service('createpdf');
-
     assert.ok(service, 'Registered the service');
   });
+  it('converts a simple html',async ()=>{
+    const filename=path.join(__dirname,"../sample_html.html")
+    const file=fs.readFileSync(filename)
+    const pdf=await service.create({id: "1", html: file.toString("utf-8")})
+    fs.writeFileSync(path.join(__dirname,"../sample_html.pdf"),pdf)
+    pdf.should.be.ok
+  })
 });
