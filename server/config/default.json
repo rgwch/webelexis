@@ -38,7 +38,7 @@
   },
   "solr": {
     "host": "http://localhost:8983/solr",
-    "core": "/webelexis",
+    "core": "/elexisdata",
     "schema": false,
     "migrate": "alter",
     "idfield": "id",
