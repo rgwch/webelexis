@@ -5,6 +5,7 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const fetch=require('node-fetch')
 const logger = require('../../logger');
 // logger.level="debug"
 
@@ -20,9 +21,12 @@ const uri_regexp = /\w+:\/\/(\/?\/?)[^\s]+/
 const handleCreate = async ctx => {
   if (ctx.data && ctx.data.contents) {
     if (uri_regexp.exec(ctx.data.contents)) {
-      const solrService=ctx.app.service('solr')
-      const created=await solrService.create(ctx.data)
-      console.log(created)
+      const result= await fetch(ctx.app.get("tika").host,{method:"post",body:ctx.data.contents})
+      if(result.status!=200){
+        throw feathers.error(result.message)
+      }
+      ctx.data=result
+      return ctx
     }
   }
   if(ctx.data.template){

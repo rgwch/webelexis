@@ -47,6 +47,9 @@
       "max": 100
     }
   },
+  "tika":{
+    "host": "http://localhost:9998"
+  },
   "authentication": {
     "entity": "user",
     "service": "user",
@@ -59,10 +62,10 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "https://webelexis.ch",
       "issuer": "feathers",
       "algorithm": "HS256",
-      "expiresIn": "1d"
+      "expiresIn": "2d"
     },
     "local": {
       "usernameField": "id",

@@ -5,7 +5,6 @@
  ********************************************/
 
 const createService = require('feathers-solr');
-const { SolrClient } = require('feathers-solr')
 const fetch = require('node-fetch')
 const solrServer = "http://localhost:8983/solr/"
 // const createModel = require('../../models/documents.model');
