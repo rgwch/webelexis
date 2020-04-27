@@ -4,27 +4,31 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const createService = require('feathers-nedb');
-const createModel = require('../../models/documents.model');
+const createService = require('feathers-solr');
+const { SolrClient } = require('feathers-solr')
+const fetch = require('node-fetch')
+const solrServer = "http://localhost:8983/solr/"
+// const createModel = require('../../models/documents.model');
 const hooks = require('./documents.hooks');
-const doctool=require('../../util/topdf')
+const doctool = require('../../util/topdf')
 const customMethods = require('feathers-custom-methods')
 
 module.exports = function (app) {
-  const Model = createModel(app);
+  const Model = fetch;
   const paginate = app.get('paginate');
-
-  const options = {
+  const options = Object.assign({},{
+    host: solrServer,
+    core: "demo",
     Model,
-    id: "id",
     paginate
-  };
+  },app.get('solr'));
 
   // Initialize our service with any options it requires
   app.use('/documents', createService(options));
 
   // Get our initialized service so that we can register hooks
   const service = app.service('documents');
+  /*
   app.configure(customMethods({
     methods: {
       documents: ['toPDF', "store"]
@@ -32,6 +36,6 @@ module.exports = function (app) {
   }))
 
   service.toPDF=doctool.toPDF
-
+*/
   service.hooks(hooks);
 };
