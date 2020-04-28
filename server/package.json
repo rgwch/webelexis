@@ -69,6 +69,7 @@
     "pq": "0.0.3",
     "pug": "^2.0.4",
     "serve-favicon": "^2.4.5",
+    "simple-watcher": "^4.0.1",
     "solr-client": "^0.7.1",
     "sqlite3": "^4.1.1",
     "tmp": "0.0.33",
