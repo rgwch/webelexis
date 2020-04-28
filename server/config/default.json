@@ -45,10 +45,9 @@
     "paginate": {
       "default": 20,
       "max": 100
-    }
-  },
-  "tika":{
-    "host": "http://localhost:9998"
+    },
+    "tika": "http://localhost:9998",
+    "filestore": "solr-docs"
   },
   "authentication": {
     "entity": "user",

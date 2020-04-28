@@ -70,11 +70,15 @@ describe('\'documents\' service', () => {
     exists.data.length.should.be.gt(0)
 
   })
-  it("creates an entry from a odt document", async()=>{
+  xit("creates an entry from a odt document", async()=>{
     const p=path.join(__dirname,"../test.odt")
-    const result=await service.create({contents: "file://"+p})
+    const result=await service.create({contents: "file:/"+p})
     result.should.be.ok
 
+  })
+  it("creates an entry from a remote file", async()=>{
+    const result=await service.create({contents: "http://www.elexis.ch/ungrad"})
+    result.should.be.ok
   })
   xit("creates a pdf from a template and a document", async () => {
     const service = app.service('documents');
