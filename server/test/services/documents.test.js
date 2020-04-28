@@ -17,7 +17,11 @@ describe('\'documents\' service', () => {
   const service = app.service('documents')
 
   beforeEach(async () => {
-    await service.remove(null, { subject: "a test" })
+    try {
+      await service.remove(null, { query: {subject: "a test" }})
+    } catch (err) {
+      // doesn't matter
+    }
   })
 
   it('registered the service', () => {
@@ -50,9 +54,9 @@ describe('\'documents\' service', () => {
     const found = await service.get(created.id)
     found.concern[0].should.equal(pat.id)
     found.addressee[0].should.equal(adr.id)
-    found.contents="<h1>Modified</h1>"
-    found._version_=0
-    const updated=await service.update(found.id,Object.assign({},found))
+    found.contents = "<h1>Modified</h1>"
+    found._version_ = 0
+    const updated = await service.update(found.id, Object.assign({}, found))
     updated.id.should.equal(created.id)
     updated.concern[0].should.equal(pat.id)
     updated.addressee[0].should.equal(adr.id)
@@ -65,20 +69,28 @@ describe('\'documents\' service', () => {
     // const empty=await service.find({query: {$search: "alpha:beta"}})
     // empty.should.be.ok
     // empty.data.length.should.equal(0)
-    const exists=await service.find({ query: { $search: "contents:mod*" } })
+    const exists = await service.find({ query: { $search: "contents:mod*" } })
     exists.should.be.ok
     exists.data.length.should.be.gt(0)
 
   })
-  xit("creates an entry from a odt document", async()=>{
-    const p=path.join(__dirname,"../test.odt")
-    const result=await service.create({contents: "file:/"+p})
+  it("creates an entry from a odt document", async () => {
+    const p = path.join(__dirname, "../test.odt")
+    const result = await service.create({ contents: "file://" + p })
     result.should.be.ok
 
   })
-  it("creates an entry from a remote file", async()=>{
-    const result=await service.create({contents: "http://www.elexis.ch/ungrad"})
+  it("creates an entry from a remote file", async () => {
+    const result = await service.create({ contents: "http://www.elexis.ch/ungrad", filename: "Elexis_Ungrad.html" })
     result.should.be.ok
+  })
+
+  it("deletes a file",async ()=>{
+    const p = path.join(__dirname, "../test.odt")
+    const result = await service.create({ contents: "file://" + p, filename: "doomed.odt" })
+    result.should.be.ok
+    const removed=await service.remove(result.id)
+    removed.should.be.ok
   })
   xit("creates a pdf from a template and a document", async () => {
     const service = app.service('documents');

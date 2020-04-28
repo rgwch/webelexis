@@ -19,6 +19,7 @@ module.exports = function (app) {
     host: solrServer,
     core: "demo",
     Model,
+    multi: true,
     paginate
   },app.get('solr'));
 
