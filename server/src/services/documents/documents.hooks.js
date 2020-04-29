@@ -64,7 +64,7 @@ const handleCreate = async ctx => {
       if (text.status != 200) {
         throw new Error(text.statusText)
       }
-      const json = await meta.json()
+      const json = Object.assign({}, (await meta.json()), ctx.data)
       json.contents = (await text.text()).trim()
 
       const storage = getStorage(ctx)
@@ -76,7 +76,13 @@ const handleCreate = async ctx => {
         fname = uuid()
       }
       let dir = path.join(storage, (json.concern || "."))
-      await fs.mkdir(dir, { recursive: true })
+      try {
+        await fs.mkdir(dir, { recursive: true })
+      } catch (err) {
+        if (err.code != "EEXIST") {
+          throw (err)
+        }
+      }
       let filename = path.join(dir, fname)
       const written = await fs.writeFile(filename, cnt)
       json.loc = path.join((json.concern || "."), fname);
@@ -98,13 +104,15 @@ const handleCreate = async ctx => {
  * @param {} ctx
  */
 const handleDelete = async ctx => {
-  if (ctx.id) {
-    const doc = await ctx.service.get(ctx.id)
-    if (doc.loc && !uri_regexp.exec(doc.loc)) {
-      const storage = getStorage(ctx)
-      const fname = path.join(storage, doc.loc)
-      await fs.unlink(fname)
-    }
+  if(Array.isArray(ctx.result)){
+    const ctxr=ctx
+    handleDelete(ctx.result.map(el=>{ctxr.result=el; return ctxr}))
+  }
+  const doc = ctx.result
+  if (doc && doc.loc && !uri_regexp.exec(doc.loc)) {
+    const storage = getStorage(ctx)
+    const fname = path.join(storage, doc.loc)
+    await fs.unlink(fname)
   }
   return ctx
 }
@@ -113,7 +121,7 @@ module.exports = {
     all: [ /* authenticate('jwt') */],
     find: [],
     get: [],
-    create: [/*handleCreate */],
+    create: [handleCreate],
     update: [],
     patch: [],
     remove: []

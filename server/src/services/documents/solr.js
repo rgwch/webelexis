@@ -1,7 +1,11 @@
 const fetch = require('node-fetch')
+const _ = require('lodash')
 
 const fields = [
-  { name: "Character Count", type: "plongs" },
+  { name: "_nest_path_", type: "_nest_path_" },
+  { name: "_root_", type: "string", docValues: false, indexed: true, stored: false },
+  { name: "score", type: "plongs" },
+  { name: "Character_Count", type: "plongs" },
   { name: "Content-Encoding", type: "text_general" },
   { name: "Content-Language", type: "text_general" },
   { name: "Content-Type", type: "text_general" },
@@ -31,18 +35,16 @@ const fields = [
   { name: "lastupdate", type: "plongs" },
   { name: "loc", type: "string", indexed: false, stored: true },
   { name: "name", type: "text_general", indexed: true, stored: true },
-  { name: "subject", type: "string" },
+  { name: "subject", type: "text_general" },
   { name: "template", type: "string" },
   { name: "title", type: "text_general", indexed: true, stored: true },
   { name: "url", type: "string" }
 ]
 
-const sendCommand= async (api,body)=>{
+const sendCommand = async (api, body) => {
   try {
     const result = await fetch(api, {
-      headers: { "content-type": "application/json" }, method: "post", body: JSON.stringify({
-        "delete-field": {"name": field.name}
-      })
+      headers: { "content-type": "application/json" }, method: "post", body: JSON.stringify(body)
     })
     if (result.status != 200) {
       console.log(result.statusText)
@@ -51,42 +53,60 @@ const sendCommand= async (api,body)=>{
     console.log(err)
   }
 }
-const replaceField=async ( api, field)=>{
 
-}
-const createField= async (api, field)=>{
-
-}
-
-const deleteField = async (api, field) => {
-    sendCommand(api)
+const createCore = async solr => {
+  const api = solr.host + "/admin/cores?action="
+  try {
+    let response = await fetch(`${api}STATUS&core=${solr.core}`)
+    if (response.status != 200) {
+      console.log(response.statusText)
+    } else {
+      const status = await response.json()
+      if (!status.status.elexisdata.name) {
+        response = await fetch(`${api}RENAME&core=gettingstarted&other=${solr.core}`)
+        const result = await response.json()
+        console.log(result.msg)
+      }
+    }
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const checkSchema = async app => {
-  const api = app.get('solr').host + "/schema"
+  const solr = app.get('solr')
+  const api = solr.host + "/" + solr.core + "/schema"
   const res = await fetch(api, { method: 'get' })
   if (res.status == 200) {
-    schema = await res.json()
+    const schema = await res.json()
     for (const field of schema.schema.fields) {
       const check = fields.find(n => n.name === field.name)
       if (check) {
-
+        if (!_.isEqual(check, field)) {
+          await sendCommand(api, { "replace-field": field })
+        }
       } else {
-        await sendCommand(api, {"delete-field": {name:}})
-        await deleteField(api, field)
+        // await sendCommand(api, { "delete-field": { name: field.name } })
       }
     }
-    for(const field of fields){
-      const check=schema.schema.fields.find(n=>n.name===field.name)
-      if(!check){
-        await createField(api, field)
+    for (const field of fields) {
+      const check = schema.schema.fields.find(n => n.name === field.name)
+      if (!check) {
+        await sendCommand(api, { "add-field": field })
       }
     }
-    console.log(schema)
+    // console.log(schema)
   } else {
-    throw new Error("could not retrieve schema " + res.statusText)
+    if (res.status == 404) {
+      console.log("schema not found")
+      await createCore(solr)
+      await checkSchema(app)
+    } else {
+      throw new Error("could not retrieve schema " + res.statusText)
+    }
   }
 }
+
 
 module.exports = {
   checkSchema

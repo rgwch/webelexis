@@ -37,14 +37,9 @@
     "url": "http://localhost:2016/lucinda/2.0/"
   },
   "solr": {
-    "host": "http://localhost:8983/solr/elexisdata",
-    "schema": false,
-    "migrate": "alter",
+    "host": "http://localhost:8983/solr",
+    "core": "elexisdata",
     "idfield": "id",
-    "paginate": {
-      "default": 20,
-      "max": 100
-    },
     "tika": "http://localhost:9998",
     "filestore": "solr-docs"
   },

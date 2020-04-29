@@ -13,14 +13,16 @@ const hooks = require('./documents.hooks');
 const doctool = require('../../util/topdf')
 const customMethods = require('feathers-custom-methods')
 
+
 module.exports = function (app) {
-  const solrServer = app.get('solr').host
+  const solr=app.get('solr')
+  const solrServer = solr.host+"/"+solr.core
   const paginate = app.get('paginate');
   const options = {
     Model: SolrClient(fetch, solrServer),
     multi: true,
     // events: ['testing'],
-    paginate: {}
+    // paginate: {default:10, max:100}
   }
 
   // Initialize our service with any options it requires
