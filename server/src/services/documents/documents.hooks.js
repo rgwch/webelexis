@@ -85,13 +85,14 @@ const handleCreate = async ctx => {
       } else {
         json.loc = json.contents
       }
-      if(json.loc.startsWith(storage)){
-        json.loc=json.loc.substring(storage.length)
-      }
+
       json.contents = (await text.text()).trim()
       json.id = api.makeFileID(ctx.app, json.loc)
       if (!json.id) {
         json.id = uuid()
+      }
+      if(json.loc.startsWith(storage)){
+        json.loc=json.loc.substring(storage.length)
       }
       ctx.data = json
       return ctx
