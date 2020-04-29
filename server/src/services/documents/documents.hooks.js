@@ -113,7 +113,7 @@ module.exports = {
     all: [ /* authenticate('jwt') */],
     find: [],
     get: [],
-    create: [handleCreate],
+    create: [/*handleCreate */],
     update: [],
     patch: [],
     remove: []

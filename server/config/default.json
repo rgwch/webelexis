@@ -1,6 +1,6 @@
 {
   "configname": "default",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "testing": false,
   "host": "localhost",
   "port": 3030,
@@ -37,8 +37,7 @@
     "url": "http://localhost:2016/lucinda/2.0/"
   },
   "solr": {
-    "host": "http://localhost:8983/solr",
-    "core": "/elexisdata",
+    "host": "http://localhost:8983/solr/elexisdata",
     "schema": false,
     "migrate": "alter",
     "idfield": "id",
