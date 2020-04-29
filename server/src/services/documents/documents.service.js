@@ -4,27 +4,26 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const createService = require('feathers-solr');
+const Service = require('feathers-solr');
+const { SolrClient } = require('feathers-solr');
 const fetch = require('node-fetch')
-const solrServer = "http://localhost:8983/solr/"
+const solrServer = "http://localhost:8983/solr/getting"
 // const createModel = require('../../models/documents.model');
 const hooks = require('./documents.hooks');
 const doctool = require('../../util/topdf')
 const customMethods = require('feathers-custom-methods')
 
 module.exports = function (app) {
-  const Model = fetch;
+  const Model = SolrClient(fetch,solrServer);
   const paginate = app.get('paginate');
   const options = Object.assign({},{
-    host: solrServer,
-    core: "demo",
     Model,
     multi: true,
     paginate
   },app.get('solr'));
 
   // Initialize our service with any options it requires
-  app.use('/documents', createService(options));
+  app.use('/documents', new Service(options));
 
   // Get our initialized service so that we can register hooks
   const service = app.service('documents');

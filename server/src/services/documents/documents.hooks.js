@@ -6,7 +6,7 @@
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const fetch = require('node-fetch')
-const logger = require('../../logger');
+const log = require('../../logger');
 const fs = require('fs').promises
 const path = require('path')
 const getStream = require('get-stream')
@@ -15,7 +15,7 @@ const uuid = require('uuid/v4')
 
 const uri_regexp = /\w+:\/\/(\/?\/?)[^\s]+/
 
-getStorage = ctx => {
+const getStorage = ctx => {
   let storage = ctx.app.get('solr').filestore
   if (!storage) {
     log.error("solr.filestore not defined in app onfiguration")
@@ -31,7 +31,7 @@ getStorage = ctx => {
 
 /**
  * When creating a document, some cases are recognized:
- * - If the contents-field is an URI, the file is indexed through solr/lucene and stored in the filesystem
+ * - If the contents-field is an URI, the file is fetched, indexed through solr/lucene and stored in the filesystem
  * - if the template field is not null, the contents is merged with the template. In that case,
  *   contents can be JSON or html. The resulting document is sent to solr and stored in the filesystem.
  * - if contents is not an URI and template is falsey, the data is simply sent to solr.
@@ -62,7 +62,7 @@ const handleCreate = async ctx => {
       }
       const text = await fetch(addr + "/tika", { headers: { accept: "text/plain" }, method: "put", body: intoStream(cnt) })
       if (text.status != 200) {
-        throw new Error(result.statusText)
+        throw new Error(text.statusText)
       }
       const json = await meta.json()
       json.contents = (await text.text()).trim()

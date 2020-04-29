@@ -47,7 +47,7 @@
     "feathers-custom-methods": "^0.0.2",
     "feathers-knex": "^3.3.0",
     "feathers-nedb": "^3.0.0",
-    "feathers-solr": "^1.1.16",
+    "feathers-solr": "^2.7.8",
     "get-stream": "^5.1.0",
     "get-uri": "^2.0.4",
     "helmet": "^3.22.0",
