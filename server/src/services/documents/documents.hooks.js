@@ -12,20 +12,10 @@ const path = require('path')
 const getStream = require('get-stream')
 const intoStream = require('into-stream')
 const uuid = require('uuid/v4')
+const api=require('./solr')
 
 const uri_regexp = /\w+:\/\/(\/?\/?)[^\s]+/
 
-const getStorage = ctx => {
-  let storage = ctx.app.get('solr').filestore
-  if (!storage) {
-    log.error("solr.filestore not defined in app onfiguration")
-    throw new Error("Filestore not found")
-  }
-  if (!storage.startsWith("/")) {
-    storage = path.join(process.env.HOME, storage)
-  }
-  return storage
-}
 
 // logger.level="debug"
 
@@ -67,7 +57,7 @@ const handleCreate = async ctx => {
       const json = Object.assign({}, (await meta.json()), ctx.data)
 
       if (!ctx.params || !ctx.params.inPlace) {
-        const storage = getStorage(ctx)
+        const storage = api.getStorage(ctx.app)
 
         let fname = json.filename || json.title
         if (fname) {
@@ -114,7 +104,7 @@ const handleDelete = async ctx => {
   }
   const doc = ctx.result
   if (doc && doc.loc && !uri_regexp.exec(doc.loc)) {
-    const storage = getStorage(ctx)
+    const storage = api.getStorage(ctx.app)
     const fname = path.join(storage, doc.loc)
     await fs.unlink(fname)
   }

@@ -41,7 +41,8 @@
     "core": "elexisdata",
     "idfield": "id",
     "tika": "http://localhost:9998",
-    "filestore": "solr-docs"
+    "filestore": "solr-docs",
+    "watch": true
   },
   "authentication": {
     "entity": "user",

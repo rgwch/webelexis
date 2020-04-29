@@ -1,5 +1,8 @@
 const fetch = require('node-fetch')
 const _ = require('lodash')
+const log = require('../../logger');
+const path = require('path')
+const crypt = require('crypto')
 
 const fields = [
   { name: "_nest_path_", type: "_nest_path_" },
@@ -107,7 +110,33 @@ const checkSchema = async app => {
   }
 }
 
+const getStorage = app => {
+  let storage = app.get('solr').filestore
+  if (!storage) {
+    log.error("solr.filestore not defined in app onfiguration")
+    throw new Error("Filestore not found")
+  }
+  if (!storage.startsWith("/")) {
+    storage = path.join(process.env.HOME, storage)
+  }
+  return storage
+}
+
+const makeFileID = (app, filepath) => {
+  const base=getStorage(app)
+  if(filepath.startsWith("file://")){
+    filepath=filepath.substring(7)
+  }
+  if(filepath.startsWith(base)){
+    filepath=filepath.substring(base.length)
+  }
+  const hash=crypt.createHash('md5')
+  hash.update(filepath)
+  return hash.digest('hex')
+}
 
 module.exports = {
-  checkSchema
+  checkSchema,
+  getStorage,
+  makeFileID
 }

@@ -12,11 +12,13 @@ const api = require('./solr')
 const hooks = require('./documents.hooks');
 const doctool = require('../../util/topdf')
 const customMethods = require('feathers-custom-methods')
-
+const log = require('../../logger')
+const watcher=require('simple-watcher')
+const fs=require('fs')
 
 module.exports = async function (app) {
-  const solr=app.get('solr')
-  const solrServer = solr.host+"/"+solr.core
+  const solr = app.get('solr')
+  const solrServer = solr.host + "/" + solr.core
   const paginate = app.get('paginate');
   const options = {
     Model: SolrClient(fetch, solrServer),
@@ -31,9 +33,23 @@ module.exports = async function (app) {
   // Get our initialized service so that we can register hooks
   const service = app.service('documents');
   // service.create({ id: "abc", contents: "contents", subject: "test" })/*.then(result => {
-    // console.log(JSON.stringify(result))
+  // console.log(JSON.stringify(result))
   // })*/
   await api.checkSchema(app)
+  if (solr.watch) {
+    let storage = api.getStorage(app)
+    watcher(storage,fp=>{
+      try{
+        const stat=fs.statSync(fp)
+        if(stat.isFile()){
+          service.create({contents: "file://"+fp},{inPlace:true})
+        }
+      }catch(err){
+        service.remove()
+      }
+      console.log(fp)
+    })
+  }
 
   /*
   app.configure(customMethods({
