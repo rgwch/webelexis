@@ -123,17 +123,19 @@ const getStorage = app => {
 }
 
 const makeFileID = (app, filepath) => {
-  const base=getStorage(app)
-  if(filepath.startsWith("file://")){
-    filepath=filepath.substring(7)
+  const base = getStorage(app)
+  if (filepath.startsWith("file://")) {
+    filepath = filepath.substring(7)
   }
-  if(filepath.startsWith(base)){
-    filepath=filepath.substring(base.length)
+  if (filepath.startsWith(base)) {
+    filepath = filepath.substring(base.length)
   }
-  const hash=crypt.createHash('md5')
+  const hash = crypt.createHash('md5')
   hash.update(filepath)
   return hash.digest('hex')
 }
+
+
 
 module.exports = {
   checkSchema,

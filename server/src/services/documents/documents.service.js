@@ -13,8 +13,10 @@ const hooks = require('./documents.hooks');
 const doctool = require('../../util/topdf')
 const customMethods = require('feathers-custom-methods')
 const log = require('../../logger')
-const watcher=require('simple-watcher')
-const fs=require('fs')
+const watcher = require('simple-watcher')
+const fs = require('fs')
+const walker = require('walkdir')
+
 
 module.exports = async function (app) {
   const solr = app.get('solr')
@@ -36,20 +38,60 @@ module.exports = async function (app) {
   // console.log(JSON.stringify(result))
   // })*/
   await api.checkSchema(app)
+
+  const storeRescan = async (base) => {
+    const emitter = walker(base)
+    emitter.on('file', async (filename, stat) => {
+      try {
+        const exist = await service.get(api.makeFileID(app, filename))
+        log.debug(exist.id)
+      } catch (ex) {
+        const created = await service.create({contents: filename}, { inPlace: true })
+        log.debug(created.id)
+      }
+    })
+    emitter.on('end', () => {
+      return true
+    })
+    emitter.on('error', () => {
+      throw new Error("can't read path " + base)
+    })
+    emitter.on('fail', p => {
+      log.warn("failed on " + p)
+    })
+
+  }
+
+
   if (solr.watch) {
     let storage = api.getStorage(app)
-    watcher(storage,fp=>{
-      try{
-        const stat=fs.statSync(fp)
-        if(stat.isFile()){
-          service.create({contents: "file://"+fp},{inPlace:true})
+    storeRescan(storage).then(() => {
+      watcher(storage, async fp => {
+        log.info("File watcher: " + fp)
+        try {
+          const stat = fs.statSync(fp)
+          if (stat.isFile()) {
+            log.debug(fp + " is a file")
+            try {
+              const exists = await service.get(api.getFileID(app, fp))
+              await service.update({ contents: "file://" + fp })
+              log.info("Updated " + fp)
+            } catch (err) {
+              await service.create({ contents: "file://" + fp }, { inPlace: true })
+              log.info("created " + fp)
+            }
+          }
+        } catch (err) {
+          await service.remove(api.getFileID(app, fp))
+          log.info("deleted " + fp)
         }
-      }catch(err){
-        service.remove()
-      }
-      console.log(fp)
+      })
+    }).catch(err => {
+      log.error("Could not scan watchdir " + err)
     })
   }
+
+
 
   /*
   app.configure(customMethods({

@@ -12,7 +12,7 @@ const path = require('path')
 const getStream = require('get-stream')
 const intoStream = require('into-stream')
 const uuid = require('uuid/v4')
-const api=require('./solr')
+const api = require('./solr')
 
 const uri_regexp = /\w+:\/\/(\/?\/?)[^\s]+/
 
@@ -28,18 +28,25 @@ const uri_regexp = /\w+:\/\/(\/?\/?)[^\s]+/
  * @param {} ctx
  */
 const handleCreate = async ctx => {
+  const storage = api.getStorage(ctx.app)
   if (ctx.data && ctx.data.contents) {
-    if (uri_regexp.exec(ctx.data.contents)) {
+    if (uri_regexp.exec(ctx.data.contents) || ctx.data.contents.startsWith(storage)) {
       /* TIKA parser */
       let cnt
-      if (ctx.data.contents.startsWith("file://")) {
-        const url = new URL(ctx.data.contents)
-        cnt = await fs.readFile(url)
-      } else {
-        const res = await fetch(ctx.data.contents)
-        cnt = await getStream(res.body)
+      try {
+        if (ctx.data.contents.startsWith("file://")) {
+          const url = new URL(ctx.data.contents)
+          cnt = await fs.readFile(url)
+        } else if (ctx.data.contents.startsWith(storage)) {
+          cnt = await fs.readFile(ctx.data.contents)
+        } else {
+          const res = await fetch(ctx.data.contents)
+          cnt = await getStream(res.body)
+        }
+      } catch (ferr) {
+        log.error("file error "+ferr)
+        throw new Error(ferr)
       }
-
       const addr = ctx.app.get('solr').tika
       if (!addr) {
         log.error("solr.tika not defined in app configuration")
@@ -57,7 +64,6 @@ const handleCreate = async ctx => {
       const json = Object.assign({}, (await meta.json()), ctx.data)
 
       if (!ctx.params || !ctx.params.inPlace) {
-        const storage = api.getStorage(ctx.app)
 
         let fname = json.filename || json.title
         if (fname) {
@@ -80,6 +86,7 @@ const handleCreate = async ctx => {
         json.loc = json.contents
       }
       json.contents = (await text.text()).trim()
+      json.id = api.makeFileID(ctx.app, json.loc)
       if (!json.id) {
         json.id = uuid()
       }
