@@ -85,6 +85,10 @@ describe('\'documents\' service', () => {
     const result = await service.create({ contents: "http://www.elexis.ch/ungrad", filename: "Elexis_Ungrad.html", subject: "test" })
     result.should.be.ok
   })
+  it("indexes a file in-place", async()=>{
+    const result=await service.create({contents: "http://www.google.ch", filname: "google", subject: "test"},{inPlace: true})
+    result.should.be.ok
+  })
 
   xit("deletes a file",async ()=>{
     const p = path.join(__dirname, "../test.odt")

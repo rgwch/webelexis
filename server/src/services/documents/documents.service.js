@@ -14,7 +14,7 @@ const doctool = require('../../util/topdf')
 const customMethods = require('feathers-custom-methods')
 
 
-module.exports = function (app) {
+module.exports = async function (app) {
   const solr=app.get('solr')
   const solrServer = solr.host+"/"+solr.core
   const paginate = app.get('paginate');
@@ -30,14 +30,10 @@ module.exports = function (app) {
 
   // Get our initialized service so that we can register hooks
   const service = app.service('documents');
-  service.create({ id: "abc", contents: "contents", subject: "test" })/*.then(result => {
-    console.log(JSON.stringify(result))
-  })*/
-  api.checkSchema(app).then(() => {
-
-  }).catch(err => {
-    console.log(err)
-  })
+  // service.create({ id: "abc", contents: "contents", subject: "test" })/*.then(result => {
+    // console.log(JSON.stringify(result))
+  // })*/
+  await api.checkSchema(app)
 
   /*
   app.configure(customMethods({

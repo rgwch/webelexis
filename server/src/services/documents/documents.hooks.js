@@ -65,27 +65,31 @@ const handleCreate = async ctx => {
         throw new Error(text.statusText)
       }
       const json = Object.assign({}, (await meta.json()), ctx.data)
-      json.contents = (await text.text()).trim()
 
-      const storage = getStorage(ctx)
+      if (!ctx.params || !ctx.params.inPlace) {
+        const storage = getStorage(ctx)
 
-      let fname = json.filename || json.title
-      if (fname) {
-        fname = encodeURIComponent(fname)
-      } else {
-        fname = uuid()
-      }
-      let dir = path.join(storage, (json.concern || "."))
-      try {
-        await fs.mkdir(dir, { recursive: true })
-      } catch (err) {
-        if (err.code != "EEXIST") {
-          throw (err)
+        let fname = json.filename || json.title
+        if (fname) {
+          fname = encodeURIComponent(fname)
+        } else {
+          fname = uuid()
         }
+        let dir = path.join(storage, (json.concern || "."))
+        try {
+          await fs.mkdir(dir, { recursive: true })
+        } catch (err) {
+          if (err.code != "EEXIST") {
+            throw (err)
+          }
+        }
+        let filename = path.join(dir, fname)
+        const written = await fs.writeFile(filename, cnt)
+        json.loc = path.join((json.concern || "."), fname);
+      } else {
+        json.loc = json.contents
       }
-      let filename = path.join(dir, fname)
-      const written = await fs.writeFile(filename, cnt)
-      json.loc = path.join((json.concern || "."), fname);
+      json.contents = (await text.text()).trim()
       if (!json.id) {
         json.id = uuid()
       }
@@ -104,9 +108,9 @@ const handleCreate = async ctx => {
  * @param {} ctx
  */
 const handleDelete = async ctx => {
-  if(Array.isArray(ctx.result)){
-    const ctxr=ctx
-    handleDelete(ctx.result.map(el=>{ctxr.result=el; return ctxr}))
+  if (Array.isArray(ctx.result)) {
+    const ctxr = ctx
+    handleDelete(ctx.result.map(el => { ctxr.result = el; return ctxr }))
   }
   const doc = ctx.result
   if (doc && doc.loc && !uri_regexp.exec(doc.loc)) {
