@@ -13,7 +13,7 @@ const path = require('path')
  * This text expects a running solr instance with a core 'elexisdata'
  * configured in config/default.json
 */
-describe('\'documents\' service', () => {
+xdescribe('\'documents\' service', () => {
   const service = app.service('documents')
 
   beforeEach(async () => {
