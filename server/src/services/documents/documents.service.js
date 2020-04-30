@@ -13,7 +13,7 @@ const hooks = require('./documents.hooks');
 const doctool = require('../../util/topdf')
 const customMethods = require('feathers-custom-methods')
 const log = require('../../logger')
-const watcher = require('simple-watcher')
+const watcher = require('chokidar')
 const fs = require('fs')
 const walker = require('walkdir')
 
@@ -66,6 +66,34 @@ module.exports = async function (app) {
   if (solr.watch) {
     let storage = api.getStorage(app)
     storeRescan(storage).then(() => {
+      watcher.watch(storage,{
+        ignored: /(^|[\/\\])\../,
+        followSymlinks: false
+      })
+        .on('add', fp=>{
+          try{
+            await service.create({ contents: "file://" + fp }, { inPlace: true })
+            log.info("added "+fp)
+          }catch(err){
+            log.error("Error adding "+fp+", "+err)
+          }
+        })
+        .on('change', fp=>{
+          try{
+            await service.update({ contents: "file://" + fp })
+          }catch(err){
+            log.error("Error updating "+fp+", "+err)
+          }
+        })
+        .on('unlink',fp=>{
+          try{
+            await service.remove(api.makeFileID(app,fp))
+          }catch(err){
+            log.error("Error removing "+fp+", "+err)
+          }
+        })
+        .on('error',err=>{})
+      /*
       watcher(storage, async fp => {
         log.info("File watcher: " + fp)
         try {
@@ -89,6 +117,7 @@ module.exports = async function (app) {
     }).catch(err => {
       log.error("Could not scan watchdir " + err)
     })
+    */
   }
 
 
