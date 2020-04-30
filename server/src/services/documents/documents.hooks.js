@@ -44,7 +44,7 @@ const handleCreate = async ctx => {
           cnt = await getStream(res.body)
         }
       } catch (ferr) {
-        log.error("file error "+ferr)
+        log.error("file error " + ferr)
         throw new Error(ferr)
       }
       const addr = ctx.app.get('solr').tika
@@ -85,14 +85,23 @@ const handleCreate = async ctx => {
       } else {
         json.loc = json.contents
       }
+      let inhalt = (await text.text()).trim()
+      if (inhalt.length < 10) {
+        inhalt = ocr(cnt)
+      }
 
-      json.contents = (await text.text()).trim()
+      json.contents = inhalt
       json.id = api.makeFileID(ctx.app, json.loc)
       if (!json.id) {
         json.id = uuid()
       }
-      if(json.loc.startsWith(storage)){
-        json.loc=json.loc.substring(storage.length)
+      if (json.loc.startsWith(storage)) {
+        json.loc = json.loc.substring(storage.length + 1)
+      }
+      if (!json.title) {
+        const ext = path.extname(json.loc)
+        const base = path.basename(json.loc, ext)
+        json.title = base
       }
       ctx.data = json
       return ctx

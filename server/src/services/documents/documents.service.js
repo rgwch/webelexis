@@ -46,7 +46,7 @@ module.exports = async function (app) {
         const exist = await service.get(api.makeFileID(app, filename))
         log.debug(exist.id)
       } catch (ex) {
-        const created = await service.create({contents: filename}, { inPlace: true })
+        const created = await service.create({ contents: filename }, { inPlace: true })
         log.debug(created.id)
       }
     })
@@ -66,62 +66,37 @@ module.exports = async function (app) {
   if (solr.watch) {
     let storage = api.getStorage(app)
     storeRescan(storage).then(() => {
-      watcher.watch(storage,{
+      watcher.watch(storage, {
         ignored: /(^|[\/\\])\../,
         followSymlinks: false
       })
-        .on('add', fp=>{
-          try{
+        .on('add', async fp => {
+          try {
             await service.create({ contents: "file://" + fp }, { inPlace: true })
-            log.info("added "+fp)
-          }catch(err){
-            log.error("Error adding "+fp+", "+err)
+            log.info("added " + fp)
+          } catch (err) {
+            log.error("Error adding " + fp + ", " + err)
           }
         })
-        .on('change', fp=>{
-          try{
+        .on('change', async fp => {
+          try {
             await service.update({ contents: "file://" + fp })
-          }catch(err){
-            log.error("Error updating "+fp+", "+err)
+          } catch (err) {
+            log.error("Error updating " + fp + ", " + err)
           }
         })
-        .on('unlink',fp=>{
-          try{
-            await service.remove(api.makeFileID(app,fp))
-          }catch(err){
-            log.error("Error removing "+fp+", "+err)
+        .on('unlink', async fp => {
+          try {
+            await service.remove(api.makeFileID(app, fp))
+          } catch (err) {
+            log.error("Error removing " + fp + ", " + err)
           }
         })
-        .on('error',err=>{})
-      /*
-      watcher(storage, async fp => {
-        log.info("File watcher: " + fp)
-        try {
-          const stat = fs.statSync(fp)
-          if (stat.isFile()) {
-            log.debug(fp + " is a file")
-            try {
-              const exists = await service.get(api.getFileID(app, fp))
-              await service.update({ contents: "file://" + fp })
-              log.info("Updated " + fp)
-            } catch (err) {
-              await service.create({ contents: "file://" + fp }, { inPlace: true })
-              log.info("created " + fp)
-            }
-          }
-        } catch (err) {
-          await service.remove(api.getFileID(app, fp))
-          log.info("deleted " + fp)
-        }
-      })
-    }).catch(err => {
-      log.error("Could not scan watchdir " + err)
+        .on('error', err => { })
     })
-    */
+
   }
-
-
-
+  
   /*
   app.configure(customMethods({
     methods: {
