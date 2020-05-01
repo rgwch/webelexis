@@ -1,7 +1,11 @@
 const intoStream = require('into-stream')
 const fetch = require('node-fetch')
+const log = require('../../logger')
+const ocr = require('../../util/ocr')
 
 module.exports = app => {
+  const joblist = []
+  let waiting = false
   tika = async cnt => {
     const addr = app.get('solr').tika
     if (!addr) {
@@ -19,8 +23,31 @@ module.exports = app => {
     }
     const text = (await rtext.text()).trim()
     const meta = await rmeta.json()
+    log.debug("text: " + text.length)
 
     return { meta, text }
   }
-  return tika
+  ocr = async (file) => {
+    joblist.push(file)
+  }
+
+  exec = () => {
+    if (joblist.length && !waiting) {
+      const job = joblist.pop()
+      waiting = true
+      ocr(job.cntents).then(ocrd => {
+        if (ocrd.length != job.contents.length) {
+          const service = app.service('documents')
+          service.update(job.meta.id, job.meta, { contents: ocrd }).then(updated => {
+            waiting = false
+          })
+        } else {
+          waiting = false
+        }
+      })
+    }
+  }
+  setInterval(exec, 1000)
+
+  return { tika, ocr }
 }

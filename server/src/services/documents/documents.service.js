@@ -96,7 +96,7 @@ module.exports = async function (app) {
     })
 
   }
-  
+
   /*
   app.configure(customMethods({
     methods: {

@@ -38,14 +38,14 @@ const handleCreate = async ctx => {
       try {
         if (ctx.data.contents.startsWith("file://")) {
           const url = new URL(ctx.data.contents)
-          filename=path.basename(ctx.data.contents.substring(6))
+          filename = path.basename(ctx.data.contents.substring(6))
           cnt = await fs.readFile(url)
         } else if (ctx.data.contents.startsWith(storage)) {
           cnt = await fs.readFile(ctx.data.contents)
-          filename=path.basename(ct.data.contents.substring(storage.length))
+          filename = path.basename(ct.data.contents.substring(storage.length))
         } else {
           const res = await fetch(ctx.data.contents)
-          filename=ctx.data.contents
+          filename = ctx.data.contents
           cnt = await getStream(res.body)
         }
         ctx.data.filename = ctx.data.filename || filename
@@ -53,20 +53,12 @@ const handleCreate = async ctx => {
         log.error("file error " + ferr)
         throw new Error(ferr)
       }
-      let extracted = await extractor(cnt)
-      if (extracted.text.length < 5) {
-        try {
-          cnt = await ocr(cnt)
-          extracted = await extractor(cnt)
-        } catch (err) {
-          log.error("ocr failed")
-        }
-
-      }
+      log.debug("extracting " + filename)
+      let extracted = await extractor.tika(cnt)
       const json = Object.assign({}, extracted.meta, ctx.data)
 
       if (!ctx.params || !ctx.params.inPlace) {
-        if(json.title.toLowerCase()=="untitled"){
+        if (json.title.toLowerCase() == "untitled") {
           delete json.title
         }
         let fname = json.filename || json.title
@@ -103,6 +95,10 @@ const handleCreate = async ctx => {
         json.title = base
       }
       ctx.data = json
+      if (extracted.text.length < 5) {
+        extractor.ocr({ meta: json, contents: cnt })
+      }
+
       return ctx
     }
   }
@@ -129,13 +125,17 @@ const handleDelete = async ctx => {
   }
   return ctx
 }
+
+const handleUpdate = async ctx=>{
+  return ctx
+}
 module.exports = {
   before: {
     all: [ /* authenticate('jwt') */],
     find: [],
     get: [],
     create: [handleCreate],
-    update: [],
+    update: [handleUpdate],
     patch: [],
     remove: []
   },
