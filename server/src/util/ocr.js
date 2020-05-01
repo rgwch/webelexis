@@ -1,24 +1,21 @@
-const fs = require('fs').promises
-const pdfocr = require('pdf-ocr')
-const tmp = require('tmp-promise')
+const fetch = require('node-fetch')
 
 module.exports = cnt => {
   return new Promise(async (resolve, reject) => {
-    const { fd, path, cleanup } = await tmp.file()
-    const rs = await fs.writeFile(path, cnt)
-    const processor = pdfocr(path, { type: 'ocr' }, err => {
-      if (err) {
-        reject(err)
-      }
+    const response = await fetch('http://localhost:9997', {
+      method: 'post', 
+      headers: {
+        "content-type": "application/octet-stream",
+        "accept": "application/octet-stream"
+      }, body: cnt
     })
-    processor.on('complete', data => {
-      resolve(data.textPages)
-    })
-    processor.on('error', err => {
-      reject(err)
-    })
+    if (response.status == 200) {
+      console.log("ok")
+      const pdf = await response.buffer()
+      resolve(pdf)
+    } else {
+      reject(response.statusText)
+    }
   })
-
-
 
 }

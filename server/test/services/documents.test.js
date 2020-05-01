@@ -13,7 +13,7 @@ const path = require('path')
  * This text expects a running solr instance with a core 'elexisdata'
  * configured in config/default.json
 */
-xdescribe('\'documents\' service', () => {
+describe('\'documents\' service', () => {
   const service = app.service('documents')
 
   beforeEach(async () => {
@@ -75,17 +75,23 @@ xdescribe('\'documents\' service', () => {
     exists.length.should.be.gt(0)
 
   })
-  it("creates an entry from a odt document", async () => {
+  it("imports and ocrs a pdf without text layer",async ()=>{
+    const p = path.join(__dirname, "../ocrtest.pdf")
+    const result = await service.create({ contents: "file://" + p,subject: "test" })
+    result.should.be.ok
+
+  })
+  xit("creates an entry from a odt document", async () => {
     const p = path.join(__dirname, "../test.odt")
     const result = await service.create({ contents: "file://" + p,subject: "test" })
     result.should.be.ok
 
   })
-  it("creates an entry from a remote file", async () => {
+  xit("creates an entry from a remote file", async () => {
     const result = await service.create({ contents: "http://www.elexis.ch/ungrad", filename: "Elexis_Ungrad.html", subject: "test" })
     result.should.be.ok
   })
-  it("indexes a file in-place", async()=>{
+  xit("indexes a file in-place", async()=>{
     const result=await service.create({contents: "http://www.google.ch", filname: "google", subject: "test"},{inPlace: true})
     result.should.be.ok
   })

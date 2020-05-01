@@ -41,6 +41,7 @@ app.use(helmet());
 app.use(compress());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.raw({ inflate: true, limit: "50mb", type: "application/octet-stream" }))
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 
 // Host the public folder
