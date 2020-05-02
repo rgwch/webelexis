@@ -25,7 +25,7 @@ class FallService{
     }
   }
 }
-describe('\'billing\' service', () => {
+xdescribe('\'billing\' service', () => {
   let ks;
   let fs;
 

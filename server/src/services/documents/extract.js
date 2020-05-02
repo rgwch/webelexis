@@ -1,7 +1,7 @@
 const intoStream = require('into-stream')
 const fetch = require('node-fetch')
 const log = require('../../logger')
-const ocr = require('../../util/ocr')
+const ocrservice = require('../../util/ocr')
 
 module.exports = app => {
   const joblist = []
@@ -35,7 +35,7 @@ module.exports = app => {
     if (joblist.length && !waiting) {
       const job = joblist.pop()
       waiting = true
-      ocr(job.cntents).then(ocrd => {
+      ocrservice(job.cntents).then(ocrd => {
         if (ocrd.length != job.contents.length) {
           const service = app.service('documents')
           service.update(job.meta.id, job.meta, { contents: ocrd }).then(updated => {

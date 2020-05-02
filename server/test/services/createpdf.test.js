@@ -8,7 +8,7 @@ const app = require('../../src/app');
 const path=require('path')
 const fs=require('fs')
 
-describe('\'createpdf\' service', () => {
+xdescribe('\'createpdf\' service', () => {
   const service = app.service('createpdf');
   it('registered the service', () => {
     assert.ok(service, 'Registered the service');

@@ -18,7 +18,7 @@ describe('\'documents\' service', () => {
 
   beforeEach(async () => {
     try {
-      await service.remove(null, { query: {subject: "test" }})
+      await service.remove(null, { query: { subject: "test" } })
     } catch (err) {
       console.log(err)
       // doesn't matter
@@ -61,7 +61,7 @@ describe('\'documents\' service', () => {
     updated.id.should.equal(created.id)
     updated.concern.should.equal(pat.id)
     updated.addressee[0].should.equal(adr.id)
-    const list = await service.find({ query: { $search: "concern:"+pat.id } })
+    const list = await service.find({ query: { $search: "concern:" + pat.id } })
     list.should.be.ok
     list.length.should.be.gt(0)
     const lucene = await service.find({ query: { $search: "contents:lor*" } })
@@ -75,32 +75,36 @@ describe('\'documents\' service', () => {
     exists.length.should.be.gt(0)
 
   })
-  it("imports and ocrs a pdf without text layer",async ()=>{
+  xit("imports and ocrs a pdf without text layer", async () => {
     const p = path.join(__dirname, "../ocrtest.pdf")
-    const result = await service.create({ contents: "file://" + p,subject: "test" })
+    const result = await service.create({ contents: "file://" + p, subject: "test" })
     result.should.be.ok
 
   })
-  xit("creates an entry from a odt document", async () => {
+  it("creates and modifies an entry from a odt document", async () => {
     const p = path.join(__dirname, "../test.odt")
-    const result = await service.create({ contents: "file://" + p,subject: "test" })
+    const result = await service.create({ contents: "file://" + p, subject: "test" })
     result.should.be.ok
+    result.title = "Ein neuer Titel"
+    result.contents=p
+    const updated = await service.update(result.id, result)
+    updated.title.should.equal("Ein neuer Titel")
 
   })
   xit("creates an entry from a remote file", async () => {
     const result = await service.create({ contents: "http://www.elexis.ch/ungrad", filename: "Elexis_Ungrad.html", subject: "test" })
     result.should.be.ok
   })
-  xit("indexes a file in-place", async()=>{
-    const result=await service.create({contents: "http://www.google.ch", filname: "google", subject: "test"},{inPlace: true})
+  xit("indexes a file in-place", async () => {
+    const result = await service.create({ contents: "http://www.google.ch", filname: "google", subject: "test" }, { inPlace: true })
     result.should.be.ok
   })
 
-  xit("deletes a file",async ()=>{
+  xit("deletes a file", async () => {
     const p = path.join(__dirname, "../test.odt")
     const result = await service.create({ contents: "file://" + p, filename: "doomed.odt", subject: "test" })
     result.should.be.ok
-    const removed=await service.remove(result.id)
+    const removed = await service.remove(result.id)
     removed.should.be.ok
   })
   xit("creates a pdf from a template and a document", async () => {
