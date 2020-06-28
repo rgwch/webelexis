@@ -17,7 +17,6 @@ const elexisUserconfig = require('./elexis-userconfig/elexis-userconfig.service.
 const prescriptions = require('./prescriptions/prescriptions.service.js');
 const auf = require('./auf/auf.service.js');
 const createpdf = require('./createpdf/createpdf.service.js');
-const documents = require('./documents/documents.service.js');
 const macros = require('./macros/macros.service.js');
 const labresults = require('./labresults/labresults.service.js');
 const findings = require('./findings/findings.service.js');
@@ -64,7 +63,6 @@ module.exports = function (app) {
  app.configure(prescriptions);
  app.configure(auf);
  app.configure(createpdf);
- app.configure(documents);
  app.configure(macros);
  app.configure(labresults);
  app.configure(findings);
