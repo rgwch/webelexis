@@ -21,7 +21,7 @@ const java = require('java')
 const moment = require('moment')
 const logger = require('../logger')
 const crypto = require('crypto')
-const JACKSON_VERSION = "2.9.8"
+const JACKSON_VERSION = "2.11.1"
 
 
 /* generate dependencies with
