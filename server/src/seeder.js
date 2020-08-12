@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018 by G. Weirich         *
+ * Copyright (c) 2018-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -74,7 +74,7 @@ module.exports = async function (app) {
     roles: [roles.user.id, roles.guest.id, roles.doc.id, roles.mpa.id, roles.agenda.id, roles.billing.id],
     is_active: "0"
   }
-  
+
   user.remove(null, { query: { is_active: "0" } }).then(removed => {
     Promise.all([user.create(_guest), user.create(_admin), user.create(_user)]).then(result => {
       logger.info("created dummy users")

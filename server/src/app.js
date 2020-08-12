@@ -33,7 +33,11 @@ app.set('view engine', 'pug')
 
 // Load app configuration
 app.configure(configuration());
-app.set("userconfig", require('../../data/settings'))
+try {
+  app.set("userconfig", require('../../data/settings'))
+} catch (err) {
+  app.set("userconfig", {})
+}
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());

@@ -24,9 +24,17 @@ module.exports = function (app) {
   const conf = app.get("userconfig")  // = ../data/settings.js
   logger.info("Settingsname: " + conf.settingsname)
   logger.info("config name: " + app.get("configname"))
+  const dbconf = {
+    host: process.env.DBHOST || conf.elexisdb.host || "localhost",
+    port: process.env.DBPORT || conf.elexisdb.port || 3306,
+    database: process.env.DBNAME || conf.elexisdb.database,
+    user: process.env.DBUSER || conf.elexisdb.user || "elexisuser",
+    password: process.env.DBPWD || conf.elexisdb.password || "elexis"
+  }
+
   const db = knex({
     client,
-    connection: conf.elexisdb || connection,
+    connection: dbconf || connection,
     pool: { max: 50 }
   })
   db("config")
