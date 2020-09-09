@@ -19,10 +19,10 @@ export class Calendar {
 
   }
 
-  searchTriggeredChanged(){
-    alert("search "+this.searchTriggered)
+  searchTriggeredChanged() {
+    alert("search " + this.searchTriggered)
   }
-  
+
   attached() {
     this.instance = mobi.eventcalendar(this.cal, {
       lang: 'de',
@@ -32,6 +32,7 @@ export class Calendar {
       display: 'inline',
       showEventCount: true,
       theme: 'bootstrap',
+      buttons: [{ text: "eins" }, { text: "zwei" }],
       view: {
         calendar: {
           type: 'month',

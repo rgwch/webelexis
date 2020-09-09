@@ -34,7 +34,7 @@ app.set('view engine', 'pug')
 // Load app configuration
 app.configure(configuration());
 try {
-  app.set("userconfig", require('../../data/settings'))
+  app.set("userconfig", require(process.env.WEBELEXIS_SETTINGS || '../../data/settings'))
 } catch (err) {
   app.set("userconfig", {})
 }
