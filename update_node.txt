@@ -8,4 +8,7 @@ npm install java
 cd node_modules/iconv
 npx node-gyp rebuild
 
-DO NOT use node 12. should work with 11
+or:
+delete node_modules and npm i
+
+((DO NOT use node 12. should work with 11)) works also in 12 now

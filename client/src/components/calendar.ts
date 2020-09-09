@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2020 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { observable } from 'aurelia-framework';
 
 // https://demo.mobiscroll.com/jquery/eventcalendar/listview-rendering
@@ -31,8 +37,8 @@ export class Calendar {
       eventText: 'Termin',
       display: 'inline',
       showEventCount: true,
-      theme: 'bootstrap',
-      buttons: [{ text: "eins" }, { text: "zwei" }],
+      theme: 'ios',
+      buttons: [{ text: "Neuer Termin", handler: this.newAppnt }],
       view: {
         calendar: {
           type: 'month',
@@ -62,5 +68,7 @@ export class Calendar {
       }
     })
   }
-
+  newAppnt(){
+    alert("New Appointment")
+  }
 }

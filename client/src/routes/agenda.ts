@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2020 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { IKontakt, KontaktManager } from '../models/kontakt-manager';
 import { autoinject, observable } from 'aurelia-framework';
 import { EventManager, IEvent } from '../models/event-manager';
@@ -16,10 +22,15 @@ export class Agenda {
 
   }
 
-
+  /*
+    the event-selcted from the calendar component
+  */
   eventSelected = (event, instance) => {
     this.selectedEvent = event.event
   }
+  /*
+    the set-month callback from the calendar component
+  */
   setMonth = async (event, cal) => {
     await this.evm.setUser()
     const dat = moment(event.firstDay).startOf('month').subtract(3, 'days')
@@ -32,6 +43,10 @@ export class Agenda {
     } while (skip)
 
   }
+
+  /*
+    the set-day callback from the calendar component
+  */
   setDay = (event, cal) => {
     // alert(JSON.stringify(event))
     /*
@@ -48,6 +63,7 @@ export class Agenda {
     */
     return true
   }
+
   async addBatch(query, skip, cal): Promise<number> {
     query.$skip = skip
     const events = await this.evm.find(query)
@@ -58,7 +74,7 @@ export class Agenda {
       return {
         start: this.dt.addMinutesToDate(ev.tag, ev.beginn),
         end: this.dt.addMinutesToDate(ev.tag, parseInt(ev.beginn) + parseInt(ev.dauer)),
-        text: `${label} (<span style="color:${typecolor}">${ev.termintyp}</span>,<span style="color:${statecolor}">${ev.terminstatus}</span>); ${ev.grund || ""}`,
+        text: `${label} (<span style="color:${typecolor}">${ev.termintyp}</span>,<span style="color:${statecolor}">${ev.terminstatus}</span>); ${ev.grund || ""} <i class="fa fa.trash">`,
         color: this.evm.getStateColor(ev),
         termin: ev
       }
