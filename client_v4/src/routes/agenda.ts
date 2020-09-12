@@ -16,6 +16,7 @@ import { AppState } from '../services/app-state'
 export class Agenda {
   message: string;
   selectedEvent: IEvent
+  events: Array<IEvent>=[]
 
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
     private appState: AppState) {
@@ -48,9 +49,9 @@ export class Agenda {
     the set-day callback from the calendar component
   */
   setDay = (event, cal) => {
-    // alert(JSON.stringify(event))
-    /*
-    const datum = this.dt.DateToElexisDate(event.date)
+    alert(JSON.stringify(event))
+    
+    const datum = this.dt.dateToElexisDate(event.date)
     this.evm.find({ tag: datum }).then(events => {
       cal.setEvents(events.data.map((ev: IEvent) => {
         return {
@@ -60,7 +61,7 @@ export class Agenda {
         }
       }))
     })
-    */
+    
     return true
   }
 

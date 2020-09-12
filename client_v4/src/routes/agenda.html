@@ -2,6 +2,7 @@
   <require from="../components/mobiscroll/calendar"></require>
   <require from="../components/current-event"></require>
   <require from="../components/summary"></require>
+  <require from="../components/event"></require>
   <require from="../forms/searchfield"></require>
 
   <div class="row">
@@ -10,7 +11,9 @@
       searchtext.bind="Suche" result.two-way="binding"></calendar>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-4">
-      <p>Event list</p>
+      <template repeat.for="entry of events.data">
+        <event entry.bind="entry" index.bind="$index"></event>
+      </template>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-4">
       <p>KG</p>
