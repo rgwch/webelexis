@@ -6,12 +6,11 @@
 
 import { observable } from 'aurelia-framework';
 import './mobiscroll.javascript.scss';
-import * as mobi from './mobiscroll.javascript.min.js'
+import * as mobiscroll from './mobiscroll.javascript.min.js'
 
 // https://demo.mobiscroll.com/jquery/eventcalendar/listview-rendering
 
 import { bindable, bindingMode, inlineView, autoinject } from 'aurelia-framework';
-// const mobi = window['mobiscroll']
 
 @autoinject
 export class Calendar {
@@ -32,7 +31,7 @@ export class Calendar {
   }
 
   attached() {
-    this.instance = mobi.eventcalendar(this.cal, {
+    this.instance = mobiscroll.eventcalendar(this.cal, {
       lang: 'de',
       noEventsText: 'Keine Termine',
       eventsText: 'Termine',
@@ -45,12 +44,12 @@ export class Calendar {
         calendar: {
           type: 'month',
           size: 1
-        },
+        }/*,
         eventList: {
           type: 'day',
           size: 1,
           scrollable: true
-        }
+        }*/
       },
       onBeforeShow: (event, inst) => {
         const dat = new Date()
