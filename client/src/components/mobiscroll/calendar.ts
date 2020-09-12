@@ -5,11 +5,13 @@
  ********************************************/
 
 import { observable } from 'aurelia-framework';
+import './mobiscroll.javascript.scss';
+import * as mobi from './mobiscroll.javascript.min.js'
 
 // https://demo.mobiscroll.com/jquery/eventcalendar/listview-rendering
 
 import { bindable, bindingMode, inlineView, autoinject } from 'aurelia-framework';
-const mobi = window['mobiscroll']
+// const mobi = window['mobiscroll']
 
 @autoinject
 export class Calendar {
