@@ -47,6 +47,16 @@
   height: 60vh;
 }
 
+.event {
+  a {
+    color: black;
+  }
+  background-color: $fillcolor;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: small;
+}
+
 .green{
   color: green;
 }

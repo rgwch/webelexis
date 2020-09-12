@@ -4,6 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+import { IQueryResult } from 'services/dataservice';
 import { IKontakt, KontaktManager } from '../models/kontakt-manager';
 import { autoinject, observable } from 'aurelia-framework';
 import { EventManager, IEvent } from '../models/event-manager';
@@ -16,7 +17,7 @@ import { AppState } from '../services/app-state'
 export class Agenda {
   message: string;
   selectedEvent: IEvent
-  events: Array<IEvent>=[]
+  events: Array<IEvent> = []
 
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
     private appState: AppState) {
@@ -49,10 +50,9 @@ export class Agenda {
     the set-day callback from the calendar component
   */
   setDay = (event, cal) => {
-    alert(JSON.stringify(event))
-    
     const datum = this.dt.dateToElexisDate(event.date)
-    this.evm.find({ tag: datum }).then(events => {
+    this.evm.find({ tag: datum }).then((list: IQueryResult<IEvent>) => {
+      /*
       cal.setEvents(events.data.map((ev: IEvent) => {
         return {
           start: this.dt.addMinutesToDate(event.date, ev.beginn),
@@ -60,8 +60,10 @@ export class Agenda {
           text: this.evm.getLabel(ev)
         }
       }))
+      */
+      this.events = list.data
     })
-    
+
     return true
   }
 

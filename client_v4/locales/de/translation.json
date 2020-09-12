@@ -17,6 +17,12 @@
     "street": "Strasse",
     "zip": "Plz"
   },
+  "appointment": {
+    "new_for": "Neuer Termin für:",
+    "delete": "Löschen",
+    "shorten": "Kürzen",
+    "enlarge": "Verlängern"
+  },
   "contact": {
     "birthdate": "Gebursdatum",
     "email": "E-Mail",

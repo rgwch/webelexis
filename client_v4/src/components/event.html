@@ -1,12 +1,12 @@
 <template>
   <require from="./newappnt"></require>
   <!-- left column: indication of times -->
-  <div class="col-lg-2 col-md-3 termin text-truncate" css.bind="statecss">
+  <div class="col-lg-3 col-md-4 text-truncate" css.bind="statecss">
     ${getTimes()}
     <div if.bind="detailVisible && (!isStaticType())" class="slideitem au-animate">
       <!-- selects to display and change types and states of appointments -->
       <select value.bind="entry.obj.termintyp" style="display:block;width:100%" change.delegate="save()" )>
-        <option repeat.for="tt of termintypen">${tt}</option>
+        <option class="selector" repeat.for="tt of termintypen">${tt}</option>
       </select>
       <select value.bind="entry.obj.terminstatus" style="display:block;width:100%" change.delegate="save()">
         <option repeat.for="tt of terminstaten">${tt}</option>
@@ -20,8 +20,8 @@
     </div>
   </div>
   <!-- Right column: Appointment concern -->
-  <div class="col-lg-10 col-md-9">
-    <div class="termin text-truncate" css.bind="typecss">
+  <div class="col-lg-9 col-md-8">
+    <div class="text-truncate" css.bind="typecss">
       <a href="#" click.trigger="showDetail()" role="button">
         <span style="width:80%;">
           ${getLabel()} (${entry.obj.termintyp}, ${entry.obj.terminstatus}):
