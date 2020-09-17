@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-5 col-lg-4">
       <calendar set-day.bind="setDay" , set-month.bind="setMonth" event-selected.bind="eventSelected"
-      searchtext.bind="Suche" result.two-way="binding"></calendar>
+        searchtext.bind="Suche" result.two-way="binding" resources.bind="evm.agendaResources"></calendar>
     </div>
     <div class="col-sm-12 col-md-7 col-lg-4">
       <template repeat.for="entry of events">

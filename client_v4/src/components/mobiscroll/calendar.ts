@@ -17,9 +17,11 @@ export class Calendar {
   @bindable setDay: (event, instance) => boolean
   @bindable setMonth: (event, instance) => {}
   @bindable eventSelected: (event, instance) => {}
+  @bindable resources: Array<string> = ["test"]
   @observable searchTriggered: string
 
 
+  bereich
   instance
 
   constructor(private cal: Element) {
@@ -72,6 +74,10 @@ export class Calendar {
         // eventList: { type: "day", scrollable: true }
       }
     })
+  }
+
+  selected() {
+    console.log(this.bereich)
   }
   newAppnt() {
     alert("New Appointment")

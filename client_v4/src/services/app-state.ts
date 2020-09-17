@@ -6,11 +6,12 @@ import { autoinject } from 'aurelia-framework';
 import { IUser } from '../models/user-manager';
 
 export const SELECTABLE = {
-  user: "user",
-  patient: "patient",
-  mandator: "mandant",
-  case: "fall",
-  encounter: "enc"
+  user: "user",         // The currently logged-in user
+  patient: "patient",   // the currently selected patient
+  mandator: "mandant",  // the currently responsible mandator (depending on case)
+  case: "fall",         // the currently active case
+  encounter: "enc",     // the currently active encounter
+  resource: "rsc"       // the currently selected scheduler resource
 }
 
 @autoinject
