@@ -18,6 +18,9 @@ export class Agenda {
   message: string;
   selectedEvent: IEvent
   events: Array<IEvent> = []
+  lastMonthEvent
+  lastDayEvent
+  lastResource: string
 
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
     private appState: AppState) {
@@ -33,15 +36,22 @@ export class Agenda {
   /*
     the set-month callback from the calendar component
   */
-  setMonth = async (event, cal) => {
+  setMonth = async (ev, cal, resource?) => {
     await this.evm.setUser()
-    const dat = moment(event.firstDay).startOf('month').subtract(3, 'days')
+    if (ev) {
+      this.lastMonthEvent = ev
+    }
+    const dat = moment((ev || this.lastMonthEvent).firstDay).startOf('month').subtract(3, 'days')
     const von = this.dt.dateToElexisDate(dat.toDate())
     const bis = this.dt.dateToElexisDate(dat.add(36, 'days').toDate())
     cal.setEvents([])
+
+    if (resource) {
+      this.lastResource = resource
+    }
     let skip = 0
     do {
-      skip = await this.addBatch({ tag: { $gte: von, $lte: bis }, termintyp: { $ne: "Reserviert" }, bereich: "Gerry" }, skip, cal)
+      skip = await this.addBatch({ tag: { $gte: von, $lte: bis }, termintyp: { $ne: "Reserviert" }, bereich: this.lastResource }, skip, cal)
     } while (skip)
 
   }
@@ -49,9 +59,16 @@ export class Agenda {
   /*
     the set-day callback from the calendar component
   */
-  setDay = (event, cal) => {
-    const datum = this.dt.dateToElexisDate(event.date)
-    this.evm.find({ tag: datum }).then((list: IQueryResult<IEvent>) => {
+  setDay = (event, cal, resource?) => {
+    if (event) {
+      this.lastDayEvent = event
+    }
+    if (resource) {
+      this.lastResource = resource
+    }
+
+    const datum = this.dt.dateToElexisDate((event || this.lastDayEvent).date)
+    this.evm.find({ tag: datum, bereich: this.lastResource }).then((list: IQueryResult<IEvent>) => {
       /*
       cal.setEvents(events.data.map((ev: IEvent) => {
         return {

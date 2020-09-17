@@ -34,7 +34,12 @@
     "phone2": "Telefon 2",
     "remark": "Bemerkung"
   },
-  
+  "dlg": {
+    "create": "Erstellen"
+  },
+  "info": {
+    "nopatselected": "Kein Patient ausgewählt"
+  },
   "validation": {
     "invalidDate": "Ungültiges Datum",
     "onlyText": "Nur Buchstaben"

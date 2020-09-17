@@ -14,15 +14,15 @@ import { bindable, bindingMode, inlineView, autoinject } from 'aurelia-framework
 
 @autoinject
 export class Calendar {
-  @bindable setDay: (event, instance) => boolean
-  @bindable setMonth: (event, instance) => {}
+  @bindable setDay: (event, instance, resource?) => boolean
+  @bindable setMonth: (event, instance, resource?) => {}
   @bindable eventSelected: (event, instance) => {}
   @bindable resources: Array<string> = ["test"]
   @observable searchTriggered: string
 
-
   bereich
   instance
+  mode
 
   constructor(private cal: Element) {
 
@@ -55,12 +55,13 @@ export class Calendar {
       },
       onBeforeShow: (event, inst) => {
         const dat = new Date()
-        this.setMonth({ firstDay: dat }, inst)
+        this.setMonth({ firstDay: dat }, inst, this.bereich)
       },
       onDayChange: this.setDay,
       onPageChange: this.setMonth,
       onEventSelect: this.eventSelected
     })
+    this.mode = "month"
   }
 
   /**
@@ -68,16 +69,19 @@ export class Calendar {
    * @param mode 
    */
   display(mode: string) {
+    this.mode = mode
     this.instance.option({
       view: {
-        calendar: (mode == 'day' ? undefined : { type: mode, size: 1 })
+        calendar: ({ type: mode, size: 1 })
         // eventList: { type: "day", scrollable: true }
       }
     })
   }
 
   selected() {
-    console.log(this.bereich)
+
+    this.setDay(null, this.instance, this.bereich)
+    this.setMonth(null, this.instance, this.bereich)
   }
   newAppnt() {
     alert("New Appointment")

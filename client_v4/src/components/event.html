@@ -35,7 +35,7 @@
     <!-- detail informations depending of appointment type-->
     <div if.bind="detailVisible" class="slideitem au-animate" style="height:8em;">
       <div>
-        <new-appointment termin.bind="entry" if.bind="entry.isFree()"></new-appointment>
+        <new-appointment termin.bind="entry" if.bind="entry.termintyp === termintypen[0]"></new-appointment>
         <div if.bind="entry.isAppointment()">
           <textarea value.bind="entry.obj.grund" style="width:100%;height:5em;" blur.trigger="save()"></textarea>
           <div>
