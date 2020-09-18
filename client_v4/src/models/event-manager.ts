@@ -5,7 +5,6 @@ import { ObjectManager } from './object-manager';
 import { UUID, IElexisType, ELEXISDATE, ELEXISDATETIME } from './elexistype';
 import { AppState } from '../services/app-state'
 import { IQueryResult } from 'services/dataservice';
-import { intersection, isInteger } from 'lodash';
 const log = LogManager.getLogger('EventManager')
 
 
@@ -129,6 +128,10 @@ export class EventManager extends ObjectManager {
     }
   }
 
+  getEndMinutes(termin: IEvent): number {
+    const ret = parseInt(termin.beginn) + parseInt(termin.dauer)
+    return ret;
+  }
   getTypeColor(ev: IEvent): string {
     return "#" + this.terminTypColors[ev.termintyp]
   }

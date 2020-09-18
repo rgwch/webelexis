@@ -9,7 +9,6 @@ import Backend from "i18next-xhr-backend";
 import 'bootstrap'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "../static/mobiscroll.javascript.min.css";
 import env from "environment"
 
 let selectedLanguage = navigator.languages[0] || navigator.language;
@@ -58,8 +57,8 @@ export async function configure(aurelia: Aurelia) {
   await aurelia.start()
   await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
   await appState.login()
-  aurelia.setRoot(PLATFORM.moduleName('app')).catch(err=>{
-    console.log("Activation failed! "+err)
+  aurelia.setRoot(PLATFORM.moduleName('app')).catch(err => {
+    console.log("Activation failed! " + err)
   })
 
 

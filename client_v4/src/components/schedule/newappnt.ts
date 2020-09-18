@@ -14,7 +14,7 @@ import { AppState } from 'services/app-state';
 import { IKontakt } from 'models/kontakt-manager';
 import { I18N } from 'aurelia-i18n';
 import env from 'environment'
-
+import './schedule.scss'
 
 
 @autoinject

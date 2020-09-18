@@ -8,14 +8,14 @@ import { bindable, computedFrom, valueConverter, inject, NewInstance, LogManager
 import { ValidationController, ValidationRules } from 'aurelia-validation'
 import * as _ from 'lodash/core'
 
-const log=LogManager.getLogger("FlexForm")
+const log = LogManager.getLogger("FlexForm")
 
 /**
  * FlexForm: Counterpart for the CommonViewer: Generic Detail-Display. 
  * Usage: Define a FlexFormConfig and bind it
  * as 'ff_cfg' to the <flex-form> custom element. Bind the Object to display as 'entity' to the flex-form.
  */
-export interface FlexformConfig {
+export interface IFlexformConfig {
   title: () => string     // Title for the Form
   colcss?: string       // CSS class for the columns of the form. Defaults to "form-group col-6"
   rowcss?: string       // CSS class for the rows of the form. Defaults to "form-row"
@@ -42,7 +42,7 @@ export interface FlexformListRenderer {
 
 @inject(NewInstance.of(ValidationController))
 export class FlexForm {
-  @bindable ff_cfg: FlexformConfig
+  @bindable ff_cfg: IFlexformConfig
   @bindable entity: any;
   @bindable lockable: boolean
   isLocked: boolean
@@ -62,7 +62,7 @@ export class FlexForm {
     this.original = this.original = Object.assign({}, newvalue)
     this.isDirty = false
     this.isLocked = true
-    log.info("Entity changed from "+(oldvalue ? oldvalue.id : "empty")+" to "+(newvalue ? newvalue.id : "empty"))
+    log.info("Entity changed from " + (oldvalue ? oldvalue.id : "empty") + " to " + (newvalue ? newvalue.id : "empty"))
   }
 
   @computedFrom('entity')
@@ -134,7 +134,7 @@ export class FlexForm {
     save the entiy to the database. Will reject if validaion fails
   */
   save() {
-    
+
     this.validationController.validate().then(result => {
       if (result.valid) {
         const dataService = this.ds.getService(this.entity.type)

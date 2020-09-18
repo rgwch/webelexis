@@ -1,0 +1,15 @@
+<template>
+  <require from="forms/commonviewer"></require>
+  <ux-dialog>
+    <ux-dialog-header>
+      <h3 t="dlg.selectpat"></h3>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <common-viewer style="height:300px;" attach-focus cv_cfg.bind="cv"></common-viewer>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="dc.cancel()">Cancel</button>
+      <button click.trigger="dc.ok(patient)">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>
