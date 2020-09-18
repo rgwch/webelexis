@@ -4,12 +4,12 @@
  * Copyright (c) 2016-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-import { EventManager, IEvent } from '../models/event-manager';
+import { EventManager, IEvent } from 'models/event-manager';
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
-import { DateTime } from "../services/datetime";
-import { AppState } from '../services/app-state';
-
+import { DateTime } from "services/datetime";
+import { AppState } from 'services/app-state';
+import './schedule.scss'
 
 
 /*

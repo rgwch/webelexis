@@ -6,12 +6,12 @@
 
 import { autoinject, bindable, observable } from "aurelia-framework";
 import { IEvent, EventManager } from "models/event-manager";
-import { DateTime } from '../services/datetime'
+import { DateTime } from 'services/datetime'
 import { IPatient, PatientManager } from 'models/patient-manager';
 import { DialogService } from 'aurelia-dialog'
 // import { SelectPatient } from '../dialogs/select-pat';
-import { AppState } from '../services/app-state';
-import { IKontakt } from '../models/kontakt-manager';
+import { AppState } from 'services/app-state';
+import { IKontakt } from 'models/kontakt-manager';
 import { I18N } from 'aurelia-i18n';
 import env from 'environment'
 
@@ -31,8 +31,8 @@ export class NewAppointment {
   protected patlabel: string
 
   constructor(private dt: DateTime, private appState: AppState,
-              private dlgs: DialogService, private i18: I18N, 
-              private em: EventManager, private patM: PatientManager) { }
+    private dlgs: DialogService, private i18: I18N,
+    private em: EventManager, private patM: PatientManager) { }
 
   public sliderChanged(minutes: number) {
     this.time = this.dt.minutesToTimeString(minutes)
@@ -62,7 +62,7 @@ export class NewAppointment {
   }
 
   protected newTermin() {
-    const user = this.appState.getSelectedItem('user')  || {label: "wlx"}
+    const user = this.appState.getSelectedItem('user') || { label: "wlx" }
     const ip = env.metadata.ip || "?"
     this.termin.beginn = this.slider.toString()
     this.termin.dauer = "30"

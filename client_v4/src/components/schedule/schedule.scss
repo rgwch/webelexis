@@ -1,0 +1,12 @@
+@import "../../stylevars";
+@import "../../base";
+
+.event {
+  a {
+    color: black;
+  }
+  background-color: $fillcolor;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: small;
+}
