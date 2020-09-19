@@ -8,7 +8,7 @@ import { autoinject, bindable } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { ObjectManager } from '../models/object-manager';
 import { BindingSignaler } from "aurelia-templating-resources";
-import { FlexformConfig } from "./flexform";
+import { IFlexformConfig } from "./flexform";
 import { IElexisType } from "models/elexistype";
 import './commonviewer.scss'
 
@@ -51,7 +51,7 @@ export interface IViewerConfiguration {
   // function to create a label for each object of the list
   getLabel: (obj) => string;
   // Show "new object" Button and create Dialog with FlexFormConfig if pushed
-  createDef?: FlexformConfig;
+  createDef?: IFlexformConfig;
   handleError?: (err) => void;
 }
 

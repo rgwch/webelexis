@@ -37,7 +37,7 @@ export class PatientManager extends ObjectManager {
   /**
 * create a field definition for detail display in FlexForm or in a new item dialog.
 */
-  public getFieldDefinition(pat: IPatient): IFlexformConfig {
+  public getFieldDefinition(): IFlexformConfig {
     return {
       title: () => "", // ()=>Patient.getTitle(),
       compact: true,

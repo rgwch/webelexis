@@ -4,10 +4,10 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { IPatient } from 'models/patient-manager';
 import { IViewerConfiguration } from 'forms/commonviewer';
 import { DialogController } from 'aurelia-dialog'
 import { autoinject } from 'aurelia-framework';
+import { PatientManager } from 'models/patient-manager';
 
 /**
  * Dialog to select a patient
@@ -23,12 +23,12 @@ export class SelectPatient {
       asPrefix: false,
       value: ""
     }],
-    createDef: Patient.getDefinition(),
-    getLabel: (obj) => Patient.getLabel(obj),
+    createDef: this.pm.getFieldDefinition(),
+    getLabel: (obj) => this.pm.getLabel(obj),
   }
   patient = {}
 
-  constructor(private dc: DialogController) { }
+  constructor(private dc: DialogController, private pm: PatientManager) { }
 
 
 }

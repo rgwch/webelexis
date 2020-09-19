@@ -6,7 +6,7 @@ import { DateTime } from '../services/datetime';
 import { I18N } from 'aurelia-i18n';
 import { bindable, autoinject } from 'aurelia-framework';
 import { IPatient } from '../models/patient-manager';
-import { FlexformConfig } from '../forms/flexform';
+import { IFlexformConfig } from '../forms/flexform';
 import * as moment from 'moment'
 
 const log=LogManager.getLogger('Personal-Data')
@@ -26,7 +26,7 @@ export class PersonalData {
   kontaktChanged(newp,old){
     log.info("Change patient from "+(old ? old.bezeichnung1 : old)+" to "+(newp ? newp.bezeichnung1 : newp))
   }
-  ffc: FlexformConfig = {
+  ffc: IFlexformConfig = {
     title: () => this.km.getLabel(this.kontakt),
     compact: true,
     attributes: [
