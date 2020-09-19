@@ -35,8 +35,8 @@ export async function configure(aurelia: Aurelia) {
       })
     })
     .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
-    .plugin(PLATFORM.moduleName("aurelia-animator-css"));
-
+    .plugin(PLATFORM.moduleName("aurelia-animator-css"))
+    .plugin(PLATFORM.moduleName("aurelia-dialog"))
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
   // LogManager.addAppender(new ConsoleAppender())
   // LogManager.setLevel(LogManager.logLevel.info)  // Chrome doesn't show "debug" level.

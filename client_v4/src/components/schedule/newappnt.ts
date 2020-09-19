@@ -9,7 +9,7 @@ import { IEvent, EventManager } from "models/event-manager";
 import { DateTime } from 'services/datetime'
 import { IPatient, PatientManager } from 'models/patient-manager';
 import { DialogService } from 'aurelia-dialog'
-// import { SelectPatient } from '../dialogs/select-pat';
+import { SelectPatient } from 'dialogs/select-pat';
 import { AppState } from 'services/app-state';
 import { IKontakt } from 'models/kontakt-manager';
 import { I18N } from 'aurelia-i18n';
@@ -50,7 +50,7 @@ export class NewAppointment {
   }
 
   protected selectPatient() {
-    /*
+    
     this.dlgs.open({ viewModel: SelectPatient, model: this.kontakt, lock: false }).whenClosed(response => {
       if (!response.wasCancelled) {
         console.log(this.kontakt)
@@ -58,7 +58,7 @@ export class NewAppointment {
         console.log(response.output);
       }
     });
-    */
+    
   }
 
   protected newTermin() {
