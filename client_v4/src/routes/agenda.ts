@@ -24,7 +24,14 @@ export class Agenda {
 
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
     private appState: AppState) {
+  }
 
+  private reload = object => this.setDay()
+  attached() {
+    this.evm.on(['created', 'removed', 'updated', 'patched'], this.reload)
+  }
+  detached() {
+    this.evm.off(['created', 'removed', 'updated', 'patched'], this.reload)
   }
 
   /*
@@ -59,7 +66,7 @@ export class Agenda {
   /*
     the set-day callback from the calendar component
   */
-  setDay = (event, cal, resource?) => {
+  setDay = (event?, cal?, resource?) => {
     if (event) {
       this.lastDayEvent = event
     }

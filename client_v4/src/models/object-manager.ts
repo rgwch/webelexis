@@ -24,7 +24,7 @@ export class ObjectManager {
     this.dataService = this.dataSource.getService(serviceName);
   }
 
-  protected getDataService(name:string){
+  protected getDataService(name: string) {
     return this.dataSource.getService(name)
   }
   /**
@@ -74,11 +74,19 @@ export class ObjectManager {
     return await this.dataService.patch(el.id, { deleted: "1" })
   }
 
-  public on(event: string, func: (event) => void) {
-    this.dataService.on(event, func)
+  public on(event: string | Array<string>, func: (event) => void) {
+    if (Array.isArray(event)) {
+      event.forEach(ev => this.on(ev, func))
+    } else {
+      this.dataService.on(event, func)
+    }
   }
 
-  public off(event: string, func: (event) => void) {
-    this.dataService.off(event, func)
+  public off(event: string | Array<string>, func: (event) => void) {
+    if (Array.isArray(event)) {
+      event.forEach(ev => this.off(ev, func))
+    } else {
+      this.dataService.off(event, func)
+    }
   }
 }
