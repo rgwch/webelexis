@@ -94,7 +94,7 @@ export class EventManager extends ObjectManager {
           data: ret,
           limit: found.limit,
           skip: found.skip,
-          total: ret.length
+          total: found.total
         }
       } else {
         return {
@@ -128,6 +128,10 @@ export class EventManager extends ObjectManager {
     }
   }
 
+  public isReserved = (event): boolean => event.termintyp === this.terminTypes[1]
+  public isFree = (event): boolean => event.termintyp === this.terminTypes[0]
+  public isAppointment = (event): boolean => !this.isFree(event) && !this.isReserved(event)
+
   getEndMinutes(termin: IEvent): number {
     const ret = parseInt(termin.beginn) + parseInt(termin.dauer)
     return ret;
@@ -140,7 +144,12 @@ export class EventManager extends ObjectManager {
     return "#" + this.terminStateColors[ev.terminstatus]
   }
 
-  getNextEvent(ev: IEvent): Promise<IEvent> {
+  async getNextEvent(ev: IEvent): Promise<IEvent> {
+    const following = await super.find({ tag: ev.tag, beginn: { $gt: this.getEndMinutes(ev) }, bereich: ev.bereich, $limit: 1 })
+    if (following.total > 0) {
+      return following.data[0]
+    }
     return null
   }
+
 }

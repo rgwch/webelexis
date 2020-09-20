@@ -96,13 +96,13 @@ export class Agenda {
     const events = await this.evm.find(query)
     cal.addEvent(events.data.map((ev: IEvent) => {
       const label = this.evm.getLabel(ev)
-      const typecolor = this.evm.getTypeColor(ev)
-      const statecolor = this.evm.getStateColor(ev)
+      // const typecolor = this.evm.getTypeColor(ev)
+      // const statecolor = this.evm.getStateColor(ev)
       return {
         start: this.dt.addMinutesToDate(ev.tag, ev.beginn),
         end: this.dt.addMinutesToDate(ev.tag, parseInt(ev.beginn) + parseInt(ev.dauer)),
-        text: `${label} (<span style="color:${typecolor}">${ev.termintyp}</span>,<span style="color:${statecolor}">${ev.terminstatus}</span>); ${ev.grund || ""} <i class="fa fa.trash">`,
-        color: this.evm.getStateColor(ev),
+        text: label, //`${label} (<span style="color:${typecolor}">${ev.termintyp}</span>,<span style="color:${statecolor}">${ev.terminstatus}</span>); ${ev.grund || ""} <i class="fa fa.trash">`,
+        // color: this.evm.getStateColor(ev),
         termin: ev
       }
     }))

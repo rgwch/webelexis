@@ -133,7 +133,7 @@ export class Event {
     this.evm.save(this.entry);
   }
   /**
-   * from UI button: Enlarge duration of appointment
+   * from UI button: Double duration of appointment, at most all time until next appnt.
    */
   protected enlarge() {
     this.evm.getNextEvent(this.entry).then(nxt => {

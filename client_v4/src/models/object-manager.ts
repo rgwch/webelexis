@@ -49,8 +49,8 @@ export class ObjectManager {
   }
 
   public find(query?) {
-    return this.dataService.find(query ? { query: query } : {})
-    // return this.dataService.find(query)
+    const ret=this.dataService.find(query ? { query: query } : {})
+    return ret
   }
   /**
    * Fetch Object with given id

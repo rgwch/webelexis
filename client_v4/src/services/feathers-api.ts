@@ -23,7 +23,7 @@ export class FeathersDS implements IDataSource {
 
   constructor() {
     const socket = io(env.baseURL);
-    this.client= feathers()
+    this.client = feathers()
     this.client.configure(socketio(socket))
     this.client.configure(auth.default({}))
   }
@@ -46,54 +46,21 @@ export class FeathersDS implements IDataSource {
    * @returns the logged in 'user' object with all properties except the password.
    * or undefined if it could not log in.
    */
-  /*
-  public async login(username?: string, password?: string): Promise<IUser> {
-    try {
-      let jwt;
-      if (username && password) {
-        jwt = await this.client.authenticate({
-          id: username,
-          password,
-          strategy: "local"
-        });
-      } else {
-        jwt = await this.client.authenticate();
-      }
-      // const verified = await this.client.passport.verifyJWT(jwt.accessToken);
-      const user = await this.client.service("user").get(username);
-      return user;
-    } catch (err) {
-      throw new Error("Error while authenticating " + err);
 
-    }
-  }
-*/
-public async login(username?, password?){
-  let user
-  if(username && password){
-    user = await this.client.authenticate({
-      strategy: 'local',
-      id: username,
-      password: password
-    })
-  }else{
-    user= await this.client.reAuthenticate()
-  }
-  return user.user
-}
-/*
-  public async login(username?, password?){
-    try{
-      return await this.client.reAuthenticate()
-    }catch(err){
-      return await this.client.authenticate({
+  public async login(username?, password?) {
+    let user
+    if (username && password) {
+      user = await this.client.authenticate({
         strategy: 'local',
         id: username,
-        password
+        password: password
       })
+    } else {
+      user = await this.client.reAuthenticate()
     }
+    return user.user
   }
-*/
+
   public async checkLogin(): Promise<IUser> {
     const jwt = this.client.authenticate();
     const verified = await this.client.passport.verifyJWT(jwt.accessToken);
