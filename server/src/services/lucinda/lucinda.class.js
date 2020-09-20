@@ -44,7 +44,7 @@ class Service {
   get(id, params) {
     if (id == "info") {
       return new Promise((resolve, reject) => {
-        request(this.options.url + "ping", (err, result) => {
+        request(this.options.url + "/", (err, result) => {
           if (err) {
             reject(err)
           }
@@ -123,7 +123,7 @@ class Service {
           if (result.statusCode == 202) {
             return result.body
           } else {
-            reject("error "+result.statusCode.toString())
+            reject("error " + result.statusCode.toString())
           }
         }
       })
@@ -132,7 +132,7 @@ class Service {
   }
 
   async patch(id, data, params) {
-    return await this.update(id,data,params);
+    return await this.update(id, data, params);
   }
 
   remove(id, params) {
