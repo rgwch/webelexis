@@ -57,13 +57,13 @@ export class AppState {
   login = (username?: string, password?: string): Promise<IUser> => {
     return this.ds.login(username, password).then((user: IUser) => {
       this.loggedInUser = user
-      this.selectItem('user', user)
+      this.selectItem(SELECTABLE.user, user)
       this.subscriptions.forEach(sub => sub(user))
       return user
     }).catch(err => {
       console.log(err)
       this.loggedInUser = null
-      this.selectItem("user", null)
+      this.selectItem(SELECTABLE.user, null)
       return null
     })
 

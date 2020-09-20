@@ -9,6 +9,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import { DateTime } from "services/datetime";
 import { AppState } from 'services/app-state';
+import * as moment from 'moment'
 import './schedule.scss'
 
 
@@ -151,5 +152,13 @@ export class Event {
    */
   protected delete() {
     this.evm.remove(this.entry);
+  }
+
+}
+
+export class metadataValueConverter{
+  public toView(elem: IEvent){
+    const d=new Date(parseInt(elem.angelegt)*60000)
+    return `${elem.erstelltvon}, ${moment(d).format("HH:mm, DD.MM.yy")}`
   }
 }

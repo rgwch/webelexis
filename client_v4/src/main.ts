@@ -26,7 +26,7 @@ export async function configure(aurelia: Aurelia) {
         attributes: aliases,
         lng: 'de', //selectedLanguage,
         fallbacklng: 'de',
-        ns: ['menu', 'translation'],
+        ns: ['menu', 'translation', 'dialog'],
         defaultNs: 'translation',
         backend: {
           loadPath: './locales/{{lng}}/{{ns}}.json'
@@ -36,7 +36,11 @@ export async function configure(aurelia: Aurelia) {
     })
     .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
     .plugin(PLATFORM.moduleName("aurelia-animator-css"))
-    .plugin(PLATFORM.moduleName("aurelia-dialog"))
+    .plugin(PLATFORM.moduleName("aurelia-dialog"), config=>{
+      config.useDefaults();
+      config.settings.lock=true;
+      config.settings.keyboard=true;
+    })
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
   // LogManager.addAppender(new ConsoleAppender())
   // LogManager.setLevel(LogManager.logLevel.info)  // Chrome doesn't show "debug" level.

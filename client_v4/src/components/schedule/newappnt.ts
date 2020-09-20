@@ -10,6 +10,7 @@ import { DateTime } from 'services/datetime'
 import { IPatient, PatientManager } from 'models/patient-manager';
 import { DialogService } from 'aurelia-dialog'
 import { SelectPatient } from 'dialogs/select-pat';
+import { TextInput } from 'dialogs/text-input';
 import { AppState, SELECTABLE } from 'services/app-state';
 import { IKontakt } from 'models/kontakt-manager';
 import { I18N } from 'aurelia-i18n';
@@ -62,15 +63,29 @@ export class NewAppointment {
 
   }
 
+  protected enterText() {
+    const mdl = {
+      caption: this.i18.tr("dialog:freetext"),
+    }
+    this.dlgs.open({ viewModel: TextInput, model: mdl, lock: false}).whenClosed(response => {
+      if (!response.wasCancelled) {
+        this.kontakt=undefined
+        this.patlabel = response.output
+      }
+    })
+  }
+
   protected newTermin() {
-    const user = this.appState.getSelectedItem('user') || { label: "wlx" }
-    const ip = env.metadata.ip || "?"
+    const user = this.appState.getSelectedItem(SELECTABLE.user) || { label: "wlx" }
+    const ip = env.metadata.ip || window.location.host 
     this.termin.beginn = this.slider.toString()
     this.termin.dauer = "30"
     this.termin.termintyp = this.terminTyp
     this.termin.terminstatus = this.terminStatus
-    this.termin.patid = this.kontakt.id
-    this.termin.erstelltvon = user.label + "@" + ip // TODO
+    this.termin.patid = (this.kontakt ? this.kontakt.id : this.patlabel);
+    this.termin.erstelltvon = user.label + "@" + ip 
+    this.termin.angelegt = (Math.round(new Date().getTime()/60000)).toString()
+    console.log(this.termin.angelegt)
     this.em.save(this.termin)
   }
 }

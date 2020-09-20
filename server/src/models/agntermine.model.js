@@ -25,13 +25,13 @@ module.exports = async function (app) {
         table.string('termintyp')
         table.string('terminstatus')
         table.string('erstelltvon')
-        table.string('angelegt', 10)
-        table.string('lastedit', 10)
+        table.string('angelegt', 10)    // time in minutes
+        table.string('lastedit', 10)    // time in minutes
         table.string('flags', 10)
         table.string('deleted', 1)
         table.text("extension")
         table.string('linkgroup')
-        table.bigint('lastupdate')
+        table.bigint('lastupdate')      // ts in milliseconds
         table.text('statushistory')
         table.string('priority', 1)
         table.string('casetype', 1)
