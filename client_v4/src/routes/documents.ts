@@ -5,4 +5,7 @@ export class Documents{
   concern: string=""
   expression:string=""
   
+  search(){
+    
+  }
 }
