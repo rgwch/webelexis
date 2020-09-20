@@ -1,6 +1,8 @@
-import { noView } from 'aurelia-framework';
+import { autoinject } from 'aurelia-framework';
 
-@noView
+@autoinject
 export class Documents{
+  concern: string=""
+  expression:string=""
   
 }
