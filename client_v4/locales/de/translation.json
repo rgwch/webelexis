@@ -21,7 +21,8 @@
     "new_for": "Neuer Termin für:",
     "delete": "Löschen",
     "shorten": "Kürzen",
-    "enlarge": "Verlängern"
+    "enlarge": "Verlängern",
+    "orfreetext": "oder Freitext"
   },
   "contact": {
     "birthdate": "Gebursdatum",
@@ -38,7 +39,8 @@
     "create": "Erstellen"
   },
   "info": {
-    "nopatselected": "Kein Patient ausgewählt"
+    "nopatselected": "Kein Patient ausgewählt",
+    "selectpat": "Patient wählen"
   },
   "validation": {
     "invalidDate": "Ungültiges Datum",

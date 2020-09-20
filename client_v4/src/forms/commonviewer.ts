@@ -10,6 +10,8 @@ import { ObjectManager } from '../models/object-manager';
 import { BindingSignaler } from "aurelia-templating-resources";
 import { IFlexformConfig } from "./flexform";
 import { IElexisType } from "models/elexistype";
+import { IKontakt } from 'models/kontakt-manager';
+
 import './commonviewer.scss'
 
 /***
@@ -60,7 +62,7 @@ export class CommonViewer {
   @bindable
   public cv_cfg: IViewerConfiguration;
   public items;
-  public selectedItem: string = ""; // referenced in view
+  public selected_object: string = "-" // referenced in view
   private newobj: IElexisType = {};
   private objectManager: ObjectManager
 
@@ -164,7 +166,7 @@ export class CommonViewer {
       // this.dispatcher.selectItem(item);
     }
     // display selected status in viewer elements
-    this.selectedItem = item.id;
+    this.selected_object = item.id;
     this.signaler.signal("selected");
   }
 

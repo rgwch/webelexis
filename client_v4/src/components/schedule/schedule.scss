@@ -13,6 +13,13 @@
 
 .newappnt {
   padding: 3px;
-  margin: 3px;
+  margin-bottom: 8px;
   background-color: $form-background;
+  a {
+    color: blue;
+    text-decoration: underline;
+  }
+  a:hover {
+    color: red;
+  }
 }

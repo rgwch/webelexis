@@ -5,11 +5,11 @@
       <h3 t="dlg.selectpat"></h3>
     </ux-dialog-header>
     <ux-dialog-body>
-      <common-viewer style="height:300px;" attach-focus cv_cfg.bind="cv"></common-viewer>
+      <common-viewer style="height:300px;" cv_cfg.bind="cv"></common-viewer>
     </ux-dialog-body>
     <ux-dialog-footer>
       <button click.trigger="dc.cancel()">Cancel</button>
-      <button click.trigger="dc.ok(patient)">Ok</button>
+      <button click.trigger="ok(item)">Ok</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

@@ -10,7 +10,7 @@ import { DateTime } from 'services/datetime'
 import { IPatient, PatientManager } from 'models/patient-manager';
 import { DialogService } from 'aurelia-dialog'
 import { SelectPatient } from 'dialogs/select-pat';
-import { AppState } from 'services/app-state';
+import { AppState, SELECTABLE } from 'services/app-state';
 import { IKontakt } from 'models/kontakt-manager';
 import { I18N } from 'aurelia-i18n';
 import env from 'environment'
@@ -32,7 +32,7 @@ export class NewAppointment {
 
   constructor(private dt: DateTime, private appState: AppState,
     private dlgs: DialogService, private i18: I18N,
-    private em: EventManager, private patM: PatientManager) { }
+    private em: EventManager, private patman: PatientManager) { }
 
   public sliderChanged(minutes: number) {
     this.time = this.dt.minutesToTimeString(minutes)
@@ -45,20 +45,21 @@ export class NewAppointment {
     this.terminTyp = this.termintypen[2]
     this.terminStatus = this.terminstaten[1]
     this.slider = parseInt(this.termin.beginn)
-    this.kontakt = this.appState.getSelectedItem('patient')
-    this.patlabel = this.kontakt ? this.patM.getLabel(this.kontakt as IPatient) : this.i18.tr('info.nopatselected')
+    this.kontakt = this.appState.getSelectedItem(SELECTABLE.patient)
+    this.patlabel = this.kontakt ? this.patman.getLabel(this.kontakt as IPatient) : this.i18.tr('info.selectpat')
   }
 
   protected selectPatient() {
-    
+
     this.dlgs.open({ viewModel: SelectPatient, model: this.kontakt, lock: false }).whenClosed(response => {
       if (!response.wasCancelled) {
-        console.log(this.kontakt)
+        this.kontakt = response.output
+        this.patlabel = this.patman.getLabel(this.kontakt as IPatient)
       } else {
         console.log(response.output);
       }
     });
-    
+
   }
 
   protected newTermin() {

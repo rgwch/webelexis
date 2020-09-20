@@ -33,7 +33,7 @@
       </a>
     </div>
     <!-- detail informations depending of appointment type-->
-    <div if.bind="detailVisible" class="slideitem au-animate" style="height:8em;">
+    <div if.bind="detailVisible" class="slideitem au-animate">
       <div>
         <new-appointment termin.bind="entry" if.bind="entry.termintyp === termintypen[0]"></new-appointment>
         <div if.bind="entry.isAppointment()">
