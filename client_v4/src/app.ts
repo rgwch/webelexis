@@ -1,6 +1,7 @@
+import { PatientManager } from './models/patient-manager';
 import { StickerManager } from './models/sticker-manager';
 import { LogManager } from 'aurelia-framework';
-import { AppState } from './services/app-state';
+import { AppState, SELECTABLE } from './services/app-state';
 import { Router, Redirect } from 'aurelia-router';
 import { I18N } from 'aurelia-i18n';
 import { autoinject } from 'aurelia-framework';
@@ -11,11 +12,15 @@ const log=LogManager.getLogger("app.ts")
 @autoinject
 export class App {
   router: Router
-
-
-  constructor(private i18n: I18N, private stm:StickerManager) { }
+  private actpat
+  constructor(private i18n: I18N, 
+              private stm:StickerManager, 
+              private appState:AppState) { }
 
   activate(){
+    this.appState.subscribe(SELECTABLE.patient,(type,pat)=>{
+      this.actpat=pat
+    })  
   }
 
   configureRouter(config, router) {
@@ -93,5 +98,14 @@ class Authorizer {
         return next.cancel(new Redirect('login'))
       }
     }
+  }
+}
+
+@autoinject
+export class patValueConverter{
+
+  constructor(private pm:PatientManager){}
+  public toView(patient){
+    return patient ? this.pm.getLabel(patient) : "Kein Patient ausgewählt"
   }
 }

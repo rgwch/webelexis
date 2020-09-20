@@ -1,3 +1,4 @@
+import { Router } from 'aurelia-router';
 
 /********************************************
  * This file is part of Webelexis           *
@@ -8,7 +9,7 @@ import { EventManager, IEvent } from 'models/event-manager';
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import { DateTime } from "services/datetime";
-import { AppState } from 'services/app-state';
+import { AppState, SELECTABLE } from 'services/app-state';
 import * as moment from 'moment'
 import './schedule.scss'
 
@@ -40,7 +41,8 @@ export class Event {
     private dt: DateTime,
     private evm: EventManager,
     private ea: EventAggregator,
-    private appState: AppState
+    private appState: AppState,
+    private router:Router
   ) { }
 
   public bind(context) {
@@ -52,18 +54,14 @@ export class Event {
     this.detailVisible = !this.detailVisible;
   }
 
-  /*
-  protected select(view, list) {
+  
+  protected select(dest) {
     const patient = this.entry.kontakt;
-    patient.type = "patient";
-    this.we.selectItem(patient);
-    if (list) {
-      this.ea.publish(SWITCH_PANELS, { left: list, right: view });
-    } else {
-      this.ea.publish(SWITCH_PANELS, { right: view });
-    }
+    patient.type = SELECTABLE.patient;
+    this.appState.selectItem(SELECTABLE.patient,patient);
+    this.router.navigateToRoute(dest)        
   }
-*/
+
 
   protected get typecss() {
     const style = `background-color:${this.evm.getTypeColor(this.entry)};`;
@@ -159,6 +157,6 @@ export class Event {
 export class metadataValueConverter{
   public toView(elem: IEvent){
     const d=new Date(parseInt(elem.angelegt)*60000)
-    return `${elem.erstelltvon}, ${moment(d).format("HH:mm, DD.MM.yy")}`
+    return `${elem.erstelltvon}, ${moment(d).format("DD.MM.yy HH:mm")}`
   }
 }

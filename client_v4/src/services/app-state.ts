@@ -1,4 +1,4 @@
-import { IElexisType } from '../models/elexistype';
+import { IElexisType } from 'models/elexistype';
 import { Container } from 'aurelia-dependency-injection';
 import { IDataSource } from './dataservice';
 import { autoinject } from 'aurelia-framework';
@@ -18,7 +18,7 @@ export const SELECTABLE = {
 export class AppState {
   loggedInUser: IUser = null
   ds: IDataSource
-  subscriptions = new Array<(IUser) => {}>()
+  subscriptions = new Array<{ elemtype, func: (string, IElexisType) => {} }>()
 
   items = {}
 
@@ -30,8 +30,19 @@ export class AppState {
   selectItem(type: string, object: IElexisType) {
     if (object) {
       this.items[type] = object
+      this.subscriptions.forEach(sub => {
+        if (sub.elemtype == type) {
+          sub.func(type, object)
+        }
+      })
     } else {
       delete this.items[type]
+      this.subscriptions.forEach(sub => {
+        if (sub.elemtype == type) {
+          sub.func(type, null)
+        }
+      })
+
     }
   }
 
@@ -43,9 +54,14 @@ export class AppState {
     return !!this.loggedInUser
   }
 
-  subscribe(func: (newUser) => any) {
-    this.subscriptions.push(func)
+  subscribe(elemtype: string | Array<string>, func: (type, item) => any) {
+    if (Array.isArray(elemtype)) {
+      elemtype.forEach(typ => this.subscribe(typ, func))
+    } else {
+      this.subscriptions.push({ elemtype, func })
+    }
   }
+
   hasRole(role: string): boolean {
     if (this.loggedInUser) {
       if (this.loggedInUser.roles.includes(role)) {
@@ -58,7 +74,6 @@ export class AppState {
     return this.ds.login(username, password).then((user: IUser) => {
       this.loggedInUser = user
       this.selectItem(SELECTABLE.user, user)
-      this.subscriptions.forEach(sub => sub(user))
       return user
     }).catch(err => {
       console.log(err)

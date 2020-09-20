@@ -22,6 +22,10 @@ export class Agenda {
   lastDayEvent
   lastResource: string
 
+  calendar_class="col-sm-12 col-md-5 col-lg-4"
+  eventlist_class="col-sm-12 col-md-7 col-lg-4"
+  kg_class="col-sm-12 col-md-8 col-lg-4"
+
   constructor(private evm: EventManager, private dt: DateTime, private km: KontaktManager,
     private appState: AppState) {
   }

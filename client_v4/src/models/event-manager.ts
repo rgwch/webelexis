@@ -3,7 +3,7 @@ import { autoinject, LogManager } from 'aurelia-framework';
 import { IKontakt, KontaktManager } from './kontakt-manager';
 import { ObjectManager } from './object-manager';
 import { UUID, IElexisType, ELEXISDATE, ELEXISDATETIME } from './elexistype';
-import { AppState } from '../services/app-state'
+import { AppState, SELECTABLE } from '../services/app-state'
 import { IQueryResult } from 'services/dataservice';
 const log = LogManager.getLogger('EventManager')
 
@@ -45,7 +45,7 @@ export class EventManager extends ObjectManager {
         console.log("loaded colors")
       })
     }
-    this.appState.subscribe(this.setUser)
+    this.appState.subscribe(SELECTABLE.user, this.setUser)
   }
 
 

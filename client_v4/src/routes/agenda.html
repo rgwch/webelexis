@@ -5,17 +5,18 @@
   <require from="../components/schedule/event"></require>
   <require from="../forms/searchfield"></require>
 
+  <i class="closer fas fa-angle-double-left"></i>
   <div class="row">
-    <div class="col-sm-12 col-md-5 col-lg-4">
-      <calendar set-day.bind="setDay" , set-month.bind="setMonth" event-selected.bind="eventSelected"
+    <div class.bind="calendar_class">
+      <calendar set-day.bind="setDay", set-month.bind="setMonth" event-selected.bind="eventSelected"
         searchtext.bind="Suche" result.two-way="binding" resources.bind="evm.agendaResources"></calendar>
     </div>
-    <div class="col-sm-12 col-md-7 col-lg-4">
+    <div class.bind="eventlist_class">
       <template repeat.for="entry of events">
         <event class="row event" entry.bind="entry" index.bind="$index"></event>
       </template>
     </div>
-    <div class="col-sm-12 col-md-8 col-lg-4">
+    <div class.bind="kg_class">
       <p>KG</p>
       <!-- summary if.bind="selectedEvent.termin.kontakt.istperson" patient.bind="selectedEvent.termin.kontakt"></summary>
       <current-event else event.bind="selectedEvent"></current-event -->

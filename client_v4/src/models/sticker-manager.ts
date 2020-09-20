@@ -6,7 +6,7 @@
 import { ObjectManager } from './object-manager';
 import { IElexisType } from "./elexistype"
 import { autoinject } from "aurelia-framework"
-import { AppState } from '../services/app-state';
+import { AppState, SELECTABLE } from '../services/app-state';
 
 /**
  * The Elexis 'Sticker' or 'Etikette' is some sort of badge or label for an object.
@@ -26,7 +26,7 @@ export class StickerManager extends ObjectManager {
 
   constructor(private appState: AppState) {
     super('stickers')
-    this.appState.subscribe(async newUser => {
+    this.appState.subscribe(SELECTABLE.user,async newUser => {
       await this.ensureLoaded()
     })
   }
