@@ -2,7 +2,7 @@ const assert = require('assert');
 const app = require('../../src/app');
 require('chai').should()
 
-describe('\'prescriptions\' service', () => {
+xdescribe('\'prescriptions\' service', () => {
   const service = app.service('prescriptions');
 
   it('registered the service', () => {

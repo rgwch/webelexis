@@ -1,7 +1,7 @@
 const assert = require('assert');
 const app = require('../../src/app');
 
-describe('\'tarmed\' service', () => {
+xdescribe('\'tarmed\' service', () => {
   it('registered the service', () => {
     const service = app.service('tarmed');
 

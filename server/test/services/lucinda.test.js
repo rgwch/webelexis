@@ -25,8 +25,22 @@ describe('\'lucinda\' service', () => {
   })
 
   it("performs a global search", async () => {
-    const result = await service.find({ query: { content: "*" } })
+    const result = await service.find({ query: { "query": "contents:*","offset":10, "limit":20 } })
     result.should.be.ok
+    result.status.should.equal("ok")
+    result.numFound.should.be.gt(0)
+
+  })
+
+  it("fetches first document", async()=>{
+    const result = await service.find({ query: { "query": "contents:*","offset":0, "limit":5 } })
+    result.should.be.ok
+    result.status.should.equal("ok")
+    result.numFound.should.be.gt(0)
+    const meta=result.docs[0]
+    const id=meta.id
+    const doc=await service.get(id)
+    doc.should.be.ok
   })
   xit("indexes a pdf file", async () => {
     const testfile = path.join(__dirname, "../test.pdf")

@@ -3,7 +3,7 @@ const app = require('../../src/app');
 const Gapfinder=require('../../src/services/schedule/gapfinder')
 require('chai').should()
 
-describe('schedule', () => {
+xdescribe('schedule', () => {
   describe('schedule gapfinder', ()=>{
     const gapf=new Gapfinder()
     const a=[5,10]
@@ -74,7 +74,7 @@ describe('schedule', () => {
     const{DateTime} = require('luxon')
     const dt=DateTime.fromFormat("20190422","yyyyLLdd")
     const tstart=dt.plus({minutes:550})
-    console.log(tstart.toJSDate())   
+    console.log(tstart.toJSDate())
     const ical=require('ical-generator')
     const cal=ical({domain: "Test",name: "Arzttermin"})
     cal.method('publish').prodId({

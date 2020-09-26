@@ -1,4 +1,4 @@
-const request = require('request')
+const fetch = require('node-fetch')
 const fs = require('fs')
 const getUri = require('get-uri')
 const uuid = require('uuid/v4')
@@ -14,25 +14,21 @@ class Service {
    * @param {} params - query: A lucene-style query string
    */
   async find(params) {
-    return new Promise((resolve, reject) => {
-      request({
-        method: "POST",
-        url: this.options.url + "query",
-        json: true,
-        body: params.query
-      }, (err, res) => {
-        if (err) reject(err)
-        if (res) {
-          if (res.statusCode == 204) {
-            resolve([])
-          } else if (res.statusCode == 200) {
-            resolve(res.body)
-          } else {
-            reject("bad result")
-          }
-        }
-      })
-    })
+    delete params.query.deleted
+    const options = {
+      method: "POST",
+      body: JSON.stringify(params.query),
+      headers: { "Content-Type": "application/json" }
+    }
+    const res = await fetch(this.options.url + "query", options)
+    if (res.status == 204) {
+      return ([])
+    } else if (res.status == 200) {
+      return await res.json()
+    } else {
+      throw new Error("bad result")
+    }
+
   }
 
   /**
@@ -41,31 +37,18 @@ class Service {
    * @param {} id
    * @param {*} params
    */
-  get(id, params) {
+  async get(id, params) {
     if (id == "info") {
-      return new Promise((resolve, reject) => {
-        request(this.options.url + "/", (err, result) => {
-          if (err) {
-            reject(err)
-          }
-          if (result) {
-            resolve(result.body)
-          }
-        })
-      })
+      const res = await fetch(this.options.url)
+      return await res.text()
     } else {
-      return new Promise((resolve, reject) => {
-        request.get(this.options.url + "get/" + id, (err, result) => {
-          if (err) reject(err)
-          if (result) {
-            if (result.statusCode == 200) {
-              resolve(result.body)
-            } else {
-              reject("not found")
-            }
-          }
-        })
-      })
+      const res = await fetch(this.options.url + "get/" + id)
+      if (res.status == 200) {
+        return await res.text()
+      }
+      else {
+        return ""
+      }
     }
   }
 

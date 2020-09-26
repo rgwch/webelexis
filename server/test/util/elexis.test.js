@@ -3,7 +3,7 @@ const ElexisUtils=require('../../src/util/elexis-types')
 const should = require('chai').should();
 const elexis=new ElexisUtils()
 
-describe("Elexis-specific utility functions",()=>{
+xdescribe("Elexis-specific utility functions",()=>{
   it("converts an elexis date into a standard Date String",()=>{
     let local=elexis.makeLocalFromCompact("20180818")
     local.should.equal('18.08.2018')
