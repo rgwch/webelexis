@@ -64,26 +64,25 @@ class Service {
    * @param {*} params
    * @returns: a result with statusCode (201 for ok), a status with "ok" and the _id.
    */
-  create(data, params) {
+  async create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
-    return new Promise((resolve, reject) => {
-      const endpoint = data.filename ? "addfile" : "index"
-      request({
-        method: "POST",
-        uri: this.options.url + endpoint,
-        body: data,
-        json: true
-      }, (err, result) => {
-        if (err) {
-          reject(err)
-        }
-        if (result) {
-          resolve(result)
-        }
-      })
-    })
+
+    const endpoint = data.metadata && data.metadata.filename ? "addfile" : "addindex"
+    const options = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" }
+    }
+    const result = await fetch(this.options.url + endpoint, options)
+    if (result.status == 201) {
+      return "indexed"
+    } else if (result.status == 202) {
+      return "added"
+    } else {
+      throw new Error("bad request " + result.statustext)
+    }
 
   }
 

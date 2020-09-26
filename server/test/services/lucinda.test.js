@@ -42,16 +42,20 @@ describe('\'lucinda\' service', () => {
     const doc=await service.get(id)
     doc.should.be.ok
   })
-  xit("indexes a pdf file", async () => {
+  it("indexes a pdf file", async () => {
     const testfile = path.join(__dirname, "../test.pdf")
     const buffer = fs.readFileSync(testfile)
     const doc = {
       payload: buffer.toString("base64"),
-      some: "thing",
-      filename: "test.pdf"
+      metadata: {
+        some: "thing",
+        filename: "test.pdf",
+        filepath: "mocha/test.pdf"
+      }
     }
     const created = await service.create(doc)
     created.should.be.ok
+    created.should.equal("added")
     created.should.have.property("statusCode")
     assert(created.statusCode == 201, "Statuscode is 201 - created")
     const result = created.body
