@@ -9,9 +9,12 @@ RUN apk add --no-cache openjdk8 nano \
   && npm install -g aurelia-cli pm2 \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
   && git clone https://github.com/rgwch/webelexis \
-  && cd webelexis/client \
+  && cd webelexis/client_v3 \
   && npm install \
   && au build --env prod \
+  && cd ../client_v4 \
+  && npm install \
+  && npm run build \
   && cd ../selfservice \
   && npm install \
   && npm --production prune \

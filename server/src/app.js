@@ -49,7 +49,8 @@ app.use(express.raw({ inflate: true, limit: "50mb", type: "application/octet-str
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
 
 // Host the public folder
-app.use('/', express.static(app.get('public')));
+app.use('/', express.static(app.get('client4')));
+app.use('/v3',express.static(app.get("client3")));
 app.use('/static', express.static(path.join(__dirname, '../public')))
 
 // Set up Plugins and providers

@@ -4,7 +4,8 @@
   "testing": false,
   "host": "localhost",
   "port": 3030,
-  "public": "../../client/dist/",
+  "client3": "../../client_v3/dist/",
+  "client4": "../../client_v4/dist/",
   "paginate": {
     "default": 50,
     "max": 100

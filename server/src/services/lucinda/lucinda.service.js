@@ -10,6 +10,10 @@ module.exports = function (app) {
 
   // Get our initialized service so that we can register hooks
   const service = app.service('lucinda');
+
+  /**
+   * Create a REST endpoint to fetch individual documents by URL
+   */
   app.get("/lucindadoc/:id", async (req, res) => {
     const doc = await service.get(req.params.id)
     res.set({
