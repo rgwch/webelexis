@@ -1,3 +1,5 @@
+@import "./stylevars";
+
 body{
   box-sizing: border-box;
 }
@@ -13,4 +15,11 @@ body{
   color: black;
 }
 
+.sheet{
+  background-color: $base-color;
+  padding: 8px;
+  margin-top: 3px;
+  border: 1px solid $bordercolor;
+  border-radius: $border-radius;
+}
 
