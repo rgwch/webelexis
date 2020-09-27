@@ -16,8 +16,8 @@
     </form>
     <div>
       <div class="compactlist" repeat.for="doc of docs">
-        <!-- span click.delegate="fetch(doc.id)">${doc.concern} - ${doc.date | datetime} ${doc.title}</span -->
-        <a href="http://localhost:3030/lucindadoc/${doc.id}" target="_new">${doc.title}</a>
+        <span click.delegate="fetch(doc.id)">${doc.concern} - ${doc.date | datetime} ${doc.title}</span>
+        <!-- a href="http://localhost:3030/lucindadoc/${doc.id}" target="_blank" title="test">${doc.title}</a -->
       </div>
     </div>
   </div>

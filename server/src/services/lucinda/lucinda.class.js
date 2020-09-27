@@ -46,7 +46,7 @@ class Service {
     } else {
       const res = await fetch(this.options.url + "get/" + id)
       if (res.status == 200) {
-        return await res.text()
+        return await res.buffer()
       }
       else {
         return ""

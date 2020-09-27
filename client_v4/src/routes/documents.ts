@@ -1,6 +1,7 @@
 import { DocumentManager } from './../models/document-manager';
 import { autoinject } from 'aurelia-framework';
 import * as moment from 'moment'
+import env from "environment"
 
 @autoinject
 export class Documents {
@@ -33,8 +34,11 @@ export class Documents {
 
   fetch(id){
     this.dm.fetch(id).then(doc=>{
-      const win=window.open("","_new");
-      // win.document.write(doc as string)
+      const win=window.open(`${env.baseURL}lucindadoc/${id}`, "_blank");
+      setTimeout(()=>{
+        console.log(win.document.title)
+        win.document.title="Hallo"
+      },100)
     })
   }
 }
