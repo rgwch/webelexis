@@ -14,10 +14,10 @@ class Service {
    * @param {} params - query: A lucene-style query string
    */
   async find(params) {
-    delete params.query.deleted
+    // delete params.deleted
     const options = {
       method: "POST",
-      body: JSON.stringify(params.query),
+      body: JSON.stringify(params),
       headers: { "Content-Type": "application/json" }
     }
     const res = await fetch(this.options.url + "query", options)
@@ -92,24 +92,18 @@ class Service {
    * @param {*} data @see create
    * @param {*} params
    */
-  update(id, data, params) {
-    return new Promise((resolve, reject) => {
-      request({
-        method: "POST",
-        uri: this.options.url + "update",
-        body: data,
-        json: true
-      }, (err, result) => {
-        if (err) reject(err)
-        if (result) {
-          if (result.statusCode == 202) {
-            return result.body
-          } else {
-            reject("error " + result.statusCode.toString())
-          }
-        }
-      })
-    })
+  async update(id, data, params) {
+    const opt = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" }
+    }
+    const result = await fetch(this.options.url + "update", opt)
+    if (result.status == 200) {
+      return await result.json()
+    } else {
+      throw new Error(result.status)
+    }
 
   }
 
@@ -117,21 +111,19 @@ class Service {
     return await this.update(id, data, params);
   }
 
-  remove(id, params) {
-    return new Promise((resolve, reject) => {
-      request.get(this.options.url + "remove/" + id, (err, res) => {
-        if (err) reject(err)
-        if (res) {
-          if (res.statusCode == 200) {
-            if (typeof (res.body) == 'string') {
-              resolve(JSON.parse(res.body))
-            } else {
-              resolve(res.body)
-            }
-          }
-        }
-      })
-    })
+  /**
+   * remove a document from the database and the filestore
+   * @param {string} id the id of the document
+   */
+  async remove(id, params) {
+    const result = await fetch(this.options.url + "removeindex/" + id)
+    if (result.status == 200) {
+      const ret = await result.text()
+      return "ok"
+    } else {
+      throw new Error("Could not delete " + id)
+    }
+
   }
 }
 

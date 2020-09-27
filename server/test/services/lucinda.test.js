@@ -25,21 +25,21 @@ describe('\'lucinda\' service', () => {
   })
 
   it("performs a global search", async () => {
-    const result = await service.find({ query: { "query": "contents:*","offset":10, "limit":20 } })
+    const result = await service.find({ "query": "contents:*", "offset": 0, "limit": 20 })
     result.should.be.ok
     result.status.should.equal("ok")
     result.numFound.should.be.gt(0)
 
   })
 
-  it("fetches first document", async()=>{
-    const result = await service.find({ query: { "query": "contents:*","offset":0, "limit":5 } })
+  it("fetches first document", async () => {
+    const result = await service.find({ "query": "contents:*", "offset": 0, "limit": 5 })
     result.should.be.ok
     result.status.should.equal("ok")
     result.numFound.should.be.gt(0)
-    const meta=result.docs[0]
-    const id=meta.id
-    const doc=await service.get(id)
+    const meta = result.docs[0]
+    const id = meta.id
+    const doc = await service.get(id)
     doc.should.be.ok
   })
   it("indexes a pdf file", async () => {
@@ -56,21 +56,17 @@ describe('\'lucinda\' service', () => {
     const created = await service.create(doc)
     created.should.be.ok
     created.should.equal("added")
-    created.should.have.property("statusCode")
-    assert(created.statusCode == 201, "Statuscode is 201 - created")
-    const result = created.body
-    result.status.should.equal("ok")
-    result._id.should.be.a('string')
-    const queried = await service.find({ query: "lorem ipsum" })
+    const queried = await service.find({ "query": "lorem ipsum" })
     queried.status.should.equal("ok")
-    queried.result.should.be.an('array')
-    queried.result.length.should.be.gt(0)
-    const retrieved = await service.get(result._id)
+    queried.docs.should.be.an('array')
+    queried.docs.length.should.be.gt(0)
+    const id = queried.docs[0].id
+    const retrieved = await service.get(id)
     retrieved.should.be.ok
     const pdf = Buffer.from(retrieved)
     // pdf.should.equal(buffer)
-    const deleted = await service.remove(result._id)
-    deleted.status.should.equal("ok")
+    const deleted = await service.remove(id)
+    deleted.should.equal("ok")
   })
 });
 
