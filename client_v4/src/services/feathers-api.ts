@@ -1,17 +1,19 @@
-import { IUser } from '../models/user-manager';
+
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018-2020 by G. Weirich         *
+ * Copyright (c) 2018-2020 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 import { IDataSource, IDataService } from './dataservice';
-import { autoinject } from 'aurelia-framework';
+import { autoinject, LogManager } from 'aurelia-framework';
 import * as feathers from '@feathersjs/feathers'
 import * as socketio from '@feathersjs/socketio-client'
 import * as io from 'socket.io-client'
 import * as auth from '@feathersjs/authentication-client'
-import env from 'environment'
-
+import * as environment from '../../config/environment.json'
+import { AppState } from 'services/app-state';
+import { IUser } from '../models/user-manager';
+const log=LogManager.getLogger("feathersDS")
 
 /**
  * A DataSource implementation based on FeathersJS
@@ -21,8 +23,9 @@ import env from 'environment'
 export class FeathersDS implements IDataSource {
   private client
 
-  constructor() {
-    const socket = io(env.baseURL);
+
+  constructor(private appState:AppState) {
+    const socket = io(environment.baseURL);
     this.client = feathers()
     this.client.configure(socketio(socket))
     this.client.configure(auth.default({}))
@@ -77,20 +80,22 @@ export class FeathersDS implements IDataSource {
     return this.client.logout();
   }
 
+
   public metadata() {
     //log.info("getting metadata from " + env.baseURL);
-    return fetch(env.baseURL + "metadata")
+    return fetch(environment.baseURL + "metadata")
       .then(response => {
         return response.json();
       })
       .then(json => {
-        env["metadata"] = json;
+        this.appState.metadata = json;
         return json;
       })
       .catch(err => {
-        //log.error("can't fetch metadata: " + err);
+        log.error("can't fetch metadata: " + err);
         // alert(this.i18n.tr("errmsg.connect"));
-        return env.metadata
+        return this.appState.metadata
       });
   }
+  
 }

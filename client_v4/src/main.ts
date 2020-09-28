@@ -2,14 +2,13 @@ import { IDataSource } from './services/dataservice';
 import { FeathersDS } from './services/feathers-api'
 import { AppState } from './services/app-state';
 import { Aurelia, LogManager } from 'aurelia-framework'
-import * as environment from '../config/environment.json';
 import { PLATFORM } from 'aurelia-pal';
 import { TCustomAttribute } from 'aurelia-i18n'
 import Backend from "i18next-xhr-backend";
 import 'bootstrap'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import env from "environment"
+import * as env from "../config/environment.json"
 
 let selectedLanguage = navigator.languages[0] || navigator.language;
 selectedLanguage = selectedLanguage.substr(0, 2);
@@ -31,7 +30,7 @@ export async function configure(aurelia: Aurelia) {
         backend: {
           loadPath: './locales/{{lng}}/{{ns}}.json'
         },
-        debug: environment.debug
+        debug: env.debug
       })
     })
     .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
@@ -41,11 +40,11 @@ export async function configure(aurelia: Aurelia) {
       config.settings.lock=true;
       config.settings.keyboard=true;
     })
-  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
+  aurelia.use.developmentLogging(env.debug ? 'debug' : 'warn');
   // LogManager.addAppender(new ConsoleAppender())
   // LogManager.setLevel(LogManager.logLevel.info)  // Chrome doesn't show "debug" level.
 
-  if (environment.testing) {
+  if (env.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
 

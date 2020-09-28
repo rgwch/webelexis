@@ -5,8 +5,8 @@
  ********************************************/
 
 import { observable } from 'aurelia-framework';
-import './mobiscroll.javascript.scss';
-import * as mobiscroll from './mobiscroll.javascript.min.js'
+import '../../../proprietary/mobiscroll.javascript.scss';
+import * as mobiscroll from '../../../proprietary/mobiscroll.javascript.min.js'
 
 // https://demo.mobiscroll.com/jquery/eventcalendar/listview-rendering
 

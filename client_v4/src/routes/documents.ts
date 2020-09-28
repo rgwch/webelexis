@@ -1,7 +1,7 @@
 import { DocumentManager } from './../models/document-manager';
 import { autoinject } from 'aurelia-framework';
 import * as moment from 'moment'
-import env from "environment"
+import * as env from "../../config/environment.json"
 
 @autoinject
 export class Documents {

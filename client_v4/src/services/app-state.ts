@@ -19,7 +19,12 @@ export class AppState {
   loggedInUser: IUser = null
   ds: IDataSource
   subscriptions = new Array<{ elemtype, func: (string, IElexisType) => {} }>()
-
+  public metadata = {
+    aclmapping: { guest: [] },
+    ip: "?",
+    roles: { guest: "guest", admin: "admin" },
+    sitename: "Webelexis"
+  }
   items = {}
 
   constructor() {

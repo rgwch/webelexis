@@ -14,7 +14,6 @@ import { TextInput } from 'dialogs/text-input';
 import { AppState, SELECTABLE } from 'services/app-state';
 import { IKontakt } from 'models/kontakt-manager';
 import { I18N } from 'aurelia-i18n';
-import env from 'environment'
 import './schedule.scss'
 
 
@@ -77,7 +76,7 @@ export class NewAppointment {
 
   protected newTermin() {
     const user = this.appState.getSelectedItem(SELECTABLE.user) || { label: "wlx" }
-    const ip = env.metadata.ip || window.location.host 
+    const ip = this.appState.metadata.ip || window.location.host 
     this.termin.beginn = this.slider.toString()
     this.termin.dauer = "30"
     this.termin.termintyp = this.terminTyp
