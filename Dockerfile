@@ -4,6 +4,7 @@ EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
 
 WORKDIR /home/node
+ADD client_v4/proprietary proprietary
 RUN apk add --no-cache openjdk8 nano \
   && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git tzdata\
   && npm install -g aurelia-cli pm2 \
@@ -13,6 +14,7 @@ RUN apk add --no-cache openjdk8 nano \
   && npm install \
   && au build --env prod \
   && cd ../client_v4 \
+  && mv /home/node/proprietary . \
   && npm install \
   && npm run build \
   && cd ../selfservice \
