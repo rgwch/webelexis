@@ -1,10 +1,10 @@
 {
   "name": "webelexis",
   "description": "A Web Client for Elexis(tm).",
-  "version": "3.4.3",
+  "version": "3.4.5",
   "repository": {
-    "type": "???",
-    "url": "???"
+    "type": "git",
+    "url": "https://github.com/rgwch/webelexis"
   },
   "license": "MIT",
   "dependencies": {

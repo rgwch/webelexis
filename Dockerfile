@@ -10,13 +10,14 @@ RUN apk add --no-cache openjdk8 nano \
   && npm install -g aurelia-cli pm2 \
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
   && git clone https://github.com/rgwch/webelexis \
-  && cd webelexis/client_v3 \
-  && npm install \
-  && au build --env prod \
-  && cd ../client_v4 \
-  && mv /home/node/proprietary . \
+  && cd webelexis/client_v4 \
+  && cp -r /home/node/proprietary . \
+  && rm -rf /home/node/proprietary \
   && npm install \
   && npm run build \
+  && cd ../client_v3 \
+  && npm install \
+  && au build --env prod \
   && cd ../selfservice \
   && npm install \
   && npm --production prune \
@@ -27,7 +28,9 @@ RUN apk add --no-cache openjdk8 nano \
   && apk del build_deps \
   && npm --production prune \
   && npm remove -g aurelia-cli \
-  && cd ../client \
+  && cd ../client_v3 \
+  && npm --production prune \
+  && cd ../client_v4 \
   && npm --production prune \
   && chown -R 1000:1000 /home/node/webelexis
 

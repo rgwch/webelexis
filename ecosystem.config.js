@@ -13,7 +13,7 @@ module.exports = {
     script: 'src/index.js',
     cwd: 'server',
     instances: 1,
-    autorestart: true,
+    autorestart: false,
     watch: false,
     max_memory_restart: '1G',
     env: {
