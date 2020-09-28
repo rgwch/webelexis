@@ -1,10 +1,11 @@
 {
   "configname": "dockered",
-  "version": "3.0.7",
+  "version": "3.4.5",
   "testing": false,
   "host": "localhost",
   "port": 3030,
-  "public": "../../client/dist/",
+  "client3": "../../client_v3/dist/",
+  "client4": "../../client_v4/dist/",
   "paginate": {
     "default": 50,
     "max": 100
@@ -13,22 +14,21 @@
     "client": "mysql2",
     "connection": {
       "host": "192.168.1.95",
-
       "database": "elexis",
       "user": "elexisuser",
       "password": "elexis"
     }
   },
-  "lucinda":{
-    "url": "http://192.168.0.1:2016/lucinda/2.0/"
+  "lucinda": {
+    "url": "http://localhost:9997/lucinda/3.0/"
   },
   "solr": {
     "host": "http://localhost:8983/solr",
-    "core": "/webelexis",
-    "schema": false,
-    "migrate": "alter",
+    "core": "elexisdata",
     "idfield": "id",
-    "paginate": 20
+    "tika": "http://localhost:9998",
+    "filestore": "solr-docs",
+    "watch": true
   },
   "authentication": {
     "entity": "user",

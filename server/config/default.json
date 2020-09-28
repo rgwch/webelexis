@@ -1,6 +1,6 @@
 {
   "configname": "default",
-  "version": "3.0.8",
+  "version": "3.4.5",
   "testing": false,
   "host": "localhost",
   "port": 3030,
