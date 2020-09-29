@@ -32,13 +32,13 @@ export class Documents {
     })
   }
 
-  fetch(id){
-    this.dm.fetch(id).then(doc=>{
-      const win=window.open(`${env.baseURL}lucindadoc/${id}`, "_blank");
-      setTimeout(()=>{
+  fetch(id) {
+    this.dm.fetch(id).then(doc => {
+      const win = window.open(`${(env.baseURL || window.location.href)}lucindadoc/${id}`, "_blank");
+      setTimeout(() => {
         console.log(win.document.title)
-        win.document.title="Hallo"
-      },100)
+        win.document.title = "Hallo"
+      }, 100)
     })
   }
 }

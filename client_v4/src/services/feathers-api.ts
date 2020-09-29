@@ -13,7 +13,7 @@ import * as auth from '@feathersjs/authentication-client'
 import * as environment from '../../config/environment.json'
 import { AppState } from 'services/app-state';
 import { IUser } from '../models/user-manager';
-const log=LogManager.getLogger("feathersDS")
+const log = LogManager.getLogger("feathersDS")
 
 /**
  * A DataSource implementation based on FeathersJS
@@ -24,8 +24,8 @@ export class FeathersDS implements IDataSource {
   private client
 
 
-  constructor(private appState:AppState) {
-    const socket = io(environment.baseURL);
+  constructor(private appState: AppState) {
+    const socket = io(environment.baseURL || window.location.href);
     this.client = feathers()
     this.client.configure(socketio(socket))
     this.client.configure(auth.default({}))
@@ -61,7 +61,7 @@ export class FeathersDS implements IDataSource {
     } else {
       user = await this.client.reAuthenticate()
     }
-    user.user.label=user.user.id
+    user.user.label = user.user.id
     return user.user
   }
 
@@ -83,7 +83,7 @@ export class FeathersDS implements IDataSource {
 
   public metadata() {
     //log.info("getting metadata from " + env.baseURL);
-    return fetch(environment.baseURL + "metadata")
+    return fetch((environment.baseURL || window.location.href) + "metadata")
       .then(response => {
         return response.json();
       })
@@ -97,5 +97,5 @@ export class FeathersDS implements IDataSource {
         return this.appState.metadata
       });
   }
-  
+
 }
