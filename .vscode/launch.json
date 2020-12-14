@@ -34,7 +34,7 @@
       "request": "launch",
       "name": "Launch Chrome",
       "url": "http://localhost:9000",
-      "webRoot": "${workspaceFolder}/client"
+      "webRoot": "${workspaceFolder}/client_v4"
     },
     {
       "type": "node",

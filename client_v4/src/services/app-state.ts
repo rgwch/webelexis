@@ -17,7 +17,7 @@ export const SELECTABLE = {
 @autoinject
 export class AppState {
   loggedInUser: IUser = null
-  ds: IDataSource
+  // ds: IDataSource
   subscriptions = new Array<{ elemtype, func: (string, IElexisType) => {} }>()
   public metadata = {
     aclmapping: { guest: [] },
@@ -28,7 +28,7 @@ export class AppState {
   items = {}
 
   constructor() {
-    this.ds = Container.instance.get("DataSource")
+    // this.ds = Container.instance.get("DataSource")
 
   }
 
@@ -76,7 +76,8 @@ export class AppState {
     return false
   }
   login = (username?: string, password?: string): Promise<IUser> => {
-    return this.ds.login(username, password).then((user: IUser) => {
+    const ds = Container.instance.get('DataSource')
+    return ds.login(username, password).then((user: IUser) => {
       this.loggedInUser = user
       this.selectItem(SELECTABLE.user, user)
       return user
@@ -91,7 +92,8 @@ export class AppState {
 
 
   logOut() {
-    this.ds.logout()
+    const ds = Container.instance.get('DataSource')
+    ds.logout()
     this.loggedInUser = null
     this.selectItem('user', null)
   }

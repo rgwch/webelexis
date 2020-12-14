@@ -12,8 +12,13 @@
         <li class="nav-item">
           <a route-href="route: agenda" class="nav-link" t="menu:agenda"></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" route-href="route: patient" t="menu:patient"></a>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" id="patientMenu" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">Patient</a>
+          <div class="dropdown-menu" aria-labeledby="patientMenu">
+            <a route-href="route: patient" class="dropdown-item">Personalien</a>
+            <a route-href="route: patkons" class="dropdown-item">Konsultationen</a>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" route-href="route:kons" t="menu:konsultation"></a>

@@ -35,10 +35,10 @@ export async function configure(aurelia: Aurelia) {
     })
     .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
     .plugin(PLATFORM.moduleName("aurelia-animator-css"))
-    .plugin(PLATFORM.moduleName("aurelia-dialog"), config=>{
+    .plugin(PLATFORM.moduleName("aurelia-dialog"), config => {
       config.useDefaults();
-      config.settings.lock=true;
-      config.settings.keyboard=true;
+      config.settings.lock = true;
+      config.settings.keyboard = true;
     })
   aurelia.use.developmentLogging(env.debug ? 'debug' : 'warn');
   // LogManager.addAppender(new ConsoleAppender())
@@ -57,9 +57,13 @@ export async function configure(aurelia: Aurelia) {
   aurelia.container.registerInstance("DataSource", datasource)
   const appState = aurelia.container.get(AppState)
 
-  await aurelia.start()
-  await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
-  await appState.login()
+  try {
+    await aurelia.start()
+    await aurelia.setRoot(PLATFORM.moduleName("routes/launching"))
+    await appState.login()
+  } catch (startupErr) {
+    alert(startupErr);
+  }
   aurelia.setRoot(PLATFORM.moduleName('app')).catch(err => {
     console.log("Activation failed! " + err)
   })
