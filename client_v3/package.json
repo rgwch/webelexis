@@ -32,7 +32,6 @@
     "d3-shape": "^1.3.7",
     "d3-time-format": "^2.2.3",
     "fhirclient": "^0.1.15",
-    "fsevents": "^2.0.1",
     "i18next": "^11.10.2",
     "i18next-xhr-backend": "^1.5.1",
     "jquery": "^3.4.1",
@@ -46,13 +45,13 @@
     "pikaday": "^1.8.0",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
+    "sass": "^1.49.0",
     "socket.io-client": "^2.2.0",
     "string-hash": "^1.1.3"
   },
   "optionalDependencies": {
     "fsevents": "^2.0.1"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@types/jasmine": "^2.8.16",
     "@types/lodash": "^4.14.149",
@@ -91,7 +90,7 @@
     "karma-webpack": "^4.0.2",
     "mini-css-extract-plugin": "^0.4.5",
     "minimatch": "^3.0.4",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "nps": "^5.10.0",
     "nps-utils": "^1.5.0",
     "npx": "^10.2.2",

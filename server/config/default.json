@@ -1,6 +1,6 @@
 {
   "configname": "default",
-  "version": "3.4.5",
+  "version": "3.5.0",
   "testing": false,
   "host": "localhost",
   "port": 3030,
@@ -48,7 +48,7 @@
   "authentication": {
     "entity": "user",
     "service": "user",
-    "secret": "RTOlqkqNt5Q3rERR/M+tdLQyLbU=",
+    "secret": "KrVv/aWQFHPK2EVB45OkE6jlS0U=",
     "authStrategies": [
       "jwt",
       "local"
@@ -57,13 +57,13 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://webelexis.ch",
+      "audience": "https://yourdomain.com",
       "issuer": "feathers",
       "algorithm": "HS256",
-      "expiresIn": "2d"
+      "expiresIn": "1d"
     },
     "local": {
-      "usernameField": "id",
+      "usernameField": "email",
       "passwordField": "password"
     }
   },

@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -25,6 +25,7 @@ const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
 const admin = require('./admin')
+const billing = require('./billing');
 
 const app = express(feathers());
 app.set('views', path.join(__dirname, '../views'))
@@ -49,9 +50,10 @@ app.use(express.raw({ inflate: true, limit: "50mb", type: "application/octet-str
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
 
 // Host the public folder
-app.use('/', express.static(app.get('client4')));
+app.use('/v4', express.static(app.get('client4')));
 app.use('/v3',express.static(app.get("client3")));
 app.use('/static', express.static(path.join(__dirname, '../public')))
+
 
 // Set up Plugins and providers
 app.configure(express.rest())
@@ -62,6 +64,7 @@ app.configure(knex);
 app.configure(middleware);
 app.configure(authentication)
 app.configure(admin)
+app.configure(billing)
 
 // Set up our services (see `services/index.js`)
 app.configure(services);
