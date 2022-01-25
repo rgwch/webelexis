@@ -18,6 +18,7 @@ module.exports = (app) => {
         query: {
           rndatum: fromDate,
           rnstatus: status,
+          $limit: 1,
         },
       })
       const hydrated = await Promise.all(
@@ -55,35 +56,40 @@ module.exports = (app) => {
       res.json({ status: result })
     })
     */
-}
-async function hydrate(bill, db) {
-  delete bill.extinfo
-  if (bill.fallid) {
-    const fallService = app.service('fall')
-    bill.fall = await fallService.get(bill.fallid)
-    delete bill.fall.extinfo
-  }
-  if (bill.mandantid) {
-    const pService = app.service('kontakt')
-    bill.mandant = await pService.get(bill.mandantid)
-    delete bill.mandant.extinfo
-  }
-  if (bill.fall) {
-    if (bill.fall.patientid) {
-      const pService = app.service('kontakt')
-      bill.patient = await pService.get(bill.fall.patientid)
-      delete bill.patient.extinfo
+
+  async function hydrate(bill, db) {
+    delete bill.extinfo
+    if (bill.fallid) {
+      try {
+        const fallService = app.service('fall')
+        bill.fall = await fallService.get(bill.fallid)
+        delete bill.fall.extinfo
+      } catch (err) {
+        console.log(err)
+      }
     }
-    if (bill.fall.garantid) {
+    if (bill.mandantid) {
       const pService = app.service('kontakt')
-      bill.garant = await pService.get(bill.fall.garantid)
-      delete bill.garant.extinfo
+      bill.mandant = await pService.get(bill.mandantid)
+      delete bill.mandant.extinfo
     }
-    if (bill.fall.kostentrid) {
-      const pService = app.service('kontakt')
-      bill.kostentraeger = await pService.get(bill.fall.kostentrid)
-      delete bill.kostentraeger.extinfo
+    if (bill.fall) {
+      if (bill.fall.patientid) {
+        const pService = app.service('kontakt')
+        bill.patient = await pService.get(bill.fall.patientid)
+        delete bill.patient.extinfo
+      }
+      if (bill.fall.garantid) {
+        const pService = app.service('kontakt')
+        bill.garant = await pService.get(bill.fall.garantid)
+        delete bill.garant.extinfo
+      }
+      if (bill.fall.kostentrid) {
+        const pService = app.service('kontakt')
+        bill.kostentraeger = await pService.get(bill.fall.kostentrid)
+        delete bill.kostentraeger.extinfo
+      }
     }
+    return bill
   }
-  return bill
 }
