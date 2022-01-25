@@ -2,7 +2,7 @@ import cfg from '../services/properties'
 import { type Invoice, InvoiceState } from '../models/invoice'
 
 export async function getBills(criteria): Promise<Array<Invoice>>{
-    const res=await fetch(cfg.server+"/load",{
+    const res=await fetch(cfg.server+"/billing/load",{
         method:"post",
         body: JSON.stringify(criteria)
     })

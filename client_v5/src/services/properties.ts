@@ -3,6 +3,6 @@ export default {
     build: "SVELFHIR_BUILDDATE",
     production: "isproduction",
 
-    server: "http://localhost:2999"
+    server: "http://localhost:3030"
 }
 
