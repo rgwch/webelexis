@@ -1,0 +1,34 @@
+{
+  "cal": {
+    "apr": "April",
+    "aug": "August",
+    "dec": "December",
+    "feb": "February",
+    "fr": "Fri",
+    "fri": "Friday",
+    "jan": "January",
+    "jul": "July",
+    "jun": "June",
+    "mai": "May",
+    "mar": "March",
+    "mo": "Mon",
+    "mon": "Monday",
+    "nov": "November",
+    "oct": "October",
+    "sa": "Sat",
+    "sat": "Saturday",
+    "sep": "September",
+    "su": "Sun",
+    "sun": "Sunday",
+    "th": "Thu",
+    "thu": "Thursday",
+    "tu": "Tue",
+    "tue": "Tuesday",
+    "we": "Wed",
+    "wed": "Wednesday"
+  },
+  "demotest": "test component",
+  "formatting": {
+    "date": "YYYY-MM-DD"
+  }
+}

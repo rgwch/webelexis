@@ -1,0 +1,34 @@
+{
+  "cal": {
+    "apr": "Avril",
+    "aug": "Août",
+    "dec": "Decembre",
+    "feb": "Février",
+    "fr": "Ven",
+    "fri": "Vendredi",
+    "jan": "Janvier",
+    "jul": "Juillet",
+    "jun": "Juin",
+    "mai": "Mai",
+    "mar": "Mart",
+    "mo": "Lun",
+    "mon": "Lundi",
+    "nov": "Novembre",
+    "oct": "Octobre",
+    "sa": "Sam",
+    "sat": "Samedi",
+    "sep": "Septembre",
+    "su": "Dim",
+    "sun": "Dimanche",
+    "th": "Jeu",
+    "thu": "Jeudi",
+    "tu": "Mar",
+    "tue": "Mardi",
+    "we": "Mer",
+    "wed": "Mercredi"
+  },
+  "demotest": "truc de démonstration",
+  "formatting": {
+    "date": "DD.MM.YYYY"
+  }
+}
