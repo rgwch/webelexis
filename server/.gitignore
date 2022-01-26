@@ -112,3 +112,4 @@ lib/*.jar
 data/
 
 sample_html.pdf
+dist

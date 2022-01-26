@@ -122,7 +122,7 @@ class ElexisUtils {
 
   /**
    * Convert an Elexis ExtInfo field to json.
-   * @param {} buffer  the binary data as stored in the database
+   * @param {Buffer} buffer  the binary data as stored in the database
    * @returns a JSON object with the contents of the ExtInfo (which might be {}
    * if the input was empty or could not be read.)
    */
@@ -147,7 +147,7 @@ class ElexisUtils {
 
   /**
    * convert a JSON Object to ExtInfo
-   * @param {} obj  some json
+   * @param {any} obj  some json
    * @returns a binary containing the ExtInfo ready to write into the database
    */
   writeExtInfo(obj) {
@@ -273,7 +273,7 @@ class ElexisUtils {
   /**
    * Create a Password hash compatible to Elexis's Password hash
    * @param {string} pwd The plaintext password
-   * @param {string} salt should be 8 bytes, can be null, then we'll autogenerate one
+   * @param  salt should be 8 bytes, can be null, then we'll autogenerate one
    */
   hashPassword(pwd, salt) {
     if (!salt) {
