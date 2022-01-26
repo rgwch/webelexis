@@ -26,7 +26,7 @@ const appHooks = require('./app.hooks');
 const channels = require('./channels');
 const admin = require('./admin')
 const billing = require('./billing');
-
+const userconf = require("./configuration")
 const app = express(feathers());
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'pug')
@@ -35,7 +35,7 @@ app.set('view engine', 'pug')
 // Load app configuration
 app.configure(configuration());
 try {
-  app.set("userconfig", require(process.env.WEBELEXIS_SETTINGS || '../../data/settings'))
+  app.set("userconfig", /* require(process.env.WEBELEXIS_SETTINGS) || */ userconf.config)
 } catch (err) {
   app.set("userconfig", {})
 }
@@ -47,11 +47,11 @@ app.use(compress());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.raw({ inflate: true, limit: "50mb", type: "application/octet-stream" }))
-app.use(favicon(path.join(__dirname, 'favicon.ico')));
+app.use(favicon(path.join(__dirname, "../public", 'favicon.ico')));
 
 // Host the public folder
 app.use('/v4', express.static(app.get('client4')));
-app.use('/v3',express.static(app.get("client3")));
+app.use('/v3', express.static(app.get("client3")));
 app.use('/static', express.static(path.join(__dirname, '../public')))
 
 

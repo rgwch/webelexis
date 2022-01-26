@@ -22,6 +22,7 @@ module.exports = function (app) {
   // const { client, connection } = app.get('postgresql');
   // const {client,connection} = app.get("sqlite");
   const conf = app.get("userconfig")  // = ../data/settings.js
+  console.log(JSON.stringify(conf))
   logger.info("Settingsname: " + conf.settingsname)
   logger.info("config name: " + app.get("configname"))
   const dbconf = {

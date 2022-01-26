@@ -1,11 +1,11 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018-2020 by G. Weirich    *
+ * Copyright (c) 2018-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const logger = require('./logger')
-const roles = require('../config/roles')
+const roles = require('./configuration').roles
 
 /**
  * In testing-mode, Seeder creates data to initialize the NeDB-databases.

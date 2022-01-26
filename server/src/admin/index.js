@@ -1,15 +1,15 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const logger = require('../logger')
 const Mailer = require('../util/mailer')
-const defaults = require('../../../data/settings')
+const defaults = require('../configuration')
 const uuid = require('uuid/v4')
-const roles=require('../../config/roles')
-const {hasRight} = require('../util/acl')
+const roles = defaults.roles
+const { hasRight } = require('../util/acl')
 
 module.exports = function (app) {
 

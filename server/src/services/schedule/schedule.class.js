@@ -1,10 +1,10 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2019-2020 by G. Weirich         *
+ * Copyright (c) 2019-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-const defaults = require('../../../../data/settings').schedule
+const defaults = require('../../configuration').schedule
 const { DateTime } = require('luxon')
 const ElexisUtils = require('../../util/elexis-types')
 const GapFinder = require('./gapfinder')
@@ -126,7 +126,7 @@ class Service {
 
     const cfg = this.options.app.get('userconfig')
     if (cfg.schedule.confirm && data.sendmail) {
-      require('./mailmaker')(cfg,data)
+      require('./mailmaker')(cfg, data)
     }
 
     return inserted;
