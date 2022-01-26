@@ -16,7 +16,8 @@ export async function getBills(criteria): Promise<Array<Invoice>>{
 
 export function getOpenBills() : Promise<Array<Invoice>>{
     const criteria={
-        rnstatus: InvoiceState.OPEN_AND_PRINTED
+        rnstatus: InvoiceState.OPEN_AND_PRINTED,
+        $limit:1
     }
     return getBills(criteria)
 }

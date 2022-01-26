@@ -14,13 +14,17 @@ module.exports = (app) => {
       const status = req.query.status || 4
       const fromDate = req.query.datum
       const billService = app.service('bills')
-      const result = await billService.find({
-        query: {
-          rndatum: fromDate,
-          rnstatus: status,
-          $limit: 1,
-        },
-      })
+      const query={}
+      if(fromDate){
+        query.rndatum=fromDate
+      }
+      if(status){
+        query.status=status
+      }
+      if(limit){
+        query.$limit=limit
+      }
+      const result = await billService.find({query})
       const hydrated = await Promise.all(
         result.data.map((bill) => hydrate(bill, billService)),
       )
@@ -33,7 +37,7 @@ module.exports = (app) => {
       const billService = app.service('bills')
       const result = await billService.find({ query: q })
       const hydrated = await Promise.all(
-        result.map((bill) => hydrate(bill, billService)),
+        result.data.map((bill) => hydrate(bill, billService)),
       )
       res.json(hydrated)
     })
