@@ -4,7 +4,7 @@ For some tasks we need java libraries (see src/util/elexis-types.ts for more inf
 
 These are:
 
-* rgw-toolbox-x.y.z.jar
+* rgw-toolbox-x.y.z.jar (https://elexis.jfrog.io/artifactory/default-maven-virtual/rgwch/rgw-toolbox/4.2.7/rgw-toolbox-4.2.7.jar)
 * jackson-core-x.y.z.jar
 * jackson-annotations-x.y.z.jar
 * jackson-databind-x.y.z.jar
@@ -18,4 +18,5 @@ To simplify things, I made a pom.xml. So you may just type:
 This will fetch more libraries than needed for webelexis, though. You can delete all but the above named.
 
 The shell script fetch.sh automates all that. You just need Maven 3.3 or higher, and there you go.
+
 
