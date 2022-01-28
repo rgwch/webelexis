@@ -27,3 +27,7 @@ export const login = async (username?: string, password?: string) => {
         return undefined
     }
 }
+
+if(true){
+    login("gerry","pxgerry")
+}
