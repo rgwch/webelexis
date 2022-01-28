@@ -35,9 +35,10 @@ export const config = {
   /* connection to the database */
   elexisdb: {
     host: "localhost",
-    database: "elexis",
-    user: "praxis",
-    password: "topsecret",
+    database: "elexiscopy",
+    user: "elexisuser",
+    password: "elexis",
+    port: 3312
   },
   /* We need an SMTP host to send mails for lost password retrieval */
   smtp: {
