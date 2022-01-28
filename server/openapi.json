@@ -1,0 +1,20 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+        "title":"Webelexis Server",
+        "version":"1.0"
+    },
+    "servers": [
+        {"url":"https://api.server.test/v1"}
+    ],
+    "paths": {
+      "/admin":{
+        "get":{
+          "responses": {
+            "200": {}
+          }
+        }
+      }
+
+    }
+}
