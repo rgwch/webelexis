@@ -3,8 +3,8 @@
   import { getService } from "../services/io";
   let bills;
   const billService = getService("bills");
-  billService.find({}).then((result) => {
-    bills = result;
+  billService.find({ query: { $limit: 2 } }).then((result: query_result) => {
+    bills = result.data;
   });
 </script>
 

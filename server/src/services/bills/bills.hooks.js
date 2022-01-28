@@ -1,20 +1,31 @@
+
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "extinfo" })
+const flatiron = require('../../hooks/flatiron')([{
+  id: "fallid",
+  obj: "fall",
+  service: "fall"
+}, {
+  id: "mandantid",
+  obj: "mandant",
+  service: "kontakt"
+}])
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
+    create: [handleExtinfo, flatiron],
+    update: [handleExtinfo, flatiron],
+    patch: [flatiron],
     remove: []
   },
 
   after: {
     all: [],
-    find: [],
-    get: [],
+    find: [handleExtinfo, flatiron],
+    get: [handleExtinfo, flatiron],
     create: [],
     update: [],
     patch: [],

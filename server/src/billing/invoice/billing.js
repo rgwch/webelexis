@@ -1,8 +1,9 @@
-const qr = require('swissqrbill')
-const cfg = require('../config.js')
-const path = require('path')
+import { PDF } from 'swissqrbill/pdf'
+import { mm2pt } from 'swissqrbill/utils'
+import cfg from './config.js'
+import path from 'path'
 
-module.exports.createBill = (bill) => {
+export function createBill(bill) {
   return new Promise((resolve, reject) => {
     const data = createData(bill)
     const pdf = new PDF(
@@ -11,8 +12,7 @@ module.exports.createBill = (bill) => {
       {
         autoGenerate: false,
         size: 'A4',
-      },
-      () => resolve(true),
+      },()=>resolve(true)
     )
     pdf.fontSize(12)
     pdf.fillColor('black')
@@ -33,11 +33,9 @@ module.exports.createBill = (bill) => {
     pdf.fontSize(11)
     pdf.font('Helvetica')
     pdf.text(
-      `${c.city}, ${date.getDate()}.${
-        date.getMonth() + 1
-      }.${date.getFullYear()}`,
-      mm2pt(20),
-      mm2pt(35),
+      `${c.city}, ${date.getDate()}.${(date.getMonth() + 1)}.${date.getFullYear()}`,
+        mm2pt(20),
+        mm2pt(35),
       {
         width: mm2pt(170),
         align: 'right',
@@ -45,7 +43,7 @@ module.exports.createBill = (bill) => {
     )
     pdf.fontSize(12)
     pdf.font('Helvetica')
-    const d = data.debtor
+    const d=data.debtor
     pdf.text(
       `${d.name}\n${d.address}\n${d.zip} ${d.city}`,
       mm2pt(130),
@@ -58,16 +56,17 @@ module.exports.createBill = (bill) => {
     )
     pdf.fontSize(14)
     pdf.font('Helvetica-Bold')
-    pdf.text('Rechnung Nr. ' + bill.rnnummer, mm2pt(20), mm2pt(100), {
+    pdf.text('Rechnung Nr. '+bill.rnnummer, mm2pt(20), mm2pt(100), {
       width: mm2pt(170),
       align: 'left',
     })
 
+    
     pdf.addQRBill()
     pdf.end()
   })
 }
-module.exports.paymentSlip = (bill) => {
+export function paymentSlip(bill) {
   return new Promise((resolve, reject) => {
     try {
       const pdf = new PDF(
@@ -109,12 +108,7 @@ function reference(bill) {
   const pnr = bill.patient.patientnr
   const rnnr = bill.rnnummer
   const prefix = new Date().toISOString().substring(0, 10).replace(/\-/g, '')
-  const refline = (
-    prefix +
-    '0000' +
-    pnr.padStart(5, '0)') +
-    rnnr.padStart(5, '0')
-  ).padEnd(26, '0')
+  const refline = (prefix + '0000' + pnr.padStart(5,'0)') + rnnr.padStart(5,'0')).padEnd(26, '0')
   return luhn(refline)
 }
 
