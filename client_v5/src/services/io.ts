@@ -1,23 +1,29 @@
 import cfg from '../services/properties'
-import { type Invoice, InvoiceState } from '../models/invoice'
+import io from 'socket.io-client';
+import feathers from '@feathersjs/client';
+import auth from '@feathersjs/authentication-client';
 
-export async function getBills(criteria): Promise<Array<Invoice>>{
-    const res=await fetch(cfg.server+"/billing/load",{
-        method:"post",
-        body: JSON.stringify(criteria)
-    })
-    if(res.ok){
-        return await res.json()
-    }else{
-        alert(res.status)
-        return []
-    }
-}
+const socket = io(cfg.server)
+const app = feathers()
+app.configure(feathers.socketio(socket))
+app.configure(auth({ storage: window.localStorage }))
 
-export function getOpenBills() : Promise<Array<Invoice>>{
-    const criteria={
-        rnstatus: InvoiceState.OPEN_AND_PRINTED,
-        $limit:1
+export const getService = (name: string) => app.service(name)
+
+export const login = async (username?: string, password?: string) => {
+    try {
+        let jwt
+        if (username && password) {
+            jwt = await app.authenticate({
+                id: username, password,
+                strategy: "local"
+            })
+        } else {
+            jwt = await app.authenticate()
+        }
+        const verified=await app.passport.verifyJWT(jwt?.accessToken)
+        const user=await app.service("user").get(verified.userId)        
+    }catch(err){
+        return undefined
     }
-    return getBills(criteria)
 }
