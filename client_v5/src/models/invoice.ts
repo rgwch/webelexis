@@ -1,9 +1,12 @@
+import { getService } from "../services/io";
+
 export interface Kontakt {
   id: string
   bezeichnung1: string
   bezeichnung2: string
   bezeichnung3: string
   geburtsdatum: string
+  patientnr: string
   geschlecht: "m" | "f"
   titel: string
   strasse: string
@@ -76,4 +79,8 @@ export enum InvoiceState {
   CANCELLED
 }
 
-
+export async function print(bill: Invoice): Promise<boolean> {
+  const printer = getService("invoice")
+  const ret = await printer.create(bill)
+  return ret
+}

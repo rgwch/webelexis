@@ -1,15 +1,40 @@
 <script lang="ts">
-  import { type Invoice, InvoiceState } from "../models/invoice";
+  import { InvoiceState, print } from "../models/invoice";
+  import type { Invoice } from "../models/invoice";
   import { Money } from "../models/money";
   import { DateTime } from "luxon";
-    import { _ } from "svelte-i18n";
+  import { _ } from "svelte-i18n";
   export let bills: Array<Invoice> = [];
+  let allchecked: boolean = false;
+  const selection = new Array<boolean>(bills.length);
+  function checkall() {
+    const prev = selection[0];
+    for (let i = 0; i < bills.length; i++) {
+      selection[i] = !prev;
+    }
+    allchecked = false;
+  }
+  async function output() {
+    for (let i = 0; i < bills.length; i++) {
+      if (selection[i]) {
+        const result = await print(bills[i]);
+        console.log(result);
+      }
+    }
+  }
 </script>
 
 <template>
   <div class="overflow-auto">
     <table>
       <thead>
+        <th
+          ><input
+            type="checkbox"
+            on:click={checkall}
+            bind:checked={allchecked}
+          /></th
+        >
         <th class="px-5 mx-5">{$_("billing.invoicenumber")}</th>
         <th>{$_("billing.invoicedate")} </th>
         <th>{$_("billing.invoicestate")} </th>
@@ -18,8 +43,11 @@
         <th>{$_("billing.patient")}</th>
       </thead>
       <tbody>
-        {#each bills as bill}
+        {#each bills as bill, idx}
           <tr>
+            <td>
+              <input type="checkbox" bind:checked={selection[idx]} />
+            </td>
             <td class="text-center">{bill.rnnummer}</td>
             <td class="text-center"
               >{DateTime.fromISO(bill.rndatum).toLocaleString()}</td
@@ -41,5 +69,8 @@
         {/each}
       </tbody>
     </table>
+  </div>
+  <div>
+    <button on:click={output}>Ausgeben</button>
   </div>
 </template>

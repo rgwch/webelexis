@@ -109,6 +109,9 @@ export const config = {
     fallgesetz: "KVG",
     fallgrund: "Krankheit",
     fallbezeichnung: "Allg.",
+  },
+  billing: {
+    output: "/path/to/pdf/output"
   }
 }
 export const roles = {
