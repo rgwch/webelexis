@@ -1,4 +1,27 @@
 {
+  "billing": {
+    "CANCELLED": "Storniert",
+    "DEMAND_NOTE": "Zahlungserinnerung",
+    "DEMAND_NOTE_2": "Zweite Mahnung",
+    "DEMAND_NOTE_2_PRINTED": "Zweite Mahnung gedruckt",
+    "DEMAND_NOTE_3": "Dritte Mahnung",
+    "DEMAND_NOTE_3_PRINTED": "Dritte Mahnung gedruckt",
+    "DEMAND_NOTE_PRINTED": "Zahlungserinnerung gedruckt",
+    "EXCESSIVE_PAYMENT": "Zuviel bezahlt",
+    "IN_EXECUTION": "In Betreibung",
+    "OPEN": "Offen",
+    "OPEN_AND_PRINTED": "Offen und gedruckt",
+    "PAID": "Bezahlt",
+    "PARTIAL_LOSS": "Teilverlust",
+    "PARTIAL_PAYMENT": "Teilweise bezahlt",
+    "TOTAL_LOSS": "Totalverlust",
+    "amount": "Betrag",
+    "invoicedate": "Rechnungsdatum",
+    "invoicenumber": "Rechungsnummer",
+    "invoicestate": "Rechnungsstatus",
+    "patient": "Patient",
+    "statedate": "Statusdatum"
+  },
   "cal": {
     "apr": "April",
     "aug": "August",
@@ -30,28 +53,5 @@
   "demotest": "Testkomponente",
   "formatting": {
     "date": "DD.MM.YYYY"
-  },
-  "billing": {
-    "invoicenumber": "Rechungsnummer",
-    "invoicedate": "Rechnungsdatum",
-    "invoicestate": "Rechnungsstatus",
-    "statedate": "Statusdatum",
-    "amount": "Betrag",
-    "patient": "Patient",
-    "OPEN": "Offen",
-    "OPEN_AND_PRINTED": "Offen und gedruckt",
-    "DEMAND_NOTE": "Zahlungserinnerung",
-    "DEMAND_NOTE_PRINTED": "Zahlungserinnerung gedruckt",
-    "DEMAND_NOTE_2": "Zweite Mahnung",
-    "DEMAND_NOTE_2_PRINTED": "Zweite Mahnung gedruckt",
-    "DEMAND_NOTE_3": "Dritte Mahnung",
-    "DEMAND_NOTE_3_PRINTED": "Dritte Mahnung gedruckt",
-    "IN_EXECUTION": "In Betreibung",
-    "PARTIAL_LOSS": "Teilverlust",
-    "TOTAL_LOSS": "Totalverlust",
-    "PARTIAL_PAYMENT": "Teilweise bezahlt",
-    "PAID": "Bezahlt",
-    "EXCESSIVE_PAYMENT": "Zuviel bezahlt",
-    "CANCELLED": "Storniert"
   }
 }

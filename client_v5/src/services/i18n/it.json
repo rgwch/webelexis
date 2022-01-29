@@ -1,4 +1,27 @@
 {
+  "billing": {
+    "CANCELLED": "annulato",
+    "DEMAND_NOTE": "avvertimento",
+    "DEMAND_NOTE_2": "secondo promemoria",
+    "DEMAND_NOTE_2_PRINTED": "Zweite Mahnung gedruckt",
+    "DEMAND_NOTE_3": "Terzo promemoria",
+    "DEMAND_NOTE_3_PRINTED": "Terzo promemoria stampato",
+    "DEMAND_NOTE_PRINTED": "avvertimento stampato",
+    "EXCESSIVE_PAYMENT": "pagato troppo",
+    "IN_EXECUTION": "in operazione",
+    "OPEN": "non pagata",
+    "OPEN_AND_PRINTED": "stampato",
+    "PAID": "pagata",
+    "PARTIAL_LOSS": "perdita parziale",
+    "PARTIAL_PAYMENT": "parzialmente pagato",
+    "TOTAL_LOSS": "perdita totale",
+    "amount": "quantità",
+    "invoicedate": "data della fattura",
+    "invoicenumber": "numero di fattura",
+    "invoicestate": "stato della fattura",
+    "patient": "paziente",
+    "statedate": "data dello stato"
+  },
   "cal": {
     "apr": "Aprile",
     "aug": "Agosto",

@@ -1,4 +1,27 @@
 {
+  "billing": {
+    "CANCELLED": "annulé",
+    "DEMAND_NOTE": "premier rappel",
+    "DEMAND_NOTE_2": "deuxième rappel",
+    "DEMAND_NOTE_2_PRINTED": "deuxième rappel imprimé",
+    "DEMAND_NOTE_3": "troisième rappel",
+    "DEMAND_NOTE_3_PRINTED": "troisième rappel imprimé",
+    "DEMAND_NOTE_PRINTED": "rappel imprimé",
+    "EXCESSIVE_PAYMENT": "payé trop",
+    "IN_EXECUTION": "en opération",
+    "OPEN": "ouvert",
+    "OPEN_AND_PRINTED": "ouvert et imprimé",
+    "PAID": "payé",
+    "PARTIAL_LOSS": "perte partiale",
+    "PARTIAL_PAYMENT": "payé partiallement",
+    "TOTAL_LOSS": "perte totale",
+    "amount": "montant",
+    "invoicedate": "date de facture",
+    "invoicenumber": "numéro de facture",
+    "invoicestate": "état de facture",
+    "patient": "atient",
+    "statedate": "date d'état"
+  },
   "cal": {
     "apr": "Avril",
     "aug": "Août",
