@@ -111,7 +111,15 @@ export const config = {
     fallbezeichnung: "Allg.",
   },
   billing: {
-    output: "/path/to/pdf/output"
+    output: "/home/gerry/elexis/bills",
+    creditor: {
+      name: "Praxis Webelexis",
+      address: "Hintergasse 17",
+      zip: 9999,
+      city: "Webelexikon",
+      account: "CH007007007007", // You'll need a real QR-Account IBAN to create bills.
+      country: "CH"
+    }
   }
 }
 export const roles = {
