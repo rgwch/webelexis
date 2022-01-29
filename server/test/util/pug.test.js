@@ -1,5 +1,4 @@
 const compiler=require('../../src/util/compile-pug')
-require('chai').should()
 const path=require('path')
 
 const meta={

@@ -1,14 +1,13 @@
-const chai=require('chai')
-const promised=require('chai-as-promised')
-chai.use(promised)
-const expect=chai.expect()
-chai.should()
 
+describe("Setup check",()=>{
+  it ("should reject",()=>{
+    expect(check()).rejects.toMatch("blah")
+  })  
+})
   function check(){
     return new Promise((resolve,reject)=>{
       reject("blah")
     })
   }
 
-  check().should.be.rejectedWith("blah")
-
+  

@@ -25,7 +25,6 @@ const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
 const admin = require('./admin')
-const billing = require('./billing');
 const userconf = require("./configuration")
 const app = express(feathers());
 app.set('views', path.join(__dirname, '../views'))
@@ -50,8 +49,9 @@ app.use(express.raw({ inflate: true, limit: "50mb", type: "application/octet-str
 app.use(favicon(path.join(__dirname, "../public", 'favicon.ico')));
 
 // Host the public folder
-app.use('/v4', express.static(app.get('client4')));
-app.use('/v3', express.static(app.get("client3")));
+app.use('/v3', express.static(path.join(__dirname, "../../client_v3")));
+app.use('/v4', express.static(path.join(__dirname, "../../client_v4")));
+app.use('/v5', express.static(path.join(__dirname, "../../client_v5")));
 app.use('/static', express.static(path.join(__dirname, '../public')))
 
 
@@ -64,7 +64,6 @@ app.configure(knex);
 app.configure(middleware);
 app.configure(authentication)
 app.configure(admin)
-app.configure(billing)
 
 // Set up our services (see `services/index.js`)
 app.configure(services);

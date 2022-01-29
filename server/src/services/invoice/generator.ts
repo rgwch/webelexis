@@ -3,18 +3,24 @@ const util = require('swissqrbill/utils')
 import { config as cfg } from '../../configuration'
 import path from 'path'
 import { Currency } from 'swissqrbill/lib/node/esm/shared/types'
+import {print} from 'unix-print'
 const mm2pt = util.mm2pt
 
 export function createBill(bill) {
   return new Promise((resolve, reject) => {
     const data = createData(bill)
+    const filename=path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf')
     const pdf = new qrbill.PDF(
-      data,
-      path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf'),
+      data,filename,
       {
         autoGenerate: false,
         size: 'A4',
-      }, () => resolve(true)
+      }, () => {
+        print(filename).then(fin=>{
+          resolve(true)
+  
+        })
+      }
     )
     pdf.fontSize(12)
     pdf.fillColor('black')

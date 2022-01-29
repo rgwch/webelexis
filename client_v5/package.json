@@ -1,7 +1,7 @@
 {
-  "name": "svendistoje",
-  "description": "A base setup for Svelte with i18n with WindiCSS, Storybook and Jest in Typescript",
-  "version": "1.1.1",
+  "name": "Webelexis",
+  "description": "A nodejs Elexis client",
+  "version": "3.5.1",
   "scripts": {
     "build": "rollup -c .config/rollup.config.js",
     "clean": "rimraf public/build",

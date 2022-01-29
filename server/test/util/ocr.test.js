@@ -1,4 +1,3 @@
-require('chai').should()
 const path = require('path')
 const ocr = require('../../src/util/ocr')
 const fs=require('fs').promises
