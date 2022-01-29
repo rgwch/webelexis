@@ -20,18 +20,22 @@ export class Money {
     if (parts.length == 1) {
       parts = s.split(',')
     }
-    const base: number = parseInt(parts[0])
-    const frac: number = parts.length > 1 ? parseInt(parts[1]) : 0
-    return base * 100 + frac
+    if (parts.length == 1) {
+      return parseInt(parts[0])
+    } else {
+      const base: number = parseInt(parts[0])
+      const frac: number = parseInt(parts[1])
+      return base * 100 + frac
+    }
   }
   getValue(): number {
     return this.cents / 100
   }
-  getFormatted(n:number=0): string {
+  getFormatted(n: number = 0): string {
     const s = this.cents.toString()
     const f = s.substring(0, s.length - 2)
     const c = s.substring(s.length - 2)
-    return (f + '.' + c).padStart(n,"0")
+    return (f + '.' + c).padStart(n, "0")
   }
   round5(): Money {
     const rounded = Math.round(this.getValue() * 20) / 20
