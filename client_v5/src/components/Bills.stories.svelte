@@ -1,7 +1,7 @@
 <script>
   import { Meta, Template, Story } from '@storybook/addon-svelte-csf'
   import Bills from './Bills.svelte'
-  
+
   const dummies = [
     {
       rnnummer: '1',
@@ -12,10 +12,12 @@
       rndatumbis: '20211231',
       statusdatum: '20220110',
       betrag: '23420',
-      patient: {
-          bezeichnung1:"Testperson",
-          bezeichnung2:"Armeswesen"
-      }
+      fall: {
+        patient: {
+          bezeichnung1: 'Testperson',
+          bezeichnung2: 'Armeswesen',
+        },
+      },
     },
     {
       rnnummer: '2',
@@ -26,10 +28,12 @@
       rndatumbis: '20211130',
       statusdatum: '20220115',
       betrag: '4780',
-      patient:{
-          bezeichnung1: "Testarossa",
-          bezeichnung2: "Ferrari"
-      }
+      fall: {
+        patient: {
+          bezeichnung1: 'Testarossa',
+          bezeichnung2: 'Ferrari',
+        },
+      },
     },
   ]
 </script>
@@ -40,4 +44,4 @@
   <Bills {...args} />
 </Template>
 
-<Story name="Rechnungen" args={ {bills: dummies} } />
+<Story name="Rechnungen" args={{ bills: dummies }} />

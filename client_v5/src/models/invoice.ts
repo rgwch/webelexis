@@ -76,6 +76,4 @@ export enum InvoiceState {
   CANCELLED
 }
 
-export async function hydrate(input: Invoice): Promise<Invoice> {
 
-}
