@@ -111,7 +111,7 @@ export const config = {
     fallbezeichnung: "Allg.",
   },
   billing: {
-    output: "/home/gerry/elexis/bills",
+    output: "/path/to/pdf/bills",
     creditor: {
       name: "Praxis Webelexis",
       address: "Hintergasse 17",
