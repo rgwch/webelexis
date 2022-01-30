@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { createBill } = require('./generator')
+import { createBill } from './generator'
 
 const create = async ctx => {
   const result = await createBill(ctx.data)
