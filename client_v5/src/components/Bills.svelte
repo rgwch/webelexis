@@ -17,10 +17,10 @@
     }
     allchecked = false;
   }
-  async function output() {
+  async function output(withPrint: boolean) {
     for (let i = 0; i < bills.length; i++) {
       if (selection[i]) {
-        const result = await print(bills[i]);
+        const result = await print(bills[i], withPrint);
         console.log(result);
       }
     }
@@ -74,6 +74,11 @@
     </table>
   </div>
   <div>
-    <button on:click={output}>Ausgeben</button>
+    <button on:click={() => output(false)}>Ausgeben</button>
+    <button
+      on:click={() => {
+        output(true);
+      }}>Drucken</button
+    >
   </div>
 </template>

@@ -59,6 +59,7 @@ export interface Invoice {
   extinfo?: Uint8Array
   fall?: Fall
   mandant?: Kontakt
+  output?: boolean
 }
 
 export enum InvoiceState {
@@ -79,8 +80,9 @@ export enum InvoiceState {
   CANCELLED
 }
 
-export async function print(bill: Invoice): Promise<boolean> {
+export async function print(bill: Invoice, toPrinter: boolean): Promise<boolean> {
   const printer = getService("invoice")
+  bill.output = toPrinter
   const ret = await printer.create(bill)
   return ret
 }

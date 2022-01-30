@@ -7,7 +7,7 @@ import { print } from 'unix-print'
 import { DateTime } from 'luxon'
 const mm2pt = util.mm2pt
 
-export function createBill(bill, doPrint: boolean = false) {
+export function createBill(bill) {
   return new Promise((resolve, reject) => {
     const data = createData(bill)
     const filename = path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf')
@@ -17,7 +17,7 @@ export function createBill(bill, doPrint: boolean = false) {
         autoGenerate: false,
         size: 'A4',
       }, () => {
-        if (doPrint) {
+        if (bill.output) {
           print(filename, cfg.billing.printer).then(fin => {
             resolve(true)
 
@@ -86,18 +86,26 @@ export function createBill(bill, doPrint: boolean = false) {
         align: 'left',
       },
     )
+
+    pdf.rect(mm2pt(20), mm2pt(113), mm2pt(90), mm2pt(12))
+      .lineWidth(1)
+      .fillOpacity(0.5)
+      .fillAndStroke("gray", "#555")
+
     pdf.fontSize(14)
-    pdf.font('Helvetica-Bold')
-    pdf.text('Honorar-Rechnung Nr. ' + bill.rnnummer, mm2pt(20), mm2pt(100), {
-      width: mm2pt(170),
-      align: 'left',
-    })
+      .font('Helvetica-Bold')
+      .fillColor("black")
+      .opacity(1)
+      .text('Honorar-Rechnung Nr. ' + bill.rnnummer, mm2pt(20), mm2pt(100), {
+        width: mm2pt(170),
+        align: 'left',
+      })
 
     pdf.fontSize(11)
     pdf.font("Courier")
     pdf.text(`Behandlungen von: ${DateTime.fromISO(bill.rndatumvon).toLocaleString()}\n`
       + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toLocaleString()}`,
-      mm2pt(20), mm2pt(115), {
+      mm2pt(22), mm2pt(115), {
       width: mm2pt(120),
       align: "left"
     })
@@ -108,6 +116,7 @@ export function createBill(bill, doPrint: boolean = false) {
       width: mm2pt(180),
       align: "left"
     })
+
 
     pdf.addQRBill()
     pdf.end()
