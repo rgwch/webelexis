@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -8,7 +8,7 @@
  * Utility to send mails. We need this primarly to help the user retrieve lost passwords
  */
 const nodemailer = require('nodemailer')
-const logger = require('../logger')
+import { logger } from '../logger'
 
 class Mailer {
   /**
@@ -17,7 +17,6 @@ class Mailer {
    * @param {*} sender
    */
   constructor(config, sender) {
-
     this.sender = sender
 
     this.smtp = {
@@ -25,9 +24,9 @@ class Mailer {
       port: config.port,
       secure: true,
       auth: {
-        user: (config.user || process.env.SMTPUSER),
-        pass: (config.pwd || process.env.SMTPPASSWORD)
-      }
+        user: config.user || process.env.SMTPUSER,
+        pass: config.pwd || process.env.SMTPPASSWORD,
+      },
     }
     this.transporter = nodemailer.createTransport(this.smtp)
   }
@@ -36,13 +35,13 @@ class Mailer {
       from: this.sender,
       to: address,
       subject: subject,
-      text: contents
+      text: contents,
     }
     if (ical) {
       message.icalEvent = {
-        filename: "arzttermin.ics",
-        method: "publish",
-        content: ical
+        filename: 'arzttermin.ics',
+        method: 'publish',
+        content: ical,
       }
     }
     this.transporter.sendMail(message, (err, info) => {

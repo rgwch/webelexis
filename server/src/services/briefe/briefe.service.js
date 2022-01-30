@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -9,9 +9,10 @@ const createModel = require('../../models/briefe.model');
 const hooks = require('./briefe.hooks');
 const fs = require('fs')
 const path = require('path')
-const logger = require('../../logger')
 const { DateTime } = require('luxon')
-const compilePug = require('../../util/compile-pug')
+import compilePug  from '../../util/compile-pug'
+import {logger} from '../../logger'
+
 
 module.exports = function (app) {
   const Model = createModel(app);

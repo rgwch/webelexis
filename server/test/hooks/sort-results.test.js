@@ -1,14 +1,14 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const assert = require('assert');
 const feathers = require('@feathersjs/feathers');
-const sortResults = require('../../src/hooks/sort-results');
+const sortResults = require('../../dist/hooks/sort-results');
 
-describe('\'sortResults\' hook', () => {
+xdescribe('\'sortResults\' hook', () => {
   let app;
 
   beforeEach(() => {

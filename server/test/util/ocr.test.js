@@ -1,5 +1,5 @@
 const path = require('path')
-const ocr = require('../../src/util/ocr')
+const ocr = require('../../dist/util/ocr')
 const fs=require('fs').promises
 
 xdescribe("ocr utility", () => {

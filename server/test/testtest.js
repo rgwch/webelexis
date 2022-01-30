@@ -1,5 +1,5 @@
 
-describe("Setup check",()=>{
+xdescribe("Setup check",()=>{
   it ("should reject",()=>{
     expect(check()).rejects.toMatch("blah")
   })  

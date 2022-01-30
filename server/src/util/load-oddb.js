@@ -3,7 +3,7 @@ const unzip = require('extract-zip')
 const xmlstream = require('xml-stream')
 const fs = require('fs')
 const path = require('path')
-const logger = require('../logger')
+import {logger} from '../logger'
 
 
 class Oddb {

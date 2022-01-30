@@ -1,6 +1,5 @@
 
-const ElexisUtils=require('../../src/util/elexis-types')
-const should = require('chai').should();
+const ElexisUtils=require('../../dist/util/elexis-types')
 const elexis=new ElexisUtils()
 
 xdescribe("Elexis-specific utility functions",()=>{

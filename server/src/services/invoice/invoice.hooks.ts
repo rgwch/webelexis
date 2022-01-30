@@ -6,7 +6,7 @@ const create = async ctx => {
   ctx.result = true
   return ctx
 }
-module.exports = {
+export default {
   before: {
     all: [authenticate('jwt')],
     find: [],

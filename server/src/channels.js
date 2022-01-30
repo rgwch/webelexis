@@ -1,22 +1,22 @@
-const logger=require('./logger')
-module.exports = function(app) {
-  if(typeof app.channel !== 'function') {
+const { logger } = require('./logger')
+module.exports = function (app) {
+  if (typeof app.channel !== 'function') {
     // If no real-time functionality has been configured just return
-    logger.debug("no channel")
-    return;
+    logger.debug('no channel')
+    return
   }
 
-  app.on('connection', connection => {
+  app.on('connection', (connection) => {
     // On a new real-time connection, add it to the anonymous channel
-    app.channel('anonymous').join(connection);
-    logger.debug("connection "+JSON.stringify(connection))
-  });
+    app.channel('anonymous').join(connection)
+    logger.debug('connection ' + JSON.stringify(connection))
+  })
 
   app.on('login', (authResult, { connection }) => {
-    logger.debug("user logged in, opened channel")
+    logger.debug('user logged in, opened channel')
     // connection can be undefined if there is no
     // real-time connection, e.g. when logging in via REST
-    if(connection) {
+    if (connection) {
       // Obtain the logged in user from the connection
       // const user = connection.user;
 
@@ -24,7 +24,7 @@ module.exports = function(app) {
       //app.channel('anonymous').leave(connection);
 
       // Add it to the authenticated user channel
-      app.channel('authenticated').join(connection);
+      app.channel('authenticated').join(connection)
 
       // Channels can be named anything and joined on any condition
 
@@ -38,20 +38,23 @@ module.exports = function(app) {
       // app.channel(`emails/${user.email}`).join(channel);
       // app.channel(`userIds/$(user.id}`).join(channel);
     }
-  });
+  })
 
-  app.publish((data, hook) => { // eslint-disable-line no-unused-vars
+  app.publish((data, hook) => {
+    // eslint-disable-line no-unused-vars
     // Here you can add event publishers to channels set up in `channels.js`
     // To publish only for a specific event use `app.publish(eventname, () => {})`
 
-    logger.debug('Publishing all events to all authenticated users. See `channels.js` and https://docs.feathersjs.com/api/channels.html for more information.'); // eslint-disable-line
+    logger.debug(
+      'Publishing all events to all authenticated users. See `channels.js` and https://docs.feathersjs.com/api/channels.html for more information.',
+    ) // eslint-disable-line
 
     // console.log(JSON.stringify(data))
     // console.log(JSON.stringify(hook))
     // e.g. to publish all service events to all authenticated users use
     //return app.channel('authenticated');
-    return app.channel('anonymous')  // TEST ONLY
-  });
+    return app.channel('anonymous') // TEST ONLY
+  })
 
   // Here you can also add service specific event publishers
   // e..g the publish the `user` service `created` event to the `admins` channel
@@ -64,4 +67,4 @@ module.exports = function(app) {
   //     app.channel(`emails/${data.recipientEmail}`)
   //   ];
   // });
-};
+}

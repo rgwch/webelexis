@@ -26,7 +26,7 @@
 
 const acls = new Map()
 import { roles as sysroles, mappings as mapper } from '../configuration'
-import logger from '../logger'
+import {logger} from '../logger'
 
 
 class ACE {

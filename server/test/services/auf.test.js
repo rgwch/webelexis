@@ -3,9 +3,9 @@
  * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-const app = require('../../src/app');
+const app = require('../../dist/app');
 
-describe('\'auf\' service', () => {
+xdescribe('\'auf\' service', () => {
   it('registered the service', () => {
     const service = app.service('auf');
     expect(service).toBeOk();

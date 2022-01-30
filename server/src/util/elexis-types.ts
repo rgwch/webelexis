@@ -1,6 +1,6 @@
 /***************************************
  * This file is part of Webelexis(tm)
- * Copyright (c) 2016-2020 by G. Weirich.
+ * Copyright (c) 2016-2022 by G. Weirich.
  * All rights reserved.
  ***************************************/
 
@@ -17,10 +17,11 @@
  *
  */
 
-const java = require('java')
-const moment = require('moment')
-const logger = require('../logger')
-const crypto = require('crypto')
+import java from 'java'
+import moment from 'moment'
+import {logger} from '../logger'
+import crypto from 'crypto'
+
 const JACKSON_VERSION = "2.11.1"
 
 

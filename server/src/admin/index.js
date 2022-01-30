@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const logger = require('../logger')
+const {logger} = require('../logger')
 const Mailer = require('../util/mailer')
 const defaults = require('../configuration')
 const uuid = require('uuid/v4')

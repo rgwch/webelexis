@@ -1,6 +1,6 @@
 // Initializes the `invoice` service on path `/invoice`
-const createService = require('./invoice.class.js');
-const hooks = require('./invoice.hooks');
+import createService from './invoice.class'
+import hooks from './invoice.hooks'
 
 module.exports = function (app) {
   

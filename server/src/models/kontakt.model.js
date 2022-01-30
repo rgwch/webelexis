@@ -1,9 +1,10 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-const logger = require('../logger')
+import {logger} from '../logger'
+
 
 function createTable(db, tableName) {
   return db.schema.createTable(tableName, table => {

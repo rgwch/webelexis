@@ -1,7 +1,6 @@
 const assert = require('assert');
-const app = require('../../src/app');
-const Gapfinder=require('../../src/services/schedule/gapfinder')
-require('chai').should()
+const app = require('../../dist/app');
+const Gapfinder=require('../../dist/services/schedule/gapfinder')
 
 xdescribe('schedule', () => {
   describe('schedule gapfinder', ()=>{

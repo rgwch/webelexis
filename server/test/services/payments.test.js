@@ -1,8 +1,8 @@
 const app = require('../../dist/app');
 
-xdescribe('\'invoice\' service', () => {
+describe('\'payments\' service', () => {
   it('registered the service', () => {
-    const service = app.service('invoice');
+    const service = app.service('payments');
     expect(service).toBeTruthy();
   });
 });

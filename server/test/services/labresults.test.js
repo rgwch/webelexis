@@ -1,7 +1,5 @@
 const assert = require('assert');
-const app = require('../../src/app');
-const chai = require('chai')
-chai.should()
+const app = require('../../dist/app');
 
 xdescribe('\'labresults\' service', () => {
   const labService = app.service('labresults');

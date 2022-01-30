@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import logger from '../../logger'
+import {logger} from '../../logger'
 import { config } from '../../configuration'
 const defaults = config.agenda
 

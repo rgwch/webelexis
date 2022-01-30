@@ -1,7 +1,6 @@
 const fs=require('fs')
 const path=require('path')
-const doctool=require('../../src/util/topdf')
-const should = require('chai').should();
+const doctool=require('../../dist/util/topdf')
 
 xdescribe("toPDF creates PDF documents",()=>{
   it("merges a template and a document",()=>{

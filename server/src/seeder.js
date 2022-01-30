@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const logger = require('./logger')
+const {logger} = require('./logger')
 const roles = require('./configuration').roles
 
 /**

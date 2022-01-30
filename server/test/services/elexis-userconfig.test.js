@@ -1,12 +1,12 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const assert = require('assert');
-const app = require('../../src/app');
-const chai=require('chai').use(require('chai-as-promised'))
+const expectCt = require('helmet/dist/middlewares/expect-ct');
+const app = require('../../dist/app');
 
 xdescribe('\'elexis-userconfig\' service', () => {
   let service
@@ -18,12 +18,12 @@ xdescribe('\'elexis-userconfig\' service', () => {
   });
   it('loads a configuration variable',()=>{
     return service.get("test:agenda/farben/typ/besuch").then(color=>{
-      color.should.not.be.undefined
+      expectCt(color).toBeDefined()
     })
   })
   it('returns the empty string on an inexistent configuration variable',()=>{
     return service.get("test:this/doesnt/exist").then(bad=>{
-      bad.should.equal("")
+      expectCt(bad).toBe("")
     })
   })
   it('throws an error on inexistent user',()=>{
@@ -31,7 +31,7 @@ xdescribe('\'elexis-userconfig\' service', () => {
   })
   it('finds a bunch of settings',()=>{
     return service.find({query: {user:"test",param:{$like:"agenda/farben/typ%"}}}).then(colors=>{
-      (colors!=undefined).should.be.ok
+      expectCt(colors).toBeDefined()
     })
   })
 });

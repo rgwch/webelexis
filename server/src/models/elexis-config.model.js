@@ -3,7 +3,7 @@
  * Copyright (c) 2016-2018 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-const logger = require('../logger')
+import {logger} from '../logger'
 
 
 module.exports = function (app) {

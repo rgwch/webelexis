@@ -1,16 +1,15 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-require('chai').should()
 const assert = require('assert');
-const app = require('../../src/app');
+const app = require('../../dist/app');
 const fs = require('fs')
 const path = require('path')
 const Samdas = require('@rgwch/samdastools')
-const elexistools = new (require('../../src/util/elexis-types'))()
+const elexistools = new (require('../../dist/util/elexis-types'))()
 
 
 xdescribe('\'konsultation\' service', () => {

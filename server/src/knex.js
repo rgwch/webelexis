@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -11,7 +11,7 @@
  */
 
 const knex = require("knex")
-const logger = require("./logger")
+const {logger} = require("./logger")
 const fs = require("fs")
 const path = require("path")
 const normalize = require('./normalize_db')

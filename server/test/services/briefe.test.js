@@ -1,7 +1,6 @@
 const assert = require('assert');
-const app = require('../../src/app');
+const app = require('../../dist/app');
 const path=require('path')
-require('chai').should()
 
 xdescribe('\'briefe\' service', () => {
   let service = app.service('briefe');

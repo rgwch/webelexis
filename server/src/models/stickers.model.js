@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const logger = require('../logger')
+import {logger} from '../logger'
 
 module.exports = function (app) {
   const db = app.get('knexClient');

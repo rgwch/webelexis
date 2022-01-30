@@ -1,13 +1,13 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 const assert = require('assert');
 const feathers = require('@feathersjs/feathers')
-const createService = require('../../src/services/billable/billable.class')
+const createService = require('../../dist/services/billable/billable.class')
 const knex = require('feathers-knex');
-const realApp=require('../../src/app')
+const realApp=require('../../dist/app')
 const paginate = {
   "default": 50,
   "max": 100

@@ -11,4 +11,5 @@ npx node-gyp rebuild
 or:
 delete node_modules and npm i
 
-((DO NOT use node 12. should work with 11)) works also in 12 now
+-----
+if can't install java: Make sure JAVA_HOME is set 

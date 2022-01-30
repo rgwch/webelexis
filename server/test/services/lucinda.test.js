@@ -1,13 +1,12 @@
 const assert = require('assert');
-require('chai').should()
-const app = require('../../src/app');
+const app = require('../../dist/app');
 const fs = require('fs')
 const path = require('path')
 
 /**
  * remove the x from xdescribe, if you have a working lucinda server
  */
-describe('\'lucinda\' service', () => {
+xdescribe('\'lucinda\' service', () => {
   let service
 
   before(() => {

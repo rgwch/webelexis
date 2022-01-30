@@ -1,9 +1,5 @@
 const assert = require('assert');
-const app = require('../../src/app');
-const chai=require('chai')
-const promised=require('chai-as-promised')
-chai.use(promised)
-chai.should()
+const app = require('../../dist/app');
 
 const macroset={
   name: "_unittest",
