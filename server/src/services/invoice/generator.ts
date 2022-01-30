@@ -21,7 +21,12 @@ export function createBill(bill) {
         if (bill.toMail) {
           const smtp = cfg.smtp
           const mailer = new Mailer(smtp, "praxis@weirich.ch")
-          mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename })
+          mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename }).then(result => {
+            resolve(true)
+          }).catch(err => {
+            console.log("error with mailer " + err)
+            reject(err)
+          })
         } else if (bill.output) {
           print(filename, cfg.billing.printer).then(fin => {
             resolve(true)
