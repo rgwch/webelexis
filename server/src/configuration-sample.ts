@@ -112,6 +112,7 @@ export const config = {
   },
   billing: {
     output: "/path/to/pdf/bills",
+    printer: "Brother_HL_L2370DN_series",
     creditor: {
       name: "Praxis Webelexis",
       address: "Hintergasse 17",
@@ -119,7 +120,8 @@ export const config = {
       city: "Webelexikon",
       account: "CH007007007007", // You'll need a real QR-Account IBAN to create bills.
       country: "CH"
-    }
+    },
+    invoiceText: "Bitte reichen Sie den beigefügten Rückerstattungsbeleg Ihrer Krankenkasse ein und überweisen Sie den Rechnungsbetrag mit untenstehendem Einzahlungsschein."
   }
 }
 export const roles = {

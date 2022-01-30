@@ -3,41 +3,65 @@ const util = require('swissqrbill/utils')
 import { config as cfg } from '../../configuration'
 import path from 'path'
 import { Currency } from 'swissqrbill/lib/node/esm/shared/types'
-import {print} from 'unix-print'
+import { print } from 'unix-print'
+import { DateTime } from 'luxon'
 const mm2pt = util.mm2pt
 
-export function createBill(bill) {
+export function createBill(bill, doPrint: boolean = false) {
   return new Promise((resolve, reject) => {
     const data = createData(bill)
-    const filename=path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf')
+    const filename = path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf')
     const pdf = new qrbill.PDF(
-      data,filename,
+      data, filename,
       {
         autoGenerate: false,
         size: 'A4',
       }, () => {
-        print(filename).then(fin=>{
+        if (doPrint) {
+          print(filename, cfg.billing.printer).then(fin => {
+            resolve(true)
+
+          }).catch(err => {
+            console.log("Error with lp " + err)
+            reject(err)
+          })
+        } else {
           resolve(true)
-  
-        })
+        }
       }
     )
     pdf.fontSize(12)
     pdf.fillColor('black')
     pdf.font('Helvetica')
-    const c = data.creditor
-    pdf.text(
-      `${c.name}\n${c.address}\n${c.zip} ${c.city}`,
-      mm2pt(20),
-      mm2pt(35),
-      {
-        width: mm2pt(100),
-        height: mm2pt(50),
-        align: 'left',
-      },
-    )
-    const date = new Date()
 
+    if (cfg.mandators?.default) {
+      const abs = cfg.mandators.default
+      pdf.text(
+        `${abs.name}\n${abs.subtitle}\n${abs.address}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`,
+        mm2pt(20),
+        mm2pt(35),
+        {
+          width: mm2pt(100),
+          height: mm2pt(50),
+          align: 'left',
+        },
+      )
+
+    } else {
+      const abs = data.creditor
+      pdf.text(
+        `${abs.name.replace(/\|/g, "\n")}\n${abs.address.replace(/\|/g, "\n")}\n${abs.zip} ${abs.city}`,
+        mm2pt(20),
+        mm2pt(35),
+        {
+          width: mm2pt(100),
+          height: mm2pt(50),
+          align: 'left',
+        },
+      )
+    }
+    const date = new Date()
+    const c = data.creditor
     pdf.fontSize(11)
     pdf.font('Helvetica')
     pdf.text(
@@ -64,11 +88,26 @@ export function createBill(bill) {
     )
     pdf.fontSize(14)
     pdf.font('Helvetica-Bold')
-    pdf.text('Rechnung Nr. ' + bill.rnnummer, mm2pt(20), mm2pt(100), {
+    pdf.text('Honorar-Rechnung Nr. ' + bill.rnnummer, mm2pt(20), mm2pt(100), {
       width: mm2pt(170),
       align: 'left',
     })
 
+    pdf.fontSize(11)
+    pdf.font("Courier")
+    pdf.text(`Behandlungen von: ${DateTime.fromISO(bill.rndatumvon).toLocaleString()}\n`
+      + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toLocaleString()}`,
+      mm2pt(20), mm2pt(115), {
+      width: mm2pt(120),
+      align: "left"
+    })
+
+    pdf.fontSize(12)
+    pdf.font("Times-Roman")
+    pdf.text(cfg.billing.invoiceText, mm2pt(20), mm2pt(130), {
+      width: mm2pt(180),
+      align: "left"
+    })
 
     pdf.addQRBill()
     pdf.end()
