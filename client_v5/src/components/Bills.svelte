@@ -5,6 +5,9 @@
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";
   export let bills: Array<Invoice> = [];
+  export let filter: (any) => boolean = (bill?) => {
+    return true;
+  };
   let allchecked: boolean = false;
   const selection = new Array<boolean>(bills.length);
   function checkall() {
@@ -43,7 +46,7 @@
         <th>{$_("billing.patient")}</th>
       </thead>
       <tbody>
-        {#each bills as bill, idx}
+        {#each bills.filter(filter) as bill, idx}
           <tr>
             <td>
               <input type="checkbox" bind:checked={selection[idx]} />
