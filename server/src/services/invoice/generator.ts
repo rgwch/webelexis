@@ -5,6 +5,7 @@ import path from 'path'
 import { Currency } from 'swissqrbill/lib/node/esm/shared/types'
 import { print } from 'unix-print'
 import { DateTime } from 'luxon'
+import { Mailer } from '../../util/mailer'
 const mm2pt = util.mm2pt
 
 export function createBill(bill) {
@@ -17,7 +18,11 @@ export function createBill(bill) {
         autoGenerate: false,
         size: 'A4',
       }, () => {
-        if (bill.output) {
+        if (bill.toMail) {
+          const smtp = cfg.smtp
+          const mailer = new Mailer(smtp, "praxis@weirich.ch")
+          mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename })
+        } else if (bill.output) {
           print(filename, cfg.billing.printer).then(fin => {
             resolve(true)
 
@@ -165,7 +170,7 @@ function reference(bill) {
   const pnr = bill.fall.patient.patientnr
   const rnnr = bill.rnnummer
   const prefix = new Date().toISOString().substring(0, 10).replace(/\-/g, '')
-  const refline = (prefix + '0000' + pnr.padStart(5, '0)') + rnnr.padStart(5, '0')).padEnd(26, '0')
+  const refline = (prefix + '0000' + pnr.padStart(5, '0') + rnnr.padStart(5, '0')).padEnd(26, '0')
   return luhn(refline)
 }
 

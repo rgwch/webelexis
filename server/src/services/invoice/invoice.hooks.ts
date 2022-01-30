@@ -1,7 +1,17 @@
+import { config } from '../../configuration'
 const { authenticate } = require('@feathersjs/authentication').hooks;
 import { createBill } from './generator'
 
 const create = async ctx => {
+  if (config.billing.stickerForMail) {
+    const stickerService = ctx.app.service("stickers")
+    const stickers = await stickerService.find({ query: { forPatient: ctx.data.fall.patient.id } })
+    if (stickers.length > 0) {
+      if (stickers.find(st => st.name == config.billing.stickerForMail)) {
+        ctx.data.toMail = ctx.data.fall.patient.email
+      }
+    }
+  }
   const result = await createBill(ctx.data)
   ctx.result = true
   return ctx

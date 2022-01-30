@@ -121,6 +121,7 @@ export const config = {
       account: "CH007007007007", // You'll need a real QR-Account IBAN to create bills.
       country: "CH"
     },
+    stickerForMail: "Rechnung per Mail",
     invoiceText: "Bitte reichen Sie den beigefügten Rückerstattungsbeleg Ihrer Krankenkasse ein und überweisen Sie den Rechnungsbetrag mit untenstehendem Einzahlungsschein."
   }
 }

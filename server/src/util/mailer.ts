@@ -10,13 +10,20 @@
 const nodemailer = require('nodemailer')
 import { logger } from '../logger'
 
-class Mailer {
+export type Attachment = {
+  filename: string
+  content?: Buffer | string
+  path?: string
+}
+export class Mailer {
   /**
    *
    * @param {{host,port,user,pwd}} config
    * @param {*} sender
    */
-  constructor(config, sender) {
+  private smtp
+  private transporter
+  constructor(private config, private sender) {
     this.sender = sender
 
     this.smtp = {
@@ -30,7 +37,7 @@ class Mailer {
     }
     this.transporter = nodemailer.createTransport(this.smtp)
   }
-  send(address, subject, contents, ical) {
+  async send(address: string, subject: string, contents: string, attachment: Attachment, ical?): Promise<any> {
     const message = {
       from: this.sender,
       to: address,
@@ -38,19 +45,19 @@ class Mailer {
       text: contents,
     }
     if (ical) {
-      message.icalEvent = {
+      message["icalEvent"] = {
         filename: 'arzttermin.ics',
         method: 'publish',
         content: ical,
       }
     }
-    this.transporter.sendMail(message, (err, info) => {
-      if (err) {
-        logger.error(err)
-      } else {
-        logger.info(JSON.stringify(info))
-      }
-    })
+    if (attachment) {
+      message["attachments"] = [
+        attachment
+      ]
+    }
+    const result = await this.transporter.sendMail(message)
+    return result
   }
 }
-module.exports = Mailer
+
