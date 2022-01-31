@@ -47,7 +47,7 @@ export function createBill(bill) {
     if (cfg.mandators?.default) {
       const abs = cfg.mandators.default
       pdf.text(
-        `${abs.name}\n${abs.subtitle}\n${abs.address}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`,
+        `${abs.name}\n${abs.subtitle}\n${abs.street}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`,
         mm2pt(20),
         mm2pt(35),
         {
@@ -97,7 +97,7 @@ export function createBill(bill) {
       },
     )
 
-    pdf.rect(mm2pt(20), mm2pt(113), mm2pt(90), mm2pt(12))
+    pdf.rect(mm2pt(20), mm2pt(112), mm2pt(85), mm2pt(12.5))
       .lineWidth(1)
       .fillOpacity(0.5)
       .fillAndStroke("gray", "#555")

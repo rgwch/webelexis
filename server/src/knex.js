@@ -7,7 +7,7 @@
 /*
  * connection to the Elexis database is via knex (https://knexjs.org)
  * here we configure our knex instance. The client credentials are
- * configured in /config/*.json
+ * configured in ./configuration.ts
  */
 
 const knex = require("knex")
