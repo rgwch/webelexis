@@ -11,7 +11,7 @@ const kontakt = require('./kontakt/kontakt.service.js');
 const agntermine = require('./agntermine/agntermine.service.js');
 const patient = require('./patient/patient.service.js');
 const fall = require('./fall/fall.service.js');
-const konsultation = require('./konsultation/konsultation.service.js');
+import konsultation from './konsultation/konsultation.service.js';
 const article = require('./article/article.service.js');
 const elexisUserconfig = require('./elexis-userconfig/elexis-userconfig.service.js');
 const prescriptions = require('./prescriptions/prescriptions.service.js');

@@ -1,14 +1,14 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const createService = require('feathers-knex');
 const createModel = require('../../models/konsultation.model');
-const hooks = require('./konsultation.hooks');
+import hooks from './konsultation.hooks';
 
-module.exports = function (app) {
+export default (app) => {
   const Model = createModel(app);
   const paginate = app.get('paginate');
 

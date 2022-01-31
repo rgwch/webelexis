@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
-const log = require('../logger')
+import { logger as log } from '../logger'
 
-module.exports = cnt => {
+export default cnt => {
   return new Promise(async (resolve, reject) => {
     log.debug("sending file to ocr")
     const response = await fetch('http://localhost:9997', {
@@ -17,7 +17,7 @@ module.exports = cnt => {
       const pdf = await response.buffer()
       resolve(pdf)
     } else {
-      log.error("Failure in OCR "+response.statusText)
+      log.error("Failure in OCR " + response.statusText)
       reject(response.statusText)
     }
   })

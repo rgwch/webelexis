@@ -1,15 +1,16 @@
 const tmp = require('tmp')
 const unzip = require('extract-zip')
 const xmlstream = require('xml-stream')
-const fs = require('fs')
-const path = require('path')
-import {logger} from '../logger'
+import fs from 'fs'
+import path from 'path'
+import { logger } from '../logger'
 
 
-class Oddb {
+export class Oddb {
+  private tmpdir
+  private db
 
-  constructor(app) {
-    this.app = app
+  constructor(private app) {
     const tmpobj = tmp.dirSync()
     tmp.setGracefulCleanup()
     this.tmpdir = tmpobj.name
@@ -24,7 +25,7 @@ class Oddb {
         DSCR: item.DSCRD.$text,
         ADDDSCR: item.SORTD.$text,
         NARCOTIC: (item.BG.$text == "Y") ? "1" : "0"
-      }
+      } as any
       if (item.ARTBAR && item.ARTBAR.BC) {
         imp.GTIN = item.ARTBAR.BC.$text
       }
@@ -43,7 +44,7 @@ class Oddb {
       }
       const query = {
         PHAR: imp.PHAR
-      }
+      } as any
       if (imp.gtin) {
         query.GTIN = imp.GTIN
       }
@@ -86,7 +87,7 @@ class Oddb {
           if (result) {
             this.importProducts().then(result => {
               if (result) {
-                resolve()
+                resolve(undefined)
               } else {
                 reject()
               }
@@ -155,4 +156,3 @@ class Oddb {
   }
 }
 
-module.exports = Oddb

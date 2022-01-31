@@ -97,7 +97,7 @@ export function createBill(bill) {
       },
     )
 
-    pdf.rect(mm2pt(20), mm2pt(112), mm2pt(85), mm2pt(12.5))
+    pdf.rect(mm2pt(20), mm2pt(112.5), mm2pt(75), mm2pt(16))
       .lineWidth(1)
       .fillOpacity(0.5)
       .fillAndStroke("gray", "#555")
@@ -113,8 +113,8 @@ export function createBill(bill) {
 
     pdf.fontSize(11)
     pdf.font("Courier")
-    pdf.text(`Behandlungen von: ${DateTime.fromISO(bill.rndatumvon).toLocaleString()}\n`
-      + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toLocaleString()}`,
+    pdf.text(`Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(cfg.billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(cfg.billing.datetime)}\n`
+      + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(cfg.billing.datetime)}`,
       mm2pt(22), mm2pt(115), {
       width: mm2pt(120),
       align: "left"
@@ -122,7 +122,7 @@ export function createBill(bill) {
 
     pdf.fontSize(12)
     pdf.font("Times-Roman")
-    pdf.text(cfg.billing.invoiceText, mm2pt(20), mm2pt(130), {
+    pdf.text(cfg.billing.invoiceText, mm2pt(20), mm2pt(135), {
       width: mm2pt(180),
       align: "left"
     })
@@ -157,7 +157,7 @@ function createData(bill) {
     reference: reference(bill),
     creditor: cfg.billing.creditor,
     debtor: {
-      name: patient.bezeichnung1 + ' ' + patient.bezeichnung2,
+      name: patient.bezeichnung2 + ' ' + patient.bezeichnung1,
       address: patient.strasse,
       zip: parseInt(patient.plz),
       city: patient.ort,
