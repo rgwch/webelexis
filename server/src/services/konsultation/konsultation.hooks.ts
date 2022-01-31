@@ -156,9 +156,9 @@ const createKonsText = async context => {
 const textContents = async context => {
   if (context.params.query && context.params.query.$find) {
     const expr = context.params.query.$find
-    const re = new RegExp(expr,"i")
+    const re = new RegExp(expr, "i")
     delete context.params.query.$find
-    context.params.query.$limit=500
+    context.params.query.$limit = 500
     let raw = await context.service.find(context.params)
     if (raw && raw.data) {
       let processed = []
@@ -178,10 +178,16 @@ const textContents = async context => {
   return context
 }
 
+const allowNull = ctx => {
+  if (ctx.params.query?.rechnungsid === 'null') {
+    ctx.params.query.rechnungsid = null
+    return ctx
+  }
+}
 export default {
   before: {
     all: [ /* authenticate('jwt') */],
-    find: [withPatientId, textContents],
+    find: [allowNull, withPatientId, textContents],
     get: [],
     create: [createKonsText],
     update: [updateKonsText],
