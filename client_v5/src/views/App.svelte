@@ -1,5 +1,6 @@
 <script lang="ts">
   import Bills from "../components/Bills.svelte";
+  import Unbilled from "../components/Unbilled.svelte"
   import { getService } from "../services/io";
   import { InvoiceState } from "../models/invoice";
   import { _ } from "svelte-i18n";
@@ -62,4 +63,6 @@
   <input type="text" bind:value={name} />
   <button on:click={refilter}>Filter</button>
   <Bills {bills} filter={patfilter} />
+  <p>Unbilled</p>
+  <Unbilled></Unbilled>
 </template>

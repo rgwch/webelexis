@@ -1,4 +1,10 @@
 
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 const { Service } = require('feathers-knex');
 
 export class Bills extends Service {

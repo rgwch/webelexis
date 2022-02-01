@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "extinfo" })
@@ -11,7 +17,7 @@ const flatiron = require('../../hooks/flatiron')([{
   service: "kontakt"
 }])
 
-module.exports = {
+export default {
   before: {
     all: [authenticate('jwt')],
     find: [],
