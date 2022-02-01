@@ -200,10 +200,11 @@ const allowNull = (ctx) => {
 
 const unbilled = async (ctx) => {
   if (ctx.id === 'unbilled') {
-    const query = 'SELECT distinct PATIENTID FROM FAELLE '
-    "JOIN BEHANDLUNGEN ON BEHANDLUNGEN.FALLID=FAELLE.ID WHERE BEHANDLUNGEN.deleted='1' AND BEHANDLUNGEN.billable='1' AND BEHANDLUNGEN.RECHNUNGSID = 'blah' "
+    // const query = 'SELECT distinct PATIENTID FROM FAELLE '
+    // "JOIN BEHANDLUNGEN ON BEHANDLUNGEN.FALLID=FAELLE.ID WHERE BEHANDLUNGEN.deleted='1' AND BEHANDLUNGEN.billable='1' AND BEHANDLUNGEN.RECHNUNGSID = 'blah' "
     const knex = ctx.app.get('knexClient')
-    const result = await knex.raw(query)
+    const query = knex("faelle").join("behandlungen", "behandlungen.fallid", "=", "faelle.id").whereNull("behandlungen.rechnungsid").select("faelle.patientid","behandlungen.id","faelle.id as fallid")
+    const result = await query
     ctx.result = result
   }
   return ctx
