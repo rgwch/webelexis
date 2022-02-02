@@ -10,6 +10,7 @@ import properties from '../services/properties'
   })
   function toggle(t:Tree<konsdef>){
       t.props.open=!t.props.open
+      patients=patients
   }
 </script>
 
