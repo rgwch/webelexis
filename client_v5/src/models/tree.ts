@@ -1,18 +1,35 @@
-export interface Comparator<T> {
+export interface IComparator<T> {
   compare(a: T, b: T): number
 }
+export interface ITreeListener {
+  fetchChildren(t: Tree<any>): Promise<boolean>
+}
+
 export class Tree<T> {
   private first: Tree<T>
   private next: Tree<T>
 
-  constructor(private parent: Tree<T>, private payload: T) {
+  /**
+   * @param parent
+   * @param payload
+   * @param listener - If a tree has a listener, it becomes a LazyTree, i.e. loads children only when getChildren() is called.
+   */
+  constructor(
+    private parent: Tree<T>,
+    private payload: T,
+    private listener?: ITreeListener,
+  ) {
     if (parent) {
-      this.next = parent.first
+      const sibling = parent.first
+      this.next = sibling
       parent.first = this
     }
   }
 
-  public getChildren(): Array<Tree<T>> {
+  public async getChildren(): Promise<Array<Tree<T>>> {
+    if (this.listener) {
+      const result = await this.listener.fetchChildren(this)
+    }
     const ret = new Array<Tree<T>>()
     let runner = this.first
     while (runner) {
@@ -22,36 +39,32 @@ export class Tree<T> {
     return ret
   }
 
-  public insert(element: T, comparator: Comparator<T>): Tree<T> {
+  /**
+   * Creates a new Node with the given payload. If a node with the same payload (as identified by the comparator) already exists, return that node.
+   * @param payload
+   * @param comparator
+   * @returns
+   */
+  public insert(
+    payload: T,
+    comparator: (a: T, b: T) => number,
+    listener?: ITreeListener,
+  ): Tree<T> {
     let runner = this.first
     while (runner) {
-      if (comparator.compare(runner.payload, element) == 0) {
+      if (comparator(runner.payload, payload) === 0) {
         return runner
       } else {
         runner = runner.next
       }
     }
-    return new Tree<T>(this, element)
+    return new Tree<T>(this, payload, listener)
+  }
+  setPayload = (p: T) => {
+    this.payload = p
   }
   getPayload = () => this.payload
   getNext = () => this.next
   getFirst = () => this.first
   getParent = () => this.parent
-}
-
-export interface LazyTreeListener {
-  fetchChildren(t: LazyTree<any>): boolean
-}
-export class LazyTree<T> extends Tree<T> {
-  constructor(parent: Tree<T>, payload: T, private listener) {
-    super(parent, payload)
-  }
-
-  public getChildren(): Array<Tree<T>> {
-    if (super.getFirst() != null || this.listener(this)) {
-      return super.getChildren()
-    } else {
-      return []
-    }
-  }
 }
