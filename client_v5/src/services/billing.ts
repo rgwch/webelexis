@@ -22,7 +22,7 @@ class PatientListener implements ITreeListener {
     this.patService = getService("patient")
   }
   async fetchChildren(t: Tree<konsdef>): Promise<boolean> {
-    const konsdef = t.getPayload()
+    const konsdef = t.payload
     if (konsdef) {
       konsdef.Patient = await this.patService.get(konsdef.patientid)
       for (const cas of this.all) {
@@ -44,7 +44,7 @@ class FallListener implements ITreeListener {
     this.fallService = getService("fall")
   }
   async fetchChildren(t: Tree<konsdef>): Promise<boolean> {
-    const konsdef = t.getPayload()
+    const konsdef = t.payload
     if (konsdef) {
       for (let f of this.all) {
         if (f.patientid === konsdef.patientid) {

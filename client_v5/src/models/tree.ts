@@ -6,8 +6,8 @@ export interface ITreeListener {
 }
 
 export class Tree<T> {
-  private first: Tree<T>
-  private next: Tree<T>
+  private _first: Tree<T>
+  private _next: Tree<T>
 
   /**
    * @param parent
@@ -15,14 +15,14 @@ export class Tree<T> {
    * @param listener - If a tree has a listener, it becomes a LazyTree, i.e. loads children only when getChildren() is called.
    */
   constructor(
-    private parent: Tree<T>,
-    private payload: T,
+    private _parent: Tree<T>,
+    private _payload: T,
     private listener?: ITreeListener,
   ) {
-    if (parent) {
-      const sibling = parent.first
-      this.next = sibling
-      parent.first = this
+    if (_parent) {
+      const sibling = _parent._first
+      this._next = sibling
+      _parent._first = this
     }
   }
 
@@ -31,10 +31,10 @@ export class Tree<T> {
       const result = await this.listener.fetchChildren(this)
     }
     const ret = new Array<Tree<T>>()
-    let runner = this.first
+    let runner = this._first
     while (runner) {
       ret.push(runner)
-      runner = runner.next
+      runner = runner._next
     }
     return ret
   }
@@ -50,21 +50,29 @@ export class Tree<T> {
     comparator: (a: T, b: T) => number,
     listener?: ITreeListener,
   ): Tree<T> {
-    let runner = this.first
+    let runner = this._first
     while (runner) {
       if (comparator(runner.payload, payload) === 0) {
         return runner
       } else {
-        runner = runner.next
+        runner = runner._next
       }
     }
     return new Tree<T>(this, payload, listener)
   }
   setPayload = (p: T) => {
-    this.payload = p
+    this._payload = p
   }
-  getPayload = () => this.payload
-  getNext = () => this.next
-  getFirst = () => this.first
-  getParent = () => this.parent
+  get payload() {
+    return this._payload
+  }
+  get next() {
+    return this._next
+  }
+  get first() {
+    return this._first
+  }
+  get parent() {
+    return this._parent
+  }
 }
