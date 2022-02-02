@@ -46,10 +46,9 @@ class FallListener implements ITreeListener {
   async fetchChildren(t: Tree<konsdef>): Promise<boolean> {
     const konsdef = t.getPayload()
     if (konsdef) {
-      konsdef.Fall = await this.fallService.get(konsdef.fallid)
-      for (const cas of this.all) {
-        if (cas.fallid === konsdef.fallid) {
-          t.insert(cas, (a, b) => a.fallid.localeCompare(b.fallid))
+      for (let f of this.all) {
+        if (f.patientid === konsdef.patientid) {
+          t.insert(f, (a, b) => a.fallid.localeCompare(b.fallid))
         }
       }
       return true
@@ -65,7 +64,7 @@ export class Billing {
     const unbilled: Array<konsdef> = await konsService.get('unbilled')
     const ret = new Tree<konsdef>(null, null)
     for (let p of unbilled) {
-      const node = ret.insert(p, (a, b) => a.patientid.localeCompare(b.patientid), new PatientListener(unbilled))
+      const node = ret.insert(p, (a, b) => a.patientid.localeCompare(b.patientid), new FallListener(unbilled))
     }
     return ret
   }
