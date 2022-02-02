@@ -8,6 +8,7 @@ export interface ITreeListener {
 export class Tree<T> {
   private _first: Tree<T>
   private _next: Tree<T>
+  public props: any = {}
 
   /**
    * @param parent
@@ -26,10 +27,7 @@ export class Tree<T> {
     }
   }
 
-  public async getChildren(): Promise<Array<Tree<T>>> {
-    if (this.listener) {
-      const result = await this.listener.fetchChildren(this)
-    }
+  public getChildren(): Array<Tree<T>> {
     const ret = new Array<Tree<T>>()
     let runner = this._first
     while (runner) {
@@ -37,6 +35,12 @@ export class Tree<T> {
       runner = runner._next
     }
     return ret
+  }
+  public async fetch(): Promise<Array<Tree<T>>> {
+    if (this.listener) {
+      const result = await this.listener.fetchChildren(this)
+    }
+    return this.getChildren()
   }
 
   /**

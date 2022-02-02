@@ -64,7 +64,20 @@ export class Billing {
     const unbilled: Array<konsdef> = await konsService.get('unbilled')
     const ret = new Tree<konsdef>(null, null)
     for (let p of unbilled) {
-      const node = ret.insert(p, (a, b) => a.patientid.localeCompare(b.patientid), new FallListener(unbilled))
+      const patNode = ret.insert(p, (a, b) => a.patientid.localeCompare(b.patientid))
+      patNode.props.open = false
+      for (let q of unbilled) {
+        if (q.patientid === patNode.payload.patientid) {
+          const caseNode = patNode.insert(q, (a, b) => a.fallid.localeCompare(b.fallid))
+          caseNode.props.open = false
+          for (let l of unbilled) {
+            if (l.fallid === caseNode.payload.fallid) {
+              const encNode = new Tree<konsdef>(caseNode, l)
+              encNode.props.open = false
+            }
+          }
+        }
+      }
     }
     return ret
   }
