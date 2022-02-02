@@ -22,7 +22,8 @@ describe('Tree', () => {
     expect(t3.getParent()).toBe(t1)
     expect(t4.getParent()).toBe(t2)
     expect(t4.getNext()).toBeUndefined()
-    expect((await t1.getChildren()).length).toBe(2)
     */
+    expect((await t1.getChildren()).length).toBe(2)
+    
   })
 })
