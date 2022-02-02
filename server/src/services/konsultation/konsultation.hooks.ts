@@ -203,7 +203,13 @@ const unbilled = async (ctx) => {
     // const query = 'SELECT distinct PATIENTID FROM FAELLE '
     // "JOIN BEHANDLUNGEN ON BEHANDLUNGEN.FALLID=FAELLE.ID WHERE BEHANDLUNGEN.deleted='1' AND BEHANDLUNGEN.billable='1' AND BEHANDLUNGEN.RECHNUNGSID = 'blah' "
     const knex = ctx.app.get('knexClient')
-    const query = knex("faelle").join("behandlungen", "behandlungen.fallid", "=", "faelle.id").whereNull("behandlungen.rechnungsid").select("faelle.patientid","behandlungen.id","faelle.id as fallid")
+    const query = knex("faelle").join("behandlungen", "behandlungen.fallid", "=", "faelle.id")
+      .join("kontakt", "kontakt.id", "faelle.patientid")
+      .whereNull("behandlungen.rechnungsid")
+      .select("faelle.patientid", "behandlungen.id as konsid", "faelle.id as fallid",
+        "faelle.datumvon as falldatum", "faelle.bezeichnung as falltitel", "behandlungen.datum as konsdatum",
+        "kontakt.bezeichnung1 as lastname", "kontakt.bezeichnung2 as firstname")
+      .orderBy([{ column: 'lastname', order: 'desc' }, { column: 'firstname', order: 'desc' }])
     const result = await query
     ctx.result = result
   }
