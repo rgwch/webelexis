@@ -43,6 +43,7 @@
     "i18next-json-sync": "^2.3.1",
     "jest": "^27.4.7",
     "jest-svelte-events": "^1.0.5",
+    "lru-cache": "^6.0.0",
     "luxon": "^2.3.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.64.0",
