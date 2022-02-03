@@ -20,7 +20,7 @@ import properties from '../services/properties';
 </script>
 
 <template>
-  <div class="my-3 border-2 border-solid border-blue-400 rounded max-h-screen overflow-auto max-w-1/2">
+  <div class="my-3 border-2 border-solid border-blue-400 rounded max-h-[80vh] overflow-auto max-w-1/2">
     <h2 class="mx-3">{$_("titles.unbilled")}</h2>
     <ul>
       {#each patients as p}
