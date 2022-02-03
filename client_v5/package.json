@@ -32,6 +32,7 @@
     "@storybook/svelte": "^6.4.13",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/svelte": "^3.0.3",
+    "@testing-library/user-event": "^13.5.0",
     "@tsconfig/svelte": "^3.0.0",
     "@types/feathersjs__authentication-client": "^1.0.9",
     "@types/feathersjs__socketio-client": "^1.0.7",
