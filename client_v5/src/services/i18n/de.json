@@ -52,6 +52,6 @@
   },
   "demotest": "Testkomponente",
   "formatting": {
-    "date": "DD.MM.YYYY"
+    "date": "dd.LL.yyyy"
   }
 }

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { Billing, type konsdef } from '../services/billing'
   import type {Tree} from '../models/tree'
-import properties from '../services/properties'
+  import {DateTime} from 'luxon'
+  import {_} from 'svelte-i18n'
 
   let patients:Array<Tree<konsdef>>=[]
   const biller = new Billing()
@@ -21,13 +22,13 @@ import properties from '../services/properties'
       {p.payload.firstname}
       {#if p.props.open}
         {#each p.getChildren() as f, k}
-          <p on:click={() => toggle(f)}>
-            {f.payload.falldatum}
+          <p on:click|stopPropagation={() => toggle(f)}>
+            {DateTime.fromISO(f.payload.falldatum).toFormat($_("formatting.date"))}
             {f.payload.falltitel}
             {#if f.props.open}
               {#each f.getChildren() as e}
                 <p>
-                  {e.payload.konsdatum}
+                  {DateTime.fromISO(e.payload.konsdatum).toFormat($_("formatting.date"))}
                 </p>
               {/each}
             {/if}
