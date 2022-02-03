@@ -1,6 +1,6 @@
 <script lang="ts">
   import Bills from "../components/Bills.svelte";
-  import Unbilled from "../components/Unbilled.svelte"
+  import Unbilled from "../components/Unbilled.svelte";
   import { getService } from "../services/io";
   import { InvoiceState } from "../models/invoice";
   import { _ } from "svelte-i18n";
@@ -55,14 +55,15 @@
 </script>
 
 <template>
-  <select bind:value={billstate} on:change={select} on:click={select}>
-    {#each states as state}
-      <option value={state}>{$_("billing." + state)}</option>
-    {/each}
-  </select>
-  <input type="text" bind:value={name} />
-  <button on:click={refilter}>Filter</button>
-  <Bills {bills} filter={patfilter} />
-  <p>Unbilled</p>
-  <Unbilled></Unbilled>
+  <div class="container mx-auto">
+    <select bind:value={billstate} on:change={select} on:click={select}>
+      {#each states as state}
+        <option value={state}>{$_("billing." + state)}</option>
+      {/each}
+    </select>
+    <input type="text" bind:value={name} />
+    <button on:click={refilter}>Filter</button>
+    <Bills {bills} filter={patfilter} />
+    <Unbilled></Unbilled>
+  </div>
 </template>

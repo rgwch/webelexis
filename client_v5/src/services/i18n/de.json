@@ -53,5 +53,8 @@
   "demotest": "Testkomponente",
   "formatting": {
     "date": "dd.LL.yyyy"
+  },
+  "titles":{
+    "unbilled": "Unverrechnete Konsultationen"
   }
 }

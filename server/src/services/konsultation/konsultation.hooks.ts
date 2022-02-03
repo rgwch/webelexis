@@ -209,7 +209,7 @@ const unbilled = async (ctx) => {
       .select("faelle.patientid", "behandlungen.id as konsid", "faelle.id as fallid",
         "faelle.datumvon as falldatum", "faelle.bezeichnung as falltitel", "behandlungen.datum as konsdatum",
         "kontakt.bezeichnung1 as lastname", "kontakt.bezeichnung2 as firstname")
-      .orderBy([{ column: 'lastname', order: 'desc' }, { column: 'firstname', order: 'desc' }])
+      .orderBy([{ column: 'lastname', order: 'desc' }, { column: 'firstname', order: 'desc' },{column: 'konsdatum', order:"desc"}])
     const result = await query
     ctx.result = result
   }

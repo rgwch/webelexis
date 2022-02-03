@@ -72,7 +72,7 @@ export class Billing {
           caseNode.props.open = false
           for (let l of unbilled) {
             if (l.fallid === caseNode.payload.fallid) {
-              const encNode = new Tree<konsdef>(caseNode, l)
+              const encNode = caseNode.insert(l,(a, b) => a.konsid.localeCompare(b.konsid))
               encNode.props.open = false
             }
           }

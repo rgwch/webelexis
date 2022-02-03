@@ -40,10 +40,12 @@ export function createBill(bill) {
         }
       }
     )
+
+    // Block Absender links oben
     pdf.fontSize(12)
     pdf.fillColor('black')
     pdf.font('Helvetica')
-
+    let sender = ""
     if (cfg.mandators?.default) {
       const abs = cfg.mandators.default
       pdf.text(
@@ -56,7 +58,7 @@ export function createBill(bill) {
           align: 'left',
         },
       )
-
+      sender = `${abs.name}, ${abs.street}, ${abs.place}`
     } else {
       const abs = data.creditor
       pdf.text(
@@ -69,7 +71,9 @@ export function createBill(bill) {
           align: 'left',
         },
       )
+      sender = `${abs.name}, ${abs.address}, ${abs.zip} ${abs.city}`
     }
+    // Ort und Datum
     const date = new Date()
     const c = data.creditor
     pdf.fontSize(11)
@@ -83,6 +87,10 @@ export function createBill(bill) {
         align: 'right',
       },
     )
+
+    // Adressat und Absenderzeile
+    pdf.fontSize(8)
+    pdf.text(sender, mm2pt(130), mm2pt(52))
     pdf.fontSize(12)
     pdf.font('Helvetica')
     const d = data.debtor
@@ -97,6 +105,7 @@ export function createBill(bill) {
       },
     )
 
+    // Rechnungsdetails
     pdf.rect(mm2pt(20), mm2pt(112.5), mm2pt(75), mm2pt(16))
       .lineWidth(1)
       .fillOpacity(0.5)
@@ -120,6 +129,7 @@ export function createBill(bill) {
       align: "left"
     })
 
+    // Freitext
     pdf.fontSize(12)
     pdf.font("Times-Roman")
     pdf.text(cfg.billing.invoiceText, mm2pt(20), mm2pt(135), {
