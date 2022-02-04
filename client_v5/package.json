@@ -1,7 +1,7 @@
 {
   "name": "Webelexis",
-  "description": "A nodejs Elexis client",
-  "version": "3.5.1",
+  "description": "A Svelte-powered Elexis client",
+  "version": "3.5.2",
   "scripts": {
     "build": "rollup -c .config/rollup.config.js",
     "clean": "rimraf public/build",
