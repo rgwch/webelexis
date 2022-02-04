@@ -41,9 +41,10 @@ export class TerminManager {
 
   constructor() {
     this.terminService = getService("termin")
+    this.loadDefaultsFor({id: "gerry", roles:["admin"]})
   }
 
-  
+
   public async loadDefaultsFor(user: UserType) {
     Statics.agendaResources = await this.terminService.get("resources")
     Statics.terminTypColors = await this.terminService.get("typecolors", {
@@ -141,17 +142,35 @@ export class TerminManager {
  */
 export class TerminModel {
   public obj: TerminType
+  private kontaktService
 
   constructor(obj: TerminType) {
     this.obj = obj
+    this.kontaktService = getService("kontakt")
   }
-  public getKontakt = (): KontaktType => this.obj.kontakt
-  public getLabel = (): string => {
-    const k = this.getKontakt()
-    if (k) {
-      return Kontakt.getLabel(k)
-    } else {
-      return this.obj.patid
+  public getKontakt = async (): Promise<KontaktType> => {
+    if (!this.obj.kontakt) {
+      try {
+        this.obj.kontakt = await this.kontaktService.get(this.obj.patid)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    return this.obj.kontakt
+  }
+  public getLabel = async (): Promise<string> => {
+    if (this.obj.termintyp === Statics.terminTypes[0]) {
+      return Statics.terminTypes[0]
+    } else if (this.obj.termintyp === Statics.terminTypes[1]) {
+      return Statics.terminTypes[1]
+    }
+    else {
+      const k = await this.getKontakt()
+      if (k) {
+        return Kontakt.getLabel(k)
+      } else {
+        return this.obj.patid
+      }
     }
   }
   public getTyp = (): string => this.obj.termintyp
@@ -197,13 +216,13 @@ export class TerminModel {
   }
   public getStartTime(): DateTime {
     const day = DateTime.fromFormat(this.obj.tag, "yyyyLLdd")
-    day.plus({minutes: parseInt(this.obj.beginn, 10)})
+    day.plus({ minutes: parseInt(this.obj.beginn, 10) })
     return day
   }
 
   public getEndTime(): DateTime {
     const start = DateTime.local(this.getStartTime())
-    start.plus({minutes: parseInt(this.obj.dauer, 10)})
+    start.plus({ minutes: parseInt(this.obj.dauer, 10) })
     return start
   }
 }

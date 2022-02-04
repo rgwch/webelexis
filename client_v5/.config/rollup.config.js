@@ -59,8 +59,8 @@ export default {
     css({ output: production ? windicss.optimize('bundle.css') : 'bundle.css' }),
     replace({
       'isproduction': production.toString(),
-      'SVELFHIR_VERSION': infos.version,
-      'SVELFHIR_BUILDDATE': new Date().toString(),
+      'WEBELEXIS_VERSION': infos.version,
+      'WEBELEXIS_BUILDDATE': new Date().toString(),
       'preventAssignment': true
     }),
     // If you have external dependencies installed from

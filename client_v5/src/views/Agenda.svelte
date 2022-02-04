@@ -1,29 +1,33 @@
 <script lang="ts">
-  import Calendar from '../components/Calendar.svelte'
-  import { getService } from '../services/io'
-  import { DateTime } from 'luxon'
-  import Listview from '../components/Listview.svelte'
-  const agnService = getService('termin')
-  let date: Date = new Date()
-  let list: Array<any> = []
+  import DatePicker from "../components/DatePicker.svelte";
+  import {TerminManager, TerminModel, type TerminType} from '../models/termine-model'
+  const tm=new TerminManager()
+
+  let list: Array<TerminModel> = [];
   function select(event) {
-    const date = event.detail
-    agnService
-      .find({
-        query: {
-          tag: DateTime.fromJSDate(date).toFormat('yyyyLLdd'),
-          deleted: '0',
-        },
-      })
-      .then((result) => {
-        list = result.data
-      })
+    const date = event.detail;
+    tm.fetchForDay(date,"gerry").then(result=>{
+      list=result
+    })
+    
   }
 </script>
 
 <template>
   <div class="flex">
-    <Calendar {date} on:select={select} />
-    <Listview {list} />
+    <DatePicker on:select={select} keepOpen={true} />
+    <div>
+      <ul>
+        {#each list as tm}
+          <li style={"background-color"+tm.getStateColor()}>
+            {#await tm.getLabel()}
+              loading...
+            {:then label}
+              {label}
+            {/await}
+          </li>
+        {/each}
+      </ul>
+    </div>
   </div>
 </template>

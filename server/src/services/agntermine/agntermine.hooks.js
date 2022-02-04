@@ -8,7 +8,7 @@ const validate = require('../validator').validate
 const { DateTime } = require('luxon')
 const Elexistypes = require('../../util/elexis-types')
 const Elexis = new Elexistypes()
-const metaqueries = require('./metaqueries')
+import metaqueries from './metaqueries'
 const logger = require('../../logger')
 
 

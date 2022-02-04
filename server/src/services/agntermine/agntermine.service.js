@@ -1,12 +1,12 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const createService = require('feathers-knex');
 const createModel = require('../../models/agntermine.model');
-const hooks = require('./agntermine.hooks');
+import hooks from './agntermine.hooks';
 const validator=require('../validator').initialize
 
 module.exports = async function (app) {
