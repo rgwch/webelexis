@@ -8,26 +8,28 @@ const app = feathers()
 app.configure(feathers.socketio(socket))
 app.configure(auth({ storage: window.localStorage }))
 
-export const getService = (name: string) => app.service(name)
+export type ServiceType = "patient" | "termin" | "fall" | "stickers" | "user" | "kontakt"
+  | "admin" | "konsultation" | "invoice"
+export const getService = (name: ServiceType) => app.service(name)
 
 export const login = async (username?: string, password?: string) => {
-    try {
-        let jwt
-        if (username && password) {
-            jwt = await app.authenticate({
-                id: username, password,
-                strategy: "local"
-            })
-        } else {
-            jwt = await app.authenticate()
-        }
-        const verified=await app.passport.verifyJWT(jwt?.accessToken)
-        const user=await app.service("user").get(verified.userId)        
-    }catch(err){
-        return undefined
+  try {
+    let jwt
+    if (username && password) {
+      jwt = await app.authenticate({
+        id: username, password,
+        strategy: "local"
+      })
+    } else {
+      jwt = await app.authenticate()
     }
+    const verified = await app["passport"].verifyJWT(jwt?.accessToken)
+    const user = await app.service("user").get(verified.userId)
+  } catch (err) {
+    return undefined
+  }
 }
 
-if(true){
-    login("gerry","pxgerry")
+if (true) {
+  login("gerry", "pxgerry")
 }

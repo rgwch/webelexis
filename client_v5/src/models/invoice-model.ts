@@ -1,5 +1,14 @@
-import { getService } from "../services/io";
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
 
+import type { ElexisType, UUID, DATE } from './elexistype';
+import { getService } from "../services/io";
+import type { CaseType } from "./case-model";
+import type { KontaktType } from "./kontakt-model";
+/*
 export interface Kontakt {
   id: string
   bezeichnung1: string
@@ -43,22 +52,23 @@ export interface Fall {
   lastupdate: number
 
 }
-export interface Invoice {
-  id?: string
+*/
+export interface Invoice extends ElexisType {
+  id?: UUID
   deleted?: string
   lastupdate?: number
   rnnummer: string
-  fallid: string
-  mandantid?: string
-  rndatum: string
-  rnstatus: string
-  rndatumvon: string
-  rndatumbis: string
-  statusdatum: string
+  fallid: UUID
+  mandantid?: UUID
+  rndatum: DATE
+  rnstatus: InvoiceState
+  rndatumvon: DATE
+  rndatumbis: DATE
+  statusdatum: DATE
   betrag: string
   extinfo?: Uint8Array
-  fall?: Fall
-  mandant?: Kontakt
+  fall?: CaseType
+  mandant?: KontaktType
   output?: boolean
 }
 

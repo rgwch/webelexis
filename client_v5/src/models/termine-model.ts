@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { type KontaktType, Kontakt } from "./kontakt"
+import { type KontaktType, Kontakt } from "./kontakt-model"
 import type { ElexisType, UUID } from "./elexistype"
 import type { UserType } from "./user-model"
 import { DateTime } from "luxon"
@@ -41,7 +41,7 @@ export class TerminManager {
 
   constructor() {
     this.terminService = getService("termin")
-    this.loadDefaultsFor({id: "gerry", roles:["admin"]})
+    this.loadDefaultsFor({ id: "gerry", roles: ["admin"] })
   }
 
 

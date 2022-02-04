@@ -1,7 +1,8 @@
 import { render, fireEvent } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
-import Calendar from './Calendar.svelte'
 import "../services/i18n/i18n";
+
+import Calendar from './Calendar.svelte'
 
 describe("Calendar", () => {
   it('should create', async () => {

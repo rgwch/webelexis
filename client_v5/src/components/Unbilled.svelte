@@ -6,7 +6,7 @@
   import '../../node_modules/@fortawesome/fontawesome-free/js/solid';
 	import '../../node_modules/@fortawesome/fontawesome-free/js/fontawesome';
 import properties from '../services/properties';
-	
+
   let patients:Array<Tree<konsdef>>=[]
   const biller = new Billing()
   biller.getBillables().then((result) => {
@@ -20,9 +20,9 @@ import properties from '../services/properties';
 </script>
 
 <template>
-  <div class="my-3 border-2 border-solid border-blue-400 rounded max-h-[80vh] overflow-auto max-w-1/2">
+  <div class="border-2 border-solid border-blue-400 rounded my-3 p1">
     <h2 class="mx-3">{$_("titles.unbilled")}</h2>
-    <ul>
+    <ul class="max-h-[80vh] overflow-auto">
       {#each patients as p}
         <li on:click={() => toggle(p)} class="cursor-pointer">
           {p.payload.lastname}

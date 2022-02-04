@@ -6,7 +6,7 @@
 
 import type { ElexisType, UUID } from './elexistype';
 import { ObjectManager } from './object-manager';
-import type { KontaktType } from './kontakt';
+import type { KontaktType } from './kontakt-model';
 import { getService } from '../services/io';
 import * as LRU from 'lru-cache'
 
@@ -45,8 +45,8 @@ export class UserManager extends ObjectManager {
   /**
    * Check if a user has a given role
    * note: usually, you'd rather use hasACE()
-   * @param usr 
-   * @param role 
+   * @param usr
+   * @param role
    */
   public hasRole(usr: UserType, role: string): boolean {
     if (role == global.roles.guest) {
@@ -62,8 +62,8 @@ export class UserManager extends ObjectManager {
 
   /**
    * Check if a user has a given ACE
-   * @param usr 
-   * @param acename 
+   * @param usr
+   * @param acename
    */
   public async hasACE(usr: UserType, acename: string): Promise<boolean> {
     const key = "ace:" + (usr ? usr.id : "guest") + "." + acename
@@ -79,7 +79,7 @@ export class UserManager extends ObjectManager {
 
   /**
    * Retrieve the Elexis-Kontakt linked to a user (if any)
-   * @param usr 
+   * @param usr
    * @returns a Promise resolving on the Kontakt or rejecting if no such Kontakt exists
    */
   public async getElexisKontakt(usr: UserType): Promise<KontaktType> {
@@ -96,7 +96,7 @@ export class UserManager extends ObjectManager {
   /**
    * Retrieve the associated Mandator for a User
    * @param user
-   * @returns a Promise resolving to a KontaktType representing the responsible Mandator (which might be the User teitselves) 
+   * @returns a Promise resolving to a KontaktType representing the responsible Mandator (which might be the User teitselves)
    */
   public async getActiveMandatorFor(user: UserType): Promise<KontaktType> {
     if (user._Mandator) {

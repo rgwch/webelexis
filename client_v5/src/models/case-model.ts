@@ -7,6 +7,7 @@
 import type { ElexisType, UUID } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { getService } from "../services/io";
+import type { ServiceType } from './../services/io';
 import { DateTime } from 'luxon'
 
 /**
@@ -31,7 +32,7 @@ export class CaseManager extends ObjectManager {
   private patientService
 
   constructor() {
-    super('fall');
+    super("fall");
     this.patientService = getService("patient");
   }
 

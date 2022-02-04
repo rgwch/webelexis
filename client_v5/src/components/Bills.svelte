@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { InvoiceState, print } from "../models/invoice";
-  import type { Invoice } from "../models/invoice";
+  import { InvoiceState, print } from "../models/invoice-model";
+  import type { Invoice } from "../models/invoice-model";
   import { Money } from "../models/money";
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";

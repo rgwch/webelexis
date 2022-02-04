@@ -2,7 +2,7 @@
   import Bills from "../components/Bills.svelte";
   import Unbilled from "../components/Unbilled.svelte";
   import { getService } from "../services/io";
-  import { InvoiceState } from "../models/invoice";
+  import { InvoiceState } from "../models/invoice-model";
   import { _ } from "svelte-i18n";
 
   let bills;
@@ -55,11 +55,11 @@
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex flex-col lg:flex-row">
     <div
-      class="my-3 p-1 border-2 border-solid border-blue-400 rounded max-h-[80vh] overflow-auto max-w-1/2"
+      class="flex-auto my-3 p-1 border-2 border-solid border-blue-400 rounded max-h-full max-w-full"
     >
-    <h2 class="mx-3">{$_("titles.bills")}</h2>
+      <h2 class="mx-3">{$_("titles.bills")}</h2>
       <select bind:value={billstate} on:change={select} on:click={select}>
         {#each states as state}
           <option value={state}>{$_("billing." + state)}</option>
@@ -69,6 +69,8 @@
       <button on:click={refilter}>Filter</button>
       <Bills {bills} filter={patfilter} />
     </div>
-    <Unbilled />
+    <div class="flex-auto">
+      <Unbilled />
+    </div>
   </div>
 </template>

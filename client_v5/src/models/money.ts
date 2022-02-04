@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 export class Money {
   private cents: number = 0
 

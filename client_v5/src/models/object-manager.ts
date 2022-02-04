@@ -5,7 +5,7 @@
  ********************************************/
 
 import type { ElexisType, UUID } from "./elexistype";
-import { getService } from "../services/io";
+import { getService, type ServiceType } from "../services/io";
 
 /**
  * Base class for all ElexisType- subtype managers
@@ -13,8 +13,8 @@ import { getService } from "../services/io";
 export class ObjectManager {
   protected dataService
 
-  constructor(serviceName: string) {
-    this.dataService = getService(serviceName);
+  constructor(service: ServiceType) {
+    this.dataService = getService(service);
   }
 
   /**

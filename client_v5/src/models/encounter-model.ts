@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import type { CaseType, CaseManager } from "./case";
+import type { CaseType, CaseManager } from "./case-model";
 import type { ElexisType, UUID } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { DateTime } from 'luxon'
