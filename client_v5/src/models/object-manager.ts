@@ -43,7 +43,7 @@ export class ObjectManager {
    * @param id
    * @returns the object or undefined if no such object was found
    */
-  public async fetch(id: UUID) {
+  public async fetch(id: UUID): Promise<ElexisType> {
     try {
       return await this.dataService.get(id);
     } catch (err) {

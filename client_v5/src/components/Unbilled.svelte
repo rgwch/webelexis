@@ -2,11 +2,15 @@
   import { Billing, type konsdef } from '../services/billing'
   import type {Tree} from '../models/tree'
   import {DateTime} from 'luxon'
-  import {t, _} from 'svelte-i18n'
+  import {CaseManager, type CaseType} from '../models/case-model'
+  import {EncounterManager, type EncounterType} from '../models/encounter-model'
+  import {_} from 'svelte-i18n'
   import '../../node_modules/@fortawesome/fontawesome-free/js/solid';
 	import '../../node_modules/@fortawesome/fontawesome-free/js/fontawesome';
-import properties from '../services/properties';
 
+
+  const cm=new CaseManager()
+  const em=new EncounterManager()
   let patients:Array<Tree<konsdef>>=[]
   const biller = new Billing()
   biller.getBillables().then((result) => {
@@ -17,6 +21,18 @@ import properties from '../services/properties';
       patients=patients
   }
 
+  async function getFall(t:Tree<konsdef>): Promise<CaseType>{
+    if(!t.payload.Fall){
+      t.payload.Fall=await cm.fetch(t.payload.fallid)
+    }
+    return t.payload.Fall
+  }
+  async function getEncounter(t:Tree<konsdef>): Promise<EncounterType>{
+    if(!t.payload.Konsultation){
+      t.payload.Konsultation=await em.fetch(t.payload.konsid)
+    }
+    return t.payload.Konsultation
+  }
 </script>
 
 <template>
@@ -31,17 +47,20 @@ import properties from '../services/properties';
             <ul>
               {#each p.getChildren() as f, k}
                 <li on:click|stopPropagation={() => toggle(f)}>
-                  {DateTime.fromISO(f.payload.falldatum).toFormat(
-                    $_("formatting.date")
-                  )}
-                  {f.payload.falltitel}
+                  {#await getFall(f)}
+                    {$_("general.loading")}
+                  {:then}
+                    {cm.getLabel(f.payload.Fall)}
+                  {/await}
                   {#if f.props.open}
                     <ul>
                       {#each f.getChildren() as e}
                         <li>
-                          {DateTime.fromISO(e.payload.konsdatum).toFormat(
-                            $_("formatting.date")
-                          )}
+                          {#await getEncounter(e)}
+                            {$_("general-loading")}
+                          {:then}
+                            {em.getLabel(e.payload.Konsultation)}
+                          {/await}
                         </li>
                       {/each}
                     </ul>

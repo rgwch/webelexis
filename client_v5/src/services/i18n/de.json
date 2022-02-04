@@ -54,8 +54,11 @@
   "formatting": {
     "date": "dd.LL.yyyy"
   },
-  "titles":{
+  "titles": {
     "unbilled": "Unverrechnete Konsultationen",
     "bills": "Rechnungen"
+  },
+  "general": {
+    "loading": "lese..."
   }
 }
