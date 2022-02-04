@@ -20,7 +20,7 @@ export interface PatientType extends KontaktType {
 let trl
 const unregister = _.subscribe((res) => (trl = res))
 export class PatientManager {
-  constructor() {}
+  constructor() { }
 
   /**
    * create a standardized human readable 'concerning' line from patient data
@@ -69,9 +69,8 @@ export class Patient {
     const sticker = Patient.sm.getFirstSticker(obj.stickers)
     let style = 'color:black;'
     if (sticker) {
-      style = `color:#${sticker.foreground || 'black'};background-color:#${
-        sticker.background || 'white'
-      };`
+      style = `color:#${sticker.foreground || 'black'};background-color:#${sticker.background || 'white'
+        };`
     }
     let final = `<span style="${style}">${ret}</span>`
     let images = ''
@@ -80,7 +79,7 @@ export class Patient {
       for (const name of obj.stickers) {
         const imgdata = Patient.sm.getImage(name)
         if (imgdata) {
-          images += `<img src="data:image/png;base64,${imgdata}" 
+          images += `<img src="data:image/png;base64,${imgdata}"
           alt="${name}" style="height:1em;width:1em;padding-left:2px;"
          data-toggle="tooltip" title="${name}">`
         }
@@ -191,7 +190,7 @@ export class Patient {
     }
   }
 
-  public static loadContactOptions(obj: PatientType) {}
+  public static loadContactOptions(obj: PatientType) { }
 
   /**
    * Verify that val is a string of 2 to 80 chars length, containing
@@ -239,7 +238,7 @@ export class Patient {
    */
   public static viewToDateModel(val) {
     const m = DateTime.fromFormat(val, 'D.M.YYYY')
-    const ret = m.toFormat('YYYYMMDD')
+    const ret = m.toFormat(trl("formatting.dbdate"))
     return ret
   }
 }

@@ -1,4 +1,9 @@
 {
+  "address": {
+    "place": "Ort",
+    "street": "Strasse",
+    "zip": "plz"
+  },
   "billing": {
     "CANCELLED": "Storniert",
     "DEMAND_NOTE": "Zahlungserinnerung",
@@ -50,15 +55,31 @@
     "we": "Mi",
     "wed": "Mittwoch"
   },
+  "contact": {
+    "birthdate": "Geburtsdatum",
+    "email": "E-Mail",
+    "firstname": "Vorname",
+    "gender": "Geschlecht",
+    "lastname": "Name",
+    "mobile": "Mobil",
+    "phone1": "Telefon 1",
+    "phone2": "Telefon 2",
+    "remark": "Bemerkung"
+  },
   "demotest": "Testkomponente",
   "formatting": {
-    "date": "dd.LL.yyyy"
-  },
-  "titles": {
-    "unbilled": "Unverrechnete Konsultationen",
-    "bills": "Rechnungen"
+    "date": "dd.LL.yyyy",
+    "dbdate": "yyyyLLdd"
   },
   "general": {
     "loading": "lese..."
+  },
+  "titles": {
+    "bills": "Rechnungen",
+    "unbilled": "Unverrechnete Konsultationen"
+  },
+  "validation": {
+    "ivalidDate": "Ungültiges Datum",
+    "onlyText": "Nur Text"
   }
 }

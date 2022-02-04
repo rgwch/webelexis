@@ -1,4 +1,9 @@
 {
+  "address": {
+    "place": "Ort",
+    "street": "Strasse",
+    "zip": "plz"
+  },
   "billing": {
     "CANCELLED": "annulé",
     "DEMAND_NOTE": "premier rappel",
@@ -50,8 +55,31 @@
     "we": "Mer",
     "wed": "Mercredi"
   },
+  "contact": {
+    "birthdate": "Geburtsdatum",
+    "email": "E-Mail",
+    "firstname": "Vorname",
+    "gender": "Geschlecht",
+    "lastname": "Name",
+    "mobile": "Mobil",
+    "phone1": "Telefon 1",
+    "phone2": "Telefon 2",
+    "remark": "Bemerkung"
+  },
   "demotest": "truc de démonstration",
   "formatting": {
-    "date": "DD.MM.YYYY"
+    "date": "DD.MM.YYYY",
+    "dbdate": "yyyyLLdd"
+  },
+  "general": {
+    "loading": "lese..."
+  },
+  "titles": {
+    "bills": "Rechnungen",
+    "unbilled": "Unverrechnete Konsultationen"
+  },
+  "validation": {
+    "ivalidDate": "Ungültiges Datum",
+    "onlyText": "Nur Text"
   }
 }
