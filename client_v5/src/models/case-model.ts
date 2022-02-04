@@ -9,6 +9,7 @@ import { ObjectManager } from "./object-manager";
 import { getService } from "../services/io";
 import type { ServiceType } from './../services/io';
 import { DateTime } from 'luxon'
+import type { PatientType } from './patient';
 
 /**
  * An Elexis "Fall"
@@ -24,7 +25,7 @@ export interface CaseType extends ElexisType {
   datumbis?: string;
   extinfo?: any;
   extjson?: any;
-  _Patient?: any
+  _Patient?: PatientType
 }
 
 export class CaseManager extends ObjectManager {

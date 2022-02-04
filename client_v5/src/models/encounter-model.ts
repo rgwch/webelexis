@@ -4,64 +4,67 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import type { CaseType, CaseManager } from "./case-model";
-import type { ElexisType, UUID } from "./elexistype";
-import { ObjectManager } from "./object-manager";
+import type { CaseType, CaseManager } from './case-model'
+import type { ElexisType, UUID } from './elexistype'
+import { ObjectManager } from './object-manager'
 import { DateTime } from 'luxon'
 
 /**
  * An Elexis "Konsultation"
  */
 export interface EncounterType extends ElexisType {
-  datum: string; // YYYYMMDD
-  zeit: string; // HH:mm:ss
-  mandantid: UUID; // UUIDv4 (36) or ElexisID (25)
-  fallid: UUID; // UUIDv4 (36) or ElexisID (25)
-  rechnungsid?: UUID; // UUIDv4 (36) or ElexisID (25)
-  leistungen?: string; // usually null
+  datum: string // YYYYMMDD
+  zeit: string // HH:mm:ss
+  mandantid: UUID // UUIDv4 (36) or ElexisID (25)
+  fallid: UUID // UUIDv4 (36) or ElexisID (25)
+  rechnungsid?: UUID // UUIDv4 (36) or ElexisID (25)
+  leistungen?: string // usually null
   eintrag: {
-    remark: string; // Editor of last modification
-    html?: string; // HTML Version of the entrytext
-    timestamp: string; // Date of last modification
-  };
+    remark: string // Editor of last modification
+    html?: string // HTML Version of the entrytext
+    timestamp: string // Date of last modification
+  }
   _Patient?: any
-  _Fall?: CaseType;
+  _Fall?: CaseType
 }
 
 export class EncounterManager extends ObjectManager {
-
   constructor() {
-    super("konsultation")
+    super('konsultation')
+  }
+
+  private timeString(t: string) {
+    return t.substring(0, 2) + ':' + t.substring(2,4)
   }
 
   public fetchFor(
     dateFrom: string,
     dateUntil: string,
-    mandant: UUID
+    mandant: UUID,
   ): Promise<EncounterType[]> {
-    const from = DateTime.fromISO(dateFrom).toFormat("yyyyLLdd");
-    const until = DateTime.fromISO(dateUntil).toFormat("yyyyLLdd");
+    const from = DateTime.fromISO(dateFrom).toFormat('yyyyLLdd')
+    const until = DateTime.fromISO(dateUntil).toFormat('yyyyLLdd')
 
     return this.dataService
       .find({
         query: {
-          $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }]
-        }
+          $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }],
+        },
       })
-      .then(result => {
+      .then((result) => {
         return result.data.sort((a, b) => {
-          const d1 = a.datum;
-          const d2 = b.datum;
-          let dx = d1.localeCompare(d2);
+          const d1 = a.datum
+          const d2 = b.datum
+          let dx = d1.localeCompare(d2)
           if (dx === 0) {
-            dx = a.zeit.localeCompare(b.zeit);
+            dx = a.zeit.localeCompare(b.zeit)
           }
-          return dx;
-        });
+          return dx
+        })
       })
-      .catch(err => {
-        alert(err);
-      });
+      .catch((err) => {
+        alert(err)
+      })
   }
 
   /*
@@ -83,7 +86,11 @@ export class EncounterManager extends ObjectManager {
   }
 */
   public getLabel(enc: EncounterType) {
-    return DateTime.fromISO(enc.datum).toLocaleString() + "," + enc.zeit;
+    return (
+      DateTime.fromISO(enc.datum).toLocaleString() +
+      ', ' +
+      this.timeString(enc.zeit)
+    )
   }
 
   /*

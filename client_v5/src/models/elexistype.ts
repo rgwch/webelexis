@@ -3,16 +3,16 @@
  * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-
+import type { StickerType } from './stickers-model'
 /**
  * Base model for all types transported from and to the elexis database
  */
 export interface ElexisType {
   type?: string
-  id?: string
-  stickers?: string[]
+  id?: UUID
+  stickers?: Array<string>
 }
 
-export type UUID = string
+export type UUID = string // UUIDv4 (36) or ElexisID (25)
 
-export type DATE = string
+export type DATE = string // YYYYMMDD
