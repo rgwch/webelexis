@@ -55,6 +55,7 @@
     "date": "dd.LL.yyyy"
   },
   "titles":{
-    "unbilled": "Unverrechnete Konsultationen"
+    "unbilled": "Unverrechnete Konsultationen",
+    "bills": "Rechnungen"
   }
 }

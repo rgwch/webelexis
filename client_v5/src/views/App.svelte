@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <!-- div class="container mx-auto px-2" -->
+  <div class="container mx-auto px-2">
   <Router>
     <nav>
       <Link to="agenda">Agenda</Link>
@@ -17,5 +17,5 @@
       <Route path="billing" component={Billing} />
     </div>
   </Router>
-  <!-- /div -->
+  </div>
 </template>

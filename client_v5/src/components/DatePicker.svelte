@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import Calendar from "./Calendar.svelte";
   import { monthNames } from "../models/timedate";
   import { DateTime } from "luxon";
@@ -30,7 +30,7 @@
   export let id: string = Math.random()
     .toString(36)
     .replace(/[^a-z]+/g, "")
-    .substr(0, 5);
+    .substring(0, 5);
 
   let showDatePicker;
 
@@ -49,9 +49,15 @@
   const prev_year = () => (current = selected.minus({ years: 1 }).toJSDate()); // new Date(selected.setFullYear(selected.getFullYear() - 1)));
   const today = () => {
     current = new Date();
+    dateChanged()
   };
   const next_month = () => (current = selected.plus({ months: 1 }).toJSDate()); // new Date(selected.setMonth(selected.getMonth() + 1)));
   const prev_month = () => (current = selected.minus({ months: 1 }).toJSDate()); // new Date(selected.setMonth(selected.getMonth() - 1)));
+  
+  onMount(()=>{
+    setTimeout(()=>dispatch('select',current),200)
+    
+  })
 </script>
 
 <template>

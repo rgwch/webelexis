@@ -16,10 +16,10 @@
 <template>
   <div class="flex">
     <DatePicker on:select={select} keepOpen={true} />
-    <div>
+    <div class="flex-auto">
       <ul>
         {#each list as tm}
-          <li style={"background-color"+tm.getStateColor()}>
+          <li style="background-color:{tm.getStateColor()}">
             {#await tm.getLabel()}
               loading...
             {:then label}

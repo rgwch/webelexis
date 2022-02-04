@@ -28,7 +28,7 @@
 </script>
 
 <template>
-  <div class="overflow-auto">
+  <div class="overflow-auto max-h-[80vh] max-w-full">
     <table>
       <thead>
         <th

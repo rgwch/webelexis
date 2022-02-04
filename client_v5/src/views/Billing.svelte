@@ -55,15 +55,20 @@
 </script>
 
 <template>
-  <div class="container mx-auto">
-    <select bind:value={billstate} on:change={select} on:click={select}>
-      {#each states as state}
-        <option value={state}>{$_("billing." + state)}</option>
-      {/each}
-    </select>
-    <input type="text" bind:value={name} />
-    <button on:click={refilter}>Filter</button>
-    <Bills {bills} filter={patfilter} />
-    <Unbilled></Unbilled>
+  <div class="flex">
+    <div
+      class="my-3 p-1 border-2 border-solid border-blue-400 rounded max-h-[80vh] overflow-auto max-w-1/2"
+    >
+    <h2 class="mx-3">{$_("titles.bills")}</h2>
+      <select bind:value={billstate} on:change={select} on:click={select}>
+        {#each states as state}
+          <option value={state}>{$_("billing." + state)}</option>
+        {/each}
+      </select>
+      <input type="text" bind:value={name} />
+      <button on:click={refilter}>Filter</button>
+      <Bills {bills} filter={patfilter} />
+    </div>
+    <Unbilled />
   </div>
 </template>
