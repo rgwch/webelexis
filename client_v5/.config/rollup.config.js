@@ -6,7 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
-import windicss from 'svelte-windicss-preprocess'
+import { windi } from 'svelte-windicss-preprocess'
 import replace from '@rollup/plugin-replace'
 import json from '@rollup/plugin-json'
 import infos from '../package.json'
@@ -47,7 +47,7 @@ export default {
     svelte({
       preprocess: [
         sveltePreprocess({ sourceMap: !production }),
-        windicss.preprocess(),
+        windi({ mode: production ? "production" : "development" }),
       ],
       compilerOptions: {
         // enable run-time checks when not in production
@@ -56,7 +56,7 @@ export default {
     }),
     // we'll extract any component CSS out into
     // a separate file - better for performance
-    css({ output: production ? windicss.optimize('bundle.css') : 'bundle.css' }),
+    css({ output: 'bundle.css' }),
     replace({
       'isproduction': production.toString(),
       'WEBELEXIS_VERSION': infos.version,
