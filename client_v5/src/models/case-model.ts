@@ -9,7 +9,7 @@ import { ObjectManager } from "./object-manager";
 import { getService } from "../services/io";
 import type { ServiceType } from './../services/io';
 import { DateTime } from 'luxon'
-import type { PatientType } from './patient';
+import type { PatientType } from './patient-model';
 
 /**
  * An Elexis "Fall"

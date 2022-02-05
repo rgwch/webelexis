@@ -8,6 +8,8 @@ import type { CaseType, CaseManager } from './case-model'
 import type { ElexisType, UUID } from './elexistype'
 import { ObjectManager } from './object-manager'
 import { DateTime } from 'luxon'
+import { _ } from 'svelte-i18n'
+import { weekDaysShort } from './timedate'
 
 /**
  * An Elexis "Konsultation"
@@ -29,12 +31,14 @@ export interface EncounterType extends ElexisType {
 }
 
 export class EncounterManager extends ObjectManager {
+  private trl
   constructor() {
     super('konsultation')
+    const un = _.subscribe(res => this.trl = res)
   }
 
   private timeString(t: string) {
-    return t.substring(0, 2) + ':' + t.substring(2,4)
+    return t.substring(0, 2) + ':' + t.substring(2, 4)
   }
 
   public fetchFor(
@@ -86,8 +90,10 @@ export class EncounterManager extends ObjectManager {
   }
 */
   public getLabel(enc: EncounterType) {
+    const dat = DateTime.fromISO(enc.datum)
+    const weekday = weekDaysShort[dat.weekday - 1]
     return (
-      DateTime.fromISO(enc.datum).toLocaleString() +
+      weekday + ", " + dat.toFormat(this.trl("formatting.date")) +
       ', ' +
       this.timeString(enc.zeit)
     )

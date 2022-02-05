@@ -69,6 +69,7 @@
   "demotest": "Testkomponente",
   "formatting": {
     "date": "dd.LL.yyyy",
+    "longdate": "ccc, dd.LL.yyyy",
     "dbdate": "yyyyLLdd"
   },
   "general": {

@@ -1,37 +1,39 @@
 <script lang="ts">
-  import { Billing, type konsdef } from '../services/billing'
-  import type {Tree} from '../models/tree'
-  import {DateTime} from 'luxon'
-  import {CaseManager, type CaseType} from '../models/case-model'
-  import {EncounterManager, type EncounterType} from '../models/encounter-model'
-  import {_} from 'svelte-i18n'
-  import '../../node_modules/@fortawesome/fontawesome-free/js/solid';
-	import '../../node_modules/@fortawesome/fontawesome-free/js/fontawesome';
+  import { Billing } from "../services/billing";
+  import type { konsdef } from "../services/billing";
+  import type { Tree } from "../models/tree";
+  import { DateTime } from "luxon";
+  import { CaseManager } from "../models/case-model";
+  import type { CaseType } from "../models/case-model";
+  import { EncounterManager } from "../models/encounter-model";
+  import type { EncounterType } from "../models/encounter-model";
+  import { _ } from "svelte-i18n";
+  import "../../node_modules/@fortawesome/fontawesome-free/js/solid";
+  import "../../node_modules/@fortawesome/fontawesome-free/js/fontawesome";
 
-
-  const cm=new CaseManager()
-  const em=new EncounterManager()
-  let patients:Array<Tree<konsdef>>=[]
-  const biller = new Billing()
+  const cm = new CaseManager();
+  const em = new EncounterManager();
+  let patients: Array<Tree<konsdef>> = [];
+  const biller = new Billing();
   biller.getBillables().then((result) => {
-    patients=result.getChildren()
-  })
-  function toggle(t:Tree<konsdef>){
-      t.props.open=!t.props.open
-      patients=patients
+    patients = result.getChildren();
+  });
+  function toggle(t: Tree<konsdef>) {
+    t.props.open = !t.props.open;
+    patients = patients;
   }
 
-  async function getFall(t:Tree<konsdef>): Promise<CaseType>{
-    if(!t.payload.Fall){
-      t.payload.Fall=await cm.fetch(t.payload.fallid)
+  async function getFall(t: Tree<konsdef>): Promise<CaseType> {
+    if (!t.payload.Fall) {
+      t.payload.Fall = await cm.fetch(t.payload.fallid);
     }
-    return t.payload.Fall
+    return t.payload.Fall;
   }
-  async function getEncounter(t:Tree<konsdef>): Promise<EncounterType>{
-    if(!t.payload.Konsultation){
-      t.payload.Konsultation=await em.fetch(t.payload.konsid)
+  async function getEncounter(t: Tree<konsdef>): Promise<EncounterType> {
+    if (!t.payload.Konsultation) {
+      t.payload.Konsultation = await em.fetch(t.payload.konsid);
     }
-    return t.payload.Konsultation
+    return t.payload.Konsultation;
   }
 </script>
 
