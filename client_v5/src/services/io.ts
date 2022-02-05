@@ -9,7 +9,7 @@ app.configure(feathers.socketio(socket))
 app.configure(auth({ storage: window.localStorage }))
 
 export type ServiceType = "patient" | "termin" | "fall" | "stickers" | "user" | "kontakt"
-  | "admin" | "konsultation" | "invoice"
+  | "admin" | "konsultation" | "invoice" | "billing" | "billable"
 export const getService = (name: ServiceType) => app.service(name)
 
 export const login = async (username?: string, password?: string) => {
