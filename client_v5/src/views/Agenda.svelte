@@ -2,6 +2,7 @@
   import DatePicker from "../components/DatePicker.svelte";
   import { TerminManager, TerminModel } from "../models/termine-model";
   import type { TerminType } from "../models/termine-model";
+  import { _ } from "svelte-i18n";
   const tm = new TerminManager();
 
   let list: Array<TerminModel> = [];
@@ -22,7 +23,7 @@
         {#each list as tm}
           <li style="background-color:{tm.getStateColor()}">
             {#await tm.getLabel()}
-              loading...
+              {$_("general.loading")}
             {:then label}
               {label}
             {/await}

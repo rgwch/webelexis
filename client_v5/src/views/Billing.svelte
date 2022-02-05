@@ -17,6 +17,7 @@
     });
   let states: Array<string> = [];
 
+  // Build Array of possible Bill states
   for (let value in InvoiceState) {
     if (typeof InvoiceState[value] === "number") {
       states.push(value);
