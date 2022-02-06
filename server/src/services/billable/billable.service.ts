@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import createService from './billable.class.js';
+import createService from './billable.class';
 import hooks from './billable.hooks'
 
 export default function (app) {

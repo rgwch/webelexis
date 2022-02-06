@@ -4,23 +4,25 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import createService from './admin.class';
-import hooks from './admin.hooks';
+// Use DIY Service instead of feathers default service
+import createService from './patient.class';
+import hooks from './patient.hooks';
 
 export default function (app) {
 
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'admin',
+    app,
+    name: 'patient',
     paginate
   };
 
   // Initialize our service with any options it requires
-  app.use('/admin', createService(options));
+  app.use('/patient', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('admin');
+  const service = app.service('patient');
 
   service.hooks(hooks);
 };

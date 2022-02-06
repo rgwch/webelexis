@@ -4,23 +4,25 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import createService from './admin.class';
-import hooks from './admin.hooks';
+const createService = require('feathers-knex');
+import createModel from '../../models/article.model'
+import  hooks from './article.hooks'
 
 export default function (app) {
-
+  const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'admin',
+    name: 'artikelstamm_ch',
+    Model,
     paginate
   };
 
   // Initialize our service with any options it requires
-  app.use('/admin', createService(options));
+  app.use('/article', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('admin');
+  const service = app.service('article');
 
   service.hooks(hooks);
 };

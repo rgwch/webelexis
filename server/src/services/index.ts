@@ -7,27 +7,27 @@
 import elexisConfig from './elexis-config/elexis-config.service'
 import admin from './admin/admin.service'
 import user from './user/user.service'
-const kontakt = require('./kontakt/kontakt.service.js')
+import kontakt from './kontakt/kontakt.service'
 import agntermine from './agntermine/agntermine.service'
-const patient = require('./patient/patient.service.js')
+import patient from './patient/patient.service'
 import fall from './fall/fall.service'
 import konsultation from './konsultation/konsultation.service'
-const article = require('./article/article.service.js')
+import article from './article/article.service'
 import elexisUserconfig from './elexis-userconfig/elexis-userconfig.service'
 import prescriptions from './prescriptions/prescriptions.service'
 import auf from './auf/auf.service'
 import createpdf from './createpdf/createpdf.service'
-const macros = require('./macros/macros.service.js')
-const labresults = require('./labresults/labresults.service.js')
-const findings = require('./findings/findings.service.js')
-const stickers = require('./stickers/stickers.service.js')
+import macros from './macros/macros.service'
+import labresults from './labresults/labresults.service'
+import findings from './findings/findings.service'
+import stickers from './stickers/stickers.service'
 import billing from './billing/billing.service'
-const tarmed = require('./tarmed/tarmed.service.js')
+import tarmed from './tarmed/tarmed.service'
 import billable from './billable/billable.service'
-import leistungsblock from './leistungsblock/leistungsblock.service.js'
-const lucinda = require('./lucinda/lucinda.service.js')
-const oddb = require('./oddb/oddb.service.js')
-const metaArticle = require('./meta-article/meta-article.service.js')
+import leistungsblock from './leistungsblock/leistungsblock.service'
+import lucinda from './lucinda/lucinda.service'
+import oddb  from'./oddb/oddb.service'
+import metaArticle from './meta-article/meta-article.service'
 import briefe from './briefe/briefe.service'
 const { ACE, declareACE } = require('../util/acl')
 const generateACLs = (servicename) => {
@@ -41,12 +41,12 @@ const generateACLs = (servicename) => {
   const a7 = new ACE(servicename + '.get', a6)
   declareACE([a1, a2, a3, a4, a5, a6, a7])
 }
-const schedule = require('./schedule/schedule.service.js')
-const stickynotes = require('./stickynotes/stickynotes.service.js')
+import schedule from './schedule/schedule.service'
+import stickynotes from './stickynotes/stickynotes.service'
 import bills from './bills/bills.service'
 import invoice from './invoice/invoice.service'
-const payments = require('./payments/payments.service.js')
-import diagnose from './diagnose/diagnose.service';
+import payments from './payments/payments.service'
+import diagnose from './diagnose/diagnose.service'
 
 export default (app) => {
   app.configure(elexisConfig)
@@ -85,5 +85,5 @@ export default (app) => {
   app.configure(bills)
   app.configure(invoice)
   app.configure(payments)
-  app.configure(diagnose);
+  app.configure(diagnose)
 }
