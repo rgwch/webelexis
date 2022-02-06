@@ -1,6 +1,6 @@
 // Initializes the `tarmed` service on path `/tarmed`
 const createService = require('feathers-knex');
-const createModel = require('../../models/tarmed.model');
+import createModel from '../../models/tarmed.model'
 const hooks = require('./tarmed.hooks');
 
 module.exports = function (app) {

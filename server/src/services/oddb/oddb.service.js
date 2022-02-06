@@ -1,6 +1,6 @@
 // Initializes the `oddb` service on path `/oddb`
 const createService = require('feathers-knex');
-const createModel = require('../../models/oddb.model');
+import createModel from '../../models/oddb.model'
 const hooks = require('./oddb.hooks');
 
 module.exports = function (app) {
@@ -21,4 +21,3 @@ module.exports = function (app) {
 
   service.hooks(hooks);
 };
-  

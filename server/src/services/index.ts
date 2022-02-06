@@ -4,31 +4,31 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const elexisConfig = require('./elexis-config/elexis-config.service.js')
-const admin = require('./admin/admin.service.js')
-const user = require('./user/user.service.js')
+import elexisConfig from './elexis-config/elexis-config.service'
+import admin from './admin/admin.service'
+import user from './user/user.service'
 const kontakt = require('./kontakt/kontakt.service.js')
-const agntermine = require('./agntermine/agntermine.service.js')
+import agntermine from './agntermine/agntermine.service'
 const patient = require('./patient/patient.service.js')
-const fall = require('./fall/fall.service.js')
+import fall from './fall/fall.service'
 import konsultation from './konsultation/konsultation.service'
 const article = require('./article/article.service.js')
-const elexisUserconfig = require('./elexis-userconfig/elexis-userconfig.service.js')
-const prescriptions = require('./prescriptions/prescriptions.service.js')
-const auf = require('./auf/auf.service.js')
-const createpdf = require('./createpdf/createpdf.service.js')
+import elexisUserconfig from './elexis-userconfig/elexis-userconfig.service'
+import prescriptions from './prescriptions/prescriptions.service'
+import auf from './auf/auf.service'
+import createpdf from './createpdf/createpdf.service'
 const macros = require('./macros/macros.service.js')
 const labresults = require('./labresults/labresults.service.js')
 const findings = require('./findings/findings.service.js')
 const stickers = require('./stickers/stickers.service.js')
-const billing = require('./billing/billing.service.js')
+import billing from './billing/billing.service'
 const tarmed = require('./tarmed/tarmed.service.js')
-const billable = require('./billable/billable.service.js')
-const leistungsblock = require('./leistungsblock/leistungsblock.service.js')
+import billable from './billable/billable.service'
+import leistungsblock from './leistungsblock/leistungsblock.service.js'
 const lucinda = require('./lucinda/lucinda.service.js')
 const oddb = require('./oddb/oddb.service.js')
 const metaArticle = require('./meta-article/meta-article.service.js')
-const briefe = require('./briefe/briefe.service.js')
+import briefe from './briefe/briefe.service'
 const { ACE, declareACE } = require('../util/acl')
 const generateACLs = (servicename) => {
   const a = []
@@ -43,10 +43,10 @@ const generateACLs = (servicename) => {
 }
 const schedule = require('./schedule/schedule.service.js')
 const stickynotes = require('./stickynotes/stickynotes.service.js')
-import bills from './bills/bills.service.js'
-const invoice = require('./invoice/invoice.service.js')
+import bills from './bills/bills.service'
+import invoice from './invoice/invoice.service'
 const payments = require('./payments/payments.service.js')
-import diagnose from './diagnose/diagnose.service.js';
+import diagnose from './diagnose/diagnose.service';
 
 export default (app) => {
   app.configure(elexisConfig)

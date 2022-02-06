@@ -6,7 +6,7 @@
 
 import { logger } from '../logger'
 
-export default (app) => {
+export const createModel = (app) => {
   const db = app.get('knexClient');
   const tableName = 'diagnosen';
   const jointTable = 'behdl_dg_joint'

@@ -1,6 +1,6 @@
-// Initializes the `invoice` service on path `/invoice`
-import createService from './invoice.class'
-import hooks from './invoice.hooks'
+// Initializes the `createpdf` service on path `/createpdf`
+const createService = require('./createpdf.class.js');
+import hooks from './createpdf.hooks'
 
 export default function (app) {
 
@@ -11,10 +11,10 @@ export default function (app) {
   };
 
   // Initialize our service with any options it requires
-  app.use('/invoice', createService(options));
+  app.use('/createpdf', createService(options));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('invoice');
+  const service = app.service('createpdf');
 
   service.hooks(hooks);
 };

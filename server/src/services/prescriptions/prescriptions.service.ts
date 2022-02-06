@@ -4,25 +4,33 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+// Initializes the `prescriptions` service on path `/rezept`
 const createService = require('feathers-knex');
-import createModel from '../../models/konsultation.model'
-import hooks from './konsultation.hooks';
+import createModel from '../../models/prescriptions.model'
+import hooks from './prescriptions.hooks'
 
-export default (app) => {
+export default function (app) {
   const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'behandlungen',
+    name: 'patient_artikel_joint',
     Model,
-    paginate
+    paginate: {
+      default: 100,
+      max: 500
+    }
   };
 
   // Initialize our service with any options it requires
-  app.use('/konsultation', createService(options));
+  app.use('/prescriptions', createService(options));
+  app.use('/rezepte', createService({
+    name: "rezepte",
+    Model
+  }))
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('konsultation');
+  const service = app.service('prescriptions');
 
   service.hooks(hooks);
 };

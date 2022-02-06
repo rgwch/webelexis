@@ -1,6 +1,6 @@
 // Initializes the `stickynotes` service on path `/stickynotes`
 const { Stickynotes } = require('./stickynotes.class');
-const createModel = require('../../models/stickynotes.model');
+import createModel from '../../models/stickynotes.model'
 const hooks = require('./stickynotes.hooks');
 
 module.exports = function (app) {

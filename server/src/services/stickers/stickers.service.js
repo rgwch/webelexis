@@ -1,6 +1,6 @@
 // Initializes the `stickers` service on path `/stickers`
 const createService = require('feathers-knex');
-const createModel = require('../../models/stickers.model');
+import createModel from '../../models/stickers.model'
 const hooks = require('./stickers.hooks');
 
 module.exports = function (app) {

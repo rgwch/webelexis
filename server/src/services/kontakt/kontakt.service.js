@@ -1,11 +1,11 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2018 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
 const createService = require('feathers-knex');
-const createModel = require('../../models/kontakt.model');
+import createModel from '../../models/kontakt.model'
 const hooks = require('./kontakt.hooks');
 
 module.exports = function (app) {

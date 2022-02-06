@@ -1,5 +1,5 @@
-const qrbill = require('swissqrbill')
-const util = require('swissqrbill/utils')
+import qrbill from 'swissqrbill'
+const util = qrbill.utils // require('swissqrbill/utils')
 import { config as cfg } from '../../configuration'
 import path from 'path'
 import { Currency } from 'swissqrbill/lib/node/esm/shared/types'

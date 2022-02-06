@@ -4,25 +4,26 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+// Initializes the `auf` service on path `/auf`
 const createService = require('feathers-knex');
-import createModel from '../../models/konsultation.model'
-import hooks from './konsultation.hooks';
+import createModel from '../../models/auf.model';
+import hooks from './auf.hooks'
 
-export default (app) => {
+export default function (app) {
   const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'behandlungen',
+    name: 'auf',
     Model,
     paginate
   };
 
   // Initialize our service with any options it requires
-  app.use('/konsultation', createService(options));
+  app.use('/auf', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('konsultation');
+  const service = app.service('auf');
 
   service.hooks(hooks);
 };
