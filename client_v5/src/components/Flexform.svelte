@@ -248,7 +248,7 @@
           {#if displayType(attr) == "line"}
             <div>
               {#if !ff_cfg.compact}
-                <label for="attr.attribute"
+                <label for={attr.attribute}
                   >{attr.label || attr.attribute}</label
                 >
               {/if}
@@ -257,7 +257,7 @@
                 class="form-control"
                 readonly={isLocked}
                 placeholder="${attr.label}"
-                id="${attr.attribute}"
+                id={attr.attribute}
                 bind:value={entity[attr.attribute]}
                 on:blur={() => validateField(attr)}
               />
@@ -270,10 +270,10 @@
           {:else if displayType(attr) == "field"}
             <div>
               {#if !ff_cfg.compact}
-                <label for="attr.attribute">${attr.label}</label>
+                <label for={attr.attribute}>{attr.label}</label>
               {/if}
               <textarea
-                id="${attr.attribute}"
+                id={attr.attribute}
                 bind:value={entity[attr.attribute]}
                 readonly={isLocked}
                 style="width:100%;height:5em;"
