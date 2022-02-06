@@ -1,5 +1,6 @@
-const design = require('./design');
-module.exports = function (app) {
+import design from './design';
+
+export default function (app) {
   app.get("/test",(req,reply)=>{
     reply.json({"status":"Hups"})
   })

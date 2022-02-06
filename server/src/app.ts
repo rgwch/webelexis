@@ -7,12 +7,12 @@
 /*
    main entry point for the webelexis server
 */
-const path = require('path')
-const favicon = require('serve-favicon')
-const compress = require('compression')
-const cors = require('cors')
-const helmet = require('helmet')
-const { logger } = require('./logger')
+import path from 'path'
+import favicon from 'serve-favicon'
+import compress from 'compression'
+import cors from 'cors'
+import helmet from 'helmet'
+import { logger } from './logger'
 const authentication = require('./authentication')
 const knex = require('./knex')
 const feathers = require('@feathersjs/feathers')
@@ -20,11 +20,11 @@ const configuration = require('@feathersjs/configuration')
 const express = require('@feathersjs/express')
 const socketio = require('@feathersjs/socketio')
 
-const middleware = require('./middleware')
+import middleware from './middleware'
 import services from './services'
 import appHooks from './app.hooks'
 import channels from './channels'
-const admin = require('./admin')
+import admin from './admin'
 import { config as userconf } from './configuration'
 const app = express(feathers())
 app.set('views', path.join(__dirname, '../views'))

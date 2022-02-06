@@ -29,7 +29,7 @@ import lucinda from './lucinda/lucinda.service'
 import oddb  from'./oddb/oddb.service'
 import metaArticle from './meta-article/meta-article.service'
 import briefe from './briefe/briefe.service'
-const { ACE, declareACE } = require('../util/acl')
+import { ACE, declareACE } from '../util/acl'
 const generateACLs = (servicename) => {
   const a = []
   const a1 = new ACE(servicename)

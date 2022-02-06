@@ -4,14 +4,13 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const {logger} = require('../logger')
+import {logger} from '../logger'
 const Mailer = require('../util/mailer')
-const defaults = require('../configuration')
+import {config, roles} from '../configuration'
 const uuid = require('uuid/v4')
-const roles = defaults.roles
-const { hasRight } = require('../util/acl')
+import { hasRight } from '../util/acl'
 
-module.exports = function (app) {
+export default function (app) {
 
   app.get("/lostpwd/:mail", (request, reply) => {
     const mail = request.params.mail
@@ -26,8 +25,8 @@ module.exports = function (app) {
       userService.update(user.email, user).then(updated => {
 
       })
-      const mailer = new Mailer(app, defaults.system.admin)
-      const mail = `Bitte folgen Sie innert 4 Stunden diesem Link: ${defaults.system.url}, um Ihr Passwort zurückzusetzen.`
+      const mailer = new Mailer(app, config.admin)
+      const mail = `Bitte folgen Sie innert 4 Stunden diesem Link: ${config.url}, um Ihr Passwort zurückzusetzen.`
       mailer.send(mail, "Webelexis Passwort Wiederherstellung")
       reply.send("Sie erhalten in Kürze eine Mail mit Anweisungen, wie Sie Ihr Passwort zurücksetzen können.")
     }).catch(notfound => {
@@ -52,7 +51,7 @@ module.exports = function (app) {
         user.token.uuid = uuid()
         user.token.ts = new Date().getTime()
         userService.update(user.email, user).then(updated => {
-          response.render('newpwd', { title: `${defaults.system.sitename}`, user: user.email, uid: user.token.uuid })
+          response.render('newpwd', { title: `${config.sitename}`, user: user.email, uid: user.token.uuid })
         })
       }
     }

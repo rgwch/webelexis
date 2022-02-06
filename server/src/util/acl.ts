@@ -1,6 +1,6 @@
 /***************************************
  * This file is part of Webelexis(tm)
- * Copyright (c) 2016-2020 by G. Weirich.
+ * Copyright (c) 2016-2022 by G. Weirich.
  * All rights reserved.
  ***************************************/
 
@@ -29,11 +29,11 @@ import { roles as sysroles, mappings as mapper } from '../configuration'
 import {logger} from '../logger'
 
 
-class ACE {
+export class ACE {
   private name
   private parent
   private fullname
-  constructor(name, parent) {
+  constructor(name, parent?) {
     this.name = name
     this.parent = parent
     if (this.parent) {
@@ -44,7 +44,7 @@ class ACE {
   }
 }
 
-const declareACE = (ace) => {
+export const declareACE = (ace) => {
   if (Array.isArray(ace)) {
     for (const a of ace) {
       declareACE(a)
@@ -59,7 +59,7 @@ const declareACE = (ace) => {
  * @param {*} usr The user in question
  * @param {*} acename the action requested
  */
-const hasRight = (usr, acename) => {
+export const hasRight = (usr, acename) => {
   // if no usr is given, or they have no roles, it's a guest
   if (!usr) {
     usr = {}
@@ -113,16 +113,10 @@ const hasRight = (usr, acename) => {
  * @param {*} usr
  * @param {*} ace
  */
-const needsRight = (usr, ace) => {
+export const needsRight = (usr, ace) => {
   if (!hasRight(usr, ace)) {
     logger.warn("%s has insufficient rights for %s", usr, ace)
     throw new Error("insufficient rights")
   }
 }
 
-module.exports = {
-  ACE,
-  declareACE,
-  hasRight,
-  needsRight
-}
