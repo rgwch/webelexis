@@ -17,6 +17,7 @@ module.exports = {
     config.plugins.push(
       new WindiCSS()
     )
+    config.output.hashFunction = 'md5'
     return config
   }
 }
