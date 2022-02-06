@@ -8,7 +8,7 @@
     "dev": "rollup -c .config/rollup.config.js -w",
     "start": "sirv public -s --port 3000",
     "validate": "svelte-check",
-    "storybook": "start-storybook -p 6006 -c .config/storybook",
+    "storybook": "export NODE_OPTIONS=--openssl-legacy-provider && start-storybook -p 6006 -c .config/storybook",
     "build-storybook": "build-storybook -c .config/storybook",
     "test": "jest -c .config/jest.config.js",
     "test:watch": "npm test -- --watch",

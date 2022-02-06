@@ -99,7 +99,6 @@
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import { attr } from "svelte/internal";
   export let ff_cfg: FlexformConfig;
   export let entity: any;
   export let lockable: boolean = false;
@@ -108,21 +107,21 @@
   let original: any;
 
   onMount(() => {
-    this.isLocked = this.lockable;
+    isLocked = lockable;
   });
 
   // called whenever a new entity is loaded
   function entityChanged(newvalue, oldvalue) {
-    this.original = this.original = Object.assign({}, newvalue);
-    this.isDirty = false;
-    this.isLocked = true;
+    original = Object.assign({}, newvalue);
+    isDirty = false;
+    isLocked = true;
   }
 
   function getTitle() {
-    if (typeof this.ff_cfg.title === "string") {
-      return this.ff_cfg.title;
+    if (typeof ff_cfg.title === "string") {
+      return ff_cfg.title;
     } else {
-      return this.ff_cfg.title();
+      return ff_cfg.title();
     }
   }
 
@@ -144,7 +143,7 @@
     called befor commiting any changes to the database
 
   function validate() {
-    this.ff_cfg.attributes.forEach(attr => {
+    ff_cfg.attributes.forEach(attr => {
       if (attr.validation) {
         ValidationRules
           .ensure(entity => entity[attr.attribute])
@@ -159,12 +158,12 @@
     called after leaving a field. Set dirty flag and give error message
   */
   function validateField(attr) {
-    if (this.entity) {
-      // this.isDirty = !_.isEqual(this.entity, this.original);
+    if (entity) {
+      // isDirty = !_.isEqual(entity, original);
 
       if (attr && attr.validation) {
-        if (this.entity[attr.attribute]) {
-          if (attr.validation(this.entity[attr.attribute], this.entity)) {
+        if (entity[attr.attribute]) {
+          if (attr.validation(entity[attr.attribute], entity)) {
             attr.hasErrors = false;
           } else {
             attr.hasErrors = true;
@@ -179,40 +178,43 @@
     toggle the lock
   */
   function lock() {
-    this.isLocked = !this.isLocked;
+    isLocked = !isLocked;
   }
 
   /*
     save the entiy to the database. Will reject if validaion fails
   */
+
   function save() {
-    this.validationController.validate().then((result) => {
+    /*
+    validationController.validate().then((result) => {
       if (result.valid) {
-        const dataService = this.ds.getService(this.entity.type);
+        const dataService = ds.getService(entity.type);
         if (dataService) {
-          dataService.update(this.entity.id, this.entity);
-          dataService.emit("updated", this.entity);
+          dataService.update(entity.id, entity);
+          dataService.emit("updated", entity);
         }
-        this.isDirty = false;
-        this.original = Object.assign({}, this.entity);
+        isDirty = false;
+        original = Object.assign({}, entity);
       }
     });
+    */
   }
 
   /*
     cancel all modifications and restore state after last save
   */
   function undo() {
-    this.entity = Object.assign({}, this.original);
-    this.isDirty = false;
+    entity = Object.assign({}, original);
+    isDirty = false;
   }
 
   function getRowCss() {
-    return this.ff_cfg.rowcss || "form-row";
+    return ff_cfg.rowcss || "form-row";
   }
   function colCss(attr) {
-    if (this.ff_cfg.colcss) {
-      return this.ff_cfg.colcss;
+    if (ff_cfg.colcss) {
+      return ff_cfg.colcss;
     } else {
       if (attr.sizehint) {
         return "form-group col-" + attr.sizehint;
@@ -242,11 +244,13 @@
   <form>
     <div>
       {#each ff_cfg.attributes as attr}
-        <div class="${colCss(attr)}">
+        <div class={colCss(attr)}>
           {#if displayType(attr) == "line"}
             <div>
               {#if !ff_cfg.compact}
-                <label for="attr.attribute">${attr.label}</label>
+                <label for="attr.attribute"
+                  >{attr.label || attr.attribute}</label
+                >
               {/if}
               <input
                 type="text"
