@@ -8,7 +8,7 @@ import { DateTime } from 'luxon'
 import { Mailer } from '../../util/mailer'
 const mm2pt = util.mm2pt
 
-export function createBill(bill) {
+export function outputInvoice(bill) {
   return new Promise((resolve, reject) => {
     const data = createData(bill)
     const filename = path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf')

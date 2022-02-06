@@ -1,6 +1,6 @@
 import { config } from '../../configuration'
 const { authenticate } = require('@feathersjs/authentication').hooks;
-import { createBill } from './generator'
+import { outputInvoice } from './generator'
 
 const create = async ctx => {
   if (config.billing.stickerForMail) {
@@ -12,7 +12,7 @@ const create = async ctx => {
       }
     }
   }
-  const result = await createBill(ctx.data)
+  const result = await outputInvoice(ctx.data)
   ctx.result = true
   return ctx
 }

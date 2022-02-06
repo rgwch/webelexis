@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -46,7 +46,9 @@ const stickynotes = require('./stickynotes/stickynotes.service.js')
 import bills from './bills/bills.service.js'
 const invoice = require('./invoice/invoice.service.js')
 const payments = require('./payments/payments.service.js')
-module.exports = function (app) {
+import diagnose from './diagnose/diagnose.service.js';
+
+export default (app) => {
   app.configure(elexisConfig)
   generateACLs('elexis-config')
   app.configure(admin)
@@ -83,4 +85,5 @@ module.exports = function (app) {
   app.configure(bills)
   app.configure(invoice)
   app.configure(payments)
+  app.configure(diagnose);
 }

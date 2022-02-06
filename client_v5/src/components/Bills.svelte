@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { InvoiceState, print } from "../models/invoice-model";
-  import type { Invoice } from "../models/invoice-model";
+  import { InvoiceState, Invoice } from "../models/invoice-model";
+  import type { InvoiceType } from "../models/invoice-model";
   import { Money } from "../models/money";
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";
@@ -20,11 +20,12 @@
   async function output(withPrint: boolean) {
     for (let i = 0; i < bills.length; i++) {
       if (selection[i]) {
-        const result = await print(bills[i], withPrint);
-        selection[i]=false
+        const bill = new Invoice(bills[i]);
+        const result = await bill.print(withPrint);
+        selection[i] = false;
       }
     }
-    alert ("ok")
+    alert("ok");
   }
 </script>
 

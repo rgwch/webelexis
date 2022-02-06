@@ -7,10 +7,10 @@
 /**
  * 'npm start' will execute this script
  */
-const app = require('./app');
+import app from './app';
 const port = app.get('port');
 const server = app.listen(port);
-import {logger} from './logger'
+import { logger } from './logger'
 
 process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)

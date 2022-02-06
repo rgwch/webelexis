@@ -31,9 +31,9 @@ export class BillingsManager {
    * Fetch all billings for a given encounter
    * @param kons
    */
-  public async getBillings(kons: EncounterType): Promise<BillingModel[]> {
+  public async getBillings(kons_id: string): Promise<BillingModel[]> {
     const ret = await this.billingService.find({
-      query: { behandlung: kons.id },
+      query: { behandlung: kons_id },
     })
     return ret.data.map((b) => new BillingModel(b))
   }

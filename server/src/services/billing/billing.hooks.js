@@ -1,16 +1,17 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
+// Elexis "Leistungen" bzw. "Verrechnet"
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { DateTime } = require('luxon')
 const uuid = require('uuid/v4')
 
-const typemap={
-  "ch.elexis.data.TarmedLeistung":"tarmed",
-  "ch.artikelstamm.elexis.common.ArtikelstammItem":"article"
+const typemap = {
+  "ch.elexis.data.TarmedLeistung": "tarmed",
+  "ch.artikelstamm.elexis.common.ArtikelstammItem": "article"
 }
 
 /**
@@ -44,25 +45,25 @@ const adapter = async ctx => {
     mul = [{ multiplikator: "1.0" }]
   }
   billing.vk_scale = mul[0].multiplikator
-  const tp=parseFloat(billing.vk_tp)
-  const scale=parseFloat(billing.vk_scale)
-  billing.vk_preis = Math.round(tp*scale)
-  billing.id=uuid()
-  billing.lastupdate=new Date().getTime()
-  billing.deleted="0"
+  const tp = parseFloat(billing.vk_tp)
+  const scale = parseFloat(billing.vk_scale)
+  billing.vk_preis = Math.round(tp * scale)
+  billing.id = uuid()
+  billing.lastupdate = new Date().getTime()
+  billing.deleted = "0"
   ctx.data = billing
   return ctx
 }
 
-const check=ctx=>{
-  if(ctx.data){
+const check = ctx => {
+  if (ctx.data) {
     console.log(ctx.data)
   }
 }
 module.exports = {
   before: {
     all: [authenticate('jwt')],
-    find: [check],
+    find: [],
     get: [],
     create: [adapter],
     update: [],
@@ -72,7 +73,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [check],
+    find: [],
     get: [],
     create: [],
     update: [],

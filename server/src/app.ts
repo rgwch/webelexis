@@ -12,7 +12,7 @@ const favicon = require('serve-favicon');
 const compress = require('compression');
 const cors = require('cors');
 const helmet = require('helmet');
-const {logger} = require('./logger');
+const { logger } = require('./logger');
 const authentication = require('./authentication')
 const knex = require('./knex');
 const feathers = require('@feathersjs/feathers');
@@ -21,7 +21,7 @@ const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
 
 const middleware = require('./middleware');
-const services = require('./services');
+import services from './services';
 const appHooks = require('./app.hooks');
 import channels from './channels'
 const admin = require('./admin')
@@ -86,4 +86,4 @@ if (app.get("userconfig").testing) {
 } else {
   logger.info("running in production mode")
 }
-module.exports = app;
+export default app;

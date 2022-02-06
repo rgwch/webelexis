@@ -5,7 +5,8 @@
  ********************************************/
 
 import type { ElexisType, UUID } from "./elexistype";
-import {DateTime} from 'luxon'
+import { ObjectManager } from './object-manager'
+import { DateTime } from 'luxon'
 
 /**
  * An Elexis "Kontakt"
@@ -34,16 +35,25 @@ export interface KontaktType extends ElexisType {
   extjson?: any
 }
 
-export class Kontakt {
+export class KontaktManager extends ObjectManager {
+  constructor() {
+    super("kontakt")
+  }
+}
+export class KontaktModel {
 
-  public static getLabel = (raw: KontaktType) => {
-    let d = raw.geburtsdatum || "";
+  constructor(private obj: KontaktType) {
+
+  }
+
+  public getLabel = () => {
+    let d = this.obj.geburtsdatum || "";
     if (d.length === 8) {
-      d=DateTime.fromFormat(d,'yyyyLLdd').toFormat("dd.LL.yyyy")
+      d = DateTime.fromFormat(d, 'yyyyLLdd').toFormat("dd.LL.yyyy")
     }
-    let ret = raw.bezeichnung1 + " " + (raw.bezeichnung2 || "");
-    if (raw.geschlecht) {
-      ret += `(${raw.geschlecht})`;
+    let ret = this.obj.bezeichnung1 + " " + (this.obj.bezeichnung2 || "");
+    if (this.obj.geschlecht) {
+      ret += `(${this.obj.geschlecht})`;
     }
     if (d) {
       ret += ", " + d;

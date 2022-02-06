@@ -19,6 +19,7 @@ export interface CaseType extends ElexisType {
   patientid: UUID;
   kostentrid: UUID;
   bezeichnung: string;
+  betriebsnummer: string;
   grund: "Krankheit" | "Unfall" | "Mutterschaft";
   gesetz: string;
   datumvon: string;
@@ -79,4 +80,34 @@ export class CaseManager extends ObjectManager {
 
 export class CaseModel {
   constructor(private obj: CaseType) { }
+
+  public get id() {
+    return this.obj.id
+  }
+
+  public getBillingate(): Date {
+    if (this.obj.betriebsnummer) {
+      const dt = DateTime.fromISO(this.obj.betriebsnummer)
+      if (dt.isValid) {
+        return dt.toJSDate()
+      }
+    }
+    return undefined
+  }
+
+  public setBillingDate(d: Date | string) {
+    if (d) {
+      let dt: DateTime
+      if (d instanceof Date) {
+        dt = DateTime.fromJSDate(d)
+      } else {
+        dt = DateTime.fromISO(d)
+      }
+      if (dt.isValid) {
+        this.obj.betriebsnummer = dt.toFormat("yyyyLLdd")
+      }
+    } else {
+      delete this.obj.betriebsnummer
+    }
+  }
 }

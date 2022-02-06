@@ -59,7 +59,7 @@
                       {#each f.getChildren() as e}
                         <li>
                           {#await getEncounter(e)}
-                            {$_("general-loading")}
+                            {$_("general.loading")}
                           {:then}
                             {em.getLabel(e.payload.Konsultation)}
                           {/await}

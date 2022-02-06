@@ -53,12 +53,12 @@ export interface Fall {
 
 }
 */
-export interface Invoice extends ElexisType {
+export interface InvoiceType extends ElexisType {
   id?: UUID
   deleted?: string
   lastupdate?: number
   rnnummer: string
-  fallid: UUID
+  fallid?: UUID
   mandantid?: UUID
   rndatum: DATE
   rnstatus: InvoiceState
@@ -67,8 +67,9 @@ export interface Invoice extends ElexisType {
   statusdatum: DATE
   betrag: string
   extinfo?: Uint8Array
-  fall?: CaseType
-  mandant?: KontaktType
+  extjson?: any
+  _Fall?: CaseType
+  _Mandant?: KontaktType
   output?: boolean
 }
 
@@ -90,9 +91,15 @@ export enum InvoiceState {
   CANCELLED
 }
 
-export async function print(bill: Invoice, toPrinter: boolean): Promise<boolean> {
-  const printer = getService("invoice")
-  bill.output = toPrinter
-  const ret = await printer.create(bill)
-  return ret
+export class Invoice {
+  constructor(private bill) { }
+
+  public async print(toPrinter: boolean): Promise<boolean> {
+    const printer = getService("invoice")
+    this.bill.output = toPrinter
+    const ret = await printer.create(this.bill)
+    return ret
+  }
+
 }
+

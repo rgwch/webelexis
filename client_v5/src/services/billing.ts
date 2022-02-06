@@ -1,6 +1,11 @@
+import type { InvoiceType } from './../models/invoice-model';
 import { getService } from "./io";
-import type { EncounterType as Konsultation } from "../models/encounter-model";
-import { Tree, type ITreeListener } from "../models/tree";
+import { EncounterModel, EncounterManager } from "../models/encounter-model";
+import type { EncounterType } from '../models/encounter-model';
+import { Tree } from "../models/tree";
+import { BillingModel, BillingsManager } from "../models/billings-model";
+import { KontaktManager } from '../models/kontakt-model'
+import { CaseModel } from '../models/case-model'
 
 export type konsdef = {
   konsid: string, patientid: string, fallid: string,
@@ -12,49 +17,6 @@ export type konsdef = {
   Patient?: any
   Fall?: any
   Konsultation?: any
-}
-/**
- * Expand full content of 'Patient' entry and add "Fall" nodes to each "Patient" node
- */
-class PatientListener implements ITreeListener {
-  private patService
-  constructor(private all: Array<konsdef>) {
-    this.patService = getService("patient")
-  }
-  async fetchChildren(t: Tree<konsdef>): Promise<boolean> {
-    const konsdef = t.payload
-    if (konsdef) {
-      konsdef.Patient = await this.patService.get(konsdef.patientid)
-      for (const cas of this.all) {
-        if (cas.patientid === konsdef.patientid) {
-          t.insert(cas, (a, b) => a.fallid.localeCompare(b.fallid), new FallListener(this.all))
-        }
-      }
-      return true
-    }
-    return false
-  }
-}
-/**
- * Expand full content of 'Fall' node and add related 'Konsultation" entries.
- */
-class FallListener implements ITreeListener {
-  private fallService
-  constructor(private all: Array<konsdef>) {
-    this.fallService = getService("fall")
-  }
-  async fetchChildren(t: Tree<konsdef>): Promise<boolean> {
-    const konsdef = t.payload
-    if (konsdef) {
-      for (let f of this.all) {
-        if (f.patientid === konsdef.patientid) {
-          t.insert(f, (a, b) => a.fallid.localeCompare(b.fallid))
-        }
-      }
-      return true
-    }
-    return false
-  }
 }
 
 export class Billing {
@@ -72,7 +34,7 @@ export class Billing {
           caseNode.props.open = false
           for (let l of unbilled) {
             if (l.fallid === caseNode.payload.fallid) {
-              const encNode = caseNode.insert(l,(a, b) => a.konsid.localeCompare(b.konsid))
+              const encNode = caseNode.insert(l, (a, b) => a.konsid.localeCompare(b.konsid))
               encNode.props.open = false
             }
           }
@@ -81,4 +43,48 @@ export class Billing {
     }
     return ret
   }
+
+  async createBill(fall: Tree<konsdef>) {
+    const errors: Array<String> = []
+    const bm = new BillingsManager()
+    const em = new EncounterManager()
+    const km = new KontaktManager()
+    const konsen = fall.getChildren()
+    const rechnung: Partial<InvoiceType> = {}
+    let f: CaseModel
+    for (const k of konsen) {
+      try {
+        const enc = await em.fetch(k.payload.konsid) as EncounterType
+        const kons = new EncounterModel(enc)
+        const mandator = await kons.getMandator()
+        if (!mandator) {
+          errors.push("No mandator for " + enc.id)
+        } else {
+          rechnung._Mandant = mandator
+          rechnung.mandantid = mandator.id
+        }
+        const fall = await kons.getCase()
+        if (fall == null) {
+          errors.push("No case for encounter " + enc.id)
+        } else {
+          if (rechnung.fallid) {
+            if (fall.id != rechnung.fallid) {
+              errors.push("different cases")
+            }
+          } else {
+            rechnung.fallid = fall.id
+            rechnung._Fall = fall
+          }
+          const cas = new CaseModel(fall)
+          cas.setBillingDate(null)
+
+        }
+
+      } catch (err) {
+        errors.push(err)
+      }
+    }
+  }
+
+
 }

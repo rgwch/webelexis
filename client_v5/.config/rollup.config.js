@@ -6,7 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
-import { windi } from 'svelte-windicss-preprocess'
+import windi from 'svelte-windicss-preprocess'
 import replace from '@rollup/plugin-replace'
 import json from '@rollup/plugin-json'
 import infos from '../package.json'
@@ -47,7 +47,8 @@ export default {
     svelte({
       preprocess: [
         sveltePreprocess({ sourceMap: !production }),
-        windi({ mode: production ? "production" : "development" }),
+        // windi({ mode: production ? "production" : "development" }),
+        windi.preprocess()
       ],
       compilerOptions: {
         // enable run-time checks when not in production

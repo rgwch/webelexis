@@ -1,15 +1,25 @@
+
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-import type { CaseType, CaseManager } from './case-model'
+import { CaseManager } from './case-model'
+import type { CaseType } from './case-model'
 import type { ElexisType, UUID } from './elexistype'
+import type { PatientType } from './patient-model'
+import type { KontaktType } from './kontakt-model'
+import { KontaktManager } from './kontakt-model'
 import { ObjectManager } from './object-manager'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { weekDaysShort } from './timedate'
+import type { BillingModel, BillingsManager } from './billings-model'
+import { getService } from '../services/io';
+
+let trl
+const un = _.subscribe(res => { trl = res })
 
 /**
  * An Elexis "Konsultation"
@@ -28,19 +38,17 @@ export interface EncounterType extends ElexisType {
   }
   _Patient?: any
   _Fall?: CaseType
+  _Mandator?: KontaktType
 }
 
 export class EncounterManager extends ObjectManager {
-  private trl
   constructor() {
     super('konsultation')
-    const un = _.subscribe(res => this.trl = res)
   }
 
-  private timeString(t: string) {
-    return t.substring(0, 2) + ':' + t.substring(2, 4)
+  public getLabel(enc: EncounterType) {
+    return new EncounterModel(enc).getLabel()
   }
-
   public fetchFor(
     dateFrom: string,
     dateUntil: string,
@@ -71,37 +79,59 @@ export class EncounterManager extends ObjectManager {
       })
   }
 
-  /*
-  public async getCase(enc: EncounterType): Promise<CaseType> {
-    if (!enc._Fall) {
-      if (enc.fallid) {
-        enc._Fall = await this.cm.fetch(enc.fallid)
-      }
-    }
-    return enc._Fall
+
+}
+
+export class EncounterModel {
+  private bm: BillingsManager
+  private cm: CaseManager;
+  private km: KontaktManager;
+
+  constructor(private enc: EncounterType) {
+    this.bm = getService("billing")
+    this.cm = new CaseManager()
+    this.km = new KontaktManager()
   }
 
-  public async getPatient(enc: EncounterType): Promise<PatientType> {
-    if (!enc._Patient){
-      const fall = await this.getCase(enc)
-      enc._Patient = await this.cm.getPatient(fall)
-    }
-    return enc._Patient
+  private timeString(t: string) {
+    return t.substring(0, 2) + ':' + t.substring(2, 4)
   }
-*/
-  public getLabel(enc: EncounterType) {
-    const dat = DateTime.fromISO(enc.datum)
+
+  public getLabel() {
+    const dat = DateTime.fromISO(this.enc.datum)
     const weekday = weekDaysShort[dat.weekday - 1]
     return (
-      weekday + ", " + dat.toFormat(this.trl("formatting.date")) +
+      weekday + ", " + dat.toFormat(trl("formatting.date")) +
       ', ' +
-      this.timeString(enc.zeit)
+      this.timeString(this.enc.zeit)
     )
   }
 
-  /*
-  public getBillings(enc: EncounterType): Promise<BillingModel[]>{
-    return this.bm.getBillings(enc)
+  public getBillings(): Promise<BillingModel[]> {
+    return this.bm.getBillings(this.enc.id)
   }
-  */
+
+  public async getCase(): Promise<CaseType> {
+    if (!this.enc._Fall) {
+      if (this.enc.fallid) {
+        this.enc._Fall = await getService("fall").fetch(this.enc.fallid)
+      }
+    }
+    return this.enc._Fall
+  }
+
+  public async getPatient(): Promise<PatientType> {
+    if (!this.enc._Patient) {
+      const fall = await this.getCase()
+      this.enc._Patient = await this.cm.getPatient(fall)
+    }
+    return this.enc._Patient
+  }
+
+  public async getMandator(): Promise<KontaktType> {
+    if (!this.enc._Mandator) {
+      this.enc._Mandator = await this.km.fetch(this.enc.mandantid) as KontaktType
+    }
+    return this.enc._Mandator
+  }
 }
