@@ -27,7 +27,7 @@ export default {
 
   after: {
     all: [],
-    find: [metaqueries],
+    find: [],
     get: [],
     create: [],
     update: [],

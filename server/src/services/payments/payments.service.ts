@@ -3,7 +3,7 @@ const { Payments } = require('./payments.class');
 import createModel from '../../models/payments.model'
 import hooks from './payments.hooks'
 
-export default function (app) {
+export default (app)=> {
   const options = {
     Model: createModel(app),
     paginate: app.get('paginate')

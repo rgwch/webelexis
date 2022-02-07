@@ -10,13 +10,13 @@
  * configured in ./configuration.ts
  */
 
-const knex = require("knex")
-const {logger} = require("./logger")
-const fs = require("fs")
+import knex from "knex"
+import {logger} from "./logger"
+import fs  from "fs"
 const path = require("path")
 const normalize = require('./normalize_db')
 
-module.exports = function (app) {
+export default function (app) {
   // uncomment exactly one of the following three lines
   const { client, connection } = app.get("mysql")
   // const { client, connection } = app.get('postgresql');

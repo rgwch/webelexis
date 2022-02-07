@@ -14,7 +14,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import { logger } from './logger'
 const authentication = require('./authentication')
-const knex = require('./knex')
+import  knex from './knex'
 const feathers = require('@feathersjs/feathers')
 const configuration = require('@feathersjs/configuration')
 const express = require('@feathersjs/express')
