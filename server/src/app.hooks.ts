@@ -5,11 +5,11 @@
  ********************************************/
 
 // Application hooks that run for every service
-const logger = require('./hooks/logger');
-const cleanup = require('./hooks/pre-store')
-const treatDeleted = require('./hooks/treat-deleted');
-const softDelete = require('./hooks/softdelete')
-const timings = require('./hooks/timings')
+import logger from './hooks/logger'
+import cleanup from './hooks/pre-store'
+import treatDeleted from './hooks/treat-deleted'
+import softDelete from './hooks/softdelete'
+import timings from './hooks/timings'
 import acl from './hooks/acl'
 
 export default {

@@ -5,10 +5,10 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks
-const ElexisUtils = require('../../util/elexis-types')
+import { ElexisUtils } from '../../util/elexis-types'
 const util = new ElexisUtils()
 const Samdas = require('@rgwch/samdastools')
-const logger = require('../../logger')
+import { logger } from '../../logger'
 
 /**
  * Find ecnounters by patient id
@@ -209,7 +209,7 @@ const unbilled = async (ctx) => {
       .select("faelle.patientid", "behandlungen.id as konsid", "faelle.id as fallid",
         "faelle.datumvon as falldatum", "faelle.bezeichnung as falltitel", "behandlungen.datum as konsdatum",
         "kontakt.bezeichnung1 as lastname", "kontakt.bezeichnung2 as firstname")
-      .orderBy([{ column: 'lastname', order: 'desc' }, { column: 'firstname', order: 'desc' },{column: 'konsdatum', order:"desc"}])
+      .orderBy([{ column: 'lastname', order: 'desc' }, { column: 'firstname', order: 'desc' }, { column: 'konsdatum', order: "desc" }])
     const result = await query
     ctx.result = result
   }

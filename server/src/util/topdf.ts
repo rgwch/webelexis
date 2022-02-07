@@ -21,7 +21,7 @@ function merge(template, doc) {
   return compiled
 }
 
-module.exports = {
+export default {
   merge: merge,
   toPDF: merge
 }

@@ -4,8 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const treatDeleted = require('../../hooks/treat-deleted');
-const handleExtInfo = require('../../hooks/handle-extinfo');
+import  treatDeleted from '../../hooks/treat-deleted'
+import handleExtInfo from '../../hooks/handle-extinfo'
 
 /**
  * Check if there's a '$find' property in the query, and if so, make a LIKE - query over

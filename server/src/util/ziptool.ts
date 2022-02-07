@@ -1,9 +1,9 @@
 const ZIP_MARKER = 5 << 29
-const { Zip } = require('zlibt2')
-const unzipper = require('unzipper')
+import { Zip } from 'zlibt2'
+import  unzipper from 'unzipper'
 
 
-exports.create = (name, data) => {
+export const create = (name, data) => {
   const zipped = new Zip()
   zipped.addFile(Buffer.from(data), { filename: name })
   const compressed = zipped.compress()
@@ -15,11 +15,11 @@ exports.create = (name, data) => {
   return def
 }
 
-exports.extract = async (zipped, name) => {
+export const extract = async (zipped, name) => {
   return await unzip(zipped, name)
 }
 
-exports.check = async (fakedata) => {
+export const check = async (fakedata) => {
   const zipped = exports.create("test", fakedata)
   const unzipped = await exports.extract(zipped, "test")
   return unzipped

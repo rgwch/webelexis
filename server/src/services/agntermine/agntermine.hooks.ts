@@ -3,13 +3,14 @@
  * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
+
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const validate = require('../validator').validate
-const { DateTime } = require('luxon')
-const Elexistypes = require('../../util/elexis-types')
-const Elexis = new Elexistypes()
+import { DateTime } from 'luxon'
+import { ElexisUtils } from '../../util/elexis-types'
+const Elexis = new ElexisUtils()
 import metaqueries from './metaqueries'
-const logger = require('../../logger')
+import { logger } from '../../logger'
 
 
 /**

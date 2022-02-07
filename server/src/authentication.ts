@@ -1,8 +1,8 @@
 const { AuthenticationService, JWTStrategy } = require('@feathersjs/authentication');
 const { LocalStrategy } = require('@feathersjs/authentication-local');
 const { expressOauth } = require('@feathersjs/authentication-oauth');
-const ElexisUtil = require('./util/elexis-types')
-const elexisUtils = new ElexisUtil()
+import { ElexisUtils } from './util/elexis-types'
+const elexisUtils = new ElexisUtils()
 
 
 class ElexisAuth extends LocalStrategy {

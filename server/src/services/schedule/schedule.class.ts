@@ -6,14 +6,14 @@
 
 const defaults = require('../../configuration').schedule
 import { DateTime } from 'luxon'
-const ElexisUtils = require('../../util/elexis-types')
-import {Gapfinder} from './gapfinder'
+import { ElexisUtils } from '../../util/elexis-types'
+import { Gapfinder } from './gapfinder'
 const elexis = new ElexisUtils()
 const gapf = new Gapfinder()
 
 /* eslint-disable no-unused-vars */
 export class Service {
-  constructor(private options={app: undefined}) {
+  constructor(private options = { app: undefined }) {
   }
 
 

@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -9,7 +9,7 @@
  * Only if the request originates from the server by itself, then really remove.
  * This hook is inserted as an app hook before removal, i.e works on all datatypes.
  */
-module.exports = ctx => {
+export default ctx => {
   if (ctx.params.provider && ctx.path !== 'authentication') {
     ctx.data = ctx.data || {}
     ctx.data.deleted = "1"

@@ -5,9 +5,8 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const handleExtInfo = require('../../hooks/handle-extinfo')
+import handleExtInfo from '../../hooks/handle-extinfo'
 import hashPassword from './hash-password'
-const uuid = require('uuid').v4
 const hooks = require('@feathersjs/authentication-local').hooks
 hooks.hashPassword = hashPassword
 const protect = hooks.protect

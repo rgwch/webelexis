@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -8,9 +8,9 @@
  * utility to read data from the server console. We need this primarly to initalize an administrator
  * account.
  */
-const readline = require('readline')
+import readline from 'readline'
 
-const ask = prompt => {
+export default prompt => {
   return new Promise(resolve => {
     const rl = readline.createInterface({
       input: process.stdin,
@@ -25,4 +25,4 @@ const ask = prompt => {
   })
 }
 
-module.exports=ask
+

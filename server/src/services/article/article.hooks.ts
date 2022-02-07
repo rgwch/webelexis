@@ -4,9 +4,10 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import filters  from './article_filters'
+import filters from './article_filters'
 const filter = filters({ blackbox: true, generics: false })
-const handleExtinfo = require('../../hooks/handle-extinfo')({extinfo: "extinfo"})
+import Extinfo from '../../hooks/handle-extinfo'
+const handleExtinfo = Extinfo({ extinfo: "extinfo" })
 
 const scopes = {
   "ch.artikelstamm.elexis.common.ArtikelstammItem": "artikelstamm_ch",

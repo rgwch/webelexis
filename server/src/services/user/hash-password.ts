@@ -4,8 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const log = require('../../logger')
-const ElexisUtils = require('../../util/elexis-types')
+import { logger as log } from '../../logger'
+import { ElexisUtils } from '../../util/elexis-types'
 const util = new ElexisUtils()
 
 export default function hashPassword(options = {}) {

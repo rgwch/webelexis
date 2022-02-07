@@ -6,7 +6,8 @@
 
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "extinfo" })
+import Extinfo from '../../hooks/handle-extinfo'
+const handleExtinfo = Extinfo({ extinfo: "extinfo" })
 import flatiron from '../../hooks/flatiron'
 const fi = flatiron([{
   id: "fallid",

@@ -5,8 +5,11 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const treatDeleted = require('../../hooks/treat-deleted');
-const handleExtInfo = require('../../hooks/handle-extinfo')({ extinfo: "extinfo" });
+import treatDeleted from '../../hooks/treat-deleted'
+import Extinfo from '../../hooks/handle-extinfo'
+
+const handleExtInfo = Extinfo({ extinfo: "extinfo" });
+
 import fi from "../../hooks/flatiron"
 const flatiron = fi([{
   id: "patientid",

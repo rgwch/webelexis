@@ -4,8 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const {logger} = require('./logger')
-const roles = require('./configuration').roles
+import { logger } from './logger'
+import { roles } from './configuration'
 
 /**
  * In testing-mode, Seeder creates data to initialize the NeDB-databases.
@@ -13,7 +13,7 @@ const roles = require('./configuration').roles
  * exist, otherwise seeder will throw an error.
  */
 
-module.exports = async function (app) {
+export default async function (app) {
   // Find patient with TitelSuffix 'unittest' and exit if not found
   const pats = app.service('patient')
 

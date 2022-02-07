@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const unzipper = require('unzipper')
+import unzipper from 'unzipper'
 
 const unzip = raw => {
   if (raw) {

@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const { needsRight } = require('../util/acl')
+import { needsRight } from '../util/acl'
 
 export default ctx => {
   if (ctx.type == "before" && ctx.params && ctx.params.provider) {

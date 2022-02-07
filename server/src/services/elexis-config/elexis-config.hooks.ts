@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const hook = require('../../hooks/return-config.js')
+import hook from '../../hooks/return-config.js'
 
 export default {
   before: {

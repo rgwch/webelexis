@@ -1,6 +1,6 @@
-const {logger} = require("./logger")
+import { logger } from "./logger"
 
-module.exports = async app => {
+export default async app => {
   const modify = async tableName => {
     const columns = await knex.table(tableName).columnInfo()
     for (const key of Object.keys(columns)) {
@@ -25,9 +25,9 @@ module.exports = async app => {
   for (const row of results[0]) {
     const name = row.TABLE_NAME || row.table_name
     logger.info("modifying " + name)
-    if(name !== name.toLocaleLowerCase()){
-      await knex.schema.renameTable(name, name+"_temp")
-      await knex.schema.renameTable(name+"_temp",name.toLocaleLowerCase())
+    if (name !== name.toLocaleLowerCase()) {
+      await knex.schema.renameTable(name, name + "_temp")
+      await knex.schema.renameTable(name + "_temp", name.toLocaleLowerCase())
     }
     await modify(name.toLocaleLowerCase())
   }

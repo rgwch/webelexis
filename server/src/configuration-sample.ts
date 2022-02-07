@@ -179,6 +179,11 @@ export const roles = {
     id: "admin",
     label: "Administrator",
     descr: "An administrator"
+  },
+  billing: {
+    id: "billing",
+    label: "Buchhaltung",
+    desc: "Handling of invoices and payments"
   }
 }
 

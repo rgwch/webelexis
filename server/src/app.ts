@@ -26,6 +26,7 @@ import appHooks from './app.hooks'
 import channels from './channels'
 import admin from './admin'
 import { config as userconf } from './configuration'
+import seeder from './seeder'
 const app = express(feathers())
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'pug')
@@ -88,7 +89,7 @@ app.hooks(appHooks)
 // If in testing mode: Seed databases
 if (app.get('userconfig').testing) {
   logger.info('running in testing mode')
-  const seeder = require('./seeder')
+  
   seeder(app).catch((err) => {
     console.log('reject ' + err)
   })

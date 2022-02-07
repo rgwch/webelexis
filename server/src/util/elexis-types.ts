@@ -19,7 +19,7 @@
 
 import java from 'java'
 import moment from 'moment'
-import {logger} from '../logger'
+import { logger } from '../logger'
 import crypto from 'crypto'
 
 const JACKSON_VERSION = "2.11.1"
@@ -44,7 +44,7 @@ export interface IVersionedResource {
 }
 */
 
-class ElexisUtils {
+export class ElexisUtils {
 
   constructor() {
     let path = require('path');
@@ -276,7 +276,7 @@ class ElexisUtils {
    * @param {string} pwd The plaintext password
    * @param  salt should be 8 bytes, can be null, then we'll autogenerate one
    */
-  hashPassword(pwd, salt) {
+  hashPassword(pwd, salt?) {
     if (!salt) {
       salt = crypto.randomBytes(8)
     } else {
@@ -289,4 +289,4 @@ class ElexisUtils {
   }
 }
 
-module.exports = ElexisUtils
+

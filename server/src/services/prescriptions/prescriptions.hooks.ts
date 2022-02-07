@@ -7,7 +7,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 import { DateTime } from 'luxon'
 import { logger } from '../../logger'
-const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "extinfo" })
+import Extinfo from '../../hooks/handle-extinfo'
+const handleExtinfo = Extinfo({ extinfo: "extinfo" })
 import fi from '../../hooks/flatiron'
 const flatiron = fi([{
   id: "rezeptid",

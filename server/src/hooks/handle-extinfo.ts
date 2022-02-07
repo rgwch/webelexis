@@ -1,10 +1,10 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018-2020 by G. Weirich         *
+ * Copyright (c) 2018-2022 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
 
-const ElexisUtils = require('../util/elexis-types')
+import { ElexisUtils } from '../util/elexis-types'
 const util = new ElexisUtils()
 
 const defaultOptions = {
@@ -36,14 +36,14 @@ const getItems = ctx => {
  * ExtInfo field (case sensitive!). Defaults to 'extinfo'
  */
 
-module.exports = function (options = defaultOptions) {
+export default function (options = defaultOptions) {
   return context => {
     if (context.method == "get" || context.method == "find") {
       const items = getItems(context)
       for (const obj of items) {
         if (obj[options.extinfo]) {
           obj.extjson = util.getExtInfo(obj[options.extinfo])
-          if(obj.extjson){
+          if (obj.extjson) {
             delete obj[options.extinfo]
           }
         }
