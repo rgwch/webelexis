@@ -11,6 +11,7 @@ export const config = {
   sitename: "Praxis Webelexis",
   /* Admin's mail is needed for registering new users and for lost password retrieval */
   admin: "someone@webelexis.ch",
+  url: "lostpassword@webelexis.ch",
   /* If the user database is empty, create an admin and assign this pasword. Make sure to remove the line
      after the first start. */
   adminpwd: "topsecret",
@@ -122,7 +123,15 @@ export const config = {
       country: "CH"
     },
     stickerForMail: "Rechnung per Mail",
-    invoiceText: "Bitte reichen Sie den beigefügten Rückerstattungsbeleg Ihrer Krankenkasse ein und überweisen Sie den Rechnungsbetrag mit untenstehendem Einzahlungsschein."
+    invoiceHeading: "Honorar-Rechnung Nr. ",
+    invoiceText: "Bitte reichen Sie den beigefügten Rückerstattungsbeleg Ihrer Krankenkasse ein und überweisen Sie den Rechnungsbetrag mit untenstehendem Einzahlungsschein.",
+    reminder1Heading: "Zahlungserinnerung für Rn. Nr.",
+    reminder1Text: "Ihre Zahlung ist noch nicht eingegangen",
+    reminder2Heading: "Zweite Mahnung für Rn. Nr.",
+    reminder2Text: "Bitte zahlen Sie innert 10 Tagen",
+    reminder3Heading: "Dritte Mahnung für Rn. Nr.",
+    reminder3Text: "Umgehende Zahlung"
+    
   }
 }
 export const roles = {

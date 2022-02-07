@@ -111,11 +111,34 @@ export function outputInvoice(bill) {
       .fillOpacity(0.5)
       .fillAndStroke("gray", "#555")
 
+    let heading;
+    let invoiceText
+    switch (parseInt(bill.rnstatus)) {
+      case 4:
+      case 5:
+        heading = cfg.billing.invoiceHeading;
+        invoiceText = cfg.billing.invoiceText
+        break;
+      case 6:
+      case 7:
+        heading = cfg.billing.reminder1Heading;
+        invoiceText = cfg.billing.reminder1Text;
+        break;
+      case 8:
+      case 9:
+        heading = cfg.billing.reminder2Heading;
+        invoiceText = cfg.billing.reminder2Text;
+        break;
+      default:
+        heading = cfg.billing.reminder3Heading
+        invoiceText = cfg.billing.reminder3Text;
+    }
+
     pdf.fontSize(14)
       .font('Helvetica-Bold')
       .fillColor("black")
       .opacity(1)
-      .text('Honorar-Rechnung Nr. ' + bill.rnnummer, mm2pt(20), mm2pt(100), {
+      .text(`${heading} ${bill.rnnummer}`, mm2pt(20), mm2pt(100), {
         width: mm2pt(170),
         align: 'left',
       })
@@ -132,7 +155,7 @@ export function outputInvoice(bill) {
     // Freitext
     pdf.fontSize(12)
     pdf.font("Times-Roman")
-    pdf.text(cfg.billing.invoiceText, mm2pt(20), mm2pt(135), {
+    pdf.text(invoiceText, mm2pt(20), mm2pt(135), {
       width: mm2pt(180),
       align: "left"
     })
