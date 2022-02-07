@@ -14,7 +14,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import { logger } from './logger'
 const authentication = require('./authentication')
-import  knex from './knex'
+import knex from './knex'
 const feathers = require('@feathersjs/feathers')
 const configuration = require('@feathersjs/configuration')
 const express = require('@feathersjs/express')
@@ -89,7 +89,7 @@ app.hooks(appHooks)
 // If in testing mode: Seed databases
 if (app.get('userconfig').testing) {
   logger.info('running in testing mode')
-  
+
   seeder(app).catch((err) => {
     console.log('reject ' + err)
   })
