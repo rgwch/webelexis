@@ -39,22 +39,13 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Mocha Tests",
-      "program": "${workspaceFolder}/server/node_modules/mocha/bin/_mocha",
+      "name": "Jest Tests",
+      "program": "${workspaceFolder}/server/node_modules/jest/bin/jest.js",
       "outputCapture": "std",
       "cwd": "${workspaceFolder}/server",
       "env": {
         "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
-      },
-      "args": [
-        "-u",
-        "bdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "${workspaceFolder}/server/test"
-      ],
+      }
     },
     {
       "type": "node",
