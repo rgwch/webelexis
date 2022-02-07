@@ -160,7 +160,7 @@ export function paymentSlip(bill) {
 }
 
 function createData(bill) {
-  const patient = bill.fall.patient
+  const patient = bill._Fall._Patient
   const data = {
     currency: 'CHF' as Currency,
     amount: amount(bill.betrag),
@@ -182,7 +182,7 @@ function amount(asstring) {
 }
 
 function reference(bill) {
-  const pnr = bill.fall.patient.patientnr
+  const pnr = bill._Fall._Patient.patientnr
   const rnnr = bill.rnnummer
   const prefix = new Date().toISOString().substring(0, 10).replace(/\-/g, '')
   const refline = (prefix + '0000' + pnr.padStart(5, '0') + rnnr.padStart(5, '0')).padEnd(26, '0')

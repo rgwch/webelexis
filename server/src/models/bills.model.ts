@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -10,7 +10,7 @@
 //
 // See http://knexjs.org/
 // for more of what you can do here.
-module.exports = function (app) {
+export default function (app) {
   const db = app.get('knexClient');
   const tableName = 'rechnungen';
   db.schema.hasTable(tableName).then(exists => {

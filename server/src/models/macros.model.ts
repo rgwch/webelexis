@@ -1,7 +1,7 @@
 const NeDB = require('nedb');
 const path = require('path');
 
-module.exports = function (app) {
+export default function (app) {
   const dbPath = app.get('nedb');
   const Model = new NeDB({
     filename: path.join(dbPath, 'macros.db'),

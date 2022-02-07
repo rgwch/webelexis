@@ -4,7 +4,7 @@
   import { Money } from "../models/money";
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";
-  export let bills: Array<Invoice> = [];
+  export let bills: Array<InvoiceType> = [];
   export let filter: (any) => boolean = (bill?) => {
     return true;
   };
@@ -65,9 +65,9 @@
             >
             <td class="text-right">{new Money(bill.betrag).getFormatted()}</td>
             <td class="text-left px-8">
-              {bill.fall.patient.bezeichnung1}
-              {bill.fall.patient.bezeichnung2}, {DateTime.fromISO(
-                bill.fall.patient.geburtsdatum
+              {bill._Fall._Patient.bezeichnung1}
+              {bill._Fall._Patient.bezeichnung2}, {DateTime.fromISO(
+                bill._Fall._Patient.geburtsdatum
               ).toLocaleString()}
             </td>
           </tr>

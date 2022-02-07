@@ -5,7 +5,7 @@
  ********************************************/
 
 const createService = require('feathers-knex');
-const createModel = require('../../models/agntermine.model');
+import createModel from '../../models/agntermine.model'
 import hooks from './agntermine.hooks';
 const validator = require('../validator').initialize
 

@@ -6,7 +6,7 @@
 
 // Initializes the `bills` service on path `/bills`
 import { Bills } from './bills.class'
-const createModel = require('../../models/bills.model')
+import createModel from '../../models/bills.model'
 import hooks from './bills.hooks'
 
 export default (app) => {

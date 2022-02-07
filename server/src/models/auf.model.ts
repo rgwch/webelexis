@@ -5,9 +5,9 @@
  ********************************************/
 /* eslint-disable no-console */
 
-const {logger} = require('../logger')
+import {logger} from '../logger'
 
-module.exports = function (app) {
+export default function (app) {
   const db = app.get('knexClient');
   const tableName = 'auf';
   db.schema.hasTable(tableName).then(exists => {

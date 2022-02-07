@@ -10,11 +10,11 @@ const handleExtinfo = require('../../hooks/handle-extinfo')({ extinfo: "extinfo"
 import flatiron from '../../hooks/flatiron'
 const fi = flatiron([{
   id: "fallid",
-  obj: "fall",
+  obj: "_Fall",
   service: "fall"
 }, {
   id: "mandantid",
-  obj: "mandant",
+  obj: "_Mandant",
   service: "kontakt"
 }])
 

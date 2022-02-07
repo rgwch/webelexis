@@ -5,7 +5,7 @@ import { outputInvoice } from './generator'
 const create = async ctx => {
   if (config.billing.stickerForMail) {
     const stickerService = ctx.app.service("stickers")
-    const stickers = await stickerService.find({ query: { forPatient: ctx.data.fall.patient.id } })
+    const stickers = await stickerService.find({ query: { forPatient: ctx.data._Fall._Patient.id } })
     if (stickers.length > 0) {
       if (stickers.find(st => st.name == config.billing.stickerForMail)) {
         ctx.data.toMail = ctx.data.fall.patient.email

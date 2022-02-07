@@ -3,10 +3,10 @@
  * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-const {logger} = require('../logger')
+import {logger} from '../logger'
 
 
-module.exports = function (app) {
+export default function (app) {
   const db = app.get('knexClient');
   const tableName = 'artikelstamm_ch';
   const legacyName = 'artikel';
