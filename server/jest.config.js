@@ -5,5 +5,6 @@ module.exports = {
   testMatch: [
     "**/__tests__/**/*.[jt]s?(x)",
     "**/?(*.)+(spec).[tj]s?(x)"
-  ]
+  ],
+  testPathIgnorePatterns: ["dist" ]
 };

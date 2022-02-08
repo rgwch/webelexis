@@ -7,7 +7,7 @@
 /**
  * Utility to send mails. We need this primarly to help the user retrieve lost passwords
  */
-const nodemailer = require('nodemailer')
+import nodemailer from 'nodemailer'
 import { logger } from '../logger'
 
 export type Attachment = {
@@ -37,7 +37,13 @@ export class Mailer {
     }
     this.transporter = nodemailer.createTransport(this.smtp)
   }
-  async send(address: string, subject: string, contents: string, attachment: Attachment, ical?): Promise<any> {
+  async send(
+    address: string,
+    subject: string,
+    contents: string,
+    attachment?: Attachment,
+    ical?,
+  ): Promise<any> {
     const message = {
       from: this.sender,
       to: address,
@@ -45,19 +51,16 @@ export class Mailer {
       text: contents,
     }
     if (ical) {
-      message["icalEvent"] = {
+      message['icalEvent'] = {
         filename: 'arzttermin.ics',
         method: 'publish',
         content: ical,
       }
     }
     if (attachment) {
-      message["attachments"] = [
-        attachment
-      ]
+      message['attachments'] = [attachment]
     }
     const result = await this.transporter.sendMail(message)
     return result
   }
 }
-

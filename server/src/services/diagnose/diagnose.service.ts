@@ -8,7 +8,7 @@ export default app => {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'diagnose',
+    name: 'diagnosen',
     Model,
     paginate
   };

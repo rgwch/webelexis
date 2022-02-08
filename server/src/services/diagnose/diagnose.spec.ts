@@ -1,16 +1,26 @@
-// import app from '../../app'
+import app from '../../app'
 
-xdescribe("diagnose", () => {
+describe('diagnose', () => {
   let service
 
-  beforeAll(() => {
-    // service = app.service("kontakt")
+  function delay() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(true)
+      }, 100)
+    })
+  }
+
+  beforeAll(async () => {
+    service = app.service('diagnose')
+    await delay()
+  
   })
-  it("registered the service", () => {
+  it('registered the service', () => {
     expect(service).toBeTruthy()
   })
-  xit("fetches some diagnoses", async () => {
-    const result = await service.fetch({})
+  it('fetches some diagnoses', async () => {
+    const result = await service.find({})
     expect(result.total).toBeGreaterThan(0)
   })
 })

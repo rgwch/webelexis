@@ -11,7 +11,7 @@ export default (basedir, file, metadata) => {
       throw err
     }
     const outfile = path.join(basedir, path.basename(file, '.pug') + '.html')
-    console.log(path.resolve(outfile))
+    // console.log(path.resolve(outfile))
     fs.writeFileSync(outfile, result)
   })
 }
