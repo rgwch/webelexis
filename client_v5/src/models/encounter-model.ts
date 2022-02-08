@@ -129,7 +129,7 @@ export class EncounterModel {
       const num = parseFloat(b.zahl)
       sum += preis * num
     }
-    return new Money(sum / 100)
+    return new Money(sum)
   }
 
   public async getCase(): Promise<CaseType> {

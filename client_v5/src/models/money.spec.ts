@@ -23,7 +23,17 @@ describe('Money', () => {
       expect(m2.round5().getFormatted()).toEqual("20.20")
       const m3=new Money(2012)
       expect(m3.round5().getFormatted()).toEqual("20.10")
-
-
+  })
+  it("formats correctly",()=>{
+    const m1=new Money(1015)
+    expect(m1.getFormatted()).toEqual("10.15")
+    const m2=new Money(10015)
+    expect(m2.getFormatted()).toEqual("100.15")
+    const m3=new Money(115)
+    expect(m3.getFormatted()).toEqual("1.15")
+    const m4=new Money(15)
+    expect(m4.getFormatted()).toEqual("0.15")
+    const m5=new Money(0)
+    expect(m5.getFormatted()).toEqual("0.00")
   })
 })

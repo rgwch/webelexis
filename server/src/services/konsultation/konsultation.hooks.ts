@@ -206,6 +206,7 @@ const unbilled = async (ctx) => {
     const query = knex("faelle").join("behandlungen", "behandlungen.fallid", "=", "faelle.id")
       .join("kontakt", "kontakt.id", "faelle.patientid")
       .whereNull("behandlungen.rechnungsid")
+      .andWhere("behandlungen.deleted","0")
       .select("faelle.patientid", "behandlungen.id as konsid", "faelle.id as fallid",
         "faelle.datumvon as falldatum", "faelle.bezeichnung as falltitel", "behandlungen.datum as konsdatum",
         "kontakt.bezeichnung1 as lastname", "kontakt.bezeichnung2 as firstname")
