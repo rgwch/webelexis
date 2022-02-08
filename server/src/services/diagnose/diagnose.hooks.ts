@@ -1,18 +1,17 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks
 
-const metaqueries = async ctx => {
-  const knex = ctx.app.get("knexClient")
+const metaqueries = async (ctx) => {
+  const knex = ctx.app.get('knexClient')
   const query = ctx.params.query
   if (query?.konsid) {
     knex('behdl_dg_joint')
-      .join('behandlungen', "behandlungsid", "=", "behandlungen.id")
-      .where("behdl_dg_joint.deleted", "0")
-      .andWhere("behandlungen.deleted", "0")
-      .andWhere("behandlungsid", query.konsid)
-
-
+      .join('behandlungen', 'behandlungsid', '=', 'behandlungen.id')
+      .where('behdl_dg_joint.deleted', '0')
+      .andWhere('behandlungen.deleted', '0')
+      .andWhere('behandlungsid', query.konsid)
+    ctx.result = await knex
+    return ctx
   }
-
 }
 export default {
   before: {
@@ -22,7 +21,7 @@ export default {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   after: {
@@ -32,7 +31,7 @@ export default {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   error: {
@@ -42,6 +41,6 @@ export default {
     create: [],
     update: [],
     patch: [],
-    remove: []
-  }
-};
+    remove: [],
+  },
+}

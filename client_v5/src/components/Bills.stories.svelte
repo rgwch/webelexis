@@ -12,8 +12,8 @@
       rndatumbis: "20211231",
       statusdatum: "20220110",
       betrag: "23420",
-      fall: {
-        patient: {
+      _Fall: {
+        _Patient: {
           bezeichnung1: "Testperson",
           bezeichnung2: "Armeswesen",
         },
@@ -28,8 +28,8 @@
       rndatumbis: "20211130",
       statusdatum: "20220115",
       betrag: "4780",
-      fall: {
-        patient: {
+      _Fall: {
+        _Patient: {
           bezeichnung1: "Testarossa",
           bezeichnung2: "Ferrari",
         },

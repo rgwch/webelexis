@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import hook from '../../hooks/return-config.js'
+import hook from '../../hooks/return-config'
 
 export default {
   before: {
