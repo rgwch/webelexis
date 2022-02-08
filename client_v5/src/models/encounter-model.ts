@@ -1,4 +1,3 @@
-
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
@@ -15,11 +14,15 @@ import { ObjectManager } from './object-manager'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { weekDaysShort } from './timedate'
-import type { BillingModel, BillingsManager } from './billings-model'
-import { getService } from '../services/io';
+import type { BillingModel } from './billings-model'
+import { BillingsManager } from './billings-model'
+import { getService } from '../services/io'
+import { Money } from './money'
 
 let trl
-const un = _.subscribe(res => { trl = res })
+const un = _.subscribe((res) => {
+  trl = res
+})
 
 /**
  * An Elexis "Konsultation"
@@ -78,17 +81,16 @@ export class EncounterManager extends ObjectManager {
         alert(err)
       })
   }
-
-
 }
 
 export class EncounterModel {
   private bm: BillingsManager
-  private cm: CaseManager;
-  private km: KontaktManager;
+  private cm: CaseManager
+  private km: KontaktManager
+  private billings: Array<BillingModel>
 
   constructor(private enc: EncounterType) {
-    this.bm = getService("billing")
+    this.bm = new BillingsManager()
     this.cm = new CaseManager()
     this.km = new KontaktManager()
   }
@@ -97,24 +99,43 @@ export class EncounterModel {
     return t.substring(0, 2) + ':' + t.substring(2, 4)
   }
 
-  public getLabel() {
+  public async getLabel(): Promise<string> {
     const dat = DateTime.fromISO(this.enc.datum)
     const weekday = weekDaysShort[dat.weekday - 1]
+    const sum = await this.getSum()
     return (
-      weekday + ", " + dat.toFormat(trl("formatting.date")) +
+      weekday +
       ', ' +
-      this.timeString(this.enc.zeit)
+      dat.toFormat(trl('formatting.date')) +
+      ', ' +
+      this.timeString(this.enc.zeit) +
+      ' - ' +
+      sum.round5().getFormatted(2)
     )
   }
 
-  public getBillings(): Promise<BillingModel[]> {
-    return this.bm.getBillings(this.enc.id)
+  public async getBillings(reload: boolean = false): Promise<BillingModel[]> {
+    if (!this.billings || reload) {
+      this.billings = await this.bm.getBillings(this.enc.id)
+    }
+    return this.billings
+  }
+
+  public async getSum(): Promise<Money> {
+    let sum = 0
+    for (const billing of await this.getBillings()) {
+      const b = billing.getBilling()
+      const preis = parseFloat(b.vk_preis)
+      const num = parseFloat(b.zahl)
+      sum += preis * num
+    }
+    return new Money(sum / 100)
   }
 
   public async getCase(): Promise<CaseType> {
     if (!this.enc._Fall) {
       if (this.enc.fallid) {
-        this.enc._Fall = await getService("fall").fetch(this.enc.fallid)
+        this.enc._Fall = await getService('fall').fetch(this.enc.fallid)
       }
     }
     return this.enc._Fall
@@ -130,7 +151,9 @@ export class EncounterModel {
 
   public async getMandator(): Promise<KontaktType> {
     if (!this.enc._Mandator) {
-      this.enc._Mandator = await this.km.fetch(this.enc.mandantid) as KontaktType
+      this.enc._Mandator = (await this.km.fetch(
+        this.enc.mandantid,
+      )) as KontaktType
     }
     return this.enc._Mandator
   }

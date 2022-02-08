@@ -7,15 +7,11 @@
 export class Money {
   private cents: number = 0
 
-  constructor(initial: number | string) {
-    if (typeof initial === 'number') {
-      if (Math.floor(initial) === initial) {
-        this.cents = Math.round(initial * 100) / 100
-      } else {
-        this.cents = Math.round(initial * 10000) / 100
-      }
+  constructor(initialCents: number | string) {
+    if (typeof initialCents === 'number') {
+        this.cents = Math.round(initialCents * 100) / 100
     } else {
-      this.cents = this.string2number(initial)
+      this.cents = this.string2number(initialCents)
     }
   }
   number2string(n: number) {
