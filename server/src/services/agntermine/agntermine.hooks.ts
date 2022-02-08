@@ -5,13 +5,12 @@
  ********************************************/
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const validate = require('../validator').validate
 import { DateTime } from 'luxon'
 import { ElexisUtils } from '../../util/elexis-types'
 const Elexis = new ElexisUtils()
 import metaqueries from './metaqueries'
 import { logger } from '../../logger'
-
+import { validate } from '../validator';
 
 /**
  * Hook to sort appointments by begin time. Since time is encoded as string but meant als minutes

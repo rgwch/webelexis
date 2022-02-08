@@ -77,6 +77,7 @@ export class Billing {
           }
           const cas = new CaseModel(fall)
           cas.setBillingDate(null)
+          
 
         }
 

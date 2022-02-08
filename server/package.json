@@ -28,7 +28,7 @@
     "start": "tsc && NODE_ENV=debug node dist/",
     "prod": "tsc && NODE_ENV=production node dist/",
     "dockered": "tsc && NODE_ENV=dockered node dist/",
-    "test": "jest",
+    "test": "tsc && jest",
     "clean": "rimraf dist"
   },
   "dependencies": {
