@@ -95,6 +95,10 @@ export class CaseModel {
     return undefined
   }
 
+  /**
+   * Set date when this case was billed or should be billed
+   * @param d 
+   */
   public setBillingDate(d: Date | string) {
     if (d) {
       let dt: DateTime

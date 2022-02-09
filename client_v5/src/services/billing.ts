@@ -1,4 +1,5 @@
 import type { InvoiceType } from './../models/invoice-model';
+import { DiagnoseManager, DiagnoseModel } from '../models/diagnose-model'
 import { getService } from "./io";
 import { EncounterModel, EncounterManager } from "../models/encounter-model";
 import type { EncounterType } from '../models/encounter-model';
@@ -49,9 +50,11 @@ export class Billing {
     const bm = new BillingsManager()
     const em = new EncounterManager()
     const km = new KontaktManager()
+    const dm = new DiagnoseManager()
     const konsen = fall.getChildren()
     const rechnung: Partial<InvoiceType> = {}
     let f: CaseModel
+    let diagnosen: Array<DiagnoseModel> = []
     for (const k of konsen) {
       try {
         const enc = await em.fetch(k.payload.konsid) as EncounterType
@@ -77,8 +80,9 @@ export class Billing {
           }
           const cas = new CaseModel(fall)
           cas.setBillingDate(null)
-          
-
+          if (diagnosen.length === 0) {
+            diagnosen = diagnosen.concat(await dm.findForKons(enc.id))
+          }
         }
 
       } catch (err) {

@@ -6,6 +6,7 @@
 
 import type { ElexisType, UUID } from "./elexistype";
 import { getService, type ServiceType } from "../services/io";
+import type { QueryResult } from './query-result'
 
 /**
  * Base class for all ElexisType- subtype managers
@@ -51,6 +52,9 @@ export class ObjectManager {
     }
   }
 
+  public async find(query: any): Promise<QueryResult> {
+    return this.dataService.find({ query })
+  }
   /**
    * Delete Object
    * @param el
