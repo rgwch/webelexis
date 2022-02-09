@@ -61,6 +61,7 @@ export class Billing {
     const em = new EncounterManager()
     const km = new KontaktManager()
     const dm = new DiagnoseManager()
+    const billsService=getService("bills")
     const konsen = fall.getChildren()
     const rechnung: Partial<InvoiceType> = {}
     let f: CaseModel
@@ -118,5 +119,9 @@ export class Billing {
     rechnung.rndatumbis=endDate.toFormat("yyyyLLdd")
     rechnung.rndatum=DateTime.now().toFormat("yyyyLLdd")
     // getNextRnNummer
+    const finalized=billsService.create(rechnung)
+    for (const k of konsen){
+      // insert bill number
+    }
   }
 }
