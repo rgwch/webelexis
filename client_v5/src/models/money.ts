@@ -1,4 +1,5 @@
-5/********************************************
+5
+/********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2022 by G. Weirich         *
  * License and Terms see LICENSE            *
@@ -9,7 +10,7 @@ export class Money {
 
   constructor(initialCents: number | string) {
     if (typeof initialCents === 'number') {
-        this.cents = Math.round(initialCents * 100) / 100
+      this.cents = Math.round(initialCents * 100) / 100
     } else {
       this.cents = this.string2number(initialCents)
     }
@@ -35,12 +36,19 @@ export class Money {
   }
   getFormatted(n: number = 0): string {
     const s = this.cents.toString()
-    const f = s.substring(0, s.length - 2) || "0"
-    const c = s.substring(s.length - 2).padStart(2,"0")
-    return (f + '.' + c).padStart(n, "0")
+    const f = s.substring(0, s.length - 2) || '0'
+    const c = s.substring(s.length - 2).padStart(2, '0')
+    return (f + '.' + c).padStart(n, '0')
   }
   round5(): Money {
     const rounded = Math.round(this.getValue() * 20) / 20
-    return new Money(rounded*100)
+    return new Money(rounded * 100)
+  }
+
+  addCents(n: number): void {
+    this.cents += n
+  }
+  getCentsAsString() {
+    return this.cents.toString()
   }
 }

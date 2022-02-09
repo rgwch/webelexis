@@ -157,4 +157,11 @@ export class EncounterModel {
     }
     return this.enc._Mandator
   }
+  public getDateTime():DateTime{
+    const dat=DateTime.fromFormat(this.enc.datum,"yyyyLLdd")
+    const hrs=parseInt(this.enc.zeit.substring(0,2))
+    const mins=parseInt(this.enc.zeit.substring(2))
+    dat.plus({hours:hrs,minutes:mins})
+    return dat
+  }
 }
