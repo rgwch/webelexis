@@ -4,19 +4,24 @@ const metaqueries = async (ctx) => {
   const knex = ctx.app.get('knexClient')
   const query = ctx.params.query
   if (query?.konsid) {
-    knex('behdl_dg_joint')
-      .join('behandlungen', 'behandlungsid', '=', 'behandlungen.id')
+    const result=await knex('behdl_dg_joint')
+      .join('diagnosen', 'diagnoseid', '=', 'diagnosen.id')
       .where('behdl_dg_joint.deleted', '0')
-      .andWhere('behandlungen.deleted', '0')
+      .andWhere('diagnosen.deleted', '0')
       .andWhere('behandlungsid', query.konsid)
-    ctx.result = await knex
+    ctx.result = {
+      total: result.length,
+      data: result,
+      skip: 0,
+      limit: 0
+    }
     return ctx
   }
 }
 export default {
   before: {
     all: [authenticate('jwt')],
-    find: [],
+    find: [metaqueries],
     get: [],
     create: [],
     update: [],
