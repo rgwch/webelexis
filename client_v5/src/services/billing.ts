@@ -55,13 +55,13 @@ export class Billing {
     return ret
   }
 
-  async createBill(fall: Tree<konsdef>) {
+  async createBill(fall: Tree<konsdef>): Promise<InvoiceType> {
     const errors: Array<String> = []
     const bm = new BillingsManager()
     const em = new EncounterManager()
     const km = new KontaktManager()
     const dm = new DiagnoseManager()
-    const billsService=getService("bills")
+    const billsService = getService('bills')
     const konsen = fall.getChildren()
     const rechnung: Partial<InvoiceType> = {}
     let f: CaseModel
@@ -69,10 +69,12 @@ export class Billing {
     let startDate: DateTime = DateTime.fromISO('2200-12-31')
     let endDate: DateTime = DateTime.fromISO('1900-01-01')
     let billAmount = new Money(0)
+    let konsultationen: Array<EncounterModel> = []
     for (const k of konsen) {
       try {
         const enc = (await em.fetch(k.payload.konsid)) as EncounterType
         const kons = new EncounterModel(enc)
+        konsultationen.push(kons)
         const mandator = await kons.getMandator()
         if (!mandator) {
           errors.push('No mandator for ' + enc.id)
@@ -114,14 +116,15 @@ export class Billing {
         errors.push(err)
       }
     }
-    rechnung.betrag=billAmount.getCentsAsString()
-    rechnung.rndatumvon=startDate.toFormat("yyyyLLdd")
-    rechnung.rndatumbis=endDate.toFormat("yyyyLLdd")
-    rechnung.rndatum=DateTime.now().toFormat("yyyyLLdd")
+    rechnung.betrag = billAmount.getCentsAsString()
+    rechnung.rndatumvon = startDate.toFormat('yyyyLLdd')
+    rechnung.rndatumbis = endDate.toFormat('yyyyLLdd')
+    rechnung.rndatum = DateTime.now().toFormat('yyyyLLdd')
     // getNextRnNummer
-    const finalized=billsService.create(rechnung)
-    for (const k of konsen){
-      // insert bill number
+    const finalized = await billsService.create(rechnung)
+    for (const k of konsultationen) {
+      k.setInvoice(finalized.id)
     }
+    return finalized
   }
 }

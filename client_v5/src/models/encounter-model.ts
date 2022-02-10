@@ -87,12 +87,14 @@ export class EncounterModel {
   private bm: BillingsManager
   private cm: CaseManager
   private km: KontaktManager
+  private em: EncounterManager
   private billings: Array<BillingModel>
 
   constructor(private enc: EncounterType) {
     this.bm = new BillingsManager()
     this.cm = new CaseManager()
     this.km = new KontaktManager()
+    this.em = new EncounterManager()
   }
 
   private timeString(t: string) {
@@ -157,11 +159,16 @@ export class EncounterModel {
     }
     return this.enc._Mandator
   }
-  public getDateTime():DateTime{
-    const dat=DateTime.fromFormat(this.enc.datum,"yyyyLLdd")
-    const hrs=parseInt(this.enc.zeit.substring(0,2))
-    const mins=parseInt(this.enc.zeit.substring(2))
-    dat.plus({hours:hrs,minutes:mins})
+  public getDateTime(): DateTime {
+    const dat = DateTime.fromFormat(this.enc.datum, 'yyyyLLdd')
+    const hrs = parseInt(this.enc.zeit.substring(0, 2))
+    const mins = parseInt(this.enc.zeit.substring(2))
+    dat.plus({ hours: hrs, minutes: mins })
     return dat
+  }
+
+  public async setInvoice(invoideId: string) {
+    this.enc.rechnungsid = invoideId
+    await this.em.save(this.enc)
   }
 }
