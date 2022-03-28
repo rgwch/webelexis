@@ -1,0 +1,86 @@
+{
+  "address": {
+    "place": "Ort",
+    "street": "Strasse",
+    "zip": "plz"
+  },
+  "billing": {
+    "CANCELLED": "Storniert",
+    "DEMAND_NOTE": "Zahlungserinnerung",
+    "DEMAND_NOTE_2": "Zweite Mahnung",
+    "DEMAND_NOTE_2_PRINTED": "Zweite Mahnung gedruckt",
+    "DEMAND_NOTE_3": "Dritte Mahnung",
+    "DEMAND_NOTE_3_PRINTED": "Dritte Mahnung gedruckt",
+    "DEMAND_NOTE_PRINTED": "Zahlungserinnerung gedruckt",
+    "EXCESSIVE_PAYMENT": "Zuviel bezahlt",
+    "IN_EXECUTION": "In Betreibung",
+    "OPEN": "Offen",
+    "OPEN_AND_PRINTED": "Offen und gedruckt",
+    "PAID": "Bezahlt",
+    "PARTIAL_LOSS": "Teilverlust",
+    "PARTIAL_PAYMENT": "Teilweise bezahlt",
+    "TOTAL_LOSS": "Totalverlust",
+    "amount": "Betrag",
+    "invoicedate": "Rechnungsdatum",
+    "invoicenumber": "Rechungsnummer",
+    "invoicestate": "Rechnungsstatus",
+    "patient": "Patient",
+    "statedate": "Statusdatum"
+  },
+  "cal": {
+    "apr": "April",
+    "aug": "August",
+    "dec": "Dezember",
+    "feb": "Februar",
+    "fr": "Fr",
+    "fri": "Freitag",
+    "jan": "Januar",
+    "jul": "Juli",
+    "jun": "Juni",
+    "mai": "Mai",
+    "mar": "März",
+    "mo": "Mo",
+    "mon": "Montag",
+    "nov": "November",
+    "oct": "Oktober",
+    "sa": "Sa",
+    "sat": "Samstag",
+    "sep": "September",
+    "su": "So",
+    "sun": "Sonntag",
+    "th": "Do",
+    "thu": "Donnerstag",
+    "tu": "Di",
+    "tue": "Dienstag",
+    "we": "Mi",
+    "wed": "Mittwoch"
+  },
+  "contact": {
+    "birthdate": "Geburtsdatum",
+    "email": "E-Mail",
+    "firstname": "Vorname",
+    "gender": "Geschlecht",
+    "lastname": "Name",
+    "mobile": "Mobil",
+    "phone1": "Telefon 1",
+    "phone2": "Telefon 2",
+    "remark": "Bemerkung"
+  },
+  "demotest": "Testkomponente",
+  "formatting": {
+    "date": "dd.LL.yyyy",
+    "longdate": "ccc, dd.LL.yyyy",
+    "dbdate": "yyyyLLdd"
+  },
+  "general": {
+    "loading": "lese..."
+  },
+  "titles": {
+    "bills": "Rechnungen",
+    "unbilled": "Unverrechnete Konsultationen"
+  },
+  "validation": {
+    "ivalidDate": "Ungültiges Datum",
+    "onlyText": "Nur Text"
+  }
+}

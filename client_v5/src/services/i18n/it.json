@@ -1,0 +1,85 @@
+{
+  "address": {
+    "place": "Ort",
+    "street": "Strasse",
+    "zip": "plz"
+  },
+  "billing": {
+    "CANCELLED": "annulato",
+    "DEMAND_NOTE": "avvertimento",
+    "DEMAND_NOTE_2": "secondo promemoria",
+    "DEMAND_NOTE_2_PRINTED": "Zweite Mahnung gedruckt",
+    "DEMAND_NOTE_3": "Terzo promemoria",
+    "DEMAND_NOTE_3_PRINTED": "Terzo promemoria stampato",
+    "DEMAND_NOTE_PRINTED": "avvertimento stampato",
+    "EXCESSIVE_PAYMENT": "pagato troppo",
+    "IN_EXECUTION": "in operazione",
+    "OPEN": "non pagata",
+    "OPEN_AND_PRINTED": "stampato",
+    "PAID": "pagata",
+    "PARTIAL_LOSS": "perdita parziale",
+    "PARTIAL_PAYMENT": "parzialmente pagato",
+    "TOTAL_LOSS": "perdita totale",
+    "amount": "quantità",
+    "invoicedate": "data della fattura",
+    "invoicenumber": "numero di fattura",
+    "invoicestate": "stato della fattura",
+    "patient": "paziente",
+    "statedate": "data dello stato"
+  },
+  "cal": {
+    "apr": "Aprile",
+    "aug": "Agosto",
+    "dec": "Dicembre",
+    "feb": "Febbraio",
+    "fr": "Ven",
+    "fri": "Venerdi",
+    "jan": "Gennaio",
+    "jul": "Luglio",
+    "jun": "Giugno",
+    "mai": "Maggio",
+    "mar": "Marzo",
+    "mo": "Lun",
+    "mon": "Lunedi",
+    "nov": "Novembre",
+    "oct": "Ottobre",
+    "sa": "Sab",
+    "sat": "Sabato",
+    "sep": "Settembre",
+    "su": "Dom",
+    "sun": "Domenica",
+    "th": "Gio",
+    "thu": "Giovedi",
+    "tu": "Mar",
+    "tue": "Martedi",
+    "we": "Mer",
+    "wed": "Mercoledi"
+  },
+  "contact": {
+    "birthdate": "Geburtsdatum",
+    "email": "E-Mail",
+    "firstname": "Vorname",
+    "gender": "Geschlecht",
+    "lastname": "Name",
+    "mobile": "Mobil",
+    "phone1": "Telefon 1",
+    "phone2": "Telefon 2",
+    "remark": "Bemerkung"
+  },
+  "demotest": "no lo so",
+  "formatting": {
+    "date": "DD.MM.YYYY",
+    "dbdate": "yyyyLLdd"
+  },
+  "general": {
+    "loading": "lese..."
+  },
+  "titles": {
+    "bills": "Rechnungen",
+    "unbilled": "Unverrechnete Konsultationen"
+  },
+  "validation": {
+    "ivalidDate": "Ungültiges Datum",
+    "onlyText": "Nur Text"
+  }
+}

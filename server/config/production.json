@@ -1,11 +1,12 @@
 {
   "configname": "production",
-  "version": "3.0.6",
+  "version": "3.5.0",
   "testing": false,
   "host": "localhost",
   "port": 3030,
   "client3": "../../client_v3/dist/",
   "client4": "../../client_v4/dist/",
+  "client5": "../../client_v5/dist",
   "paginate": {
     "default": 50,
     "max": 100

@@ -39,30 +39,21 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Mocha Tests",
-      "program": "${workspaceFolder}/server/node_modules/mocha/bin/_mocha",
+      "name": "Jest Tests",
+      "program": "${workspaceFolder}/server/node_modules/jest/bin/jest.js",
       "outputCapture": "std",
       "cwd": "${workspaceFolder}/server",
       "env": {
         "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
-      },
-      "args": [
-        "-u",
-        "bdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "--recursive",
-        "${workspaceFolder}/server/test"
-      ],
+      }
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Server debug",
-      "program": "${workspaceFolder}/server/src/index.js",
+      "program": "${workspaceFolder}/server/dist/index.js",
       "outputCapture": "std",
-      "cwd": "${workspaceFolder}/server",
+      "cwd": "${workspaceFolder}/server/dist",
       "env": {
         "NODE_CONFIG_DIR": "${workspaceFolder}/server/config",
         "EXTERNAL_PORT": 2019

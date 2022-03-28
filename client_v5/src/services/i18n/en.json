@@ -1,0 +1,85 @@
+{
+  "address": {
+    "place": "place",
+    "street": "street",
+    "zip": "zip"
+  },
+  "billing": {
+    "CANCELLED": "cancelled",
+    "DEMAND_NOTE": "reminded",
+    "DEMAND_NOTE_2": "second reminder",
+    "DEMAND_NOTE_2_PRINTED": "second reminder printed",
+    "DEMAND_NOTE_3": "third reminder",
+    "DEMAND_NOTE_3_PRINTED": "third reminder printed",
+    "DEMAND_NOTE_PRINTED": "reminder printer",
+    "EXCESSIVE_PAYMENT": "overpaid",
+    "IN_EXECUTION": "in execution",
+    "OPEN": "open",
+    "OPEN_AND_PRINTED": "open and printed",
+    "PAID": "paid",
+    "PARTIAL_LOSS": "partial loss",
+    "PARTIAL_PAYMENT": "partially paid",
+    "TOTAL_LOSS": "total loss",
+    "amount": "amount",
+    "invoicedate": "invoice date",
+    "invoicenumber": "invoice number",
+    "invoicestate": "invoice state",
+    "patient": "patient",
+    "statedate": "date of state"
+  },
+  "cal": {
+    "apr": "April",
+    "aug": "August",
+    "dec": "December",
+    "feb": "February",
+    "fr": "Fri",
+    "fri": "Friday",
+    "jan": "January",
+    "jul": "July",
+    "jun": "June",
+    "mai": "May",
+    "mar": "March",
+    "mo": "Mon",
+    "mon": "Monday",
+    "nov": "November",
+    "oct": "October",
+    "sa": "Sat",
+    "sat": "Saturday",
+    "sep": "September",
+    "su": "Sun",
+    "sun": "Sunday",
+    "th": "Thu",
+    "thu": "Thursday",
+    "tu": "Tue",
+    "tue": "Tuesday",
+    "we": "Wed",
+    "wed": "Wednesday"
+  },
+  "contact": {
+    "birthdate": "birthdate",
+    "email": "email",
+    "firstname": "first name",
+    "gender": "gender",
+    "lastname": "last name",
+    "mobile": "mobile",
+    "phone1": "phone 1",
+    "phone2": "phone 2",
+    "remark": "remark"
+  },
+  "demotest": "test component",
+  "formatting": {
+    "date": "yyyy/LL/dd",
+    "dbdate": "yyyyLLdd"
+  },
+  "general": {
+    "loading": "loading..."
+  },
+  "titles": {
+    "bills": "Billes",
+    "unbilled": "Unbilled encounters"
+  },
+  "validation": {
+    "ivalidDate": "invalid date",
+    "onlyText": "only text allowed"
+  }
+}
