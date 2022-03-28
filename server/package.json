@@ -64,7 +64,7 @@
     "mysql2": "^1.7.0",
     "nedb": "^1.8.0",
     "node-expat": "^2.3.18",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "node-zip": "^1.1.1",
     "nodemailer": "^6.4.16",
     "pdf-ocr": "^0.1.0",
