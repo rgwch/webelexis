@@ -7,7 +7,7 @@
   import { _ } from 'svelte-i18n'
 
   let bills: Array<InvoiceType>
-  let billstate = InvoiceState[4]
+  let billstate = InvoiceState[4]   // Open
   let name: string
 
   const billService = getService('bills')
