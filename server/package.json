@@ -26,6 +26,7 @@
   },
   "scripts": {
     "start": "tsc && NODE_ENV=debug node dist/",
+    "dev": "tsc && NODE_ENV=debug node dist/",
     "prod": "tsc && NODE_ENV=production node dist/",
     "dockered": "tsc && NODE_ENV=dockered node dist/",
     "test": "jest",
