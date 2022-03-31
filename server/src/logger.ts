@@ -12,13 +12,13 @@ import winston from 'winston'
 
 export const logger = winston.createLogger({
   level: 'info',
-
+  silent: false,
   format: winston.format.combine(
     winston.format.colorize(),
     winston.format.splat(),
     winston.format.simple(),
   ),
-  transports: [new winston.transports.Console()],
+  transports: [new winston.transports.Console({ silent: true })],
 })
 
 logger.info('Webelexis Server: logger created')
