@@ -1,6 +1,12 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 /* eslint-disable no-unused-vars */
 export class Service {
-  constructor(private options = {}) {}
+  constructor(private options = {}) { }
 
   async find(params) {
     return []

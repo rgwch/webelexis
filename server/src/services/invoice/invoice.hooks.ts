@@ -1,7 +1,18 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { config } from '../../configuration'
 const { authenticate } = require('@feathersjs/authentication').hooks;
 import { outputInvoice } from './generator'
 
+/**
+ * Create a bill and print or mail it
+ * @param ctx
+ * @returns
+ */
 const create = async ctx => {
   if (config.billing.stickerForMail) {
     const stickerService = ctx.app.service("stickers")

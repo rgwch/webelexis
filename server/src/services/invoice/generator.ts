@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import qrbill from 'swissqrbill'
 const util = qrbill.utils // require('swissqrbill/utils')
 import { config as cfg } from '../../configuration'

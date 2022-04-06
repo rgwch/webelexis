@@ -19,13 +19,22 @@ describe('bills', () => {
     const result = await service.find({})
     expect(result.total).toBeGreaterThan(0)
   })
-  it('fetches bills matching a patient', async () => {
-    const result = await service.find({ query: { patientid: "testperson", rnstatus: '5' } })
+  xit('fetches bills matching a patient', async () => {
+    const result = await service.find({ query: { patientid: "testperson", rnstatus: '*' } })
     expect(result.total).toBeGreaterThan(0)
     const check = result.data[0]
     expect(check).toHaveProperty('fallid')
     expect(check).toHaveProperty('_Fall')
     expect(check).toHaveProperty('mandantid')
     expect(check).toHaveProperty('_Mandant')
+    const fall = check["_Fall"]
+    expect(fall).toHaveProperty("patientid")
+    expect(fall).toHaveProperty("_Patient")
+    expect(fall._Patient).toHaveProperty("bezeichnung1")
+  })
+
+  it("fetches bills matching a birthdate", async () => {
+    const result = await service.find({ query: { patientid: "1961", rnstatus: '5' } })
+    expect(result.total).toBeGreaterThan(0)
   })
 })

@@ -16,6 +16,12 @@ export class Bills extends Service {
     this.app = app
   }
 
+  /**
+   * Find existing bills with a given status and optionally for a given patient description
+   * patient description can be: "Year of birth" or (part of)"firstname lastname" or (partof)"firstname" or (partof)"lastname"
+   * @param params
+   * @returns
+   */
   async find(params) {
     if (params.query?.patientid) {
       const query = this.knex('faelle')
@@ -25,7 +31,7 @@ export class Bills extends Service {
         .where('rechnungen.rnstatus', '=', params.query.rnstatus)
       let q = params.query.patientid
       if (q.match(/[0-9]{4,4}/)) {
-        query.where('kontakt.geburtsdatum', 'like', q + "????")
+        query.where('kontakt.geburtsdatum', 'like', q + "____")
       } else if (q.match(/\w+\s+\w+/)) {
         const vn = q.split(/\s+/)
         query.where('kontakt.bezeichnung1', 'like', vn[0] + "%")
@@ -44,6 +50,7 @@ export class Bills extends Service {
         query.offset(params.query.$skip)
         result['skip'] = params.query.$skip
       }
+      const raw = query.toString();
       const found = await query
       result['total'] = found.length
       result['data'] = found
