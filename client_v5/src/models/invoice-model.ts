@@ -70,6 +70,7 @@ export interface InvoiceType extends ElexisType {
   extjson?: any
   _Fall?: CaseType
   _Mandant?: KontaktType
+  _Patname?: String
   output?: boolean
 }
 

@@ -8,6 +8,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks
 import Extinfo from '../../hooks/handle-extinfo'
 const handleExtinfo = Extinfo({ extinfo: 'extinfo' })
 import flatiron from '../../hooks/flatiron'
+import { DateTime } from 'luxon'
 const fi = flatiron([
   {
     id: 'fallid',
@@ -22,9 +23,9 @@ const fi = flatiron([
 ])
 
 /**
- * Whwn creating a Bill: Assign a new and unique bill number
- * @param ctx 
- * @returns 
+ * When creating a Bill: Assign a new and unique bill number
+ * @param ctx
+ * @returns
  */
 const assignBillNumber = async (ctx) => {
   const config = ctx.app.service('elexis-config')
@@ -39,6 +40,22 @@ const assignBillNumber = async (ctx) => {
   return ctx
 }
 
+const _addPatient = (bill) => {
+  bill._Patname = bill._Fall?._Patient?.bezeichnung1 + " " +
+    bill._Fall?._Patient?.bezeichnung2 + ", " + DateTime.fromISO(
+      bill._Fall?._Patient?.geburtsdatum
+    )?.toLocaleString()
+}
+const addPatient = async ctx => {
+  if (Array.isArray(ctx.result.data)) {
+    for (const bill of ctx.result.data) {
+      _addPatient(bill)
+    }
+  } else {
+    _addPatient(ctx.result.data)
+  }
+  return ctx;
+}
 export default {
   before: {
     all: [authenticate('jwt')],
@@ -46,14 +63,14 @@ export default {
     get: [],
     create: [handleExtinfo, fi, assignBillNumber],
     update: [handleExtinfo, fi],
-    patch: [flatiron],
+    patch: [fi],
     remove: [],
   },
 
   after: {
     all: [],
-    find: [handleExtinfo, fi],
-    get: [handleExtinfo, fi],
+    find: [handleExtinfo, fi, addPatient],
+    get: [handleExtinfo, fi, addPatient],
     create: [],
     update: [],
     patch: [],

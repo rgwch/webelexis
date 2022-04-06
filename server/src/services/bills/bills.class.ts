@@ -28,7 +28,9 @@ export class Bills extends Service {
         .join('rechnungen', 'faelle.id', "=", 'rechnungen.fallid')
         .join('kontakt', 'kontakt.id', '=', 'faelle.patientid')
         .select("rechnungen.*")
-        .where('rechnungen.rnstatus', '=', params.query.rnstatus)
+      if (params.query.rnstatus) {
+        query.where('rechnungen.rnstatus', '=', params.query.rnstatus)
+      }
       let q = params.query.patientid
       if (q.match(/[0-9]{4,4}/)) {
         query.where('kontakt.geburtsdatum', 'like', q + "____")

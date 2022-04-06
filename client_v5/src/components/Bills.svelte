@@ -9,6 +9,7 @@
     return true;
   };
   let allchecked: boolean = false;
+  let reverse: boolean = true;
   const selection = new Array<boolean>(bills.length);
   function checkall() {
     const prev = selection[0];
@@ -27,6 +28,19 @@
     }
     alert("ok");
   }
+  function sort(col) {
+    // console.log("sort " + col);
+    reverse = !reverse;
+    bills = bills.sort((a, b) => {
+      let result = 0;
+      if (col == "betrag") {
+        result = parseFloat(a[col]) - parseFloat(b[col]);
+      } else {
+        result = a[col].localeCompare(b[col]);
+      }
+      return reverse ? result * -1 : result;
+    });
+  }
 </script>
 
 <template>
@@ -40,12 +54,22 @@
             bind:checked={allchecked}
           /></th
         >
-        <th class="px-5 mx-5">{$_("billing.invoicenumber")}</th>
-        <th>{$_("billing.invoicedate")} </th>
-        <th>{$_("billing.invoicestate")} </th>
-        <th>{$_("billing.statedate")}</th>
-        <th>{$_("billing.amount")}</th>
-        <th>{$_("billing.patient")}</th>
+        <th class="px-5 mx-5" on:click={() => sort("rnnummer")}
+          >{$_("billing.invoicenumber")}</th
+        >
+        <th
+          ><span on:click={() => sort("rndatum")}
+            >{$_("billing.invoicedate")}</span
+          >
+        </th>
+        <th on:click={() => sort("rnstatus")}>{$_("billing.invoicestate")} </th>
+        <th on:click={() => sort("statusdatum")}>{$_("billing.statedate")}</th>
+        <th
+          on:click={() => {
+            sort("betrag");
+          }}>{$_("billing.amount")}</th
+        >
+        <th on:click={() => sort("_Patname")}>{$_("billing.patient")}</th>
       </thead>
       <tbody>
         {#each bills.filter(filter) as bill, idx}
@@ -55,20 +79,21 @@
             </td>
             <td class="text-center">{bill.rnnummer}</td>
             <td class="text-center"
-              >{DateTime.fromISO(bill.rndatum).toLocaleString()}</td
+              >{DateTime.fromISO(bill.rndatum).toFormat(
+                $_("formatting.date")
+              )}</td
             >
             <td class="text-center"
               >{$_("billing." + InvoiceState[bill.rnstatus])}</td
             >
             <td class="text-center"
-              >{DateTime.fromISO(bill.statusdatum).toLocaleString()}</td
+              >{DateTime.fromISO(bill.statusdatum).toFormat(
+                $_("formatting.date")
+              )}</td
             >
             <td class="text-right">{new Money(bill.betrag).getFormatted()}</td>
             <td class="text-left px-8">
-              {bill._Fall._Patient.bezeichnung1}
-              {bill._Fall._Patient.bezeichnung2}, {DateTime.fromISO(
-                bill._Fall._Patient.geburtsdatum
-              ).toLocaleString()}
+              {bill._Patname}
             </td>
           </tr>
         {/each}

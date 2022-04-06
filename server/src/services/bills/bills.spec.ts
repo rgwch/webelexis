@@ -19,8 +19,8 @@ describe('bills', () => {
     const result = await service.find({})
     expect(result.total).toBeGreaterThan(0)
   })
-  xit('fetches bills matching a patient', async () => {
-    const result = await service.find({ query: { patientid: "testperson", rnstatus: '*' } })
+  it('fetches bills matching a patient', async () => {
+    const result = await service.find({ query: { patientid: "testperson", rnstatus: '5' } })
     expect(result.total).toBeGreaterThan(0)
     const check = result.data[0]
     expect(check).toHaveProperty('fallid')
