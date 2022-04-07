@@ -6,15 +6,15 @@
   import type { InvoiceType } from "../models/invoice-model";
   import { _ } from "svelte-i18n";
 
-  let bills: Array<InvoiceType>;
+  let bills: Promise<Array<InvoiceType>>;
   let billstate = InvoiceState[4]; // Open
   let name: string;
 
   const billService = getService("bills");
-  billService
+  bills=billService
     .find({ query: { $limit: 50, rnStatus: InvoiceState[billstate] } })
     .then((result: query_result) => {
-      bills = result.data;
+      return result.data;
     });
   let states: Array<string> = [];
 
@@ -26,10 +26,10 @@
   }
   // All with state
   function select() {
-    billService
+    bills=billService
       .find({ query: { $limit: 50, rnstatus: InvoiceState[billstate] } })
       .then((result: query_result) => {
-        bills = result.data;
+        return result.data;
       });
   }
 
@@ -48,7 +48,7 @@
   }
   // all with state and matching name or firstname
   function refilter() {
-    billService
+    bills=billService
       .find({
         query: {
           $limit: 100,
@@ -57,7 +57,7 @@
         },
       })
       .then((result: query_result) => {
-        bills = result.data;
+        return result.data;
       });
   }
 </script>
