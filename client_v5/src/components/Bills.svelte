@@ -5,8 +5,9 @@
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";
 
-  export let bills: Promise<Array<InvoiceType>>;
-  let _bills: Array<InvoiceType>;
+  export let bills: Array<InvoiceType>;
+  export let busy = false;
+
   export let filter: (any) => boolean = (bill?) => {
     return true;
   };
@@ -14,20 +15,17 @@
   let reverse: boolean = true;
   let selection: Array<boolean> = [];
 
-  bills.then((res) => {
-    _bills = res;
-    selection = new Array<boolean>(_bills.length);
-  });
+  selection = new Array<boolean>(bills.length);
 
   function checkall() {
     const prev = selection[0];
-    for (let i = 0; i < _bills.length; i++) {
+    for (let i = 0; i < bills.length; i++) {
       selection[i] = !prev;
     }
     allchecked = false;
   }
   async function output(withPrint: boolean) {
-    for (let i = 0; i < _bills.length; i++) {
+    for (let i = 0; i < bills.length; i++) {
       if (selection[i]) {
         const bill = new Invoice(bills[i]);
         const result = await bill.print(withPrint);
@@ -39,7 +37,7 @@
   function sort(col) {
     // console.log("sort " + col);
     reverse = !reverse;
-    _bills = _bills.sort((a, b) => {
+    bills = bills.sort((a, b) => {
       let result = 0;
       if (col == "betrag") {
         result = parseFloat(a[col]) - parseFloat(b[col]);
@@ -92,10 +90,10 @@
         >
       </thead>
       <tbody>
-        {#await bills}
+        {#if busy}
           <img src="webelexis-anim.gif" width="150px" alt="wait..." />
-        {:then _bills}
-          {#each _bills.filter(filter) as bill, idx}
+        {:else}
+          {#each bills.filter(filter) as bill, idx}
             <tr>
               <td>
                 <input type="checkbox" bind:checked={selection[idx]} />
@@ -121,7 +119,7 @@
               </td>
             </tr>
           {/each}
-        {/await}
+        {/if}
       </tbody>
     </table>
   </div>

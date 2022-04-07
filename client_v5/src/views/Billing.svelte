@@ -6,16 +6,24 @@
   import type { InvoiceType } from "../models/invoice-model";
   import { _ } from "svelte-i18n";
 
-  let bills: Promise<Array<InvoiceType>>;
+  let bills: Array<InvoiceType>=[];
   let billstate = InvoiceState[4]; // Open
   let name: string;
+  let busy=false
 
   const billService = getService("bills");
-  bills=billService
-    .find({ query: { $limit: 50, rnStatus: InvoiceState[billstate] } })
-    .then((result: query_result) => {
-      return result.data;
-    });
+
+  async function reload(): Promise<Array<InvoiceType>> {
+    const query = { $limit: 50, rnStatus: InvoiceState[billstate] };
+    if (name) {
+      query["patientid"] = name;
+    }
+    busy=true
+    const result = await billService.find({ query });
+    bills = result.data;
+    busy=false;
+    return result.data;
+  }
   let states: Array<string> = [];
 
   // Build Array of possible Bill states
@@ -23,14 +31,6 @@
     if (typeof InvoiceState[value] === "number") {
       states.push(value);
     }
-  }
-  // All with state
-  function select() {
-    bills=billService
-      .find({ query: { $limit: 50, rnstatus: InvoiceState[billstate] } })
-      .then((result: query_result) => {
-        return result.data;
-      });
   }
 
   function patfilter(bill): boolean {
@@ -46,20 +46,6 @@
       bill._Fall?._Patient?.bezeichnung2?.match(name)
     );
   }
-  // all with state and matching name or firstname
-  function refilter() {
-    bills=billService
-      .find({
-        query: {
-          $limit: 100,
-          rnstatus: InvoiceState[billstate],
-          patientid: name,
-        },
-      })
-      .then((result: query_result) => {
-        return result.data;
-      });
-  }
 </script>
 
 <template>
@@ -69,14 +55,14 @@
       max-h-full max-w-full"
     >
       <h2 class="mx-3">{$_("titles.bills")}</h2>
-      <select bind:value={billstate} on:change={select} on:click={select}>
+      <select bind:value={billstate} on:change={reload} on:click={reload}>
         {#each states as state}
           <option value={state}>{$_("billing." + state)}</option>
         {/each}
       </select>
       <input type="text" bind:value={name} />
-      <button on:click={refilter}>Filter</button>
-      <Bills {bills} filter={patfilter} />
+      <button on:click={reload}>Filter</button>
+      <Bills {bills} filter={patfilter} {busy}/>
     </div>
     <div class="flex-auto">
       <Unbilled />
