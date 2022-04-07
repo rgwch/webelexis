@@ -4,6 +4,7 @@
   import { Money } from "../models/money";
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";
+  
   export let bills: Array<InvoiceType> = [];
   export let filter: (any) => boolean = (bill?) => {
     return true;
@@ -54,22 +55,16 @@
             bind:checked={allchecked}
           /></th
         >
-        <th class="px-5 mx-5" on:click={() => sort("rnnummer")}
-          >{$_("billing.invoicenumber")}</th
-        >
-        <th
-          ><span on:click={() => sort("rndatum")}
-            >{$_("billing.invoicedate")}</span
-          >
-        </th>
-        <th on:click={() => sort("rnstatus")}>{$_("billing.invoicestate")} </th>
-        <th on:click={() => sort("statusdatum")}>{$_("billing.statedate")}</th>
-        <th
+        <th class="px-5 mx-5 hover:text-blue-600 underline cursor-pointer" on:click={() => sort("rnnummer")}>{$_("billing.invoicenumber")}</th>
+        <th class="hover:text-blue-600 underline cursor-pointer" on:click={() => sort("rndatum")}>{$_("billing.invoicedate")} </th>
+        <th class="hover:text-blue-600 underline cursor-pointer" on:click={() => sort("rnstatus")}>{$_("billing.invoicestate")} </th>
+        <th class="hover:text-blue-600 underline cursor-pointer" on:click={() => sort("statusdatum")}>{$_("billing.statedate")}</th>
+        <th class="hover:text-blue-600 underline cursor-pointer"
           on:click={() => {
             sort("betrag");
           }}>{$_("billing.amount")}</th
         >
-        <th on:click={() => sort("_Patname")}>{$_("billing.patient")}</th>
+        <th class="hover:text-blue-600 underline cursor-pointer" on:click={() => sort("_Patname")}>{$_("billing.patient")}</th>
       </thead>
       <tbody>
         {#each bills.filter(filter) as bill, idx}
