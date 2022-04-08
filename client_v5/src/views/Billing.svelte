@@ -6,6 +6,7 @@
   import type { InvoiceType } from "../models/invoice-model";
   import { _ } from "svelte-i18n";
 
+  const fetchsize=80;
   let bills: Array<InvoiceType>=[];
   let billstate = InvoiceState[4]; // Open
   let name: string;
@@ -14,7 +15,7 @@
   const billService = getService("bills");
 
   async function reload(): Promise<Array<InvoiceType>> {
-    const query = { $limit: 50, rnStatus: InvoiceState[billstate] };
+    const query = { $limit: fetchsize, rnStatus: InvoiceState[billstate] };
     if (name) {
       query["patientid"] = name;
     }

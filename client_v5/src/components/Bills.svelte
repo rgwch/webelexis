@@ -13,23 +13,35 @@
   };
   let allchecked: boolean = false;
   let reverse: boolean = true;
-  let selection: Array<boolean> = [];
+  let selection: Array<InvoiceType>;
+  let checked: Array<boolean>;
 
-  selection = new Array<boolean>(bills.length);
-
+  $: {
+    let l = bills.length;
+    selection = new Array<InvoiceType>(l);
+    checked = new Array<boolean>(l);
+  }
   function checkall() {
     const prev = selection[0];
     for (let i = 0; i < bills.length; i++) {
-      selection[i] = !prev;
+      selection[i] = prev ? bills[i] : undefined;
+      checked[i] = !prev;
     }
     allchecked = false;
   }
+  function select(i) {
+    if (checked[i]) {
+      selection[i] = undefined;
+    } else {
+      selection[i] = bills[i];
+    }
+  }
   async function output(withPrint: boolean) {
-    for (let i = 0; i < bills.length; i++) {
+    for (let i = 0; i < selection.length; i++) {
       if (selection[i]) {
-        const bill = new Invoice(bills[i]);
+        const bill = new Invoice(selection[i]);
         const result = await bill.print(withPrint);
-        selection[i] = false;
+        checked[i] = false;
       }
     }
     alert("ok");
@@ -96,7 +108,11 @@
           {#each bills.filter(filter) as bill, idx}
             <tr>
               <td>
-                <input type="checkbox" bind:checked={selection[idx]} />
+                <input
+                  type="checkbox"
+                  bind:checked={checked[idx]}
+                  on:click={() => select(idx)}
+                />
               </td>
               <td class="text-center">{bill.rnnummer}</td>
               <td class="text-center"
