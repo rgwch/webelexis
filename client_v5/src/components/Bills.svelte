@@ -14,34 +14,20 @@
   };
   let allchecked: boolean = false;
   let reverse: boolean = true;
-  let selection: Array<InvoiceType> = [];
-  let checked: Array<boolean> = [];
+  // let selection: Array<InvoiceType> = [];
+  // let checked: Array<boolean> = [];
 
   function checkall() {
-    const prev = selection[0];
+    const prev = bills[0].selected;
     for (let i = 0; i < bills.length; i++) {
-      selection[i] = prev ? bills[i] : undefined;
-      checked[i] = !prev;
+      bills[i].selected = !prev;
     }
     allchecked = false;
   }
   function select(i) {
-    if (checked[i]) {
-      selection[i] = undefined;
-    } else {
-      selection[i] = bills[i];
-    }
+    bills[i].selected = !bills[i].selected;
   }
-  async function output(withPrint: boolean) {
-    for (let i = 0; i < selection.length; i++) {
-      if (selection[i]) {
-        const bill = new Invoice(selection[i]);
-        const result = await bill.print(withPrint);
-        checked[i] = false;
-      }
-    }
-    alert("ok");
-  }
+
   function sort(col) {
     // console.log("sort " + col);
     reverse = !reverse;
@@ -106,7 +92,7 @@
               <td>
                 <input
                   type="checkbox"
-                  bind:checked={checked[idx]}
+                  bind:checked={bills[idx].selected}
                   on:click={() => select(idx)}
                 />
               </td>
@@ -135,13 +121,5 @@
       </tbody>
     </table>
   </div>
-  <div>
-    <button on:click={() => output(false)}>Ausgeben</button>
-    <button
-      on:click={() => {
-        output(true);
-      }}>Drucken</button
-    >
-  </div>
-  <BillActions {selection} />
+  <BillActions bind:selection={bills} />
 </template>
