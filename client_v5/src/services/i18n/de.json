@@ -29,7 +29,8 @@
     "actions": {
       "output": "Ausgeben",
       "print": "Drucken",
-      "demand_level": "Mahnstufe erhöhen"
+      "demand_level": "Mahnstufe",
+      "storno": "Stornieren"
     }
   },
   "cal": {

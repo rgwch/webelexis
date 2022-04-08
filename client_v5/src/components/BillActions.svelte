@@ -16,7 +16,26 @@
 </script>
 
 <template>
-  <button type="button" on:click={() => output(false)}
-    >{$_("billing.actions.output")}</button
-  >
+  <div class="flex justify-left py-8">
+    <button
+      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6"
+    >
+      {$_("billing.actions.output")}
+    </button>
+    <button
+      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6"
+    >
+      {$_("billing.actions.print")}
+    </button>
+    <button
+      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6"
+    >
+      {$_("billing.actions.demand_level")} &uarr;
+    </button>
+    <button
+      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6"
+    >
+      {$_("billing.actions.storno")}
+    </button>
+  </div>
 </template>
