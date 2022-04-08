@@ -4,6 +4,7 @@
   import { Money } from "../models/money";
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";
+  import BillActions from "./BillActions.svelte";
 
   export let bills: Array<InvoiceType>;
   export let busy = false;
@@ -13,14 +14,9 @@
   };
   let allchecked: boolean = false;
   let reverse: boolean = true;
-  let selection: Array<InvoiceType>;
-  let checked: Array<boolean>;
+  let selection: Array<InvoiceType> = [];
+  let checked: Array<boolean> = [];
 
-  $: {
-    let l = bills.length;
-    selection = new Array<InvoiceType>(l);
-    checked = new Array<boolean>(l);
-  }
   function checkall() {
     const prev = selection[0];
     for (let i = 0; i < bills.length; i++) {
@@ -147,4 +143,5 @@
       }}>Drucken</button
     >
   </div>
+  <BillActions {selection} />
 </template>

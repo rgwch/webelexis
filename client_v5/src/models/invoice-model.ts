@@ -71,7 +71,7 @@ export interface InvoiceType extends ElexisType {
   _Fall?: CaseType
   _Mandant?: KontaktType
   _Patname?: String
-  output?: boolean
+  selected?: boolean
 }
 
 export enum InvoiceState {

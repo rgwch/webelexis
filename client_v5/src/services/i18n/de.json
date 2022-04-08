@@ -25,7 +25,12 @@
     "invoicenumber": "Rechungsnummer",
     "invoicestate": "Rechnungsstatus",
     "patient": "Patient",
-    "statedate": "Statusdatum"
+    "statedate": "Statusdatum",
+    "actions": {
+      "output": "Ausgeben",
+      "print": "Drucken",
+      "demand_level": "Mahnstufe erhöhen"
+    }
   },
   "cal": {
     "apr": "April",
