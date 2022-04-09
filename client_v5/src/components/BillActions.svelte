@@ -4,12 +4,20 @@
   import { _ } from "svelte-i18n";
   export let selection: Array<InvoiceType> = [];
   async function output(withPrint: boolean) {
+    let err: boolean = false;
     for (let i = 0; i < selection.length; i++) {
       if (selection[i].selected) {
         const bill = new Invoice(selection[i]);
         const result = await bill.print(withPrint);
-        selection[i].selected = false;
+        if (result) {
+          selection[i].selected = false;
+        } else {
+          err = true;
+        }
       }
+    }
+    if (err) {
+      alert("Es gab Fehler");
     }
     alert("ok");
   }
@@ -34,9 +42,9 @@
               alert("State can't be changed automatically " + sel.rnnummer);
           }
           const res = await bill.setInvoiceState(newstate);
-          alert("OK: "+JSON.stringify(res));
+          alert("OK: " + JSON.stringify(res));
         } catch (err) {
-          alert("Error: "+err);
+          alert("Error: " + err);
         }
       }
     }

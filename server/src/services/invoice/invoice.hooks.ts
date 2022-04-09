@@ -23,8 +23,8 @@ const create = async ctx => {
       }
     }
   }
-  const result = await outputInvoice(ctx.data)
-  ctx.result = true
+  ctx.result = await outputInvoice(ctx.data)
+  if (ctx.result) { }
   return ctx
 }
 export default {

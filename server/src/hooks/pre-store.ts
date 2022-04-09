@@ -22,6 +22,13 @@ const do_prepare = (obj, method) => {
     obj.deleted = "0"
   }
   delete obj.type
+  /*
+  for (const prop in obj) {
+    if (prop.startsWith("_")) {
+      delete obj[prop];
+    }
+  }
+  */
   return obj
 }
 
