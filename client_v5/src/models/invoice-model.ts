@@ -5,7 +5,8 @@
  ********************************************/
 
 import type { ElexisType, UUID, DATE } from './elexistype';
-import { getService } from "../services/io";
+import { getService} from "../services/io";
+import type {IService} from '../services/io'
 import type { CaseType } from "./case-model";
 import type { KontaktType } from "./kontakt-model";
 /*
@@ -71,6 +72,7 @@ export interface InvoiceType extends ElexisType {
   _Fall?: CaseType
   _Mandant?: KontaktType
   _Patname?: String
+  output?: boolean
   selected?: boolean
 }
 
@@ -93,8 +95,13 @@ export enum InvoiceState {
 }
 
 export class Invoice {
-  constructor(private bill) { }
+  constructor(private bill: InvoiceType) { }
 
+  public async setDemandLevel(level: InvoiceState) {
+    const billService:IService<InvoiceType> = getService("bills")
+    const result=await billService.patch(this.bill.id, { rnstatus: level })
+    return result
+  }
   public async print(toPrinter: boolean): Promise<boolean> {
     const printer = getService("invoice")
     this.bill.output = toPrinter
