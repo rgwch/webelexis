@@ -76,6 +76,7 @@ export interface InvoiceType extends ElexisType {
   selected?: boolean
 }
 
+
 export enum InvoiceState {
   OPEN = 4,
   OPEN_AND_PRINTED,
@@ -94,10 +95,28 @@ export enum InvoiceState {
   CANCELLED
 }
 
+export const RnState={
+  OPEN :4,
+  OPEN_AND_PRINTED:5,
+  DEMAND_NOTE:6,
+  DEMAND_NOTE_PRINTED:7,
+  DEMAND_NOTE_2:8,
+  DEMAND_NOTE_2_PRINTED:9,
+  DEMAND_NOTE_3:10,
+  DEMAND_NOTE_3_PRINTED:11,
+  IN_EXECUTION:12,
+  PARTIAL_LOSS:13,
+  TOTAL_LOSS:14,
+  PARTIAL_PAYMENT:15,
+  PAID:16,
+  EXCESSIVE_PAYMENT:17,
+  CANCELLED:18
+}
+
 export class Invoice {
   constructor(private bill: InvoiceType) { }
 
-  public async setDemandLevel(level: InvoiceState) {
+  public async setInvoiceState(level:number) {
     const billService:IService<InvoiceType> = getService("bills")
     const result=await billService.patch(this.bill.id, { rnstatus: level })
     return result
