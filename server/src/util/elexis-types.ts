@@ -125,12 +125,14 @@ export class ElexisUtils {
     let array = java.newArray("byte",
       Array.prototype.slice.call(raw, 0)
     )
-    let unp = java.callStaticMethodSync("ch.rgw.tools.StringTool", "unpack", array)
-    return unp.split("\n")
+    let list = java.callStaticMethodSync("ch.rgw.tools.StringTool", "unpack", array)
+    const arr = list.toArraySync()
+    return arr
   }
 
   packStrings(strings: Array<string>): Uint8Array {
-    let packed = java.callStaticMethodSync("ch.rgw.tools.StringTool", "pack", strings)
+    const arr = java.newArray("java.lang.String", strings)
+    let packed = java.callStaticMethodSync("ch.rgw.tools.StringTool", "pack", arr)
     return packed
   }
   /**
