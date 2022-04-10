@@ -133,6 +133,11 @@ export class Invoice {
       return false;
     }
   }
+  /**
+   * output a bill
+   * @param toPrinter if true: send to printer, otherwise only export to directory 
+   * @returns true on success
+   */
   public async print(toPrinter: boolean): Promise<boolean> {
     try {
       const printer: IService<InvoiceType> = getService("invoice")
@@ -146,7 +151,7 @@ export class Invoice {
           case RnState.DEMAND_NOTE_2: this.bill.rnstatus = RnState.DEMAND_NOTE_2_PRINTED; break;
           case RnState.DEMAND_NOTE_3: this.bill.rnstatus = RnState.DEMAND_NOTE_3_PRINTED; break;
         }
-        this.bill.statusdatum = DateTime.fromJSDate(new Date()).toFormat("yyyyLLdd");
+        this.bill.statusdatum = DateTime.now().toFormat("yyyyLLdd");
         const modified = await billService.update(this.bill.id, this.bill)
         return true
       }
