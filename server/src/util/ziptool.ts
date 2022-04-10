@@ -1,6 +1,6 @@
 const ZIP_MARKER = 5 << 29
 import { Zip } from 'zlibt2'
-import  unzipper from 'unzipper'
+import unzipper from 'unzipper'
 
 
 export const create = (name, data) => {
@@ -20,13 +20,13 @@ export const extract = async (zipped, name) => {
 }
 
 export const check = async (fakedata) => {
-  const zipped = exports.create("test", fakedata)
-  const unzipped = await exports.extract(zipped, "test")
+  const zipped = await create("test", fakedata)
+  const unzipped = await extract(zipped, "test")
   return unzipped
 }
 
 
-const unzip = (raw, name) => {
+const unzip = (raw, name: string): Promise<any> => {
   if (raw) {
     const src = Buffer.from(raw)
     const buffer = Buffer.allocUnsafe(src.length - 4)
