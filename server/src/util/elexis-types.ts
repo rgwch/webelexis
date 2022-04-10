@@ -121,6 +121,18 @@ export class ElexisUtils {
     return binfield
   }
 
+  unpackStrings(raw): Array<string> {
+    let array = java.newArray("byte",
+      Array.prototype.slice.call(raw, 0)
+    )
+    let unp = java.callStaticMethodSync("ch.rgw.tools.StringTool", "unpack", array)
+    return unp.split("\n")
+  }
+
+  packStrings(strings: Array<string>): Uint8Array {
+    let packed = java.callStaticMethodSync("ch.rgw.tools.StringTool", "pack", strings)
+    return packed
+  }
   /**
    * Convert an Elexis ExtInfo field to json.
    * @param {Buffer} buffer  the binary data as stored in the database
