@@ -65,7 +65,7 @@ export class ElexisUtils {
   /**
    * create an empty versionedResource
    */
-  createVersionedResource() {
+  createVersionedResource(): Uint8Array {
     let vr = java.callStaticMethodSync("ch.rgw.tools.VersionedResource", "load", null)
     let bindata = java.callMethodSync(vr, "serialize")
     return bindata
@@ -76,7 +76,7 @@ export class ElexisUtils {
    * @param bindata: The binary data containing the versionedResource
    * @returns string: The head revision as IVersionedResource
    */
-  getVersionedResource(bindata) {
+  getVersionedResource(bindata: Uint8Array) {
     if (bindata && bindata.length) {
       let array = java.newArray("byte",
         Array.prototype.slice.call(bindata, 0)
@@ -111,7 +111,7 @@ export class ElexisUtils {
    * @param remark a remark for the new version
    * @returns {*} the updated VersionedResource
    */
-  updateVersionedResource(entry, newText, remark) {
+  updateVersionedResource(entry, newText, remark): Uint8Array {
     let array = java.newArray("byte",
       Array.prototype.slice.call(entry, 0)
     )
@@ -121,7 +121,7 @@ export class ElexisUtils {
     return binfield
   }
 
-  unpackStrings(raw): Array<string> {
+  unpackStrings(raw: Uint8Array): Array<string> {
     let array = java.newArray("byte",
       Array.prototype.slice.call(raw, 0)
     )
@@ -174,7 +174,7 @@ export class ElexisUtils {
     }
   }
 
-  dateStrings(date) {
+  dateStrings(date: Date) {
     var month = (date.getMonth() + 1).toString();
     if (month.length < 2) {
       month = '0' + month
@@ -191,25 +191,25 @@ export class ElexisUtils {
   }
 
   // create a YYYYMMDD String from a Date object
-  makeCompactFromDateObject(date) {
+  makeCompactFromDateObject(date: Date): string {
     var ret = this.dateStrings(date)
     return ret.year + ret.month + ret.day
   }
 
   // Create a Date object from a YYYYMMDD String
-  makeDateObjectFromCompact(datestring) {
+  makeDateObjectFromCompact(datestring: string): Date {
     if (datestring !== undefined && datestring.length === 8) {
       let year = parseInt(datestring.substring(0, 4))
       let month = parseInt(datestring.substring(4, 6)) - 1
       let day = parseInt(datestring.substring(6, 8))
       return new Date(year, month, day)
     } else {
-      return ""
+      return undefined
     }
   }
 
   // Create a Date object from a dd.mm.yyyy String
-  makeDateObjectFromLocal(datestring) {
+  makeDateObjectFromLocal(datestring: string): Date {
     if (datestring !== undefined) {
       var ar = datestring.split(".")
       var yr = parseInt(ar[2])
@@ -218,14 +218,14 @@ export class ElexisUtils {
       } else if (yr < 100) {
         yr += 1900
       }
-      return new Date(yr, parseInt(ar[1]) - 1, ar[0])
+      return new Date(yr, parseInt(ar[1]) - 1, parseInt(ar[0]))
     } else {
       return new Date()
     }
   }
 
   // make a hh:mm String from a number of minutes
-  makeTime(minutes) {
+  makeTime(minutes: number): string {
     let hours = Math.floor(minutes / 60)
     let rest = minutes - (hours * 60)
     let mins = rest.toString()
@@ -241,7 +241,7 @@ export class ElexisUtils {
   }
 
   // make a number of minutes from a hh:mm or hhmm String
-  makeMinutes(timeString) {
+  makeMinutes(timeString: string): number {
     let hm = timeString.split(":")
     if (hm.length < 2) {
       hm[1] = timeString.substr(-2)
@@ -289,6 +289,7 @@ export class ElexisUtils {
    * Create a Password hash compatible to Elexis's Password hash
    * @param {string} pwd The plaintext password
    * @param  salt should be 8 bytes, can be null, then we'll autogenerate one
+   * (which is only useful, if you save it later from the result)
    */
   hashPassword(pwd, salt?) {
     if (!salt) {

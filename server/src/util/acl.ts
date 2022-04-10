@@ -26,14 +26,15 @@
 
 const acls = new Map()
 import { roles as sysroles, mappings as mapper } from '../configuration'
-import {logger} from '../logger'
+import { logger } from '../logger'
 
 
 export class ACE {
   private name
   private parent
   private fullname
-  constructor(name, parent?) {
+
+  constructor(name: string, parent?: ACE) {
     this.name = name
     this.parent = parent
     if (this.parent) {
