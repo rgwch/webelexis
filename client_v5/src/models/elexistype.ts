@@ -10,6 +10,8 @@ import type { StickerType } from './stickers-model'
 export interface ElexisType {
   type?: string
   id?: UUID
+  deleted?: string
+  lastupdate?: number
   stickers?: Array<string>
 }
 

@@ -10,56 +10,10 @@ import type { IService } from '../services/io'
 import type { CaseType } from "./case-model";
 import type { KontaktType } from "./kontakt-model";
 import { DateTime } from 'luxon';
+import type { Paginated } from '@feathersjs/feathers';
+import { Money } from './money'
 
-/*
-export interface Kontakt {
-  id: string
-  bezeichnung1: string
-  bezeichnung2: string
-  bezeichnung3: string
-  geburtsdatum: string
-  patientnr: string
-  geschlecht: "m" | "f"
-  titel: string
-  strasse: string
-  plz: string
-  ort: string
-  email: string
-  anschrift: string
-  bemerkung: string
-  deleted: string
-  lastupdate: number
-  extinfo: Uint8Array
-
-}
-export interface Fall {
-  id: string
-  patientid: string
-  patient?: Kontakt
-  garantid: string
-  garant?: Kontakt
-  kostentrid: string
-  kostentraeger: Kontakt
-  versnummer: string
-  fallnumme: string
-  betriebsnummer: string
-  diagnosen: string
-  datumvon: string
-  datumbis: string
-  bezeichnuns: string
-  grund: string
-  gesetz: string
-  extinfo: Uint8Array
-  status: string
-  deleted: string
-  lastupdate: number
-
-}
-*/
 export interface InvoiceType extends ElexisType {
-  id?: UUID
-  deleted?: string
-  lastupdate?: number
   rnnummer: string
   fallid?: UUID
   mandantid?: UUID
@@ -77,7 +31,12 @@ export interface InvoiceType extends ElexisType {
   output?: boolean
   selected?: boolean
 }
-
+export interface PaymentType extends ElexisType {
+  rechnungsid: UUID
+  betrag: string
+  datum: DATE
+  bemerkung: string
+}
 
 export enum InvoiceState {
   OPEN = 4,
@@ -116,12 +75,66 @@ export const RnState = {
 }
 
 export class Invoice {
+  private paymentService: IService<PaymentType> = getService("payments")
+  private static billService: IService<InvoiceType> = getService("bills")
   constructor(private bill: InvoiceType) { }
 
+  public static async getFromNumber(nr: string): Promise<Invoice> {
+    const result = (await this.billService.find({ query: { rnnummer: nr } })) as Paginated<InvoiceType>
+    if (result.total > 0) {
+      return result[0]
+    } else {
+      return undefined
+    }
+  }
+
+  /**
+   * get all transactions on this bill (positive and negative)
+   * @returns
+   */
+  public async getTransactions(): Promise<Array<PaymentType>> {
+    const result: Paginated<PaymentType> = (await this.paymentService.find({ query: { rechnungsid: this.bill.id } })) as Paginated<PaymentType>
+    return result.data
+  }
+  /**
+   * get all payments (i.e. positive transactions) on this bill)
+   */
+  public async getPayments(): Promise<Array<PaymentType>> {
+    return (await this.getPayments()).filter(n => parseInt(n.betrag) > 0)
+  }
+  public async addPayment(amount: Money, remark: string, date: Date): Promise<PaymentType> {
+    const remaining = await this.getRemaining()
+    const newRemaining: Money = remaining.subtract(amount)
+    if (newRemaining.isNeglectable()) {
+      await this.setInvoiceState(RnState.PAID)
+    } else if (newRemaining.isNegative()) {
+      await this.setInvoiceState(RnState.EXCESSIVE_PAYMENT)
+    } else if (newRemaining.isEqual(this.getAmount())) {
+      // ?
+    } else if (newRemaining.compareTo(remaining) < 0) {
+      await this.setInvoiceState(RnState.PARTIAL_PAYMENT)
+    }
+    const ret: PaymentType = {
+      rechnungsid: this.bill.id,
+      betrag: amount.getCentsAsString(),
+      datum: DateTime.fromJSDate(date).toFormat("yyyyLLdd"),
+      bemerkung: remark
+    }
+    return this.paymentService.create(ret) as Promise<PaymentType>
+  }
+  public async getRemaining(): Promise<Money> {
+    const payments = await this.getTransactions()
+    let ret: Money = this.getAmount()
+    for (const payment of payments) {
+      const part = new Money(payment.betrag)
+      ret = ret.subtract(part)
+    }
+    return ret
+  }
   public async setInvoiceState(level: string): Promise<boolean> {
     try {
-      const billService: IService<InvoiceType> = getService("bills")
-      const result: InvoiceType = await billService.patch(this.bill.id, { rnstatus: level, statusdatum: DateTime.now().toFormat("yyyyLLdd") }) as InvoiceType
+
+      const result: InvoiceType = await Invoice.billService.patch(this.bill.id, { rnstatus: level, statusdatum: DateTime.now().toFormat("yyyyLLdd") }) as InvoiceType
       if (result && (result.rnstatus == level)) {
         return true
       } else {
@@ -141,7 +154,6 @@ export class Invoice {
   public async print(toPrinter: boolean): Promise<boolean> {
     try {
       const printer: IService<InvoiceType> = getService("invoice")
-      const billService: IService<InvoiceType> = getService("bills")
       this.bill.output = toPrinter
       const ret = await printer.create(this.bill)
       if (ret) {
@@ -151,8 +163,8 @@ export class Invoice {
           case RnState.DEMAND_NOTE_2: this.bill.rnstatus = RnState.DEMAND_NOTE_2_PRINTED; break;
           case RnState.DEMAND_NOTE_3: this.bill.rnstatus = RnState.DEMAND_NOTE_3_PRINTED; break;
         }
-        this.bill.statusdatum = DateTime.now().toFormat("yyyyLLdd");
-        const modified = await billService.update(this.bill.id, this.bill)
+        this.bill.statusdatum = DateTime.fromJSDate(new Date()).toFormat("yyyyLLdd");
+        const modified = await Invoice.billService.update(this.bill.id, this.bill)
         return true
       }
       return false;
@@ -161,6 +173,27 @@ export class Invoice {
       return false;
     }
   }
+  public getAmount = () => new Money(this.bill.betrag)
+  public getRemark(): string {
+    return this.bill.extjson.Bemerkung
+  }
+  public setRemark(rem): void {
+    this.bill.extjson.Bemerkung = rem
+  }
+  public addTrace(name: string, text: string): void {
+    const trace = this.bill.extjson[name]
+    // todo: unzip trace, will be a string with \n delimiters
+  }
 
+  public getTrace() {
+
+  }
+  public async delete() {
+    const transactions = await this.getTransactions()
+    for (const tx of transactions) {
+      await this.paymentService.remove(tx.id)
+    }
+    await Invoice.billService.remove(this.bill.id)
+  }
 }
 
