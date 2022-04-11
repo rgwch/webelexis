@@ -17,7 +17,7 @@
       </snapshots>
       <id>bintray-rgwch-maven</id>
       <name>bintray-plugins</name>
-      <url>https://elexis.jfrog.io/artifactory/default-maven-virtual</url>
+      <url>https://rgwch.jfrog.io/artifactory/default-maven-virtual</url>
     </repository>
     <repository>
       <releases>
