@@ -135,6 +135,10 @@ export const config = {
     
   }
 }
+
+/**
+ * Definition of all possible roles in the system. At least "guest" and "admin" are required.
+ */
 export const roles = {
   guest: {
     id: "guest",
@@ -188,6 +192,10 @@ export const roles = {
   }
 }
 
+/**
+ * fine grained adjustment of which role implies which privileges. That can be a whole servioce with all methods (e.g. "termin") or it can be only given methods 
+ * of a service (e.g. "article.find"). The acl global hook checks if necessary privileges are ggiven for current user.
+ */
 export const mappings = {
   [roles.guest.id]: ['stickers.find'],
   [roles.agenda.id]: ['termin'],
@@ -200,7 +208,7 @@ export const mappings = {
   [roles.user.id]: ['user.get']
 }
 
-// user role includes guest role and agenda rolw
+// user role includes guest role and agenda role
 mappings[roles.user.id] = [...mappings[roles.guest.id], ...mappings[roles.user.id], ...mappings[roles.agenda.id]]
 // mpa role includes user role
 mappings[roles.mpa.id] = [...mappings[roles.user.id], ...mappings[roles.mpa.id]]
