@@ -26,10 +26,11 @@ import tarmed from './tarmed/tarmed.service'
 import billable from './billable/billable.service'
 import leistungsblock from './leistungsblock/leistungsblock.service'
 import lucinda from './lucinda/lucinda.service'
-import oddb  from'./oddb/oddb.service'
+import oddb from './oddb/oddb.service'
 import metaArticle from './meta-article/meta-article.service'
 import briefe from './briefe/briefe.service'
 import { ACE, declareACE } from '../util/acl'
+import utility from './utility/utility-service'
 const generateACLs = (servicename) => {
   const a = []
   const a1 = new ACE(servicename)
@@ -86,4 +87,5 @@ export default (app) => {
   app.configure(invoice)
   app.configure(payments)
   app.configure(diagnose)
+  app.configure(utility)
 }

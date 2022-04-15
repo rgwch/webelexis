@@ -1,7 +1,4 @@
 import { logger } from '../../logger'
-import { level, debug } from 'winston'
-logger.transports[0].silent = true
-logger.transports[0].level = 'error'
 import app from '../../app'
 
 
@@ -11,6 +8,9 @@ describe('bills', () => {
   beforeAll(async () => {
     service = app.service('bills')
 
+  })
+  afterAll(() => {
+    delete app["knexClient"]
   })
   it('registered the service', () => {
     expect(service).toBeTruthy()
