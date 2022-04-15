@@ -58,7 +58,8 @@ export class Bills extends Service {
       result['data'] = found
       return result
     } else {
-      return super.find(params)
+      const result=await super.find(params)
+      return result
     }
   }
 };

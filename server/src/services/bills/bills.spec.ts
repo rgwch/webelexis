@@ -18,6 +18,8 @@ describe('bills', () => {
   it('fetches some bills', async () => {
     const result = await service.find({})
     expect(result.total).toBeGreaterThan(0)
+    const bill=result.data[0]
+    expect(bill).toHaveProperty("extjson")
   })
   it('fetches bills matching a patient', async () => {
     const result = await service.find({ query: { patientid: "testperson", rnstatus: '5' } })

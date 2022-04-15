@@ -2,6 +2,21 @@ import { ElexisUtils } from "./elexis-types";
 const util = new ElexisUtils()
 
 describe("Elexisutils", () => {
+  it("creates and modifies an extinfo field",()=>{
+    const input={
+      "1":"eins",
+      "2":"zwei",
+      "3":{
+        "3.1": "Dreipunkt 1",
+        "3.2": ["eins","zwei","drei"]
+      },
+      "4": [1,2,3,4,5,6,7,8,9]
+    }
+    const extinfo=util.writeExtInfo(input)
+    expect(extinfo).toBeTruthy()
+    const extjson=util.getExtInfo(extinfo)
+    expect(extjson).toEqual(input)
+  })
   it("creates and updates a VersionedResource", () => {
     const vr = util.createVersionedResource()
     const vr1 = util.updateVersionedResource(vr, "Added Text", "some remark")
