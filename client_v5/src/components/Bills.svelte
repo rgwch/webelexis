@@ -5,6 +5,7 @@
   import { DateTime } from "luxon";
   import { _ } from "svelte-i18n";
   import BillActions from "./BillActions.svelte";
+  import Bill from "./Bill.svelte";
 
   export let bills: Array<InvoiceType>;
   export let busy = false;

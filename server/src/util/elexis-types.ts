@@ -22,7 +22,7 @@ import moment from 'moment'
 import { logger } from '../logger'
 import crypto from 'crypto'
 
-const JACKSON_VERSION = "2.11.1"
+const JACKSON_VERSION = "2.13.2"
 
 
 /* generate dependencies with
@@ -121,6 +121,10 @@ export class ElexisUtils {
     return binfield
   }
 
+  unpackStringsFromString(raw: string): Array<string> {
+    const b = Buffer.from(raw, "base64")
+    return this.unpackStrings(b)
+  }
   unpackStrings(raw: Uint8Array): Array<string> {
     let array = java.newArray("byte",
       Array.prototype.slice.call(raw, 0)

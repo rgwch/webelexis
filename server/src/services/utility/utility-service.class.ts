@@ -10,7 +10,7 @@ export class Utility {
         return await util.packStrings(params)
       }
       case "unpack": {
-        return await util.unpackStrings(params)
+        return await util.unpackStringsFromString(params)
       }
 
       default:

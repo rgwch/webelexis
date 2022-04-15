@@ -2,19 +2,20 @@ import { ElexisUtils } from "./elexis-types";
 const util = new ElexisUtils()
 
 describe("Elexisutils", () => {
-  it("creates and modifies an extinfo field",()=>{
-    const input={
-      "1":"eins",
-      "2":"zwei",
-      "3":{
+
+  it("creates and modifies an extinfo field", () => {
+    const input = {
+      "1": "eins",
+      "2": "zwei",
+      "3": {
         "3.1": "Dreipunkt 1",
-        "3.2": ["eins","zwei","drei"]
+        "3.2": ["eins", "zwei", "drei"]
       },
-      "4": [1,2,3,4,5,6,7,8,9]
+      "4": [1, 2, 3, 4, 5, 6, 7, 8, 9]
     }
-    const extinfo=util.writeExtInfo(input)
+    const extinfo = util.writeExtInfo(input)
     expect(extinfo).toBeTruthy()
-    const extjson=util.getExtInfo(extinfo)
+    const extjson = util.getExtInfo(extinfo)
     expect(extjson).toEqual(input)
   })
   it("creates and updates a VersionedResource", () => {
@@ -34,6 +35,10 @@ describe("Elexisutils", () => {
     expect(upacked).toEqual(arr)
   })
 
+  it("decompresses an existing extinfo string", () => {
+    const compressed = 'oAAASFBLAwQUAAgICAC9TCFUAAAAAAAAAAAAAAAABAAAAERhdGEzMNQzMNQzMjAy0lEwsLQyNrcytbRScMwpVghJLMpNTdENSk3OyCvNS1dILC1OKSpNzk7Ns1LwT0tLzVMozUtRSE8FC5YAAFBLBwjbqszFRwAAAEgAAABQSwECFAAUAAgICAC9TCFU26rMxUcAAABIAAAABAAAAAAAAAAAAAAAAAAAAAAARGF0YVBLBQYAAAAAAQABADIAAAB5AAAAAAA='
+    const unpacked = util.unpackStringsFromString(compressed);
+  })
   it("decodes a Date", () => {
     const date = new Date(2020, 2, 3)
     const parsed = util.dateStrings(date)

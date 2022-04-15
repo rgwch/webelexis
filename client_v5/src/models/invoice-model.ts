@@ -79,6 +79,7 @@ export class Invoice {
   private static billService: IService<InvoiceType> = getService("bills")
   private static utilService: IService<any> = getService("utility")
   static OUTPUT = "Ausgegeben"
+  static STATECHANGE = "Statusänderung"
   static DESCRIPTION = "Webelexis printer"
   constructor(private bill: InvoiceType) { }
 
@@ -210,9 +211,14 @@ export class Invoice {
 
   }
 
-  public getTrace(name: string) {
+  public async getTrace(name: string): Promise<Array<string>> {
     const trace = this.bill.extjson[name]
-
+    if (trace) {
+      const unpacked = await Invoice.utilService.get("unpack", trace)
+      return unpacked
+    } else {
+      return []
+    }
   }
   public async delete() {
     const transactions = await this.getTransactions()
