@@ -63,7 +63,7 @@ export default {
     get: [],
     create: [handleExtinfo, fi, assignBillNumber],
     update: [handleExtinfo, fi],
-    patch: [fi],
+    patch: [handleExtinfo, fi],
     remove: [],
   },
 

@@ -77,6 +77,9 @@ export const RnState = {
 export class Invoice {
   private paymentService: IService<PaymentType> = getService("payments")
   private static billService: IService<InvoiceType> = getService("bills")
+  private static utilService: IService<any> = getService("utility")
+  static OUTPUT = "Ausgegeben"
+  static DESCRIPTION = "Webelexis printer"
   constructor(private bill: InvoiceType) { }
 
   public static async getFromNumber(nr: string): Promise<Invoice> {
@@ -87,6 +90,7 @@ export class Invoice {
       return undefined
     }
   }
+
 
   /**
    * get all transactions on this bill (positive and negative)
@@ -131,6 +135,18 @@ export class Invoice {
     }
     return ret
   }
+  public getInvoiceState(): string {
+    const state = this.bill.rnstatus
+    if (state) {
+      for (const prop in RnState) {
+        if (RnState[prop] == state) {
+          return prop
+        }
+      }
+    } else {
+      return "unknown"
+    }
+  }
   public async setInvoiceState(level: string): Promise<boolean> {
     try {
 
@@ -148,7 +164,7 @@ export class Invoice {
   }
   /**
    * output a bill
-   * @param toPrinter if true: send to printer, otherwise only export to directory 
+   * @param toPrinter if true: send to printer, otherwise only export to directory
    * @returns true on success
    */
   public async print(toPrinter: boolean): Promise<boolean> {
@@ -164,7 +180,9 @@ export class Invoice {
           case RnState.DEMAND_NOTE_3: this.bill.rnstatus = RnState.DEMAND_NOTE_3_PRINTED; break;
         }
         this.bill.statusdatum = DateTime.fromJSDate(new Date()).toFormat("yyyyLLdd");
+        await this.addTrace(Invoice.OUTPUT, Invoice.DESCRIPTION + ": " + this.getInvoiceState())
         const modified = await Invoice.billService.update(this.bill.id, this.bill)
+
         return true
       }
       return false;
@@ -180,12 +198,20 @@ export class Invoice {
   public setRemark(rem): void {
     this.bill.extjson.Bemerkung = rem
   }
-  public addTrace(name: string, text: string): void {
+  public async addTrace(name: string, text: string): Promise<void> {
     const trace = this.bill.extjson[name]
-    // todo: unzip trace, will be a string with \n delimiters
+    if (trace) {
+      const unpacked: Array<string> = await Invoice.utilService.get("unpack", trace)
+      unpacked.push(text)
+      this.bill.extjson[name] = await Invoice.utilService.get("pack", unpacked)
+    } else {
+      this.bill.extjson[name] = await Invoice.utilService.get("pack", [text])
+    }
+
   }
 
-  public getTrace() {
+  public getTrace(name: string) {
+    const trace = this.bill.extjson[name]
 
   }
   public async delete() {
