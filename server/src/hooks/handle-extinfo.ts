@@ -56,7 +56,7 @@ export default function (options = defaultOptions) {
       const items = getItems(context)
       for (const obj of items) {
         if (obj.extjson && obj.extjson != {}) {
-          obj[options.extinfo] = util.writeExtInfo(obj.extjson)
+          obj[options.extinfo] = Buffer.from(util.writeExtInfo(obj.extjson))
         }
         delete obj.extjson
       }
