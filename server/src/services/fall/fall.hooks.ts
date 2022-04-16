@@ -11,19 +11,20 @@ import Extinfo from '../../hooks/handle-extinfo'
 const handleExtInfo = Extinfo({ extinfo: "extinfo" });
 
 import fi from "../../hooks/flatiron"
-const flatiron = fi([{
-  id: "patientid",
-  obj: "_Patient",
-  service: "kontakt"
-}, {
-  id: "garantid",
-  obj: "_Garant",
-  service: "kontakt"
-}, {
-  id: "kostentrid",
-  obj: "_Kostentraeger",
-  service: "kontakt"
-}])
+const flatiron = fi([
+  {
+    id: "patientid",
+    obj: "_Patient",
+    service: "kontakt"
+  }, {
+    id: "garantid",
+    obj: "_Garant",
+    service: "kontakt"
+  }, {
+    id: "kostentrid",
+    obj: "_Kostentraeger",
+    service: "kontakt"
+  }])
 
 export default {
   before: {

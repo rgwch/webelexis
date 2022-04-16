@@ -49,64 +49,77 @@ const _addPatient = (bill) => {
     )?.toLocaleString()
 }
 const addPatient = async ctx => {
-  if (Array.isArray(ctx.result.data)) {
-    for (const bill of ctx.result.data) {
-      _addPatient(bill)
+  if (ctx.result.data) {
+    if (Array.isArray(ctx.result.data)) {
+      for (const bill of ctx.result.data) {
+        _addPatient(bill)
+      }
+    } else {
+      _addPatient(ctx.result.data)
     }
   } else {
-    _addPatient(ctx.result.data)
+    _addPatient(ctx.result)
   }
   return ctx;
 }
 
-const unpack = (obj, field: string) => {
-
+const unpack = (obj, fieldlist: Array<string>) => {
   if (Array.isArray(obj)) {
     for (const o of obj) {
-      unpack(o, field)
+      unpack(o, fieldlist)
     }
   } else {
     if (obj.extjson) {
-      const trace = obj.extjson[field]
-      if (trace) {
-        const decoded = util.unpackStringsFromString(trace)
-        obj.extjson["_" + field] = decoded
-      } else {
-        obj.extjson["_" + field] = []
+      for (const field of fieldlist) {
+        const trace = obj.extjson[field]
+        if (trace) {
+          const decoded = util.unpackStringsFromString(trace)
+          obj.extjson["_" + field] = decoded
+        } else {
+          obj.extjson["_" + field] = []
+        }
       }
     }
   }
   return obj;
 }
 
-const pack = (obj, field) => {
+const pack = (obj, fieldlist: Array<string>) => {
   if (Array.isArray(obj)) {
     for (const o of obj) {
-      pack(o, field)
+      pack(o, fieldlist)
     }
   } else {
     if (obj.extjson) {
-      const trace = obj.extjson["_" + field]
-      if (trace) {
-        const decoded = util.packStringsToString(trace)
-        obj.extjson[field] = decoded
-        delete obj.extjson["_" + field]
+      for (const field of fieldlist) {
+        const trace = obj.extjson["_" + field]
+        if (trace) {
+          const decoded = util.packStringsToString(trace)
+          obj.extjson[field] = decoded
+          delete obj.extjson["_" + field]
+        }
       }
     }
   }
   return obj;
 }
 
-const handleTraces = ctx => {
-  if (ctx.method == 'get' || ctx.method == 'find') {
-    ctx.result.data = unpack(ctx.result.data, "Ausgegeben")
-    ctx.result.data = unpack(ctx.result.data, "Statusänderung")
-  } else {
-    ctx.data = pack(ctx.data, "Ausgegeben")
-    ctx.data = pack(ctx.data, "Statusänderung")
+const packedField = (fieldlist: Array<string>) => {
+  return ctx => {
+    switch (ctx.method) {
+      case 'get': ctx.result = unpack(ctx.result, fieldlist); break
+      case 'find': ctx.result.data = unpack(ctx.result.data, fieldlist); break;
+      case 'update':
+      case 'patch':
+      case 'create':
+        ctx.data = pack(ctx.data, fieldlist); break;
+      default:
+        throw new Error("undefined method in hook")
+    }
+    return ctx
   }
-  return ctx
 }
+const traces = packedField(["Ausgegeben", "Statusänderung"])
 
 export default {
   before: {
@@ -114,15 +127,15 @@ export default {
     find: [],
     get: [],
     create: [handleExtinfo, fi, assignBillNumber],
-    update: [handleTraces, handleExtinfo, fi],
-    patch: [handleTraces, handleExtinfo, fi],
+    update: [traces, handleExtinfo, fi],
+    patch: [traces, handleExtinfo, fi],
     remove: [],
   },
 
   after: {
     all: [],
-    find: [handleExtinfo, handleTraces, fi, addPatient],
-    get: [handleExtinfo, handleTraces, fi, addPatient],
+    find: [handleExtinfo, traces, fi, addPatient],
+    get: [handleExtinfo, traces, fi, addPatient],
     create: [],
     update: [],
     patch: [],

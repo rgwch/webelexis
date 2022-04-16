@@ -41,18 +41,18 @@ const flatten = (item, fieldlist) => {
  * @param {*} obj the Object to consider
  * @param {*} fieldlist a list of field definitions (see above)
  */
-const fold = async (app, obj, fieldlist) => {
+const fold = async (app, data, fieldlist) => {
   for (const field of fieldlist) {
-    if (obj[field.id] && field.service) {
+    if (data[field.id] && field.service) {
       const rel = app.service(field.service)
       try {
-        obj[field.obj] = await rel.get(obj[field.id])
+        data[field.obj] = await rel.get(data[field.id])
       } catch (err) {
-        logger.warn("flatiron %s / %s / %s", JSON.stringify(obj), JSON.stringify(fieldlist), err)
+        logger.warn("flatiron %s / %s / %s", JSON.stringify(data), JSON.stringify(fieldlist), err)
       }
     }
   }
-  return obj
+  return data
 }
 
 /**
@@ -61,7 +61,9 @@ const fold = async (app, obj, fieldlist) => {
 export default fieldlist => {
   return async ctx => {
     switch (ctx.method) {
-      case 'get': await fold(ctx.app, ctx.result, fieldlist); break
+      case 'get':
+        await fold(ctx.app, ctx.result, fieldlist);
+        break;
       case 'find':
         for (const el of ctx.result.data) {
           await fold(ctx.app, el, fieldlist)
