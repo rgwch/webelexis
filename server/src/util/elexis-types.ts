@@ -178,13 +178,13 @@ export class ElexisUtils {
    * @param {any} obj  some json
    * @returns a binary containing the ExtInfo ready to write into the database
    */
-  writeExtInfo(obj) {
+  writeExtInfo(obj): Uint8Array {
     if (obj && obj != {}) {
       const str = JSON.stringify(obj)
-      return java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "flattenFromJson", str)
-    } else {
-      return null;
+      const u8 = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "flattenFromJson", str)
+      return u8
     }
+    return null
   }
 
   dateStrings(date: Date) {

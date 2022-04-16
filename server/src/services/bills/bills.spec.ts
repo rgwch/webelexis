@@ -35,13 +35,11 @@ describe('bills', () => {
     const saved = await service.update(bill.id, bill)
     // const check = await service.find({ query: { id: bill.id } })
     // expect(check.data[0]).toHaveProperty("extjson")
-    try {
-      const check = await service.get(bill.id)
-      expect(check).toHaveProperty("extjson")
-    } catch (err) {
-      console.log(err)
-    }
-
+    const check = await service.get(bill.id)
+    expect(check).toHaveProperty("extjson")
+    const meta = check.extjson
+    expect(meta).toHaveProperty("_Ausgegeben")
+    expect(meta._Ausgegeben).toContain("__Test__")
 
   })
   it('fetches bills matching a patient', async () => {
