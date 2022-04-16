@@ -18,8 +18,23 @@ describe('bills', () => {
   it('fetches some bills', async () => {
     const result = await service.find({})
     expect(result.total).toBeGreaterThan(0)
-    const bill=result.data[0]
+    const bill = result.data[0]
     expect(bill).toHaveProperty("extjson")
+
+  })
+  it('modifies bill tracemessages', async () => {
+    const result = await service.find({})
+    expect(result.total).toBeGreaterThan(0)
+    const bill = result.data[0]
+    expect(bill).toHaveProperty("extjson")
+    const outputs = bill.extjson["_Ausgegeben"]
+    expect(Array.isArray(outputs)).toBeTruthy()
+    outputs.push("__Test__")
+    bill.extjson["_Ausgegeben"] = outputs
+    const saved = await service.update(bill.id, bill)
+    const check = await service.get(bill.id)
+    expect(check).toHaveProperty("extjson")
+
   })
   it('fetches bills matching a patient', async () => {
     const result = await service.find({ query: { patientid: "testperson", rnstatus: '5' } })

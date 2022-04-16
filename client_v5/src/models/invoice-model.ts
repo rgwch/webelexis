@@ -12,6 +12,7 @@ import type { KontaktType } from "./kontakt-model";
 import { DateTime } from 'luxon';
 import type { Paginated } from '@feathersjs/feathers';
 import { Money } from './money'
+import { _ } from 'svelte-i18n'
 
 export interface InvoiceType extends ElexisType {
   rnnummer: string
@@ -27,7 +28,7 @@ export interface InvoiceType extends ElexisType {
   extjson?: any
   _Fall?: CaseType
   _Mandant?: KontaktType
-  _Patname?: String
+  _Patname?: string
   output?: boolean
   selected?: boolean
 }
@@ -78,10 +79,13 @@ export class Invoice {
   private paymentService: IService<PaymentType> = getService("payments")
   private static billService: IService<InvoiceType> = getService("bills")
   private static utilService: IService<any> = getService("utility")
-  static OUTPUT = "Ausgegeben"
-  static STATECHANGE = "Statusänderung"
+  static OUTPUT = "_Ausgegeben"
+  static STATECHANGE = "_Statusänderung"
   static DESCRIPTION = "Webelexis printer"
-  constructor(private bill: InvoiceType) { }
+  private trl
+  constructor(private bill: InvoiceType) {
+    _.subscribe(t => this.trl = t)
+  }
 
   public static async getFromNumber(nr: string): Promise<Invoice> {
     const result = (await this.billService.find({ query: { rnnummer: nr } })) as Paginated<InvoiceType>
@@ -136,12 +140,16 @@ export class Invoice {
     }
     return ret
   }
+  /**
+   * Get invoice state as textual representation
+   * @returns
+   */
   public getInvoiceState(): string {
     const state = this.bill.rnstatus
     if (state) {
       for (const prop in RnState) {
         if (RnState[prop] == state) {
-          return prop
+          return this.trl("billing." + prop) || prop
         }
       }
     } else {
@@ -181,7 +189,8 @@ export class Invoice {
           case RnState.DEMAND_NOTE_3: this.bill.rnstatus = RnState.DEMAND_NOTE_3_PRINTED; break;
         }
         this.bill.statusdatum = DateTime.fromJSDate(new Date()).toFormat("yyyyLLdd");
-        await this.addTrace(Invoice.OUTPUT, Invoice.DESCRIPTION + ": " + this.getInvoiceState())
+
+        this.addTrace(Invoice.OUTPUT, `${DateTime.now().toFormat("dd.LL.yyyy, HH:mm:ss")}: ${Invoice.DESCRIPTION}: ${this.getInvoiceState()}`);
         const modified = await Invoice.billService.update(this.bill.id, this.bill)
 
         return true
@@ -199,26 +208,16 @@ export class Invoice {
   public setRemark(rem): void {
     this.bill.extjson.Bemerkung = rem
   }
-  public async addTrace(name: string, text: string): Promise<void> {
-    const trace = this.bill.extjson[name]
-    if (trace) {
-      const unpacked: Array<string> = await Invoice.utilService.get("unpack", trace)
-      unpacked.push(text)
-      this.bill.extjson[name] = await Invoice.utilService.get("pack", unpacked)
-    } else {
-      this.bill.extjson[name] = await Invoice.utilService.get("pack", [text])
+  public addTrace(name: string, text: string): void {
+    if (!this.bill.extjson[name]) {
+      this.bill.extjson[name] = []
     }
-
+    this.bill.extjson[name].push(text)
   }
 
-  public async getTrace(name: string): Promise<Array<string>> {
+  public getTrace(name: string): Array<string> {
     const trace = this.bill.extjson[name]
-    if (trace) {
-      const unpacked = await Invoice.utilService.get("unpack", trace)
-      return unpacked
-    } else {
-      return []
-    }
+    return trace || []
   }
   public async delete() {
     const transactions = await this.getTransactions()

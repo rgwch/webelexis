@@ -4,6 +4,10 @@
     "street": "Strasse",
     "zip": "plz"
   },
+  "actions": {
+    "ok": "Ok",
+    "cancel": "Abbruch"
+  },
   "billing": {
     "CANCELLED": "Storniert",
     "DEMAND_NOTE": "Zahlungserinnerung",

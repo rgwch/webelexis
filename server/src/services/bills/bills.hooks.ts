@@ -9,6 +9,7 @@ import Extinfo from '../../hooks/handle-extinfo'
 const handleExtinfo = Extinfo({ extinfo: 'extinfo' })
 import flatiron from '../../hooks/flatiron'
 import { DateTime } from 'luxon'
+import { ElexisUtils } from '../../util/elexis-types'
 const fi = flatiron([
   {
     id: 'fallid',
@@ -21,6 +22,7 @@ const fi = flatiron([
     service: 'kontakt',
   },
 ])
+const util = new ElexisUtils()
 
 /**
  * When creating a Bill: Assign a new and unique bill number
@@ -56,21 +58,71 @@ const addPatient = async ctx => {
   }
   return ctx;
 }
+
+const unpack = (obj, field: string) => {
+
+  if (Array.isArray(obj)) {
+    for (const o of obj) {
+      unpack(o, field)
+    }
+  } else {
+    if (obj.extjson) {
+      const trace = obj.extjson[field]
+      if (trace) {
+        const decoded = util.unpackStringsFromString(trace)
+        obj.extjson["_" + field] = decoded
+      } else {
+        obj.extjson["_" + field] = []
+      }
+    }
+  }
+  return obj;
+}
+
+const pack = (obj, field) => {
+  if (Array.isArray(obj)) {
+    for (const o of obj) {
+      pack(o, field)
+    }
+  } else {
+    if (obj.extjson) {
+      const trace = obj.extjson["_" + field]
+      if (trace) {
+        const decoded = util.packStringsToString(trace)
+        obj.extjson[field] = decoded
+        delete obj.extjson["_" + field]
+      }
+    }
+  }
+  return obj;
+}
+
+const handleTraces = ctx => {
+  if (ctx.method == 'get' || ctx.method == 'find') {
+    ctx.result.data = unpack(ctx.result.data, "Ausgegeben")
+    ctx.result.data = unpack(ctx.result.data, "Statusänderung")
+  } else {
+    ctx.data = pack(ctx.data, "Ausgegeben")
+    ctx.data = pack(ctx.data, "Statusänderung")
+  }
+  return ctx
+}
+
 export default {
   before: {
     all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [handleExtinfo, fi, assignBillNumber],
-    update: [handleExtinfo, fi],
-    patch: [handleExtinfo, fi],
+    update: [handleTraces, handleExtinfo, fi],
+    patch: [handleTraces, handleExtinfo, fi],
     remove: [],
   },
 
   after: {
     all: [],
-    find: [handleExtinfo, fi, addPatient],
-    get: [handleExtinfo, fi, addPatient],
+    find: [handleExtinfo, handleTraces, fi, addPatient],
+    get: [handleExtinfo, handleTraces, fi, addPatient],
     create: [],
     update: [],
     patch: [],

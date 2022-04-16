@@ -69,6 +69,7 @@ export default fieldlist => {
         break;
       case 'create':
       case 'update':
+      case 'patch':
         if (Array.isArray(ctx.data)) {
           for (const elem of ctx.data) {
             flatten(elem, fieldlist)

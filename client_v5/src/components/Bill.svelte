@@ -7,14 +7,8 @@
   export let invoice: InvoiceType = undefined;
   const bill = new Invoice(invoice);
   const state: string = bill.getInvoiceState();
-  let states: Array<string> = [];
-  let outputs: Array<string> = [];
-  bill.getTrace(Invoice.STATECHANGE).then((tr) => {
-    states = tr;
-  });
-  bill.getTrace(Invoice.OUTPUT).then((tr) => {
-    outputs = tr;
-  });
+  let states: Array<string> = bill.getTrace(Invoice.STATECHANGE);
+  let outputs: Array<string> = bill.getTrace(Invoice.OUTPUT);
 </script>
 
 <template>

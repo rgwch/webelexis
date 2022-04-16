@@ -45,13 +45,17 @@ export default function (options = defaultOptions) {
           obj.extjson = util.getExtInfo(obj[options.extinfo])
           if (obj.extjson) {
             delete obj[options.extinfo]
+          } else {
+            obj.extjson = { "error": "extinfo" }
           }
+        } else {
+          obj.extjson = {}
         }
       }
     } else if (context.method == "create" || context.method == "update" || context.method == "patch") {
       const items = getItems(context)
       for (const obj of items) {
-        if (obj.extjson != {}) {
+        if (obj.extjson && obj.extjson != {}) {
           obj[options.extinfo] = util.writeExtInfo(context.data.extJson)
         }
         delete obj.extjson

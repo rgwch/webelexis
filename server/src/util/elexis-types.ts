@@ -134,6 +134,15 @@ export class ElexisUtils {
     return arr
   }
 
+  packStringsToString(strings: Array<string>): string {
+    const arr = this.packStrings(strings)
+    if (arr) {
+      const b = Buffer.from(arr)
+      return b.toString("base64");
+    } else {
+      return ""
+    }
+  }
   packStrings(strings: Array<string>): Uint8Array {
     const arr = java.newArray("java.lang.String", strings)
     let packed = java.callStaticMethodSync("ch.rgw.tools.StringTool", "pack", arr)

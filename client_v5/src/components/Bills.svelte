@@ -6,6 +6,7 @@
   import { _ } from "svelte-i18n";
   import BillActions from "./BillActions.svelte";
   import Bill from "./Bill.svelte";
+  import Modal from "./Modal.svelte";
 
   export let bills: Array<InvoiceType>;
   export let busy = false;
@@ -17,6 +18,7 @@
   let reverse: boolean = true;
   // let selection: Array<InvoiceType> = [];
   // let checked: Array<boolean> = [];
+  let current: InvoiceType = undefined;
 
   function checkall() {
     const prev = bills[0].selected;
@@ -97,7 +99,9 @@
                   on:click={() => select(idx)}
                 />
               </td>
-              <td class="text-center">{bill.rnnummer}</td>
+              <td class="text-center" on:click={() => (current = bill)}
+                >{bill.rnnummer}</td
+              >
               <td class="text-center"
                 >{DateTime.fromISO(bill.rndatum).toFormat(
                   $_("formatting.date")
@@ -122,5 +126,17 @@
       </tbody>
     </table>
   </div>
+  {#if current}
+    <Modal
+      title={current._Patname}
+      dismiss={() => {
+        current = undefined;
+      }}
+    >
+      <div slot="body">
+        <Bill invoice={current} />
+      </div>
+    </Modal>
+  {/if}
   <BillActions bind:selection={bills} />
 </template>
