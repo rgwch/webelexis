@@ -155,7 +155,7 @@ export class ElexisUtils {
    * @returns a JSON object with the contents of the ExtInfo (which might be {}
    * if the input was empty or could not be read.)
    */
-  getExtInfo(buffer) {
+  getExtInfo(buffer:Uint8Array) {
     if (buffer) {
       try {
         let array = java.newArray("byte",
@@ -183,7 +183,7 @@ export class ElexisUtils {
     if (obj && obj != {}) {
       const str = JSON.stringify(obj)
       const u8 = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "flattenFromJson", str)
-      return u8
+      return Buffer.from(u8)
     }
     return null
   }
