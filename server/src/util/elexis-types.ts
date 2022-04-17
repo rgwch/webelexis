@@ -23,12 +23,13 @@ import { logger } from '../logger'
 import crypto from 'crypto'
 
 const JACKSON_VERSION = "2.13.2"
+const TOOLBOX_VERSION = "4.2.8"
 
 
 /* generate dependencies with
    mvn dependency:copy-dependencies
    */
-const utils = "rgw-toolbox-4.2.7.jar"
+const utils = `rgw-toolbox-${TOOLBOX_VERSION}.jar`
 const ann = `jackson-annotations-${JACKSON_VERSION}.jar`
 const jackson = `jackson-core-${JACKSON_VERSION}.jar`
 const databind = `jackson-databind-${JACKSON_VERSION}.jar`
