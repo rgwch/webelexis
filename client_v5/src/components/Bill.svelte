@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { binding_callbacks } from "svelte/internal";
-
   import { Invoice } from "../models/invoice-model";
   import type { InvoiceType } from "../models/invoice-model";
+  import { _ } from "svelte-i18n";
 
   export let invoice: InvoiceType = undefined;
   const bill = new Invoice(invoice);
@@ -16,12 +15,26 @@
 </script>
 
 <template>
-  <p>state</p>
-  {#each states as state}
-    <p>{state}</p>
-  {/each}
-  <hr />
-  {#each outputs as output}
-    <p>{output}</p>
-  {/each}
+  <div>
+    <p class="m-0 p-0">
+      {$_("billing.invoicestate")}: {bill.getInvoiceState()}
+      <button>manuell ändern</button>
+    </p>
+    <p class="mb-0 font-bold">{$_("titles.progress")}:</p>
+    <div class="overflow-auto h-20 border border-2 border-blue-400 py-1">
+      <ul>
+        {#each states as state}
+          <li>{state}</li>
+        {/each}
+      </ul>
+    </div>
+    <p class="mb-0 font-bold">{$_("titles.outputs")}:</p>
+    <div class="overflow-auto h-20 border-2 border-blue-400 py-1">
+      <ul>
+        {#each outputs as output}
+          <li>{output}</li>
+        {/each}
+      </ul>
+    </div>
+  </div>
 </template>

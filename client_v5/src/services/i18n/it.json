@@ -1,4 +1,8 @@
 {
+  "actions": {
+    "cancel": "Abbruch",
+    "ok": "Ok"
+  },
   "address": {
     "place": "Ort",
     "street": "Strasse",
@@ -20,6 +24,12 @@
     "PARTIAL_LOSS": "perdita parziale",
     "PARTIAL_PAYMENT": "parzialmente pagato",
     "TOTAL_LOSS": "perdita totale",
+    "actions": {
+      "demand_level": "Mahnstufe",
+      "output": "Ausgeben",
+      "print": "Drucken",
+      "storno": "Stornieren"
+    },
     "amount": "quantità",
     "invoicedate": "data della fattura",
     "invoicenumber": "numero di fattura",
@@ -69,13 +79,16 @@
   "demotest": "no lo so",
   "formatting": {
     "date": "DD.MM.YYYY",
-    "dbdate": "yyyyLLdd"
+    "dbdate": "yyyyLLdd",
+    "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
     "loading": "lese..."
   },
   "titles": {
     "bills": "Rechnungen",
+    "outputs": "Ausgaben",
+    "progress": "Verlauf",
     "unbilled": "Unverrechnete Konsultationen"
   },
   "validation": {

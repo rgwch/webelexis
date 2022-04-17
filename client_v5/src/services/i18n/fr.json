@@ -1,4 +1,8 @@
 {
+  "actions": {
+    "cancel": "Abbruch",
+    "ok": "Ok"
+  },
   "address": {
     "place": "Ort",
     "street": "Strasse",
@@ -20,6 +24,12 @@
     "PARTIAL_LOSS": "perte partiale",
     "PARTIAL_PAYMENT": "payé partiallement",
     "TOTAL_LOSS": "perte totale",
+    "actions": {
+      "demand_level": "Mahnstufe",
+      "output": "Ausgeben",
+      "print": "Drucken",
+      "storno": "Stornieren"
+    },
     "amount": "montant",
     "invoicedate": "date de facture",
     "invoicenumber": "numéro de facture",
@@ -69,13 +79,16 @@
   "demotest": "truc de démonstration",
   "formatting": {
     "date": "DD.MM.YYYY",
-    "dbdate": "yyyyLLdd"
+    "dbdate": "yyyyLLdd",
+    "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
     "loading": "lese..."
   },
   "titles": {
     "bills": "Rechnungen",
+    "outputs": "Ausgaben",
+    "progress": "Verlauf",
     "unbilled": "Unverrechnete Konsultationen"
   },
   "validation": {
