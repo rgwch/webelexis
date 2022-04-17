@@ -96,7 +96,6 @@ export class Invoice {
     }
   }
 
-
   /**
    * get all transactions on this bill (positive and negative)
    * @returns
@@ -111,6 +110,14 @@ export class Invoice {
   public async getPayments(): Promise<Array<PaymentType>> {
     return (await this.getPayments()).filter(n => parseInt(n.betrag) > 0)
   }
+
+  /**
+   * Add a payment
+   * @param amount 
+   * @param remark 
+   * @param date 
+   * @returns The PaymentType (Which is already saved to the database)
+   */
   public async addPayment(amount: Money, remark: string, date: Date): Promise<PaymentType> {
     const remaining = await this.getRemaining()
     const newRemaining: Money = remaining.subtract(amount)
@@ -131,6 +138,11 @@ export class Invoice {
     }
     return this.paymentService.create(ret) as Promise<PaymentType>
   }
+
+  /**
+   * Find unpaid amoount of thos invoice
+   * @returns The unpaid amount as Money instance
+   */
   public async getRemaining(): Promise<Money> {
     const payments = await this.getTransactions()
     let ret: Money = this.getAmount()
@@ -140,12 +152,14 @@ export class Invoice {
     }
     return ret
   }
+
   /**
    * Get invoice state as textual representation
+   * @param if given: Text for that state, else Text for current state
    * @returns
    */
-  public getInvoiceState(): string {
-    const state = this.bill.rnstatus
+  public getInvoiceState(stateID?:string): string {
+    const state = stateID || this.bill.rnstatus
     if (state) {
       for (const prop in RnState) {
         if (RnState[prop] == state) {

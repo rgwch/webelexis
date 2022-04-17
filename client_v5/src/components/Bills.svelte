@@ -99,7 +99,7 @@
                   on:click={() => select(idx)}
                 />
               </td>
-              <td class="text-center" on:click={() => (current = bill)}
+              <td class="text-center cursor-pointer underline" on:click={() => (current = bill)} 
                 >{bill.rnnummer}</td
               >
               <td class="text-center"

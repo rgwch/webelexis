@@ -7,7 +7,11 @@
   export let invoice: InvoiceType = undefined;
   const bill = new Invoice(invoice);
   const state: string = bill.getInvoiceState();
-  let states: Array<string> = bill.getTrace(Invoice.STATECHANGE);
+  let states: Array<string> = bill.getTrace(Invoice.STATECHANGE).map((e) => {
+    const parts = e.split(/: /);
+    const text = bill.getInvoiceState(parts[1]);
+    return parts[0] + ": " + text;
+  });
   let outputs: Array<string> = bill.getTrace(Invoice.OUTPUT);
 </script>
 
