@@ -23,7 +23,7 @@ import { logger } from '../logger'
 import crypto from 'crypto'
 
 const JACKSON_VERSION = "2.13.2"
-const TOOLBOX_VERSION = "4.2.8"
+const TOOLBOX_VERSION = "4.2.9"
 
 
 /* generate dependencies with
@@ -155,7 +155,7 @@ export class ElexisUtils {
    * @returns a JSON object with the contents of the ExtInfo (which might be {}
    * if the input was empty or could not be read.)
    */
-  getExtInfo(buffer:Uint8Array) {
+  getExtInfo(buffer: Uint8Array) {
     if (buffer) {
       try {
         let array = java.newArray("byte",

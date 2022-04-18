@@ -81,6 +81,7 @@ describe("Elexisutils", () => {
       const zipped = fs.readFileSync("./test/test4.bin")
       const unzipped = util.getExtInfo(zipped)
       expect(unzipped).toBeTruthy()
+
     } catch (err) {
       throw (err)
     }
