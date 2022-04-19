@@ -13,6 +13,7 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 import { logger } from './logger'
+// require('iconv-lite').encodingExists('foo')
 const authentication = require('./authentication')
 import knex from './knex'
 const feathers = require('@feathersjs/feathers')
