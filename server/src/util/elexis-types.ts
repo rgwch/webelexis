@@ -23,12 +23,13 @@ import { logger } from '../logger'
 import crypto from 'crypto'
 
 const JACKSON_VERSION = "2.13.2"
+const TOOLBOX_VERSION = "4.2.9"
 
 
 /* generate dependencies with
    mvn dependency:copy-dependencies
    */
-const utils = "rgw-toolbox-4.2.7.jar"
+const utils = `rgw-toolbox-${TOOLBOX_VERSION}.jar`
 const ann = `jackson-annotations-${JACKSON_VERSION}.jar`
 const jackson = `jackson-core-${JACKSON_VERSION}.jar`
 const databind = `jackson-databind-${JACKSON_VERSION}.jar`
@@ -154,7 +155,7 @@ export class ElexisUtils {
    * @returns a JSON object with the contents of the ExtInfo (which might be {}
    * if the input was empty or could not be read.)
    */
-  getExtInfo(buffer) {
+  getExtInfo(buffer: Uint8Array) {
     if (buffer) {
       try {
         let array = java.newArray("byte",
@@ -182,7 +183,7 @@ export class ElexisUtils {
     if (obj && obj != {}) {
       const str = JSON.stringify(obj)
       const u8 = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "flattenFromJson", str)
-      return u8
+      return Buffer.from(u8)
     }
     return null
   }

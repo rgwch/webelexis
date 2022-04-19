@@ -1,12 +1,12 @@
 {
+  "actions": {
+    "cancel": "Abbruch",
+    "ok": "Ok"
+  },
   "address": {
     "place": "Ort",
     "street": "Strasse",
     "zip": "plz"
-  },
-  "actions": {
-    "ok": "Ok",
-    "cancel": "Abbruch"
   },
   "billing": {
     "CANCELLED": "Storniert",
@@ -24,18 +24,18 @@
     "PARTIAL_LOSS": "Teilverlust",
     "PARTIAL_PAYMENT": "Teilweise bezahlt",
     "TOTAL_LOSS": "Totalverlust",
+    "actions": {
+      "demand_level": "Mahnstufe",
+      "output": "Ausgeben",
+      "print": "Drucken",
+      "storno": "Stornieren"
+    },
     "amount": "Betrag",
     "invoicedate": "Rechnungsdatum",
     "invoicenumber": "Rechungsnummer",
     "invoicestate": "Rechnungsstatus",
     "patient": "Patient",
-    "statedate": "Statusdatum",
-    "actions": {
-      "output": "Ausgeben",
-      "print": "Drucken",
-      "demand_level": "Mahnstufe",
-      "storno": "Stornieren"
-    }
+    "statedate": "Statusdatum"
   },
   "cal": {
     "apr": "April",
@@ -79,14 +79,16 @@
   "demotest": "Testkomponente",
   "formatting": {
     "date": "dd.LL.yyyy",
-    "longdate": "ccc, dd.LL.yyyy",
-    "dbdate": "yyyyLLdd"
+    "dbdate": "yyyyLLdd",
+    "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
     "loading": "lese..."
   },
   "titles": {
     "bills": "Rechnungen",
+    "outputs": "Ausgaben",
+    "progress": "Verlauf",
     "unbilled": "Unverrechnete Konsultationen"
   },
   "validation": {

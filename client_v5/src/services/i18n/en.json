@@ -1,4 +1,8 @@
 {
+  "actions": {
+    "cancel": "Abbruch",
+    "ok": "Ok"
+  },
   "address": {
     "place": "place",
     "street": "street",
@@ -20,6 +24,12 @@
     "PARTIAL_LOSS": "partial loss",
     "PARTIAL_PAYMENT": "partially paid",
     "TOTAL_LOSS": "total loss",
+    "actions": {
+      "demand_level": "Mahnstufe",
+      "output": "Ausgeben",
+      "print": "Drucken",
+      "storno": "Stornieren"
+    },
     "amount": "amount",
     "invoicedate": "invoice date",
     "invoicenumber": "invoice number",
@@ -69,13 +79,16 @@
   "demotest": "test component",
   "formatting": {
     "date": "yyyy/LL/dd",
-    "dbdate": "yyyyLLdd"
+    "dbdate": "yyyyLLdd",
+    "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
     "loading": "loading..."
   },
   "titles": {
     "bills": "Billes",
+    "outputs": "Ausgaben",
+    "progress": "Verlauf",
     "unbilled": "Unbilled encounters"
   },
   "validation": {

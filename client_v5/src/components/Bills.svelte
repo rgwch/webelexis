@@ -99,8 +99,9 @@
                   on:click={() => select(idx)}
                 />
               </td>
-              <td class="text-center cursor-pointer underline" on:click={() => (current = bill)} 
-                >{bill.rnnummer}</td
+              <td
+                class="text-center cursor-pointer underline"
+                on:click={() => (current = bill)}>{bill.rnnummer}</td
               >
               <td class="text-center"
                 >{DateTime.fromISO(bill.rndatum).toFormat(
@@ -128,7 +129,7 @@
   </div>
   {#if current}
     <Modal
-      title={current._Patname}
+      title={current._Patname + ", " + current.rnnummer}
       dismiss={() => {
         current = undefined;
       }}

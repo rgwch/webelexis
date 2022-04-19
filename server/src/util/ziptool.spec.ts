@@ -1,5 +1,6 @@
 import { create, extract, check } from './ziptool'
 import { randomBytes } from 'crypto'
+import fs from 'fs'
 
 describe("Ziptool", () => {
   it("compresses and expands an entity", async () => {
@@ -13,5 +14,15 @@ describe("Ziptool", () => {
     const input = randomBytes(1000).toString("utf-8")
     const result = await check(input)
     expect(result).toEqual(input)
+  })
+
+  xit("expands an elexis extinfo entry", async () => {
+    try {
+      const zipped = fs.readFileSync("./test/test4.bin")
+      const unzipped = await extract("zipped", "")
+      expect(unzipped).toBeTruthy()
+    } catch (err) {
+      throw (err)
+    }
   })
 })

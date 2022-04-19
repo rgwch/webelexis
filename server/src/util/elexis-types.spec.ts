@@ -1,4 +1,5 @@
 import { ElexisUtils } from "./elexis-types";
+import fs from 'fs'
 const util = new ElexisUtils()
 
 describe("Elexisutils", () => {
@@ -38,6 +39,7 @@ describe("Elexisutils", () => {
   it("decompresses an existing extinfo string", () => {
     const compressed = 'oAAASFBLAwQUAAgICAC9TCFUAAAAAAAAAAAAAAAABAAAAERhdGEzMNQzMNQzMjAy0lEwsLQyNrcytbRScMwpVghJLMpNTdENSk3OyCvNS1dILC1OKSpNzk7Ns1LwT0tLzVMozUtRSE8FC5YAAFBLBwjbqszFRwAAAEgAAABQSwECFAAUAAgICAC9TCFU26rMxUcAAABIAAAABAAAAAAAAAAAAAAAAAAAAAAARGF0YVBLBQYAAAAAAQABADIAAAB5AAAAAAA='
     const unpacked = util.unpackStringsFromString(compressed);
+    expect(unpacked).toEqual(["01.01.2022, 09:37:59: Als Tarmed-Rechnung ausdrucken: Offen und gedruckt"])
   })
   it("decodes a Date", () => {
     const date = new Date(2020, 2, 3)
@@ -72,5 +74,28 @@ describe("Elexisutils", () => {
   it("creates an elexis-compatible password hash", () => {
     const result = util.hashPassword("topSecret", "1")
     expect(result.hashed).toEqual("deb55dc0c7e0998962dc4ce0fc6f58d835704d63")
+  })
+
+  it("expands an elexis extinfo entry", async () => {
+    try {
+      const zipped = fs.readFileSync("./test/test4.bin")
+      const unzipped = util.getExtInfo(zipped)
+      expect(unzipped).toBeTruthy()
+      const states=unzipped["Statusänderung"]
+      const unpacked=util.unpackStringsFromString(states)
+      expect(Array.isArray(unpacked)).toBeTruthy()
+      unpacked.push("__Test Entry__")
+      const packed=Buffer.from(util.packStrings(unpacked))
+      unzipped["Statusänderung"]=packed
+      const rezipped=util.writeExtInfo(unzipped)
+
+      const unzipped2=util.getExtInfo(rezipped)
+      const states2=util.unpackStringsFromString(unzipped2["Statusänderung"])
+      expect(Array.isArray(states2)).toBeTruthy()
+      expect(states2).toContain("__Test Entry__");
+      
+    } catch (err) {
+      throw (err)
+    }
   })
 })
