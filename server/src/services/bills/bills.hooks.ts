@@ -73,7 +73,7 @@ const unpack = (obj, fieldlist: Array<string>) => {
       for (const field of fieldlist) {
         const trace = obj.extjson[field]
         if (trace) {
-          const decoded = util.unpackStringsFromString(trace)
+          const decoded = util.unpackStrings(trace)
           obj.extjson["_" + field] = decoded
         } else {
           obj.extjson["_" + field] = []
@@ -94,7 +94,7 @@ const pack = (obj, fieldlist: Array<string>) => {
       for (const field of fieldlist) {
         const trace = obj.extjson["_" + field]
         if (trace) {
-          const decoded = util.packStringsToString(trace)
+          const decoded = util.packStrings(trace)
           obj.extjson[field] = decoded
           delete obj.extjson["_" + field]
         }

@@ -81,7 +81,19 @@ describe("Elexisutils", () => {
       const zipped = fs.readFileSync("./test/test4.bin")
       const unzipped = util.getExtInfo(zipped)
       expect(unzipped).toBeTruthy()
+      const states=unzipped["Statusänderung"]
+      const unpacked=util.unpackStringsFromString(states)
+      expect(Array.isArray(unpacked)).toBeTruthy()
+      unpacked.push("__Test Entry__")
+      const packed=Buffer.from(util.packStrings(unpacked))
+      unzipped["Statusänderung"]=packed
+      const rezipped=util.writeExtInfo(unzipped)
 
+      const unzipped2=util.getExtInfo(rezipped)
+      const states2=util.unpackStringsFromString(unzipped2["Statusänderung"])
+      expect(Array.isArray(states2)).toBeTruthy()
+      expect(states2).toContain("__Test Entry__");
+      
     } catch (err) {
       throw (err)
     }
