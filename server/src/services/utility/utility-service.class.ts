@@ -17,8 +17,13 @@ export class Utility {
   async patch(id, data, params) {
     switch (id) {
       case "addTrace": {
-        const result = util.addEntryToPackedStrings(data, params.field, params.entry)
-        return result;
+        const field = params.field.startsWith("_") ? params.field.substring(1) : params.field;
+        const result = util.addEntryToPackedStrings(data, field, params.entry)
+        return result
+      }
+      case "setField": {
+        const field = params.field.startsWith("_") ? params.field.substring(1) : params.field;
+        const result = util.addEntryToExtinfo(data, field, params.entry)
       }
       default:
         throw new Error("invalid utility call: patch " + id)

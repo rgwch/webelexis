@@ -25,7 +25,7 @@ export interface InvoiceType extends ElexisType {
   statusdatum: DATE
   betrag: string
   extinfo?: Uint8Array
-  extjson?: any
+  // extjson?: any
   _Fall?: CaseType
   _Mandant?: KontaktType
   _Patname?: string
@@ -79,8 +79,13 @@ export class Invoice {
   private paymentService: IService<PaymentType> = getService("payments")
   private static billService: IService<InvoiceType> = getService("bills")
   private static utilService: IService<any> = getService("utility")
-  static OUTPUT = "_Ausgegeben"
-  static STATECHANGE = "_Statusänderung"
+  static TRACE_OUTPUT = "_Ausgegeben"
+  static TRACE_STATECHANGE = "_Statusänderung"
+  static TRACE_CORRECTION = "_Korrektur"
+  static TRACE_REJECTED = "_Zurückgewiesen"
+  static TRACE_PAYMENT = "_Zahlung"
+  static TRACE_REMARKS = "_Bemerkungen"
+
   static DESCRIPTION = "Webelexis printer"
   private trl
   constructor(private bill: InvoiceType) {
@@ -204,7 +209,7 @@ export class Invoice {
         }
         this.bill.statusdatum = DateTime.fromJSDate(new Date()).toFormat("yyyyLLdd");
 
-        this.addTrace(Invoice.OUTPUT, `${DateTime.now().toFormat("dd.LL.yyyy, HH:mm:ss")}: ${Invoice.DESCRIPTION}: ${this.getInvoiceState()}`);
+        this.addTrace(Invoice.TRACE_OUTPUT, `${DateTime.now().toFormat("dd.LL.yyyy, HH:mm:ss")}: ${Invoice.DESCRIPTION}: ${this.getInvoiceState()}`);
         const modified = await Invoice.billService.update(this.bill.id, this.bill)
 
         return true
