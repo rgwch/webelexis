@@ -113,9 +113,9 @@ export class Invoice {
 
   /**
    * Add a payment
-   * @param amount 
-   * @param remark 
-   * @param date 
+   * @param amount
+   * @param remark
+   * @param date
    * @returns The PaymentType (Which is already saved to the database)
    */
   public async addPayment(amount: Money, remark: string, date: Date): Promise<PaymentType> {
@@ -158,7 +158,7 @@ export class Invoice {
    * @param if given: Text for that state, else Text for current state
    * @returns
    */
-  public getInvoiceState(stateID?:string): string {
+  public getInvoiceState(stateID?: string): string {
     const state = stateID || this.bill.rnstatus
     if (state) {
       for (const prop in RnState) {
@@ -222,11 +222,13 @@ export class Invoice {
   public setRemark(rem): void {
     this.bill.extjson.Bemerkung = rem
   }
-  public addTrace(name: string, text: string): void {
+  public async addTrace(name: string, text: string): Promise<void> {
     if (!this.bill.extjson[name]) {
       this.bill.extjson[name] = []
     }
     this.bill.extjson[name].push(text)
+    const patched = await Invoice.utilService.patch("addTrace", this.bill.extinfo, { field: name, entry: text })
+    this.bill.extinfo = patched
   }
 
   public getTrace(name: string): Array<string> {

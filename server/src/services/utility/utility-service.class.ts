@@ -11,7 +11,17 @@ export class Utility {
       }
 
       default:
-        throw new Error("invalid Utility call: " + id)
+        throw new Error("invalid Utility call: get " + id)
+    }
+  }
+  async patch(id, data, params) {
+    switch (id) {
+      case "addTrace": {
+        const result = util.addEntryToPackedStrings(data, params.field, params.entry)
+        return result;
+      }
+      default:
+        throw new Error("invalid utility call: patch " + id)
     }
   }
 }

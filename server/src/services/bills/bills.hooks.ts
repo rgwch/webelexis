@@ -84,6 +84,7 @@ const unpack = (obj, fieldlist: Array<string>) => {
   return obj;
 }
 
+
 const pack = (obj, fieldlist: Array<string>) => {
   if (Array.isArray(obj)) {
     for (const o of obj) {
@@ -94,8 +95,8 @@ const pack = (obj, fieldlist: Array<string>) => {
       for (const field of fieldlist) {
         const trace = obj.extjson["_" + field]
         if (trace) {
-          const decoded = util.packStringsToString(trace)
-          obj.extjson[field] = decoded
+          // const decoded = util.packStringsToString(trace)
+          // obj.extjson[field] = decoded
           delete obj.extjson["_" + field]
         }
       }
@@ -127,8 +128,8 @@ export default {
     find: [],
     get: [],
     create: [handleExtinfo, fi, assignBillNumber],
-    update: [traces, handleExtinfo, fi],
-    patch: [traces, handleExtinfo, fi],
+    update: [handleExtinfo, fi],
+    patch: [handleExtinfo, fi],
     remove: [],
   },
 
