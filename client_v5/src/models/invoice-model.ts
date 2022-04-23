@@ -25,7 +25,7 @@ export interface InvoiceType extends ElexisType {
   statusdatum: DATE
   betrag: string
   extinfo?: Uint8Array
-  // extjson?: any
+  extjson?: any
   _Fall?: CaseType
   _Mandant?: KontaktType
   _Patname?: string
@@ -224,8 +224,9 @@ export class Invoice {
   public getRemark(): string {
     return this.bill.extjson.Bemerkung
   }
-  public setRemark(rem): void {
-    this.bill.extjson.Bemerkung = rem
+  public async setRemark(rem): Promise<void> {
+    const patched = await Invoice.utilService.patch("setField", this.bill.extinfo, { field: Invoice.TRACE_REMARKS, entry: rem })
+    this.bill.extinfo=patched
   }
   public async addTrace(name: string, text: string): Promise<void> {
     if (!this.bill.extjson[name]) {

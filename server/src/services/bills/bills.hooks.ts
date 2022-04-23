@@ -69,15 +69,15 @@ const unpack = (obj, fieldlist: Array<string>) => {
       unpack(o, fieldlist)
     }
   } else {
-    if (obj.extjson) {
+    if (obj.extinfo) {
+      obj.extjson = util.getExtInfo(obj.extinfo)
       for (const field of fieldlist) {
         const trace = obj.extjson[field]
         if (trace) {
           const decoded = util.unpackStringsFromString(trace)
-          obj.extjson["_" + field] = decoded
-          delete obj.extjson[field];
+          obj.extjson[field] = decoded
         } else {
-          obj.extjson["_" + field] = []
+          obj.extjson[field] = []
         }
       }
     }
@@ -86,59 +86,36 @@ const unpack = (obj, fieldlist: Array<string>) => {
 }
 
 
-const pack = (obj, fieldlist: Array<string>) => {
-  if (Array.isArray(obj)) {
-    for (const o of obj) {
-      pack(o, fieldlist)
-    }
+const pack = ctx => {
+  delete ctx.data.extjson
+  return ctx;
+}
+
+
+const fieldList = ["Ausgegeben", "Statusänderung", "Korrektur", "Zurückgewiesen", "Zahlung"]
+const tojson = ctx => {
+  if (ctx.method === 'get') {
+    ctx.result = unpack(ctx.result, fieldList);
   } else {
-    if (obj.extjson) {
-      for (const field of fieldlist) {
-        const trace = obj.extjson["_" + field]
-        if (trace) {
-          // const decoded = util.packStringsToString(trace)
-          // obj.extjson[field] = decoded
-          delete obj.extjson["_" + field]
-          delete obj.extjson[field]
-        }
-      }
-    }
-  }
-  return obj;
-}
-
-const packedField = (fieldlist: Array<string>) => {
-  return ctx => {
-    switch (ctx.method) {
-      case 'get': ctx.result = unpack(ctx.result, fieldlist); break
-      case 'find': ctx.result.data = unpack(ctx.result.data, fieldlist); break;
-      case 'update':
-      case 'patch':
-      case 'create':
-        ctx.data = pack(ctx.data, fieldlist); break;
-      default:
-        throw new Error("undefined method in hook")
-    }
-    return ctx
+    ctx.result.data = unpack(ctx.result.data, fieldList);
   }
 }
-const traces = packedField(["Ausgegeben", "Statusänderung"])
 
 export default {
   before: {
     all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [handleExtinfo, fi, assignBillNumber],
-    update: [handleExtinfo, fi],
-    patch: [handleExtinfo, fi],
+    create: [pack,fi, assignBillNumber],
+    update: [pack,fi],
+    patch: [fi],
     remove: [],
   },
 
   after: {
     all: [],
-    find: [handleExtinfo, traces, fi, addPatient],
-    get: [handleExtinfo, traces, fi, addPatient],
+    find: [tojson, fi, addPatient],
+    get: [tojson, fi, addPatient],
     create: [],
     update: [],
     patch: [],
