@@ -6,9 +6,6 @@ export class Utility {
   async get(id, params) {
     switch (id) {
       case "ping": return "pong"; break;
-      case "pack": {
-        return await util.packStrings(params)
-      }
       case "unpack": {
         return await util.unpackStringsFromString(params)
       }
