@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { BillingsFilter } from "../services/billing";
+
   export let options: Partial<{
     selected: boolean;
     firstolder: boolean;

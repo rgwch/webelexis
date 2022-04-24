@@ -41,9 +41,7 @@
     return new EncounterModel(t.payload.Konsultation);
   }
   let selectOptions = { selected: true };
-  function doSelect() {
-    alert("select");
-  }
+  function doSelect() {}
 </script>
 
 <template>

@@ -24,6 +24,21 @@ export type konsdef = {
   Konsultation?: any
 }
 
+export type BillingsFilter = {
+  bSelected: boolean;
+  bFirstolder: boolean;
+  bLastolder: boolean;
+  bBetween: boolean;
+  bAmount: boolean;
+  bName: boolean;
+  firstolderdays: number;
+  lastolderdays: number;
+  betweenfrom: string;
+  betweenuntil: string;
+  name: string;
+  amount: number;
+}
+
 export class Billing {
   async getBillables(): Promise<Tree<konsdef>> {
     const konsService = getService('konsultation')
