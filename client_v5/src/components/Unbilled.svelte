@@ -16,6 +16,7 @@
   const cm = new CaseManager();
   const em = new EncounterManager();
   let patients: Array<Tree<konsdef>> = [];
+  let selected: Array<Tree<konsdef>> = [];
   const biller = new Billing();
   let selector = false;
   let deselector = false;
@@ -39,24 +40,33 @@
     }
     return new EncounterModel(t.payload.Konsultation);
   }
+  let selectOptions = { selected: true };
+  function doSelect() {
+    alert("select");
+  }
 </script>
 
 <template>
   {#if selector}
     <Modal
       title={$_("actions.select")}
-      dismiss={() => {
+      dismiss={(ok) => {
         selector = false;
+        if (ok) {
+          doSelect();
+        }
       }}
     >
-      <div slot="body"><SelectOptions /></div>
+      <div slot="body"><SelectOptions options={selectOptions} /></div>
     </Modal>
   {/if}
   {#if deselector}
     <Modal
       title={$_("actions.deselect")}
-      dismiss={() => {
+      dismiss={(ok) => {
         deselector = false;
+        if (ok) {
+        }
       }}
     >
       <div slot="body">deselect</div>
@@ -66,7 +76,7 @@
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
       <h2 class="mx-3">
         {$_("titles.unbilled")}<span
-          class="ml-4 text-sm cursor-pointer underline hover:text-blue-600"
+          class="ml-4 text-sm cursor-pointer underline hover:text-blue-600 rounded-full"
           on:click={() => {
             selector = true;
           }}>{$_("actions.select")}</span
