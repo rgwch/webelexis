@@ -1,7 +1,9 @@
 {
   "actions": {
     "cancel": "Abbruch",
-    "ok": "Ok"
+    "ok": "Ok",
+    "deselect": "abwählen...",
+    "select": "auswählen..."
   },
   "address": {
     "place": "Ort",
@@ -89,7 +91,9 @@
     "bills": "Rechnungen",
     "outputs": "Ausgaben",
     "progress": "Verlauf",
-    "unbilled": "Unverrechnete Konsultationen"
+    "unbilled": "Unverrechnete Konsultationen",
+    "selected": "Auswahl",
+    "detail": "Detail"
   },
   "validation": {
     "ivalidDate": "Ungültiges Datum",

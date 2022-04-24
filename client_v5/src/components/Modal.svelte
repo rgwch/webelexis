@@ -27,7 +27,9 @@
     <div class="bg-white rounded-lg w-1/2">
       <div class="flex flex-col p-4">
         <div class="flex items-center w-full">
-          <div class="text-gray-800 font-medium text-lg">{title}</div>
+          <div class="text-gray-800 font-medium text-lg capitalize">
+            {title}
+          </div>
         </div>
         <hr />
         <div class="my-5 w-full">

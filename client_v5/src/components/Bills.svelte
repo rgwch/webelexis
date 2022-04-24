@@ -100,7 +100,7 @@
                 />
               </td>
               <td
-                class="text-center cursor-pointer underline"
+                class="text-center cursor-pointer underline hover:text-blue-600"
                 on:click={() => (current = bill)}>{bill.rnnummer}</td
               >
               <td class="text-center"
