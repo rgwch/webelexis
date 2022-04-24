@@ -28,7 +28,7 @@ export class Billing {
   async getBillables(): Promise<Tree<konsdef>> {
     const konsService = getService('konsultation')
     const patService = getService('patient')
-    const unbilled: Array<konsdef> = await konsService.get('unbilled')
+    const unbilled: Array<konsdef> = await konsService.find({ query: { id: 'unbilled' } })
     const ret = new Tree<konsdef>(null, null)
     for (let p of unbilled) {
       const patNode = ret.insert(p, (a, b) =>

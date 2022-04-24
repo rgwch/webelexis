@@ -199,14 +199,14 @@ const allowNull = (ctx) => {
 }
 
 const unbilled = async (ctx) => {
-  if (ctx.id === 'unbilled') {
+  if (ctx.params.query.id === 'unbilled') {
     // const query = 'SELECT distinct PATIENTID FROM FAELLE '
     // "JOIN BEHANDLUNGEN ON BEHANDLUNGEN.FALLID=FAELLE.ID WHERE BEHANDLUNGEN.deleted='1' AND BEHANDLUNGEN.billable='1' AND BEHANDLUNGEN.RECHNUNGSID = 'blah' "
     const knex = ctx.app.get('knexClient')
     const query = knex("faelle").join("behandlungen", "behandlungen.fallid", "=", "faelle.id")
       .join("kontakt", "kontakt.id", "faelle.patientid")
       .whereNull("behandlungen.rechnungsid")
-      .andWhere("behandlungen.deleted","0")
+      .andWhere("behandlungen.deleted", "0")
       .select("faelle.patientid", "behandlungen.id as konsid", "faelle.id as fallid",
         "faelle.datumvon as falldatum", "faelle.bezeichnung as falltitel", "behandlungen.datum as konsdatum",
         "kontakt.bezeichnung1 as lastname", "kontakt.bezeichnung2 as firstname")
@@ -222,8 +222,8 @@ export default {
     all: [
       /* authenticate('jwt') */
     ],
-    find: [allowNull, withPatientId, textContents],
-    get: [unbilled],
+    find: [unbilled, allowNull, withPatientId, textContents],
+    get: [],
     create: [createKonsText],
     update: [updateKonsText],
     patch: [],
