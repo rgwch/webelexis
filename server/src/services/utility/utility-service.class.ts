@@ -16,14 +16,27 @@ export class Utility {
   }
   async patch(id, data, params) {
     switch (id) {
+      /**
+       * Add a "Trace" entry to a compressed-string-field in an Extinfo block. We can't to this with the extjson concept
+       * because JSON does not have a concept of ByteArray.
+       */
       case "addTrace": {
-        const field = params.field.startsWith("_") ? params.field.substring(1) : params.field;
-        const result = util.addEntryToPackedStrings(data, field, params.entry)
-        return result
+        const q = params.query
+        if (q && q.field && q.entry) {
+          const result = util.addEntryToPackedStrings(data, q.field, q.entry)
+          return result
+        } else {
+          throw new Error("pad parameters for addTrace " + JSON.stringify(params.query))
+        }
       }
       case "setField": {
-        const field = params.field.startsWith("_") ? params.field.substring(1) : params.field;
-        const result = util.addEntryToExtinfo(data, field, params.entry)
+        const q = params.query
+        if (q && q.field && q.entry) {
+          const result = util.addEntryToExtinfo(data, q.field, q.entry)
+          return result
+        } else {
+          throw new Error("pad parameters for setField " + JSON.stringify(params.query))
+        }
       }
       default:
         throw new Error("invalid utility call: patch " + id)
