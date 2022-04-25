@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Billing } from "../services/billing";
+  import { Billing, type BillingsFilter } from "../services/billing";
   import type { konsdef } from "../services/billing";
   import type { Tree } from "../models/tree";
   import { DateTime } from "luxon";
@@ -40,7 +40,7 @@
     }
     return new EncounterModel(t.payload.Konsultation);
   }
-  let selectOptions = { selected: true };
+  let selectOptions:BillingsFilter = { bSelected: true };
   function doSelect() {}
 </script>
 

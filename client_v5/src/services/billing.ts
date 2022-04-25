@@ -25,21 +25,25 @@ export type konsdef = {
 }
 
 export type BillingsFilter = {
-  bSelected: boolean;
-  bFirstolder: boolean;
-  bLastolder: boolean;
-  bBetween: boolean;
-  bAmount: boolean;
-  bName: boolean;
-  firstolderdays: number;
-  lastolderdays: number;
-  betweenfrom: string;
-  betweenuntil: string;
-  name: string;
-  amount: number;
+  bSelected?: boolean;
+  bFirstolder?: boolean;
+  bLastolder?: boolean;
+  bBetween?: boolean;
+  bAmount?: boolean;
+  bName?: boolean;
+  firstolderdays?: number;
+  lastolderdays?: number;
+  betweenfrom?: string;
+  betweenuntil?: string;
+  name?: string;
+  amount?: number;
 }
 
 export class Billing {
+  /**
+   * fetch a Tree of all unbilled encounters. One Node per patient, one case-node per case, containing all encounters for that case.
+   * @returns 
+   */
   async getBillables(): Promise<Tree<konsdef>> {
     const konsService = getService('konsultation')
     const patService = getService('patient')
