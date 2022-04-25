@@ -1,5 +1,5 @@
 <script lang="ts">
-  import DatePicker from "../components/DatePicker.svelte";
+  import DatePicker from "../widgets/DatePicker.svelte";
   import { TerminManager, TerminModel } from "../models/termine-model";
   import type { TerminType } from "../models/termine-model";
   import { _ } from "svelte-i18n";
@@ -18,7 +18,6 @@
   <div class="flex">
     <DatePicker on:select={select} keepOpen={true} />
     <div class="flex-auto">
-      §
       <ul>
         {#each list as tm}
           <li style="background-color:{tm.getStateColor()}">

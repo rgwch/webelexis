@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Listview from "./Listview.svelte";
+    import Listview from "../components./components/Listview.svelte";
     export let list:Array<any>=[]
 
 </script>
