@@ -8,7 +8,7 @@
 const { Service } = require('feathers-knex');
 
 export class Bills extends Service {
-  private knex
+  // private knex
   private app
   constructor(options, app) {
     options.name = 'rechnungen'
@@ -24,7 +24,7 @@ export class Bills extends Service {
    */
   async find(params) {
     if (params.query?.patientid) {
-      const query = this.knex('faelle')
+      const query = super.knex('faelle')
         .join('rechnungen', 'faelle.id', "=", 'rechnungen.fallid')
         .join('kontakt', 'kontakt.id', '=', 'faelle.patientid')
         .select("rechnungen.*")
@@ -58,7 +58,7 @@ export class Bills extends Service {
       result['data'] = found
       return result
     } else {
-      const result=await super.find(params)
+      const result = await super.find(params)
       return result
     }
   }

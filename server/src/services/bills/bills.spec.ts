@@ -21,7 +21,7 @@ describe('bills', () => {
     expect(bill).toHaveProperty("extjson")
 
   })
-  it('modifies bill tracemessages', async () => {
+  xit('modifies bill tracemessages', async () => {
     jest.setTimeout(20000);
     const result = await service.find({})
     expect(result.total).toBeGreaterThan(0)

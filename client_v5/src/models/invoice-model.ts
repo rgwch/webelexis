@@ -79,8 +79,13 @@ export class Invoice {
   private paymentService: IService<PaymentType> = getService("payments")
   private static billService: IService<InvoiceType> = getService("bills")
   private static utilService: IService<any> = getService("utility")
-  static OUTPUT = "_Ausgegeben"
-  static STATECHANGE = "_Statusänderung"
+  static TRACE_OUTPUT = "Ausgegeben"
+  static TRACE_STATECHANGE = "Statusänderung"
+  static TRACE_CORRECTION = "Korrektur"
+  static TRACE_REJECTED = "Zurückgewiesen"
+  static TRACE_PAYMENT = "Zahlung"
+  static TRACE_REMARKS = "Bemerkungen"
+
   static DESCRIPTION = "Webelexis printer"
   private trl
   constructor(private bill: InvoiceType) {
@@ -113,9 +118,9 @@ export class Invoice {
 
   /**
    * Add a payment
-   * @param amount 
-   * @param remark 
-   * @param date 
+   * @param amount
+   * @param remark
+   * @param date
    * @returns The PaymentType (Which is already saved to the database)
    */
   public async addPayment(amount: Money, remark: string, date: Date): Promise<PaymentType> {
@@ -130,13 +135,15 @@ export class Invoice {
     } else if (newRemaining.compareTo(remaining) < 0) {
       await this.setInvoiceState(RnState.PARTIAL_PAYMENT)
     }
-    const ret: PaymentType = {
+    const payment: PaymentType = {
       rechnungsid: this.bill.id,
       betrag: amount.getCentsAsString(),
       datum: DateTime.fromJSDate(date).toFormat("yyyyLLdd"),
       bemerkung: remark
     }
-    return this.paymentService.create(ret) as Promise<PaymentType>
+    const ret = await this.paymentService.create(payment) as PaymentType
+    this.addTrace(Invoice.TRACE_PAYMENT, (ret).datum + ": " + ret.betrag)
+    return ret
   }
 
   /**
@@ -158,7 +165,7 @@ export class Invoice {
    * @param if given: Text for that state, else Text for current state
    * @returns
    */
-  public getInvoiceState(stateID?:string): string {
+  public getInvoiceState(stateID?: string): string {
     const state = stateID || this.bill.rnstatus
     if (state) {
       for (const prop in RnState) {
@@ -175,6 +182,7 @@ export class Invoice {
 
       const result: InvoiceType = await Invoice.billService.patch(this.bill.id, { rnstatus: level, statusdatum: DateTime.now().toFormat("yyyyLLdd") }) as InvoiceType
       if (result && (result.rnstatus == level)) {
+        this.addTrace(Invoice.TRACE_STATECHANGE, result.rnstatus)
         return true
       } else {
         return false;
@@ -202,9 +210,9 @@ export class Invoice {
           case RnState.DEMAND_NOTE_2: this.bill.rnstatus = RnState.DEMAND_NOTE_2_PRINTED; break;
           case RnState.DEMAND_NOTE_3: this.bill.rnstatus = RnState.DEMAND_NOTE_3_PRINTED; break;
         }
-        this.bill.statusdatum = DateTime.fromJSDate(new Date()).toFormat("yyyyLLdd");
+        this.bill.statusdatum = DateTime.now().toFormat("yyyyLLdd");
 
-        this.addTrace(Invoice.OUTPUT, `${DateTime.now().toFormat("dd.LL.yyyy, HH:mm:ss")}: ${Invoice.DESCRIPTION}: ${this.getInvoiceState()}`);
+        this.addTrace(Invoice.TRACE_OUTPUT, `${Invoice.DESCRIPTION}: ${this.getInvoiceState()}`);
         const modified = await Invoice.billService.update(this.bill.id, this.bill)
 
         return true
@@ -219,14 +227,21 @@ export class Invoice {
   public getRemark(): string {
     return this.bill.extjson.Bemerkung
   }
-  public setRemark(rem): void {
-    this.bill.extjson.Bemerkung = rem
+  public async setRemark(rem): Promise<void> {
+    const patched = await Invoice.utilService.patch("setField", this.bill.extinfo, { query: { field: Invoice.TRACE_REMARKS, entry: rem } })
+    this.bill.extinfo = patched
   }
-  public addTrace(name: string, text: string): void {
+
+  public async addTrace(name: string, message: string): Promise<void> {
     if (!this.bill.extjson[name]) {
       this.bill.extjson[name] = []
     }
+    const timestamp = DateTime.now().toFormat("dd.LL.yyyy, HH:mm:ss")
+    const text = timestamp + ": " + message
     this.bill.extjson[name].push(text)
+    const patched = await Invoice.utilService.patch("addTrace", this.bill.extinfo, { query: { field: name, entry: text } })
+    this.bill.extinfo = patched
+    Invoice.billService.patch(this.bill.id, { extinfo: patched })
   }
 
   public getTrace(name: string): Array<string> {

@@ -29,18 +29,22 @@ describe("Elexisutils", () => {
     expect(entry.version).toEqual(0)
 
   })
+
+  /*
   it("compresses and decompresses a string array", () => {
     const arr = ["eins", "zwei", "drei"]
     const comp = util.packStrings(arr)
     const upacked = util.unpackStrings(comp)
     expect(upacked).toEqual(arr)
   })
-
-  it("decompresses an existing extinfo string", () => {
-    const compressed = 'oAAASFBLAwQUAAgICAC9TCFUAAAAAAAAAAAAAAAABAAAAERhdGEzMNQzMNQzMjAy0lEwsLQyNrcytbRScMwpVghJLMpNTdENSk3OyCvNS1dILC1OKSpNzk7Ns1LwT0tLzVMozUtRSE8FC5YAAFBLBwjbqszFRwAAAEgAAABQSwECFAAUAAgICAC9TCFU26rMxUcAAABIAAAABAAAAAAAAAAAAAAAAAAAAAAARGF0YVBLBQYAAAAAAQABADIAAAB5AAAAAAA='
-    const unpacked = util.unpackStringsFromString(compressed);
-    expect(unpacked).toEqual(["01.01.2022, 09:37:59: Als Tarmed-Rechnung ausdrucken: Offen und gedruckt"])
-  })
+  */
+  /*
+    it("decompresses an existing extinfo string", () => {
+      const compressed = 'oAAASFBLAwQUAAgICAC9TCFUAAAAAAAAAAAAAAAABAAAAERhdGEzMNQzMNQzMjAy0lEwsLQyNrcytbRScMwpVghJLMpNTdENSk3OyCvNS1dILC1OKSpNzk7Ns1LwT0tLzVMozUtRSE8FC5YAAFBLBwjbqszFRwAAAEgAAABQSwECFAAUAAgICAC9TCFU26rMxUcAAABIAAAABAAAAAAAAAAAAAAAAAAAAAAARGF0YVBLBQYAAAAAAQABADIAAAB5AAAAAAA='
+      const unpacked = util.unpackStringsFromString(compressed);
+      expect(unpacked).toEqual(["01.01.2022, 09:37:59: Als Tarmed-Rechnung ausdrucken: Offen und gedruckt"])
+    })
+    */
   it("decodes a Date", () => {
     const date = new Date(2020, 2, 3)
     const parsed = util.dateStrings(date)
@@ -76,6 +80,16 @@ describe("Elexisutils", () => {
     expect(result.hashed).toEqual("deb55dc0c7e0998962dc4ce0fc6f58d835704d63")
   })
 
+  it("adds an entry to a compressed string field", () => {
+    const zipped = fs.readFileSync("./test/test4.bin")
+    const rezipped = util.addEntryToPackedStrings(zipped, "Statusänderung", "__TEST__");
+    const unzipped2 = util.getExtInfo(rezipped)
+    const states2 = util.unpackStringsFromString(unzipped2["Statusänderung"])
+    expect(Array.isArray(states2)).toBeTruthy()
+    expect(states2).toContain("__TEST__");
+
+  })
+  /*
   it("expands an elexis extinfo entry", async () => {
     try {
       const zipped = fs.readFileSync("./test/test4.bin")
@@ -93,9 +107,10 @@ describe("Elexisutils", () => {
       const states2=util.unpackStringsFromString(unzipped2["Statusänderung"])
       expect(Array.isArray(states2)).toBeTruthy()
       expect(states2).toContain("__Test Entry__");
-      
+
     } catch (err) {
       throw (err)
     }
   })
+  */
 })

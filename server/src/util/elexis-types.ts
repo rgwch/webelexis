@@ -23,7 +23,7 @@ import { logger } from '../logger'
 import crypto from 'crypto'
 
 const JACKSON_VERSION = "2.13.2"
-const TOOLBOX_VERSION = "4.2.9"
+const TOOLBOX_VERSION = "4.2.10"
 
 
 /* generate dependencies with
@@ -122,6 +122,7 @@ export class ElexisUtils {
     return binfield
   }
 
+
   unpackStringsFromString(raw: string): Array<string> {
     const b = Buffer.from(raw, "base64")
     return this.unpackStrings(b)
@@ -135,20 +136,22 @@ export class ElexisUtils {
     return arr
   }
 
-  packStringsToString(strings: Array<string>): string {
-    const arr = this.packStrings(strings)
-    if (arr) {
-      const b = Buffer.from(arr)
-      return b.toString("base64");
-    } else {
-      return ""
+  /*
+    packStringsToString(strings: Array<string>): string {
+      const arr = this.packStrings(strings)
+      if (arr) {
+        const b = Buffer.from(arr)
+        return b.toString("base64");
+      } else {
+        return ""
+      }
     }
-  }
-  packStrings(strings: Array<string>): Uint8Array {
-    const arr = java.newArray("java.lang.String", strings)
-    let packed = java.callStaticMethodSync("ch.rgw.tools.StringTool", "pack", arr)
-    return packed
-  }
+    packStrings(strings: Array<string>): Uint8Array {
+      const arr = java.newArray("java.lang.String", strings)
+      let packed = java.callStaticMethodSync("ch.rgw.tools.StringTool", "pack", arr)
+      return packed
+    }
+    */
   /**
    * Convert an Elexis ExtInfo field to json.
    * @param {Buffer} buffer  the binary data as stored in the database
@@ -188,6 +191,32 @@ export class ElexisUtils {
     return null
   }
 
+  addEntryToPackedStrings(buffer: Uint8Array, field: string, entry: string): Uint8Array {
+    if (buffer) {
+      let array = java.newArray("byte",
+        Array.prototype.slice.call(buffer, 0)
+      )
+
+      const ret = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "addTrace", array, field, entry);
+      return Buffer.from(ret);
+    } else {
+      return null
+    }
+
+  }
+
+  addEntryToExtinfo(buffer: Uint8Array, field: string, entry: string): Uint8Array {
+    if (buffer) {
+      let array = java.newArray("byte",
+        Array.prototype.slice.call(buffer, 0)
+      )
+
+      const ret = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "putEntry", array, field, entry);
+      return ret
+    } else {
+      return null
+    }
+  }
   dateStrings(date: Date) {
     var month = (date.getMonth() + 1).toString();
     if (month.length < 2) {

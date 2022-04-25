@@ -1,4 +1,7 @@
 import app from '../../app'
+import fs from 'fs'
+import { ElexisUtils } from '../../util/elexis-types'
+const util = new ElexisUtils()
 
 describe('Utility', () => {
   let service
@@ -14,12 +17,12 @@ describe('Utility', () => {
     expect(service).toBeTruthy()
   })
 
-  it("packs and unpacks a string array", async () => {
-    const arr = ["one", "two", "three"]
-    const packed = await service.get("pack", arr)
-    expect(packed).toBeTruthy()
-    const expanded = await service.get("unpack", packed)
-    expect(expanded).toEqual(arr)
+  it("extends a packed string field", async () => {
+    const zipped = fs.readFileSync("./test/test4.bin")
+    const rezipped = await service.patch("addTrace", zipped, { field: "Statusänderung", entry: "__Modified__" });
+    const unpacked = util.getExtInfo(rezipped)
+    const expanded = await service.get("unpack", unpacked["Statusänderung"])
+    expect(expanded).toContain("__Modified__")
   })
 
 })
