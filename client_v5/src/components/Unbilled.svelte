@@ -24,7 +24,7 @@ const tree = new Tree<string>(null, "root");
 new Tree<string>(tree, "one");
 new Tree<string>(tree, "two");
 
-let tSelected=tree
+let tSelected = new Tree<konsdef>(null, null);
 const biller = new Billing();
 let selector = false;
 let deselector = false;
@@ -50,15 +50,15 @@ async function getEncounter(t: Tree<konsdef>): Promise<EncounterModel> {
 }
 let selectOptions: BillingsFilter = { bSelected: true };
 function doSelect() {
-  const temp = new Tree<string>(null, "root");
+  const temp = new Tree<konsdef>(null, null);
   if (selectOptions.bName) {
-    const regexp=new RegExp(selectOptions.name+".*","i")
+    const regexp = new RegExp(selectOptions.name + ".*", "i");
     for (const node of patients) {
       if (
         node.payload.lastname.match(regexp) ||
         node.payload.firstname.match(regexp)
       ) {
-        new Tree<string>(temp, "Huch");
+        new Tree<konsdef>(temp, node.payload);
       }
     }
   }
@@ -147,10 +147,10 @@ function doSelect() {
             deselector = true;
           }}">{$_("actions.deselect")}</span>
       </h2>
-      <p>
-        Test
-        <TreeView tree="{tSelected}" labelProvider="{(n) => n.payload}" />
-      </p>
+      
+      
+        <TreeView tree="{tSelected}" labelProvider="{(n) => n.payload?.lastname+" "+n.payload?.firstname}" />
+      
     </div>
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
       <h2 class="mx-3">{$_("titles.detail")}</h2>

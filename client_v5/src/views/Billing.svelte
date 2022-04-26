@@ -4,8 +4,6 @@ import Unbilled from "../components/Unbilled.svelte";
 import { getService } from "../services/io";
 import { InvoiceState } from "../models/invoice-model";
 import type { InvoiceType } from "../models/invoice-model";
-import { Tree } from "../models/tree";
-import TreeView from "../widgets/TreeView.svelte";
 import { _ } from "svelte-i18n";
 
 const fetchsize = 80;
@@ -36,9 +34,6 @@ for (let value in InvoiceState) {
   }
 }
 
-const tree = new Tree<string>(null, "root");
-new Tree<string>(tree, "one");
-new Tree<string>(tree, "two");
 
 function patfilter(bill): boolean {
   if (!name) {
@@ -56,7 +51,6 @@ function patfilter(bill): boolean {
 </script>
 
 <template>
-  <TreeView tree="{tree}" labelProvider="{(s) => JSON.stringify(s.payload)}" />
   <div class="flex flex-col lg:flex-row">
     <div
       class="flex-auto my-3 p-1 border-2 border-solid border-blue-400 rounded
