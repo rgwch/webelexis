@@ -70,6 +70,16 @@ export class Tree<T> {
     }
     return new Tree<T>(this, payload, listener)
   }
+
+  /**
+   * Moves a complete subtree into this Tree (must be the same type)
+    */
+  public moveTree(other:Tree<T>){
+    other._parent=this
+    other._next=this.first
+    this._first=other
+  }
+
   setPayload = (p: T) => {
     this._payload = p
   }

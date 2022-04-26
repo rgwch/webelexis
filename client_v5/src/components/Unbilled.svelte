@@ -49,6 +49,7 @@ async function getEncounter(t: Tree<konsdef>): Promise<EncounterModel> {
   return new EncounterModel(t.payload.Konsultation);
 }
 let selectOptions: BillingsFilter = { bSelected: true };
+
 function doSelect() {
   const temp = new Tree<konsdef>(null, null);
   if (selectOptions.bName) {
@@ -58,7 +59,8 @@ function doSelect() {
         node.payload.lastname.match(regexp) ||
         node.payload.firstname.match(regexp)
       ) {
-        new Tree<konsdef>(temp, node.payload);
+        // new Tree<konsdef>(temp, node.payload);
+          temp.moveTree(node)
       }
     }
   }
