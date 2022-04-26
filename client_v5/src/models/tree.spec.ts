@@ -14,6 +14,7 @@ describe('Tree', () => {
     const t3 = new Tree<string>(t1, 'second child')
     const t4 = new Tree<string>(t2, 'grandchild')
     const t5 = t1.insert('first child', stringComparator)
+   
 
     expect(t1.first.payload).toBe(t3.payload)
 
@@ -23,7 +24,9 @@ describe('Tree', () => {
     expect(t3.parent.payload).toBe(t1.payload)
     expect(t4.parent.payload).toBe(t2.payload)
     expect(t4.next).toBeUndefined()
-    expect((await t1.getChildren()).length).toBe(2)
+    const t6 = t1.insert('third child', stringComparator)
+
+    expect((await t1.getChildren()).length).toBe(3)
     expect((await t2.getChildren()).length).toBe(1)
   })
 })
