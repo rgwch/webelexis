@@ -5,7 +5,7 @@
 	import MarginDecorator from './MarginDecorator.svelte';
 </script>
 
-<Meta title="Components/Calendar" component={Calendar} />
+<Meta title="Widgets/Calendar" component={Calendar} />
 
 <div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500">
 	<h1 class="font-bold text-lg">Calendar</h1>

@@ -14,7 +14,7 @@
   };
 </script>
 
-<Meta title="Components/Flexform" component={Flexform} />
+<Meta title="WIdgets/Flexform" component={Flexform} />
 
 <Template let:args>
   <Flexform {...args} />

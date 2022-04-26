@@ -7,7 +7,7 @@
 </script>
 
 <Meta
-	title="Components/DatePicker"
+	title="Widgets/DatePicker"
 	component={DatePicker}
 	argTypes={{ onSelect: { action: 'select' } }}
 />
