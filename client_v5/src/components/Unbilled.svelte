@@ -44,7 +44,7 @@
   }
   let selectOptions: BillingsFilter = { bSelected: true };
   function doSelect() {
-    tSelected = new Tree<konsdef>(null, null);
+    const temp = new Tree<konsdef>(null, null);
     if (selectOptions.bName) {
       for (const node of patients) {
         if (
@@ -55,6 +55,7 @@
         }
       }
     }
+    tSelected=temp
   }
 </script>
 
@@ -146,7 +147,7 @@
       <TreeView
         tree={tSelected}
         labelProvider={(tree) => {
-          return tree?.payload?.id;
+          return "**"+tree?.payload?.id;
         }}
       />
     </div>
