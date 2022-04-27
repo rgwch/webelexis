@@ -18,11 +18,7 @@ const cm = new CaseManager();
 const em = new EncounterManager();
 let patients: Array<Tree<konsdef>> = [];
 
-const tree = new Tree<string>(null, "root");
-new Tree<string>(tree, "one");
-new Tree<string>(tree, "two");
-
-let tSelected = new Tree<konsdef>(null, null);
+let tSelected: Array<Tree<konsdef>>=[]
 const biller = new Billing();
 let selector = false;
 let deselector = false;
@@ -62,7 +58,7 @@ function doSelect() {
       }
     }
   }
-  tSelected = temp;
+  tSelected = temp.getChildren()
 }
 </script>
 
@@ -149,7 +145,7 @@ function doSelect() {
       </h2>
       
       
-        <TreeView tree="{tSelected}" labelProvider="{(n) => n.payload?.lastname+" "+n.payload?.firstname}" />
+        <TreeView trees="{tSelected}" labelProvider="{(n) => n.payload?.lastname+" "+n.payload?.firstname}" />
       
     </div>
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">

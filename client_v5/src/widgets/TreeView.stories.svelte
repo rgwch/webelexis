@@ -11,6 +11,7 @@
     n1.setPayload("eins")
     n2.setPayload("zwei")
   // n1.insert("ch1",comparator)
+  const trees=dummy.getChildren()
 </script>
 
 <Meta title="Widgets/Tree" component={TreeView} />
@@ -21,5 +22,5 @@
 
 <Story
   name="Tree"
-  args={{ tree:dummy,labelProvider: n=>n.payload}}
+  args={{ trees,labelProvider: n=>n.payload}}
 />

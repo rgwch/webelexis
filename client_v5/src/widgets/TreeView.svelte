@@ -1,28 +1,30 @@
 <script lang="ts">
-  import "../../node_modules/@fortawesome/fontawesome-free/js/solid";
-  import "../../node_modules/@fortawesome/fontawesome-free/js/fontawesome";
-
+  import Fa from "svelte-fa";
+  import { faCaretRight, faCaretDown } from "@fortawesome/free-solid-svg-icons";
   import type { Tree } from "../models/tree";
-  export let tree: Tree<any>;
+
+  export let trees: Array<Tree<any>>;
   export let labelProvider: (x: Tree<any>) => string;
-  $: list = tree.getChildren();
-  function toggle(t: Tree<any>) {
-    t.props.open = !t.props.open;
-    
-  }
 </script>
 
 <template>
   <div class="bg-green-200">
-    {#each list as e}
+    {#each trees as e}
       <p>
-        {#if !e.props.open}
-          <i class="fas fa-caret-down"  />
+        <!-- i class={e.props.open ? "fas fa-caret-down" : "fas fa-caret-right"} / -->
+        {#if e.props.open}
+          <Fa icon={faCaretDown} />
         {:else}
-          <i class="fas fa-caret-right" />
+          <Fa icon={faCaretRight} />
         {/if}
-        <span on:click={() => toggle(e)} class="cursor-pointer">{labelProvider(e)}</span>
+        <span
+          on:click={() => (e.props.open = !e.props.open)}
+          class="cursor-pointer">{labelProvider(e)}</span
+        >
       </p>
     {/each}
   </div>
 </template>
+
+<style>
+</style>

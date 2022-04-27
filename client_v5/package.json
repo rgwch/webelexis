@@ -56,6 +56,7 @@
     "socket.io-client": "^2.4.0",
     "svelte": "^3.46.2",
     "svelte-check": "^2.3.0",
+    "svelte-fa": "^2.4.0",
     "svelte-i18n": "^3.3.13",
     "svelte-jester": "^2.1.5",
     "svelte-loader": "^3.1.2",
@@ -70,6 +71,7 @@
   },
   "dependencies": {
     "@feathersjs/feathers": "^4.5.12",
-    "@feathersjs/socketio-client": "^4.5.13"
+    "@feathersjs/socketio-client": "^4.5.13",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1"
   }
 }
