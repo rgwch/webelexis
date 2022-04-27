@@ -1,4 +1,4 @@
-<!-- Only needed for Storybook to render common tyles (since WindiCSS @apply doesn't seem to be supported) -->
+<!-- Only needed for Storybook to render common styles (since WindiCSS @apply doesn't seem to be supported) -->
 <template>
 	<div>
 		<slot />

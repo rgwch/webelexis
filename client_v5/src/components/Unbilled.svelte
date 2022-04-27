@@ -10,11 +10,9 @@ import type { CaseType } from "../models/case-model";
 import { EncounterManager, EncounterModel } from "../models/encounter-model";
 import SelectOptions from "./SelectOptions.svelte";
 import Modal from "./Modal.svelte";
-import type { EncounterType } from "../models/encounter-model";
 import { _ } from "svelte-i18n";
 import "../../node_modules/@fortawesome/fontawesome-free/js/solid";
 import "../../node_modules/@fortawesome/fontawesome-free/js/fontawesome";
-import { setLocale } from "../services/i18n/i18n";
 
 const cm = new CaseManager();
 const em = new EncounterManager();
