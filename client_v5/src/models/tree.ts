@@ -74,22 +74,24 @@ export class Tree<T> {
   /**
    * Moves a complete subtree into this Tree (must be the same type)
     */
-  public acquireTree(other:Tree<T>){
-    const oldparent=other.parent
-    if(oldparent.first==other){
-      oldparent._first=other.next
-    }else{
-      let runner=oldparent.first
-      while(runner){
-        if(runner.next==other){
-          runner._next=other.next
+  public acquireTree(other: Tree<T>) {
+    const oldparent = other.parent
+    if (oldparent) {
+      if (oldparent.first == other) {
+        oldparent._first = other.next
+      } else {
+        let runner = oldparent.first
+        while (runner) {
+          if (runner.next == other) {
+            runner._next = other.next
+          }
+          runner = runner.next
         }
-        runner=runner.next
       }
     }
-    other._parent=this
-    other._next=this.first
-    this._first=other
+    other._parent = this
+    other._next = this.first
+    this._first = other
   }
 
   setPayload = (p: T) => {
