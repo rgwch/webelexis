@@ -14,6 +14,12 @@ describe('Tree', () => {
     const t3 = new Tree<string>(t1, 'second child')
     const t4 = new Tree<string>(t2, 'grandchild')
     const t5 = t1.insert('first child', stringComparator)
+
+    const u1=new Tree<string>(null,"parent of u")
+    const u2 = new Tree<string>(u1, 'first child of u')
+    const u3 = new Tree<string>(u1, 'second child of u')
+    const u4 = new Tree<string>(u2, 'grandchild of u')
+    
    
 
     expect(t1.payload).toEqual("parent")
@@ -29,5 +35,10 @@ describe('Tree', () => {
 
     expect((await t1.getChildren()).length).toBe(3)
     expect((await t2.getChildren()).length).toBe(1)
+
+    expect((await u1.getChildren()).length).toBe(2)
+    t2.acquireTree(u2)
+    expect((await t2.getChildren()).length).toBe(2)
+    expect((await u1.getChildren()).length).toBe(1)
   })
 })

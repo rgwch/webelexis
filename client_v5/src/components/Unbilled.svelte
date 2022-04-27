@@ -60,7 +60,7 @@ function doSelect() {
         node.payload.firstname.match(regexp)
       ) {
         // new Tree<konsdef>(temp, node.payload);
-          temp.moveTree(node)
+          temp.acquireTree(node)
       }
     }
   }
