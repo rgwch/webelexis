@@ -65,7 +65,7 @@ export class CaseManager extends ObjectManager {
     }
     return fall._Patient;
   }
-  public getLabel(obj: CaseType) {
+  public getLabel(obj: CaseType): string {
     const beginDate = DateTime.fromISO(obj.datumvon).toLocaleString();
     let gesetz = obj.gesetz;
     if (!gesetz) {

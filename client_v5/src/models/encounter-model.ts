@@ -49,8 +49,19 @@ export class EncounterManager extends ObjectManager {
     super('konsultation')
   }
 
-  public getLabel(enc: EncounterType) {
+  public getLabel(enc: EncounterType): Promise<string> {
     return new EncounterModel(enc).getLabel()
+  }
+  public getSimpleLabel(enc: EncounterType): string {
+    const dat = DateTime.fromISO(enc.datum)
+    const weekday = weekDaysShort[dat.weekday - 1]
+    return (
+      weekday +
+      ', ' +
+      dat.toFormat(trl('formatting.date')) +
+      ', ' +
+      enc.zeit.substring(0, 2) + ':' + enc.zeit.substring(2, 4)
+    )
   }
   public fetchFor(
     dateFrom: string,

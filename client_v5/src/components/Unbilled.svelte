@@ -8,11 +8,10 @@ import { DateTime } from "luxon";
 import { CaseManager } from "../models/case-model";
 import type { CaseType } from "../models/case-model";
 import { EncounterManager, EncounterModel } from "../models/encounter-model";
+import {Patient} from "../models/patient-model"
 import SelectOptions from "./SelectOptions.svelte";
 import Modal from "./Modal.svelte";
 import { _ } from "svelte-i18n";
-import "../../node_modules/@fortawesome/fontawesome-free/js/solid";
-import "../../node_modules/@fortawesome/fontawesome-free/js/fontawesome";
 
 const cm = new CaseManager();
 const em = new EncounterManager();
@@ -28,6 +27,15 @@ biller.getBillables().then((result) => {
 function toggle(t: Tree<konsdef>) {
   t.props.open = !t.props.open;
   patients = patients;
+}
+
+const labelProvider: (x: Tree<any>) => string=(node:Tree<any>)=>{
+  switch(node.props.type){
+    case "p": return Patient.getLabel(node.payload.Patient)
+    case "c": return cm.getLabel(node.payload.Fall)
+    case "e": return em.getSimpleLabel(node.payload.Konsultation)
+    default: throw new Error("unknown node def "+JSON.stringify(node.props))
+  }
 }
 
 async function getFall(t: Tree<konsdef>): Promise<CaseType> {
@@ -145,7 +153,7 @@ function doSelect() {
       </h2>
       
       
-        <TreeView trees="{tSelected}" labelProvider="{(n) => n.payload?.lastname+" "+n.payload?.firstname}" />
+        <TreeView trees={tSelected} labelProvider={labelProvider} />
       
     </div>
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">

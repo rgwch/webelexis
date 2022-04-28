@@ -54,18 +54,21 @@ export class Billing {
         a.patientid.localeCompare(b.patientid),
       )
       patNode.props.open = false
+      patNode.props.type="p"
       for (let q of unbilled) {
         if (q.patientid === patNode.payload.patientid) {
           const caseNode = patNode.insert(q, (a, b) =>
             a.fallid.localeCompare(b.fallid),
           )
           caseNode.props.open = false
+          caseNode.props.type="c"
           for (let l of unbilled) {
             if (l.fallid === caseNode.payload.fallid) {
               const encNode = caseNode.insert(l, (a, b) =>
                 a.konsid.localeCompare(b.konsid),
               )
               encNode.props.open = false
+              encNode.props.type="e"
             }
           }
         }
