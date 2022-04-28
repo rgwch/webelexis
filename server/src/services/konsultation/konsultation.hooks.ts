@@ -209,7 +209,7 @@ const unbilled = async (ctx) => {
       .andWhere("behandlungen.deleted", "0")
       .select("faelle.patientid", "behandlungen.id as konsid", "faelle.id as fallid",
         "faelle.datumvon as falldatum", "faelle.bezeichnung as falltitel", "behandlungen.datum as konsdatum",
-        "kontakt.bezeichnung1 as lastname", "kontakt.bezeichnung2 as firstname")
+        "kontakt.bezeichnung1 as lastname", "kontakt.bezeichnung2 as firstname", "kontakt.geburtsdatum as birthdate")
       .orderBy([{ column: 'lastname', order: 'desc' }, { column: 'firstname', order: 'desc' }, { column: 'konsdatum', order: "desc" }])
     const result = await query
     ctx.result = result

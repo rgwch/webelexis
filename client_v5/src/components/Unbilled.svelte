@@ -3,12 +3,13 @@ import { Billing } from "../services/billing";
 import type { BillingsFilter } from "../services/billing";
 import type { konsdef } from "../services/billing";
 import { Tree } from "../models/tree";
+import type { ITreeListener } from "../models/tree";
 import TreeView from "../widgets/TreeView.svelte";
 import { DateTime } from "luxon";
 import { CaseManager } from "../models/case-model";
 import type { CaseType } from "../models/case-model";
 import { EncounterManager, EncounterModel } from "../models/encounter-model";
-import {Patient} from "../models/patient-model"
+import { Patient } from "../models/patient-model";
 import SelectOptions from "./SelectOptions.svelte";
 import Modal from "./Modal.svelte";
 import { _ } from "svelte-i18n";
@@ -17,7 +18,7 @@ const cm = new CaseManager();
 const em = new EncounterManager();
 let patients: Array<Tree<konsdef>> = [];
 
-let tSelected: Array<Tree<konsdef>>=[]
+let tSelected: Array<Tree<konsdef>> = [];
 const biller = new Billing();
 let selector = false;
 let deselector = false;
@@ -29,14 +30,28 @@ function toggle(t: Tree<konsdef>) {
   patients = patients;
 }
 
-const labelProvider: (x: Tree<any>) => string=(node:Tree<any>)=>{
-  switch(node.props.type){
+const labelProvider: (x: Tree<any>) => string = (node: Tree<any>) => {
+  switch (node.props.type) {
+    /*
     case "p": return Patient.getLabel(node.payload.Patient)
     case "c": return cm.getLabel(node.payload.Fall)
     case "e": return em.getSimpleLabel(node.payload.Konsultation)
-    default: throw new Error("unknown node def "+JSON.stringify(node.props))
+    */
+    case "p":
+      return node.payload.lastname + " " + node.payload.firstname+", "+DateTime.fromISO(node.payload.birthdate).toLocaleString();
+    case "c":
+      return (
+        "Fall vom " + DateTime.fromISO(node.payload.falldatum).toLocaleString()+"("+node.payload.falltitel+")"
+      );
+    case "e":
+      return (
+        "Konsultation vom " +
+        DateTime.fromISO(node.payload.konsdatum).toLocaleString()
+      );
+    default:
+      throw new Error("unknown node def " + JSON.stringify(node.props));
   }
-}
+};
 
 async function getFall(t: Tree<konsdef>): Promise<CaseType> {
   if (!t.payload.Fall) {
@@ -62,11 +77,11 @@ function doSelect() {
         node.payload.firstname.match(regexp)
       ) {
         // new Tree<konsdef>(temp, node.payload);
-          temp.acquireTree(node)
+        temp.acquireTree(node);
       }
     }
   }
-  tSelected = temp.getChildren()
+  tSelected = temp.getChildren();
 }
 </script>
 
@@ -103,7 +118,8 @@ function doSelect() {
             selector = true;
           }}">{$_("actions.select")}</span>
       </h2>
-      <ul class="max-h-[80vh] overflow-auto">
+      <TreeView trees={patients} {labelProvider}></TreeView>
+      <!-- ul class="max-h-[80vh] overflow-auto">
         {#each patients as p}
           <li on:click="{() => toggle(p)}" class="cursor-pointer">
             {p.payload.lastname}
@@ -140,7 +156,7 @@ function doSelect() {
             {/if}
           </li>
         {/each}
-      </ul>
+      </ul -->
     </div>
 
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
@@ -151,10 +167,8 @@ function doSelect() {
             deselector = true;
           }}">{$_("actions.deselect")}</span>
       </h2>
-      
-      
-        <TreeView trees={tSelected} labelProvider={labelProvider} />
-      
+
+      <TreeView trees="{tSelected}" labelProvider="{labelProvider}" />
     </div>
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
       <h2 class="mx-3">{$_("titles.detail")}</h2>

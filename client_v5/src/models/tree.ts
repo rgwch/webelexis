@@ -19,7 +19,7 @@ export class Tree<T> {
   /**
    * @param parent
    * @param payload
-   * @param listener - If a tree has a listener, it becomes a LazyTree, i.e. loads children only when getChildren() is called.
+   * @param listener - If a tree has a listener, it becomes a LazyTree, i.e. loads children only when fetch() is called.
    */
   constructor(
     private _parent: Tree<T>,

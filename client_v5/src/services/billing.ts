@@ -3,6 +3,7 @@ import { DiagnoseManager, DiagnoseModel } from '../models/diagnose-model'
 import { getService } from './io'
 import { EncounterModel, EncounterManager } from '../models/encounter-model'
 import type { EncounterType } from '../models/encounter-model'
+import type { ITreeListener } from "../models/tree";
 import { Tree } from '../models/tree'
 import { BillingModel, BillingsManager } from '../models/billings-model'
 import { KontaktManager } from '../models/kontakt-model'
@@ -19,6 +20,7 @@ export type konsdef = {
   konsdatum: string
   firstname: string
   lastname: string
+  birthdate: string
   Patient?: any
   Fall?: any
   Konsultation?: any
@@ -44,31 +46,31 @@ export class Billing {
    * fetch a Tree of all unbilled encounters. One Node per patient, one case-node per case, containing all encounters for that case.
    * @returns 
    */
-  async getBillables(): Promise<Tree<konsdef>> {
+  async getBillables(listener?: ITreeListener): Promise<Tree<konsdef>> {
     const konsService = getService('konsultation')
     const patService = getService('patient')
     const unbilled: Array<konsdef> = await konsService.find({ query: { id: 'unbilled' } })
     const ret = new Tree<konsdef>(null, null)
     for (let p of unbilled) {
       const patNode = ret.insert(p, (a, b) =>
-        a.patientid.localeCompare(b.patientid),
+        a.patientid.localeCompare(b.patientid), listener
       )
       patNode.props.open = false
-      patNode.props.type="p"
+      patNode.props.type = "p"
       for (let q of unbilled) {
         if (q.patientid === patNode.payload.patientid) {
           const caseNode = patNode.insert(q, (a, b) =>
-            a.fallid.localeCompare(b.fallid),
+            a.fallid.localeCompare(b.fallid), listener
           )
           caseNode.props.open = false
-          caseNode.props.type="c"
+          caseNode.props.type = "c"
           for (let l of unbilled) {
             if (l.fallid === caseNode.payload.fallid) {
               const encNode = caseNode.insert(l, (a, b) =>
-                a.konsid.localeCompare(b.konsid),
+                a.konsid.localeCompare(b.konsid), listener
               )
               encNode.props.open = false
-              encNode.props.type="e"
+              encNode.props.type = "e"
             }
           }
         }
