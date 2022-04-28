@@ -8,19 +8,25 @@
 </script>
 
 <template>
-  <div class="bg-green-200">
+  <div class="bg-green-200 static">
     {#each trees as e}
-      <p>
-        <!-- i class={e.props.open ? "fas fa-caret-down" : "fas fa-caret-right"} / -->
+      <p class="my-0">
         {#if e.props.open}
           <Fa icon={faCaretDown} />
+          <span
+            on:click={() => (e.props.open = !e.props.open)}
+            class="cursor-pointer">{labelProvider(e)}</span
+          >
+          <div class="relative left-2">
+            <svelte:self trees={e.getChildren()} {labelProvider} />
+          </div>
         {:else}
           <Fa icon={faCaretRight} />
+          <span
+            on:click={() => (e.props.open = !e.props.open)}
+            class="cursor-pointer">{labelProvider(e)}</span
+          >
         {/if}
-        <span
-          on:click={() => (e.props.open = !e.props.open)}
-          class="cursor-pointer">{labelProvider(e)}</span
-        >
       </p>
     {/each}
   </div>
