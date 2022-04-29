@@ -1,33 +1,3 @@
-<style>
-.relative {
-  position: relative;
-}
-.permanent {
-  width: 370px;
-}
-.popup {
-  position: absolute;
-  top: 1.5em;
-  left: 0px;
-  border: 1px solid green;
-  display: inline-block;
-  background: green;
-}
-
-.month-name {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 6px 0;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
-
 <script lang="ts">
 import { createEventDispatcher, onMount } from "svelte";
 import Calendar from "./Calendar.svelte";
@@ -143,8 +113,39 @@ onMount(() => {
         <Calendar
           bind:date="{current}"
           isAllowed="{isAllowed}"
-          on:select="{dateChanged}" />
+          on:select="{dateChanged}"
+        />
       </div>
     {/if}
   </div>
 </template>
+
+<style>
+.relative {
+  position: relative;
+}
+.permanent {
+  width: 370px;
+}
+.popup {
+  position: absolute;
+  top: 1.5em;
+  left: 0px;
+  border: 1px solid green;
+  display: inline-block;
+  background: green;
+}
+
+.month-name {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 6px 0;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

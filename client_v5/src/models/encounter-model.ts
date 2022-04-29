@@ -191,7 +191,8 @@ export class EncounterModel {
       attributes: [
         {
           attribute: "datum",
-          label: trl('encounter.date')
+          label: trl('encounter.date'),
+          datatype: "date"
         }
 
       ]

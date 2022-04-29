@@ -1,26 +1,35 @@
 <script>
-  import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
-  import { _ } from "svelte-i18n";
-  import Flexform from "./Flexform.svelte";
+import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
+import { _ } from "svelte-i18n";
+import Flexform from "./Flexform.svelte";
 
-  const dummy = {
-    title: () => "Testform",
-    attributes: [
-      {
-        attribute: "textfield",
-        label: $_("demotest"),
-      },
-    ],
-  };
+const dummy = {
+  title: () => "Testform",
+  attributes: [
+    {
+      attribute: "textfield",
+      label: $_("demotest"),
+      datatype: "string",
+    },
+    {
+      attribute: "date",
+      datatype: "date",
+      label: "Date",
+    },
+  ],
+};
 </script>
 
-<Meta title="WIdgets/Flexform" component={Flexform} />
+<Meta title="Widgets/Flexform" component="{Flexform}" />
 
 <Template let:args>
   <Flexform {...args} />
 </Template>
 
 <Story
-  name="Rechnungen"
-  args={{ ff_cfg: dummy, entity: { textfield: "Test" } }}
+  name="Lockable"
+  args="{{
+    ff_cfg: dummy,
+    entity: { textfield: 'Test', date: '20220412', lockable: true },
+  }}"
 />

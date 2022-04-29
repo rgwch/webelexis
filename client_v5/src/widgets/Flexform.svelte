@@ -1,21 +1,22 @@
 <script lang="ts">
-import { onMount } from "svelte";
 import type { FlexformConfig } from "./flexformtypes";
 import { FlexFormValueConverter } from "./flexformtypes";
+import Fa from "svelte-fa";
+import {
+  faSave,
+  faLockOpen,
+  faLock,
+  faUndo,
+} from "@fortawesome/free-solid-svg-icons";
 import LineInput from "./LineInput.svelte";
 import TextInput from "./TextInput.svelte";
 import DateInput from "./DateInput.svelte";
 export let ff_cfg: FlexformConfig;
 export let entity: any;
-export let lockable: boolean = false;
-let isLocked: boolean;
+export let lockable: boolean = true;
+let isLocked: boolean = lockable;
 let isDirty: boolean = false;
-let original: any;
-const converter = new FlexFormValueConverter();
-
-onMount(() => {
-  isLocked = lockable;
-});
+let original: any = Object.assign({}, entity);
 
 // called whenever a new entity is loaded
 $: {
@@ -29,21 +30,6 @@ function getTitle() {
     return ff_cfg.title;
   } else {
     return ff_cfg.title();
-  }
-}
-
-function displayType(attrib) {
-  const type = attrib.datatype || "string";
-  if (typeof type == "string") {
-    if (type == "string") {
-      return "line";
-    } else if (type == "text") {
-      return "field";
-    }
-  } else if (type.toForm) {
-    return "line";
-  } else {
-    return "list";
   }
 }
 
@@ -81,21 +67,24 @@ function undo() {
   entity = Object.assign({}, original);
   isDirty = false;
 }
+function changed(field, value) {
+  isDirty = true;
+}
 </script>
 
 <template>
   {#if lockable}
-    <div class="float-right">
+    <div class="float-right" on:click="{lock}">
       <!-- span class="detailcaption">${ff_cfg.title ? ff_cfg.title() : "Auswahl"}</span -->
       {#if !isLocked}
-        <i class="fa fa-lock-open" style="color:red" on:click="{lock}"></i>
+        <Fa icon="{faLockOpen}" class="text-red-500" on:click="{lock}" />
       {/if}
       {#if isLocked}
-        <i class="fa fa-lock" on:click="{lock}"></i>
+        <Fa icon="{faLock}" on:click="{lock}" />
       {/if}
       {#if isDirty}
-        <i class="fa fa-save" on:click="{save}"></i>
-        <i class="fa fa-undo" on:click="{undo}"></i>
+        <Fa icon="{faSave}" on:click="{save}" />
+        <Fa icon="{faUndo}" on:click="{undo}" />
       {/if}
     </div>
   {/if}
@@ -107,6 +96,8 @@ function undo() {
             <LineInput
               bind:value="{entity[attr.attribute]}"
               label="{attr.label}"
+              disabled="{isLocked}"
+              on:textChanged="{(value) => changed(attr.attribute, value)}"
             />
           {:else if attr.datatype == "date"}
             <DateInput
