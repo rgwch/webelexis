@@ -15,7 +15,7 @@ import PatientDetail from "./PatientDetail.svelte";
 import FallDetail from "./FallDetail.svelte"
 import EncounterDetail from "./EncounterDetail.svelte"
 import SelectOptions from "./SelectOptions.svelte";
-import Modal from "./Modal.svelte";
+import Modal from "../widgets/Modal.svelte";
 import { _ } from "svelte-i18n";
 
 const cm = new CaseManager();

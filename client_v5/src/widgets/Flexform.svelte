@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+  import {DateTime} from 'luxon'
   export interface FlexformConfig {
     title: () => string; // Title for the Form
     colcss?: string; // CSS class for the columns of the form.
@@ -58,6 +59,9 @@
               return value;
             case "number":
               return value.toString();
+            case 'date':
+              return DateTime.fromISO(value).toLocaleString()
+
           }
         } else {
           const func = attr.datatype.toForm;
@@ -83,6 +87,8 @@
               return value;
             case "number":
               return parseFloat(value);
+            case "date":
+              return DateTime.fromFormat(value, "DD")  
           }
         } else {
           const func = attr.datatype.toData;
