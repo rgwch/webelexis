@@ -9,6 +9,8 @@ import type { KontaktType } from './kontakt-model'
 import { StickerManager } from './stickers-model'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
+import { ObjectManager } from './object-manager'
+import type { FlexformConfig } from '../widgets/Flexform.svelte'
 
 /**
  * An Elexis "Patient"
@@ -19,8 +21,10 @@ export interface PatientType extends KontaktType {
 
 let trl
 const unregister = _.subscribe((res) => (trl = res))
-export class PatientManager {
-  constructor() { }
+export class PatientManager extends ObjectManager{
+  constructor() { 
+    super("patient")
+  }
 
   /**
    * create a standardized human readable 'concerning' line from patient data
@@ -95,7 +99,7 @@ export class Patient {
   /**
    * create a field definition for detail display in FlexForm or in a new item dialog.
    */
-  public static getDefinition() {
+  public static getDefinition() :FlexformConfig{
     return {
       title: () => '', // ()=>Patient.getTitle(),
       compact: true,

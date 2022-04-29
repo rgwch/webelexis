@@ -9,8 +9,11 @@ import { ObjectManager } from "./object-manager";
 import { getService } from "../services/io";
 import type { ServiceType } from './../services/io';
 import { DateTime } from 'luxon'
+import { _ } from 'svelte-i18n'
 import type { PatientType } from './patient-model';
-
+import type { FlexformConfig } from "../widgets/Flexform.svelte";
+let trl
+const unregister = _.subscribe((res) => (trl = res))
 /**
  * An Elexis "Fall"
  */
@@ -112,6 +115,36 @@ export class CaseModel {
       }
     } else {
       delete this.obj.betriebsnummer
+    }
+  }
+  public static getDefinition(): FlexformConfig {
+    return {
+      title: () => "",
+      compact: true,
+      attributes: [
+        {
+          attribute: "datumvon",
+          label: trl('case.begindate'),
+          datatype: "date",
+          sizehint: 6
+        },
+        {
+          attribute: "datumbis",
+          label: trl('case.enddate'),
+          datatype: "date",
+          sizehint: 6
+        },
+        {
+          attribute: "grund",
+          label: trl("case.reason"),
+          datatype: "string",
+        }, {
+          attribute: "bezeichnung",
+          label: trl('case.description'),
+          datatype: "string"
+        }
+
+      ],
     }
   }
 }

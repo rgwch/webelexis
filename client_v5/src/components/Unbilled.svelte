@@ -8,17 +8,23 @@ import TreeView from "../widgets/TreeView.svelte";
 import { DateTime } from "luxon";
 import { CaseManager } from "../models/case-model";
 import type { CaseType } from "../models/case-model";
-import { EncounterManager, EncounterModel } from "../models/encounter-model";
-import { Patient } from "../models/patient-model";
+import { EncounterManager } from "../models/encounter-model";
+import type { EncounterType } from "../models/encounter-model";
+import { Patient, PatientManager } from "../models/patient-model";
+import PatientDetail from "./PatientDetail.svelte";
+import FallDetail from "./FallDetail.svelte"
+import EncounterDetail from "./EncounterDetail.svelte"
 import SelectOptions from "./SelectOptions.svelte";
 import Modal from "./Modal.svelte";
 import { _ } from "svelte-i18n";
 
 const cm = new CaseManager();
 const em = new EncounterManager();
+const pm = new PatientManager();
 let patients: Array<Tree<konsdef>> = [];
 
 let tSelected: Array<Tree<konsdef>> = [];
+let selectedElement: any;
 const biller = new Billing();
 let selector = false;
 let deselector = false;
@@ -38,10 +44,20 @@ const labelProvider: (x: Tree<any>) => string = (node: Tree<any>) => {
     case "e": return em.getSimpleLabel(node.payload.Konsultation)
     */
     case "p":
-      return node.payload.lastname + " " + node.payload.firstname+", "+DateTime.fromISO(node.payload.birthdate).toLocaleString();
+      return (
+        node.payload.lastname +
+        " " +
+        node.payload.firstname +
+        ", " +
+        DateTime.fromISO(node.payload.birthdate).toLocaleString()
+      );
     case "c":
       return (
-        "Fall vom " + DateTime.fromISO(node.payload.falldatum).toLocaleString()+"("+node.payload.falltitel+")"
+        "Fall vom " +
+        DateTime.fromISO(node.payload.falldatum).toLocaleString() +
+        "(" +
+        node.payload.falltitel +
+        ")"
       );
     case "e":
       return (
@@ -53,17 +69,39 @@ const labelProvider: (x: Tree<any>) => string = (node: Tree<any>) => {
   }
 };
 
+async function detailDisplay(node) {
+  switch (node.props.type) {
+    case "p":
+      selectedElement = await getPatient(node);
+      break;
+    case "c":
+      selectedElement = await getFall(node);
+      break;
+    case "e":
+      selectedElement = await getEncounter(node);
+      break;
+    default:
+      throw new Error("bad konsdef");
+  }
+  console.log("+" + JSON.stringify(selectedElement));
+}
+async function getPatient(t: Tree<konsdef>): Promise<Patient> {
+  if (!t.payload.Patient) {
+    t.payload.Patient = await pm.fetch(t.payload.patientid);
+  }
+  return t.payload.Patient;
+}
 async function getFall(t: Tree<konsdef>): Promise<CaseType> {
   if (!t.payload.Fall) {
     t.payload.Fall = await cm.fetch(t.payload.fallid);
   }
   return t.payload.Fall;
 }
-async function getEncounter(t: Tree<konsdef>): Promise<EncounterModel> {
+async function getEncounter(t: Tree<konsdef>): Promise<EncounterType> {
   if (!t.payload.Konsultation) {
     t.payload.Konsultation = await em.fetch(t.payload.konsid);
   }
-  return new EncounterModel(t.payload.Konsultation);
+  return t.payload.Konsultation;
 }
 let selectOptions: BillingsFilter = { bSelected: true };
 
@@ -118,7 +156,10 @@ function doSelect() {
             selector = true;
           }}">{$_("actions.select")}</span>
       </h2>
-      <TreeView trees={patients} {labelProvider}></TreeView>
+      <TreeView
+        trees="{patients}"
+        labelProvider="{labelProvider}"
+        on:selected="{(event) => detailDisplay(event.detail)}" />
       <!-- ul class="max-h-[80vh] overflow-auto">
         {#each patients as p}
           <li on:click="{() => toggle(p)}" class="cursor-pointer">
@@ -168,10 +209,20 @@ function doSelect() {
           }}">{$_("actions.deselect")}</span>
       </h2>
 
-      <TreeView trees="{tSelected}" labelProvider="{labelProvider}" />
+      <TreeView
+        trees="{tSelected}"
+        labelProvider="{labelProvider}"
+        on:selected="{(event) => detailDisplay(event.detail)}" />
     </div>
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
       <h2 class="mx-3">{$_("titles.detail")}</h2>
+      {#if selectedElement?.geburtsdatum}
+        <PatientDetail entity="{selectedElement}" />
+      {:else if selectedElement?.patientid}
+        <FallDetail entity="{selectedElement}" />
+      {:else if selectedElement?.fallid}
+        <EncounterDetail entity="{selectedElement}" />
+      {/if}
     </div>
   </div>
 </template>

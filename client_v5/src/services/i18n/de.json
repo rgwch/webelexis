@@ -67,6 +67,12 @@
     "we": "Mi",
     "wed": "Mittwoch"
   },
+  "case":{
+    "begindate": "Anfangsdatum",
+    "enddate": "Enddatum",
+    "reason": "Grund",
+    "description": "Bezeichnung"
+  },
   "contact": {
     "birthdate": "Geburtsdatum",
     "email": "E-Mail",
@@ -83,6 +89,9 @@
     "date": "dd.LL.yyyy",
     "dbdate": "yyyyLLdd",
     "longdate": "ccc, dd.LL.yyyy"
+  },
+  "encounter":{
+    "date": "Datum"
   },
   "general": {
     "loading": "lese..."

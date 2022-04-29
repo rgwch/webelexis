@@ -18,6 +18,7 @@ import type { BillingModel } from './billings-model'
 import { BillingsManager } from './billings-model'
 import { getService } from '../services/io'
 import { Money } from './money'
+import type { FlexformConfig } from '../widgets/Flexform.svelte'
 
 let trl
 const un = _.subscribe((res) => {
@@ -181,5 +182,19 @@ export class EncounterModel {
   public async setInvoice(invoideId: string) {
     this.enc.rechnungsid = invoideId
     await this.em.save(this.enc)
+  }
+
+  public static getDefinition(): FlexformConfig {
+    return {
+      title: () => "",
+      compact: true,
+      attributes: [
+        {
+          attribute: "datum",
+          label: trl('encounter.date')
+        }
+
+      ]
+    }
   }
 }
