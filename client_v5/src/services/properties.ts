@@ -4,6 +4,9 @@ export default {
     production: "isproduction",
 
     server: "http://localhost:3030",
-    mandator:"gerry"
+    mandator:"gerry",
+    volatile:{
+        
+    }
 }
 
