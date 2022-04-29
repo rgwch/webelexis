@@ -5,15 +5,24 @@
 
   export let trees: Array<Tree<any>>;
   export let labelProvider: (x: Tree<any>) => string;
-  function handleDragStart(event){
-
+  function handleDragStart(event, index:number){
+    event.dataTransfer.setData('text/plain',index.toString())
+  }
+  function dropped(event){
+    console.log(event.dataTransfer.getData("text/plain"))
+  }
+  function dragenter(event){
+    console.log("enter")
+  }
+  function dragleave(event){
+    console.log("leave")
   }
 </script>
 
 <template>
-  <div class="bg-green-200 static overflow-x-hidden overflow-y-auto">
-    {#each trees as e}
-      <p class="my-1 px-2 my-1" draggable="true" on:dragstart={handleDragStart}>
+  <div class="bg-green-200 static overflow-x-hidden overflow-y-auto" on:drop|preventDefault={dropped} on:dragenter|preventDefault={dragenter} on:dragleave|preventDefault={dragleave}>
+    {#each trees as e, index}
+      <p class="my-1 px-2 my-1" draggable="true" on:dragstart={(event)=>handleDragStart(event,index)}>
         <Fa class="mx-2 cursor-move" icon={faGripVertical} />
         {#if e.props.open}
           <Fa icon={faCaretDown} />
