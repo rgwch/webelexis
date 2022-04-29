@@ -1,6 +1,3 @@
-<style>
-</style>
-
 <script lang="ts">
 import DatePicker from "./DatePicker.svelte";
 import { DateTime } from "luxon";
@@ -10,8 +7,8 @@ const dispatch = createEventDispatcher();
 /**
  * Predefined value. Should be a Javascript-Date compliant formatted string
  */
-export let dateString: string = "1981-03-09";
-let current: Date = new Date(dateString);
+export let dateString: string = "19810309";
+let current: Date = DateTime.fromISO(dateString).toJSDate();
 /**
  * Optional label
  */
@@ -26,7 +23,7 @@ export let id: string = Math.random()
  */
 export let disabled: boolean = false;
 function changed() {
-  const ndate = DateTime.fromJSDate(current).toFormat("yyyy-LL-dd");
+  const ndate = DateTime.fromJSDate(current).toFormat("yyyyLLdd");
   //console.log('date changed from ',dateString," to ", ndate);
   dateString = ndate;
   dispatch("dateChanged");
@@ -45,6 +42,10 @@ A label and a DatePicker
       current="{current}"
       on:select="{changed}"
       id="{id}"
-      disabled="{disabled}" />
+      disabled="{disabled}"
+    />
   </div>
 </template>
+
+<style>
+</style>

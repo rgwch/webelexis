@@ -10,6 +10,7 @@ export interface FlexformConfig {
     | "date"
     | "string"
     | "text"
+    | "number"
     | { toForm: (x: any) => string; toData: (x: string) => any }
     | FlexformListRenderer;
     // type of the data. Either "string" or an object containing a function to

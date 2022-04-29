@@ -3,6 +3,8 @@ import { onMount } from "svelte";
 import type { FlexformConfig } from "./flexformtypes";
 import { FlexFormValueConverter } from "./flexformtypes";
 import LineInput from "./LineInput.svelte";
+import TextInput from "./TextInput.svelte";
+import DateInput from "./DateInput.svelte";
 export let ff_cfg: FlexformConfig;
 export let entity: any;
 export let lockable: boolean = false;
@@ -101,41 +103,32 @@ function undo() {
     <div>
       {#each ff_cfg.attributes as attr}
         <div>
-          {#if displayType(attr) == "line"}
-            <LineInput bind:value="{entity.attribute}" label="{attr.label}" />
-            <!-- div >
-              {#if !ff_cfg.compact}
-                <label for={attr.attribute}
-                  >{attr.label || attr.attribute}</label
-                >
-              {/if}
-              <input
-                type="text"
-                class="form-control"
-                readonly={isLocked}
-                placeholder="${attr.label}"
-                id={attr.attribute}
-                bind:value={entity[attr.attribute]}
-                on:blur={() => validateField(attr)}
-              />
-              {#if attr.hasErrors}
-                <span class="error" style="font-size: small;color:red"
-                  >{attr.errmsg}</span
-                >
-              {/if}
-            </div -->
-          {:else if displayType(attr) == "field"}
-            <div>
-              {#if !ff_cfg.compact}
-                <label for="{attr.attribute}">{attr.label}</label>
-              {/if}
-              <textarea
-                id="{attr.attribute}"
-                bind:value="{entity[attr.attribute]}"
-                readonly="{isLocked}"
-                style="width:100%;height:5em;"
-                on:blur="{() => validateField(attr)}"></textarea>
-            </div>
+          {#if attr.datatype == "string"}
+            <LineInput
+              bind:value="{entity[attr.attribute]}"
+              label="{attr.label}"
+            />
+          {:else if attr.datatype == "date"}
+            <DateInput
+              dateString="{entity[attr.attribute]}"
+              label="{attr.label}"
+            />
+          {:else if attr.datatype == "number"}
+            <LineInput
+              bind:value="{attr.attribute}"
+              label="{attr.label}"
+              validate="{(n) => !isNaN(n)}"
+              errmsg="numbers only"
+            />
+          {:else if attr.datatype == "text"}
+            {#if !ff_cfg.compact}
+              <label for="{attr.attribute}">{attr.label}</label>
+            {/if}
+            <TextInput
+              id="{attr.attribute}"
+              value="{entity[attr.attribute]}"
+              readonly="{isLocked}"
+            />
           {/if}
         </div>
       {/each}

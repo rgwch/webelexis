@@ -34,8 +34,14 @@ import Calendar from "./Calendar.svelte";
 import { monthNames } from "../models/timedate";
 import { DateTime } from "luxon";
 import { _ } from "svelte-i18n";
-import "../../node_modules/@fortawesome/fontawesome-free/js/solid";
-import "../../node_modules/@fortawesome/fontawesome-free/js/fontawesome";
+import Fa from "svelte-fa";
+import {
+  faForward,
+  faBackward,
+  faChevronLeft,
+  faChevronRight,
+  faCalendarDay,
+} from "@fortawesome/free-solid-svg-icons";
 const dispatch = createEventDispatcher();
 
 /**
@@ -112,13 +118,13 @@ onMount(() => {
         <div class="month-name">
           <div class="center">
             <span class="mx-4" on:click="{prev_year}">
-              <i class="fa fa-backward"></i>
+              <Fa icon="{faBackward}" />
             </span>
             <span class="mx-4" on:click="{prev_month}">
-              <i class="fa fa-chevron-left"></i>
+              <Fa icon="{faChevronLeft}" />
             </span>
             <span on:click="{today}">
-              <i class="fa fa-calendar-day"></i>
+              <Fa icon="{faCalendarDay}" />
             </span>
           </div>
           <div class="center">
@@ -127,10 +133,10 @@ onMount(() => {
           </div>
           <div class="center">
             <span class="mx-4" on:click="{next_month}">
-              <i class="fa fa-chevron-right"></i>
+              <Fa icon="{faChevronRight}" />
             </span>
             <span class="mx-4" on:click="{next_year}">
-              <i class="fa fa-forward"></i>
+              <Fa icon="{faForward}" />
             </span>
           </div>
         </div>

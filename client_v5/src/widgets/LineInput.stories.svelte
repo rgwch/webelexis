@@ -8,15 +8,16 @@ const validate = (val) => val.length > 2;
 </script>
 
 <div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500">
-  <h1 class="font-bold text-lg">DateInput</h1>
-  <p class="mb-5">A LineInput.</p>
+  <h1 class="font-bold text-lg">LineInput</h1>
+  <p class="mb-5">Enter a line of text.</p>
   <p>Sends 'textChanged' event if new Text entered</p>
 </div>
 
 <Meta
   title="Form-Inputs/LineInput"
   component="{LineInput}"
-  argTypes="{{ onTextChanged: { action: 'textChanged' } }}" />
+  argTypes="{{ onTextChanged: { action: 'textChanged' } }}"
+/>
 
 <Template let:args>
   <MarginDecorator>
@@ -31,8 +32,10 @@ const validate = (val) => val.length > 2;
     label: 'Enter less than 3 chars for error',
     validate,
     errmsg: 'Must enter 3 or more chars',
-  }}" />
+  }}"
+/>
 
 <Story
   name="disabled"
-  args="{{ value: 'disable', label: "can't change", disabled: true }}" />
+  args="{{ value: 'disable', label: "can't change", disabled: true }}"
+/>

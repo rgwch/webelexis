@@ -124,10 +124,7 @@ export class Patient {
         {
           attribute: 'geburtsdatum',
           label: trl('contact.birthdate'),
-          datatype: {
-            toForm: (x) => Patient.dateModelToView(x),
-            toData: (x) => Patient.viewToDateModel(x),
-          },
+          datatype: "date",
           validation: Patient.checkdate,
           validationMessage: trl('validation.invalidDate'),
           sizehint: 2,
