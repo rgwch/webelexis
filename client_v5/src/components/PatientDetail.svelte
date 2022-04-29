@@ -4,6 +4,7 @@ import type { FlexformConfig } from "../widgets/Flexform.svelte";
 import Form from "../widgets/Flexform.svelte";
 export let entity;
 const form: FlexformConfig = Patient.getDefinition();
+form.compact = false;
 </script>
 
 <template>
