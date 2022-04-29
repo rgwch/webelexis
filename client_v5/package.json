@@ -20,7 +20,7 @@
     "@babel/preset-env": "^7.16.8",
     "@feathersjs/authentication-client": "^4.5.13",
     "@feathersjs/client": "^4.5.13",
-    "@fortawesome/fontawesome-free": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
@@ -72,7 +72,6 @@
   },
   "dependencies": {
     "@feathersjs/feathers": "^4.5.12",
-    "@feathersjs/socketio-client": "^4.5.13",
-    "@fortawesome/free-solid-svg-icons": "^6.1.1"
+    "@feathersjs/socketio-client": "^4.5.13"
   }
 }

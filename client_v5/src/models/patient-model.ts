@@ -10,7 +10,8 @@ import { StickerManager } from './stickers-model'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { ObjectManager } from './object-manager'
-import type { FlexformConfig } from '../widgets/Flexform.svelte'
+import type { FlexformConfig } from '../widgets/flexformtypes'
+
 
 /**
  * An Elexis "Patient"
@@ -21,8 +22,8 @@ export interface PatientType extends KontaktType {
 
 let trl
 const unregister = _.subscribe((res) => (trl = res))
-export class PatientManager extends ObjectManager{
-  constructor() { 
+export class PatientManager extends ObjectManager {
+  constructor() {
     super("patient")
   }
 
@@ -99,7 +100,7 @@ export class Patient {
   /**
    * create a field definition for detail display in FlexForm or in a new item dialog.
    */
-  public static getDefinition() :FlexformConfig{
+  public static getDefinition(): FlexformConfig {
     return {
       title: () => '', // ()=>Patient.getTitle(),
       compact: true,

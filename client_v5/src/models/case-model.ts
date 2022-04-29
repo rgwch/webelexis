@@ -11,7 +11,7 @@ import type { ServiceType } from './../services/io';
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import type { PatientType } from './patient-model';
-import type { FlexformConfig } from "../widgets/Flexform.svelte";
+import type { FlexformConfig } from "../widgets/flexformtypes";
 let trl
 const unregister = _.subscribe((res) => (trl = res))
 /**
@@ -100,7 +100,7 @@ export class CaseModel {
 
   /**
    * Set date when this case was billed or should be billed
-   * @param d 
+   * @param d
    */
   public setBillingDate(d: Date | string) {
     if (d) {

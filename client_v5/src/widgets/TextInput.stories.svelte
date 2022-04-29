@@ -1,7 +1,7 @@
 <script>
 import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
 import "../services/i18n/i18n";
-import LineInput from "./LineInput.svelte";
+import TextInput from "./TextInput.svelte";
 import MarginDecorator from "./MarginDecorator.svelte";
 
 const validate = (val) => val.length > 2;
@@ -14,13 +14,13 @@ const validate = (val) => val.length > 2;
 </div>
 
 <Meta
-  title="Form-Inputs/LineInput"
-  component="{LineInput}"
+  title="Form-Inputs/TextInput"
+  component="{TextInput}"
   argTypes="{{ onTextChanged: { action: 'textChanged' } }}" />
 
 <Template let:args>
   <MarginDecorator>
-    <LineInput {...args} on:textChanged="{args.onTextChanged}" />
+    <TextInput {...args} on:textChanged="{args.onTextChanged}" />
   </MarginDecorator>
 </Template>
 
@@ -28,9 +28,7 @@ const validate = (val) => val.length > 2;
   name="enabled"
   args="{{
     value: '',
-    label: 'Enter less than 3 chars for error',
-    validate,
-    errmsg: 'Must enter 3 or more chars',
+    label: 'A multiline text field',
   }}" />
 
 <Story

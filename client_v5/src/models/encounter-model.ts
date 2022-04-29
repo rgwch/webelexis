@@ -18,7 +18,7 @@ import type { BillingModel } from './billings-model'
 import { BillingsManager } from './billings-model'
 import { getService } from '../services/io'
 import { Money } from './money'
-import type { FlexformConfig } from '../widgets/Flexform.svelte'
+import type { FlexformConfig } from '../widgets/flexformtypes'
 
 let trl
 const un = _.subscribe((res) => {
