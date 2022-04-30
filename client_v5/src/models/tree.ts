@@ -72,6 +72,26 @@ export class Tree<T> {
   }
 
   /**
+   * Removes a tree from its parent and sisters (if any)
+   */
+  public remove() {
+    if (this.parent) {
+      let runner = this.parent.first
+      if (runner == this) {
+        this.parent._first = this.next
+      } else {
+        while (runner) {
+          if (runner.next == this) {
+            runner._next = this.next
+          }
+          runner = runner._next
+        }
+      }
+    }
+    this._parent = null
+    this._next = null
+  }
+  /**
    * Moves a complete subtree into this Tree (must be the same type)
     */
   public acquireTree(other: Tree<T>) {

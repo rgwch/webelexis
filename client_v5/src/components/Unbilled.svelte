@@ -139,6 +139,7 @@ async function createBills() {
       }
     }
   }
+  tSelected = [];
   return bills;
 }
 </script>

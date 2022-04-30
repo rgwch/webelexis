@@ -23,7 +23,7 @@ import { logger } from '../logger'
 import crypto from 'crypto'
 
 const JACKSON_VERSION = "2.13.2"
-const TOOLBOX_VERSION = "4.2.10"
+const TOOLBOX_VERSION = "4.2.11"
 
 
 /* generate dependencies with
@@ -192,17 +192,15 @@ export class ElexisUtils {
   }
 
   addEntryToPackedStrings(buffer: Uint8Array, field: string, entry: string): Uint8Array {
-    if (buffer) {
-      let array = java.newArray("byte",
-        Array.prototype.slice.call(buffer, 0)
-      )
-
-      const ret = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "addTrace", array, field, entry);
-      return Buffer.from(ret);
-    } else {
-      return null
+    let array;
+    if (!buffer) {
+      array = java.newArray("byte")
     }
-
+    array = java.newArray("byte",
+      Array.prototype.slice.call(buffer, 0)
+    )
+    const ret = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "addTrace", array, field, entry);
+    return Buffer.from(ret);
   }
 
   addEntryToExtinfo(buffer: Uint8Array, field: string, entry: string): Uint8Array {
