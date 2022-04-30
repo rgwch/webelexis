@@ -93,20 +93,22 @@ const readKonsText = (context) => {
       .catch((err) => {
         logger.error('Error reading kons Text ' + err)
       })
-  } else if (raw) {
-    if (raw.eintrag) {
-      const entry = util.getVersionedResource(raw.eintrag)
-      if (entry.text) {
-        context.result.eintrag.html = (Samdas.toHtml(entry.text))
-      } else {
-        context.result.eintrag.html = '<p></p>'
-        logger.warn('Empty record ' + raw.id)
-      }
-      context.result.eintrag.remark = entry.remark
-      context.result.eintrag.timestamp = entry.timestamp
-    }
-    return context
   }
+}
+
+const readSingleKonsText = async ctx => {
+  if (ctx.result?.eintrag) {
+    const entry = util.getVersionedResource(ctx.result.eintrag)
+    if (entry.text) {
+      ctx.result.eintrag.html = await Samdas.toHtml(entry.text)
+    } else {
+      ctx.result.eintrag.html = '<p></p>'
+      logger.warn('Empty record ' + ctx.result.id)
+    }
+    ctx.result.eintrag.remark = entry.remark
+    ctx.result.eintrag.timestamp = entry.timestamp
+  }
+  return ctx
 }
 
 /**
@@ -247,7 +249,7 @@ export default {
   after: {
     all: [],
     find: [readKonsText],
-    get: [readKonsText],
+    get: [readSingleKonsText],
     create: [],
     update: [],
     patch: [],

@@ -17,7 +17,7 @@ describe('Utility', () => {
     expect(service).toBeTruthy()
   })
 
-  it("extends a packed string field", async () => {
+  xit("extends a packed string field", async () => {
     const zipped = fs.readFileSync("./test/test4.bin")
     const rezipped = await service.patch("addTrace", zipped, { field: "Statusänderung", entry: "__Modified__" });
     const unpacked = util.getExtInfo(rezipped)
