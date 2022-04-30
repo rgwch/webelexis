@@ -121,6 +121,15 @@ function doSelect() {
   }
   tSelected = temp.getChildren();
 }
+async function createBills() {
+  const bills = [];
+  for (const p of tSelected) {
+    for (const fall of p.getChildren()) {
+      bills.push(await biller.createBill(fall));
+    }
+  }
+  return bills;
+}
 </script>
 
 <template>
@@ -219,6 +228,12 @@ function doSelect() {
         labelProvider="{labelProvider}"
         on:selected="{(event) => detailDisplay(event.detail)}"
       />
+      <button
+        class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 rounded-full"
+        on:click="{createBills}"
+      >
+        {$_("billing.actions.create")}
+      </button>
     </div>
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
       {#if selectedElement?.geburtsdatum}

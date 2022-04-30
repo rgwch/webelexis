@@ -149,7 +149,7 @@ export class EncounterModel {
   public async getCase(): Promise<CaseType> {
     if (!this.enc._Fall) {
       if (this.enc.fallid) {
-        this.enc._Fall = await getService('fall').fetch(this.enc.fallid)
+        this.enc._Fall = (await this.cm.fetch(this.enc.fallid)) as CaseType
       }
     }
     return this.enc._Fall

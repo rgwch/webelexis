@@ -38,7 +38,7 @@ const assignBillNumber = async (ctx) => {
     param: 'RechnungsNr',
     wert: newNr.toString(),
   })
-  ctx.param.rnnummer = newNr.toString()
+  ctx.data.rnnummer = newNr.toString()
   return ctx
 }
 
@@ -106,8 +106,8 @@ export default {
     all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [pack,fi, assignBillNumber],
-    update: [pack,fi],
+    create: [pack, fi, assignBillNumber],
+    update: [pack, fi],
     patch: [fi],
     remove: [],
   },

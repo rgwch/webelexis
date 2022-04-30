@@ -44,7 +44,7 @@ export type BillingsFilter = {
 export class Billing {
   /**
    * fetch a Tree of all unbilled encounters. One Node per patient, one case-node per case, containing all encounters for that case.
-   * @returns 
+   * @returns
    */
   async getBillables(listener?: ITreeListener): Promise<Tree<konsdef>> {
     const konsService = getService('konsultation')
@@ -133,22 +133,26 @@ export class Billing {
           const l = await kons.getBillings()
           for (const billing of l) {
             const amountCents = billing.getAmount()
-            billAmount.addCents(amountCents)
+            billAmount = billAmount.addCents(amountCents)
           }
         }
       } catch (err) {
         errors.push(err)
       }
     }
-    rechnung.betrag = billAmount.getCentsAsString()
-    rechnung.rndatumvon = startDate.toFormat('yyyyLLdd')
-    rechnung.rndatumbis = endDate.toFormat('yyyyLLdd')
-    rechnung.rndatum = DateTime.now().toFormat('yyyyLLdd')
-    // getNextRnNummer
-    const finalized = await billsService.create(rechnung)
-    for (const k of konsultationen) {
-      k.setInvoice(finalized.id)
+    if (errors.length > 0) {
+      alert("errors :" + JSON.stringify(errors))
+    } else {
+      rechnung.betrag = billAmount.getCentsAsString()
+      rechnung.rndatumvon = startDate.toFormat('yyyyLLdd')
+      rechnung.rndatumbis = endDate.toFormat('yyyyLLdd')
+      rechnung.rndatum = DateTime.now().toFormat('yyyyLLdd')
+      // getNextRnNummer
+      const finalized = await billsService.create(rechnung)
+      for (const k of konsultationen) {
+        k.setInvoice(finalized.id)
+      }
+      return finalized
     }
-    return finalized
   }
 }

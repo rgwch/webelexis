@@ -53,7 +53,7 @@ export class ObjectManager {
   }
 
   public async find(query: any): Promise<QueryResult> {
-    return this.dataService.find({ query })
+    return this.dataService.find(query)
   }
   /**
    * Delete Object

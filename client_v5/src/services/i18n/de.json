@@ -27,6 +27,7 @@
     "PARTIAL_PAYMENT": "Teilweise bezahlt",
     "TOTAL_LOSS": "Totalverlust",
     "actions": {
+      "create": "Rechnungen erstellen",
       "demand_level": "Mahnstufe",
       "output": "Ausgeben",
       "print": "Drucken",
