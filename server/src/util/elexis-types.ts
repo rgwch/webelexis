@@ -206,16 +206,16 @@ export class ElexisUtils {
   }
 
   addEntryToExtinfo(buffer: Uint8Array, field: string, entry: string): Uint8Array {
-    if (buffer) {
-      let array = java.newArray("byte",
-        Array.prototype.slice.call(buffer, 0)
-      )
-
-      const ret = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "putEntry", array, field, entry);
-      return ret
-    } else {
-      return null
+    if (!buffer) {
+      const empty = { "created": new Date().toString() }
+      buffer = this.writeExtInfo(empty)
     }
+    let array = java.newArray("byte",
+      Array.prototype.slice.call(buffer, 0)
+    )
+    const ret = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "putEntry", array, field, entry);
+    return ret
+
   }
   dateStrings(date: Date) {
     var month = (date.getMonth() + 1).toString();

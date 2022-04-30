@@ -125,7 +125,18 @@ async function createBills() {
   const bills = [];
   for (const p of tSelected) {
     for (const fall of p.getChildren()) {
-      bills.push(await biller.createBill(fall));
+      try {
+        bills.push(await biller.createBill(fall));
+      } catch (error) {
+        alert(
+          "Error with " +
+            p.payload.lastname +
+            " " +
+            p.payload.firstname +
+            ": " +
+            error
+        );
+      }
     }
   }
   return bills;

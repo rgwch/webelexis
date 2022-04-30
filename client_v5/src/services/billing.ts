@@ -1,4 +1,5 @@
 import type { InvoiceType } from './../models/invoice-model'
+import { Invoice, RnState } from '../models/invoice-model'
 import { DiagnoseManager, DiagnoseModel } from '../models/diagnose-model'
 import { getService } from './io'
 import { EncounterModel, EncounterManager } from '../models/encounter-model'
@@ -143,16 +144,23 @@ export class Billing {
     if (errors.length > 0) {
       alert("errors :" + JSON.stringify(errors))
     } else {
-      rechnung.betrag = billAmount.getCentsAsString()
-      rechnung.rndatumvon = startDate.toFormat('yyyyLLdd')
-      rechnung.rndatumbis = endDate.toFormat('yyyyLLdd')
-      rechnung.rndatum = DateTime.now().toFormat('yyyyLLdd')
-      // getNextRnNummer
-      const finalized = await billsService.create(rechnung)
-      for (const k of konsultationen) {
-        k.setInvoice(finalized.id)
+      try {
+        rechnung.betrag = billAmount.getCentsAsString()
+        rechnung.rndatumvon = startDate.toFormat('yyyyLLdd')
+        rechnung.rndatumbis = endDate.toFormat('yyyyLLdd')
+        rechnung.rndatum = DateTime.now().toFormat('yyyyLLdd')
+        // getNextRnNummer
+        const finalized = await billsService.create(rechnung)
+        for (const k of konsultationen) {
+          k.setInvoice(finalized.id)
+        }
+        const invoice = new Invoice(finalized)
+        await invoice.setInvoiceState(RnState.OPEN)
+        return finalized
+      } catch (error) {
+        alert(error)
+        throw error
       }
-      return finalized
     }
   }
 }
