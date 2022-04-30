@@ -13,17 +13,20 @@ import TextInput from "./TextInput.svelte";
 import DateInput from "./DateInput.svelte";
 export let ff_cfg: FlexformConfig;
 export let entity: any;
-export let lockable: boolean = true;
+export let lockable: boolean = false;
+
 let isLocked: boolean = lockable;
 let isDirty: boolean = false;
 let original: any = Object.assign({}, entity);
 
+/*
 // called whenever a new entity is loaded
 $: {
   original = Object.assign({}, entity);
   isDirty = false;
   isLocked = true;
 }
+*/
 
 function getTitle() {
   if (typeof ff_cfg.title === "string") {
@@ -37,6 +40,7 @@ function getTitle() {
     toggle the lock
   */
 function lock() {
+  console.log("Lock called");
   isLocked = !isLocked;
 }
 
@@ -73,18 +77,27 @@ function changed(field, value) {
 </script>
 
 <template>
+  {#if getTitle()}
+    <h2 class="inline-block">{getTitle()}</h2>
+  {/if}
   {#if lockable}
-    <div class="float-right" on:click="{lock}">
-      <!-- span class="detailcaption">${ff_cfg.title ? ff_cfg.title() : "Auswahl"}</span -->
-      {#if !isLocked}
-        <Fa icon="{faLockOpen}" class="text-red-500" on:click="{lock}" />
-      {/if}
-      {#if isLocked}
-        <Fa icon="{faLock}" on:click="{lock}" />
-      {/if}
+    <div class="float-right">
+      <div class="inline-block" on:click="{lock}">
+        <!-- span class="detailcaption">${ff_cfg.title ? ff_cfg.title() : "Auswahl"}</span -->
+        {#if !isLocked}
+          <Fa icon="{faLockOpen}" class="text-red-500" on:click="{lock}" />
+        {/if}
+        {#if isLocked}
+          <Fa icon="{faLock}" on:click="{lock}" />
+        {/if}
+      </div>
       {#if isDirty}
-        <Fa icon="{faSave}" on:click="{save}" />
-        <Fa icon="{faUndo}" on:click="{undo}" />
+        <div class="mx-2 inline-block" on:click="{save}">
+          <Fa icon="{faSave}" />
+        </div>
+        <div class="mx-2 inline-block" on:click="{undo}">
+          <Fa icon="{faUndo}" />
+        </div>
       {/if}
     </div>
   {/if}

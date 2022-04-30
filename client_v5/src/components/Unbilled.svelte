@@ -12,8 +12,8 @@ import { EncounterManager } from "../models/encounter-model";
 import type { EncounterType } from "../models/encounter-model";
 import { Patient, PatientManager } from "../models/patient-model";
 import PatientDetail from "./PatientDetail.svelte";
-import FallDetail from "./FallDetail.svelte"
-import EncounterDetail from "./EncounterDetail.svelte"
+import FallDetail from "./FallDetail.svelte";
+import EncounterDetail from "./EncounterDetail.svelte";
 import SelectOptions from "./SelectOptions.svelte";
 import Modal from "../widgets/Modal.svelte";
 import { _ } from "svelte-i18n";
@@ -132,7 +132,8 @@ function doSelect() {
         if (ok) {
           doSelect();
         }
-      }}">
+      }}"
+    >
       <div slot="body"><SelectOptions options="{selectOptions}" /></div>
     </Modal>
   {/if}
@@ -143,7 +144,8 @@ function doSelect() {
         deselector = false;
         if (ok) {
         }
-      }}">
+      }}"
+    >
       <div slot="body">deselect</div>
     </Modal>
   {/if}
@@ -154,12 +156,14 @@ function doSelect() {
           class="ml-4 text-sm cursor-pointer underline hover:text-blue-600 rounded-full"
           on:click="{() => {
             selector = true;
-          }}">{$_("actions.select")}</span>
+          }}">{$_("actions.select")}</span
+        >
       </h2>
       <TreeView
         trees="{patients}"
         labelProvider="{labelProvider}"
-        on:selected="{(event) => detailDisplay(event.detail)}" />
+        on:selected="{(event) => detailDisplay(event.detail)}"
+      />
       <!-- ul class="max-h-[80vh] overflow-auto">
         {#each patients as p}
           <li on:click="{() => toggle(p)}" class="cursor-pointer">
@@ -206,16 +210,17 @@ function doSelect() {
           class="ml-4 text-sm cursor-pointer underline hover:text-blue-600"
           on:click="{() => {
             deselector = true;
-          }}">{$_("actions.deselect")}</span>
+          }}">{$_("actions.deselect")}</span
+        >
       </h2>
 
       <TreeView
         trees="{tSelected}"
         labelProvider="{labelProvider}"
-        on:selected="{(event) => detailDisplay(event.detail)}" />
+        on:selected="{(event) => detailDisplay(event.detail)}"
+      />
     </div>
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
-      <h2 class="mx-3">{$_("titles.detail")}</h2>
       {#if selectedElement?.geburtsdatum}
         <PatientDetail entity="{selectedElement}" />
       {:else if selectedElement?.patientid}

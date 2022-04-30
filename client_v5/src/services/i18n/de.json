@@ -67,7 +67,8 @@
     "we": "Mi",
     "wed": "Mittwoch"
   },
-  "case":{
+  "case": {
+    "detail": "Fall Detail",
     "begindate": "Anfangsdatum",
     "enddate": "Enddatum",
     "reason": "Grund",
@@ -90,11 +91,15 @@
     "dbdate": "yyyyLLdd",
     "longdate": "ccc, dd.LL.yyyy"
   },
-  "encounter":{
+  "encounter": {
+    "detail": "Konsultation Detail",
     "date": "Datum"
   },
   "general": {
     "loading": "lese..."
+  },
+  "patient": {
+    "detail": "Patient Detail"
   },
   "titles": {
     "bills": "Rechnungen",

@@ -30,10 +30,10 @@ function changed() {
     <input
       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
       bind:value
-      on:change="{changed}"
       on:blur="{changed}"
       id="{id}"
-      disabled="{disabled}" />
+      disabled="{disabled}"
+    />
     {#if error}
       <span class="text-sm font-semibold text-red-500">{errmsg}</span>
     {/if}

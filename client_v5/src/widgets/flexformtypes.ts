@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 export interface FlexformConfig {
-  title: () => string; // Title for the Form
+  title: string | (() => string); // Title for the Form
   compact?: boolean; // If true: Don't display labels for input fields.
   attributes: Array<{
     // Attributes to display in the form
