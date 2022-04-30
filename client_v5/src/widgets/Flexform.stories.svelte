@@ -16,6 +16,11 @@ const dummy = {
       datatype: "date",
       label: "Date",
     },
+    {
+      attribute: "number",
+      datatype: "number",
+      label: "Number field",
+    },
   ],
 };
 </script>
@@ -30,6 +35,11 @@ const dummy = {
   name="Lockable"
   args="{{
     ff_cfg: dummy,
-    entity: { textfield: 'Test', date: '20220412', lockable: true },
+    entity: {
+      textfield: 'Test',
+      date: '20220402',
+      number: 42,
+      lockable: true,
+    },
   }}"
 />

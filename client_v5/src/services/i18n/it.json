@@ -1,7 +1,9 @@
 {
   "actions": {
     "cancel": "Abbruch",
-    "ok": "Ok"
+    "deselect": "abwählen...",
+    "ok": "Ok",
+    "select": "auswählen..."
   },
   "address": {
     "place": "Ort",
@@ -65,6 +67,13 @@
     "we": "Mer",
     "wed": "Mercoledi"
   },
+  "case": {
+    "begindate": "Anfangsdatum",
+    "description": "Bezeichnung",
+    "detail": "Fall Detail",
+    "enddate": "Enddatum",
+    "reason": "Grund"
+  },
   "contact": {
     "birthdate": "Geburtsdatum",
     "email": "E-Mail",
@@ -77,6 +86,10 @@
     "remark": "Bemerkung"
   },
   "demotest": "no lo so",
+  "encounter": {
+    "date": "Datum",
+    "detail": "Konsultation Detail"
+  },
   "formatting": {
     "date": "DD.MM.YYYY",
     "dbdate": "yyyyLLdd",
@@ -85,14 +98,20 @@
   "general": {
     "loading": "lese..."
   },
+  "patient": {
+    "detail": "Patient Detail"
+  },
   "titles": {
     "bills": "Rechnungen",
+    "detail": "Detail",
     "outputs": "Ausgaben",
     "progress": "Verlauf",
+    "selected": "Auswahl",
     "unbilled": "Unverrechnete Konsultationen"
   },
   "validation": {
-    "ivalidDate": "Ungültiges Datum",
+    "invalidDate": "Ungültiges Datum",
+    "onlyNumbers": "Nur Zahlen zulässig",
     "onlyText": "Nur Text"
   }
 }

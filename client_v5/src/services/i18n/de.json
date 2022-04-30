@@ -1,8 +1,8 @@
 {
   "actions": {
     "cancel": "Abbruch",
-    "ok": "Ok",
     "deselect": "abwählen...",
+    "ok": "Ok",
     "select": "auswählen..."
   },
   "address": {
@@ -68,11 +68,11 @@
     "wed": "Mittwoch"
   },
   "case": {
-    "detail": "Fall Detail",
     "begindate": "Anfangsdatum",
+    "description": "Bezeichnung",
+    "detail": "Fall Detail",
     "enddate": "Enddatum",
-    "reason": "Grund",
-    "description": "Bezeichnung"
+    "reason": "Grund"
   },
   "contact": {
     "birthdate": "Geburtsdatum",
@@ -86,14 +86,14 @@
     "remark": "Bemerkung"
   },
   "demotest": "Testkomponente",
+  "encounter": {
+    "date": "Datum",
+    "detail": "Konsultation Detail"
+  },
   "formatting": {
     "date": "dd.LL.yyyy",
     "dbdate": "yyyyLLdd",
     "longdate": "ccc, dd.LL.yyyy"
-  },
-  "encounter": {
-    "detail": "Konsultation Detail",
-    "date": "Datum"
   },
   "general": {
     "loading": "lese..."
@@ -103,14 +103,15 @@
   },
   "titles": {
     "bills": "Rechnungen",
+    "detail": "Detail",
     "outputs": "Ausgaben",
     "progress": "Verlauf",
-    "unbilled": "Unverrechnete Konsultationen",
     "selected": "Auswahl",
-    "detail": "Detail"
+    "unbilled": "Unverrechnete Konsultationen"
   },
   "validation": {
-    "ivalidDate": "Ungültiges Datum",
+    "invalidDate": "Ungültiges Datum",
+    "onlyNumbers": "Nur Zahlen zulässig",
     "onlyText": "Nur Text"
   }
 }

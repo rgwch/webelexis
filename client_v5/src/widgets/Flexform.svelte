@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { FlexformConfig } from "./flexformtypes";
 import { FlexFormValueConverter } from "./flexformtypes";
+import { _ } from "svelte-i18n";
 import Fa from "svelte-fa";
 import {
   faSave,
@@ -116,13 +117,15 @@ function changed(field, value) {
             <DateInput
               dateString="{entity[attr.attribute]}"
               label="{attr.label}"
+              disabled="{isLocked}"
             />
           {:else if attr.datatype == "number"}
             <LineInput
-              bind:value="{attr.attribute}"
+              bind:value="{entity[attr.attribute]}"
               label="{attr.label}"
+              disabled="{isLocked}"
               validate="{(n) => !isNaN(n)}"
-              errmsg="numbers only"
+              errmsg="{$_('validation.onlyNumbers')}"
             />
           {:else if attr.datatype == "text"}
             {#if !ff_cfg.compact}

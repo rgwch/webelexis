@@ -9,9 +9,10 @@ import { ElexisUtils } from '../../util/elexis-types'
 const util = new ElexisUtils()
 const Samdas = require('@rgwch/samdastools')
 import { logger } from '../../logger'
+import sortResults from '../../hooks/sort-results'
 
 /**
- * Find ecnounters by patient id
+ * Find encounters by patient id
  * @param {*} context
  */
 const withPatientId = async (context) => {
@@ -92,6 +93,19 @@ const readKonsText = (context) => {
       .catch((err) => {
         logger.error('Error reading kons Text ' + err)
       })
+  } else if (raw) {
+    if (raw.eintrag) {
+      const entry = util.getVersionedResource(raw.eintrag)
+      if (entry.text) {
+        context.result.eintrag.html = (Samdas.toHtml(entry.text))
+      } else {
+        context.result.eintrag.html = '<p></p>'
+        logger.warn('Empty record ' + raw.id)
+      }
+      context.result.eintrag.remark = entry.remark
+      context.result.eintrag.timestamp = entry.timestamp
+    }
+    return context
   }
 }
 
@@ -233,7 +247,7 @@ export default {
   after: {
     all: [],
     find: [readKonsText],
-    get: [],
+    get: [readKonsText],
     create: [],
     update: [],
     patch: [],

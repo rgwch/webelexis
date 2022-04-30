@@ -1,7 +1,9 @@
 {
   "actions": {
-    "cancel": "Abbruch",
-    "ok": "Ok"
+    "cancel": "cancel",
+    "deselect": "deselect...",
+    "ok": "Ok",
+    "select": "select..."
   },
   "address": {
     "place": "place",
@@ -25,10 +27,10 @@
     "PARTIAL_PAYMENT": "partially paid",
     "TOTAL_LOSS": "total loss",
     "actions": {
-      "demand_level": "Mahnstufe",
-      "output": "Ausgeben",
-      "print": "Drucken",
-      "storno": "Stornieren"
+      "demand_level": "demand level",
+      "output": "Output",
+      "print": "Print",
+      "storno": "Cancel"
     },
     "amount": "amount",
     "invoicedate": "invoice date",
@@ -65,6 +67,13 @@
     "we": "Wed",
     "wed": "Wednesday"
   },
+  "case": {
+    "begindate": "Begin date",
+    "description": "Description",
+    "detail": "Case detail",
+    "enddate": "End date",
+    "reason": "Reason"
+  },
   "contact": {
     "birthdate": "birthdate",
     "email": "email",
@@ -77,6 +86,10 @@
     "remark": "remark"
   },
   "demotest": "test component",
+  "encounter": {
+    "date": "Date",
+    "detail": "Encounter detail"
+  },
   "formatting": {
     "date": "yyyy/LL/dd",
     "dbdate": "yyyyLLdd",
@@ -85,14 +98,20 @@
   "general": {
     "loading": "loading..."
   },
+  "patient": {
+    "detail": "Patient detail"
+  },
   "titles": {
-    "bills": "Billes",
-    "outputs": "Ausgaben",
-    "progress": "Verlauf",
+    "bills": "Bills",
+    "detail": "Detail",
+    "outputs": "Outputs",
+    "progress": "Progress",
+    "selected": "Selectiob",
     "unbilled": "Unbilled encounters"
   },
   "validation": {
-    "ivalidDate": "invalid date",
+    "invalidDate": "Invalid date",
+    "onlyNumbers": "only numbers allowed",
     "onlyText": "only text allowed"
   }
 }

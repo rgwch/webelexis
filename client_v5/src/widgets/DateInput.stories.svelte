@@ -7,7 +7,7 @@ import MarginDecorator from "./MarginDecorator.svelte";
 
 <div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500">
   <h1 class="font-bold text-lg">DateInput</h1>
-  <p class="mb-5">A Label and a Datepicker.</p>
+  <p class="mb-5">A Label and a Browser-defined Datepicker or inpput field.</p>
   <p>Sends 'dateChanged' event if new date selected</p>
 </div>
 
@@ -25,10 +25,14 @@ import MarginDecorator from "./MarginDecorator.svelte";
 
 <Story
   name="enabled"
-  args="{{ dateString: '20200501', label: 'A datepicker' }}"
+  args="{{ dateString: '20200501', label: 'A system datepicker' }}"
 />
 
 <Story
   name="disabled"
-  args="{{ dateString: '20200501', label: 'A datepicker', disabled: true }}"
+  args="{{
+    dateString: '20200501',
+    label: 'A disabled datepicker',
+    disabled: true,
+  }}"
 />

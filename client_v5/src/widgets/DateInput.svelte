@@ -8,7 +8,8 @@ const dispatch = createEventDispatcher();
  * Predefined value. Should be a Javascript-Date compliant formatted string
  */
 export let dateString: string = "19810309";
-let current: Date = DateTime.fromISO(dateString).toJSDate();
+//let current: Date = DateTime.fromISO(dateString).toJSDate();
+let current: string = DateTime.fromISO(dateString).toFormat("yyyy-LL-dd");
 /**
  * Optional label
  */
@@ -23,7 +24,8 @@ export let id: string = Math.random()
  */
 export let disabled: boolean = false;
 function changed() {
-  const ndate = DateTime.fromJSDate(current).toFormat("yyyyLLdd");
+  //const ndate = DateTime.fromJSDate(current).toFormat("yyyyLLdd");
+  const ndate = DateTime.fromFormat(current, "yyyy-LL-dd").toFormat("yyyyLLdd");
   //console.log('date changed from ',dateString," to ", ndate);
   dateString = ndate;
   dispatch("dateChanged");
@@ -38,12 +40,18 @@ A label and a DatePicker
     {#if label}
       <label for="{id}" class="text-sm font-bold">{label}</label>
     {/if}
-    <DatePicker
+    <input
+      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
+      type="date"
+      bind:value="{current}"
+      disabled="{disabled}"
+    />
+    <!-- DatePicker
       current="{current}"
       on:select="{changed}"
       id="{id}"
       disabled="{disabled}"
-    />
+    / -->
   </div>
 </template>
 

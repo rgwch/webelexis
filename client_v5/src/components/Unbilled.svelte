@@ -70,6 +70,7 @@ const labelProvider: (x: Tree<any>) => string = (node: Tree<any>) => {
 };
 
 async function detailDisplay(node) {
+  selectedElement = undefined;
   switch (node.props.type) {
     case "p":
       selectedElement = await getPatient(node);
@@ -83,7 +84,6 @@ async function detailDisplay(node) {
     default:
       throw new Error("bad konsdef");
   }
-  console.log("+" + JSON.stringify(selectedElement));
 }
 async function getPatient(t: Tree<konsdef>): Promise<Patient> {
   if (!t.payload.Patient) {
