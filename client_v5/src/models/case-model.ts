@@ -12,6 +12,7 @@ import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import type { PatientType } from './patient-model';
 import type { FlexformConfig } from "../widgets/flexformtypes";
+import type { EncounterType } from "./encounter-model";
 let trl
 const unregister = _.subscribe((res) => (trl = res))
 /**
@@ -79,6 +80,12 @@ export class CaseManager extends ObjectManager {
     return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung
       }`;
   }
+
+  public async getEncounters(obj: CaseType): Promise<EncounterType[]> {
+    const em = getService('konsultation')
+    const result = await em.find({ query: { fallid: obj.id } })
+    return result.data
+  }
 }
 
 export class CaseModel {
@@ -88,7 +95,7 @@ export class CaseModel {
     return this.obj.id
   }
 
-  public getBillingate(): Date {
+  public getBillingDate(): Date {
     if (this.obj.betriebsnummer) {
       const dt = DateTime.fromISO(this.obj.betriebsnummer)
       if (dt.isValid) {

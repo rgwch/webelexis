@@ -99,20 +99,24 @@ const readKonsText = (context) => {
 const readSingleKonsText = async ctx => {
   if (ctx.result?.eintrag) {
     const entry = util.getVersionedResource(ctx.result.eintrag)
-    if (entry.text) {
-      ctx.result.eintrag.html = await Samdas.toHtml(entry.text)
-    } else {
+    ctx.result.eintrag = {
+      remark: entry.remark,
+      timestamp: entry.timestamp,
+      html: await Samdas.toHtml(entry.text),
+      delta: await Samdas.toDelta(entry.text)
+    }
+    if (!ctx.result.eintrag.html) {
       ctx.result.eintrag.html = '<p></p>'
       logger.warn('Empty record ' + ctx.result.id)
     }
-    ctx.result.eintrag.remark = entry.remark
-    ctx.result.eintrag.timestamp = entry.timestamp
+    return ctx
   }
-  return ctx
 }
 
+
+
 /**
- * Hook to apply before update. Convert HTML to Samdas and update the encpunter's
+ * Hook to apply before update. Convert HTML to Samdas and update the encounter's
  * VersionedResource
  */
 const updateKonsText = async (context) => {
@@ -148,7 +152,7 @@ const updateKonsText = async (context) => {
   }
 }
 /**
- * Hook to apply after find: Convert HTML text to samdas and create a new entry
+ * Hook to apply before create: Convert HTML text to samdas and create a new entry
  * in the encounter's Versioned Resource with that Samdas text.
  * @param {*} context
  */
