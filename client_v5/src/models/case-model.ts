@@ -1,3 +1,4 @@
+import { EncounterModel } from './encounter-model';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
@@ -7,12 +8,14 @@
 import type { ElexisType, UUID } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { getService } from "../services/io";
-import type { ServiceType } from './../services/io';
+import { Money } from './money';
+
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import type { PatientType } from './patient-model';
 import type { FlexformConfig } from "../widgets/flexformtypes";
 import type { EncounterType } from "./encounter-model";
+import { empty } from "svelte/internal";
 let trl
 const unregister = _.subscribe((res) => (trl = res))
 /**
@@ -34,12 +37,13 @@ export interface CaseType extends ElexisType {
 }
 
 export class CaseManager extends ObjectManager {
-
+  private encounterService
   private patientService
 
   constructor() {
     super("fall");
     this.patientService = getService("patient");
+    this.encounterService = getService('konsultation')
   }
 
   /**
@@ -80,10 +84,21 @@ export class CaseManager extends ObjectManager {
     return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung
       }`;
   }
+  public async getUnbilledAmount(obj: CaseType): Promise<Money> {
+    const result = await this.encounterService.find({ query: { fallid: obj.id, rechnungsid: 'null' } })
+    if (result) {
+      let ret = new Money(0)
+      for (const k of result.data) {
+        const enc = new EncounterModel(k)
+        ret = ret.add(await enc.getSum())
+      }
+      return ret;
+    }
+    return new Money(-10)
+  }
 
   public async getEncounters(obj: CaseType): Promise<EncounterType[]> {
-    const em = getService('konsultation')
-    const result = await em.find({ query: { fallid: obj.id } })
+    const result = await this.encounterService.find({ query: { fallid: obj.id } })
     return result.data
   }
 }
@@ -105,6 +120,11 @@ export class CaseModel {
     return undefined
   }
 
+  public getUnbilledAmount(): Money {
+    let amount = new Money(0)
+
+    return amount
+  }
   /**
    * Set date when this case was billed or should be billed
    * @param d

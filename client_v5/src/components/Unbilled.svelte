@@ -1,11 +1,12 @@
 <script lang="ts">
 import { Billing } from "../services/billing";
-import type { BillingsFilter } from "../services/billing";
+import type { BillingsFilter } from "../services/filter";
+import { Filter } from "../services/filter";
 import type { konsdef } from "../services/billing";
 import { Tree } from "../models/tree";
 import TreeView from "../widgets/TreeView.svelte";
 import { DateTime } from "luxon";
-import { CaseManager } from "../models/case-model";
+import { CaseManager, CaseModel } from "../models/case-model";
 import type { CaseType } from "../models/case-model";
 import { EncounterManager } from "../models/encounter-model";
 import type { EncounterType } from "../models/encounter-model";
@@ -100,18 +101,12 @@ async function getEncounter(t: Tree<konsdef>): Promise<EncounterType> {
 }
 let selectOptions: BillingsFilter = { bSelected: true };
 
-function doSelect() {
+async function doSelect() {
   const temp = new Tree<konsdef>(null, null);
-  if (selectOptions.bName) {
-    const regexp = new RegExp(selectOptions.name + ".*", "i");
-    for (const node of patients) {
-      if (
-        node.payload.lastname.match(regexp) ||
-        node.payload.firstname.match(regexp)
-      ) {
-        // new Tree<konsdef>(temp, node.payload);
-        temp.acquireTree(node);
-      }
+  const filter = new Filter();
+  for (const node of patients) {
+    if (filter.applyBillingsFilter(node, selectOptions)) {
+      temp.acquireTree(node);
     }
   }
   tSelected = temp.getChildren();
