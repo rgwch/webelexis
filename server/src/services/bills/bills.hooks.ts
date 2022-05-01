@@ -31,14 +31,18 @@ const util = new ElexisUtils()
  */
 const assignBillNumber = async (ctx) => {
   const config = ctx.app.service('elexis-config')
-  const actNr = await config.get('RechnungsNr')
-  // if undef
+  let actNr = await config.get('RechnungsNr')
+  if(!actNr){
+    const init=config.create({"param":"RechnungsNr",wert:"99"})
+    actNr="99"
+  }
   const newNr = (parseInt(actNr) + 1).toString()
   await config.update('RechnungsNr', {
     param: 'RechnungsNr',
     wert: newNr.toString(),
   })
   ctx.data.rnnummer = newNr.toString()
+  ctx.data.extinfo=Buffer.from(util.addEntryToExtinfo(null,"webelexis-created",new Date().toString()))
   return ctx
 }
 

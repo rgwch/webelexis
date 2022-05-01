@@ -233,6 +233,9 @@ export class Invoice {
   }
 
   public async addTrace(name: string, message: string): Promise<void> {
+    if(!this.bill.extjson){
+      this.bill.extjson={}
+    }
     if (!this.bill.extjson[name]) {
       this.bill.extjson[name] = []
     }
@@ -245,8 +248,8 @@ export class Invoice {
   }
 
   public getTrace(name: string): Array<string> {
-    const trace = this.bill.extjson[name]
-    return trace || []
+      const trace = this.bill.extjson ? this.bill.extjson[name] : []
+      return trace || []
   }
   public async delete() {
     const transactions = await this.getTransactions()
