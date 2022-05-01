@@ -1,32 +1,21 @@
-# [Svelte](https://svelte.dev/), [WindiCSS](https://windicss.org/), [Storybook](https://storybook.js.org/), [Jest](https://jestjs.io/) & [TypeScript](https://www.typescriptlang.org/)
+# Webelexis Client v3.5
 
-Based on the template https://github.com/munxar/svendi with Svelte, Svelte-i18n, WindiCSS & Typescript
+Now created with [svelte](https://svelte.dev/)
 
-## Install
-```bash
-npx degit rgwch/svendistoje#main my-app
-cd my-app
-npm i
-```
+Current work covers creation and handling of bills (conformant to the new swiss QR-Bill standard),
 
-## Develop
-```bash
-npm run dev
-```
-(And navigate to <http://localhost:3000>)
+## Launch
 
-## Build for Production
-```bash
-npm run build
-```
+- start server (in directory ../server)
+- npm i
+- npm run dev
 
-## Run Jest
+navigate to `http://localhost:3000`
 
-```bash
+## Run tests
+
 npm test
-```
-## Run Storybook
 
-```bash
+## Run Storybook (for UI development)
+
 npm run storybook
-```
