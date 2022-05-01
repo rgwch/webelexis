@@ -21,7 +21,9 @@ function select(event) {
     <div class="flex-auto">
       <ul>
         {#each list as termin}
-          <li style="background-color:{termin.getStateColor()}">
+          <li
+            style="background-color:{termin.getStateColor()};list-style-type:none"
+          >
             <Appointment termin="{termin}" />
           </li>
         {/each}

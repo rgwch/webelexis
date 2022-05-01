@@ -142,6 +142,9 @@ export class TerminManager {
  */
 export class TerminModel {
   public obj: TerminType
+  public props = {
+    open: false
+  }
   private kontaktService
 
   constructor(obj: TerminType) {
@@ -165,15 +168,19 @@ export class TerminModel {
       return Statics.terminTypes[1]
     }
     else {
+      let line;
       const k = await this.getKontakt()
       if (k) {
         const km = new KontaktModel(k)
-        return km.getLabel()
+        line = km.getLabel()
       } else {
-        return this.obj.patid
+        line = this.obj.patid
       }
+      line += ` (${this.getTyp()}) - (${this.getState()})`
+      return line;
     }
   }
+  public getDescription = () => this.obj.grund
   public getTyp = (): string => this.obj.termintyp
   public getState = (): string => this.obj.terminstatus
   public isReserved = (): boolean => this.obj.termintyp === Statics.terminTypes[1]

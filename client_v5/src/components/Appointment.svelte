@@ -7,15 +7,30 @@ import {
   faCaretDown,
   faGripVertical,
 } from "@fortawesome/free-solid-svg-icons";
+import properties from "../services/properties";
 export let termin: TerminModel;
 </script>
 
 <template>
-  <div style="background-color:{termin.getStateColor()}">
-    {#await termin.getLabel()}
-      {$_("general.loading")}
-    {:then label}
-      {label}
-    {/await}
+  <div>
+    {#if termin.isAppointment()}
+      <span
+        on:click="{() => {
+          termin.props.open = !termin.props.open;
+        }}"
+      >
+        <Fa icon="{faCaretRight}" class="mx-2" />
+      </span>
+    {/if}
+    <span style="background-color:{termin.getStateColor()}">
+      {#await termin.getLabel()}
+        {$_("general.loading")}
+      {:then label}
+        {label}
+      {/await}
+    </span>
+    {#if termin.props.open}
+      <p>{termin.getDescription()}</p>
+    {/if}
   </div>
 </template>

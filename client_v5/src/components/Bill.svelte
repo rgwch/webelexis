@@ -23,17 +23,17 @@ let outputs: Array<string> = bill.getTrace(Invoice.TRACE_OUTPUT);
     </p>
     <p class="mb-0 font-bold">{$_("titles.progress")}:</p>
     <div class="overflow-auto h-20 border border-2 border-blue-400 py-1">
-      <ul>
+      <ul class="list-none my-0">
         {#each states as state}
-          <li>{state}</li>
+          <li class="text-sm py-0 my-0">{state}</li>
         {/each}
       </ul>
     </div>
     <p class="mb-0 font-bold">{$_("titles.outputs")}:</p>
     <div class="overflow-auto h-20 border-2 border-blue-400 py-1">
-      <ul>
+      <ul class="list-none py-0 my-0">
         {#each outputs as output}
-          <li>{output}</li>
+          <li class="text-sm py-0 my-0">{output}</li>
         {/each}
       </ul>
     </div>
