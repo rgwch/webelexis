@@ -129,4 +129,12 @@ export class Tree<T> {
   get parent() {
     return this._parent
   }
+
+  async toObject() {
+    return {
+      children: await (await this.fetch()).map(n => n.toObject()),
+      // parent: this.parent,
+      payload: this.payload
+    }
+  }
 }

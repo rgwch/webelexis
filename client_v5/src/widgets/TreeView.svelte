@@ -9,6 +9,7 @@ import type { Tree, ITreeListener } from "../models/tree";
 import global from "../services/properties";
 import { v4 as uuid } from "uuid";
 import { createEventDispatcher } from "svelte";
+const DND_TYPE = "application/x-webelexis-treeview";
 
 export let trees: Array<Tree<any>>;
 export let labelProvider: (x: Tree<any>) => string;
@@ -17,14 +18,29 @@ function handleDragStart(event, node) {
   event.dataTransfer.effectAllowed = "move";
   const id = uuid();
   global.volatile[id] = node;
-  event.dataTransfer.setData("text/plain", id);
+  event.dataTransfer.setData(DND_TYPE, id);
   event.target.style.opacity = "0.4";
+  event.target["data-id"] = id;
 }
 function handleDragEnd(event) {
   event.target.style.opacity = "1.0";
+
+  const id = event.target["data-id"];
+  // console.log("dropped " + id);
+
+  const tree: Tree<any> = global.volatile[id];
+  if (tree) {
+    tree.remove;
+    const index = trees.findIndex((t) => t.payload == tree.payload);
+    if (index != -1) {
+      trees.splice(index, 1);
+      trees = trees;
+    }
+    delete global.volatile[id];
+  }
 }
 function dropped(event) {
-  const id = event.dataTransfer.getData("text/plain");
+  const id = event.dataTransfer.getData(DND_TYPE);
   console.log(id);
   const tree = global.volatile[id];
   if (!trees) {
@@ -35,13 +51,10 @@ function dropped(event) {
 }
 function dragenter(event) {
   // event.target.style.backgroundColor="red"
-  console.log("enter");
 }
-function dragleave(event) {
-  console.log("leave");
-}
+function dragleave(event) {}
 function dragover(event) {
-  return false;
+  event.dataTransfer.effectAllowed = "move";
 }
 </script>
 
@@ -51,13 +64,15 @@ function dragover(event) {
     on:drop|preventDefault|stopPropagation="{dropped}"
     on:dragenter|preventDefault="{dragenter}"
     on:dragleave|preventDefault="{dragleave}"
-    on:dragover|preventDefault="{dragover}">
+    on:dragover|preventDefault="{dragover}"
+  >
     {#each trees as e, index}
       <p
         class="my-1 px-2 my-1"
         draggable="true"
         on:dragstart="{(event) => handleDragStart(event, e)}"
-        on:dragend="{handleDragEnd}">
+        on:dragend="{handleDragEnd}"
+      >
         <Fa class="mx-2 cursor-move" icon="{faGripVertical}" />
         {#if e.props.open}
           <Fa icon="{faCaretDown}" />
@@ -66,12 +81,14 @@ function dragover(event) {
               e.props.open = !e.props.open;
               dispatch('selected', e);
             }}"
-            class="cursor-pointer">{labelProvider(e)}</span>
+            class="cursor-pointer">{labelProvider(e)}</span
+          >
           <div class="relative left-2">
             <svelte:self
               trees="{e.getChildren()}"
               labelProvider="{labelProvider}"
-              on:selected />
+              on:selected
+            />
           </div>
         {:else}
           <Fa icon="{faCaretRight}" />
@@ -80,7 +97,8 @@ function dragover(event) {
               e.props.open = !e.props.open;
               dispatch('selected', e);
             }}"
-            class="cursor-pointer">{labelProvider(e)}</span>
+            class="cursor-pointer">{labelProvider(e)}</span
+          >
         {/if}
       </p>
     {/each}
