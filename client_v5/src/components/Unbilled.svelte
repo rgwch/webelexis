@@ -103,37 +103,42 @@ async function getEncounter(t: Tree<konsdef>): Promise<EncounterType> {
 let selectOptions: BillingsFilter = { bSelected: true };
 
 async function doSelect() {
+  const eliminate = [];
+  tSelected = tSelected || [];
   longrunning = true;
   const temp = new Tree<konsdef>(null, null);
   const filter = new Filter();
-  for (let i = 0; i < patients.length; i++) {
+  for (let i = patients.length - 1; i >= 0; i--) {
     const node = patients[i];
     if (await filter.applyBillingsFilter(node, selectOptions)) {
-      temp.acquireTree(node);
-      tSelected = temp
-        .getChildren()
-        .sort((a, b) => a.payload.lastname.localeCompare(b.payload.lastname));
+      tSelected = [...tSelected, node].sort((a, b) =>
+        a.payload.lastname.localeCompare(b.payload.lastname)
+      );
       patients.splice(i, 1);
     }
   }
   patients = patients;
   longrunning = false;
 }
+
 let deselectOptions: BillingsFilter = {};
 async function doDeselect() {
+  const eliminate = [];
   longrunning = true;
   const filter = new Filter();
-  for (let i = 0; i < tSelected.length; i++) {
+  for (let i = tSelected.length - 1; i >= 0; i--) {
     const node = tSelected[i];
     if (await filter.applyBillingsFilter(node, deselectOptions)) {
-      tSelected.splice(i, 1);
-      tSelected = tSelected;
+      // console.log("removing " + node.payload.lastname);
       patients.push(node);
+      tSelected.splice(i, 1);
     }
   }
   patients = patients.sort((a, b) =>
     a.payload.lastname.localeCompare(b.payload.lastname)
   );
+
+  tSelected = tSelected;
   longrunning = false;
 }
 async function createBills() {

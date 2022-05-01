@@ -41,7 +41,7 @@ function handleDragEnd(event) {
 }
 function dropped(event) {
   const id = event.dataTransfer.getData(DND_TYPE);
-  console.log(id);
+  // console.log(id);
   const tree = global.volatile[id];
   if (!trees) {
     trees = new Array<Tree<any>>();

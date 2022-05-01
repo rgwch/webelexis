@@ -76,9 +76,7 @@ export class Filter {
         }
       }
       if (filter.bAmountBelow) {
-        console.log(node.payload.lastname)
         if (sum.getValue() < (filter.amountBelow)) {
-          console.log("Deselect: " + sum.getValue() + ", below " + filter.amountBelow)
           return true
         }
       }
