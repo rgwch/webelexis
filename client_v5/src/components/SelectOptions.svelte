@@ -16,6 +16,16 @@ export let options: BillingsFilter = {};
     <span>Markierte</span>
   </div>
   <div>
+    <input
+      type="checkbox"
+      bind:checked="{options.bAll}"
+      on:click="{() => {
+        options.bAll = !options.bAll;
+      }}"
+    />
+    <span>Alle</span>
+  </div>
+  <div>
     <input type="checkbox" bind:checked="{options.bFirstolder}" />
     <span class="px-2">Erste Konsultation älter als</span><input
       type="number"

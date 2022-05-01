@@ -7,6 +7,7 @@ import type { konsdef } from './billing'
 
 export type BillingsFilter = {
   bSelected?: boolean;
+  bAll?:boolean;
   bFirstolder?: boolean;
   bLastolder?: boolean;
   bBetween?: boolean;
@@ -25,7 +26,9 @@ export type BillingsFilter = {
 export class Filter {
   private konsService = getService('konsultation')
   public async applyBillingsFilter(node: Tree<konsdef>, filter: BillingsFilter): Promise<boolean> {
-
+    if(filter.bAll){
+      return true;
+    }
     if (filter.bName) {
       const regexp = new RegExp(filter.name + ".*", "i");
       if (

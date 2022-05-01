@@ -202,7 +202,7 @@ async function createBills() {
   <div class="flex flex-row">
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
       <h2 class="mx-3">
-        {$_("titles.unbilled")}<span
+        {$_("titles.unbilled")} ({patients.length})<span
           class="ml-4 text-sm cursor-pointer underline hover:text-blue-600 rounded-full"
           on:click="{() => {
             selector = true;
@@ -210,53 +210,15 @@ async function createBills() {
         >
       </h2>
       <TreeView
-        trees="{patients}"
+        bind:trees="{patients}"
         labelProvider="{labelProvider}"
         on:selected="{(event) => detailDisplay(event.detail)}"
       />
-      <!-- ul class="max-h-[80vh] overflow-auto">
-        {#each patients as p}
-          <li on:click="{() => toggle(p)}" class="cursor-pointer">
-            {p.payload.lastname}
-            {p.payload.firstname}
-            {#if p.props.open}
-              <ul>
-                {#each p.getChildren() as f, k}
-                  <li on:click|stopPropagation="{() => toggle(f)}">
-                    {#await getFall(f)}
-                      {$_("general.loading")}
-                    {:then}
-                      {cm.getLabel(f.payload.Fall)}
-                    {/await}
-                    {#if f.props.open}
-                      <ul>
-                        {#each f.getChildren() as e}
-                          <li>
-                            {#await getEncounter(e)}
-                              {$_("general.loading")}
-                            {:then enc}
-                              {#await enc.getLabel()}
-                                {$_("general.loading")}
-                              {:then label}
-                                {label}
-                              {/await}
-                            {/await}
-                          </li>
-                        {/each}
-                      </ul>
-                    {/if}
-                  </li>
-                {/each}
-              </ul>
-            {/if}
-          </li>
-        {/each}
-      </ul -->
     </div>
 
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
       <h2 class="mx-3">
-        {$_("titles.selected")}<span
+        {$_("titles.selected")} ({tSelected.length})<span
           class="ml-4 text-sm cursor-pointer underline hover:text-blue-600"
           on:click="{() => {
             deselector = true;
@@ -265,7 +227,7 @@ async function createBills() {
       </h2>
 
       <TreeView
-        trees="{tSelected}"
+        bind:trees="{tSelected}"
         labelProvider="{labelProvider}"
         on:selected="{(event) => detailDisplay(event.detail)}"
       />
