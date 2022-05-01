@@ -1,10 +1,10 @@
 <script lang="ts">
-import { EncounterModel } from "../models/encounter-model";
+import { EncounterModel, type EncounterType } from "../models/encounter-model";
 import type { FlexformConfig } from "../widgets/flexformtypes";
 import { _ } from "svelte-i18n";
 import Form from "../widgets/Flexform.svelte";
 import type { Money } from "../models/money";
-export let entity;
+export let entity:EncounterType;
 const form: FlexformConfig = EncounterModel.getDefinition();
 form.title = $_("encounter.detail");
 let sum: Money;

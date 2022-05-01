@@ -9,6 +9,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     "^.+\\.css$": "<rootDir>/../.config/stylemock.ts"
+    "node_modules/svelte-fa/"
   },
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",

@@ -3,7 +3,6 @@ import { Billing } from "../services/billing";
 import type { BillingsFilter } from "../services/billing";
 import type { konsdef } from "../services/billing";
 import { Tree } from "../models/tree";
-import type { ITreeListener } from "../models/tree";
 import TreeView from "../widgets/TreeView.svelte";
 import { DateTime } from "luxon";
 import { CaseManager } from "../models/case-model";
@@ -31,10 +30,6 @@ let deselector = false;
 biller.getBillables().then((result) => {
   patients = result.getChildren();
 });
-function toggle(t: Tree<konsdef>) {
-  t.props.open = !t.props.open;
-  patients = patients;
-}
 
 const labelProvider: (x: Tree<any>) => string = (node: Tree<any>) => {
   switch (node.props.type) {
@@ -69,7 +64,7 @@ const labelProvider: (x: Tree<any>) => string = (node: Tree<any>) => {
   }
 };
 
-async function detailDisplay(node) {
+async function detailDisplay(node: Tree<konsdef>) {
   selectedElement = undefined;
   switch (node.props.type) {
     case "p":

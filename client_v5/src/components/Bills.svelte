@@ -1,49 +1,49 @@
 <script lang="ts">
-  import { InvoiceState, Invoice } from "../models/invoice-model";
-  import type { InvoiceType } from "../models/invoice-model";
-  import { Money } from "../models/money";
-  import { DateTime } from "luxon";
-  import { _ } from "svelte-i18n";
-  import BillActions from "./BillActions.svelte";
-  import Bill from "./Bill.svelte";
-  import Modal from "../widgets/Modal.svelte";
+import { InvoiceState } from "../models/invoice-model";
+import type { InvoiceType } from "../models/invoice-model";
+import { Money } from "../models/money";
+import { DateTime } from "luxon";
+import { _ } from "svelte-i18n";
+import BillActions from "./BillActions.svelte";
+import Bill from "./Bill.svelte";
+import Modal from "../widgets/Modal.svelte";
 
-  export let bills: Array<InvoiceType>;
-  export let busy = false;
+export let bills: Array<InvoiceType>;
+export let busy = false;
 
-  export let filter: (any) => boolean = (bill?) => {
-    return true;
-  };
-  let allchecked: boolean = false;
-  let reverse: boolean = true;
-  // let selection: Array<InvoiceType> = [];
-  // let checked: Array<boolean> = [];
-  let current: InvoiceType = undefined;
+export let filter: (arg: any) => boolean = (bill?) => {
+  return true;
+};
+let allchecked: boolean = false;
+let reverse: boolean = true;
+// let selection: Array<InvoiceType> = [];
+// let checked: Array<boolean> = [];
+let current: InvoiceType = undefined;
 
-  function checkall() {
-    const prev = bills[0].selected;
-    for (let i = 0; i < bills.length; i++) {
-      bills[i].selected = !prev;
+function checkall() {
+  const prev = bills[0].selected;
+  for (let i = 0; i < bills.length; i++) {
+    bills[i].selected = !prev;
+  }
+  allchecked = false;
+}
+function select(i: number) {
+  bills[i].selected = !bills[i].selected;
+}
+
+function sort(col: string) {
+  // console.log("sort " + col);
+  reverse = !reverse;
+  bills = bills.sort((a, b) => {
+    let result = 0;
+    if (col === "betrag") {
+      result = parseFloat(a[col]) - parseFloat(b[col]);
+    } else {
+      result = a[col].localeCompare(b[col]);
     }
-    allchecked = false;
-  }
-  function select(i) {
-    bills[i].selected = !bills[i].selected;
-  }
-
-  function sort(col) {
-    // console.log("sort " + col);
-    reverse = !reverse;
-    bills = bills.sort((a, b) => {
-      let result = 0;
-      if (col == "betrag") {
-        result = parseFloat(a[col]) - parseFloat(b[col]);
-      } else {
-        result = a[col].localeCompare(b[col]);
-      }
-      return reverse ? result * -1 : result;
-    });
-  }
+    return reverse ? result * -1 : result;
+  });
+}
 </script>
 
 <template>
@@ -53,37 +53,37 @@
         <th
           ><input
             type="checkbox"
-            on:click={checkall}
-            bind:checked={allchecked}
+            on:click="{checkall}"
+            bind:checked="{allchecked}"
           /></th
         >
         <th
           class="px-5 mx-5 hover:text-blue-600 underline cursor-pointer"
-          on:click={() => sort("rnnummer")}>{$_("billing.invoicenumber")}</th
+          on:click="{() => sort('rnnummer')}">{$_("billing.invoicenumber")}</th
         >
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click={() => sort("rndatum")}
+          on:click="{() => sort('rndatum')}"
           >{$_("billing.invoicedate")}
         </th>
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click={() => sort("rnstatus")}
+          on:click="{() => sort('rnstatus')}"
           >{$_("billing.invoicestate")}
         </th>
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click={() => sort("statusdatum")}>{$_("billing.statedate")}</th
+          on:click="{() => sort('statusdatum')}">{$_("billing.statedate")}</th
         >
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click={() => {
-            sort("betrag");
-          }}>{$_("billing.amount")}</th
+          on:click="{() => {
+            sort('betrag');
+          }}">{$_("billing.amount")}</th
         >
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click={() => sort("_Patname")}>{$_("billing.patient")}</th
+          on:click="{() => sort('_Patname')}">{$_("billing.patient")}</th
         >
       </thead>
       <tbody>
@@ -95,13 +95,13 @@
               <td>
                 <input
                   type="checkbox"
-                  bind:checked={bills[idx].selected}
-                  on:click={() => select(idx)}
+                  bind:checked="{bills[idx].selected}"
+                  on:click="{() => select(idx)}"
                 />
               </td>
               <td
                 class="text-center cursor-pointer underline hover:text-blue-600"
-                on:click={() => (current = bill)}>{bill.rnnummer}</td
+                on:click="{() => (current = bill)}">{bill.rnnummer}</td
               >
               <td class="text-center"
                 >{DateTime.fromISO(bill.rndatum).toFormat(
@@ -129,15 +129,15 @@
   </div>
   {#if current}
     <Modal
-      title={current._Patname + ", " + current.rnnummer}
-      dismiss={() => {
+      title="{current._Patname + ', ' + current.rnnummer}"
+      dismiss="{() => {
         current = undefined;
-      }}
+      }}"
     >
       <div slot="body">
-        <Bill invoice={current} />
+        <Bill invoice="{current}" />
       </div>
     </Modal>
   {/if}
-  <BillActions bind:selection={bills} />
+  <BillActions bind:selection="{bills}" />
 </template>
