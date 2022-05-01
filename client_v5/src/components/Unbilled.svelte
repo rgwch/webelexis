@@ -28,6 +28,7 @@ let selectedElement: any;
 const biller = new Billing();
 let selector = false;
 let deselector = false;
+let longrunning = false;
 biller.getBillables().then((result) => {
   patients = result.getChildren();
 });
@@ -102,14 +103,38 @@ async function getEncounter(t: Tree<konsdef>): Promise<EncounterType> {
 let selectOptions: BillingsFilter = { bSelected: true };
 
 async function doSelect() {
+  longrunning = true;
   const temp = new Tree<konsdef>(null, null);
   const filter = new Filter();
-  for (const node of patients) {
-    if (filter.applyBillingsFilter(node, selectOptions)) {
+  for (let i = 0; i < patients.length; i++) {
+    const node = patients[i];
+    if (await filter.applyBillingsFilter(node, selectOptions)) {
       temp.acquireTree(node);
+      tSelected = temp
+        .getChildren()
+        .sort((a, b) => a.payload.lastname.localeCompare(b.payload.lastname));
+      patients.splice(i, 1);
     }
   }
-  tSelected = temp.getChildren();
+  patients = patients;
+  longrunning = false;
+}
+let deselectOptions: BillingsFilter = {};
+async function doDeselect() {
+  longrunning = true;
+  const filter = new Filter();
+  for (let i = 0; i < tSelected.length; i++) {
+    const node = tSelected[i];
+    if (await filter.applyBillingsFilter(node, deselectOptions)) {
+      tSelected.splice(i, 1);
+      tSelected = tSelected;
+      patients.push(node);
+    }
+  }
+  patients = patients.sort((a, b) =>
+    a.payload.lastname.localeCompare(b.payload.lastname)
+  );
+  longrunning = false;
 }
 async function createBills() {
   const bills = [];
@@ -135,6 +160,14 @@ async function createBills() {
 </script>
 
 <template>
+  {#if longrunning}
+    <img
+      class="justify-center relative left-20"
+      src="webelexis-anim.gif"
+      width="150px"
+      alt="wait..."
+    />
+  {/if}
   {#if selector}
     <Modal
       title="{$_('actions.select')}"
@@ -154,10 +187,11 @@ async function createBills() {
       dismiss="{(ok) => {
         deselector = false;
         if (ok) {
+          doDeselect();
         }
       }}"
     >
-      <div slot="body">deselect</div>
+      <div slot="body"><SelectOptions options="{deselectOptions}" /></div>
     </Modal>
   {/if}
   <div class="flex flex-row">
