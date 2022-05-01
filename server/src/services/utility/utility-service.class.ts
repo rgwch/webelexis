@@ -1,4 +1,6 @@
 import { ElexisUtils } from './../../util/elexis-types';
+import Samdas from '@rgwch/samdastools'
+
 const util = new ElexisUtils()
 
 export class Utility {
@@ -9,7 +11,18 @@ export class Utility {
       case "unpack": {
         return await util.unpackStringsFromString(params)
       }
-
+      case "konsText": {
+        if (params && params.query) {
+          const result = util.getVersionedResource(params.query.entry)
+          if (result && result.text) {
+            result["html"] = await Samdas.toHtml(result.text)
+          }
+          return result
+        } else {
+          console.log(JSON.stringify(params))
+          throw new Error("pad parameters for setField " + JSON.stringify(params))
+        }
+      }
       default:
         throw new Error("invalid Utility call: get " + id)
     }

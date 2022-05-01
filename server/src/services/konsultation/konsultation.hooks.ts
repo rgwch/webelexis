@@ -55,7 +55,7 @@ const doSort = (context) => {
 /**
  * Hook to apply after find()
  * Convert encounter entries from Elexis internal VersionedResource/Samdas to
- * html (of the latest Version)
+ * html and delta
  */
 const readKonsText = (context) => {
   const raw = context.result
@@ -218,6 +218,11 @@ const allowNull = (ctx) => {
   }
 }
 
+/**
+ * retrieve all encounters for which no bill was created
+ * @param ctx
+ * @returns an array of konsdef's: {patientid,konsid,fallid,falldatum,falltitel,konsdatum,lastname,firstname,birthdate}
+ */
 const unbilled = async (ctx) => {
   if (ctx.params.query.id === 'unbilled') {
     // const query = 'SELECT distinct PATIENTID FROM FAELLE '
@@ -253,7 +258,7 @@ export default {
   after: {
     all: [],
     find: [readKonsText],
-    get: [readSingleKonsText],
+    get: [/* readSingleKonsText */],
     create: [],
     update: [],
     patch: [],

@@ -19,12 +19,20 @@ import { BillingsManager } from './billings-model'
 import { getService } from '../services/io'
 import { Money } from './money'
 import type { FlexformConfig } from '../widgets/flexformtypes'
+import type { Service } from '@feathersjs/feathers'
 
 let trl
 const un = _.subscribe((res) => {
   trl = res
 })
 
+export type EncounterEntry = {
+  remark: string
+  html?: string
+  timestamp: string
+  delta?: any
+  md?: string
+}
 /**
  * An Elexis "Konsultation"
  */
@@ -101,12 +109,14 @@ export class EncounterModel {
   private km: KontaktManager
   private em: EncounterManager
   private billings: Array<BillingModel>
+  private utility: Service<any>
 
   constructor(private enc: EncounterType) {
     this.bm = new BillingsManager()
     this.cm = new CaseManager()
     this.km = new KontaktManager()
     this.em = new EncounterManager()
+    this.utility = getService("utility")
   }
 
   private timeString(t: string) {
@@ -179,9 +189,22 @@ export class EncounterModel {
     return dat
   }
 
-  public async setInvoice(invoideId: string) {
-    this.enc.rechnungsid = invoideId
+  public async setInvoice(invoiceId: string) {
+    this.enc.rechnungsid = invoiceId
     await this.em.save(this.enc)
+  }
+
+  public async getKonsText() {
+    if (this.enc.eintrag) {
+      if (this.enc.eintrag.html) {
+        return this.enc.eintrag
+      } else {
+        const res = await this.utility.get("konsText", { query: { entry: this.enc.eintrag } })
+        return res
+      }
+    } else {
+      return { html: "<p>Kein Eintrag</p>" }
+    }
   }
 
   public static getDefinition(): FlexformConfig {

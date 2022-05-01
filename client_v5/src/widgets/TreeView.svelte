@@ -75,13 +75,15 @@ function dragover(event) {
       >
         <Fa class="mx-2 cursor-move" icon="{faGripVertical}" />
         {#if e.props.open}
-          <Fa icon="{faCaretDown}" />
           <span
             on:click="{() => {
               e.props.open = !e.props.open;
               dispatch('selected', e);
             }}"
-            class="cursor-pointer">{labelProvider(e)}</span
+            class="cursor-pointer"
+          >
+            <Fa icon="{faCaretDown}" />
+            {labelProvider(e)}</span
           >
           <div class="relative left-2">
             <svelte:self
@@ -91,13 +93,15 @@ function dragover(event) {
             />
           </div>
         {:else}
-          <Fa icon="{faCaretRight}" />
           <span
             on:click="{() => {
               e.props.open = !e.props.open;
               dispatch('selected', e);
             }}"
-            class="cursor-pointer">{labelProvider(e)}</span
+            class="cursor-pointer"
+          >
+            <Fa icon="{faCaretRight}" />
+            {labelProvider(e)}</span
           >
         {/if}
       </p>

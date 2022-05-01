@@ -8,11 +8,14 @@ export let entity:EncounterType;
 const form: FlexformConfig = EncounterModel.getDefinition();
 form.title = $_("encounter.detail");
 let sum: Money;
-new EncounterModel(entity).getSum().then((s) => (sum = s));
+let entry: string
+const kons=new EncounterModel(entity)
+kons.getSum().then((s) => (sum = s));
+kons.getKonsText().then(result=>entry=result.html)
 </script>
 
 <template>
   <Form ff_cfg="{form}" entity="{entity}" lockable="{true}" />
   <p>{$_("encounter.billed")}: {sum?.getFormatted()}</p>
-  <p>{@html entity?.eintrag?.html}</p>
+  <p>{@html entry}</p>
 </template>
