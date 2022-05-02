@@ -8,7 +8,7 @@ describe('bills', () => {
     service = app.service('bills')
 
   })
-  afterEach(() => {
+  afterAll(() => {
     delete app["knexClient"]
   })
   it('registered the service', () => {

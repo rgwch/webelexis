@@ -6,7 +6,7 @@ describe("encounters", () => {
   beforeAll(() => {
     service = app.service('konsultation')
   })
-  afterEach(() => {
+  afterAll(() => {
     delete app['knexClient']
   })
 
@@ -21,7 +21,7 @@ describe("encounters", () => {
     expect(enc).toHaveProperty("eintrag")
   })
 
-  it('gets an ecounter by id', async () => {
+  xit('gets an ecounter by id', async () => {
     const result = await service.get("04c6bd576be743af82c4efceb")
     expect(result).toBeTruthy()
     expect(result).toHaveProperty("eintrag")

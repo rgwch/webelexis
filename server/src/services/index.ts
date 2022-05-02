@@ -31,6 +31,14 @@ import metaArticle from './meta-article/meta-article.service'
 import briefe from './briefe/briefe.service'
 import { ACE, declareACE } from '../util/acl'
 import utility from './utility/utility-service'
+import blob from './blob/blob.service'
+import schedule from './schedule/schedule.service'
+import stickynotes from './stickynotes/stickynotes.service'
+import bills from './bills/bills.service'
+import invoice from './invoice/invoice.service'
+import payments from './payments/payments.service'
+import diagnose from './diagnose/diagnose.service'
+
 const generateACLs = (servicename) => {
   const a = []
   const a1 = new ACE(servicename)
@@ -42,12 +50,6 @@ const generateACLs = (servicename) => {
   const a7 = new ACE(servicename + '.get', a6)
   declareACE([a1, a2, a3, a4, a5, a6, a7])
 }
-import schedule from './schedule/schedule.service'
-import stickynotes from './stickynotes/stickynotes.service'
-import bills from './bills/bills.service'
-import invoice from './invoice/invoice.service'
-import payments from './payments/payments.service'
-import diagnose from './diagnose/diagnose.service'
 
 export default (app) => {
   app.configure(elexisConfig)
@@ -88,4 +90,5 @@ export default (app) => {
   app.configure(payments)
   app.configure(diagnose)
   app.configure(utility)
+  app.configure(blob)
 }

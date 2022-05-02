@@ -38,6 +38,9 @@
   "lucinda": {
     "url": "http://localhost:9997/lucinda/3.0/"
   },
+  "blob":{
+    "namespace": "webelexis"
+  },
   "solr": {
     "host": "http://localhost:8983/solr",
     "core": "elexisdata",
