@@ -64,39 +64,29 @@ function dragover(event) {
     on:drop|preventDefault|stopPropagation="{dropped}"
     on:dragenter|preventDefault="{dragenter}"
     on:dragleave|preventDefault="{dragleave}"
-    on:dragover|preventDefault="{dragover}"
-  >
+    on:dragover|preventDefault="{dragover}">
     {#each trees as e, index}
       <p
         class="px-2 my-0"
         draggable="true"
         on:dragstart="{(event) => handleDragStart(event, e)}"
-        on:dragend="{handleDragEnd}"
-      >
+        on:dragend="{handleDragEnd}">
         <!-- Fa class="mx-2 cursor-move" icon="{faGripVertical}" / -->
         <span
           on:click="{() => {
             e.props.open = !e.props.open;
           }}"
-          class="cursor-pointer"
-        >
-          <Fa icon="{e.props.open ? faCaretDown : faCaretRight}" /></span
-        >
+          class="cursor-pointer">
+          <Fa icon="{e.props.open ? faCaretDown : faCaretRight}" /></span>
+        <span class="mx-2 my-0" on:click="{() => dispatch('selected', e)}">
+          {labelProvider(e)}</span>
         {#if e.props.open}
-          <span class="mx-2 my-0" on:click="{() => dispatch('selected', e)}">
-            {labelProvider(e)}</span
-          >
           <div class="relative left-2">
             <svelte:self
               trees="{e.getChildren()}"
               labelProvider="{labelProvider}"
-              on:selected
-            />
+              on:selected />
           </div>
-        {:else}
-          <span class="mx-2 my-0" on:click="{() => dispatch('selected', e)}">
-            {labelProvider(e)}</span
-          >
         {/if}
       </p>
     {/each}

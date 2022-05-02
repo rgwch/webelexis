@@ -54,13 +54,10 @@ function sort(col: string) {
           ><input
             type="checkbox"
             on:click="{checkall}"
-            bind:checked="{allchecked}"
-          /></th
-        >
+            bind:checked="{allchecked}" /></th>
         <th
           class="px-5 mx-5 hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('rnnummer')}">{$_("billing.invoicenumber")}</th
-        >
+          on:click="{() => sort('rnnummer')}">{$_("billing.invoicenumber")}</th>
         <th
           class="hover:text-blue-600 underline cursor-pointer"
           on:click="{() => sort('rndatum')}"
@@ -73,18 +70,15 @@ function sort(col: string) {
         </th>
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('statusdatum')}">{$_("billing.statedate")}</th
-        >
+          on:click="{() => sort('statusdatum')}">{$_("billing.statedate")}</th>
         <th
           class="hover:text-blue-600 underline cursor-pointer"
           on:click="{() => {
             sort('betrag');
-          }}">{$_("billing.amount")}</th
-        >
+          }}">{$_("billing.amount")}</th>
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('_Patname')}">{$_("billing.patient")}</th
-        >
+          on:click="{() => sort('_Patname')}">{$_("billing.patient")}</th>
       </thead>
       <tbody>
         {#if busy}
@@ -96,28 +90,23 @@ function sort(col: string) {
                 <input
                   type="checkbox"
                   bind:checked="{bills[idx].selected}"
-                  on:click="{() => select(idx)}"
-                />
+                  on:click="{() => select(idx)}" />
               </td>
               <td
                 class="text-center cursor-pointer underline hover:text-blue-600"
-                on:click="{() => (current = bill)}">{bill.rnnummer}</td
-              >
+                on:click="{() => (current = bill)}">{bill.rnnummer}</td>
               <td class="text-center"
                 >{DateTime.fromISO(bill.rndatum).toFormat(
                   $_("formatting.date")
-                )}</td
-              >
+                )}</td>
               <td class="text-center"
-                >{$_("billing." + InvoiceState[bill.rnstatus])}</td
-              >
+                >{$_("billing." + InvoiceState[bill.rnstatus])}</td>
               <td class="text-center"
                 >{DateTime.fromISO(bill.statusdatum).toFormat(
                   $_("formatting.date")
-                )}</td
-              >
-              <td class="text-right">{new Money(bill.betrag).getFormatted()}</td
-              >
+                )}</td>
+              <td class="text-right"
+                >{new Money(bill.betrag).getFormatted()}</td>
               <td class="text-left px-8">
                 {bill._Patname}
               </td>
@@ -132,8 +121,7 @@ function sort(col: string) {
       title="{current._Patname + ', ' + current.rnnummer}"
       dismiss="{() => {
         current = undefined;
-      }}"
-    >
+      }}">
       <div slot="body">
         <Bill invoice="{current}" />
       </div>

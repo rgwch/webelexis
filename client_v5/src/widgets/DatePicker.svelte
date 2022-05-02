@@ -113,8 +113,7 @@ onMount(() => {
         <Calendar
           bind:date="{current}"
           isAllowed="{isAllowed}"
-          on:select="{dateChanged}"
-        />
+          on:select="{dateChanged}" />
       </div>
     {/if}
   </div>

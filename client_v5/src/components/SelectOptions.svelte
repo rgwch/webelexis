@@ -11,8 +11,7 @@ export let options: BillingsFilter = {};
       bind:checked="{options.bSelected}"
       on:click="{() => {
         options.bSelected = !options.bSelected;
-      }}"
-    />
+      }}" />
     <span>Markierte</span>
   </div>
   <div>
@@ -21,8 +20,7 @@ export let options: BillingsFilter = {};
       bind:checked="{options.bAll}"
       on:click="{() => {
         options.bAll = !options.bAll;
-      }}"
-    />
+      }}" />
     <span>Alle</span>
   </div>
   <div>
@@ -34,8 +32,7 @@ export let options: BillingsFilter = {};
       class="border"
       on:change="{() => {
         options.bFirstolder = options.firstolderdays > 0;
-      }}"
-    /><span>Tage</span>
+      }}" /><span>Tage</span>
   </div>
   <div>
     <input type="checkbox" bind:checked="{options.bLastolder}" />
@@ -46,16 +43,14 @@ export let options: BillingsFilter = {};
       class="border"
       on:change="{() => {
         options.bLastolder = options.lastolderdays > 0;
-      }}"
-    /><span>Tage</span>
+      }}" /><span>Tage</span>
   </div>
   <div>
     <input type="checkbox" bind:checked="{options.bBetween}" />
     <span class="px-2">Konsultationen zwischen</span><input
       type="date"
       bind:value="{options.betweenfrom}"
-      class="border"
-    /><span>und </span>
+      class="border" /><span>und </span>
     <input type="date" bind:value="{options.betweenuntil}" class="border" />
   </div>
   <div>
@@ -68,8 +63,7 @@ export let options: BillingsFilter = {};
       class="border"
       on:change="{() => {
         options.bAmount = options.amount > 0;
-      }}"
-    />
+      }}" />
   </div>
   <div>
     <input type="checkbox" bind:checked="{options.bAmountBelow}" />
@@ -81,8 +75,7 @@ export let options: BillingsFilter = {};
       class="border"
       on:change="{() => {
         options.bAmountBelow = options.amountBelow > 0;
-      }}"
-    />
+      }}" />
   </div>
   <div>
     <input type="checkbox" bind:checked="{options.bName}" />
@@ -93,7 +86,6 @@ export let options: BillingsFilter = {};
       class="border"
       on:change="{() => {
         options.bName = options.name.length > 0;
-      }}"
-    />
+      }}" />
   </div>
 </template>

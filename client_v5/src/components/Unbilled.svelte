@@ -170,8 +170,7 @@ async function createBills() {
       class="justify-center relative left-20"
       src="webelexis-anim.gif"
       width="150px"
-      alt="wait..."
-    />
+      alt="wait..." />
   {/if}
   {#if selector}
     <Modal
@@ -181,8 +180,7 @@ async function createBills() {
         if (ok) {
           doSelect();
         }
-      }}"
-    >
+      }}">
       <div slot="body"><SelectOptions options="{selectOptions}" /></div>
     </Modal>
   {/if}
@@ -194,8 +192,7 @@ async function createBills() {
         if (ok) {
           doDeselect();
         }
-      }}"
-    >
+      }}">
       <div slot="body"><SelectOptions options="{deselectOptions}" /></div>
     </Modal>
   {/if}
@@ -206,14 +203,12 @@ async function createBills() {
           class="ml-4 text-sm cursor-pointer underline hover:text-blue-600 rounded-full"
           on:click="{() => {
             selector = true;
-          }}">{$_("actions.select")}</span
-        >
+          }}">{$_("actions.select")}</span>
       </h2>
       <TreeView
         bind:trees="{patients}"
         labelProvider="{labelProvider}"
-        on:selected="{(event) => detailDisplay(event.detail)}"
-      />
+        on:selected="{(event) => detailDisplay(event.detail)}" />
     </div>
 
     <div class="border-2 border-solid border-blue-400 rounded m-2 flex-1">
@@ -222,19 +217,16 @@ async function createBills() {
           class="ml-4 text-sm cursor-pointer underline hover:text-blue-600"
           on:click="{() => {
             deselector = true;
-          }}">{$_("actions.deselect")}</span
-        >
+          }}">{$_("actions.deselect")}</span>
       </h2>
 
       <TreeView
         bind:trees="{tSelected}"
         labelProvider="{labelProvider}"
-        on:selected="{(event) => detailDisplay(event.detail)}"
-      />
+        on:selected="{(event) => detailDisplay(event.detail)}" />
       <button
         class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 rounded-full"
-        on:click="{createBills}"
-      >
+        on:click="{createBills}">
         {$_("billing.actions.create")}
       </button>
     </div>

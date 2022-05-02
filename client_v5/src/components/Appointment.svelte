@@ -17,8 +17,7 @@ export let termin: TerminModel;
       <span
         on:click="{() => {
           termin.props.open = !termin.props.open;
-        }}"
-      >
+        }}">
         <Fa icon="{faCaretRight}" class="mx-2" />
       </span>
     {/if}
