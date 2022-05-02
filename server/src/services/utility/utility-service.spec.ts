@@ -1,4 +1,7 @@
-import app from '../../app'
+import app from '../../test/app'
+import utility from './utility-service'
+app.configure(utility)
+
 import fs from 'fs'
 import { ElexisUtils } from '../../util/elexis-types'
 const util = new ElexisUtils()
@@ -10,9 +13,7 @@ describe('Utility', () => {
     service = app.service('utility')
 
   })
-  afterAll(() => {
-    delete app["knexClient"]
-  })
+  
   it('registered the service', () => {
     expect(service).toBeTruthy()
   })

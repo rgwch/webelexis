@@ -1,4 +1,6 @@
-import app from '../../app'
+import app from '../../test/app'
+import blob from './blob.service'
+app.configure(blob)
 
 describe('Blob',()=>{
   let service
@@ -20,6 +22,9 @@ describe('Blob',()=>{
     await service.update("test",{blob})
     const check=await service.get("test")
     expect(check).toEqual(blob)
+    await service.update("test",{blob:"other"})
+    const updated=await service.get("test")
+    expect(updated).toEqual("other")
     await service.remove("test")
     expect(await service.get("test")).toBeFalsy()
     
