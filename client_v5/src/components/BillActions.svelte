@@ -19,7 +19,7 @@ async function output(withPrint: boolean) {
   if (err) {
     alert("Es gab Fehler");
   }
-  alert("ok");
+  // alert("ok");
 }
 async function demandlevel(up: boolean = true) {
   for (const sel of selection) {
@@ -42,7 +42,7 @@ async function demandlevel(up: boolean = true) {
             alert("State can't be changed automatically " + sel.rnnummer);
         }
         const res = await bill.setInvoiceState(newstate);
-        alert("OK: " + JSON.stringify(res));
+        // alert("OK: " + JSON.stringify(res));
       } catch (err) {
         alert("Error: " + err);
       }

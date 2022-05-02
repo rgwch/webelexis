@@ -68,21 +68,22 @@ function dragover(event) {
   >
     {#each trees as e, index}
       <p
-        class="my-1 px-2 my-1"
+        class="px-2 my-0"
         draggable="true"
         on:dragstart="{(event) => handleDragStart(event, e)}"
         on:dragend="{handleDragEnd}"
       >
-        <Fa class="mx-2 cursor-move" icon="{faGripVertical}" />
+        <!-- Fa class="mx-2 cursor-move" icon="{faGripVertical}" / -->
+        <span
+          on:click="{() => {
+            e.props.open = !e.props.open;
+          }}"
+          class="cursor-pointer"
+        >
+          <Fa icon="{e.props.open ? faCaretDown : faCaretRight}" /></span
+        >
         {#if e.props.open}
-          <span
-            on:click="{() => {
-              e.props.open = !e.props.open;
-              dispatch('selected', e);
-            }}"
-            class="cursor-pointer"
-          >
-            <Fa icon="{faCaretDown}" />
+          <span class="mx-2 my-0" on:click="{() => dispatch('selected', e)}">
             {labelProvider(e)}</span
           >
           <div class="relative left-2">
@@ -93,14 +94,7 @@ function dragover(event) {
             />
           </div>
         {:else}
-          <span
-            on:click="{() => {
-              e.props.open = !e.props.open;
-              dispatch('selected', e);
-            }}"
-            class="cursor-pointer"
-          >
-            <Fa icon="{faCaretRight}" />
+          <span class="mx-2 my-0" on:click="{() => dispatch('selected', e)}">
             {labelProvider(e)}</span
           >
         {/if}
