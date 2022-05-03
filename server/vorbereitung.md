@@ -41,6 +41,9 @@ Optional arbeitet Webelexis mit [Lucinda](https://elexis.ch/ungrad/features/luci
 
 Installation und Konfiguration von Lucinda ist vergleichsweise simpel.
 
+### Etcd installieren
+
+Webelexis speichert manche Daten in einer [etcd](https://etcd.io/) Datenbank. Damit der service "blob" funktioniert, muss etcd installiert sein (gibt es für Linux, Windows und Mac)
 
 ### Nodejs installieren
 
