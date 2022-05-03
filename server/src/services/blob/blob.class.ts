@@ -1,5 +1,10 @@
 import { Etcd3, Namespace } from 'etcd3'
+import { v4 as uuid } from 'uuid'
+import {create,extract} from '../../util/ziptool'
 
+type entity={
+  id: string
+}
 export class Blob {
   private client
   private ns: Namespace
@@ -11,10 +16,28 @@ export class Blob {
 
   }
   async get(id, params) {
-    return this.ns.get(id)
+    const zipped= await this.ns.get(id).buffer()
+    const obj=await extract(zipped,id)
+    return JSON.parse(obj)
+  }
+  async create(obj:any){
+    if(!obj.id){
+      obj.id=uuid()
+    }
+    const zipped=create(obj.id,JSON.stringify(obj))
+    await this.ns.put(obj.id).value(zipped)
+    return obj.id
   }
   async update(id, data, params) {
-    return this.ns.put(id).value(data.blob)
+    const zipped=create(id,JSON.stringify(data))
+    await this.ns.put(id).value(zipped)
+    /*
+    if(prev){
+      const obj=await extract(prev,id)
+      return JSON.parse(obj)
+    }
+    */
+    return data
   }
 
   async remove(id, params) {
