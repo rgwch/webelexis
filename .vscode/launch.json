@@ -50,6 +50,20 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Single Jest Test",
+      "program": "${workspaceFolder}/server/node_modules/jest/bin/jest.js",
+      "outputCapture": "std",
+      "args": [
+        "src/services/blob/blob.spec.ts"
+      ],
+      "cwd": "${workspaceFolder}/server",
+      "env": {
+        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Server debug",
       "program": "${workspaceFolder}/server/dist/index.js",
       "outputCapture": "std",

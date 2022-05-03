@@ -1,8 +1,10 @@
 import { Etcd3, Namespace } from 'etcd3'
 import { v4 as uuid } from 'uuid'
-import {create,extract} from '../../util/ziptool'
+import { create, extract } from '../../util/ziptool'
 
-type entity={
+// https://microsoft.github.io/etcd3/classes/etcd3.html
+
+type entity = {
   id: string
 }
 export class Blob {
@@ -16,27 +18,31 @@ export class Blob {
 
   }
   async get(id, params) {
-    const zipped= await this.ns.get(id).buffer()
-    const obj=await extract(zipped,id)
+    const zipped = await this.ns.get(id).buffer()
+    if (!zipped) {
+      throw new Error("Item not found")
+    }
+    const obj = await extract(zipped, id)
     return JSON.parse(obj)
   }
-  async create(obj:any){
-    if(!obj.id){
-      obj.id=uuid()
+  async create(obj: any) {
+    if (!obj.id) {
+      obj.id = uuid()
     }
-    const zipped=create(obj.id,JSON.stringify(obj))
+    const zipped = create(obj.id, JSON.stringify(obj))
     await this.ns.put(obj.id).value(zipped)
     return obj.id
   }
   async update(id, data, params) {
-    const zipped=create(id,JSON.stringify(data))
-    await this.ns.put(id).value(zipped)
-    /*
+    const zipped = create(id, JSON.stringify(data))
+    const prev = await (await this.ns.put(id).value(zipped).getPrevious())
+    
     if(prev){
-      const obj=await extract(prev,id)
+      const val=prev.value
+      const obj=await extract(val,id)
       return JSON.parse(obj)
     }
-    */
+    
     return data
   }
 
