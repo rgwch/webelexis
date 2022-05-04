@@ -56,10 +56,10 @@ Empfehlung: Node >=10 und NPM>=5 (Die verwendete Node-Version muss zwingend Feat
 
 Folgende Java-Libraries müssen besorgt und nach server/lib kopiert werden:
 
-* jackson-annotations-2.9.8.jar
-* jackson-core-2.9.8.jar
-* jackson-databind-2.9.8.jar
-* rgw-toolbox-4.2.7.jar
+* jackson-annotations-2.13.2.jar
+* jackson-core-2.13.2.jar
+* jackson-databind-2.13.2.jar
+* rgw-toolbox-4.2.11.jar
 
 Man kann das automatisieren, wenn man Maven >=3.3 installiert hat: Einfach ins Verzeichnis server/lib gehen, und dort `./fetch.sh` eingeben.
 
@@ -86,14 +86,6 @@ sollte nun fehlerfrei durchlaufen
 
 Dann Server mit `npm start` laufen lassen.
 
-### Client aufsetzen und testen
-
-    cd ../client
-    npm install
-    npm install -g aurelia-cli
-    au run
-
-Dann einen Browser auf localhost:9000 richten.
 
 # Alternative: Docker
 
