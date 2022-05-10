@@ -4,7 +4,7 @@ For some tasks we need java libraries (see src/util/elexis-types.ts for more inf
 
 These are:
 
-* rgw-toolbox-x.y.z.jar (https://elexis.jfrog.io/artifactory/default-maven-virtual/rgwch/rgw-toolbox/4.2.7/rgw-toolbox-4.2.7.jar)
+* rgw-toolbox-x.y.z.jar (https://repo.repsy.io/mvn/rgwch/rgw-toolbox)
 * jackson-core-x.y.z.jar
 * jackson-annotations-x.y.z.jar
 * jackson-databind-x.y.z.jar
@@ -20,3 +20,7 @@ This will fetch more libraries than needed for webelexis, though. You can delete
 The shell script fetch.sh automates all that. You just need Maven 3.3 or higher, and there you go.
 
 
+# Etcd key/value datavase
+
+The 'blob' service uses an etcd database server. To simplify things, here's a docker-compose for a simple setup
+ 
