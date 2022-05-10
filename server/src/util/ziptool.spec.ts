@@ -17,7 +17,7 @@ describe("Ziptool", () => {
   })
 
   it("encrypts and decrypts a text",async ()=>{
-    const input = randomBytes(1000).toString("utf-8")
+    const input = randomBytes(1000)
     const result=await encrypt(input,"TopSecret", "Salt")
     const decrypted=await decrypt(result,"TopSecret","Salt")
     expect(decrypted).toEqual(input)

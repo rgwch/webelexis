@@ -40,7 +40,8 @@
   },
   "blob":{
     "namespace": "webelexis",
-    "salt": "thisShouldBeAppSpec"
+    "salt": "thisShouldBeAppSpec",
+    "indexer": "solr"
   },
   "solr": {
     "host": "http://localhost:8983/solr",
