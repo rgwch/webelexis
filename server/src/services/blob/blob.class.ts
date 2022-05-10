@@ -14,8 +14,6 @@ export class Blob {
     const cfg = this.options.cfg
     this.client = new Etcd3()
     this.ns = this.client.namespace(cfg?.namespace || "Webelexis")
-
-
   }
   async get(id, params) {
     const zipped = await this.ns.get(id).buffer()
@@ -23,7 +21,7 @@ export class Blob {
       throw new Error("Item not found")
     }
     const obj = await extract(zipped, id)
-    return JSON.parse(obj)
+    return JSON.parse(obj.toString())
   }
   async create(obj: any) {
     if (!obj.id) {
@@ -36,13 +34,13 @@ export class Blob {
   async update(id, data, params) {
     const zipped = create(id, JSON.stringify(data))
     const prev = await (await this.ns.put(id).value(zipped).getPrevious())
-    
-    if(prev){
-      const val=prev.value
-      const obj=await extract(val,id)
+
+    if (prev) {
+      const val = prev.value
+      const obj = await extract(val, id)
       return JSON.parse(obj)
     }
-    
+
     return data
   }
 

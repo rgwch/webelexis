@@ -92,6 +92,7 @@
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.16.8",
     "@feathersjs/cli": "^3.8.7",
+    "@rgwch/simple-crypt": "^1.0.9",
     "@types/jest": "^27.4.0",
     "eslint": "^8.7.0",
     "jest": "^27.4.7",
