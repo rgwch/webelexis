@@ -9,10 +9,7 @@ describe('Blob', () => {
     service = app.service("blob")
   })
 
-  afterAll(() => {
-    delete app["knexClient"]
-  })
-
+ 
   it('registered the service', () => {
     expect(service).toBeTruthy()
   })
