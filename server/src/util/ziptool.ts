@@ -4,7 +4,13 @@ import {Crypter, Modes} from '@rgwch/simple-crypt'
 import unzipper from 'unzipper'
 
 
-export const create = (name, data) => {
+/**
+ * Create a zip file with one entry
+ * @param name name of the entry
+ * @param data contents of the file
+ * @returns the zipped file
+ */
+export const create = (name:string, data:any) => {
   const zipped = new Zip()
   zipped.addFile(Buffer.from(data), { filename: name })
   const compressed = zipped.compress()
@@ -16,10 +22,21 @@ export const create = (name, data) => {
   return def
 }
 
+/**
+ * Extract a zipped file previously created with create
+ * @param zipped 
+ * @param name 
+ * @returns 
+ */
 export const extract = async (zipped: Buffer, name: string): Promise<Buffer> => {
   return await unzip(zipped, name)
 }
 
+/**
+ * Self test
+ * @param fakedata 
+ * @returns 
+ */
 export const check = async (fakedata) => {
   const zipped = await create("test", fakedata)
   const unzipped = await extract(zipped, "test")

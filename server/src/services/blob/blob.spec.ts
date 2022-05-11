@@ -4,6 +4,8 @@
 
 import app from '../../test/app'
 import blob from './blob.service'
+import lucinda from '../lucinda/lucinda.service'
+app.configure(lucinda)
 app.configure(blob)
 
 describe('Blob', () => {
@@ -19,7 +21,6 @@ describe('Blob', () => {
   })
 
   it("stores, retrieves and deletes an entry", async () => {
-    jest.setTimeout(30000)
     const id = "testblob"
     const blob = { id, data: "Something" }
     const id2 = await service.create(blob)

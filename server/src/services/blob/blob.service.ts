@@ -9,5 +9,5 @@ import {Blob} from './blob.class'
 export default function(app){
   // this reads from server/config/[runmode].json
   const options=app.get("blob")
-  app.use("/blob", new Blob(options))
+  app.use("/blob", new Blob(app,options))
 }

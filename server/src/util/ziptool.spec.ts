@@ -16,19 +16,20 @@ describe("Ziptool", () => {
     expect(result).toEqual(input)
   })
 
-  it("encrypts and decrypts a text",async ()=>{
+  it("encrypts and decrypts a text", async () => {
     const input = randomBytes(1000)
-    const result=await encrypt(input,"TopSecret", "Salt")
-    const decrypted=await decrypt(result,"TopSecret","Salt")
+    const result = await encrypt(input, "TopSecret", "Salt")
+    const decrypted = await decrypt(result, "TopSecret", "Salt")
     expect(decrypted).toEqual(input)
   })
-  xit("expands an elexis extinfo entry", async () => {
-    try {
-      const zipped = fs.readFileSync("./test/test4.bin")
-      const unzipped = await extract(zipped, "")
-      expect(unzipped).toBeTruthy()
-    } catch (err) {
-      throw (err)
-    }
+  it("fails on bad password", async () => {
+    const input = randomBytes(1000)
+    const result = await encrypt(input, "TopSecret", "Salt")
+    return expect(()=>decrypt(result, "TopSecre", "Salt")).rejects.toMatch(/pipeline Error.+/)
+  })
+  it("fails on bad salt", async () => {
+    const input = randomBytes(1000)
+    const result = await encrypt(input, "TopSecret", "SomeSaltySalt")
+    return expect(()=>decrypt(result, "TopSecret", "SomeSaltySalz")).rejects.toMatch(/pipeline Error.+/)
   })
 })

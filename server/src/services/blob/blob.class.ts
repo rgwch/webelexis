@@ -1,6 +1,6 @@
 import { Etcd3, Namespace } from 'etcd3'
 import { v4 as uuid } from 'uuid'
-import { create, extract } from '../../util/ziptool'
+import { encrypt, decrypt } from '../../util/ziptool'
 
 // https://microsoft.github.io/etcd3/classes/etcd3.html
 
@@ -10,34 +10,39 @@ type entity = {
 export class Blob {
   private client
   private ns: Namespace
-  constructor(private options) {
-    const cfg = this.options.cfg
+  constructor(private app, private options) {
     this.client = new Etcd3()
-    this.ns = this.client.namespace(cfg?.namespace || "Webelexis")
+    this.ns = this.client.namespace(this.options.namespace || "Webelexis")
   }
   async get(id, params) {
     const zipped = await this.ns.get(id).buffer()
     if (!zipped) {
       throw new Error("Item not found")
     }
-    const obj = await extract(zipped, id)
+    const obj = await decrypt(zipped, this.options.pwd, this.options.salt)
     return JSON.parse(obj.toString())
   }
   async create(obj: any) {
     if (!obj.id) {
       obj.id = uuid()
     }
-    const zipped = create(obj.id, JSON.stringify(obj))
+    const zipped = await encrypt(JSON.stringify(obj), this.options.pwd, this.options.salt)
     await this.ns.put(obj.id).value(zipped)
+    if (this.options.indexer) {
+      const indexer = this.app.service(this.options.indexer)
+      if (indexer) {
+        await indexer.create({ id: obj.id, payload: obj, type: "blob" })
+      }
+    }
     return obj.id
   }
   async update(id, data, params) {
-    const zipped = create(id, JSON.stringify(data))
+    const zipped = await encrypt(JSON.stringify(data), this.options.pwd, this.options.salt)
     const prev = await (await this.ns.put(id).value(zipped).getPrevious())
 
     if (prev) {
       const val = prev.value
-      const obj = await extract(val, id)
+      const obj = await decrypt(val, this.options.pwd, this.options.salt)
       return JSON.parse(obj.toString())
     }
 

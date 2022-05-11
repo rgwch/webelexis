@@ -41,7 +41,8 @@
   "blob":{
     "namespace": "webelexis",
     "salt": "thisShouldBeAppSpec",
-    "indexer": "lucinda"
+    "indexer": "lucinda",
+    "pwd": "PleaseChangeThis"
   },
   "solr": {
     "host": "http://localhost:8983/solr",
