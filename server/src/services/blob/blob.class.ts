@@ -38,7 +38,7 @@ export class Blob {
     if (prev) {
       const val = prev.value
       const obj = await extract(val, id)
-      return JSON.parse(obj)
+      return JSON.parse(obj.toString())
     }
 
     return data

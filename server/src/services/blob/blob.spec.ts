@@ -1,3 +1,7 @@
+/**
+ * Make Sure, etcd server is riûnning and reachable
+ */
+
 import app from '../../test/app'
 import blob from './blob.service'
 app.configure(blob)
