@@ -1,4 +1,11 @@
-version: '2'
+version: '2.4'
+
+volumes:
+  etcd_data:
+    driver: local
+  solrdata:
+  lucindadocs:
+  lucindamoved:
 
 services:
   etcd:
@@ -58,12 +65,6 @@ services:
         "node",
         "src/index.js"
       ]
-volumes:
-  etcd_data:
-    driver: local
-  solrdata:
-  lucindadocs:
-  lucindamoved:
 
 
 networks:

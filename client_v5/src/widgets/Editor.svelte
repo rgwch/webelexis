@@ -3,14 +3,22 @@ import { onMount, onDestroy } from "svelte";
 import { Editor } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 
+export let contents
 let element;
 let editor;
+
+/*
+$: {
+  console.log("Changed "+contents)
+  editor?.commands.setContent(contents)
+}
+*/
 
 onMount(() => {
   editor = new Editor({
     element: element,
     extensions: [StarterKit],
-    content: "<p>Hello World! 🌍️ </p>",
+    content: contents,
     onTransaction: () => {
       // force re-render so `editor.isActive` works as expected
       editor = editor;
