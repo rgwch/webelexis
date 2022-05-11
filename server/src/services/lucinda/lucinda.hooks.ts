@@ -13,7 +13,7 @@ const errhandler = (ctx) => {
 
 export default {
   before: {
-    all: [authenticate('jwt')],
+    all: [/* authenticate('jwt') */],
     find: [],
     get: [],
     create: [],
@@ -33,7 +33,7 @@ export default {
   },
 
   error: {
-    all: [errhandler],
+    all: [],
     find: [],
     get: [],
     create: [],

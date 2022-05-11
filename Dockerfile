@@ -2,6 +2,8 @@ FROM node:10-alpine
 EXPOSE 3030
 EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
+ARG TOOLBOX_VER=2.0.10
+ARG JACKSON_VER=2.13.2
 
 WORKDIR /home/node
 ADD client_v4/proprietary proprietary
@@ -34,14 +36,14 @@ RUN apk add --no-cache openjdk8 nano \
   && npm --production prune \
   && chown -R 1000:1000 /home/node/webelexis
 
-ADD --chown=1000:1000 https://bintray.com/rgwch/maven/download_file?file_path=rgwch%2Frgw-toolbox%2F4.2.7%2Frgw-toolbox-4.2.7.jar \
-  /home/node/webelexis/server/lib/rgw-toolbox-4.2.7.jar
-ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-annotations/2.9.8/jackson-annotations-2.9.8.jar \
-  /home/node/webelexis/server/lib/jackson-annotations-2.9.8.jar
-ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-core/2.9.8/jackson-core-2.9.8.jar \
-  /home/node/webelexis/server/lib/jackson-core-2.9.8.jar
-ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/2.9.8/jackson-databind-2.9.8.jar \
-  /home/node/webelexis/server/lib/jackson-databind-2.9.8.jar
+ADD --chown=1000:1000 https://repo.repsy.io/mvn/rgwch/rgw-toolbox/rgwch/rgw-toolbox/${TOOLBOX_VER}/rgw-toolbox-${TOOLBOX_VER}.jar \
+  /home/node/webelexis/server/lib/rgw-toolbox-${TOOLBOX_VER}.jar
+ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-annotations/${JACKSON_VER}/jackson-annotations-${JACKSON_VER}.jar \
+  /home/node/webelexis/server/lib/jackson-annotations-${JACKSON_VER}.jar
+ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-core/${JACKSON_VER}/jackson-core-${JACKSON_VER}.jar \
+  /home/node/webelexis/server/lib/jackson-core-${JACKSON_VER}.jar
+ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VER}/jackson-databind-${JACKSON_VER}.jar \
+  /home/node/webelexis/server/lib/jackson-databind-${JACKSON_VER}.jar
 
 
 

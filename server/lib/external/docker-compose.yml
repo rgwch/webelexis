@@ -1,0 +1,71 @@
+version: '2'
+
+services:
+  etcd:
+    image: docker.io/bitnami/etcd:3.5
+    container_name: webelexis_etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+    volumes:
+      - etcd_data:/bitnami/etcd
+    ports:
+      - 2380:2380
+      - 2379:2379
+      - 4001:4001
+  solr:
+    image: solr:8.5.2
+    container_name: lucinda_solr
+    volumes:
+      - ${SOLR_DATA:-solrdata}:/var/solr
+    ports:
+      - ${SOLR_PORT:-8983}:8983
+    command:
+      - solr-precreate
+      - gettingstarted
+    restart: always
+    networks:
+      - lucinda_net
+  tika:
+    image: apache/tika:1.24
+    container_name: lucinda_tika
+    ports:
+      - ${TIKA_PORT:-9998}:9998
+    networks:
+      - lucinda_net
+    restart: always
+
+  lucinda:
+    depends_on:
+      - solr
+      - tika
+    image: rgwch/lucinda-server:3.0.10
+    container_name: lucinda_main
+    environment:
+      - LUCINDA_SIMPLEWEB=${LUCINDA_SIMPLEWEB:-enabled}
+    volumes:
+      - ${LUCINDA_DOCBASE:-lucindadocs}:/var/lucinda_docbase
+      - ${LUCINDA_ATTIC:-lucindamoved}:/var/lucinda_attic
+    ports:
+      - ${LUCINDA_PORT:-9997}:9997
+    networks:
+      - lucinda_net
+    restart: on-failure
+    command:
+      [
+        "./util/wait-for-it.sh",
+        "solr:8983",
+        "--",
+        "node",
+        "src/index.js"
+      ]
+volumes:
+  etcd_data:
+    driver: local
+  solrdata:
+  lucindadocs:
+  lucindamoved:
+
+
+networks:
+  lucinda_net:
+    driver: bridge

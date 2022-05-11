@@ -6,6 +6,7 @@ import { encrypt, decrypt } from '../../util/ziptool'
 
 type entity = {
   id: string
+  data: string
 }
 export class Blob {
   private client
@@ -31,7 +32,7 @@ export class Blob {
     if (this.options.indexer) {
       const indexer = this.app.service(this.options.indexer)
       if (indexer) {
-        await indexer.create({ id: obj.id, payload: obj, type: "blob" })
+        await indexer.create({ id: obj.id, contents: obj.data, type: "blob" })
       }
     }
     return obj.id
@@ -50,6 +51,12 @@ export class Blob {
   }
 
   async remove(id, params) {
+    if (this.options.indexer) {
+      const indexer = this.app.service(this.options.indexer)
+      if (indexer) {
+        await indexer.remove(id)
+      }
+    }
     return this.ns.delete().key(id)
   }
 
