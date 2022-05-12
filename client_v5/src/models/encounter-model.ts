@@ -27,11 +27,10 @@ const un = _.subscribe((res) => {
 })
 
 export type EncounterEntry = {
-  remark: string
+  remark?: string
   html?: string
-  timestamp: string
-  delta?: any
-  md?: string
+  timestamp?: string
+  json?: any
 }
 /**
  * An Elexis "Konsultation"
@@ -110,6 +109,7 @@ export class EncounterModel {
   private em: EncounterManager
   private billings: Array<BillingModel>
   private utility: Service<any>
+  private blob: Service<any>
 
   constructor(private enc: EncounterType) {
     this.bm = new BillingsManager()
@@ -117,6 +117,7 @@ export class EncounterModel {
     this.km = new KontaktManager()
     this.em = new EncounterManager()
     this.utility = getService("utility")
+    this.blob=getService("blob")
   }
 
   private timeString(t: string) {
@@ -194,19 +195,31 @@ export class EncounterModel {
     await this.em.save(this.enc)
   }
 
-  public async getKonsText() {
+
+  public async getKonsText() : Promise<EncounterEntry> {
+    let result:EncounterEntry={ html: "<p>Kein Eintrag</p>" };
     if (this.enc.eintrag) {
       if (this.enc.eintrag.html) {
-        return this.enc.eintrag
+        result = this.enc.eintrag
       } else {
-        const res = await this.utility.get("konsText", { query: { entry: this.enc.eintrag } })
-        return res
+        result = await this.utility.get("konsText", { query: { entry: this.enc.eintrag } })
       }
-    } else {
-      return { html: "<p>Kein Eintrag</p>" }
+    } 
+    try{
+      const blob=await this.blob.get(this.enc.id)
+      result.json=blob.data
+
+    }catch(err){
+      if(err.message !== "Item not found"){
+        alert(err)
+      }
     }
+    return result
   }
 
+  public async setKonsText(contents: any){
+    await this.blob.create({id:this.enc.id,data:contents})
+  }
   public static getDefinition(): FlexformConfig {
     return {
       title: () => "",

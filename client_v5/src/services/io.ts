@@ -66,8 +66,8 @@ export interface IService<T> {
   remove(id: NullableId, params?: Params): Promise<T | T[]>;
 }
 
-export type ServiceType = "admin" | "billable" | "billing" | "bills" | "diagnose" | "fall" | "invoice" | "konsultation" | "kontakt" |
-  "patient" | "payments" | "stickers" | "termin" | "user" | "utility"
+export type ServiceType = "admin" | "billable" | "billing" | "bills" | "blob" | "diagnose" | "fall" | "invoice" | "konsultation" |
+  "kontakt" | "patient" | "payments" | "stickers" | "termin" | "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 
 export const login = async (username?: string, password?: string) => {

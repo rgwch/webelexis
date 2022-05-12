@@ -1,7 +1,8 @@
 <script lang="ts">
-import { onMount, onDestroy } from "svelte";
+import { onMount, onDestroy, createEventDispatcher } from "svelte";
 import { Editor } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
+const dispatch=createEventDispatcher()
 
 export let contents
 let element;
@@ -19,7 +20,11 @@ onMount(() => {
     element: element,
     extensions: [StarterKit],
     content: contents,
+    onBlur: ()=>{
+      dispatch("changed", editor.getJSON())
+    },
     onTransaction: () => {
+      
       // force re-render so `editor.isActive` works as expected
       editor = editor;
     },

@@ -4,9 +4,10 @@ import { encrypt, decrypt } from '../../util/ziptool'
 
 // https://microsoft.github.io/etcd3/classes/etcd3.html
 
-type entity = {
-  id: string
+export type entity = {
+  id?: string
   data: string
+  [x:string]: any
 }
 export class Blob {
   private client
@@ -23,7 +24,7 @@ export class Blob {
     const obj = await decrypt(zipped, this.options.pwd, this.options.salt)
     return JSON.parse(obj.toString())
   }
-  async create(obj: any) {
+  async create(obj: entity) {
     if (!obj.id) {
       obj.id = uuid()
     }

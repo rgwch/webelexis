@@ -14,6 +14,9 @@ const kons=new EncounterModel(entity)
 kons.getSum().then((s) => (sum = s));
 // kons.getKonsText().then(result=>entry=result.html)
 const text=kons.getKonsText()
+function changed(event){
+  kons.setKonsText(event.detail)
+}
 </script>
 
 <template>
@@ -22,6 +25,6 @@ const text=kons.getKonsText()
   {#await text}
     <p>wait</p>
   {:then result}
-    <Editor contents="{result.html}" />
+    <Editor contents="{result.json || result.html}" on:changed={changed} />
   {/await}
 </template>

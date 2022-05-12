@@ -4,6 +4,7 @@
 
 import app from '../../test/app'
 import blob from './blob.service'
+import {entity} from './blob.class'
 import lucinda from '../lucinda/lucinda.service'
 app.configure(lucinda)
 app.configure(blob)
@@ -22,7 +23,7 @@ describe('Blob', () => {
 
   it("stores, retrieves and deletes an entry", async () => {
     const id = "testblob"
-    const blob = { id, data: "Something" }
+    const blob:entity = { id, data: "Something" }
     const id2 = await service.create(blob)
     expect(id).toEqual(id2)
     const check = await service.get(id)

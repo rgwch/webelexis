@@ -55,7 +55,7 @@ const doSort = (context) => {
 /**
  * Hook to apply after find()
  * Convert encounter entries from Elexis internal VersionedResource/Samdas to
- * html and delta
+ * html
  */
 const readKonsText = (context) => {
   const raw = context.result
@@ -103,7 +103,6 @@ const readSingleKonsText = async ctx => {
       remark: entry.remark,
       timestamp: entry.timestamp,
       html: await Samdas.toHtml(entry.text),
-      delta: await Samdas.toDelta(entry.text)
     }
     if (!ctx.result.eintrag.html) {
       ctx.result.eintrag.html = '<p></p>'
