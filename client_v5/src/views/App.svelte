@@ -2,6 +2,7 @@
   import { Router, Link, Route, navigate } from "svelte-navigator";
   import Agenda from "./Agenda.svelte";
   import Billing from "./Billing.svelte";
+  import Emr from "./Emr.svelte";
 </script>
 
 <template>
@@ -10,11 +11,13 @@
       <nav>
         <Link to="agenda">Agenda</Link>
         <Link to="billing">Abrechnung</Link>
+        <Link to="emr">KG</Link>
       </nav>
       <div>
         <Route path="agenda" component={Agenda} />
         <Route path="/" component={Billing} />
         <Route path="billing" component={Billing} />
+        <Route path="emr" component={Emr} />
       </div>
     </Router>
   </div>

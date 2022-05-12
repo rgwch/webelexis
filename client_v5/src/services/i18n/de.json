@@ -104,6 +104,11 @@
     "detail": "Patient Detail"
   },
   "titles": {
+    "personalia": "Personalien",
+    "medicaments": "Medikamente",
+    "prescriptions": "Rezepte",
+    "certificates": "Zeugnisse",
+    "documents": "Dokumente",
     "bills": "Rechnungen",
     "detail": "Detail",
     "outputs": "Ausgaben",
