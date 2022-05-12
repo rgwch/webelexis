@@ -35,23 +35,38 @@ export const config = {
   docbase: "../data/sample-docbase",
   /* connection to the database */
   elexisdb: {
-    host: "localhost",
-    database: "elexiscopy",
-    user: "elexisuser",
-    password: "elexis",
-    port: 3312
+    client: "mysql2",
+    connection: {
+      host: "localhost",
+      database: "elexiscopy",
+      user: "elexisuser",
+      password: "elexis",
+      port: 3312
+    }
   },
+  /* or:
+  elexisdb: {
+    "client": "pg",
+    "connection": {
+      "host": "localhost",
+      "database": "webelexis",
+      "user": "praxis",
+      "password": "topsecret"
+    }
+  },
+  elexisdb: {
+    "client": "sqlite3",
+    "connection": {
+      "filename": "../../data/webelexis.db"
+    }
+  },
+  */
   /* We need an SMTP host to send mails for lost password retrieval */
   smtp: {
     host: "some.smpt.host",
     port: 587,
     user: "smtpuser",
     pwd: "smtppassword"
-  },
-  /* Definition of the document store. Fallback is always
-    storage in the file system */
-  lucinda: {
-    url: "http://localhost:2016/lucinda/2.0"
   },
   /**
    * Definition of default presets for appointments. Only needed if Webelexis
@@ -122,7 +137,7 @@ export const config = {
       account: "CH007007007007", // You'll need a real QR-Account IBAN to create bills.
       country: "CH"
     },
-    datetime:"dd.LL.yyyy",
+    datetime: "dd.LL.yyyy",
     stickerForMail: "Rechnung per Mail",
     invoiceHeading: "Honorar-Rechnung Nr. ",
     invoiceText: "Bitte reichen Sie den beigefügten Rückerstattungsbeleg Ihrer Krankenkasse ein und überweisen Sie den Rechnungsbetrag mit untenstehendem Einzahlungsschein.",
@@ -132,7 +147,7 @@ export const config = {
     reminder2Text: "Bitte zahlen Sie innert 10 Tagen",
     reminder3Heading: "Dritte Mahnung für Rn. Nr.",
     reminder3Text: "Umgehende Zahlung"
-    
+
   }
 }
 

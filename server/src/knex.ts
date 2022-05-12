@@ -11,31 +11,25 @@
  */
 
 import knex from "knex"
-import {logger} from "./logger"
-import fs  from "fs"
+import { logger } from "./logger"
+import fs from "fs"
 const path = require("path")
 const normalize = require('./normalize_db')
 
 export default function (app) {
-  // uncomment exactly one of the following three lines
-  const { client, connection } = app.get("mysql")
-  // const { client, connection } = app.get('postgresql');
-  // const {client,connection} = app.get("sqlite");
-  const conf = app.get("userconfig")  // = ../data/settings.js
-  
-  logger.info("Settingsname: " + conf.settingsname)
-  logger.info("config name: " + app.get("configname"))
-  const dbconf = {
-    host: process.env.DBHOST || conf.elexisdb.host || "localhost",
-    port: process.env.DBPORT || conf.elexisdb.port || 3306,
-    database: process.env.DBNAME || conf.elexisdb.database,
-    user: process.env.DBUSER || conf.elexisdb.user || "elexisuser",
-    password: process.env.DBPWD || conf.elexisdb.password || "elexis"
+  const conf = app.get("userconfig")  // = ./configuration.ts
+
+  const connection = {
+    host: process.env.DBHOST || conf.elexisdb?.connection?.host || "localhost",
+    port: process.env.DBPORT || conf.elexisdb?.connection?.port || 3306,
+    database: process.env.DBNAME || conf.elexisdb?.connection?.database || "elexis",
+    user: process.env.DBUSER || conf.elexisdb?.connection?.user || "elexisuser",
+    password: process.env.DBPWD || conf.elexisdb?.connection?.password || "elexis"
   }
 
   const db = knex({
-    client,
-    connection: dbconf || connection,
+    client: conf.elexisdb.client,
+    connection,
     pool: { max: 50 }
   })
   db("config")
