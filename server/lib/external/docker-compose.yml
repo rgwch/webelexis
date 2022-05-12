@@ -6,8 +6,24 @@ volumes:
   solrdata:
   lucindadocs:
   lucindamoved:
+  elexisdb:
 
 services:
+  elexisdb:
+    image: mariadb:10.3
+    command: --lower-case-table-names=1
+      --max-allowed-packet=128M
+      --wait-timeout=3600
+    container_name: elx_elexisdb
+    hostname: elexisdb.local
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD:-elexisadmin}
+    volumes:
+      - elexisdb:/var/lib/mysql
+    ports:
+      - "${PUBLIC_DBPORT:-3312}:3306"
+    restart: always
+   
   etcd:
     image: docker.io/bitnami/etcd:3.5
     container_name: webelexis_etcd
