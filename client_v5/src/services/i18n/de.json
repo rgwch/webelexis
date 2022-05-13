@@ -116,6 +116,9 @@
     "selected": "Auswahl",
     "unbilled": "Unverrechnete Konsultationen"
   },
+  "prompts":{
+    "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben"
+  },
   "validation": {
     "invalidDate": "Ungültiges Datum",
     "onlyNumbers": "Nur Zahlen zulässig",

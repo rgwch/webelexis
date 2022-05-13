@@ -22,6 +22,7 @@ export interface PatientType extends KontaktType {
 
 let trl
 const unregister = _.subscribe((res) => (trl = res))
+
 export class PatientManager extends ObjectManager {
   constructor() {
     super("patient")

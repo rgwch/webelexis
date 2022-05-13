@@ -7,7 +7,7 @@ import Editor from "./Editor.svelte";
 <Meta title="Widgets/Editor" component="{Editor}" />
 
 <Template let:args>
-  <Editor {...args} />
+  <Editor class="border-1" {...args} />
 </Template>
 
 <Story name="Plain" />
