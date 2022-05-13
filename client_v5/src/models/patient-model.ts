@@ -67,7 +67,7 @@ export class Patient {
       ret += `, ${DateTime.fromISO(obj.geburtsdatum).toFormat(
         trl('formatting.date'),
       )}`
-      ret += ` (${years})`
+      ret += ` (${Math.floor(years.as("years"))})`
     }
     if (obj.patientnr) {
       ret += ' [' + obj.patientnr + ']'

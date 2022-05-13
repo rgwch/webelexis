@@ -109,6 +109,8 @@
     "prescriptions": "Rezepte",
     "certificates": "Zeugnisse",
     "documents": "Dokumente",
+    "diagnoses": "Diagnosen",
+    "encounters": "Konsultationen",
     "bills": "Rechnungen",
     "detail": "Detail",
     "outputs": "Ausgaben",

@@ -71,7 +71,10 @@ export class EncounterManager extends ObjectManager {
       enc.zeit.substring(0, 2) + ':' + enc.zeit.substring(2, 4)
     )
   }
-  public fetchFor(
+  public fetchForPatient(id: string): Promise<query_result> {
+    return this.dataService.find({ query: { patientId: id } })
+  }
+  public fetchForTimes(
     dateFrom: string,
     dateUntil: string,
     mandant: UUID,
@@ -117,7 +120,7 @@ export class EncounterModel {
     this.km = new KontaktManager()
     this.em = new EncounterManager()
     this.utility = getService("utility")
-    this.blob=getService("blob")
+    this.blob = getService("blob")
   }
 
   private timeString(t: string) {
@@ -196,29 +199,29 @@ export class EncounterModel {
   }
 
 
-  public async getKonsText() : Promise<EncounterEntry> {
-    let result:EncounterEntry={ html: "<p>Kein Eintrag</p>" };
+  public async getKonsText(): Promise<EncounterEntry> {
+    let result: EncounterEntry = { html: "<p>Kein Eintrag</p>" };
     if (this.enc.eintrag) {
       if (this.enc.eintrag.html) {
         result = this.enc.eintrag
       } else {
         result = await this.utility.get("konsText", { query: { entry: this.enc.eintrag } })
       }
-    } 
-    try{
-      const blob=await this.blob.get(this.enc.id)
-      result.json=blob.data
+    }
+    try {
+      const blob = await this.blob.get(this.enc.id)
+      result.json = blob.data
 
-    }catch(err){
-      if(err.message !== "Item not found"){
+    } catch (err) {
+      if (err.message !== "Item not found") {
         alert(err)
       }
     }
     return result
   }
 
-  public async setKonsText(contents: any){
-    await this.blob.create({id:this.enc.id,data:contents})
+  public async setKonsText(contents: any) {
+    await this.blob.create({ id: this.enc.id, data: contents })
   }
   public static getDefinition(): FlexformConfig {
     return {
