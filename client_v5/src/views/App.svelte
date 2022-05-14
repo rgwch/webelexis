@@ -9,9 +9,9 @@
   <div class="md:container md:mx-auto px-2">
     <Router>
       <nav>
+        <Link to="emr">KG</Link>
         <Link to="agenda">Agenda</Link>
         <Link to="billing">Abrechnung</Link>
-        <Link to="emr">KG</Link>
       </nav>
       <div>
         <Route path="agenda" component={Agenda} />

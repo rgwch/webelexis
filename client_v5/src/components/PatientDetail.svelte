@@ -4,9 +4,10 @@ import type { FlexformConfig } from "../widgets/flexformtypes";
 import { _ } from "svelte-i18n";
 import Form from "../widgets/Flexform.svelte";
 export let entity:PatientType;
+export let showTitle=true
 const form: FlexformConfig = Patient.getDefinition();
 form.compact = false;
-form.title = $_("patient.detail");
+form.title = showTitle ? $_("patient.detail") : "";
 </script>
 
 <template>

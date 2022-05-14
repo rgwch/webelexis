@@ -4,7 +4,7 @@ import { EncounterManager } from "../models/encounter-model";
 import type { EncounterType } from "../models/encounter-model";
 import type { PatientType } from "../models/patient-model";
 const em = new EncounterManager();
-export let entity:PatientType
+export let entity: PatientType;
 
 let encounters: Array<EncounterType> = [];
 em.fetchForPatient(entity?.id).then((result) => {
@@ -15,7 +15,7 @@ em.fetchForPatient(entity?.id).then((result) => {
 <template>
   <div class="h-screen">
     {#each encounters as encounter}
-      <EncounterDetail entity="{encounter}" />
+      <EncounterDetail entity="{encounter}" showTitle="{false}" />
     {/each}
   </div>
 </template>

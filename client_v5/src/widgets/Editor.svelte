@@ -5,6 +5,8 @@ import StarterKit from "@tiptap/starter-kit";
 const dispatch=createEventDispatcher()
 
 export let contents
+export let editable=true
+ 
 let element;
 let editor;
 
@@ -20,11 +22,12 @@ onMount(() => {
     element: element,
     extensions: [StarterKit],
     content: contents,
+    editable,
     onBlur: ()=>{
       dispatch("changed", editor.getJSON())
     },
-    onTransaction: () => {
-      
+    onTransaction: event => {
+      console.log(event)
       // force re-render so `editor.isActive` works as expected
       editor = editor;
     },

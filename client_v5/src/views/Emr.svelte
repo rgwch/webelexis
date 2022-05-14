@@ -1,5 +1,5 @@
 <script lang="ts">
-import Collapse from "../widgets/Collapse.svelte";
+import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 import { _ } from "svelte-i18n";
 import { currentPatient } from "../main";
 import { Patient } from "../models/patient-model";
@@ -7,16 +7,10 @@ import PatientSelector from "../components/PatientSelector.svelte";
 import PatientDetail from "../components/PatientDetail.svelte";
 import Encounters from "../components/Encounters.svelte";
 
-let persdata = false;
-let medicaments = false;
-let encounters = false;
 let selector = false;
 
-function selected(){
-  selector=false;
-  medicaments=false;
-  encounters=false;
-  persdata=false;
+function selected() {
+  selector = false;
 }
 </script>
 
@@ -27,19 +21,29 @@ function selected(){
     {@html Patient.getLabel($currentPatient)}
   </p>
   {#if selector}
-    <PatientSelector on:selected={selected}/>
+    <PatientSelector on:selected="{selected}" />
   {/if}
-  <Collapse title="{$_('titles.personalia')}" bind:open="{persdata}">
-    <div slot="body">
-      <PatientDetail entity="{$currentPatient}" />
-    </div>
-  </Collapse>
-  <Collapse title="{$_('titles.encounters')}" bind:open="{encounters}">
-    <div slot="body">
+  <Tabs>
+    <TabList>
+      <Tab>{$_("titles.personalia")}</Tab>
+      <Tab>{$_("titles.encounters")}</Tab>
+      <Tab>{$_("titles.medicaments")}</Tab>
+      <Tab>{$_("titles.documents")}</Tab>
+    </TabList>
+
+    <TabPanel>
+      <PatientDetail entity="{$currentPatient}" showTitle="{false}" />
+    </TabPanel>
+
+    <TabPanel>
       <Encounters entity="{$currentPatient}" />
-    </div>
-  </Collapse>
-  <Collapse title="{$_('titles.medicaments')}" bind:open="{medicaments}">
-    <div slot="body">No contents yet</div>
-  </Collapse>
+    </TabPanel>
+
+    <TabPanel>
+      <p>No contents yet</p>
+    </TabPanel>
+    <TabPanel>
+      <p>No contents yet</p>
+    </TabPanel>
+  </Tabs>
 </template>

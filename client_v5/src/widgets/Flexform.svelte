@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { FlexformConfig } from "./flexformtypes";
 import { FlexFormValueConverter } from "./flexformtypes";
+import {createEventDispatcher} from 'svelte'
 import { _ } from "svelte-i18n";
 import Fa from "svelte-fa";
 import {
@@ -15,6 +16,7 @@ import DateInput from "./DateInput.svelte";
 export let ff_cfg: FlexformConfig;
 export let entity: any;
 export let lockable: boolean = false;
+const dispatch=createEventDispatcher()
 
 let isLocked: boolean = lockable;
 let isDirty: boolean = false;
@@ -43,6 +45,7 @@ function getTitle() {
 function lock() {
   console.log("Lock called");
   isLocked = !isLocked;
+  dispatch("lock",isLocked)
 }
 
 /*
