@@ -37,6 +37,7 @@ function key(event) {
     {/if}
     <div class="relative flex items-stretch flex-grow focus-within:z-10">
       <input
+        autofocus
         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
         bind:value
         on:blur="{changed}"

@@ -20,6 +20,11 @@ $: {
 
 onMount(() => {
   editor = new Editor({
+    editorProps: {
+      attributes: {
+        class: "bg-blue-200",
+      },
+    },
     element: element,
     extensions: [StarterKit, ...extensions],
     content: contents,
@@ -28,7 +33,6 @@ onMount(() => {
       dispatch("changed", editor.getJSON());
     },
     onTransaction: (event) => {
-      console.log(event);
       // force re-render so `editor.isActive` works as expected
       editor = editor;
     },
@@ -62,7 +66,7 @@ onDestroy(() => {
       P
     </button>
   {/if}
-  <div bind:this="{element}" class="border-1"></div>
+  <div bind:this="{element}" class="border-2"></div>
 
   <style>
   button.active {

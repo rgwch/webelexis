@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { FlexformConfig } from "./flexformtypes";
 import { FlexFormValueConverter } from "./flexformtypes";
-import {createEventDispatcher} from 'svelte'
+import { createEventDispatcher } from "svelte";
 import { _ } from "svelte-i18n";
 import Fa from "svelte-fa";
 import {
@@ -16,7 +16,7 @@ import DateInput from "./DateInput.svelte";
 export let ff_cfg: FlexformConfig;
 export let entity: any;
 export let lockable: boolean = false;
-const dispatch=createEventDispatcher()
+const dispatch = createEventDispatcher();
 
 let isLocked: boolean = lockable;
 let isDirty: boolean = false;
@@ -45,7 +45,7 @@ function getTitle() {
 function lock() {
   console.log("Lock called");
   isLocked = !isLocked;
-  dispatch("lock",isLocked)
+  dispatch("lock", isLocked);
 }
 
 /*
@@ -53,19 +53,9 @@ function lock() {
   */
 
 function save() {
-  /*
-    validationController.validate().then((result) => {
-      if (result.valid) {
-        const dataService = ds.getService(entity.type);
-        if (dataService) {
-          dataService.update(entity.id, entity);
-          dataService.emit("updated", entity);
-        }
-        isDirty = false;
-        original = Object.assign({}, entity);
-      }
-    });
-    */
+  dispatch("save", entity);
+  isDirty = false;
+  original = Object.assign({}, entity);
 }
 
 /*

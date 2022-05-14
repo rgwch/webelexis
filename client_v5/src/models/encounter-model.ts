@@ -131,6 +131,9 @@ export class EncounterModel {
     return t.substring(0, 2) + ':' + t.substring(2, 4)
   }
 
+  public async save() {
+    await this.em.save(this.enc)
+  }
   public async getLabel(): Promise<string> {
     const dat = DateTime.fromISO(this.enc.datum)
     const weekday = weekDaysShort[dat.weekday - 1]

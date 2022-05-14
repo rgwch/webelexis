@@ -19,6 +19,7 @@ const text=kons.getKonsText()
 function changed(event){
   kons.setKonsText(event.detail)
 }
+
 let locked=false
 </script>
 
@@ -29,6 +30,9 @@ let locked=false
     lockable="{true}"
     on:lock="{(event) => {
       locked = event.detail;
+    on:save={(event)=>{
+
+    }}
     }}" />
   <p>{$_("encounter.billed")}: {sum?.getFormatted()}</p>
   {#await text}
