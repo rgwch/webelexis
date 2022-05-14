@@ -25,6 +25,7 @@ export class StickerManager {
 
   constructor() {
     this.stickerService = getService("stickers")
+    this.loadStickers()
   }
 
   public loadStickers(): Promise<any> {

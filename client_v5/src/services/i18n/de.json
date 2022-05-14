@@ -101,7 +101,8 @@
     "loading": "lese..."
   },
   "patient": {
-    "detail": "Patient Detail"
+    "detail": "Patient Detail",
+    "noneselected":"Kein Patient ausgewählt"
   },
   "titles": {
     "personalia": "Personalien",

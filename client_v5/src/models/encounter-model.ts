@@ -72,7 +72,11 @@ export class EncounterManager extends ObjectManager {
     )
   }
   public fetchForPatient(id: string): Promise<query_result> {
-    return this.dataService.find({ query: { patientId: id } })
+    if (id) {
+      return this.dataService.find({ query: { patientId: id } })
+    } else {
+      return Promise.resolve({ total: 0, data: [], limit: 50, skip: 0 })
+    }
   }
   public fetchForTimes(
     dateFrom: string,

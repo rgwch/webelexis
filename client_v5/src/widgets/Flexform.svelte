@@ -102,43 +102,41 @@ function changed(field, value) {
       {/if}
     </div>
   {/if}
-  <form>
-    <div>
-      {#each ff_cfg.attributes as attr}
-        <div>
-          {#if attr.datatype == "string"}
-            <LineInput
-              bind:value="{entity[attr.attribute]}"
-              label="{attr.label}"
-              disabled="{isLocked}"
-              on:textChanged="{(value) => changed(attr.attribute, value)}"
-            />
-          {:else if attr.datatype == "date"}
-            <DateInput
-              dateString="{entity[attr.attribute]}"
-              label="{attr.label}"
-              disabled="{isLocked}"
-            />
-          {:else if attr.datatype == "number"}
-            <LineInput
-              bind:value="{entity[attr.attribute]}"
-              label="{attr.label}"
-              disabled="{isLocked}"
-              validate="{(n) => !isNaN(n)}"
-              errmsg="{$_('validation.onlyNumbers')}"
-            />
-          {:else if attr.datatype == "text"}
-            {#if !ff_cfg.compact}
-              <label for="{attr.attribute}">{attr.label}</label>
+  {#if entity}
+    <form>
+      <div>
+        {#each ff_cfg.attributes as attr}
+          <div>
+            {#if attr.datatype == "string"}
+              <LineInput
+                bind:value="{entity[attr.attribute]}"
+                label="{attr.label}"
+                disabled="{isLocked}"
+                on:textChanged="{(value) => changed(attr.attribute, value)}" />
+            {:else if attr.datatype == "date"}
+              <DateInput
+                dateString="{entity[attr.attribute]}"
+                label="{attr.label}"
+                disabled="{isLocked}" />
+            {:else if attr.datatype == "number"}
+              <LineInput
+                bind:value="{entity[attr.attribute]}"
+                label="{attr.label}"
+                disabled="{isLocked}"
+                validate="{(n) => !isNaN(n)}"
+                errmsg="{$_('validation.onlyNumbers')}" />
+            {:else if attr.datatype == "text"}
+              {#if !ff_cfg.compact}
+                <label for="{attr.attribute}">{attr.label}</label>
+              {/if}
+              <TextInput
+                id="{attr.attribute}"
+                value="{entity[attr.attribute]}"
+                readonly="{isLocked}" />
             {/if}
-            <TextInput
-              id="{attr.attribute}"
-              value="{entity[attr.attribute]}"
-              readonly="{isLocked}"
-            />
-          {/if}
-        </div>
-      {/each}
-    </div>
-  </form>
+          </div>
+        {/each}
+      </div>
+    </form>
+  {/if}
 </template>

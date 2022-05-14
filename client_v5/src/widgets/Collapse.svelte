@@ -9,7 +9,9 @@ export let title = "";
       <span class="text-sm">{title}</span>
     </slot>
   </div>
+  <!-- div class:hidden="{open === false}" -->
   {#if open}
     <slot name="body" />
   {/if}
+  <!-- /div -->
 </template>

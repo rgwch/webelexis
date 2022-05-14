@@ -56,6 +56,9 @@ export class Patient {
   public static sm: StickerManager = new StickerManager()
 
   public static getLabel(obj: PatientType): string {
+    if(!obj){
+      return trl('patient.noneselected')
+    }
     let ret = obj.bezeichnung1 + ' ' + obj.bezeichnung2
     if (obj.geschlecht) {
       ret += ` (${obj.geschlecht})`
