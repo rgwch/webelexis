@@ -8,13 +8,12 @@ volumes:
   lucindamoved:
   elexisdb:
 
+
 services:
   elexisdb:
     image: mariadb:10.3
-    command: --lower-case-table-names=1
-      --max-allowed-packet=128M
-      --wait-timeout=3600
-    container_name: elx_elexisdb
+    command: --lower-case-table-names=1 --max-allowed-packet=128M --wait-timeout=3600
+    container_name: wlx_elexisdb
     hostname: elexisdb.local
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD:-elexisadmin}
@@ -23,10 +22,10 @@ services:
     ports:
       - "${PUBLIC_DBPORT:-3312}:3306"
     restart: always
-   
+
   etcd:
     image: docker.io/bitnami/etcd:3.5
-    container_name: webelexis_etcd
+    container_name: wlx_etcd
     environment:
       - ALLOW_NONE_AUTHENTICATION=yes
     volumes:
@@ -37,7 +36,7 @@ services:
       - 4001:4001
   solr:
     image: solr:8.5.2
-    container_name: lucinda_solr
+    container_name: wlx_solr
     volumes:
       - ${SOLR_DATA:-solrdata}:/var/solr
     ports:
@@ -50,7 +49,7 @@ services:
       - lucinda_net
   tika:
     image: apache/tika:1.24
-    container_name: lucinda_tika
+    container_name: wlx_tika
     ports:
       - ${TIKA_PORT:-9998}:9998
     networks:
@@ -62,7 +61,7 @@ services:
       - solr
       - tika
     image: rgwch/lucinda-server:3.0.10
-    container_name: lucinda_main
+    container_name: wlx_lucinda
     environment:
       - LUCINDA_SIMPLEWEB=${LUCINDA_SIMPLEWEB:-enabled}
     volumes:
@@ -81,7 +80,6 @@ services:
         "node",
         "src/index.js"
       ]
-
 
 networks:
   lucinda_net:

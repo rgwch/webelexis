@@ -2,11 +2,12 @@
 import { onMount, onDestroy, createEventDispatcher } from "svelte";
 import { Editor } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
-const dispatch=createEventDispatcher()
+const dispatch = createEventDispatcher();
 
-export let contents
-export let editable=true
- 
+export let contents;
+export let extensions = [];
+export let editable = true;
+
 let element;
 let editor;
 
@@ -20,14 +21,14 @@ $: {
 onMount(() => {
   editor = new Editor({
     element: element,
-    extensions: [StarterKit],
+    extensions: [StarterKit, ...extensions],
     content: contents,
     editable,
-    onBlur: ()=>{
-      dispatch("changed", editor.getJSON())
+    onBlur: () => {
+      dispatch("changed", editor.getJSON());
     },
-    onTransaction: event => {
-      console.log(event)
+    onTransaction: (event) => {
+      console.log(event);
       // force re-render so `editor.isActive` works as expected
       editor = editor;
     },

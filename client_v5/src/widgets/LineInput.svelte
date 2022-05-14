@@ -1,11 +1,12 @@
 <script lang="ts">
 import { createEventDispatcher } from "svelte";
 import Fa from "svelte-fa";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 const dispatch = createEventDispatcher();
 export let value: string = "";
 export let label: string = "";
 export let disabled: boolean = false;
+export let buttonIcon = undefined;
+export let buttonText: string = undefined;
 export let id: string = Math.random()
   .toString(36)
   .replace(/[^a-z]+/g, "")
@@ -42,14 +43,19 @@ function key(event) {
         on:keypress="{key}"
         id="{id}"
         disabled="{disabled}" />
+      {#if buttonIcon || buttonText}
         <button
-        type="button"
-        on:click="{changed}"
-        class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-        <!-- Heroicon name: solid/sort-ascending -->
-        <Fa icon="{faMagnifyingGlass}" />
-        <span>Los</span>
-      </button>
+          type="button"
+          on:click="{changed}"
+          class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+          {#if buttonIcon}
+            <Fa icon="{buttonIcon}" />
+          {/if}
+          {#if buttonText}
+            <span>Los</span>
+          {/if}
+        </button>
+      {/if}
     </div>
     {#if error}
       <span class="text-sm font-semibold text-red-500">{errmsg}</span>

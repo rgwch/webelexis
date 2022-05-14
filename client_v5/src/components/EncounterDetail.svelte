@@ -1,6 +1,7 @@
 <script lang="ts">
 import { EncounterModel, type EncounterType } from "../models/encounter-model";
 import Editor from '../widgets/Editor.svelte'
+import {Macros} from '../services/macros'
 import type { FlexformConfig } from "../widgets/flexformtypes";
 import { _ } from "svelte-i18n";
 import Form from "../widgets/Flexform.svelte";
@@ -35,6 +36,7 @@ let locked=false
   {:then result}
     <Editor
       contents="{result.json || result.html}"
+      extensions="{[Macros]}"
       on:changed="{changed}"
       editable="{!locked}" />
   {/await}
