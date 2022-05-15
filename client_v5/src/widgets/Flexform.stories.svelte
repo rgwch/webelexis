@@ -1,4 +1,5 @@
 <script>
+import { faAllergies } from "@fortawesome/free-solid-svg-icons";
 import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
 import { _ } from "svelte-i18n";
 import Flexform from "./Flexform.svelte";
@@ -25,10 +26,13 @@ const dummy = {
 };
 </script>
 
-<Meta title="Widgets/Flexform" component="{Flexform}" />
+<Meta
+  title="Widgets/Flexform"
+  component="{Flexform}"
+  argTypes="{{ onSave: { action: 'save' }, onLock: { action: 'lock' } }}" />
 
 <Template let:args>
-  <Flexform {...args} />
+  <Flexform {...args} on:lock="{args.onLock}" on:save="{args.onSave}" />
 </Template>
 
 <Story
@@ -39,7 +43,6 @@ const dummy = {
       textfield: 'Test',
       date: '20220402',
       number: 42,
-      lockable: true,
     },
-  }}"
-/>
+    lockable: true,
+  }}" />

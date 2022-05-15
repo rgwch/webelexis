@@ -2,6 +2,8 @@
 import type { FlexformConfig } from "./flexformtypes";
 import { FlexFormValueConverter } from "./flexformtypes";
 import { createEventDispatcher } from "svelte";
+const dispatch = createEventDispatcher();
+
 import { _ } from "svelte-i18n";
 import Fa from "svelte-fa";
 import {
@@ -13,14 +15,16 @@ import {
 import LineInput from "./LineInput.svelte";
 import TextInput from "./TextInput.svelte";
 import DateInput from "./DateInput.svelte";
+
 export let ff_cfg: FlexformConfig;
 export let entity: any;
 export let lockable: boolean = false;
-const dispatch = createEventDispatcher();
 
 let isLocked: boolean = lockable;
 let isDirty: boolean = false;
 let original: any = Object.assign({}, entity);
+
+dispatch("lock","Initialized")
 
 /*
 // called whenever a new entity is loaded
@@ -48,11 +52,11 @@ function lock() {
   dispatch("lock", isLocked);
 }
 
-/*
-    save the entiy to the database. Will reject if validation fails
+/**
+    save the entiy to the database.
   */
-
 function save() {
+  console.log("flexform save")
   dispatch("save", entity);
   isDirty = false;
   original = Object.assign({}, entity);

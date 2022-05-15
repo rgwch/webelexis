@@ -20,6 +20,10 @@ function changed(event){
   kons.setKonsText(event.detail)
 }
 
+async function saveEncounter(){
+  console.log("Save event")
+  await kons.save()
+}
 let locked=false
 </script>
 
@@ -29,11 +33,10 @@ let locked=false
     entity="{entity}"
     lockable="{true}"
     on:lock="{(event) => {
+      console.log("Lock received")
       locked = event.detail;
-    on:save={(event)=>{
-
-    }}
-    }}" />
+    }}"
+    on:save="{saveEncounter}" />
   <p>{$_("encounter.billed")}: {sum?.getFormatted()}</p>
   {#await text}
     <p>wait</p>

@@ -25,6 +25,6 @@
 </Template>
 
 <Story
-  name="Tree"
+  name="Default"
   args={{ trees,labelProvider: n=>n.payload}}
 />
