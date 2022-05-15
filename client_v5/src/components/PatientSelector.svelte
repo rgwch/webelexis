@@ -15,13 +15,11 @@ let searchTerm = "";
 async function doSearch() {
   const result = await pm.find({ query: { $find: searchTerm } });
   found = result.data;
-  foundElements.focus();
 }
 function select(entry) {
   currentPatient.set(entry);
   dispatch("selected", entry);
 }
-let foundElements;
 </script>
 
 <template>
@@ -32,7 +30,7 @@ let foundElements;
       on:textChanged="{doSearch}"
       buttonIcon="{faMagnifyingGlass}" />
   </div>
-  <div bind:this="{foundElements}" class="border-1 overflow-auto h-20">
+  <div class="border-1 overflow-auto h-20">
     {#each found as entry}
       <p
         class="my-0 cursor-pointer hover:text-blue-400"

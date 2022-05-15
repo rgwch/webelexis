@@ -24,7 +24,7 @@ let isLocked: boolean = lockable;
 let isDirty: boolean = false;
 let original: any = Object.assign({}, entity);
 
-dispatch("lock","Initialized")
+dispatch("lock", "Initialized");
 
 /*
 // called whenever a new entity is loaded
@@ -56,7 +56,7 @@ function lock() {
     save the entiy to the database.
   */
 function save() {
-  console.log("flexform save")
+  console.log("flexform save");
   dispatch("save", entity);
   isDirty = false;
   original = Object.assign({}, entity);

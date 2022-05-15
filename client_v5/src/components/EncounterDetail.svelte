@@ -33,7 +33,7 @@ let locked=false
     entity="{entity}"
     lockable="{true}"
     on:lock="{(event) => {
-      console.log("Lock received")
+      console.log('Lock received');
       locked = event.detail;
     }}"
     on:save="{saveEncounter}" />
