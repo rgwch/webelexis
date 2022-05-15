@@ -50,10 +50,12 @@ export class CaseManager extends ObjectManager {
    * Fetch all cases for a given patient
    * @param id UUID of the patient
    */
-  public async loadCasesFor(id: UUID) {
+  public async loadCasesFor(id: UUID): Promise<Array<CaseType>> {
     const result = await this.dataService.find({ query: { patientid: id } });
     if (result && result.data) {
       return result.data;
+    } else {
+      return []
     }
   }
 

@@ -1,17 +1,16 @@
 <script lang="ts">
 import { EncounterModel, type EncounterType } from "../models/encounter-model";
+import {weekDaysShort} from '../models/timedate'
+import {DateTime} from 'luxon'
+import {CaseManager, type CaseType} from '../models/case-model'
 import Editor from '../widgets/Editor.svelte'
 import {Macros} from '../services/macros'
-import type { FlexformConfig } from "../widgets/flexformtypes";
 import { _ } from "svelte-i18n";
-import Form from "../widgets/Flexform.svelte";
 import type { Money } from "../models/money";
 export let entity:EncounterType;
-export let showTitle=true
-const form: FlexformConfig = EncounterModel.getDefinition();
-form.title = showTitle ? $_("encounter.detail") : "";
+const cm=new CaseManager()
 let sum: Money;
-let entry: string
+
 const kons=new EncounterModel(entity)
 kons.getSum().then((s) => (sum = s));
 // kons.getKonsText().then(result=>entry=result.html)
@@ -19,16 +18,39 @@ const text=kons.getKonsText()
 function changed(event){
   kons.setKonsText(event.detail)
 }
-
 async function saveEncounter(){
   console.log("Save event")
   await kons.save()
+}
+const dat=DateTime.fromISO(entity.datum)
+const weekday=weekDaysShort[dat.weekday-1]
+const konsDate=weekday+", "+dat.toFormat($_('formatting.date'))+
+(entity.zeit ? ", "+entity.zeit.substring(0, 2) + ':' + entity.zeit.substring(2, 4) : "")
+
+let casedef=""
+let fall:CaseType
+let cases=undefined
+kons.getCase().then(f=>{
+  fall=f
+  casedef=cm.getLabel(fall)
+})
+
+async function loadCases(){
+  if(fall){
+    const patid=fall.patientid
+    const caseids=await cm.loadCasesFor(patid)
+    const caselabels=[]
+    for(const caseid of caseids){
+      caselabels.push(cm.getLabel(caseid))
+    }
+    cases=caselabels
+  }
 }
 let locked=false
 </script>
 
 <template>
-  <Form
+  <!-- Form
     ff_cfg="{form}"
     entity="{entity}"
     lockable="{true}"
@@ -36,8 +58,21 @@ let locked=false
       console.log('Lock received');
       locked = event.detail;
     }}"
-    on:save="{saveEncounter}" />
-  <p>{$_("encounter.billed")}: {sum?.getFormatted()}</p>
+    on:save="{saveEncounter}" / -->
+  <div class="flex">
+    <div class="font-bold">{konsDate}</div>
+    {#if cases}
+      <select class="ml-3">
+        {#each cases as caselabel}
+          <option>{caselabel}</option>
+        {/each}
+      </select>
+    {:else}
+      <div class="cursor-pointer ml-3 bg-blue-100" on:click="{loadCases}">
+        {casedef}
+      </div>
+    {/if}
+  </div>
   {#await text}
     <p>wait</p>
   {:then result}
@@ -47,4 +82,7 @@ let locked=false
       on:changed="{changed}"
       editable="{!locked}" />
   {/await}
+  <p class="text-sm text-gray-600">
+    {$_("encounter.billed")}: {sum?.getFormatted()}
+  </p>
 </template>

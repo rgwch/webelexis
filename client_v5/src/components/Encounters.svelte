@@ -15,7 +15,7 @@ em.fetchForPatient(entity?.id).then((result) => {
 <template>
   <div class="h-50%">
     {#each encounters as encounter}
-      <EncounterDetail entity="{encounter}" showTitle="{false}" />
+      <EncounterDetail entity="{encounter}" />
     {/each}
   </div>
 </template>

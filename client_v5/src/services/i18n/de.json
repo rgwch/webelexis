@@ -102,7 +102,7 @@
   },
   "patient": {
     "detail": "Patient Detail",
-    "noneselected":"Kein Patient ausgewählt"
+    "noneselected": "Kein Patient ausgewählt"
   },
   "titles": {
     "personalia": "Personalien",
@@ -112,6 +112,7 @@
     "documents": "Dokumente",
     "diagnoses": "Diagnosen",
     "encounters": "Konsultationen",
+    "cases": "Fälle",
     "bills": "Rechnungen",
     "detail": "Detail",
     "outputs": "Ausgaben",
@@ -119,7 +120,7 @@
     "selected": "Auswahl",
     "unbilled": "Unverrechnete Konsultationen"
   },
-  "prompts":{
+  "prompts": {
     "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben"
   },
   "validation": {

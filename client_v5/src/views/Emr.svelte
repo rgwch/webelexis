@@ -2,10 +2,11 @@
 import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 import { _ } from "svelte-i18n";
 import { currentPatient } from "../main";
-import { Patient } from "../models/patient-model";
+import { Patient, PatientManager, type PatientType } from "../models/patient-model";
 import PatientSelector from "../components/PatientSelector.svelte";
 import PatientDetail from "../components/PatientDetail.svelte";
 import Encounters from "../components/Encounters.svelte";
+import Cases from '../components/Cases.svelte'
 
 let selector = false;
 
@@ -27,6 +28,7 @@ function selected() {
     <TabList>
       <Tab>{$_("titles.personalia")}</Tab>
       <Tab>{$_("titles.encounters")}</Tab>
+      <Tab>{$_("titles.cases")}</Tab>
       <Tab>{$_("titles.medicaments")}</Tab>
       <Tab>{$_("titles.documents")}</Tab>
     </TabList>
@@ -38,7 +40,9 @@ function selected() {
     <TabPanel>
       <Encounters entity="{$currentPatient}" />
     </TabPanel>
-
+    <TabPanel>
+      <Cases entity="{$currentPatient}" />
+    </TabPanel>
     <TabPanel>
       <p>No contents yet</p>
     </TabPanel>
