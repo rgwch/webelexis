@@ -11,9 +11,9 @@ export class DiagnoseManager extends ObjectManager {
     constructor() {
         super("diagnose")
     }
-    public async findForKons(konsid: string): Promise<Array<DiagnoseModel>> {
+    public async findForKons(konsid: string): Promise<Array<DiagnoseType>> {
         const diags = await super.find({ query: { konsid } })
-        return diags.data.map(di => new DiagnoseModel(di))
+        return diags.data
     }
 }
 

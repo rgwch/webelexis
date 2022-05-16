@@ -10,7 +10,8 @@ import type { UserType } from "./user-model"
 import { DateTime } from "luxon"
 // const log = LogManager.getLogger("findings-model")
 import { getService } from "../services/io"
-
+import { KontaktManager } from "./kontakt-model"
+const kontaktManager = new KontaktManager()
 /**
  * An Elexis "Termin"
  */
@@ -96,6 +97,8 @@ export class TerminManager {
         const found = await this.terminService.find({
           query: { tag: day.toFormat("yyyyLLdd"), bereich: resource }
         })
+        return found.data.map(t=>new TerminModel(t))
+        /*
         if (found.data && found.data.length > 0) {
           const ret = []
           const template = found.data[0]
@@ -124,6 +127,7 @@ export class TerminManager {
         } else {
           return []
         }
+        */
       } catch (err) {
         if (err.code && err.code === 401) {
           // this.router.navigateToRoute("user")
@@ -223,13 +227,33 @@ export class TerminModel {
   }
   public getStartTime(): DateTime {
     const day = DateTime.fromFormat(this.obj.tag, "yyyyLLdd")
-    day.plus({ minutes: parseInt(this.obj.beginn, 10) })
-    return day
+    console.log(day.toISO())
+    return day.plus({ minutes: parseInt(this.obj.beginn, 10) })
   }
 
   public getEndTime(): DateTime {
-    const start = DateTime.local(this.getStartTime())
-    start.plus({ minutes: parseInt(this.obj.dauer, 10) })
-    return start
+    const start = DateTime.fromFormat(this.obj.tag, "yyyyLLdd")
+    return start.plus({ minutes: (parseInt(this.obj.beginn, 10) + parseInt(this.obj.dauer, 10)) })
   }
+  public getTimeString(){
+    const start=this.makeTime(parseInt(this.obj.beginn))
+    const end=this.makeTime(parseInt(this.obj.beginn)+parseInt(this.obj.dauer))
+    return start+"-"+end
+  }
+
+  makeTime(minutes: number): string {
+    let hours = Math.floor(minutes / 60)
+    let rest = minutes - (hours * 60)
+    let mins = rest.toString()
+    let hoursS = hours.toString()
+    if (hoursS.length < 2) {
+      hoursS = "0" + hours
+    }
+    if (mins.length < 2) {
+      mins = "0" + mins
+    }
+
+    return hoursS + ":" + mins
+  }
+
 }

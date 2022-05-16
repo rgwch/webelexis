@@ -153,7 +153,7 @@ export default {
 
   after: {
     all: [],
-    find: [addContacts(), checkLimits],
+    find: [addContacts() /*, checkLimits */],
     get: [],
     create: [],
     update: [],
