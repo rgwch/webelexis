@@ -7,6 +7,8 @@ import Editor from '../widgets/Editor.svelte'
 import {Macros} from '../services/macros'
 import { _ } from "svelte-i18n";
 import type { Money } from "../models/money";
+import type { ElexisType } from "../models/elexistype";
+import type { KontaktType } from "../models/kontakt-model";
 export let entity:EncounterType;
 const cm=new CaseManager()
 let sum: Money;
@@ -35,6 +37,10 @@ kons.getCase().then(f=>{
   casedef=cm.getLabel(fall)
 })
 
+let mandator:KontaktType
+kons.getMandator().then(m=>{
+  mandator=m
+})
 async function loadCases(){
   if(fall){
     const patid=fall.patientid
@@ -50,17 +56,11 @@ let locked=false
 </script>
 
 <template>
-  <!-- Form
-    ff_cfg="{form}"
-    entity="{entity}"
-    lockable="{true}"
-    on:lock="{(event) => {
-      console.log('Lock received');
-      locked = event.detail;
-    }}"
-    on:save="{saveEncounter}" / -->
   <div class="flex">
     <div class="font-bold">{konsDate}</div>
+    {#if mandator}
+    <div class="ml-3">({mandator.bezeichnung3})</div>
+    {/if} 
     {#if cases}
       <select class="ml-3">
         {#each cases as caselabel}
