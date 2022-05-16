@@ -39,21 +39,14 @@ export class KontaktManager extends ObjectManager {
   constructor() {
     super("kontakt")
   }
-}
-export class KontaktModel {
-
-  constructor(private obj: KontaktType) {
-
-  }
-
-  public getLabel = () => {
-    let d = this.obj.geburtsdatum || "";
+  public getLabel = (obj:KontaktType) => {
+    let d = obj.geburtsdatum || "";
     if (d.length === 8) {
       d = DateTime.fromFormat(d, 'yyyyLLdd').toFormat("dd.LL.yyyy")
     }
-    let ret = this.obj.bezeichnung1 + " " + (this.obj.bezeichnung2 || "");
-    if (this.obj.geschlecht) {
-      ret += `(${this.obj.geschlecht})`;
+    let ret = obj.bezeichnung1 + " " + (obj.bezeichnung2 || "");
+    if (obj.geschlecht) {
+      ret += `(${obj.geschlecht})`;
     }
     if (d) {
       ret += ", " + d;
@@ -61,3 +54,5 @@ export class KontaktModel {
     return ret;
   };
 }
+
+

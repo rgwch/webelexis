@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { type KontaktType, KontaktModel } from "./kontakt-model"
+import type { KontaktType } from "./kontakt-model"
 import type { ElexisType, UUID } from "./elexistype"
 import type { UserType } from "./user-model"
 import { DateTime } from "luxon"
@@ -171,8 +171,7 @@ export class TerminModel {
       let line;
       const k = await this.getKontakt()
       if (k) {
-        const km = new KontaktModel(k)
-        line = km.getLabel()
+        line = kontaktManager.getLabel(k)
       } else {
         line = this.obj.patid
       }

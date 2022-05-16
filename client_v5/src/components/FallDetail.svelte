@@ -1,12 +1,12 @@
 <script lang="ts">
-import { CaseModel, CaseManager, type CaseType } from "../models/case-model";
+import { CaseManager, FormDefinition,  type CaseType } from "../models/case-model";
 import { EncounterModel } from "../models/encounter-model";
 import type { FlexformConfig } from "../widgets/flexformtypes";
 import { _ } from "svelte-i18n";
 import Form from "../widgets/Flexform.svelte";
 import { Money } from "../models/money";
 export let entity:CaseType;
-const form: FlexformConfig = CaseModel.getDefinition();
+const form: FlexformConfig = FormDefinition;
 form.title = $_("case.detail");
 const cm = new CaseManager();
 let sum: Money = new Money(0);

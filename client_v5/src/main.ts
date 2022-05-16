@@ -6,6 +6,7 @@ import { type PatientType, PatientManager } from './models/patient-model';
 import def from './services/properties'
 export const currentPatient: Writable<PatientType> = writable()
 
+
 // console.log(JSON.stringify(def))
 const pm = new PatientManager()
 if (def.production == "false") {

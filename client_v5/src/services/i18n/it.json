@@ -27,6 +27,7 @@
     "PARTIAL_PAYMENT": "parzialmente pagato",
     "TOTAL_LOSS": "perdita totale",
     "actions": {
+      "create": "Rechnungen erstellen",
       "demand_level": "Mahnstufe",
       "output": "Ausgeben",
       "print": "Drucken",
@@ -87,6 +88,7 @@
   },
   "demotest": "no lo so",
   "encounter": {
+    "billed": "Verrechnet",
     "date": "Datum",
     "detail": "Konsultation Detail"
   },
@@ -99,12 +101,24 @@
     "loading": "lese..."
   },
   "patient": {
-    "detail": "Patient Detail"
+    "detail": "Patient Detail",
+    "noneselected": "Kein Patient ausgewählt"
+  },
+  "prompts": {
+    "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben"
   },
   "titles": {
     "bills": "Rechnungen",
+    "cases": "Fälle",
+    "certificates": "Zeugnisse",
     "detail": "Detail",
+    "diagnoses": "Diagnosen",
+    "documents": "Dokumente",
+    "encounters": "Konsultationen",
+    "medicaments": "Medikamente",
     "outputs": "Ausgaben",
+    "personalia": "Personalien",
+    "prescriptions": "Rezepte",
     "progress": "Verlauf",
     "selected": "Auswahl",
     "unbilled": "Unverrechnete Konsultationen"

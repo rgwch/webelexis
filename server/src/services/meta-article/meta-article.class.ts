@@ -14,7 +14,7 @@ export class Service {
   constructor(private options = {}) {
     this.app = this.options['app']
     this.knex = this.app.get('knexClient')
-    this.lru = new LruCache(250)
+    this.lru = new LruCache({max:250})
   }
 
   async find(params) {

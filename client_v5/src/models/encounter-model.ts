@@ -14,12 +14,12 @@ import { ObjectManager } from './object-manager'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { weekDaysShort } from './timedate'
-import type { BillingModel } from './billings-model'
-import { BillingsManager } from './billings-model'
+import { BillingsManager, type BillingType } from './billings-model'
 import { getService } from '../services/io'
 import { Money } from './money'
 import type { FlexformConfig } from '../widgets/flexformtypes'
 import type { Service } from '@feathersjs/feathers'
+import type { InvoiceType } from './invoice-model'
 
 let trl
 const un = _.subscribe((res) => {
@@ -50,6 +50,7 @@ export interface EncounterType extends ElexisType {
   _Patient?: any
   _Fall?: CaseType
   _Mandator?: KontaktType
+  _Rechnung?: InvoiceType
 }
 
 export class EncounterManager extends ObjectManager {
@@ -114,7 +115,7 @@ export class EncounterModel {
   private cm: CaseManager
   private km: KontaktManager
   private em: EncounterManager
-  private billings: Array<BillingModel>
+  private billings: Array<BillingType>
   private utility: Service<any>
   private blob: Service<any>
 
@@ -149,7 +150,7 @@ export class EncounterModel {
     )
   }
 
-  public async getBillings(reload: boolean = false): Promise<BillingModel[]> {
+  public async getBillings(reload: boolean = false): Promise<BillingType[]> {
     if (!this.billings || reload) {
       this.billings = await this.bm.getBillings(this.enc.id)
     }
@@ -159,9 +160,8 @@ export class EncounterModel {
   public async getSum(): Promise<Money> {
     let sum = 0
     for (const billing of await this.getBillings()) {
-      const b = billing.getBilling()
-      const preis = parseFloat(b.vk_preis)
-      const num = parseFloat(b.zahl)
+      const preis = parseFloat(billing.vk_preis)
+      const num = parseFloat(billing.zahl)
       sum += preis * num
     }
     return new Money(sum)
@@ -192,6 +192,16 @@ export class EncounterModel {
     }
     return this.enc._Mandator
   }
+
+  /*
+  public async getInvoice(): Promise<InvoiceType> {
+    if (this.enc.rechnungsid) {
+      if (!this.enc._Rechnung) {
+        this.enc._Rechnung = await 
+      }
+    }
+  }
+  */
   public getDateTime(): DateTime {
     const dat = DateTime.fromFormat(this.enc.datum, 'yyyyLLdd')
     const hrs = parseInt(this.enc.zeit.substring(0, 2))
@@ -245,3 +255,4 @@ export class EncounterModel {
     }
   }
 }
+

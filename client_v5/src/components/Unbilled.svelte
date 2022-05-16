@@ -6,7 +6,7 @@ import type { konsdef } from "../services/billing";
 import { Tree } from "../models/tree";
 import TreeView from "../widgets/TreeView.svelte";
 import { DateTime } from "luxon";
-import { CaseManager, CaseModel } from "../models/case-model";
+import { CaseManager} from "../models/case-model";
 import type { CaseType } from "../models/case-model";
 import { EncounterManager } from "../models/encounter-model";
 import type { EncounterType } from "../models/encounter-model";

@@ -8,7 +8,7 @@ import type { ElexisType, UUID } from './elexistype';
 import { ObjectManager } from './object-manager';
 import type { KontaktType } from './kontakt-model';
 import { getService } from '../services/io';
-import * as LRU from 'lru-cache'
+import LRU from 'lru-cache'
 
 
 
@@ -39,7 +39,7 @@ export class UserManager extends ObjectManager {
     super('user')
     this.kontaktService = getService('kontakt')
     this.adminService = getService('admin')
-    this.cache = new LRU(100)
+    this.cache = new LRU({max:100})
   }
 
   /**
@@ -111,6 +111,15 @@ export class UserManager extends ObjectManager {
       user._Mandator = user._Kontakt
     }
     return user._Mandator
+  }
+
+  public async getAllMandators(): Promise<Array<KontaktType>> {
+    const result = await this.kontaktService.find({ query: { istMandant: "1" } })
+    if (result && result.data) {
+      return result.data
+    } else {
+      throw (new Error("no mandators found"))
+    }
   }
 
   public async getData(user: UserType, datatype: "KSK|EAN|NIF|Kanton|TarmedSpezialität") {

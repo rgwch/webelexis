@@ -103,35 +103,21 @@ export class CaseManager extends ObjectManager {
     const result = await this.encounterService.find({ query: { fallid: obj.id } })
     return result.data
   }
-}
 
-export class CaseModel {
-  constructor(private obj: CaseType) { }
-
-  public get id() {
-    return this.obj.id
-  }
-
-  public getBillingDate(): Date {
-    if (this.obj.betriebsnummer) {
-      const dt = DateTime.fromISO(this.obj.betriebsnummer)
+  public getBillingDate(obj: CaseType): Date {
+    if (obj.betriebsnummer) {
+      const dt = DateTime.fromISO(obj.betriebsnummer)
       if (dt.isValid) {
         return dt.toJSDate()
       }
     }
     return undefined
   }
-
-  public getUnbilledAmount(): Money {
-    let amount = new Money(0)
-
-    return amount
-  }
   /**
    * Set date when this case was billed or should be billed
    * @param d
    */
-  public setBillingDate(d: Date | string) {
+  public setBillingDate(obj: CaseType, d: Date | string) {
     if (d) {
       let dt: DateTime
       if (d instanceof Date) {
@@ -140,40 +126,41 @@ export class CaseModel {
         dt = DateTime.fromISO(d)
       }
       if (dt.isValid) {
-        this.obj.betriebsnummer = dt.toFormat("yyyyLLdd")
+        obj.betriebsnummer = dt.toFormat("yyyyLLdd")
       }
     } else {
-      delete this.obj.betriebsnummer
-    }
-  }
-  public static getDefinition(): FlexformConfig {
-    return {
-      title: () => "",
-      compact: true,
-      attributes: [
-        {
-          attribute: "datumvon",
-          label: trl('case.begindate'),
-          datatype: "date",
-          sizehint: 6
-        },
-        {
-          attribute: "datumbis",
-          label: trl('case.enddate'),
-          datatype: "date",
-          sizehint: 6
-        },
-        {
-          attribute: "grund",
-          label: trl("case.reason"),
-          datatype: "string",
-        }, {
-          attribute: "bezeichnung",
-          label: trl('case.description'),
-          datatype: "string"
-        }
-
-      ],
+      delete obj.betriebsnummer
     }
   }
 }
+
+
+export const FormDefinition: FlexformConfig = {
+  title: () => "",
+  compact: true,
+  attributes: [
+    {
+      attribute: "datumvon",
+      label: trl('case.begindate'),
+      datatype: "date",
+      sizehint: 6
+    },
+    {
+      attribute: "datumbis",
+      label: trl('case.enddate'),
+      datatype: "date",
+      sizehint: 6
+    },
+    {
+      attribute: "grund",
+      label: trl("case.reason"),
+      datatype: "string",
+    }, {
+      attribute: "bezeichnung",
+      label: trl('case.description'),
+      datatype: "string"
+    }
+
+  ],
+}
+

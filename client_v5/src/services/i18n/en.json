@@ -27,6 +27,7 @@
     "PARTIAL_PAYMENT": "partially paid",
     "TOTAL_LOSS": "total loss",
     "actions": {
+      "create": "Rechnungen erstellen",
       "demand_level": "demand level",
       "output": "Output",
       "print": "Print",
@@ -87,6 +88,7 @@
   },
   "demotest": "test component",
   "encounter": {
+    "billed": "Billed",
     "date": "Date",
     "detail": "Encounter detail"
   },
@@ -99,14 +101,26 @@
     "loading": "loading..."
   },
   "patient": {
-    "detail": "Patient detail"
+    "detail": "Patient detail",
+    "noneselected": "Click here to select patient"
+  },
+  "prompts": {
+    "patsearch": "Enter part of the lastname, firstname, or birthdate"
   },
   "titles": {
     "bills": "Bills",
+    "cases": "Cases",
+    "certificates": "Certificates",
     "detail": "Detail",
+    "diagnoses": "Diagnoses",
+    "documents": "Documents",
+    "encounters": "Encounters",
+    "medicaments": "Medication",
     "outputs": "Outputs",
+    "personalia": "Personal data",
+    "prescriptions": "Prescriptions",
     "progress": "Progress",
-    "selected": "Selectiob",
+    "selected": "Selection",
     "unbilled": "Unbilled encounters"
   },
   "validation": {

@@ -1,16 +1,16 @@
 import type { InvoiceType } from './../models/invoice-model'
 import { Invoice, RnState } from '../models/invoice-model'
-import { DiagnoseManager, DiagnoseModel } from '../models/diagnose-model'
 import { getService } from './io'
-import { EncounterModel, EncounterManager } from '../models/encounter-model'
+import { EncounterModel } from '../models/encounter-model'
 import type { EncounterType } from '../models/encounter-model'
 import type { ITreeListener } from "../models/tree";
 import { Tree } from '../models/tree'
-import { BillingModel, BillingsManager } from '../models/billings-model'
 import { KontaktManager } from '../models/kontakt-model'
-import { CaseModel } from '../models/case-model'
+import type { CaseType } from '../models/case-model'
 import { DateTime } from 'luxon'
 import { Money } from '../models/money'
+import { encounterManager, billingsManager, caseManager, diagnoseManager } from '../models'
+import type { DiagnoseType } from '../models/diagnose-model'
 
 export type konsdef = {
   konsid: string
@@ -67,22 +67,19 @@ export class Billing {
 
   async createBill(fall: Tree<konsdef>): Promise<InvoiceType> {
     const errors: Array<String> = []
-    const bm = new BillingsManager()
-    const em = new EncounterManager()
     const km = new KontaktManager()
-    const dm = new DiagnoseManager()
     const billsService = getService('bills')
     const konsen = fall.getChildren()
     const rechnung: Partial<InvoiceType> = {}
-    let f: CaseModel
-    let diagnosen: Array<DiagnoseModel> = []
+    let f: CaseType
+    let diagnosen: Array<DiagnoseType> = []
     let startDate: DateTime = DateTime.fromISO('2200-12-31')
     let endDate: DateTime = DateTime.fromISO('1900-01-01')
     let billAmount = new Money(0)
     let konsultationen: Array<EncounterModel> = []
     for (const k of konsen) {
       try {
-        const enc = (await em.fetch(k.payload.konsid)) as EncounterType
+        const enc = (await encounterManager.fetch(k.payload.konsid)) as EncounterType
         const kons = new EncounterModel(enc)
         konsultationen.push(kons)
         const mandator = await kons.getMandator()
@@ -104,10 +101,10 @@ export class Billing {
             rechnung.fallid = fall.id
             rechnung._Fall = fall
           }
-          const cas = new CaseModel(fall)
-          cas.setBillingDate(null)
+          const cas = fall
+          caseManager.setBillingDate(cas, null)
           if (diagnosen.length === 0) {
-            diagnosen = diagnosen.concat(await dm.findForKons(enc.id))
+            diagnosen = diagnosen.concat(await diagnoseManager.findForKons(enc.id))
           }
           const konsdat = kons.getDateTime()
           if (konsdat < startDate) {
@@ -118,7 +115,7 @@ export class Billing {
           }
           const l = await kons.getBillings()
           for (const billing of l) {
-            const amountCents = billing.getAmount()
+            const amountCents = billingsManager.getAmount(billing)
             billAmount = billAmount.addCents(amountCents)
           }
         }

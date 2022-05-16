@@ -88,9 +88,9 @@
   },
   "demotest": "Testkomponente",
   "encounter": {
+    "billed": "Verrechnet",
     "date": "Datum",
-    "detail": "Konsultation Detail",
-    "billed": "Verrechnet"
+    "detail": "Konsultation Detail"
   },
   "formatting": {
     "date": "dd.LL.yyyy",
@@ -104,24 +104,24 @@
     "detail": "Patient Detail",
     "noneselected": "Kein Patient ausgewählt"
   },
+  "prompts": {
+    "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben"
+  },
   "titles": {
-    "personalia": "Personalien",
-    "medicaments": "Medikamente",
-    "prescriptions": "Rezepte",
-    "certificates": "Zeugnisse",
-    "documents": "Dokumente",
-    "diagnoses": "Diagnosen",
-    "encounters": "Konsultationen",
-    "cases": "Fälle",
     "bills": "Rechnungen",
+    "cases": "Fälle",
+    "certificates": "Zeugnisse",
     "detail": "Detail",
+    "diagnoses": "Diagnosen",
+    "documents": "Dokumente",
+    "encounters": "Konsultationen",
+    "medicaments": "Medikamente",
     "outputs": "Ausgaben",
+    "personalia": "Personalien",
+    "prescriptions": "Rezepte",
     "progress": "Verlauf",
     "selected": "Auswahl",
     "unbilled": "Unverrechnete Konsultationen"
-  },
-  "prompts": {
-    "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben"
   },
   "validation": {
     "invalidDate": "Ungültiges Datum",

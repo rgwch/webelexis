@@ -44,7 +44,7 @@
     "i18next-json-sync": "^2.3.1",
     "jest": "^27.4.7",
     "jest-svelte-events": "^1.0.5",
-    "lru-cache": "^6.0.0",
+    "lru-cache": "^7.10.1",
     "luxon": "^2.3.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.64.0",
@@ -75,6 +75,7 @@
     "@feathersjs/socketio-client": "^4.5.13",
     "@tiptap/core": "^2.0.0-beta.175",
     "@tiptap/starter-kit": "^2.0.0-beta.184",
+    "@types/lru-cache": "^7.10.10",
     "svelte-infinite-scroll": "^2.0.1",
     "svelte-tabs": "^1.1.0"
   }

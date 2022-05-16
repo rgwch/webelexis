@@ -31,11 +31,11 @@ export class BillingsManager {
    * Fetch all billings for a given encounter
    * @param kons
    */
-  public async getBillings(kons_id: string): Promise<BillingModel[]> {
+  public async getBillings(kons_id: string): Promise<BillingType[]> {
     const ret = await this.billingService.find({
       query: { behandlung: kons_id },
     })
-    return ret.data.map((b) => new BillingModel(b))
+    return ret.data
   }
   /**
    * get a billable from a code. Note: The code must have the form:
@@ -72,21 +72,21 @@ export class BillingsManager {
     billable,
     encounter: EncounterType,
     count: number,
-    others: BillingModel[],
+    others: BillingType[],
   ): Promise<BillingType> {
     billable.encounter_id = encounter.id
-    const existing = others.find((elem) => elem.isBillingOf(billable))
+    const existing = others.find((elem) => this.isBillingOf(elem, billable))
     try {
       if (existing) {
-        existing.increase(count)
+        this.increase(existing, count)
         return await this.billingService.update(
-          existing.getBilling().id,
-          existing.getBilling(),
+          existing.id,
+          existing
         )
       } else {
         billable.count = count.toString()
         const created: BillingType = await this.billingService.create(billable)
-        others.push(new BillingModel(created))
+        others.push(created)
         return created
       }
     } catch (err) {
@@ -99,22 +99,22 @@ export class BillingsManager {
    * @param item
    * @param count
    */
-  public async setCount(item: BillingModel, count: number) {
-    item.getBilling().zahl = count.toString()
+  public async setCount(item: BillingType, count: number) {
+    item.zahl = count.toString()
     return await this.billingService.update(
-      item.getBilling().id,
-      item.getBilling(),
+      item.id,
+      item
     )
   }
   /**
    * Increase the coubt of a Billing
    * @param item
    */
-  public async increaseCount(item: BillingModel) {
-    item.increase()
+  public async increaseCount(item: BillingType) {
+    this.increase(item)
     return await this.billingService.update(
-      item.getBilling().id,
-      item.getBilling(),
+      item.id,
+      item
     )
   }
 
@@ -122,10 +122,9 @@ export class BillingsManager {
    * Remove a Billing from an encounter
    * @param billing
    */
-  public async removeBilling(billing: BillingModel) {
+  public async removeBilling(billing: BillingType) {
     try {
-      const b = billing.getBilling()
-      const removed = await this.billingService.remove(b.id)
+      const removed = await this.billingService.remove(billing.id)
       return removed
     } catch (err) {
       console.log(err)
@@ -141,49 +140,43 @@ export class BillingsManager {
       query: { behandlung: kons.id },
     })
   }
-}
-
-/**
- * Syntactic sugar around BillingType
- */
-export class BillingModel {
-  public code: string
-  constructor(private obj: BillingType) {
-    this.code = this.obj.code || this.obj.leistg_code.split(/\s*-\s*/)[0]
+  public getLabel(obj: BillingType) {
+    return obj.zahl + ' ' + this.getCode(obj) + ' ' + obj.leistg_txt
   }
-  public getLabel() {
-    return this.obj.zahl + ' ' + this.code + ' ' + this.obj.leistg_txt
+  public getCode(obj: BillingType) {
+    const code = obj.code || obj.leistg_code.split(/\s*-\s*/)[0]
+    return code
   }
-  public getBilling() {
-    return this.obj
-  }
-  public isBillingOf = (billable) => {
+  public isBillingOf = (obj: BillingType, billable) => {
     return (
-      this.code === billable.code && this.obj.klasse === billable.codesystem
+      this.getCode(obj) === billable.code && obj.klasse === billable.codesystem
     )
   }
-  public getCount(): number {
-    return parseInt(this.obj.zahl, 10)
+  public getCount(obj: BillingType): number {
+    return parseInt(obj.zahl, 10)
   }
-
-  public getAmount(): number {
-    return this.getCount() * parseFloat(this.obj.vk_preis)
+  public getAmount(obj: BillingType): number {
+    return this.getCount(obj) * parseFloat(obj.vk_preis)
   }
-  public increase(num?: number) {
+  public increase(obj: BillingType, num?: number) {
     if (!num) {
       num = 1
     }
-    this.obj.zahl = (this.getCount() + num).toString()
+    obj.zahl = (this.getCount(obj) + num).toString()
   }
-  public compare = (other) => {
-    if (this.code && other && other.code) {
-      return this.code.localeCompare(other.code)
-    } else if (this.code) {
+  public compare = (first: BillingType, second: BillingType) => {
+    const firstCode = this.getCode(first)
+    const secondCode = this.getCode(second)
+    if (firstCode && secondCode) {
+      return firstCode.localeCompare(secondCode)
+    } else if (firstCode) {
       return 1
-    } else if (other && other.code) {
+    } else if (secondCode) {
       return -1
     } else {
       return 0
     }
   }
 }
+
+

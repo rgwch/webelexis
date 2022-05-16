@@ -17,6 +17,4 @@ export class DiagnoseManager extends ObjectManager {
     }
 }
 
-export class DiagnoseModel {
-    constructor(private dg: DiagnoseType) { }
-}
+
