@@ -97,8 +97,6 @@ export class TerminManager {
         const found = await this.terminService.find({
           query: { tag: day.toFormat("yyyyLLdd"), bereich: resource }
         })
-        return found.data.map(t=>new TerminModel(t))
-        /*
         if (found.data && found.data.length > 0) {
           const ret = []
           const template = found.data[0]
@@ -127,7 +125,7 @@ export class TerminManager {
         } else {
           return []
         }
-        */
+        
       } catch (err) {
         if (err.code && err.code === 401) {
           // this.router.navigateToRoute("user")

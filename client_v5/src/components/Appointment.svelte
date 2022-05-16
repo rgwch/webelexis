@@ -2,23 +2,14 @@
 import type { TerminModel, TerminType } from "../models/termine-model";
 import Collapse from "../widgets/Collapse.svelte";
 import { _ } from "svelte-i18n";
-import properties from "../services/properties";
 export let termin: TerminModel;
-function getTimes() {
-  /*
-  const dt = termin.getStartTime();
-  const et = termin.getEndTime();
-  return dt.toFormat("HH:mm") + "-" + et.toFormat("HH:mm");
-  */
- return termin.getTimeString()
-}
 </script>
 
 <template>
   <Collapse>
     <div slot="header">
       <span style="background-color:{termin.getStateColor()}">
-        <span>{getTimes()}</span>
+        <span>{termin.getTimeString()}</span>
         {#await termin.getLabel()}
           {$_("general.loading")}
         {:then label}
@@ -26,8 +17,10 @@ function getTimes() {
         {/await}
       </span>
     </div>
-    <div slot="body">
-      <p>{termin.getDescription()}</p>
+    <div class="bg-blue-300 mx-4 px-2 border-1 rounded-md" slot="body">
+      {#if termin.isAppointment()}
+        <p>{termin.getDescription()}</p>
+      {/if}
     </div>
   </Collapse>
   <!-- div>
