@@ -195,7 +195,7 @@ export class Patient {
         {
           attribute: 'id',
           label: "id",
-          datatype: 'string',
+          datatype: 'readonly',
           sizehint: 12
         }
       ],
