@@ -132,6 +132,9 @@ export class EncounterModel {
     return t.substring(0, 2) + ':' + t.substring(2, 4)
   }
 
+  public get entity() {
+    return this.enc
+  }
   public async save() {
     await this.em.save(this.enc)
   }

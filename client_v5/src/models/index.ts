@@ -5,7 +5,8 @@ import { EncounterManager } from "./encounter-model"
 import { KontaktManager } from "./kontakt-model"
 import { StickerManager } from "./stickers-model"
 import { TerminManager } from "./termine-model"
-import {UserManager} from './user-model'
+import { PatientManager } from "./patient-model"
+import { UserManager } from './user-model'
 
 export const caseManager = new CaseManager()
 export const billingsManager = new BillingsManager()
@@ -15,3 +16,4 @@ export const diagnoseManager = new DiagnoseManager()
 export const stickerManager = new StickerManager()
 export const terminManager = new TerminManager()
 export const userManager = new UserManager()
+export const patientManager = new PatientManager()

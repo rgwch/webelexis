@@ -1,12 +1,12 @@
 <script lang="ts">
 import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
+import EncountersByDate from "../components/EncountersByDate.svelte";
 import Bills from "../components/Bills.svelte";
 import Unbilled from "../components/Unbilled.svelte";
 import { getService } from "../services/io";
 import { InvoiceState } from "../models/invoice-model";
 import type { InvoiceType } from "../models/invoice-model";
 import { _ } from "svelte-i18n";
-import Agenda from "./Agenda.svelte";
 
 const fetchsize = 80;
 let bills: Array<InvoiceType> = [];
@@ -60,7 +60,7 @@ function patfilter(bill): boolean {
     </TabList>
 
     <TabPanel>
-      <p>No Content Yet</p>
+      <EncountersByDate />
     </TabPanel>
     <TabPanel>
       <Unbilled />
