@@ -25,13 +25,13 @@ import MarginDecorator from "./MarginDecorator.svelte";
 
 <Story
   name="enabled"
-  args="{{ dateString: '20200501', label: 'A system datepicker' }}"
+  args="{{ dateString: '2020-05-01', label: 'A system datepicker' }}"
 />
 
 <Story
   name="disabled"
   args="{{
-    dateString: '20200501',
+    dateString: '2020-05-01',
     label: 'A disabled datepicker',
     disabled: true,
   }}"

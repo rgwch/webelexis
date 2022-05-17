@@ -94,11 +94,15 @@
   },
   "formatting": {
     "date": "dd.LL.yyyy",
+    "dateTime": "dd.LL.yyyy HH:mm",
     "dbdate": "yyyyLLdd",
-    "longdate": "ccc, dd.LL.yyyy"
+    "longdate": "ccc, dd.LL.yyyy",
+    "longDateTime": "ccc, dd.LL.yyyy HH:mm"
   },
   "general": {
-    "loading": "lese..."
+    "loading": "lese...",
+    "from": "von",
+    "until": "bis"
   },
   "patient": {
     "detail": "Patient Detail",

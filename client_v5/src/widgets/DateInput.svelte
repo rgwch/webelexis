@@ -23,6 +23,7 @@ export let id: string = Math.random()
  * Disable input
  */
 export let disabled: boolean = false;
+
 function changed() {
   //const ndate = DateTime.fromJSDate(current).toFormat("yyyyLLdd");
   const ndate = DateTime.fromFormat(current, "yyyy-LL-dd").toFormat("yyyyLLdd");
@@ -30,6 +31,7 @@ function changed() {
   dateString = ndate;
   dispatch("dateChanged");
 }
+
 </script>
 
 <!-- @component DateInput
@@ -44,6 +46,7 @@ A label and a DatePicker
       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
       type="date"
       bind:value="{current}"
+      on:change={changed}
       disabled="{disabled}"
     />
     <!-- DatePicker

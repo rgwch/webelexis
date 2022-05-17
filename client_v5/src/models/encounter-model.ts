@@ -91,6 +91,7 @@ export class EncounterManager extends ObjectManager {
       .find({
         query: {
           $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }],
+          $limit:1000
         },
       })
       .then((result) => {
