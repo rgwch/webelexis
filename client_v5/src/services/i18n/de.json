@@ -3,7 +3,8 @@
     "cancel": "Abbruch",
     "deselect": "abwählen...",
     "ok": "Ok",
-    "select": "auswählen..."
+    "select": "auswählen...",
+    "go":"start"
   },
   "address": {
     "place": "Ort",
