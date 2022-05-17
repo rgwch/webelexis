@@ -121,7 +121,8 @@
     "prescriptions": "Rezepte",
     "progress": "Verlauf",
     "selected": "Auswahl",
-    "unbilled": "Unverrechnete Konsultationen"
+    "unbilled": "Unverrechnete Konsultationen",
+    "fromdate": "Kons. nach Datum"
   },
   "validation": {
     "invalidDate": "Ungültiges Datum",

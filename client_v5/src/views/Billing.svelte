@@ -1,10 +1,12 @@
 <script lang="ts">
+import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 import Bills from "../components/Bills.svelte";
 import Unbilled from "../components/Unbilled.svelte";
 import { getService } from "../services/io";
 import { InvoiceState } from "../models/invoice-model";
 import type { InvoiceType } from "../models/invoice-model";
 import { _ } from "svelte-i18n";
+import Agenda from "./Agenda.svelte";
 
 const fetchsize = 80;
 let bills: Array<InvoiceType> = [];
@@ -34,7 +36,6 @@ for (let value in InvoiceState) {
   }
 }
 
-
 function patfilter(bill): boolean {
   if (!name) {
     return true;
@@ -51,22 +52,34 @@ function patfilter(bill): boolean {
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row">
-    <div
-      class="flex-auto my-3 p-1 border-2 border-solid border-blue-400 rounded
-      max-h-full max-w-full">
-      <h2 class="mx-3">{$_("titles.bills")}</h2>
-      <select bind:value="{billstate}" on:change="{reload}" on:click="{reload}">
-        {#each states as state}
-          <option value="{state}">{$_("billing." + state)}</option>
-        {/each}
-      </select>
-      <input type="text" bind:value="{name}" />
-      <button on:click="{reload}">Filter</button>
-      <Bills bills="{bills}" filter="{patfilter}" busy="{busy}" />
-    </div>
-    <div class="flex-auto">
+  <Tabs>
+    <TabList>
+      <Tab>{$_("titles.fromdate")}</Tab>
+      <Tab>{$_("titles.unbilled")}</Tab>
+      <Tab>{$_("titles.bills")}</Tab>
+    </TabList>
+
+    <TabPanel>
+      <p>No Content Yet</p>
+    </TabPanel>
+    <TabPanel>
       <Unbilled />
-    </div>
-  </div>
+    </TabPanel>
+    <TabPanel>
+      <div>
+        <h2 class="mx-3">{$_("titles.bills")}</h2>
+        <select
+          bind:value="{billstate}"
+          on:change="{reload}"
+          on:click="{reload}">
+          {#each states as state}
+            <option value="{state}">{$_("billing." + state)}</option>
+          {/each}
+        </select>
+        <input type="text" bind:value="{name}" />
+        <button on:click="{reload}">Filter</button>
+        <Bills bills="{bills}" filter="{patfilter}" busy="{busy}" />
+      </div>
+    </TabPanel>
+  </Tabs>
 </template>

@@ -6,7 +6,7 @@ export let termin: TerminModel;
 </script>
 
 <template>
-  <Collapse>
+  <Collapse locked="{!termin.isAppointment()}">
     <div slot="header">
       <span style="background-color:{termin.getStateColor()}">
         <span>{termin.getTimeString()}</span>
@@ -18,9 +18,7 @@ export let termin: TerminModel;
       </span>
     </div>
     <div class="bg-blue-300 mx-4 px-2 border-1 rounded-md" slot="body">
-      {#if termin.isAppointment()}
-        <p>{termin.getDescription()}</p>
-      {/if}
+      <p>{termin.getDescription()}</p>
     </div>
   </Collapse>
   <!-- div>
