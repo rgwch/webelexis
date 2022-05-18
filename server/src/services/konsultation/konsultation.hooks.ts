@@ -256,7 +256,7 @@ export default {
 
   after: {
     all: [],
-    find: [readKonsText],
+    find: [/* readKonsText */],
     get: [/* readSingleKonsText */],
     create: [],
     update: [],
