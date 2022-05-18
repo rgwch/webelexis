@@ -79,7 +79,28 @@ export class EncounterManager extends ObjectManager {
       return Promise.resolve({ total: 0, data: [], limit: 50, skip: 0 })
     }
   }
-  public fetchForTimes(
+
+  public async fetchForTimes(dateFrom: string, dateUntil: string, mandant: UUID): Promise<Array<EncounterType>> {
+    const from = DateTime.fromISO(dateFrom).toFormat('yyyyLLdd')
+    const until = DateTime.fromISO(dateUntil).toFormat('yyyyLLdd')
+    const query = {
+      $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }],
+    }
+    if (mandant) {
+      query["mandantid"] = mandant
+    }
+    const ret = (await super.fetchAll(query)) as Array<EncounterType>
+    return ret.sort((a, b) => {
+      const d1 = a.datum
+      const d2 = b.datum
+      let dx = d1.localeCompare(d2)
+      if (dx === 0) {
+        dx = a.zeit.localeCompare(b.zeit)
+      }
+      return dx
+    })
+  }
+  public fetchForTimes0(
     dateFrom: string,
     dateUntil: string,
     mandant: UUID,
@@ -91,7 +112,7 @@ export class EncounterManager extends ObjectManager {
       .find({
         query: {
           $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }],
-          $limit:1000
+          $limit: 1000
         },
       })
       .then((result) => {

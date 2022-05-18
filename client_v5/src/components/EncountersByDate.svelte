@@ -49,18 +49,21 @@ async function reload() {
   {#if searching}
     <img src="webelexis-anim.gif" width="150px" alt="wait..." />
   {:else}
-    {#each list as kons}
-      <Collapse>
-        <div slot="header">
-          <span class="hover:text-blue-700"
-            >{kons.getDateTime().toFormat($_("formatting.date"))}</span>
-          <span class="hover:text-blue-700 hover:font-bold"
-            >{@html Patient.getLabel(kons.entity._Patient)}</span>
-        </div>
-        <div slot="body">
-          <EncounterDetail entity="{kons.entity}" />
-        </div>
-      </Collapse>
-    {/each}
+    <div
+      class="bg-green-200 static overflow-x-hidden overflow-y-auto max-h-[80vh] h-4/5">
+      {#each list as kons}
+        <Collapse>
+          <div slot="header">
+            <span class="hover:text-blue-700"
+              >{kons.getDateTime().toFormat($_("formatting.date"))}</span>
+            <span class="hover:text-blue-700 hover:font-bold"
+              >{@html Patient.getLabel(kons.entity._Patient)}</span>
+          </div>
+          <div slot="body">
+            <EncounterDetail entity="{kons.entity}" />
+          </div>
+        </Collapse>
+      {/each}
+    </div>
   {/if}
 </template>

@@ -52,7 +52,26 @@ export class ObjectManager {
     }
   }
 
+  /**
+   * Fetch all objects matching a query. Makes repeated requests if result size exceeds $limit
+   * (Note: Hard limit of the server is set as paginate.max in server/config/*.json)
+   * @param query Query in feathers-syntax
+   * @returns an Array with the found objects
+   */
+  public async fetchAll(query: any): Promise<Array<ElexisType>> {
+    let ret = []
+    let result;
+    query.$limit = 500
+    do {
+      result = await this.dataService.find({ query })
+      ret = [...ret, ...result.data]
+      query.$skip = result.skip + result.data.length
+    } while (query.$skip < result.total)
+    return ret
+  }
+
   public async find(query: any): Promise<QueryResult> {
+
     return this.dataService.find(query)
   }
   /**
