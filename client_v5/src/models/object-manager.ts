@@ -61,7 +61,7 @@ export class ObjectManager {
   public async fetchAll(query: any): Promise<Array<ElexisType>> {
     let ret = []
     let result;
-    query.$limit = 500
+    query.$limit = 100
     do {
       result = await this.dataService.find({ query })
       ret = [...ret, ...result.data]

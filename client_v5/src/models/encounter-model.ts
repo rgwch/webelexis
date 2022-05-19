@@ -51,6 +51,7 @@ export interface EncounterType extends ElexisType {
   _Fall?: CaseType
   _Mandator?: KontaktType
   _Rechnung?: InvoiceType
+  _Sum?: Money
 }
 
 export class EncounterManager extends ObjectManager {
@@ -85,20 +86,22 @@ export class EncounterManager extends ObjectManager {
     const until = DateTime.fromISO(dateUntil).toFormat('yyyyLLdd')
     const query = {
       $and: [{ datum: { $gte: from } }, { datum: { $lte: until } }],
+      $sort: { datum: 1 }
     }
     if (mandant) {
       query["mandantid"] = mandant
     }
     const ret = (await super.fetchAll(query)) as Array<EncounterType>
+    //return ret
+
     return ret.sort((a, b) => {
-      const d1 = a.datum
-      const d2 = b.datum
-      let dx = d1.localeCompare(d2)
-      if (dx === 0) {
-        dx = a.zeit.localeCompare(b.zeit)
+      if (a.datum === b.datum) {
+        return a.zeit.localeCompare(b.zeit)
+      } else {
+        return 0
       }
-      return dx
     })
+
   }
   public fetchForTimes0(
     dateFrom: string,
@@ -183,13 +186,16 @@ export class EncounterModel {
   }
 
   public async getSum(): Promise<Money> {
-    let sum = 0
-    for (const billing of await this.getBillings()) {
-      const preis = parseFloat(billing.vk_preis)
-      const num = parseFloat(billing.zahl)
-      sum += preis * num
+    if (!this.enc._Sum) {
+      let sum = 0;
+      for (const billing of await this.getBillings()) {
+        const preis = parseFloat(billing.vk_preis)
+        const num = parseFloat(billing.zahl)
+        sum += preis * num
+      }
+      this.enc._Sum = new Money(sum)
     }
-    return new Money(sum)
+    return this.enc._Sum
   }
 
   public async getCase(): Promise<CaseType> {
@@ -222,7 +228,7 @@ export class EncounterModel {
   public async getInvoice(): Promise<InvoiceType> {
     if (this.enc.rechnungsid) {
       if (!this.enc._Rechnung) {
-        this.enc._Rechnung = await 
+        this.enc._Rechnung = await
       }
     }
   }

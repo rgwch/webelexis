@@ -17,6 +17,12 @@ export interface BillingType extends ElexisType {
   vk_preis: string
 }
 
+export interface Billable {
+  uid: string
+  codestystem: string
+  encounter: UUID
+  count: number
+}
 export class BillingsManager {
   private billingService
   private billableService
@@ -42,7 +48,7 @@ export class BillingsManager {
    * system!code, e.g. tarmed!00.0010
    * @param code
    */
-  public async getBillable(code: string) {
+  public async getBillable(code: string): Promise<Billable> {
     if (code.indexOf('!') === -1) {
       throw Error('bad code format for getBillable')
     }
