@@ -54,22 +54,22 @@ async function demandlevel(up: boolean = true) {
 <template>
   <div class="flex justify-left py-8">
     <button
-      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 rounded-full"
+      class="roundbutton"
       on:click="{() => output(false)}">
       {$_("billing.actions.output")}
     </button>
     <button
-      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 rounded-full"
+      class="roundbutton"
       on:click="{() => output(true)}">
       {$_("billing.actions.print")}
     </button>
     <button
-      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 rounded-full"
+      class="roundbutton"
       on:click="{() => demandlevel(true)}">
       {$_("billing.actions.demand_level")} &uarr;
     </button>
     <button
-      class="bg-blue-500 font-bolder text-white px-3 py-2 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 rounded-full">
+      class="roundbutton">
       {$_("billing.actions.storno")}
     </button>
   </div>

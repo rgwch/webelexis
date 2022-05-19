@@ -60,7 +60,7 @@ function dragover(event) {
 
 <template>
   <div
-    class="bg-green-200 static overflow-x-hidden overflow-y-auto max-h-[80vh] h-4/5"
+    class="scrollpanel"
     on:drop|preventDefault|stopPropagation="{dropped}"
     on:dragenter|preventDefault="{dragenter}"
     on:dragleave|preventDefault="{dragleave}"

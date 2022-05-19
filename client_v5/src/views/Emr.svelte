@@ -16,6 +16,7 @@ function selected() {
 </script>
 
 <template>
+  <p class="testclass">A Test</p>
   <p
     class="font-bold text-blue-700 cursor-pointer"
     on:click="{() => (selector = !selector)}">

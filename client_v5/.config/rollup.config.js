@@ -48,7 +48,7 @@ export default {
       preprocess: [
         sveltePreprocess({ sourceMap: !production }),
         // windi({ mode: production ? "production" : "development" }),
-        windi.preprocess()
+        windi.preprocess({configPath: "./windi.config.js"})
       ],
       compilerOptions: {
         // enable run-time checks when not in production
