@@ -1,6 +1,6 @@
 // we need this to inialialize svelte-i18n
 import './services/i18n/i18n'
-import App from './views/App.svelte';
+import App from './views/App.svelte'
 import { writable, type Writable } from 'svelte/store'
 import { type PatientType, PatientManager } from './models/patient-model';
 import def from './services/properties'
@@ -18,4 +18,4 @@ const app = new App({
   target: document.body,
 });
 
-export default app;
+// export default app;

@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { InvoiceType } from "../models/invoice-model";
+import { InvoiceType } from "../models/invoice-model";
 import { Invoice, RnState } from "../models/invoice-model";
 import { _ } from "svelte-i18n";
 export let selection: Array<InvoiceType> = [];
