@@ -34,6 +34,8 @@ services:
       - 2380:2380
       - 2379:2379
       - 4001:4001
+    restart: always
+
   solr:
     image: solr:8.5.2
     container_name: wlx_solr
@@ -47,6 +49,7 @@ services:
     restart: always
     networks:
       - lucinda_net
+      
   tika:
     image: apache/tika:1.24
     container_name: wlx_tika

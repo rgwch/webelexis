@@ -2,6 +2,11 @@
   "name": "Webelexis",
   "description": "A Svelte-powered Elexis client",
   "version": "3.5.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rgwch/webelexis"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "rollup -c .config/rollup.config.js",
     "clean": "rimraf public/build",

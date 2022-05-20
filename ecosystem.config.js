@@ -10,7 +10,7 @@
 module.exports = {
   apps : [{
     name: 'server',
-    script: 'src/index.js',
+    script: 'dist/index.js',
     cwd: 'server',
     instances: 1,
     autorestart: false,

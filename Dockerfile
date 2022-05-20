@@ -2,7 +2,7 @@ FROM node:10-alpine
 EXPOSE 3030
 EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
-ARG TOOLBOX_VER=4.2.10
+ARG TOOLBOX_VER=4.2.11
 ARG JACKSON_VER=2.13.2
 
 WORKDIR /home/node
@@ -10,6 +10,7 @@ RUN apk add --no-cache openjdk8 nano \
   && apk add --no-cache --virtual build_deps python g++ gcc make binutils-gold bash git tzdata\
   && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
   && git clone https://github.com/rgwch/webelexis \
+  && npm i -g pm2 \
   && cd webelexis/client_v5 \
   && npm install \
   && npm run build \
