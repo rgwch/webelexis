@@ -1,0 +1,69 @@
+{
+  "name": "webelexis",
+  "description": "A Svelte-powered Elexis client",
+  "version": "3.5.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rgwch/webelexis"
+  },
+  "engines": {
+    "node": "^16.0.0",
+    "npm": ">= 8.3.0"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c .config/rollup.config.js",
+    "clean": "rimraf public/build",
+    "dev": "rollup -c .config/rollup.config.js -w",
+    "start": "sirv public -s --port 3000",
+    "i18n": "sync-i18n --files '**/i18n/*.json' --primary de --languages en fr it --space 2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
+    "@feathersjs/authentication-client": "^4.5.13",
+    "@feathersjs/client": "^4.5.13",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-replace": "^3.0.1",
+    "@rollup/plugin-typescript": "^8.0.0",
+    "@tsconfig/svelte": "^3.0.0",
+    "@types/feathersjs__authentication-client": "^1.0.9",
+    "@types/feathersjs__socketio-client": "^1.0.7",
+    "@types/luxon": "^2.0.9",
+    "i18next-json-sync": "^2.3.1",
+    "lru-cache": "^7.10.1",
+    "luxon": "^2.3.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.64.0",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "sirv-cli": "^2.0.1",
+    "socket.io-client": "^2.4.0",
+    "svelte": "^3.48.0",
+    "svelte-fa": "^2.4.0",
+    "svelte-i18n": "^3.3.13",
+    "svelte-jester": "^2.1.5",
+    "svelte-loader": "^3.1.2",
+    "svelte-navigator": "^3.1.5",
+    "svelte-preprocess": "^4.7.4",
+    "svelte-windicss-preprocess": "^3.5.3",
+    "sync-i18n": "0.0.18",
+    "tslib": "^2.0.0",
+    "typescript": "^4.0.0",
+    "uuid": "^8.3.2",
+    "windicss": "^3.5.4"
+  },
+  "dependencies": {
+    "@feathersjs/feathers": "^4.5.12",
+    "@feathersjs/socketio-client": "^4.5.13",
+    "@tiptap/core": "^2.0.0-beta.175",
+    "@tiptap/starter-kit": "^2.0.0-beta.184",
+    "svelte-infinite-scroll": "^2.0.1",
+    "svelte-tabs": "^1.1.0"
+  }
+}

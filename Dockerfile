@@ -12,12 +12,14 @@ RUN apk add --no-cache openjdk8 nano \
   && git clone https://github.com/rgwch/webelexis \
   && npm i -g pm2 \
   && cd webelexis/client_v5 \
+  && mv package-dockered.json package.json \
   && npm install \
   && npm run build \
   && cd ../selfservice \
   && npm install \
   && npm --production prune \
   && cd ../server \
+  && mv package-dockered.json package.json \
   && npm install \
   && npm install java \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
