@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2019-2020 by G. Weirich         *
+ * Copyright (c) 2019-2022 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -79,7 +79,7 @@ router.post("/set", async (req, res) => {
   const email = req.body.email
   const dob = req.body.bdate
   const grund = req.body.reason
-  const sendmail=req.body.sendmail
+  const sendmail = req.body.sendmail
   const terminService = req.app.get("terminService")
   try {
     const termin = await terminService.create({ appnt, email, dob, grund, sendmail })

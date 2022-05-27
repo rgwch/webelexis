@@ -4,10 +4,11 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-const defaults = require('../../configuration').schedule
+import { config as cfg } from '../../configuration'
 import { DateTime } from 'luxon'
 import { ElexisUtils } from '../../util/elexis-types'
 import { Gapfinder } from './gapfinder'
+const defaults = cfg.schedule
 const elexis = new ElexisUtils()
 const gapf = new Gapfinder()
 
