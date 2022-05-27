@@ -84,7 +84,7 @@
     "tmp-promise": "^2.1.1",
     "underscore": "^1.13.1",
     "unzipper": "^0.9.15",
-    "uuid": "^3.4.0",
+    "uuid": "^8.3.2",
     "walkdir": "^0.4.1",
     "winston": "^3.3.3",
     "xml-stream": "^0.4.5",
