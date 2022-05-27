@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2019-2020 by G. Weirich         *
+ * Copyright (c) 2019-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -8,7 +8,7 @@
  configuration for the pm2 launcher (used in the dockerized variant)
 */
 module.exports = {
-  apps : [{
+  apps: [{
     name: 'server',
     script: 'dist/index.js',
     cwd: 'server',
@@ -25,7 +25,7 @@ module.exports = {
     env_dockered: {
       NODE_ENV: 'dockered'
     }
-  },{
+  }, {
     name: "selfservice",
     script: "bin/www",
     cwd: 'selfservice',

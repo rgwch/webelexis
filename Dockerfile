@@ -22,7 +22,6 @@ RUN apk add --no-cache openjdk8 nano \
   && cd ../server \
   && mv package-dockered.json package.json \
   && npm install \
-  && npm install java \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
   && apk del build_deps \
   && npm --production prune \
