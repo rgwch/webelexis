@@ -1,10 +1,14 @@
 {
-  "name": "Webelexis",
+  "name": "webelexis",
   "description": "A Svelte-powered Elexis client",
   "version": "3.5.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/rgwch/webelexis"
+  },
+  "engines": {
+    "node": "^16.0.0",
+    "npm": ">= 8.3.0"
   },
   "license": "MIT",
   "scripts": {
