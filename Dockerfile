@@ -2,6 +2,7 @@ FROM node:16-alpine
 EXPOSE 3030
 EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
+ENV JAVA_HOME=/usr/lib/jvm/default-jvm
 ARG TOOLBOX_VER=4.2.11
 ARG JACKSON_VER=2.13.2
 
