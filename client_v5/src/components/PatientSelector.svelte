@@ -5,7 +5,7 @@ import Fa from "svelte-fa";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { _ } from "svelte-i18n";
 import { createEventDispatcher } from "svelte";
-import { currentPatient } from "../main";
+import {currentPatient}  from "../services/store";
 import LineInput from "../widgets/LineInput.svelte";
 const dispatch = createEventDispatcher();
 

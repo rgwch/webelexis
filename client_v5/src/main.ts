@@ -1,11 +1,9 @@
 // we need this to inialialize svelte-i18n
 import './services/i18n/i18n'
 import App from './views/App.svelte'
-import { writable, type Writable } from 'svelte/store'
 import { type PatientType, PatientManager } from './models/patient-model';
 import def from './services/properties'
-export const currentPatient: Writable<PatientType> = writable()
-
+import { currentPatient } from './services/store';
 
 // console.log(JSON.stringify(def))
 const pm = new PatientManager()

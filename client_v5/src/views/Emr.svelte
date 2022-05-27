@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 import { _ } from "svelte-i18n";
-import { currentPatient } from "../main";
+import {currentPatient} from "../services/store";
 import { Patient, PatientManager, type PatientType } from "../models/patient-model";
 import PatientSelector from "../components/PatientSelector.svelte";
 import PatientDetail from "../components/PatientDetail.svelte";
