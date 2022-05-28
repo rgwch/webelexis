@@ -1,3 +1,11 @@
+/**
+ * This is the main configuration for Webelexis. Copy this file to 'default.js'
+ * and change all settings to match your setup.
+ * If you want different values for different launch modes, you can put them
+ * in 'debug.js', 'production.js' and so on accordingly (Where the basename matches
+ * the NODE_ENV variable).
+ *
+ */
 module.exports = {
   configname: "default",
   version: "3.6.0",
@@ -16,38 +24,41 @@ module.exports = {
   "lucinda": {
     "url": "http://localhost:9997/lucinda/3.0/"
   },
+  /**
+   * prefix and encryption settings for the blob store
+   */
   blob: {
     namespace: "webelexis",
     salt: "thisShouldBeAppSpec",
     indexer: "lucinda",
     pwd: "PleaseChangeThis"
   },
-  "solr": {
-    "host": "http://localhost:8983/solr",
-    "core": "elexisdata",
-    "idfield": "id",
-    "tika": "http://localhost:9998",
-    "filestore": "solr-docs",
-    "watch": true
+  solr: {
+    host: "http://localhost:8983/solr",
+    core: "elexisdata",
+    idfield: "id",
+    tika: "http://localhost:9998",
+    filestore: "solr-docs",
+    watch: true
   },
-  "authentication": {
-    "entity": "user",
-    "service": "user",
-    "secret": "KrVv/aWQFHPK2EVB45OkE6jlS0U=",
-    "authStrategies": [
+  authentication: {
+    entity: "user",
+    service: "user",
+    secret: "KrVv/aWQFHPK2EVB45OkE6jlS0U=",
+    authStrategies: [
       "jwt",
       "local"
     ],
-    "jwtOptions": {
-      "header": {
-        "typ": "access"
+    jwtOptions: {
+      header: {
+        typ: "access"
       },
-      "audience": "https://yourdomain.com",
-      "issuer": "feathers",
-      "algorithm": "HS256",
-      "expiresIn": "1d"
+      audience: "https://yourdomain.com",
+      issuer: "feathers",
+      algorithm: "HS256",
+      expiresIn: "1d"
     },
-    "local": {
+    local: {
       "usernameField": "id",
       "passwordField": "password"
     }
@@ -55,14 +66,17 @@ module.exports = {
   "nedb": "../../data",
   /* The name to show on the browser tab */
   sitename: "Praxis Webelexis",
+
   /* Admin's mail is needed for registering new users and for lost password retrieval */
   admin: "someone@webelexis.ch",
   url: "lostpassword@webelexis.ch",
+
   /* If the user database is empty, create an admin and assign this pasword. Make sure to remove the line
      after the first start. */
   adminpwd: "topsecret",
   /* create a proxy server at :4040 for appointment-self-service requests */
   self_service: true,
+
   /* A list of mandators and metadata for them. Metadata are used in templates. You can define whatever you want
      and refer to it e.g. in 'briefe' templates. See data/sample-docbase/templates/rezept.pug for an example. */
   mandators: {
@@ -77,8 +91,10 @@ module.exports = {
       gln: "123456789012"
     }
   },
+
   /* The place to store templates and documents */
-  docbase: "../data/sample-docbase",
+  docbase: "../../data/sample-docbase",
+
   /* connection to the database */
   elexisdb: {
     client: "mysql2",
@@ -172,6 +188,9 @@ module.exports = {
     fallgrund: "Krankheit",
     fallbezeichnung: "Allg.",
   },
+  /**
+   * Settings for creating and mailing invoices
+   */
   billing: {
     output: "/path/to/pdf/bills",
     printer: "Brother_HL_L2370DN_series",
@@ -195,6 +214,11 @@ module.exports = {
     reminder3Text: "Umgehende Zahlung"
 
   },
+  /**
+   * Definition of roles for different users. You can change the names and descriptions
+   * dreely. If you would like to change semantics and id, please make sure to
+   * adapt src/mappings.ts accordingly
+   */
   roles: {
     guest: {
       id: "guest",

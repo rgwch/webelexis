@@ -1,3 +1,6 @@
+/**
+ * Map roles to acl's as defined in src/services/index.ts
+ */
 import config from 'config'
 const roles = config.get("roles")
 
