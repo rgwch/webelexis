@@ -9,13 +9,13 @@ ARG JACKSON_VER=2.13.2
 WORKDIR /home/node
 RUN apk add --no-cache openjdk8 nano \
   && apk add --no-cache --virtual build_deps python2 python3 g++ gcc make binutils-gold bash git tzdata\
-  # && ln -s /usr/lib/jvm/java-1.8-openjdk/bin/javac /usr/bin/javac \
   && git clone https://github.com/rgwch/webelexis \
   && npm i -g pm2 \
   && cd webelexis/client_v5 \
   && mv package-dockered.json package.json \
   && npm install \
   && npm run build \
+  && npm --production prune \
   && cd ../selfservice \
   && npm install \
   && npm --production prune \
@@ -23,11 +23,9 @@ RUN apk add --no-cache openjdk8 nano \
   && mv package-dockered.json package.json \
   && npm install \
   && npx tsc \
+  && npm --production prune \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
   && apk del build_deps \
-  && npm --production prune \
-  && cd ../client_v5 \
-  && npm --production prune \
   && chown -R 1000:1000 /home/node/webelexis
 
 ADD --chown=1000:1000 https://repo.repsy.io/mvn/rgwch/rgw-toolbox/rgwch/rgw-toolbox/${TOOLBOX_VER}/rgw-toolbox-${TOOLBOX_VER}.jar \

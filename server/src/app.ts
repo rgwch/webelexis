@@ -50,9 +50,7 @@ app.use(
 app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')))
 
 // Host the public folder
-app.use('/v3', express.static(path.join(__dirname, '../../client_v3')))
-app.use('/v4', express.static(path.join(__dirname, '../../client_v4')))
-app.use('/v5', express.static(path.join(__dirname, '../../client_v5')))
+app.use('/', express.static(path.join(__dirname, '../../client_v5/public')))
 app.use('/static', express.static(path.join(__dirname, '../public')))
 
 // Set up Plugins and providers
