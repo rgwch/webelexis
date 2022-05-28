@@ -1,4 +1,6 @@
 FROM node:16-alpine
+LABEL maintainer="weirich@webelexis.ch"
+LABEL version="3.7.0"
 EXPOSE 3030
 EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
@@ -10,19 +12,25 @@ WORKDIR /home/node
 RUN apk add --no-cache openjdk8 nano \
   && apk add --no-cache --virtual build_deps python2 python3 g++ gcc make binutils-gold bash git tzdata\
   && git clone https://github.com/rgwch/webelexis \
-  && npm i -g pm2 \
-  && cd webelexis/client_v5 \
+  && npm i -g npm@8.11.0 \
+  && npm i -g pm2
+
+RUN cd webelexis/server \
+  && mv package-dockered.json package.json \
+  && npm i -g node-gyp \
+  && npm i iconv \
+  && npm i java \
+  && npm install \
+  && npx tsc \
+  && npm --production prune
+
+RUN cd webelexis/client_v5 \
   && mv package-dockered.json package.json \
   && npm install \
   && npm run build \
   && npm --production prune \
   && cd ../selfservice \
   && npm install \
-  && npm --production prune \
-  && cd ../server \
-  && mv package-dockered.json package.json \
-  && npm install \
-  && npx tsc \
   && npm --production prune \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
   && apk del build_deps \
