@@ -11,13 +11,13 @@ ARG JACKSON_VER=2.13.2
 WORKDIR /home/node
 RUN apk add --no-cache openjdk8 nano \
   && apk add --no-cache --virtual build_deps python2 python3 g++ gcc make binutils-gold bash git tzdata\
-  && git clone https://github.com/rgwch/webelexis \
   && npm i -g npm@8.11.0 \
-  && npm i -g pm2
+  && npm i -g pm2 \
+  && npm i -g node-gyp \
+  && git clone https://github.com/rgwch/webelexis
 
 RUN cd webelexis/server \
   && mv package-dockered.json package.json \
-  && npm i -g node-gyp \
   && npm i iconv \
   && npm i java \
   && npm install \
