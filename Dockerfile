@@ -10,7 +10,7 @@ ARG JACKSON_VER=2.13.2
 
 WORKDIR /home/node
 RUN apk add --no-cache openjdk8 nano \
-  && apk add --no-cache --virtual build_deps python2 python3 g++ gcc make binutils-gold bash git tzdata\
+  && apk add --no-cache --virtual build_deps python3 g++ gcc make binutils-gold bash git tzdata\
   && npm i -g npm@8.11.0 \
   && npm i -g pm2 \
   && npm i -g node-gyp \
@@ -34,6 +34,7 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
   /home/node/webelexis/server/lib/jackson-databind-${JACKSON_VER}.jar
 
 RUN cd webelexis/server \
+  && mv package-dockered.json package.json \
   && npm install \
   && npx tsc \
   && npm --production prune \
