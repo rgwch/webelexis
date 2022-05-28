@@ -36,6 +36,7 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
 RUN cd webelexis/server \
   && mv package-dockered.json package.json \
   && npm install \
+  && npm i java \
   && npx tsc \
   && npm --omit=dev prune \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
