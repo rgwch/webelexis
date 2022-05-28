@@ -3,7 +3,7 @@
  * Copyright (c) 2016-2022 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-const uuid = require('uuid/v4')
+import { v4 as uuid } from 'uuid'
 const { DateTime } = require('luxon')
 
 export class Service {

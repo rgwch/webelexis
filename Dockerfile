@@ -14,27 +14,15 @@ RUN apk add --no-cache openjdk8 nano \
   && npm i -g npm@8.11.0 \
   && npm i -g pm2 \
   && npm i -g node-gyp \
-  && git clone https://github.com/rgwch/webelexis
-
-RUN cd webelexis/server \
-  && mv package-dockered.json package.json \
-  && npm i iconv \
-  && npm i java \
-  && npm install \
-  && npx tsc \
-  && npm --production prune
-
-RUN cd webelexis/client_v5 \
+  && git clone https://github.com/rgwch/webelexis \
+  && cd webelexis/client_v5 \
   && mv package-dockered.json package.json \
   && npm install \
   && npm run build \
   && npm --production prune \
   && cd ../selfservice \
   && npm install \
-  && npm --production prune \
-  && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-  && apk del build_deps \
-  && chown -R 1000:1000 /home/node/webelexis
+  && npm --production prune
 
 ADD --chown=1000:1000 https://repo.repsy.io/mvn/rgwch/rgw-toolbox/rgwch/rgw-toolbox/${TOOLBOX_VER}/rgw-toolbox-${TOOLBOX_VER}.jar \
   /home/node/webelexis/server/lib/rgw-toolbox-${TOOLBOX_VER}.jar
@@ -45,6 +33,13 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
 ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VER}/jackson-databind-${JACKSON_VER}.jar \
   /home/node/webelexis/server/lib/jackson-databind-${JACKSON_VER}.jar
 
+RUN cd webelexis/server \
+  && npm install \
+  && npx tsc \
+  && npm --production prune \
+  && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+  && apk del build_deps \
+  && chown -R 1000:1000 /home/node/webelexis
 
 
 USER node

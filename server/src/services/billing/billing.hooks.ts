@@ -7,7 +7,7 @@
 // Elexis "Leistungen" bzw. "Verrechnet"
 const { authenticate } = require('@feathersjs/authentication').hooks;
 import { DateTime } from 'luxon'
-const uuid = require('uuid/v4')
+import { v4 as uuid } from 'uuid'
 
 const typemap = {
   "ch.elexis.data.TarmedLeistung": "tarmed",
