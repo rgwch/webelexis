@@ -6,11 +6,11 @@
 
 import { logger } from '../logger'
 import { Mailer } from '../util/mailer'
-import { config, roles } from '../configuration'
 import { v4 as uuid } from 'uuid'
 import { hasRight } from '../util/acl'
 
 export default function (app) {
+  const roles=app.get("roles")
   app.get('/lostpwd/:mail', async (request, reply) => {
     const usermail = request.params.mail
     logger.info('Password reset requested ' + usermail)
@@ -24,8 +24,8 @@ export default function (app) {
       }
       user.token = token
       await userService.update(user.email, user)
-      const mailer = new Mailer(app, config.admin)
-      const body = `Bitte folgen Sie innert 4 Stunden diesem Link: ${config.url}, um Ihr Passwort zurückzusetzen.`
+      const mailer = new Mailer(app, app.get("admin"))
+      const body = `Bitte folgen Sie innert 4 Stunden diesem Link: ${app.get("url")}, um Ihr Passwort zurückzusetzen.`
       const result = await mailer.send(
         usermail,
         'Webelexis Passwort Wiederherstellung',
@@ -60,7 +60,7 @@ export default function (app) {
         user.token.ts = new Date().getTime()
         userService.update(user.email, user).then((updated) => {
           response.render('newpwd', {
-            title: `${config.sitename}`,
+            title: `${app.get("sitename")}`,
             user: user.email,
             uid: user.token.uuid,
           })

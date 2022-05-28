@@ -4,7 +4,6 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { config } from '../../configuration'
 const { authenticate } = require('@feathersjs/authentication').hooks;
 import { outputInvoice } from './generator'
 
@@ -14,11 +13,12 @@ import { outputInvoice } from './generator'
  * @returns
  */
 const create = async ctx => {
-  if (config.billing.stickerForMail) {
+  const billing = ctx.app.get("billing")
+  if (billing?.stickerForMail) {
     const stickerService = ctx.app.service("stickers")
     const stickers = await stickerService.find({ query: { forPatient: ctx.data._Fall._Patient.id } })
     if (stickers.length > 0) {
-      if (stickers.find(st => st.name == config.billing.stickerForMail)) {
+      if (stickers.find(st => st.name == billing.stickerForMail)) {
         ctx.data.toMail = ctx.data.fall.patient.email
       }
     }

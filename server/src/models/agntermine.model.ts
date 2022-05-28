@@ -8,7 +8,7 @@ import {logger} from '../logger'
 
 export default async function (app) {
   const db = app.get('knexClient');
-  const agendacfg = app.get("userconfig").agenda
+  const agendacfg = app.get("agenda")
 
   const tableName = 'agntermine';
   const exists = await db.schema.hasTable(tableName)

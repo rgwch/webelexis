@@ -25,9 +25,10 @@
  */
 
 const acls = new Map()
-import { roles as sysroles, mappings as mapper } from '../configuration'
 import { logger } from '../logger'
-
+import config from 'config'
+const sysroles=config.get("roles")
+import {mappings as mapper} from '../mappings'
 
 export class ACE {
   private name

@@ -17,18 +17,18 @@ const path = require("path")
 const normalize = require('./normalize_db')
 
 export default function (app) {
-  const conf = app.get("userconfig")  // = ./configuration.ts
+  const elexisdb = app.get("elexisdb") 
 
   const connection = {
-    host: process.env.DBHOST || conf.elexisdb?.connection?.host || "localhost",
-    port: process.env.DBPORT || conf.elexisdb?.connection?.port || 3306,
-    database: process.env.DBNAME || conf.elexisdb?.connection?.database || "elexis",
-    user: process.env.DBUSER || conf.elexisdb?.connection?.user || "elexisuser",
-    password: process.env.DBPWD || conf.elexisdb?.connection?.password || "elexis"
+    host: process.env.DBHOST || elexisdb?.connection?.host || "localhost",
+    port: process.env.DBPORT || elexisdb?.connection?.port || 3306,
+    database: process.env.DBNAME || elexisdb?.connection?.database || "elexis",
+    user: process.env.DBUSER || elexisdb?.connection?.user || "elexisuser",
+    password: process.env.DBPWD || elexisdb?.connection?.password || "elexis"
   }
 
   const db = knex({
-    client: conf.elexisdb.client,
+    client: elexisdb.client,
     connection,
     pool: { max: 50 }
   })
@@ -48,7 +48,6 @@ export default function (app) {
           })
         }
       } else {
-        const conf = app.get("userconfig")
         return normalize(app).then(() => {
           return db("config")
             .insert({ param: "webelexis", wert: "3.0.6" })

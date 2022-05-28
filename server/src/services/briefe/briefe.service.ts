@@ -32,8 +32,9 @@ export default function (app) {
   service.hooks(hooks);
 
   // auto-import templates
-  const cfg = app.get("userconfig")
+  const cfg = app.get("mandators")
   cfg.mandator = cfg.mandators.default
+  cfg.docbase=app.get("docbase")
   if (cfg.docbase) {
     const templatesDir = path.resolve(path.join(cfg.docbase, "templates"))
     fs.readdir(templatesDir, (err, files) => {

@@ -114,3 +114,4 @@ data/
 sample_html.pdf
 dist
 src/configuration.ts
+config/default.js

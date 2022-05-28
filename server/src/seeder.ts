@@ -5,7 +5,6 @@
  ********************************************/
 
 import { logger } from './logger'
-import { roles } from './configuration'
 
 /**
  * In testing-mode, Seeder creates data to initialize the NeDB-databases.
@@ -16,6 +15,7 @@ import { roles } from './configuration'
 export default async function (app) {
   // Find patient with TitelSuffix 'unittest' and exit if not found
   const pats = app.service('patient')
+  const roles=app.get("roles")
 
   const testpat = await pats.find({ query: { titelsuffix: "unittest" } })
   if (!testpat || !testpat.data || testpat.data.length < 1) {

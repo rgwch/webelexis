@@ -4,17 +4,18 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { config as cfg } from '../../configuration'
 import { DateTime } from 'luxon'
 import { ElexisUtils } from '../../util/elexis-types'
 import { Gapfinder } from './gapfinder'
-const defaults = cfg.schedule
 const elexis = new ElexisUtils()
 const gapf = new Gapfinder()
 
 /* eslint-disable no-unused-vars */
 export class Service {
+  private defaults
   constructor(private options = { app: undefined }) {
+    this.defaults = this.options.app?.get("schedule")
+
   }
 
 
@@ -32,7 +33,7 @@ export class Service {
     const date = params.query.date
     const present = DateTime.local().toFormat('yyyyLLdd')
     const resource = params.query.resource
-    const minDuration = defaults.minDuration
+    const minDuration = this.defaults.minDuration
     const dayDefaults = await appntService.get('daydefaults')
     const appntStates = await appntService.get("states")
     const spec = dayDefaults[resource]
@@ -72,7 +73,7 @@ export class Service {
             beginn: gap[0],
             dauer: minDuration,
             bereich: resource,
-            termintyp: defaults.terminTyp,
+            termintyp: this.defaults.terminTyp,
             terminstatus: appntStates[1]
           }
           freeslots.push(slot)
@@ -80,7 +81,7 @@ export class Service {
         }
       }
     }
-    while (freeslots.length > defaults.maxPerDay) {
+    while (freeslots.length > this.defaults.maxPerDay) {
       const k = Math.round(Math.random() * freeslots.length - 1)
       freeslots.splice(k, 1)
     }
@@ -90,13 +91,13 @@ export class Service {
 
   async get(id, params) {
     if (id == "resource") {
-      return defaults.resource
+      return this.defaults.resource
     } else if (id == "site") {
       return {
-        name: defaults.sitename,
-        address: defaults.siteaddr,
-        phone: defaults.sitephone,
-        mail: defaults.sitemail
+        name: this.defaults.sitename,
+        address: this.defaults.siteaddr,
+        phone: this.defaults.sitephone,
+        mail: this.defaults.sitemail
       }
     }
     return {

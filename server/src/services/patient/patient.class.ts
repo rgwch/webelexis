@@ -9,8 +9,8 @@ const { DateTime } = require('luxon')
 export class Service {
   private defaults
 
-  constructor(private options={}) {
-    this.defaults = this.options["app"].get("userconfig").fall
+  constructor(private options = {}) {
+    this.defaults = this.options["app"]?.get("fall")
   }
 
   async find(params) {

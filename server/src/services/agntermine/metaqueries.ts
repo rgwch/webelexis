@@ -4,9 +4,12 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import {logger} from '../../logger'
-import { config } from '../../configuration'
-const defaults = config.agenda
+import { logger } from '../../logger'
+let defaults = {
+  resources: [], daydefaults: "",
+  termintypdefaults: [], terminstatedefaults: [],
+  statecolordefaults: {}, typcolordefaults: {}, timedefaults: {}
+}
 
 /**
  *
@@ -101,6 +104,8 @@ type metadata = {
 export default (app): metadata => {
   const elexisconfig = app.service("elexis-config")
   const meta: metadata = {}
+  defaults = app.get("agenda")
+
   /** fetch predefined appointment types */
   meta.terminTypes = async () => (await getList(elexisconfig, "TerminTypen")) || defaults.termintypdefaults
   /** fetch predefined appointment states */

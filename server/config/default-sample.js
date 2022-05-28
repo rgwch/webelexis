@@ -1,12 +1,58 @@
-/**
- * Configuration example for the webelexis server
- * please move this file to configuration.ts and
- * change contents to match your system.
- *
- */
-export const config = {
+module.exports = {
+  configname: "default",
+  version: "3.5.1",
   /* if testing is true, webelexis will create some testusers on startup and allow to login without a password. */
-  testing: true,
+  "testing": false,
+  "host": "localhost",
+  "port": 3030,
+  "client3": "../../client_v3/dist/",
+  "client4": "../../client_v4/dist/",
+  "client5": "../../client_v5/dist",
+  "paginate": {
+    "default": 50,
+    "max": 500
+  },
+
+  "lucinda": {
+    "url": "http://localhost:9997/lucinda/3.0/"
+  },
+  blob: {
+    namespace: "webelexis",
+    salt: "thisShouldBeAppSpec",
+    indexer: "lucinda",
+    pwd: "PleaseChangeThis"
+  },
+  "solr": {
+    "host": "http://localhost:8983/solr",
+    "core": "elexisdata",
+    "idfield": "id",
+    "tika": "http://localhost:9998",
+    "filestore": "solr-docs",
+    "watch": true
+  },
+  "authentication": {
+    "entity": "user",
+    "service": "user",
+    "secret": "KrVv/aWQFHPK2EVB45OkE6jlS0U=",
+    "authStrategies": [
+      "jwt",
+      "local"
+    ],
+    "jwtOptions": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "usernameField": "id",
+      "passwordField": "password"
+    }
+  },
+  "nedb": "../../data",
   /* The name to show on the browser tab */
   sitename: "Praxis Webelexis",
   /* Admin's mail is needed for registering new users and for lost password retrieval */
@@ -75,16 +121,16 @@ export const config = {
   agenda: {
     resources: ["Arzt", "MPA"],
     daydefaults: `FS1~#<ASa=A0000-0900
-1200-2359~#<ADo=A0000-0800
-1200-1300
-1700-2359~#<AFr=A0000-0800
-1200-1300
-1700-2359~#<AMi=A0000-0800
-1300-2359~#<ADi=A0000-0900
-1300-1400
-1800-2359~#<AMo=A0000-0800
-1200-1300
-1700-2359~#<ASo=A0000-2359`,
+ 1200-2359~#<ADo=A0000-0800
+ 1200-1300
+ 1700-2359~#<AFr=A0000-0800
+ 1200-1300
+ 1700-2359~#<AMi=A0000-0800
+ 1300-2359~#<ADi=A0000-0900
+ 1300-1400
+ 1800-2359~#<AMo=A0000-0800
+ 1200-1300
+ 1700-2359~#<ASo=A0000-2359`,
     termintypdefaults: ["Frei", "Reserviert", "Normal"],
     terminstatedefaults: ["-", "geplant", "eingetroffen", "fertig", "abgesagt"],
     typcolordefaults: {
@@ -148,84 +194,57 @@ export const config = {
     reminder3Heading: "Dritte Mahnung für Rn. Nr.",
     reminder3Text: "Umgehende Zahlung"
 
+  },
+  roles: {
+    guest: {
+      id: "guest",
+      label: "Gast",
+      descr: "a person not known to the system"
+    },
+    Patient: {
+      id: "patient",
+      label: "Patient",
+      descr: "Someone who can see their own data only"
+    },
+    user: {
+      id: "user",
+      label: "Anwender",
+      descr: "a person known to the system"
+    },
+    external: {
+      id: "user_external",
+      label: "externer Anwender",
+      descr: "A user who can access remotely"
+    },
+    mpa: {
+      id: "assistant",
+      label: "MPA",
+      descr: "a person working with the practice"
+    },
+    agenda: {
+      id: "appnt",
+      label: "Agenda",
+      descr: "someone who may manage appointments"
+    },
+    doc: {
+      id: "doctor",
+      label: "Arzt",
+      descr: "A doctor"
+    },
+    executive: {
+      id: "executive_doctor",
+      label: "Leitender Arzt",
+      desc: "A doctor with administrative functions"
+    },
+    admin: {
+      id: "admin",
+      label: "Administrator",
+      descr: "An administrator"
+    },
+    billing: {
+      id: "billing",
+      label: "Buchhaltung",
+      desc: "Handling of invoices and payments"
+    }
   }
 }
-
-/**
- * Definition of all possible roles in the system. At least "guest" and "admin" are required.
- */
-export const roles = {
-  guest: {
-    id: "guest",
-    label: "Gast",
-    descr: "a person not known to the system"
-  },
-  Patient: {
-    id: "patient",
-    label: "Patient",
-    descr: "Someone who can see their own data only"
-  },
-  user: {
-    id: "user",
-    label: "Anwender",
-    descr: "a person known to the system"
-  },
-  external: {
-    id: "user_external",
-    label: "externer Anwender",
-    descr: "A user who can access remotely"
-  },
-  mpa: {
-    id: "assistant",
-    label: "MPA",
-    descr: "a person working with the practice"
-  },
-  agenda: {
-    id: "appnt",
-    label: "Agenda",
-    descr: "someone who may manage appointments"
-  },
-  doc: {
-    id: "doctor",
-    label: "Arzt",
-    descr: "A doctor"
-  },
-  executive: {
-    id: "executive_doctor",
-    label: "Leitender Arzt",
-    desc: "A doctor with administrative functions"
-  },
-  admin: {
-    id: "admin",
-    label: "Administrator",
-    descr: "An administrator"
-  },
-  billing: {
-    id: "billing",
-    label: "Buchhaltung",
-    desc: "Handling of invoices and payments"
-  }
-}
-
-/**
- * fine grained adjustment of which role implies which privileges. That can be a whole servioce with all methods (e.g. "termin") or it can be only given methods 
- * of a service (e.g. "article.find"). The acl global hook checks if necessary privileges are ggiven for current user.
- */
-export const mappings = {
-  [roles.guest.id]: ['stickers.find'],
-  [roles.agenda.id]: ['termin'],
-  [roles.mpa.id]: ['termin', 'article.find', 'auf.find', 'auf.create', 'auf.update',
-    'billable.find', 'billing.create',
-    'briefe', 'documents', 'fall', 'findings', 'konsultation', 'kontakt',
-    'labresults', 'leistungsblock', 'lucinda', 'macros', 'meta-article',
-    'patient', 'prescriptions', 'stickers', 'tarmed.find', 'tarmed.get'],
-  [roles.doc.id]: ['billing'],
-  [roles.user.id]: ['user.get']
-}
-
-// user role includes guest role and agenda role
-mappings[roles.user.id] = [...mappings[roles.guest.id], ...mappings[roles.user.id], ...mappings[roles.agenda.id]]
-// mpa role includes user role
-mappings[roles.mpa.id] = [...mappings[roles.user.id], ...mappings[roles.mpa.id]]
-// doctor role includes mpa role
-mappings[roles.doc.id] = [...mappings[roles.mpa.id], ...mappings[roles.doc.id]]

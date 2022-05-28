@@ -26,7 +26,7 @@ import services from './services'
 import appHooks from './app.hooks'
 import channels from './channels'
 import admin from './admin'
-import { config as userconf } from './configuration'
+// import { config as userconf } from './configuration'
 import seeder from './seeder'
 const app = express(feathers())
 app.set('views', path.join(__dirname, '../views'))
@@ -34,14 +34,16 @@ app.set('view engine', 'pug')
 
 // Load app configuration
 app.configure(configuration())
+/*
 try {
   app.set(
     'userconfig',
-    /* require(process.env.WEBELEXIS_SETTINGS) || */ userconf,
+    userconf,
   )
 } catch (err) {
   app.set('userconfig', {})
 }
+*/
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors())

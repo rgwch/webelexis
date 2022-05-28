@@ -6,18 +6,19 @@
 
 import qrbill from 'swissqrbill'
 const util = qrbill.utils // require('swissqrbill/utils')
-import { config as cfg } from '../../configuration'
 import path from 'path'
 import { Currency } from 'swissqrbill/lib/node/esm/shared/types'
 import { print } from 'unix-print'
 import { DateTime } from 'luxon'
 import { Mailer } from '../../util/mailer'
 const mm2pt = util.mm2pt
+import conf from 'config'
+const billing=conf.get("billing")
 
 export function outputInvoice(bill):Promise<boolean> {
   return new Promise((resolve, reject) => {
     const data = createData(bill)
-    const filename = path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf')
+    const filename = path.join(billing.output || '.', bill.rnnummer + '.pdf')
     const pdf = new qrbill.PDF(
       data, filename,
       {
@@ -25,7 +26,7 @@ export function outputInvoice(bill):Promise<boolean> {
         size: 'A4',
       }, () => {
         if (bill.toMail) {
-          const smtp = cfg.smtp
+          const smtp = conf.get("smtp")
           const mailer = new Mailer(smtp, "praxis@weirich.ch")
           mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename }).then(result => {
             resolve(true)
@@ -34,7 +35,7 @@ export function outputInvoice(bill):Promise<boolean> {
             reject(err)
           })
         } else if (bill.output) {
-          print(filename, cfg.billing.printer).then(fin => {
+          print(filename, billing.printer).then(fin => {
             resolve(true)
 
           }).catch(err => {
@@ -52,8 +53,9 @@ export function outputInvoice(bill):Promise<boolean> {
     pdf.fillColor('black')
     pdf.font('Helvetica')
     let sender = ""
-    if (cfg.mandators?.default) {
-      const abs = cfg.mandators.default
+    const mandators=conf.get("mandators")
+    if (mandators?.default) {
+      const abs = mandators.default
       pdf.text(
         `${abs.name}\n${abs.subtitle}\n${abs.street}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`,
         mm2pt(20),
@@ -122,22 +124,22 @@ export function outputInvoice(bill):Promise<boolean> {
     switch (parseInt(bill.rnstatus)) {
       case 4:
       case 5:
-        heading = cfg.billing.invoiceHeading;
-        invoiceText = cfg.billing.invoiceText
+        heading = billing.invoiceHeading;
+        invoiceText = billing.invoiceText
         break;
       case 6:
       case 7:
-        heading = cfg.billing.reminder1Heading;
-        invoiceText = cfg.billing.reminder1Text;
+        heading = billing.reminder1Heading;
+        invoiceText = billing.reminder1Text;
         break;
       case 8:
       case 9:
-        heading = cfg.billing.reminder2Heading;
-        invoiceText = cfg.billing.reminder2Text;
+        heading = billing.reminder2Heading;
+        invoiceText = billing.reminder2Text;
         break;
       default:
-        heading = cfg.billing.reminder3Heading
-        invoiceText = cfg.billing.reminder3Text;
+        heading = billing.reminder3Heading
+        invoiceText = billing.reminder3Text;
     }
 
     pdf.fontSize(14)
@@ -151,8 +153,8 @@ export function outputInvoice(bill):Promise<boolean> {
 
     pdf.fontSize(11)
     pdf.font("Courier")
-    pdf.text(`Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(cfg.billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(cfg.billing.datetime)}\n`
-      + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(cfg.billing.datetime)}`,
+    pdf.text(`Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(billing.datetime)}\n`
+      + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(billing.datetime)}`,
       mm2pt(22), mm2pt(115), {
       width: mm2pt(120),
       align: "left"
@@ -176,7 +178,7 @@ export function paymentSlip(bill) {
     try {
       const pdf = new qrbill.PDF(
         createData(bill),
-        path.join(cfg.billing.output || '.', bill.rnnummer + '.pdf'),
+        path.join(billing.output || '.', bill.rnnummer + '.pdf'),
         () => {
           console.log('ok')
           resolve(true)
@@ -194,7 +196,7 @@ function createData(bill) {
     currency: 'CHF' as Currency,
     amount: amount(bill.betrag),
     reference: reference(bill),
-    creditor: cfg.billing.creditor,
+    creditor: billing.creditor,
     debtor: {
       name: patient.bezeichnung2 + ' ' + patient.bezeichnung1,
       address: patient.strasse,
