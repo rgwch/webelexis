@@ -1,7 +1,7 @@
 version: '3'
 
 volumes:
-  etcd_data:
+  redis_data:
     driver: local
   solrdata:
   lucindadocs:
@@ -25,17 +25,16 @@ services:
       - webelexis_net
     restart: always
 
-  etcd:
-    image: docker.io/bitnami/etcd:3.5
-    container_name: wlx_etcd
+  redis:
+    image: docker.io/bitnami/redis:latest
+    container_name: wlx_redis
     environment:
-      - ALLOW_NONE_AUTHENTICATION=yes
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     volumes:
-      - etcd_data:/bitnami/etcd
+      - redis_data:/bitnami/redis/data
     ports:
-      - 2380:2380
-      - 2379:2379
-      - 4001:4001
+      - 6379:6379
     restart: always
 
   solr:
@@ -51,7 +50,7 @@ services:
     restart: always
     networks:
       - webelexis_net
-      
+
   tika:
     image: apache/tika:1.24
     container_name: wlx_tika

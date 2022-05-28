@@ -1,6 +1,6 @@
 const ZIP_MARKER = 5 << 29
 import { Zip } from 'zlibt2'
-import {Crypter, Modes} from '@rgwch/simple-crypt'
+import { Crypter, Modes } from '@rgwch/simple-crypt'
 import unzipper from 'unzipper'
 
 
@@ -10,7 +10,7 @@ import unzipper from 'unzipper'
  * @param data contents of the file
  * @returns the zipped file
  */
-export const create = (name:string, data:any) => {
+export const create = (name: string, data: any) => {
   const zipped = new Zip()
   zipped.addFile(Buffer.from(data), { filename: name })
   const compressed = zipped.compress()
@@ -24,9 +24,9 @@ export const create = (name:string, data:any) => {
 
 /**
  * Extract a zipped file previously created with create
- * @param zipped 
- * @param name 
- * @returns 
+ * @param zipped
+ * @param name
+ * @returns
  */
 export const extract = async (zipped: Buffer, name: string): Promise<Buffer> => {
   return await unzip(zipped, name)
@@ -34,8 +34,8 @@ export const extract = async (zipped: Buffer, name: string): Promise<Buffer> => 
 
 /**
  * Self test
- * @param fakedata 
- * @returns 
+ * @param fakedata
+ * @returns
  */
 export const check = async (fakedata) => {
   const zipped = await create("test", fakedata)
@@ -67,17 +67,17 @@ const unzip = (raw: any, name: string): Promise<any> => {
   }
 }
 
-export const encrypt = async (raw: any, password: string, salt:string) => {
+export const encrypt = async (raw: Buffer, password: string, salt: string): Promise<Buffer> => {
   if (raw) {
-    const c=new Crypter(password,salt)
-    const ret=await c.encryptBuffer(Buffer.from(raw),Modes.Xored)
+    const c = new Crypter(password, salt)
+    const ret = await c.encryptBuffer(Buffer.from(raw), Modes.Xored)
     return ret
   }
 }
 
-export const decrypt = async (encrypted:Buffer,password:string,salt:string)=>{
-  const c=new Crypter(password,salt)
-  const ret=await c.decryptBuffer(encrypted)
+export const decrypt = async (encrypted: Buffer, password: string, salt: string): Promise<Buffer> => {
+  const c = new Crypter(password, salt)
+  const ret = await c.decryptBuffer(encrypted)
   return ret
 
 }
