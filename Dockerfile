@@ -19,10 +19,10 @@ RUN apk add --no-cache openjdk8 nano \
   && mv package-dockered.json package.json \
   && npm install \
   && npm run build \
-  && npm --production prune \
+  && npm --omit=dev prune \
   && cd ../selfservice \
   && npm install \
-  && npm --production prune
+  && npm --omit=dev prune
 
 ADD --chown=1000:1000 https://repo.repsy.io/mvn/rgwch/rgw-toolbox/rgwch/rgw-toolbox/${TOOLBOX_VER}/rgw-toolbox-${TOOLBOX_VER}.jar \
   /home/node/webelexis/server/lib/rgw-toolbox-${TOOLBOX_VER}.jar
@@ -37,7 +37,7 @@ RUN cd webelexis/server \
   && mv package-dockered.json package.json \
   && npm install \
   && npx tsc \
-  && npm --production prune \
+  && npm --omit=dev prune \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
   && apk del build_deps \
   && chown -R 1000:1000 /home/node/webelexis
