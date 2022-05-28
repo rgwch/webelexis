@@ -1,4 +1,4 @@
-version: '2.4'
+version: '3'
 
 volumes:
   etcd_data:
@@ -21,6 +21,8 @@ services:
       - elexisdb:/var/lib/mysql
     ports:
       - "${PUBLIC_DBPORT:-3312}:3306"
+    networks:
+      - webelexis_net
     restart: always
 
   etcd:
@@ -48,7 +50,7 @@ services:
       - gettingstarted
     restart: always
     networks:
-      - lucinda_net
+      - webelexis_net
       
   tika:
     image: apache/tika:1.24
@@ -56,7 +58,7 @@ services:
     ports:
       - ${TIKA_PORT:-9998}:9998
     networks:
-      - lucinda_net
+      - webelexis_net
     restart: always
 
   lucinda:
@@ -73,7 +75,7 @@ services:
     ports:
       - ${LUCINDA_PORT:-9997}:9997
     networks:
-      - lucinda_net
+      - webelexis_net
     restart: on-failure
     command:
       [
@@ -85,5 +87,5 @@ services:
       ]
 
 networks:
-  lucinda_net:
+  webelexis_net:
     driver: bridge
