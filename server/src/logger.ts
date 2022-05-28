@@ -18,7 +18,7 @@ export const logger = winston.createLogger({
     winston.format.splat(),
     winston.format.simple(),
   ),
-  transports: [new winston.transports.Console({ silent: true })],
+  transports: [new winston.transports.Console({ silent: false })],
 })
 
 logger.info('Webelexis Server: logger created')

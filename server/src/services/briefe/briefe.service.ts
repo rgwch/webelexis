@@ -33,8 +33,8 @@ export default function (app) {
 
   // auto-import templates
   const cfg = app.get("mandators")
-  cfg.mandator = cfg.mandators.default
-  cfg.docbase=app.get("docbase")
+  cfg.mandator = cfg.default
+  cfg.docbase = app.get("docbase")
   if (cfg.docbase) {
     const templatesDir = path.resolve(path.join(cfg.docbase, "templates"))
     fs.readdir(templatesDir, (err, files) => {

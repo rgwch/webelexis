@@ -26,7 +26,6 @@ import services from './services'
 import appHooks from './app.hooks'
 import channels from './channels'
 import admin from './admin'
-// import { config as userconf } from './configuration'
 import seeder from './seeder'
 const app = express(feathers())
 app.set('views', path.join(__dirname, '../views'))
@@ -34,16 +33,6 @@ app.set('view engine', 'pug')
 
 // Load app configuration
 app.configure(configuration())
-/*
-try {
-  app.set(
-    'userconfig',
-    userconf,
-  )
-} catch (err) {
-  app.set('userconfig', {})
-}
-*/
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors())
@@ -90,7 +79,7 @@ app.use(express.errorHandler({ logger }))
 app.hooks(appHooks)
 
 // If in testing mode: Seed databases
-if (app.get('userconfig').testing) {
+if (app.get('testing')) {
   logger.info('running in testing mode')
 
   seeder(app).catch((err) => {

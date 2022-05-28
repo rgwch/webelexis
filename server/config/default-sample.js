@@ -1,6 +1,6 @@
 module.exports = {
   configname: "default",
-  version: "3.5.1",
+  version: "3.6.0",
   /* if testing is true, webelexis will create some testusers on startup and allow to login without a password. */
   "testing": false,
   "host": "localhost",
