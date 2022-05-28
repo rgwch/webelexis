@@ -81,6 +81,7 @@
     "tmp": "0.0.33",
     "tmp-promise": "^2.1.1",
     "underscore": "^1.13.1",
+    "unix-print": "^1.1.0",
     "unzipper": "^0.9.15",
     "uuid": "^8.3.2",
     "walkdir": "^0.4.1",
