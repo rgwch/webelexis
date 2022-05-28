@@ -1,6 +1,6 @@
 FROM node:16-alpine
 LABEL maintainer="weirich@webelexis.ch"
-LABEL version="3.7.0"
+LABEL version="3.7.1"
 EXPOSE 3030
 EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
