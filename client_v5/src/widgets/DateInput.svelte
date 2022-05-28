@@ -29,9 +29,8 @@ function changed() {
   const ndate = DateTime.fromFormat(current, "yyyy-LL-dd").toFormat("yyyyLLdd");
   //console.log('date changed from ',dateString," to ", ndate);
   dateString = ndate;
-  dispatch("dateChanged");
+  dispatch("dateChanged", dateString);
 }
-
 </script>
 
 <!-- @component DateInput
@@ -46,9 +45,8 @@ A label and a DatePicker
       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
       type="date"
       bind:value="{current}"
-      on:change={changed}
-      disabled="{disabled}"
-    />
+      on:change="{changed}"
+      disabled="{disabled}" />
     <!-- DatePicker
       current="{current}"
       on:select="{changed}"

@@ -15,7 +15,7 @@ import {
 import LineInput from "./LineInput.svelte";
 import TextInput from "./TextInput.svelte";
 import DateInput from "./DateInput.svelte";
-import { attr } from "svelte/internal";
+import { attr, attribute_to_object } from "svelte/internal";
 
 export let ff_cfg: FlexformConfig;
 export let entity: any;
@@ -113,9 +113,12 @@ function changed(field, value) {
                 on:textChanged="{(value) => changed(attr.attribute, value)}" />
             {:else if attr.datatype == "date"}
               <DateInput
-                dateString="{entity[attr.attribute]}"
+                bind:dateString="{entity[attr.attribute]}"
                 label="{attr.label}"
-                disabled="{isLocked}" />
+                disabled="{isLocked}"
+                on:dateChanged="{(value) => {
+                  changed(attr.attribute, value);
+                }}" />
             {:else if attr.datatype == "number"}
               <LineInput
                 bind:value="{entity[attr.attribute]}"
