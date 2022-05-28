@@ -1,5 +1,10 @@
 */node_modules
 doc
 data
-client
+client_v3
+client_v4
+client_v5
+integration-test
+server
+website
 .vscode

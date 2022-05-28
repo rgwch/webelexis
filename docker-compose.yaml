@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  webelexis:
+    build: .
+    container_name: wlx_webelexis
+    hostname: webelexis
+    ports:
+      - 3030:3030
+      - 4040:4040
+    networks:
+      - external_webelexis_net
+    volumes:
+      - ./server/config:/home/node/webelexis/server/config
+networks:
+  external_webelexis_net:
+    external: true
