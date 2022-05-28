@@ -33,9 +33,9 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@feathersjs/authentication": "^4.5.12",
-    "@feathersjs/authentication-local": "^4.5.12",
-    "@feathersjs/authentication-oauth": "^4.5.12",
+    "@feathersjs/authentication": "^4.5.15",
+    "@feathersjs/authentication-local": "^4.5.15",
+    "@feathersjs/authentication-oauth": "^4.5.15",
     "@feathersjs/configuration": "^4.5.12",
     "@feathersjs/errors": "^4.5.12",
     "@feathersjs/express": "^4.5.12",
