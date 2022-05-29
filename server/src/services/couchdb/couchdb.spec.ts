@@ -16,7 +16,13 @@ describe("CouchDB", () => {
 
   it("creates, uses and deletes a database", async () => {
     const result = await service.create({ id: "testdb/Test", type: "testdoc", body: "something" })
-    expect(result.ok).toBeTruthy()
-    const retrieved = await service.get()
+    expect(result.id).toEqual("testdb/Test")
+    // expect(async () => { await service.create({ id: "testdb/Test", body: "anything" }) }).rejects.toThrow("Document update conflict")
+    const retrieved = await service.get("testdb/Test")
+    expect(retrieved.body).toEqual("something")
+    const deleted = await service.remove("testdb/Test")
+    expect(deleted.id).toEqual("testdb/Test")
+    const delDB = await service.remove("testdb")
+    expect(delDB.ok).toBeTruthy()
   })
 })

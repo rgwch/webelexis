@@ -58,8 +58,9 @@ export class CouchDB {
     }
   }
 
-  async get(id, params) {
-
+  async get(id, params?): Promise<any> {
+    const result = await this.query(id)
+    return result
   }
   async create(obj): Promise<any> {
     const ident: Array<string> = obj.id?.split("/")
@@ -79,7 +80,33 @@ export class CouchDB {
     }
 
   }
-  async update(id, data, params) { }
-  async remove(id, params) { }
+  async update(id, data, params?) {
+    const obj = await this.get(id)
+    const result = await this.send(id + "?rev=" + obj._rev, "put", data)
+    if (!result.ok) {
+      logger.error("CouchDB update: " + JSON.stringify(result))
+      throw new Error(result.reason)
+    } else {
+      return data
+    }
+  }
+  async remove(id, params?) {
+    const ident: Array<string> = id.split("/")
+    if (ident.length == 2) {
+      // delete document
+      const obj = await this.get(id)
+      const result = await this.send(id + "?rev=" + obj._rev, "delete", { rev: obj._rev })
+      if (result.ok) {
+        return obj
+      } else {
+        logger.error("Couch delete: " + JSON.stringify(result))
+        return undefined
+      }
+    } else {
+      // delete database
+      const result = await this.send(id, "delete", {})
+      return result
+    }
+  }
 
 }
