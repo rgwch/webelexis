@@ -1,10 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const handleZipped = require('../../hooks/handle-zipped')
 const Samdas = require('@rgwch/samdastools')
+import { logger } from '../../logger'
 import { create, extract } from '../../util/ziptool'
 
 const check = ctx => {
-  console.log(ctx.params)
+  logger.info(ctx.params)
   return ctx
 }
 

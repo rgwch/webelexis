@@ -7,6 +7,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 import handleExtInfo from '../../hooks/handle-extinfo'
 import hashPassword from './hash-password'
+import { logger } from '../../logger'
 const hooks = require('@feathersjs/authentication-local').hooks
 hooks.hashPassword = hashPassword
 const protect = hooks.protect
@@ -86,7 +87,7 @@ const removeRoles = async ctx => {
   const users = ctx.result
   for (const user of users) {
     const dlt = db("user_role_joint").where("user_id", user.id).del()
-    console.log(dlt.toString())
+    logger.info(dlt.toString())
     await dlt
   }
   return ctx

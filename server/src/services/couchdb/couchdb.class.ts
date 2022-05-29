@@ -2,40 +2,36 @@ import { logger } from '../../logger'
 import fetch from 'node-fetch'
 
 export class CouchDB {
-  private header = {
-    "Content-type": "application/json"
-  }
   private url
   constructor(private app, private options) {
     this.url = `http://${options.username}:${options.password}@${options.host}:${options.port}`
   }
 
-  private async query(addr: string): Promise<any> {
-    if (!addr.startsWith("/")) {
-      addr = "/" + addr
+  private async request(addr: string, database: string, method: "get" | "put" | "post" | "delete" = "get", body?: any): Promise<any> {
+    const headers = {
+      "Content-type": "application/json"
     }
-    const result = await fetch(this.url + addr)
-    if (result.ok) {
-      return await result.json()
-    } else {
-      throw new Error(result.statusText)
+    const options = {
+      method,
+      headers
     }
+    if (body) {
+      options["body"] = JSON.stringify(body)
+    }
+    const result = await fetch(this.url + "/" + database + "/" + addr, options)
+    return await result.json()
   }
-  private async send(addr: string, method: string, body: any) {
-    if (!addr.startsWith("/")) {
-      addr = "/" + addr
-    }
-    const result = await fetch(this.url + addr, { headers: this.header, method, body: JSON.stringify(body) })
-    return result.json()
-  }
+
   async checkInstance(): Promise<boolean> {
     try {
-      const data = await this.query("/")
+      const data = await fetch(this.url + "/")
       if (data) {
         logger.info("Connected with CouchDB " + data.version)
-        const dbs: Array<string> = await this.query("/_all_dbs")
-        console.log(JSON.stringify(dbs))
+        logger.info("Databases: " + JSON.stringify(this.listDatabases()))
         return true
+      } else {
+        logger.error("No data from CouchDB")
+        return false;
       }
     } catch (err) {
       logger.error("CouchDB: " + err)
@@ -43,9 +39,18 @@ export class CouchDB {
     }
   }
 
+  async listDatabases(): Promise<Array<string>> {
+    const result = await fetch(this.url + "/_all_dbs")
+    if (result.ok) {
+      return await result.json()
+    } else {
+      throw new Error("CouchDB List databases: " + JSON.stringify(result))
+    }
+
+  }
   async createDatabase(dbname: string): Promise<boolean> {
     try {
-      const result = await this.send("/" + dbname, "put", {})
+      const result = await fetch(this.url + "/" + dbname, { method: "put" })
       if (result.ok) {
         return true
       } else {
@@ -59,19 +64,17 @@ export class CouchDB {
   }
 
   async get(id, params?): Promise<any> {
-    const result = await this.query(id)
+    const db = params?.query?.database || this.options.defaultDB || "webelexis"
+    const result = await this.request(id, db)
     return result
   }
-  async create(obj): Promise<any> {
-    const ident: Array<string> = obj.id?.split("/")
-    if (!ident?.length) {
-      throw new Error("bad id for create")
+  async create(obj, params?): Promise<any> {
+    const db = params?.query?.database || this.options.defaultDB || "webelexis"
+    const dbs: Array<string> = await this.listDatabases()
+    if (!dbs.includes(db)) {
+      const ndb = await this.createDatabase(db)
     }
-    const dbs: Array<string> = await this.query("/_all_dbs")
-    if (!dbs.includes(ident[0])) {
-      const db = await this.createDatabase(ident[0])
-    }
-    const result = await this.send(obj.id, "put", obj)
+    const result = await this.request(obj.id, db, "put", obj)
     if (!result.ok) {
       logger.error(JSON.stringify(result))
       throw new Error(result.reason)
@@ -81,21 +84,22 @@ export class CouchDB {
 
   }
   async update(id, data, params?) {
-    const obj = await this.get(id)
-    const result = await this.send(id + "?rev=" + obj._rev, "put", data)
+    const db = params?.query?.database || this.options.defaultDB || "webelexis"
+    const obj = await this.get(id, params)
+    const result = await this.request(id + "?rev=" + obj._rev, db, "put", data)
     if (!result.ok) {
       logger.error("CouchDB update: " + JSON.stringify(result))
       throw new Error(result.reason)
     } else {
-      return data
+      return obj
     }
   }
-  async remove(id, params?) {
-    const ident: Array<string> = id.split("/")
-    if (ident.length == 2) {
+  async remove(id, params?): Promise<any> {
+    const db = params?.query?.database || this.options.defaultDB || "webelexis"
+    if (id) {
       // delete document
-      const obj = await this.get(id)
-      const result = await this.send(id + "?rev=" + obj._rev, "delete", { rev: obj._rev })
+      const obj = await this.get(id, params)
+      const result = await this.request(id + "?rev=" + obj._rev, db, "delete")
       if (result.ok) {
         return obj
       } else {
@@ -104,8 +108,9 @@ export class CouchDB {
       }
     } else {
       // delete database
-      const result = await this.send(id, "delete", {})
-      return result
+      const result = await fetch(this.url + "/" + db, { method: "delete" })
+      const ans = await result.json()
+      return ans
     }
   }
 

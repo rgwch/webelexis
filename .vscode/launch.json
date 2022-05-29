@@ -54,7 +54,7 @@
       "program": "${workspaceFolder}/server/node_modules/jest/bin/jest.js",
       "outputCapture": "std",
       "args": [
-        "src/services/couchdb/couchdb.spec.ts"
+        "src/services/blob/blob.spec.ts"
       ],
       "cwd": "${workspaceFolder}/server",
       "env": {

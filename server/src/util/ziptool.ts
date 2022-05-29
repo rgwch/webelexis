@@ -2,7 +2,7 @@ const ZIP_MARKER = 5 << 29
 import { Zip } from 'zlibt2'
 import { Crypter, Modes } from '@rgwch/simple-crypt'
 import unzipper from 'unzipper'
-
+import { logger } from '../logger'
 
 /**
  * Create a zip file with one entry
@@ -59,7 +59,7 @@ const unzip = (raw: any, name: string): Promise<any> => {
         rs.on('end', () => resolve(ret))
         rs.on('error', () => reject)
       }).catch(err => {
-        console.log(err)
+        logger.error("ziptool: " + err)
       })
     })
   } else {

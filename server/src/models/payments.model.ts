@@ -1,3 +1,4 @@
+import { logger } from '../logger'
 /* eslint-disable no-console */
 
 // payments-model.js - A KnexJS
@@ -19,8 +20,8 @@ export default function (app) {
           table.string('deleted', 1)
           table.bigint('lastupdate')
         })
-        .then(() => console.log(`Created ${tableName} table`))
-        .catch((e) => console.error(`Error creating ${tableName} table`, e))
+        .then(() => logger.info(`Created ${tableName} table`))
+        .catch((e) => logger.info(`Error creating ${tableName} table`, e))
     }
   })
 

@@ -91,6 +91,6 @@ export default (app) => {
   app.configure(payments)
   app.configure(diagnose)
   app.configure(utility)
-  app.configure(blob)
   app.configure(couchdb)
+  app.configure(blob)
 }

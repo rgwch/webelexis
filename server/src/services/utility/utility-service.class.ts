@@ -1,5 +1,6 @@
 import { ElexisUtils } from './../../util/elexis-types';
 import Samdas from '@rgwch/samdastools'
+import { logger } from '../../logger'
 
 const util = new ElexisUtils()
 
@@ -19,7 +20,7 @@ export class Utility {
           }
           return result
         } else {
-          console.log(JSON.stringify(params))
+          logger.error("Utility: " + JSON.stringify(params))
           throw new Error("pad parameters for setField " + JSON.stringify(params))
         }
       }

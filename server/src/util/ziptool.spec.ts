@@ -16,7 +16,7 @@ describe("Ziptool", () => {
     expect(result).toEqual(input)
   })
 
-  it("encrypts and decrypts a text", async () => {
+  it("encrypts and decrypts binary data", async () => {
     const input = randomBytes(1000)
     const result = await encrypt(input, "TopSecret", "Salt")
     const decrypted = await decrypt(result, "TopSecret", "Salt")
@@ -25,11 +25,21 @@ describe("Ziptool", () => {
   it("fails on bad password", async () => {
     const input = randomBytes(1000)
     const result = await encrypt(input, "TopSecret", "Salt")
-    return expect(()=>decrypt(result, "TopSecre", "Salt")).rejects.toMatch(/pipeline Error.+/)
+    return expect(() => decrypt(result, "TopSecre", "Salt")).rejects.toMatch(/pipeline Error.+/)
   })
   it("fails on bad salt", async () => {
     const input = randomBytes(1000)
     const result = await encrypt(input, "TopSecret", "SomeSaltySalt")
-    return expect(()=>decrypt(result, "TopSecret", "SomeSaltySalz")).rejects.toMatch(/pipeline Error.+/)
+    return expect(() => decrypt(result, "TopSecret", "SomeSaltySalz")).rejects.toMatch(/pipeline Error.+/)
+  })
+  it("encrypts and decrypts a string", async () => {
+    const test = "Something"
+    const input = Buffer.from(test, "utf-8")
+    const encrypted = await encrypt(input, "TopSecret", "Salty Stuff")
+    const intermediate = encrypted.toString("base64")
+    const reBuffer = Buffer.from(intermediate, "base64")
+    const decrypted = await decrypt(reBuffer, "TopSecret", "Salty Stuff")
+    const result = decrypted.toString("utf-8")
+    expect(test).toEqual(result)
   })
 })

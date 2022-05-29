@@ -17,7 +17,7 @@ const path = require("path")
 const normalize = require('./normalize_db')
 
 export default function (app) {
-  const elexisdb = app.get("elexisdb") 
+  const elexisdb = app.get("elexisdb")
 
   const connection = {
     host: process.env.DBHOST || elexisdb?.connection?.host || "localhost",
@@ -41,7 +41,7 @@ export default function (app) {
         if (result[0].wert < "3.0.6") {
           return normalize(app).then(() => {
             return db('config').where("param", "webelexis").update("wert", "3.0.6").then(res => {
-              console.log(res)
+              logger.info(res)
             })
           }).catch(err => {
             logger.error("Fehler beim DB update " + err)

@@ -11,11 +11,12 @@ import { Currency } from 'swissqrbill/lib/node/esm/shared/types'
 import { print } from 'unix-print'
 import { DateTime } from 'luxon'
 import { Mailer } from '../../util/mailer'
+import { logger } from '../../logger'
 const mm2pt = util.mm2pt
 import conf from 'config'
-const billing=conf.get("billing")
+const billing = conf.get("billing")
 
-export function outputInvoice(bill):Promise<boolean> {
+export function outputInvoice(bill): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const data = createData(bill)
     const filename = path.join(billing.output || '.', bill.rnnummer + '.pdf')
@@ -31,7 +32,7 @@ export function outputInvoice(bill):Promise<boolean> {
           mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename }).then(result => {
             resolve(true)
           }).catch(err => {
-            console.log("error with mailer " + err)
+            logger.error("OutputInvoice: error with mailer " + err)
             reject(err)
           })
         } else if (bill.output) {
@@ -39,7 +40,7 @@ export function outputInvoice(bill):Promise<boolean> {
             resolve(true)
 
           }).catch(err => {
-            console.log("Error with lp " + err)
+            logger.error("InvoiceOutput: Error with lp " + err)
             reject(err)
           })
         } else {
@@ -53,7 +54,7 @@ export function outputInvoice(bill):Promise<boolean> {
     pdf.fillColor('black')
     pdf.font('Helvetica')
     let sender = ""
-    const mandators=conf.get("mandators")
+    const mandators = conf.get("mandators")
     if (mandators?.default) {
       const abs = mandators.default
       pdf.text(
@@ -180,7 +181,7 @@ export function paymentSlip(bill) {
         createData(bill),
         path.join(billing.output || '.', bill.rnnummer + '.pdf'),
         () => {
-          console.log('ok')
+          logger.debug('ok')
           resolve(true)
         },
       )

@@ -81,7 +81,7 @@ if (app.get('testing')) {
   logger.info('running in testing mode')
 
   seeder(app).catch((err) => {
-    console.log('reject ' + err)
+    logger.error('reject ' + err)
   })
 } else {
   logger.info('running in production mode')

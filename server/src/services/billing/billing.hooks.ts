@@ -7,6 +7,7 @@
 // Elexis "Leistungen" bzw. "Verrechnet"
 const { authenticate } = require('@feathersjs/authentication').hooks;
 import { DateTime } from 'luxon'
+import { logger } from '../../logger'
 import { v4 as uuid } from 'uuid'
 
 const typemap = {
@@ -57,7 +58,7 @@ const adapter = async ctx => {
 
 const check = ctx => {
   if (ctx.data) {
-    console.log(ctx.data)
+    logger.debug(ctx.data)
   }
 }
 export default {

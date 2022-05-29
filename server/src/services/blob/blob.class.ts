@@ -1,69 +1,70 @@
-import { createClient } from 'redis'
 import { v4 as uuid } from 'uuid'
 import { encrypt, decrypt } from '../../util/ziptool'
 import { logger } from '../../logger'
 
+const encoding = "base64"
 export type entity = {
   id?: string
   data: string
+  z_ipped?: string
   [x: string]: any
 }
 export class Blob {
-  private client
+  private couch
   private ns: string
   constructor(private app, private options) {
-    this.client = createClient({ url: this.options.redis })
-    this.ns = (this.options.namespace || "Webelexis") + ":"
-    this.client.on('error', err => { logger.error("redis " + err) })
-    this.client.connect().then(() => {
-      logger.info("Redis connected")
-    })
+    this.couch = app.service("couchdb")
+    this.ns = (this.options.namespace || "webelexis") + "/"
   }
-  async get(id, params?) {
-    /*
-    const zipped = Buffer.from(await this.client.get(this.ns + id))
-    if (!zipped) {
-      throw new Error("Item not found")
+  private async transform(obj: entity) {
+    if (obj.data) {
+      if (this.options.pwd && this.options.salt) {
+        const zipped = await encrypt(Buffer.from(obj.data, "utf-8"), this.options.pwd, this.options.salt)
+        obj.z_ipped = zipped.toString(encoding)
+        delete obj.data
+      }
+    } else if (obj.z_ipped) {
+      const dezipped: Buffer = await decrypt(Buffer.from(obj.z_ipped, encoding), this.options.pwd, this.options.salt)
+      obj.data = dezipped.toString("utf-8")
+      delete obj.z_ipped
     }
-    const obj = await decrypt(zipped, this.options.pwd, this.options.salt)
-    return JSON.parse(obj.toString("utf-8"))
-    */
-    const ret = await (this.client.get(this.ns + id))
-    return { id, data: ret }
+    return obj
+  }
+  async get(id, params?): Promise<entity> {
+    const obj: entity = await this.couch.get(id, { query: { database: this.ns } })
+    return await this.transform(obj)
   }
 
-  async create(obj: entity) {
-    if (!obj.id) {
-      obj.id = uuid()
+  async create(ob: entity, params?): Promise<entity> {
+    const created = Object.assign({}, ob)
+    if (!created.id) {
+      created.id = uuid()
     }
-    /*
-    const zipped = await encrypt(Buffer.from(JSON.stringify(obj)), this.options.pwd, this.options.salt)
-    await this.client.set(this.ns + obj.id, zipped.toString("utf-8"))
     if (this.options.indexer) {
       const indexer = this.app.service(this.options.indexer)
       if (indexer) {
-        await indexer.create({ id: this.ns + obj.id, contents: obj.data, type: "blob" })
+        await indexer.create({ id: created.id, contents: created.data, type: "blob" })
       }
     }
-    */
-    const res = await this.client.set(this.ns + obj.id, obj.data)
-    return obj.id
+    const transformed = await this.transform(created)
+    const res = await this.couch.create(transformed, { query: { database: this.ns } })
+    return await this.transform(res)
   }
-  async update(id, data, params) {
-    const zipped = await encrypt(Buffer.from(JSON.stringify(data)), this.options.pwd, this.options.salt)
-    const prev = await this.get(this.ns + id)
-    await this.create(data)
-    return prev
+  async update(id: string, obj: entity, params?): Promise<entity> {
+    const data = Object.assign({}, obj)
+    const prev = await this.couch.update(id, await this.transform(data), { query: { database: this.ns } })
+    return await this.transform(prev)
   }
 
-  async remove(id, params): Promise<number> {
+  async remove(id: string, params?): Promise<entity> {
     if (this.options.indexer) {
       const indexer = this.app.service(this.options.indexer)
       if (indexer) {
-        await indexer.remove(this.ns + id)
+        await indexer.remove(id, { query: { database: this.ns } })
       }
     }
-    return await this.client.del(this.ns + id)
+    const obj = await this.couch.remove(id, params)
+    return await this.transform(obj)
   }
 
 }
