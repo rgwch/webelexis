@@ -1,8 +1,7 @@
 version: '3'
 
 volumes:
-  redis_data:
-    driver: local
+  couchdb:
   solrdata:
   lucindadocs:
   lucindamoved:
@@ -25,17 +24,17 @@ services:
       - webelexis_net
     restart: always
 
-  redis:
-    image: docker.io/bitnami/redis:latest
-    container_name: wlx_redis
+  couchdb:
+    image: couchdb:3.2.2
+    container_name: wlx_couchdb
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      - COUCHDB_USER=${COUCHDB_ADMIN:-couchadmin}
+      - COUCHDB_PASSWORD=${COUCHDB_ADMINPWD:-pleasechangethis}
     volumes:
-      - redis_data:/bitnami/redis/data
+      - couchdb:/opt/couchdb/data
     ports:
-      - 6379:6379
-    restart: always
+      - "${PUBLIC_COUCHDB_PORT:-5984}:5984"
+    restart: always  
 
   solr:
     image: solr:8.5.2
