@@ -32,6 +32,7 @@ import briefe from './briefe/briefe.service'
 import { ACE, declareACE } from '../util/acl'
 import utility from './utility/utility-service'
 import blob from './blob/blob.service'
+import couchdb from './couchdb/couchdb.service'
 import schedule from './schedule/schedule.service'
 import stickynotes from './stickynotes/stickynotes.service'
 import bills from './bills/bills.service'
@@ -91,4 +92,5 @@ export default (app) => {
   app.configure(diagnose)
   app.configure(utility)
   app.configure(blob)
+  app.configure(couchdb)
 }

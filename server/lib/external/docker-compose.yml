@@ -34,7 +34,9 @@ services:
       - couchdb:/opt/couchdb/data
     ports:
       - "${PUBLIC_COUCHDB_PORT:-5984}:5984"
-    restart: always  
+    networks:
+      - webelexis_net
+    restart: always
 
   solr:
     image: solr:8.5.2
