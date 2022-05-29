@@ -258,18 +258,25 @@ export class EncounterModel {
     }
     try {
       const blob = await this.blob.get(this.enc.id)
-      result.json = blob.data
-
-    } catch (err) {
-      if (err.message !== "Item not found") {
+      if (blob.data) {
+        if (typeof (blob.data == 'string')) {
+          result.json = JSON.parse(blob.data)
+        } else {
+          result.json = blob.data
+        }
+      }
+    }
+    catch (err) {
+      if (err.message !== "not_found") {
         alert(err)
       }
     }
+
     return result
   }
 
   public async setKonsText(contents: any) {
-    await this.blob.create({ id: this.enc.id, data: contents })
+    await this.blob.create({ id: this.enc.id, data: JSON.stringify(contents) })
   }
   public static getDefinition(): FlexformConfig {
     return {

@@ -66,6 +66,9 @@ export class CouchDB {
   async get(id, params?): Promise<any> {
     const db = params?.query?.database || this.options.defaultDB || "webelexis"
     const result = await this.request(id, db)
+    if (result.error) {
+      throw new Error(result.error)
+    }
     return result
   }
   async create(obj, params?): Promise<any> {

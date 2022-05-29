@@ -52,4 +52,12 @@ describe('Blob', () => {
     expect(removed.data).toEqual("A test")
 
   })
+  it("throws an error un undefined blob", async () => {
+    try {
+      const got = await service.get("thisIsInexistent")
+      expect(false).toEqual(true)
+    } catch (err) {
+      expect(err.message).toEqual("not_found")
+    }
+  })
 })

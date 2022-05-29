@@ -31,4 +31,19 @@ describe("CouchDB", () => {
     const delDB = await service.remove("", { query: { database } })
     expect(delDB.ok).toBeTruthy()
   })
+
+  it("throws an error on nonexistent get ", async () => {
+    try {
+      await service.get("in_existent_id", { query: { database } })
+      expect(false).toBeTruthy()
+    } catch (err) {
+      expect(err.message).toEqual("not_found")
+    }
+    try {
+      await service.get("inexistent_db", { query: { database: "inexistent" } })
+      expect(false).toBeTruthy()
+    } catch (err) {
+      expect(err.message).toEqual("not_found")
+    }
+  })
 })
