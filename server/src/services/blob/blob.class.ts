@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { v4 as uuid } from 'uuid'
 import { encrypt, decrypt } from '../../util/ziptool'
 import { logger } from '../../logger'
@@ -63,7 +69,7 @@ export class Blob {
         await indexer.remove(id, { query: { database: this.ns } })
       }
     }
-    const obj = await this.couch.remove(id, params)
+    const obj = await this.couch.remove(id, {query:{database: this.ns}})
     return await this.transform(obj)
   }
 

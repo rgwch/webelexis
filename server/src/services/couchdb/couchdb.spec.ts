@@ -28,7 +28,7 @@ describe("CouchDB", () => {
     expect(retrieved.contents).toEqual(testdoc.contents)
     const deleted = await service.remove(testdoc.id, { query: { database } })
     expect(deleted.id).toEqual(testdoc.id)
-    const delDB = await service.remove("", { query: { database } })
+    const delDB = await service.remove("!database!", { query: { database } })
     expect(delDB.ok).toBeTruthy()
   })
 

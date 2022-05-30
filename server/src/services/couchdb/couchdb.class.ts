@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { logger } from '../../logger'
 import fetch from 'node-fetch'
 
@@ -63,6 +69,13 @@ export class CouchDB {
     }
   }
 
+  /**
+   * Retrieve an object by its id
+   * @param id id of the object to find
+   * @param params params.query.database: Database to consider
+   * @returns the object
+   * @throws "not_found" if no object with the given id exists
+   */
   async get(id, params?): Promise<any> {
     const db = params?.query?.database || this.options.defaultDB || "webelexis"
     const result = await this.request(id, db)
@@ -71,6 +84,12 @@ export class CouchDB {
     }
     return result
   }
+  /**
+   * create a new entry. If object woth the same obj.id exists,throw error.
+   * @param obj The object to store
+   * @param params params.query.database: Database where it should be stored
+   * @returns the newly created object
+   */
   async create(obj, params?): Promise<any> {
     const db = params?.query?.database || this.options.defaultDB || "webelexis"
     const dbs: Array<string> = await this.listDatabases()
@@ -78,7 +97,7 @@ export class CouchDB {
       const ndb = await this.createDatabase(db)
     }
     const result = await this.request(obj.id, db, "put", obj)
-    if (!result.ok) {
+    if (result.error) {
       logger.error(JSON.stringify(result))
       throw new Error(result.reason)
     } else {
@@ -86,20 +105,47 @@ export class CouchDB {
     }
 
   }
+  /**
+   * Update existing object. If no object with the given ID exists:
+   * create new entry, if params.query.upsert is true, throw not_found otherwise.
+   * 
+   * @param id id of the object to update
+   * @param data the object
+   * @param params,wuery.database, params params.query.upsert, 
+   * @returns the updated or newly created object
+   */
   async update(id, data, params?) {
     const db = params?.query?.database || this.options.defaultDB || "webelexis"
-    const obj = await this.get(id, params)
-    const result = await this.request(id + "?rev=" + obj._rev, db, "put", data)
-    if (!result.ok) {
-      logger.error("CouchDB update: " + JSON.stringify(result))
-      throw new Error(result.reason)
-    } else {
-      return obj
+    try {
+      const obj = await this.get(id, params)
+      const result = await this.request(id + "?rev=" + obj._rev, db, "put", data)
+      if (result.error) {
+        logger.error("CouchDB update: " + JSON.stringify(result))
+        throw new Error(result.reason)
+      } else {
+        return obj
+      }
+    } catch (err) {
+      if (err.message === "not_found") {
+        if (params?.query?.upsert) {
+          const result = await this.create(data, params)
+          return result
+        } else {
+          throw new Error("not_found")
+        }
+      }
     }
   }
+
+  /**
+   * Remove an object by its id or delete a database
+   * @param id id of the object to remove. If id is "!database!": Delete the database in params.query.database
+   * @param params params.query.database: Database where the object is located
+   * @returns the newly deleted object
+   */
   async remove(id, params?): Promise<any> {
     const db = params?.query?.database || this.options.defaultDB || "webelexis"
-    if (id) {
+    if (id !== "!database!") {
       // delete document
       const obj = await this.get(id, params)
       const result = await this.request(id + "?rev=" + obj._rev, db, "delete")

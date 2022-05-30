@@ -28,10 +28,27 @@ module.exports = {
    * prefix and encryption settings for the blob store
    */
   blob: {
+    // Depending of the implkementatioon: Database or prefix
     namespace: "webelexis",
+    // Must remain the same for all documents of this webelexis instance
     salt: "thisShouldBeAppSpec",
+    // Password to encrypt blobs. If salt or pws is not given: Don't encrypt
+    pwd: "PleaseChangeThis",
+    // indexer to look up documents. Useful especially, if encrypted
     indexer: "lucinda",
-    pwd: "PleaseChangeThis"
+  },
+  /**
+   * Access configuration for CouchDB. 
+   */
+  couchdb:{
+    // if no db given in a request: Use defaultDB
+    defaultDB: "webelexis",
+    // Credential as defined in CouchDB
+    username: "couchadmin",
+    password:"pleasechangethis",
+    host: "localhost",
+    port: 5984
+
   },
   solr: {
     host: "http://localhost:8983/solr",
