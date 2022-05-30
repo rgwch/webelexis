@@ -18,9 +18,11 @@ export type entity = {
 export class Blob {
   private couch
   private ns: string
+  private defaultdb
   constructor(private app, private options) {
     this.couch = app.service("couchdb")
     this.ns = (this.options.namespace || "webelexis") + "/"
+    this.defaultdb={ query: { database: this.ns } }
   }
   private async transform(obj: entity) {
     if (obj.data) {
@@ -37,7 +39,9 @@ export class Blob {
     return obj
   }
   async get(id, params?): Promise<entity> {
-    const obj: entity = await this.couch.get(id, { query: { database: this.ns } })
+    // params.query={upsert: true}
+    // const p=Object.assign({},params,this.defaultdb)
+    const obj: entity = await this.couch.get(id, params)
     return await this.transform(obj)
   }
 
