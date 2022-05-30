@@ -73,9 +73,13 @@ export class EncounterManager extends ObjectManager {
       enc.zeit.substring(0, 2) + ':' + enc.zeit.substring(2, 4)
     )
   }
-  public fetchForPatient(id: string): Promise<query_result> {
+  public fetchForPatient(id: string, offset: number = 0, maxItems?: number): Promise<query_result> {
     if (id) {
-      return this.dataService.find({ query: { patientId: id } })
+      const query = { patientId: id, $skip: offset }
+      if (maxItems) {
+        query["$limit"] = maxItems
+      }
+      return this.dataService.find({ query })
     } else {
       return Promise.resolve({ total: 0, data: [], limit: 50, skip: 0 })
     }
