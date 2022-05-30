@@ -42,7 +42,7 @@ describe('Blob', () => {
 
   })
 
-  it("creates an id if none given", async () => {
+  xit("creates an id if none given", async () => {
     const created = await service.create({ data: "A test" })
     expect(created.id).toBeTruthy()
     const got = await service.get(created.id)
@@ -52,7 +52,7 @@ describe('Blob', () => {
     expect(removed.data).toEqual("A test")
 
   })
-  it("throws an error un undefined blob", async () => {
+  xit("throws an error un undefined blob", async () => {
     try {
       const got = await service.get("thisIsInexistent")
       expect(false).toEqual(true)

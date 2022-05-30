@@ -21,7 +21,7 @@ export class Blob {
   private defaultdb
   constructor(private app, private options) {
     this.couch = app.service("couchdb")
-    this.ns = (this.options.namespace || "webelexis") + "/"
+    this.ns = (this.options.namespace || "webelexis")
     this.defaultdb={ query: { database: this.ns } }
   }
   private async transform(obj: entity) {
@@ -39,13 +39,13 @@ export class Blob {
     return obj
   }
   async get(id, params?): Promise<entity> {
-    // params.query={upsert: true}
-    // const p=Object.assign({},params,this.defaultdb)
-    const obj: entity = await this.couch.get(id, params)
+    const obj: entity = await this.couch.get(id, this.defaultdb)
     return await this.transform(obj)
   }
 
   async create(ob: entity, params?): Promise<entity> {
+    params=Object.assign(this.defaultdb,params)
+    params.query=Object.assign(params.query,{upsert: true})
     const created = Object.assign({}, ob)
     if (!created.id) {
       created.id = uuid()
@@ -57,7 +57,7 @@ export class Blob {
       }
     }
     const transformed = await this.transform(created)
-    const res = await this.couch.create(transformed, { query: { database: this.ns } })
+    const res = await this.couch.create(transformed, params)
     return await this.transform(res)
   }
   async update(id: string, obj: entity, params?): Promise<entity> {
