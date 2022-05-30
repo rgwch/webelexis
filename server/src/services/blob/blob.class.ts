@@ -22,7 +22,7 @@ export class Blob {
   constructor(private app, private options) {
     this.couch = app.service("couchdb")
     this.ns = (this.options.namespace || "webelexis")
-    this.defaultdb={ query: { database: this.ns } }
+    this.defaultdb = { query: { database: this.ns } }
   }
   private async transform(obj: entity) {
     if (obj.data) {
@@ -44,8 +44,7 @@ export class Blob {
   }
 
   async create(ob: entity, params?): Promise<entity> {
-    params=Object.assign(this.defaultdb,params)
-    params.query=Object.assign(params.query,{upsert: true})
+    params = Object.assign(this.defaultdb, params)
     const created = Object.assign({}, ob)
     if (!created.id) {
       created.id = uuid()
@@ -61,8 +60,10 @@ export class Blob {
     return await this.transform(res)
   }
   async update(id: string, obj: entity, params?): Promise<entity> {
+    params = Object.assign(this.defaultdb, params)
+    params.query = Object.assign(params.query, { upsert: true })
     const data = Object.assign({}, obj)
-    const prev = await this.couch.update(id, await this.transform(data), { query: { database: this.ns } })
+    const prev = await this.couch.update(id, await this.transform(data), params)
     return await this.transform(prev)
   }
 
@@ -73,7 +74,7 @@ export class Blob {
         await indexer.remove(id, { query: { database: this.ns } })
       }
     }
-    const obj = await this.couch.remove(id, {query:{database: this.ns}})
+    const obj = await this.couch.remove(id, { query: { database: this.ns } })
     return await this.transform(obj)
   }
 

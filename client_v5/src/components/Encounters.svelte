@@ -13,7 +13,7 @@ em.fetchForPatient(entity?.id).then((result) => {
 </script>
 
 <template>
-  <div class="h-50%">
+  <div class="scrollpanel">
     {#each encounters as encounter}
       <EncounterDetail entity="{encounter}" />
     {/each}

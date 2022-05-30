@@ -276,7 +276,7 @@ export class EncounterModel {
   }
 
   public async setKonsText(contents: any) {
-    await this.blob.create({ id: this.enc.id, data: JSON.stringify(contents) })
+    await this.blob.update(this.enc.id, { id: this.enc.id, data: JSON.stringify(contents) })
   }
   public static getDefinition(): FlexformConfig {
     return {
