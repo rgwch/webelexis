@@ -47,7 +47,7 @@ export interface EncounterType extends ElexisType {
     html?: string // HTML Version of the entrytext
     timestamp: string // Date of last modification
   }
-  _Patient?: any
+  _Patient?: PatientType
   _Fall?: CaseType
   _Mandator?: KontaktType
   _Rechnung?: InvoiceType
@@ -73,7 +73,7 @@ export class EncounterManager extends ObjectManager {
       enc.zeit.substring(0, 2) + ':' + enc.zeit.substring(2, 4)
     )
   }
-  public fetchForPatient(id: string, offset: number = 0, maxItems?: number): Promise<query_result> {
+  public fetchForPatient(id: UUID, offset: number = 0, maxItems?: number): Promise<query_result> {
     if (id) {
       const query = { patientId: id, $skip: offset }
       if (maxItems) {
@@ -280,7 +280,13 @@ export class EncounterModel {
   }
 
   public async setKonsText(contents: any) {
-    await this.blob.update(this.enc.id, { id: this.enc.id, data: JSON.stringify(contents) })
+    const entry = {
+      id: this.enc.id,
+      datetime: this.enc.datum + "-" + (this.enc.zeit || "000000"),
+      data: JSON.stringify(contents),
+      pid: this.enc._Patient?.id
+    }
+    await this.blob.update(this.enc.id, entry)
   }
   public static getDefinition(): FlexformConfig {
     return {

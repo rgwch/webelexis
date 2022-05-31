@@ -24,7 +24,7 @@ $: {
 
 async function fetchEncounters() {
   const result = await em.fetchForPatient(entity?.id, offset, 3);
-  newBatch = result.data;
+  newBatch = result.data.map((e) => {(e._Patient = entity); return e});
   offset = result.skip + result.data.length;
 }
 
