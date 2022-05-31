@@ -3,6 +3,7 @@ import { Zip } from 'zlibt2'
 import { Crypter, Modes } from '@rgwch/simple-crypt'
 import unzipper from 'unzipper'
 import { logger } from '../logger'
+import elexisConfigService from '../services/elexis-config/elexis-config.service'
 
 /**
  * Create a zip file with one entry
@@ -67,6 +68,18 @@ const unzip = (raw: any, name: string): Promise<any> => {
   }
 }
 
+export const encryptToBase64 = async (raw: Buffer | string, password: string, salt: string): Promise<string> => {
+  if(typeof(raw) == 'string'){
+    raw=Buffer.from(raw,"utf-8")
+  }
+  const buffer = await encrypt(raw, password, salt)
+  return buffer.toString("base64")
+}
+export const decryptFromBase64 = async (encrypted: string, password: string, salt: string): Promise<Buffer> => {
+  const buffer = Buffer.from(encrypted, "base64")
+  const dec = await decrypt(buffer, password, salt)
+  return dec
+}
 export const encrypt = async (raw: Buffer, password: string, salt: string): Promise<Buffer> => {
   if (raw) {
     const c = new Crypter(password, salt)

@@ -5,6 +5,7 @@ import type { EncounterType } from "../models/encounter-model";
 import type { PatientType } from "../models/patient-model";
 import InfiniteScroll from "svelte-infinite-scroll";
 import { onMount } from "svelte";
+const BATCHSIZE=5
 const em = new EncounterManager();
 export let entity: PatientType;
 let current = entity.id;
@@ -23,7 +24,7 @@ $: {
 }
 
 async function fetchEncounters() {
-  const result = await em.fetchForPatient(entity?.id, offset, 3);
+  const result = await em.fetchForPatient(entity?.id, offset, BATCHSIZE);
   newBatch = result.data.map((e) => {(e._Patient = entity); return e});
   offset = result.skip + result.data.length;
 }
@@ -37,14 +38,13 @@ onMount(() => {
 </script>
 
 <template>
-  <span>{offset}</span>
   <div class="scrollpanel">
     {#each encounters as encounter}
       <EncounterDetail entity="{encounter}" />
     {/each}
     <InfiniteScroll
       hasMore="{newBatch.length > 0}"
-      threshold="{100}"
+      threshold="{50}"
       on:loadMore="{() => fetchEncounters()}" />
   </div>
 </template>

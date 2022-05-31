@@ -1,4 +1,4 @@
-import { create, extract, check, encrypt, decrypt } from './ziptool'
+import { create, extract, check, encrypt, decrypt, encryptToBase64, decryptFromBase64 } from './ziptool'
 import { randomBytes } from 'crypto'
 import fs from 'fs'
 
@@ -41,5 +41,19 @@ describe("Ziptool", () => {
     const decrypted = await decrypt(reBuffer, "TopSecret", "Salty Stuff")
     const result = decrypted.toString("utf-8")
     expect(test).toEqual(result)
+  })
+
+  it("encrypts and decrypts a Buffer to and from base64", async () => {
+    const input = randomBytes(936)
+    const result = await encryptToBase64(input, "VeryGoodPasswort", "Spicy")
+    const dec = await decryptFromBase64(result, "VeryGoodPasswort", "Spicy")
+    expect(dec).toEqual(input)
+  })
+
+  it("encrypts and decrypts a String to and from base64", async () => {
+    const input = "Some String to enrcypt"
+    const result = await encryptToBase64(input, "VeryGoodPasswort", "Spicy")
+    const dec = await decryptFromBase64(result, "VeryGoodPasswort", "Spicy")
+    expect(dec.toString("utf-8")).toEqual(input)
   })
 })

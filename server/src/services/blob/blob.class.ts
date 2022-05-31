@@ -5,7 +5,7 @@
  ********************************************/
 
 import { v4 as uuid } from 'uuid'
-import { encrypt, decrypt } from '../../util/ziptool'
+import { encrypt, decrypt, encryptToBase64, decryptFromBase64 } from '../../util/ziptool'
 import { logger } from '../../logger'
 
 const encoding = "base64"
@@ -27,12 +27,11 @@ export class Blob {
   private async transform(obj: entity) {
     if (obj.data) {
       if (this.options.pwd && this.options.salt) {
-        const zipped = await encrypt(Buffer.from(obj.data, "utf-8"), this.options.pwd, this.options.salt)
-        obj.z_ipped = zipped.toString(encoding)
+        obj.z_ipped = await encryptToBase64(obj.data, this.options.pwd, this.options.salt)
         delete obj.data
       }
     } else if (obj.z_ipped) {
-      const dezipped: Buffer = await decrypt(Buffer.from(obj.z_ipped, encoding), this.options.pwd, this.options.salt)
+      const dezipped: Buffer = await decryptFromBase64(obj.z_ipped, this.options.pwd, this.options.salt)
       obj.data = dezipped.toString("utf-8")
       delete obj.z_ipped
     }
