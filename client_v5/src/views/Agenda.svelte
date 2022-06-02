@@ -13,6 +13,21 @@ function select(event) {
     list = result;
   });
 }
+function extend(event) {
+  const termin: TerminModel = event.detail;
+  let idx = list.findIndex((t) => t.obj.id === termin.obj.id);
+  if (idx > -1) {
+    while (++idx < list.length) {
+      if (!list[idx].isFree()) {
+        const et = list[idx].getStartTime();
+        termin.setEndTime(et);
+        tm.save(termin);
+        list=tm.buildAppointmentList(list)
+        break;
+      }
+    }
+  }
+}
 </script>
 
 <template>
@@ -22,9 +37,8 @@ function select(event) {
       <ul>
         {#each list as termin}
           <li
-            style="background-color:{termin.getStateColor()};list-style-type:none"
-          >
-            <Appointment termin="{termin}" />
+            style="background-color:{termin.getStateColor()};list-style-type:none">
+            <Appointment termin="{termin}" on:extend="{extend}" />
           </li>
         {/each}
       </ul>

@@ -90,6 +90,32 @@ export class TerminManager {
     }
     return undefined
   }
+  public buildAppointmentList(raw: Array<TerminModel>) {
+    const ret = []
+    const template = raw[0]
+    for (let i = 0; i < raw.length - 1; i++) {
+      const first: TerminModel = raw[i]
+      const second: TerminModel = raw[i + 1]
+      const firstEnd = parseInt(first.obj.beginn, 10) + parseInt(first.obj.dauer, 10)
+      const secondBegin = parseInt(second.obj.beginn, 10)
+      ret.push(first)
+      if (secondBegin - firstEnd > 1) {
+        const gap: TerminType = {
+          beginn: firstEnd.toString(),
+          bereich: template.obj.bereich,
+          dauer: (secondBegin - firstEnd).toString(),
+          erstelltvon: first.obj.erstelltvon,
+          tag: template.obj.tag,
+          terminstatus: Statics.terminStates[0],
+          termintyp: Statics.terminTypes[0]
+        }
+        ret.push(new TerminModel(gap))
+      }
+      // ret.push(second)
+    }
+    ret.push(raw[raw.length - 1])
+    return ret
+  }
   public async fetchForDay(date: Date, resource: string): Promise<TerminModel[]> {
     const day = DateTime.fromJSDate(date)
     if (resource) {
@@ -98,6 +124,8 @@ export class TerminManager {
           query: { tag: day.toFormat("yyyyLLdd"), bereich: resource }
         })
         if (found.data && found.data.length > 0) {
+          const ret = this.buildAppointmentList(found.data.map(a => new TerminModel(a)))
+          /*
           const ret = []
           const template = found.data[0]
           for (let i = 0; i < found.data.length - 1; i++) {
@@ -121,11 +149,12 @@ export class TerminManager {
             // ret.push(second)
           }
           ret.push(found.data[found.data.length - 1])
-          return ret.map(r => new TerminModel(r))
+          */
+          return ret
         } else {
           return []
         }
-        
+
       } catch (err) {
         if (err.code && err.code === 401) {
           // this.router.navigateToRoute("user")
@@ -201,6 +230,11 @@ export class TerminModel {
     this.obj.beginn = (60 * st.hour + st.minute).toString()
   }
 
+  public setEndTime(et: DateTime) {
+    const minutes = et.diff(this.getStartTime(), 'minutes')
+    this.setDuration(minutes.as('minutes'))
+  }
+
   public setDuration(d: number) {
     this.obj.dauer = d.toString()
   }
@@ -225,7 +259,6 @@ export class TerminModel {
   }
   public getStartTime(): DateTime {
     const day = DateTime.fromFormat(this.obj.tag, "yyyyLLdd")
-    console.log(day.toISO())
     return day.plus({ minutes: parseInt(this.obj.beginn, 10) })
   }
 
@@ -233,10 +266,10 @@ export class TerminModel {
     const start = DateTime.fromFormat(this.obj.tag, "yyyyLLdd")
     return start.plus({ minutes: (parseInt(this.obj.beginn, 10) + parseInt(this.obj.dauer, 10)) })
   }
-  public getTimeString(){
-    const start=this.makeTime(parseInt(this.obj.beginn))
-    const end=this.makeTime(parseInt(this.obj.beginn)+parseInt(this.obj.dauer))
-    return start+"-"+end
+  public getTimeString() {
+    const start = this.makeTime(parseInt(this.obj.beginn))
+    const end = this.makeTime(parseInt(this.obj.beginn) + parseInt(this.obj.dauer))
+    return start + "-" + end
   }
 
   makeTime(minutes: number): string {
