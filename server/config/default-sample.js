@@ -28,11 +28,11 @@ module.exports = {
    * prefix and encryption settings for the blob store
    */
   blob: {
-    // Depending of the implkementatioon: Database or prefix
+    // Depending on the implementation: Database or prefix
     namespace: "webelexis",
     // Must remain the same for all documents of this webelexis instance
     salt: "thisShouldBeAppSpec",
-    // Password to encrypt blobs. If salt or pws is not given: Don't encrypt
+    // Password to encrypt blobs. If salt or pwd is not given: Don't encrypt blobs. 
     pwd: "PleaseChangeThis",
     // indexer to look up documents. Useful especially, if encrypted
     indexer: "lucinda",

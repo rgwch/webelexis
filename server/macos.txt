@@ -1,0 +1,2 @@
+- JDK 8 installed, JAVA_HOME set, eg `export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/`
+- Python 3 installed, python symlink points to python3, e.g. `ln -s -f /usr/local/bin/python3.9 /usr/local/bin/python`

@@ -4,7 +4,7 @@ For some tasks we need java libraries (see src/util/elexis-types.ts for more inf
 
 These are:
 
-* rgw-toolbox-x.y.z.jar (https://repo.repsy.io/mvn/rgwch/rgw-toolbox)
+* rgw-toolbox-x.y.z.jar (https://repo.repsy.io/mvn/rgwch/rgw-toolbox/rgwch/rgw-toolbox/)
 * jackson-core-x.y.z.jar
 * jackson-annotations-x.y.z.jar
 * jackson-databind-x.y.z.jar
