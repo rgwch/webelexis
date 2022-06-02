@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.8",
+    "@bulatdashiev/svelte-slider": "^1.0.3",
     "@feathersjs/authentication-client": "^4.5.13",
     "@feathersjs/client": "^4.5.13",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",

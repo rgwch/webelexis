@@ -3,6 +3,7 @@ import DatePicker from "../widgets/DatePicker.svelte";
 import { TerminManager, TerminModel } from "../models/termine-model";
 import type { TerminType } from "../models/termine-model";
 import Appointment from "../components/Appointment.svelte";
+import NewAppointment from "../components/Newappointment.svelte";
 import { _ } from "svelte-i18n";
 const tm = new TerminManager();
 
@@ -53,11 +54,15 @@ function remove(event) {
         {#each list as termin}
           <li
             style="background-color:{termin.getStateColor()};list-style-type:none">
-            <Appointment
-              termin="{termin}"
-              on:extend="{extend}"
-              on:shrink="{shrink}"
-              on:delete="{remove}" />
+            {#if termin.isFree()}
+              <NewAppointment termin="{termin}" />
+            {:else}
+              <Appointment
+                termin="{termin}"
+                on:extend="{extend}"
+                on:shrink="{shrink}"
+                on:delete="{remove}" />
+            {/if}
           </li>
         {/each}
       </ul>

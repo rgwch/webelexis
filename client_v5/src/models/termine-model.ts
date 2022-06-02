@@ -17,7 +17,7 @@ const kontaktManager = new KontaktManager()
  */
 export interface TerminType extends ElexisType {
   id?: UUID
-  patid?: UUID
+  patid?: UUID // or string, if not a patient
   bereich?: string
   tag: string // YYYYMMDD
   beginn: string // minutes from 00:00
@@ -125,31 +125,6 @@ export class TerminManager {
         })
         if (found.data && found.data.length > 0) {
           const ret = this.buildAppointmentList(found.data.map(a => new TerminModel(a)))
-          /*
-          const ret = []
-          const template = found.data[0]
-          for (let i = 0; i < found.data.length - 1; i++) {
-            const first: TerminType = found.data[i]
-            const second: TerminType = found.data[i + 1]
-            const firstEnd = parseInt(first.beginn, 10) + parseInt(first.dauer, 10)
-            const secondBegin = parseInt(second.beginn, 10)
-            ret.push(first)
-            if (secondBegin - firstEnd > 1) {
-              const gap: TerminType = {
-                beginn: firstEnd.toString(),
-                bereich: template.bereich,
-                dauer: (secondBegin - firstEnd).toString(),
-                erstelltvon: first.erstelltvon,
-                tag: template.tag,
-                terminstatus: Statics.terminStates[0],
-                termintyp: Statics.terminTypes[0]
-              }
-              ret.push(gap)
-            }
-            // ret.push(second)
-          }
-          ret.push(found.data[found.data.length - 1])
-          */
           return ret
         } else {
           return []
@@ -267,12 +242,11 @@ export class TerminModel {
     return start.plus({ minutes: (parseInt(this.obj.beginn, 10) + parseInt(this.obj.dauer, 10)) })
   }
   public getTimeString() {
-    const start = this.makeTime(parseInt(this.obj.beginn))
-    const end = this.makeTime(parseInt(this.obj.beginn) + parseInt(this.obj.dauer))
+    const start = TerminModel.makeTime(parseInt(this.obj.beginn))
+    const end = TerminModel.makeTime(parseInt(this.obj.beginn) + parseInt(this.obj.dauer))
     return start + "-" + end
   }
-
-  makeTime(minutes: number): string {
+  public static makeTime(minutes: number): string {
     let hours = Math.floor(minutes / 60)
     let rest = minutes - (hours * 60)
     let mins = rest.toString()
@@ -286,5 +260,6 @@ export class TerminModel {
 
     return hoursS + ":" + mins
   }
+
 
 }
