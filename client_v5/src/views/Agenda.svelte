@@ -22,10 +22,25 @@ function extend(event) {
         const et = list[idx].getStartTime();
         termin.setEndTime(et);
         tm.save(termin);
-        list=tm.buildAppointmentList(list)
+        list = tm.buildAppointmentList(list.filter((t) => !t.isFree()));
         break;
       }
     }
+  }
+}
+function shrink(event) {
+  const termin: TerminModel = event.detail;
+  termin.setDuration(Math.round(termin.getDuration() / 2));
+  tm.save(termin);
+  list = tm.buildAppointmentList(list.filter((t) => !t.isFree()));
+}
+function remove(event) {
+  const termin: TerminModel = event.detail;
+  let idx = list.findIndex((t) => t.obj.id === termin.obj.id);
+  if (idx > -1) {
+    list.splice(idx, 1);
+    tm.delete(termin);
+    list = tm.buildAppointmentList(list.filter((t) => !t.isFree()));
   }
 }
 </script>
@@ -38,7 +53,11 @@ function extend(event) {
         {#each list as termin}
           <li
             style="background-color:{termin.getStateColor()};list-style-type:none">
-            <Appointment termin="{termin}" on:extend="{extend}" />
+            <Appointment
+              termin="{termin}"
+              on:extend="{extend}"
+              on:shrink="{shrink}"
+              on:delete="{remove}" />
           </li>
         {/each}
       </ul>

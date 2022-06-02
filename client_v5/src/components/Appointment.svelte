@@ -1,13 +1,11 @@
 <script lang="ts">
 import { TerminModel, Statics } from "../models/termine-model";
-import {createEventDispatcher} from 'svelte'
+import { createEventDispatcher } from "svelte";
 import Collapse from "../widgets/Collapse.svelte";
 import { terminManager } from "../models";
 import { _ } from "svelte-i18n";
-const dispatch=createEventDispatcher()
+const dispatch = createEventDispatcher();
 export let termin: TerminModel;
-
-
 </script>
 
 <template>
@@ -25,9 +23,15 @@ export let termin: TerminModel;
     <div class="bg-blue-300 mx-4 px-2 border-1 rounded-md" slot="body">
       <div class="flex">
         <div class="flex flex-col">
-          <button>Kürzen</button>
-          <button on:click={()=>{dispatch("extend",termin)}}>Verlängern</button>
-          <button>Löschen</button>
+          <button on:click="{() => dispatch('shrink', termin)}">Kürzen</button>
+          <button
+            on:click="{() => {
+              dispatch('extend', termin);
+            }}">Verlängern</button>
+          <button
+            on:click="{() => {
+              dispatch('delete', termin);
+            }}">Löschen</button>
         </div>
         <div class="flex flex-col">
           <select bind:value="{termin.obj.termintyp}">
