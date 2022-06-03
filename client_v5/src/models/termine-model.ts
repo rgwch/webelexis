@@ -221,6 +221,9 @@ export class TerminModel {
     this.obj.beginn = (60 * st.hour + st.minute).toString()
   }
 
+  public setDescription(text:string){
+    this.obj.grund=text
+  }
   public setEndTime(et: DateTime) {
     const minutes = et.diff(this.getStartTime(), 'minutes')
     this.setDuration(minutes.as('minutes'))

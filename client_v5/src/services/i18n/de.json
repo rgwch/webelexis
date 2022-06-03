@@ -13,6 +13,7 @@
   "appointment":{
     "enternew": "Neuen Termin eintragen",
     "time": "Zeit",
+    "duration":"Dauer",
     "enter": "Eintragen"
   },
   "address": {

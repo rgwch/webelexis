@@ -56,14 +56,13 @@ function remove(event) {
           <li
             style="background-color:{termin.getStateColor()};list-style-type:none">
             {#if termin.isFree()}
-              <NewAppointment termin="{termin}" />
+              <NewAppointment termin="{termin}" on:reload="{select}" />
             {:else}
               <Appointment
                 termin="{termin}"
                 on:extend="{extend}"
                 on:shrink="{shrink}"
-                on:delete="{remove}"
-                on:reload="{select}" />
+                on:delete="{remove}" />
             {/if}
           </li>
         {/each}
