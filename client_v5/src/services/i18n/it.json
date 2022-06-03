@@ -1,14 +1,24 @@
 {
   "actions": {
     "cancel": "Abbruch",
+    "delete": "Löschen",
     "deselect": "abwählen...",
+    "extend": "Verlängern",
+    "go": "start",
     "ok": "Ok",
-    "select": "auswählen..."
+    "select": "auswählen...",
+    "shrink": "Kürzen"
   },
   "address": {
     "place": "Ort",
     "street": "Strasse",
     "zip": "plz"
+  },
+  "appointment": {
+    "duration": "Dauer",
+    "enter": "Eintragen",
+    "enternew": "Neuen Termin eintragen",
+    "time": "Zeit"
   },
   "billing": {
     "CANCELLED": "annulato",
@@ -94,11 +104,15 @@
   },
   "formatting": {
     "date": "DD.MM.YYYY",
+    "dateTime": "dd.LL.yyyy HH:mm",
     "dbdate": "yyyyLLdd",
+    "longDateTime": "ccc, dd.LL.yyyy HH:mm",
     "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
-    "loading": "lese..."
+    "from": "von",
+    "loading": "lese...",
+    "until": "bis"
   },
   "patient": {
     "detail": "Patient Detail",
@@ -115,6 +129,7 @@
     "diagnoses": "Diagnosen",
     "documents": "Dokumente",
     "encounters": "Konsultationen",
+    "fromdate": "Kons. nach Datum",
     "medicaments": "Medikamente",
     "outputs": "Ausgaben",
     "personalia": "Personalien",

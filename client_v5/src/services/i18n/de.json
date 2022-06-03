@@ -1,25 +1,24 @@
 {
   "actions": {
     "cancel": "Abbruch",
+    "delete": "Löschen",
     "deselect": "abwählen...",
+    "extend": "Verlängern",
+    "go": "start",
     "ok": "Ok",
     "select": "auswählen...",
-    "go":"start",
-    "delete":"Löschen",
-    "extend": "Verlängern",
     "shrink": "Kürzen"
-
-  },
-  "appointment":{
-    "enternew": "Neuen Termin eintragen",
-    "time": "Zeit",
-    "duration":"Dauer",
-    "enter": "Eintragen"
   },
   "address": {
     "place": "Ort",
     "street": "Strasse",
     "zip": "plz"
+  },
+  "appointment": {
+    "duration": "Dauer",
+    "enter": "Eintragen",
+    "enternew": "Neuen Termin eintragen",
+    "time": "Zeit"
   },
   "billing": {
     "CANCELLED": "Storniert",
@@ -107,12 +106,12 @@
     "date": "dd.LL.yyyy",
     "dateTime": "dd.LL.yyyy HH:mm",
     "dbdate": "yyyyLLdd",
-    "longdate": "ccc, dd.LL.yyyy",
-    "longDateTime": "ccc, dd.LL.yyyy HH:mm"
+    "longDateTime": "ccc, dd.LL.yyyy HH:mm",
+    "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
-    "loading": "lese...",
     "from": "von",
+    "loading": "lese...",
     "until": "bis"
   },
   "patient": {
@@ -130,14 +129,14 @@
     "diagnoses": "Diagnosen",
     "documents": "Dokumente",
     "encounters": "Konsultationen",
+    "fromdate": "Kons. nach Datum",
     "medicaments": "Medikamente",
     "outputs": "Ausgaben",
     "personalia": "Personalien",
     "prescriptions": "Rezepte",
     "progress": "Verlauf",
     "selected": "Auswahl",
-    "unbilled": "Unverrechnete Konsultationen",
-    "fromdate": "Kons. nach Datum"
+    "unbilled": "Unverrechnete Konsultationen"
   },
   "validation": {
     "invalidDate": "Ungültiges Datum",

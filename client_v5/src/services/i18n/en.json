@@ -1,14 +1,24 @@
 {
   "actions": {
     "cancel": "cancel",
+    "delete": "delete",
     "deselect": "deselect...",
+    "extend": "extend",
+    "go": "start",
     "ok": "Ok",
-    "select": "select..."
+    "select": "select...",
+    "shrink": "shorten"
   },
   "address": {
     "place": "place",
     "street": "street",
     "zip": "zip"
+  },
+  "appointment": {
+    "duration": "duration",
+    "enter": "accept",
+    "enternew": "Add a new appointment",
+    "time": "time"
   },
   "billing": {
     "CANCELLED": "cancelled",
@@ -94,11 +104,15 @@
   },
   "formatting": {
     "date": "yyyy/LL/dd",
+    "dateTime": "dd.LL.yyyy HH:mm",
     "dbdate": "yyyyLLdd",
+    "longDateTime": "ccc, dd.LL.yyyy HH:mm",
     "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
-    "loading": "loading..."
+    "from": "von",
+    "loading": "loading...",
+    "until": "bis"
   },
   "patient": {
     "detail": "Patient detail",
@@ -115,6 +129,7 @@
     "diagnoses": "Diagnoses",
     "documents": "Documents",
     "encounters": "Encounters",
+    "fromdate": "Kons. nach Datum",
     "medicaments": "Medication",
     "outputs": "Outputs",
     "personalia": "Personal data",
