@@ -4,7 +4,16 @@
     "deselect": "abwählen...",
     "ok": "Ok",
     "select": "auswählen...",
-    "go":"start"
+    "go":"start",
+    "delete":"Löschen",
+    "extend": "Verlängern",
+    "shrink": "Kürzen"
+
+  },
+  "appointment":{
+    "enternew": "Neuen Termin eintragen",
+    "time": "Zeit",
+    "enter": "Eintragen"
   },
   "address": {
     "place": "Ort",

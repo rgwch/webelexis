@@ -11,6 +11,7 @@ import { DateTime } from "luxon"
 // const log = LogManager.getLogger("findings-model")
 import { getService } from "../services/io"
 import { KontaktManager } from "./kontakt-model"
+import type { PatientType } from "./patient-model"
 const kontaktManager = new KontaktManager()
 /**
  * An Elexis "Termin"
@@ -195,11 +196,26 @@ export class TerminModel {
   public getDuration = (): number => parseInt(this.obj.dauer, 10)
   public getEndMinutes = (): number => this.getBeginMinutes() + this.getDuration()
 
+  public getDate(): Date {
+    const dt = DateTime.fromFormat(this.obj.tag, "yyyyLLdd")
+    return dt.toJSDate()
+  }
+
   public setTyp(typ: string): boolean {
     this.obj.termintyp = typ
     return true
   }
 
+  public setPatient(pat: PatientType) {
+    this.obj.patid = pat.id
+  }
+  public setStatus(status: string): boolean {
+    this.obj.terminstatus = status
+    return true
+  }
+  public setBeginMinutes(m: number) {
+    this.obj.beginn = m.toString()
+  }
   public setStartTime(st: DateTime) {
     this.obj.tag = st.toFormat("yyyyLLdd")
     this.obj.beginn = (60 * st.hour + st.minute).toString()

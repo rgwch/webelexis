@@ -8,8 +8,9 @@ import { _ } from "svelte-i18n";
 const tm = new TerminManager();
 
 let list: Array<TerminModel> = [];
+
 function select(event) {
-  const date = event.detail;
+  const date: Date = event.detail;
   tm.fetchForDay(date, "gerry").then((result) => {
     list = result;
   });
@@ -61,7 +62,8 @@ function remove(event) {
                 termin="{termin}"
                 on:extend="{extend}"
                 on:shrink="{shrink}"
-                on:delete="{remove}" />
+                on:delete="{remove}"
+                on:reload="{select}" />
             {/if}
           </li>
         {/each}

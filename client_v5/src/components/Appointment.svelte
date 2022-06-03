@@ -23,15 +23,15 @@ export let termin: TerminModel;
     <div class="bg-blue-300 mx-4 px-2 border-1 rounded-md" slot="body">
       <div class="flex">
         <div class="flex flex-col">
-          <button on:click="{() => dispatch('shrink', termin)}">Kürzen</button>
+          <button on:click="{() => dispatch('shrink', termin)}">{$_("actions.shrink")}</button>
           <button
             on:click="{() => {
               dispatch('extend', termin);
-            }}">Verlängern</button>
+            }}">{$_("actions.extend")}</button>
           <button
             on:click="{() => {
               dispatch('delete', termin);
-            }}">Löschen</button>
+            }}">{$_("actions.delete")}</button>
         </div>
         <div class="flex flex-col">
           <select bind:value="{termin.obj.termintyp}">
