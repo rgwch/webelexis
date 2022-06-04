@@ -1,11 +1,15 @@
 <script lang="ts">
 export let label: string = undefined;
+export let elements: Array<string> = [];
 </script>
 
 <template>
   <div>
     {#if label}
-      <label for="listbox" id="listbox-label" class="block text-sm font-medium text-gray-700">
+      <label
+        for="listbox"
+        id="listbox-label"
+        class="block text-sm font-medium text-gray-700">
         Assigned to
       </label>
     {/if}
@@ -55,36 +59,36 @@ export let label: string = undefined;
 
         Highlighted: "text-white bg-indigo-600", Not Highlighted: "text-gray-900"
       -->
-        <li
-          class="text-gray-900 cursor-default select-none relative py-2 pl-8 pr-4"
-          id="listbox-option-0"
-          role="option">
-          <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
-          <span class="font-normal block truncate"> Wade Cooper </span>
+        {#each elements as element, idx}
+          <li
+            class="text-gray-900 cursor-default select-none relative py-2 pl-8 pr-4"
+            id="{'listbox' + idx}"
+            role="option">
+            <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+            <span class="font-normal block truncate"> element</span>
 
-          <!--
+            <!--
           Checkmark, only display for selected option.
 
           Highlighted: "text-white", Not Highlighted: "text-indigo-600"
         -->
-          <span
-            class="text-indigo-600 absolute inset-y-0 left-0 flex items-center pl-1.5">
-            <!-- Heroicon name: solid/check -->
-            <svg
-              class="h-5 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </span>
-        </li>
-
-        <!-- More items... -->
+            <span
+              class="text-indigo-600 absolute inset-y-0 left-0 flex items-center pl-1.5">
+              <!-- Heroicon name: solid/check -->
+              <svg
+                class="h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </span>
+          </li>
+        {/each}
       </ul>
     </div>
   </div>
