@@ -70,17 +70,17 @@ async function accept() {
         {/if}
         <div class="flex flex-row">
           <div class="flex flex-col">
-            <select bind:value="{termintyp}">
+            <select bind:value="{termintyp}"  class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
               {#each Statics.terminTypes as type}
                 <option value="{type}">{type}</option>
               {/each}
             </select>
-            <select bind:value="{terminstate}">
+            <select bind:value="{terminstate}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
               {#each Statics.terminStates as state}
                 <option value="{state}">{state}</option>
               {/each}
             </select>
-            <select bind:value="{termin.obj.bereich}">
+            <select bind:value="{termin.obj.bereich}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
               {#each Statics.agendaResources as res}
                 <option value="{res}">{res}</option>
               {/each}
