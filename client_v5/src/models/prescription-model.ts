@@ -10,7 +10,6 @@ import { getService } from '../services/io'
 import { DateTime } from "luxon";
 import type { PatientType } from './patient-model'
 import type { KontaktType } from './kontakt-model'
-import { now } from "svelte/internal";
 
 const ELEXISDATETIME = "yyyyLLddhhmmss"
 const ELEXISDATE = "yyyyLLdd"
@@ -275,4 +274,9 @@ export class PrescriptionManager extends ObjectManager {
     }
     return undefined
   }
+
+  public ElexisDateToLocalDate(elexisdate: string): string {
+    return DateTime.fromFormat(elexisdate, ELEXISDATE).toFormat(LOCALDATE)
+  }
+
 }

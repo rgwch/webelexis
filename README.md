@@ -9,6 +9,8 @@ Die schlanke, flinke Ergänzung zu Elexis
 * Kann parallel mit Elexis im selben Netz eingesetzt werden.
 * Erlaubt optional selbständige Terminreservation für Patienten über ein Web-Interface
 
+<p style="color:red">Dieses readme betrifft eine frühere Version. Redesign ist in Arbeit</p>
+
 ## Demo Videos
 
 [Einstieg](https://youtu.be/eN2FyPkbNJM), 

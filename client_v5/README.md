@@ -7,6 +7,7 @@ Current work covers creation and handling of bills (conformant to the new swiss 
 ## Launch
 
 - start server (in directory ../server)
+- in client:
 - npm i
 - npm run dev
 

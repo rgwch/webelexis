@@ -1,4 +1,10 @@
-# Webelexis client
+# Webelexis client V3
+
+<h2 style="color:red">This Client V3 ist discontinued. Will not work with current server</h2>
+
+Use as reference only
+
+--------
 
 An Aurelia based client app for the Webelexis server
 
