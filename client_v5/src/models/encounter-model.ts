@@ -4,7 +4,6 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { CaseManager } from './case-model'
 import type { CaseType } from './case-model'
 import type { ElexisType, UUID } from './elexistype'
 import type { PatientType } from './patient-model'
@@ -20,6 +19,7 @@ import { Money } from './money'
 import type { FlexformConfig } from '../widgets/flexformtypes'
 import type { Service } from '@feathersjs/feathers'
 import type { InvoiceType } from './invoice-model'
+import { caseManager } from '../models'
 
 let trl
 const un = _.subscribe((res) => {
@@ -141,7 +141,6 @@ export class EncounterManager extends ObjectManager {
 
 export class EncounterModel {
   private bm: BillingsManager
-  private cm: CaseManager
   private km: KontaktManager
   private em: EncounterManager
   private billings: Array<BillingType>
@@ -150,7 +149,6 @@ export class EncounterModel {
 
   constructor(private enc: EncounterType) {
     this.bm = new BillingsManager()
-    this.cm = new CaseManager()
     this.km = new KontaktManager()
     this.em = new EncounterManager()
     this.utility = getService("utility")
@@ -205,7 +203,7 @@ export class EncounterModel {
   public async getCase(): Promise<CaseType> {
     if (!this.enc._Fall) {
       if (this.enc.fallid) {
-        this.enc._Fall = (await this.cm.fetch(this.enc.fallid)) as CaseType
+        this.enc._Fall = (await caseManager.fetch(this.enc.fallid)) as CaseType
       }
     }
     return this.enc._Fall
@@ -214,7 +212,7 @@ export class EncounterModel {
   public async getPatient(): Promise<PatientType> {
     if (!this.enc._Patient) {
       const fall = await this.getCase()
-      this.enc._Patient = await this.cm.getPatient(fall)
+      this.enc._Patient = await caseManager.getPatient(fall)
     }
     return this.enc._Patient
   }

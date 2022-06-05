@@ -18,3 +18,6 @@ export interface ElexisType {
 export type UUID = string // UUIDv4 (36) or ElexisID (25)
 
 export type DATE = string // YYYYMMDD
+
+export type DATETIME = string // YYYYMMDDHHmmss
+

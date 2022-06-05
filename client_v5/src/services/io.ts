@@ -67,7 +67,7 @@ export interface IService<T> {
 }
 
 export type ServiceType = "admin" | "billable" | "billing" | "bills" | "blob" | "diagnose" | "fall" | "invoice" | "konsultation" |
-  "kontakt" | "patient" | "payments" | "stickers" | "termin" | "user" | "utility"
+  "meta-article" | "kontakt" | "patient" | "payments" | "prescriptions" | "rezepte" | "stickers" | "termin" | "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 
 export const login = async (username?: string, password?: string) => {

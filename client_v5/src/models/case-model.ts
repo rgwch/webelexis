@@ -1,4 +1,3 @@
-import { EncounterModel } from './encounter-model';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
@@ -6,6 +5,7 @@ import { EncounterModel } from './encounter-model';
  ********************************************/
 
 import type { ElexisType, UUID } from "./elexistype";
+import { EncounterModel } from './encounter-model';
 import { ObjectManager } from "./object-manager";
 import { getService } from "../services/io";
 import { Money } from './money';

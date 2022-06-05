@@ -1,27 +1,29 @@
+
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2020 by G. Weirich    *
+ * Copyright (c) 2022 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
+import type { ElexisType, UUID } from "./elexistype"
+import { ObjectManager } from './object-manager';
+import { getService } from '../services/io'
+import { DateTime } from "luxon";
+import type { PatientType } from './patient-model'
+import type { KontaktType } from './kontakt-model'
+import { now } from "svelte/internal";
 
-import { WebelexisEvents } from '../webelexisevents';
-import { autoinject } from 'aurelia-framework'
-import { DataSource, DataService } from 'services/datasource';
-import { ElexisType, UUID } from './elexistype';
-import { DateTime as edt } from '../services/datetime'
-import * as moment from 'moment'
+const ELEXISDATETIME = "yyyyLLddhhmmss"
+const ELEXISDATE = "yyyyLLdd"
+const LOCALDATE = "dd.LL.yyyy"
 
-export class Modalities {
-  public static FIXMEDI = "0"
-  public static RESERVE = "1"
-  public static RECIPE = "2"
-  public static SELFDISPENSED = "3"
-  public static DONTKNOW = "4"
-  public static SYMPTOMATIC = "5"
+export const Modalities = {
+  FIXMEDI: "0",
+  RESERVE: "1",
+  RECIPE: "2",
+  SELFDISPENSED: "3",
+  DONTKNOW: "4",
+  SYMPTOMATIC: "5"
 }
-
-const ELEXISDATETIME = "YYYYMMDDHHmmss"
-const ELEXISDATE = "YYYYMMDD"
 
 /**
  * An Elexis "Rezept"
@@ -70,22 +72,20 @@ export interface PrescriptionType extends ElexisType {
   prescriptor: UUID
 }
 
+export class PrescriptionManager extends ObjectManager {
+  private prescriptionLoader
+  private artikelLoader
+  private rezepteLoader
 
-@autoinject
-export class PrescriptionManager {
-  private prescriptionLoader: DataService
-  private artikelLoader: DataService
-  private rezepteLoader: DataService
-
-  constructor(private ds: DataSource, private we: WebelexisEvents, private dt: edt) {
-    this.prescriptionLoader = ds.getService('prescriptions')
-    this.artikelLoader = ds.getService('meta-article')
-    this.rezepteLoader = ds.getService('rezepte')
+  constructor() {
+    super("prescriptions")
+    this.artikelLoader = getService('meta-article')
+    this.rezepteLoader = getService('rezepte')
   }
 
   /**
    * Fetch medication of current patient
-   * @param patientid 
+   * @param patientid
    */
   public fetchCurrent(patientid: UUID) {
     return this.prescriptionLoader.find({ query: { current: patientid } }).then(result => {
@@ -124,16 +124,15 @@ export class PrescriptionManager {
       return ret
     })
   }
-
   /**
    * create a new Prescription based on an existing prescription with a new Modality
-   * @param presc 
-   * @param modality 
+   * @param presc
+   * @param modality
    */
   public async cloneAs(presc: PrescriptionType, modality: string) {
     const ret = Object.assign({}, presc, { presctype: modality })
-    ret.datefrom = moment().subtract(10, 'minutes').format(ELEXISDATETIME)
-    ret.prescdate = moment().subtract(10, 'minutes').format(ELEXISDATE)
+    ret.datefrom = DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATETIME)
+    ret.prescdate = DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATE)
     delete ret.id
     const created = await this.prescriptionLoader.create(ret)
     created._Artikel = ret._Artikel
@@ -144,11 +143,11 @@ export class PrescriptionManager {
   /**
    * Create a new "rezept"
    */
-  public createRezept() {
+  public createRezept(patient: PatientType, mandant: KontaktType) {
     const rp = {
-      patientid: this.we.getSelectedItem('patient').id,
-      mandantid: this.we.getSelectedItem('user').id,
-      datum: moment().format(ELEXISDATE)
+      patientid: patient.id,
+      mandantid: mandant.id,
+      datum: DateTime.now().toFormat(ELEXISDATE)
     }
 
     return this.rezepteLoader.create(rp).then(ret => {
@@ -164,18 +163,18 @@ export class PrescriptionManager {
     })
   }
   /**
-   * Fetch a prescription from a "scoped id" 
-   * @param data a 'scoped id': <datatype::id> 
-   * 
+   * Fetch a prescription from a "scoped id"
+   * @param data a 'scoped id': <datatype::id>
+   *
    */
-  public async fetch(data: string) {
+  public async fetchScoped(data: string, patient: PatientType, prescriptor: KontaktType) {
     const [datatype, dataid] = data.split("::")
     let prescription: PrescriptionType
     if (datatype == "prescription") {
       prescription = await this.prescriptionLoader.get(dataid)
     } else if (datatype == "article") {
       const article = await this.artikelLoader.get(dataid)
-      prescription = await this.createFromArticle(article)
+      prescription = await this.createFromArticle(patient, prescriptor, article)
     }
     return prescription
   }
@@ -186,9 +185,9 @@ export class PrescriptionManager {
    * @param mode fixmedi|reservemedi|rezept|symptommedi
    */
   public async setMode(data: string, params?: any): Promise<PrescriptionType> {
-    const now = moment().subtract(10, 'minutes')
-    const nowFormatted = now.format(ELEXISDATETIME)
-    let prescription = await this.fetch(data)
+    const now = DateTime.now().minus({ 'minutes': 10 })
+    const nowFormatted = now.toFormat(ELEXISDATETIME)
+    let prescription = await this.fetchScoped(data, params.patient, params.prescriptor)
 
     switch (params.mode) {
       case "fixmedi":
@@ -214,19 +213,19 @@ export class PrescriptionManager {
       default: prescription.presctype = Modalities.SYMPTOMATIC
     }
     prescription.datefrom = nowFormatted
-    prescription.prescdate = this.dt.DateToElexisDate(new Date())
+    prescription.prescdate = DateTime.now().toFormat(ELEXISDATE) //this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
     // console.log(prescriptionpresctype+" -> "+updated.presctype)
     return prescription
   }
 
   public getLabel(presc: PrescriptionType): string {
-    const from = this.dt.ElexisDateTimeToLocalDate(presc.datefrom)
+    const from = DateTime.fromFormat(presc.datefrom, ELEXISDATE).toFormat(LOCALDATE) // this.dt.ElexisDateTimeToLocalDate(presc.datefrom)
     const label = presc.artikel ? presc.artikel["DSCR"] || "--" : "?"
     let ret = `${label} (${from}`
 
     if (presc.dateuntil && presc.dateuntil.substr(0, 8) !== presc.datefrom.substr(0, 8)) {
-      const until = this.dt.ElexisDateTimeToLocalDate(presc.dateuntil)
+      const until = DateTime.fromFormat(presc.dateuntil, ELEXISDATE).toFormat(LOCALDATE)// this.dt.ElexisDateTimeToLocalDate(presc.dateuntil)
       ret += " - " + until + ")"
     } else {
       ret += ")"
@@ -236,7 +235,7 @@ export class PrescriptionManager {
 
   /**
    * Save a modified prescription
-   * @param obj 
+   * @param obj
    */
   public save(obj: PrescriptionType): Promise<PrescriptionType> {
     return this.prescriptionLoader.update(obj.id, obj).then((updated: PrescriptionType) => {
@@ -247,16 +246,16 @@ export class PrescriptionManager {
   }
 
   /**
-   * Create a Prrscription from an Article
-   * @param article 
+   * Create a Prescription from an Article
+   * @param article
    */
-  public async createFromArticle(article: ArticleType): Promise<PrescriptionType> {
+  public async createFromArticle(patient: PatientType, prescriptor: KontaktType, article: ArticleType): Promise<PrescriptionType> {
     const presc: PrescriptionType = {
-      patientid: this.we.getSelectedItem('patient').id,
-      datefrom: moment().subtract(10, 'minutes').format(ELEXISDATETIME),
+      patientid: patient.id,
+      datefrom: DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATETIME),
       artikel: "ch.artikelstamm.elexis.common.ArtikelstammItem::" + article.id,
-      prescdate: this.dt.DateToElexisDate(new Date()),
-      prescriptor: this.we.getSelectedItem('user').id
+      prescdate: DateTime.now().toFormat(ELEXISDATE),// this.dt.DateToElexisDate(new Date())
+      prescriptor: prescriptor.id
     }
     const created = await this.prescriptionLoader.create(presc)
     console.log("created from article:" + JSON.stringify(created))
