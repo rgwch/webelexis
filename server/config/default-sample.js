@@ -233,7 +233,7 @@ module.exports = {
   },
   /**
    * Definition of roles for different users. You can change the names and descriptions
-   * dreely. If you would like to change semantics and id, please make sure to
+   * freely. If you would like to change semantics and id, please make sure to
    * adapt src/mappings.ts accordingly
    */
   roles: {
