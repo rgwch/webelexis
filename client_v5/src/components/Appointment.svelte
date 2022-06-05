@@ -50,15 +50,15 @@ function save() {
           <Dropdown
             bind:selected="{termin.obj.termintyp}"
             elements="{Statics.terminTypes}"
-            on:selected="{save}" />
+            on:changed="{save}" />
           <Dropdown
             bind:selected="{termin.obj.terminstatus}"
             elements="{Statics.terminStates}"
-            on:selected="{save}" />
+            on:changed="{save}" />
           <Dropdown
             bind:selected="{termin.obj.bereich}"
             elements="{Statics.agendaResources}"
-            on:selected="{save}" />
+            on:changed="{save}" />
         </div>
       </div>
     </div>

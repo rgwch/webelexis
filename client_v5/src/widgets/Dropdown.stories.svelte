@@ -10,17 +10,17 @@ const items = ["one", "two", "three"];
 <Meta
   title="Widgets/Dropdown"
   component="{Dropdown}"
-  argTypes="{{ onSelect: { action: 'select' } }}" />
+  argTypes="{{ onChanged: { action: 'changed' } }}" />
 
 <div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500">
   <h1 class="font-bold text-lg">Dropdown</h1>
-  <p class="mb-5">The Dropdown</p>
-  <p>Sends 'select' event if new item selected</p>
+  <p class="mb-5">The Dropdown displays a list of strings to select from.</p>
+  <p>Sends 'select' event if an item was selected</p>
 </div>
 
 <Template let:args>
   <MarginDecorator>
-    <Dropdown {...args} on:select="{args.onSelect}" />
+    <Dropdown {...args} on:changed="{args.onChanged}" />
   </MarginDecorator>
 </Template>
 

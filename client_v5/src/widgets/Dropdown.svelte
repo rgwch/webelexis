@@ -1,8 +1,17 @@
 <script lang="ts">
 import { createEventDispatcher } from "svelte";
 const dispatch = createEventDispatcher();
+/**
+ * The label for the drop down. Leave empty for no label
+ */
 export let label: string = undefined;
+/**
+ * The items to display in the dropdown
+ */
 export let elements: Array<string> = [];
+/**
+ * the currently selected item
+ */
 export let selected = elements[0];
 
 let open = false;
@@ -64,7 +73,7 @@ let open = false;
               on:click="{() => {
                 selected = element;
                 open = false;
-                dispatch('selected', element);
+                dispatch('changed', element);
               }}"
               class="text-gray-900 hover:(text-white bg-indigo-600) cursor-default select-none relative py-2 pl-8 pr-4"
               role="option">
