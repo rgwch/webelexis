@@ -39,6 +39,7 @@
     "@storybook/addon-actions": "^6.4.18",
     "@storybook/addon-essentials": "^6.4.18",
     "@storybook/addon-links": "^6.4.18",
+    "@storybook/addon-storyshots": "^6.5.6",
     "@storybook/addon-svelte-csf": "^1.1.0",
     "@storybook/svelte": "^6.4.18",
     "@testing-library/jest-dom": "^5.14.1",

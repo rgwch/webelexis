@@ -9,9 +9,9 @@ module.exports = {
   ],
   moduleNameMapper: {
     "^.+\\.css$": "<rootDir>/../.config/stylemock.ts"
-    "node_modules/svelte-fa/"
   },
   transform: {
+    "^.+\\.stories\\.[jt]sx?$": "<rootDir>/../node_modules/@storybook/addon-storyshots/injectFileName",
     "^.+\\.(ts|tsx)$": "ts-jest",
     "^.+\\.svelte$": [
       'svelte-jester',
@@ -22,6 +22,7 @@ module.exports = {
       }
     ]
   },
+  "transformIgnorePatterns": ["node_modules/(?!(@storybook/svelte)/)"],
   setupFilesAfterEnv: [
     "@testing-library/jest-dom/extend-expect",
     "jest-svelte-events/extend-expect"

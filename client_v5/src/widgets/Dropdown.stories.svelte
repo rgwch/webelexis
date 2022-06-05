@@ -10,12 +10,16 @@ const items = ["one", "two", "three"];
 <Meta
   title="Widgets/Dropdown"
   component="{Dropdown}"
-  argTypes="{{ onChanged: { action: 'changed' } }}" />
+  argTypes="{{
+    onChanged: { action: 'changed' },
+  }}" />
 
 <div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500">
   <h1 class="font-bold text-lg">Dropdown</h1>
-  <p class="mb-5">The Dropdown displays a list of strings to select from.</p>
-  <p>Sends 'select' event if an item was selected</p>
+  <p class="mb-5">
+    The Dropdown displays a list of strings to select from. Sends a 'changed'
+    event if an item was selected
+  </p>
 </div>
 
 <Template let:args>
@@ -25,4 +29,6 @@ const items = ["one", "two", "three"];
 </Template>
 
 <Story name="without label" args="{{ elements: items, selected: 'two' }}" />
-<Story name="with label" args="{{ elements: items, label: 'The Label' }}" />
+<Story
+  name="with label"
+  args="{{ elements: items, label: 'The Label', selected: 'one' }}" />

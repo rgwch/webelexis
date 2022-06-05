@@ -2,9 +2,9 @@
 import { createEventDispatcher } from "svelte";
 const dispatch = createEventDispatcher();
 /**
- * The label for the drop down. Leave empty for no label
+ *  The label for the drop down. Leave empty for no label
  */
-export let label: string = undefined;
+export let label: string = "";
 /**
  * The items to display in the dropdown
  */
@@ -12,7 +12,7 @@ export let elements: Array<string> = [];
 /**
  * the currently selected item
  */
-export let selected = elements[0];
+export let selected = "";
 
 let open = false;
 </script>
