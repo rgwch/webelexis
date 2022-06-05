@@ -17,7 +17,7 @@
       <p class="mb-5">
         The Dropdown
       </p>
-      <p>Sends 'select' event if new date selected</p>
+      <p>Sends 'select' event if new item selected</p>
     </div>
     
     <Template let:args>
@@ -26,5 +26,6 @@
       </MarginDecorator>
     </Template>
     
+    <Story name="without label" args="{{ elements: items}}" />
     <Story name="with label" args="{{ elements: items, label: 'The Label' }}" />
     
