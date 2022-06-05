@@ -2,10 +2,14 @@
 import { TerminModel, Statics } from "../models/termine-model";
 import { createEventDispatcher } from "svelte";
 import Collapse from "../widgets/Collapse.svelte";
+import Dropdown from "../widgets/Dropdown.svelte";
 import { terminManager } from "../models";
 import { _ } from "svelte-i18n";
 const dispatch = createEventDispatcher();
 export let termin: TerminModel;
+function save() {
+  terminManager.save(termin);
+}
 </script>
 
 <template>
@@ -23,62 +27,46 @@ export let termin: TerminModel;
     <div class="bg-blue-300 mx-4 px-2 border-1 rounded-md" slot="body">
       <div class="flex">
         <div class="flex flex-col">
-          <button
-            on:click="{() => dispatch('shrink', termin)}"
-            class="uibutton"
+          <button on:click="{() => dispatch('shrink', termin)}" class="uibutton"
             >{$_("actions.shrink")}</button>
           <button
             on:click="{() => {
               dispatch('extend', termin);
             }}"
-            class="uibutton"
-            >{$_("actions.extend")}</button>
+            class="uibutton">{$_("actions.extend")}</button>
           <button
             on:click="{() => {
               dispatch('delete', termin);
             }}"
-            class="uibutton"
-            >{$_("actions.delete")}</button>
+            class="uibutton">{$_("actions.delete")}</button>
         </div>
         <div class="flex-grow px-2">
           <textarea
             class="w-full h-full"
             bind:value="{termin.obj.grund}"
-            on:blur="{() => {
-              terminManager.save(termin);
-            }}"></textarea>
+            on:blur="{save}"></textarea>
         </div>
-        <div class="flex flex-col">
-          <select
-            bind:value="{termin.obj.termintyp}"
-            class="uibutton">
-            {#each Statics.terminTypes as type}
-              <option value="{type}">{type}</option>
-            {/each}
-          </select>
-          <select
-            bind:value="{termin.obj.terminstatus}"
-            class="uibutton">
-            {#each Statics.terminStates as state}
-              <option value="{state}">{state}</option>
-            {/each}
-          </select>
-          <select
-            bind:value="{termin.obj.bereich}"
-            class="uibutton">
-            {#each Statics.agendaResources as res}
-              <option value="{res}">{res}</option>
-            {/each}
-          </select>
+        <div class="flex-grow max-w-1/4">
+          <Dropdown
+            bind:selected="{termin.obj.termintyp}"
+            elements="{Statics.terminTypes}"
+            on:selected="{save}" />
+          <Dropdown
+            bind:selected="{termin.obj.terminstatus}"
+            elements="{Statics.terminStates}"
+            on:selected="{save}" />
+          <Dropdown
+            bind:selected="{termin.obj.bereich}"
+            elements="{Statics.agendaResources}"
+            on:selected="{save}" />
         </div>
-     
       </div>
     </div>
   </Collapse>
 </template>
-<style>
-  .uibutton{
-    @apply "mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md";
-  }
 
+<style>
+.uibutton {
+  @apply "mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md";
+}
 </style>

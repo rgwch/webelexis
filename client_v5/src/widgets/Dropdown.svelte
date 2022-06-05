@@ -11,10 +11,7 @@ let open = false;
 <template>
   <div>
     {#if label}
-      <label
-        for="listbox"
-        id="listbox-label"
-        class="block text-sm font-medium text-gray-700">
+      <label for="listbox" class="block text-sm font-medium text-gray-700">
         {label}
       </label>
     {/if}
@@ -24,10 +21,7 @@ let open = false;
           open = !open;
         }}"
         type="button"
-        class="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        aria-haspopup="listbox"
-        aria-expanded="true"
-        aria-labelledby="listbox-label">
+        class="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
         <span class="block truncate">{selected}</span>
         <span
           class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -58,17 +52,14 @@ let open = false;
     -->
       {#if open}
         <ul
-          class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
-          tabindex="-1"
-          role="listbox"
-          aria-labelledby="listbox-label"
-          aria-activedescendant="listbox-option-3">
+          class="absolute list-none z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+          tabindex="-1">
           <!--
         Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
 
         Highlighted: "text-white bg-indigo-600", Not Highlighted: "text-gray-900"
       -->
-          {#each elements as element, idx}
+          {#each elements as element}
             <li
               on:click="{() => {
                 selected = element;
@@ -76,9 +67,7 @@ let open = false;
                 dispatch('selected', element);
               }}"
               class="text-gray-900 hover:(text-white bg-indigo-600) cursor-default select-none relative py-2 pl-8 pr-4"
-              id="{'listbox' + idx}"
               role="option">
-              <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
               <span
                 class="block truncate"
                 class:font-semibold="{selected == element}">{element}</span>
