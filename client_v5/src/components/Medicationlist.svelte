@@ -1,5 +1,8 @@
 <script lang="ts">
-import type { PrescriptionType } from "../models/prescription-model";
+import type {
+  PrescriptionType,
+  ArticleType,
+} from "../models/prescription-model";
 import { Modalities, PrescriptionManager } from "../models/prescription-model";
 const pm = new PrescriptionManager();
 
@@ -94,10 +97,66 @@ function expand(idx) {
   }
   // this.signaler.signal('expand')
 }
-function dragOver(event) {}
-function dragDrop(event) {}
-function dragLeave(event) {}
-function drag(event) {}
+
+/**
+ * user drags an object over us. We'll accept only if it is a "Webelexis" object.
+ * @param event
+ */
+function dragOver(event) {
+  if (
+    event.dataTransfer.types.find((el) => el.startsWith("webelexis")) &&
+    this.list
+  ) {
+    event.preventDefault();
+    this.mark(true);
+  }
+  return true;
+}
+/**
+ * User dropped an item (article or prescription) on us.
+ * @param event
+ */
+function dragDrop(event) {
+  event.preventDefault();
+  this.mark(false);
+  const datatype = event.dataTransfer.getData("webelexis/datatype");
+  const json = event.dataTransfer.getData("webelexis/object");
+  if (datatype == "article") {
+    const obj: ArticleType = JSON.parse(json);
+    this.pm.createFromArticle(obj).then((presc) => {
+      //this.list.push(presc)
+      this.addItem(presc, Modalities.DONTKNOW);
+    });
+  } else if (datatype == "prescriptions") {
+    const obj: PrescriptionType = JSON.parse(json);
+    const mod = event.dataTransfer.getData("webelexis/modality");
+    if (mod != this.modality) {
+      // console.log("drop: " + obj + ", " + mod)
+      this.addItem(obj, mod);
+    }
+  }
+}
+
+/**
+ * drag/drop operation is finished or cancelled
+ * @param event
+ */
+function dragLeave(event) {
+  this.mark(false);
+}
+
+/**
+ * user started a drag action -> create data to identify dragged object
+ * @param event
+ */
+function drag(event) {
+  const obj = this.list.find((el) => event.target.id.endsWith(el.id));
+  event.dataTransfer.setData("text/plain", event.target.id);
+  event.dataTransfer.setData("webelexis/object", JSON.stringify(obj));
+  event.dataTransfer.setData("webelexis/modality", this.modality);
+  event.dataTransfer.setData("webelexis/datatype", "prescriptions");
+  return true;
+}
 function save(fm) {}
 let dropzone;
 </script>

@@ -114,6 +114,14 @@
     "loading": "loading...",
     "until": "bis"
   },
+  "medication": {
+    "fix": "Fixmedikation",
+    "other": "Nicht (mehr) Regelmässig",
+    "prescription": "Rezept",
+    "prescriptions": "Rezepte",
+    "reserve": "Reservemedikation",
+    "rperror": "Konnte kein Rezept erstellen"
+  },
   "patient": {
     "detail": "Patient detail",
     "noneselected": "Click here to select patient"

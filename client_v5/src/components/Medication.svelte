@@ -7,6 +7,7 @@ import props from "../services/properties";
 import { Modalities } from "../models/prescription-model";
 import Card from "../widgets/Card.svelte";
 import Fa from "svelte-fa";
+import { _ } from "svelte-i18n";
 import {
   faTrash,
   faPrescription,
@@ -76,7 +77,7 @@ function createRezept() {
     })
     .catch((err) => {
       console.log(err);
-      alert("Konnte kein Rezept erstellen");
+      alert($_("medication.rperror"));
     });
 }
 
@@ -283,7 +284,7 @@ function dateToScreen(date: string) {
         <div class="flex-1">
           <Card>
             <div slot="heading">
-              <span>Fixmedikation</span>
+              <span>{$_("medication.fixmedication")}</span>
               <Fa icon="{faPrescription}" />
             </div>
             <div slot="body">
@@ -296,7 +297,7 @@ function dateToScreen(date: string) {
         <div class="flex-1">
           <Card>
             <div slot="heading">
-              <span>Reservemedikation</span>
+              <span>{$_("medication.reserve")}</span>
               <span><Fa icon="{faPrescription}" /></span>
             </div>
             <div slot="body">
@@ -311,7 +312,7 @@ function dateToScreen(date: string) {
         <div>
           <Card>
             <div slot="heading">
-              <span>Rezepte</span>
+              <span>{$_("medication.prescriptions")}</span>
               <span on:click="{() => createRezept()}"
                 ><Fa icon="{faStar}" /></span>
             </div>
@@ -332,7 +333,7 @@ function dateToScreen(date: string) {
         <div class="flex-1">
           <Card>
             <div slot="heading">
-              <span>Rezept</span>
+              <span>{$_("medication.prescription")}</span>
               <span
                 title="Druckvorschau"
                 on:click="{() => toPdf($currentRezept)}"
@@ -358,7 +359,7 @@ function dateToScreen(date: string) {
       <div>
         <Card>
           <div slot="heading">
-            <span class="noselect">Nicht (mehr) regelmässig</span>
+            <span class="noselect">{$_("medication.other")}</span>
           </div>
           <div slot="body">
             <Medicationlist
