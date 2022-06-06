@@ -14,6 +14,9 @@ const dummies = [
     artikel: "123123",
     prescdate: "20210601",
     prescriptor: "myself",
+    _Artikel:{
+      dscr:"Güldenkraut"
+    }
   },
   {
     dosis: "1-0-1",
@@ -26,6 +29,9 @@ const dummies = [
     artikel: "123124",
     prescdate: "20210601",
     prescriptor: "myself",
+    _Artikel: {
+      dscr: "Silberstein"
+    }
   },
 ];
 </script>
@@ -36,4 +42,5 @@ const dummies = [
   <Medication {...args} />
 </Template>
 
-<Story name="Medikation" args="{{ list: dummies, modality: '0' }}" />
+<Story name="Fixmedikation" args="{{ list: dummies, modality: '0' }}" />
+<Story name="Rezept" args="{{ list: dummies, modality: '2' }}" />

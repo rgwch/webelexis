@@ -104,56 +104,71 @@ let dropzone;
 
 <template>
   <div
-    style="overflow:auto;height:${h}"
+    style="overflow:auto;height:{h}"
     on:dragover="{dragOver}"
     on:drop="{dragDrop}"
     bind:this="{dropzone}"
     on:dragleave="{dragLeave}">
     <div class="compactlist">
       {#each list as fm, index}
-        {#if index === opened && modality == "2"}
-          <span>
-            <input
-              type="text"
-              style="width:4em;"
-              id="anzahl"
-              bind:value="{fm.anzahl}"
-              on:blur="{() => save(fm)}"
-              on:keydown="{checkkey}"
-              on:focus="{() => {
-                numberFocus = true;
-              }}" />
-          </span>
-        {/if}
+        <div>
+          {#if index === opened && modality == "2"}
+            <span>
+              <input
+                type="text"
+                style="width:4em;"
+                id="anzahl"
+                bind:value="{fm.anzahl}"
+                on:blur="{() => save(fm)}"
+                on:keydown="{checkkey}"
+                on:focus="{() => {
+                  numberFocus = true;
+                }}" />
+            </span>
+          {/if}
 
-        <span
-          class="noselect"
-          on:click="{() => expand(index)}"
-          draggable="true"
-          on:dragstart="{drag}"
-          id="prescription::${fm.id}">
-          ${getLabel(fm)}
-        </span>
-        {#if index === opened}
-          <span>
-            <input
-              type="text"
-              style="width:6em;"
-              id="dosis"
-              bind:value="{fm.dosis}"
-              on:blur="{() => save(fm)}"
-              on:keydown="{checkkey}"
-              on:focus="{() => (dosisFocus = true)}" /><br />
-            <input
-              type="text"
-              style="width: 32em;"
-              id="remark"
-              bind:value="{fm.bemerkung}"
-              on:blur="{() => save(fm)}"
-              on:keydown="{checkkey}" />
+          <span
+            class="noselect"
+            on:click="{() => expand(index)}"
+            draggable="true"
+            on:dragstart="{drag}"
+            id="prescription::${fm.id}">
+            {getLabel(fm)}
           </span>
-        {/if}
+          {#if index === opened}
+            <span>
+              <input
+                type="text"
+                style="width:6em;"
+                id="dosis"
+                bind:value="{fm.dosis}"
+                on:blur="{() => save(fm)}"
+                on:keydown="{checkkey}"
+                on:focus="{() => (dosisFocus = true)}" /><br />
+              <input
+                type="text"
+                style="width: 32em;"
+                id="remark"
+                bind:value="{fm.bemerkung}"
+                on:blur="{() => save(fm)}"
+                on:keydown="{checkkey}" />
+            </span>
+          {/if}
+        </div>
       {/each}
     </div>
   </div>
 </template>
+
+<style>
+.compactlist {
+  padding-top: 0px;
+  padding-bottom: 1px;
+  margin-top: 0px;
+  margin-bottom: 1px;
+  font-size: smaller;
+  cursor: pointer;
+  color: black;
+  display: block;
+}
+</style>
