@@ -71,6 +71,12 @@ export interface PrescriptionType extends ElexisType {
   prescriptor: UUID
 }
 
+export type MEDICATIONDEF = {
+  fix?: Array<PrescriptionType>
+  reserve?: Array<PrescriptionType>
+  symptom?: Array<PrescriptionType>
+  rezeptdefs?: Array<any>
+}
 export class PrescriptionManager extends ObjectManager {
   private prescriptionLoader
   private artikelLoader
@@ -86,42 +92,42 @@ export class PrescriptionManager extends ObjectManager {
    * Fetch medication of current patient
    * @param patientid
    */
-  public fetchCurrent(patientid: UUID) {
-    return this.prescriptionLoader.find({ query: { current: patientid } }).then(result => {
-      const ret = {
-        fix: [],
-        reserve: [],
-        symptom: [],
-        rezeptdefs: []
+  public async fetchCurrent(patientid: UUID): Promise<MEDICATIONDEF> {
+    const result = await this.prescriptionLoader.find({ query: { current: patientid } })
+    const ret: MEDICATIONDEF = {
+      fix: [],
+      reserve: [],
+      symptom: [],
+      rezeptdefs: []
+    }
+    const rps = new Map()
+    for (const prescription of result.data) {
+      if (!prescription.presctype) {
+        prescription.presctype = "-1"
       }
-      const rps = new Map()
-      for (const prescription of result.data) {
-        if (!prescription.presctype) {
-          prescription.presctype = "-1"
-        }
-        switch (prescription.presctype) {
-          case Modalities.FIXMEDI: ret.fix.push(prescription); break;
-          case Modalities.RESERVE: ret.reserve.push(prescription); break;
-          case Modalities.SYMPTOMATIC: ret.symptom.push(prescription); break;
-          // don't know what to do with 2-4
-          default: ret.symptom.push(prescription);
-        }
-        if (prescription._Rezept) {
-          const rezept = prescription._Rezept
-          let rpd: RpDef = rps.get(rezept.id)
-          if (!rpd) {
-            rpd = {
-              rezept: rezept,
-              prescriptions: []
-            }
-            rps.set(rezept.id, rpd)
+      switch (prescription.presctype) {
+        case Modalities.FIXMEDI: ret.fix.push(prescription); break;
+        case Modalities.RESERVE: ret.reserve.push(prescription); break;
+        case Modalities.SYMPTOMATIC: ret.symptom.push(prescription); break;
+        // don't know what to do with 2-4
+        default: ret.symptom.push(prescription);
+      }
+      if (prescription._Rezept) {
+        const rezept = prescription._Rezept
+        let rpd: RpDef = rps.get(rezept.id)
+        if (!rpd) {
+          rpd = {
+            rezept: rezept,
+            prescriptions: []
           }
-          rpd.prescriptions.push(prescription)
+          rps.set(rezept.id, rpd)
         }
+        rpd.prescriptions.push(prescription)
       }
-      ret.rezeptdefs = Array.from(rps).map(r => r[1])
-      return ret
-    })
+    }
+    ret.rezeptdefs = Array.from(rps).map(r => r[1])
+    return ret
+
   }
   /**
    * create a new Prescription based on an existing prescription with a new Modality

@@ -7,6 +7,7 @@ import PatientSelector from "../components/PatientSelector.svelte";
 import PatientDetail from "../components/PatientDetail.svelte";
 import Encounters from "../components/Encounters.svelte";
 import Cases from '../components/Cases.svelte'
+import Medication from '../components/Medication.svelte'
 
 let selector = false;
 
@@ -47,7 +48,7 @@ function selected() {
       <Cases entity="{$currentPatient}" />
     </TabPanel>
     <TabPanel>
-      <p>No contents yet</p>
+      <Medication entity="{$currentPatient}" />
     </TabPanel>
     <TabPanel>
       <p>No contents yet</p>

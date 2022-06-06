@@ -7,6 +7,7 @@ import { StickerManager } from "./stickers-model"
 import { TerminManager } from "./termine-model"
 import { PatientManager } from "./patient-model"
 import { UserManager } from './user-model'
+import { PrescriptionManager } from "./prescription-model"
 
 export const caseManager = new CaseManager()
 export const billingsManager = new BillingsManager()
@@ -17,3 +18,4 @@ export const stickerManager = new StickerManager()
 export const terminManager = new TerminManager()
 export const userManager = new UserManager()
 export const patientManager = new PatientManager()
+export const prescriptionManager = new PrescriptionManager()

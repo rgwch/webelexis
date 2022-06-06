@@ -1,6 +1,6 @@
 <script>
 import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
-import Medication from "./Medication.svelte";
+import Medicationlist from "./Medicationlist.svelte";
 
 const dummies = [
   {
@@ -36,10 +36,10 @@ const dummies = [
 ];
 </script>
 
-<Meta title="Components/Medication" component="{Medication}" />
+<Meta title="Components/Medicationlist" component="{Medicationlist}" />
 
 <Template let:args>
-  <Medication {...args} />
+  <Medicationlist {...args} />
 </Template>
 
 <Story name="Fixmedikation" args="{{ list: dummies, modality: '0' }}" />
