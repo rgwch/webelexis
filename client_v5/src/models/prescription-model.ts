@@ -15,13 +15,14 @@ const ELEXISDATETIME = "yyyyLLddhhmmss"
 const ELEXISDATE = "yyyyLLdd"
 const LOCALDATE = "dd.LL.yyyy"
 
-export const Modalities = {
-  FIXMEDI: "0",
-  RESERVE: "1",
-  RECIPE: "2",
-  SELFDISPENSED: "3",
-  DONTKNOW: "4",
-  SYMPTOMATIC: "5"
+
+export enum Modalities {
+  FIXMEDI = "0",
+  RESERVE = "1",
+  RECIPE = "2",
+  SELFDISPENSED = "3",
+  DONTKNOW = "4",
+  SYMPTOMATIC = "5"
 }
 
 /**
@@ -139,7 +140,7 @@ export class PrescriptionManager extends ObjectManager {
     ret.datefrom = DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATETIME)
     ret.prescdate = DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATE)
     delete ret.id
-    const created = await this.prescriptionLoader.create(ret)
+    const created = await super.dataService.create(ret)
     created._Artikel = ret._Artikel
     created._Rezept = ret._Rezept
     return created
@@ -176,7 +177,7 @@ export class PrescriptionManager extends ObjectManager {
     const [datatype, dataid] = data.split("::")
     let prescription: PrescriptionType
     if (datatype == "prescription") {
-      prescription = await this.prescriptionLoader.get(dataid)
+      prescription = await this.dataService.get(dataid)
     } else if (datatype == "article") {
       const article = await this.artikelLoader.get(dataid)
       prescription = await this.createFromArticle(patient, prescriptor, article)
@@ -206,7 +207,7 @@ export class PrescriptionManager extends ObjectManager {
       case "rezept":
         const copy = Object.assign({}, prescription)
         delete copy.id
-        prescription = await this.prescriptionLoader.create(copy)
+        prescription = await this.dataService.create(copy)
         prescription.presctype = Modalities.RECIPE
         prescription.dateuntil = null
         prescription.rezeptid = params.rezeptid
@@ -219,7 +220,7 @@ export class PrescriptionManager extends ObjectManager {
     }
     prescription.datefrom = nowFormatted
     prescription.prescdate = DateTime.now().toFormat(ELEXISDATE) //this.dt.DateToElexisDate(new Date())
-    const updated: PrescriptionType = await this.prescriptionLoader.update(prescription.id, prescription)
+    const updated: PrescriptionType = await this.dataService.update(prescription.id, prescription)
     // console.log(prescriptionpresctype+" -> "+updated.presctype)
     return prescription
   }
@@ -243,7 +244,7 @@ export class PrescriptionManager extends ObjectManager {
    * @param obj
    */
   public save(obj: PrescriptionType): Promise<PrescriptionType> {
-    return this.prescriptionLoader.update(obj.id, obj).then((updated: PrescriptionType) => {
+    return this.dataService.update(obj.id, obj).then((updated: PrescriptionType) => {
       return updated
     }).catch(err => {
       console.log(err)
@@ -262,7 +263,7 @@ export class PrescriptionManager extends ObjectManager {
       prescdate: DateTime.now().toFormat(ELEXISDATE),// this.dt.DateToElexisDate(new Date())
       prescriptor: prescriptor.id
     }
-    const created = await this.prescriptionLoader.create(presc)
+    const created = await this.dataService.create(presc)
     console.log("created from article:" + JSON.stringify(created))
     created._Artikel = article
     return created
@@ -275,7 +276,7 @@ export class PrescriptionManager extends ObjectManager {
   public async delete(data: string): Promise<PrescriptionType> {
     const [datatype, dataid] = data.split("::")
     if (datatype == "prescription") {
-      const removed = await this.prescriptionLoader.remove(dataid)
+      const removed = await this.dataService.remove(dataid)
       return removed
     }
     return undefined
@@ -283,6 +284,10 @@ export class PrescriptionManager extends ObjectManager {
 
   public ElexisDateToLocalDate(elexisdate: string): string {
     return DateTime.fromFormat(elexisdate, ELEXISDATE).toFormat(LOCALDATE)
+  }
+
+  public DateToElexisDate(date: Date): string {
+    return DateTime.fromJSDate(date).toFormat(ELEXISDATE)
   }
 
 }
