@@ -78,7 +78,7 @@ export type MEDICATIONDEF = {
   rezeptdefs?: Array<any>
 }
 export class PrescriptionManager extends ObjectManager {
-  private prescriptionLoader
+  // private prescriptionLoader
   private artikelLoader
   private rezepteLoader
 
@@ -93,7 +93,7 @@ export class PrescriptionManager extends ObjectManager {
    * @param patientid
    */
   public async fetchCurrent(patientid: UUID): Promise<MEDICATIONDEF> {
-    const result = await this.prescriptionLoader.find({ query: { current: patientid } })
+    const result = await super.find({ query: { current: patientid } })
     const ret: MEDICATIONDEF = {
       fix: [],
       reserve: [],

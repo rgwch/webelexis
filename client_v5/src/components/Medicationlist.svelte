@@ -3,7 +3,7 @@ import type { PrescriptionType } from "../models/prescription-model";
 import { Modalities, PrescriptionManager } from "../models/prescription-model";
 const pm = new PrescriptionManager();
 
-export let list: Array<PrescriptionType>;
+export let list: Array<PrescriptionType>=[];
 export let modality: string = "";
 export let h = "6em";
 
