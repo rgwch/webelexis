@@ -5,6 +5,14 @@ import { onMount } from "svelte";
 import type { PatientType } from "../models/patient-model";
 import props from "../services/properties";
 import { Modalities } from "../models/prescription-model";
+import Card from "../widgets/Card.svelte";
+import Fa from "svelte-fa";
+import {
+  faTrash,
+  faPrescription,
+  faPrint,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import type {
   PrescriptionType,
   RezeptType,
@@ -12,18 +20,17 @@ import type {
   RpDef,
 } from "../models/prescription-model";
 import Medicationlist from "./Medicationlist.svelte";
-import { currentRezept, currentUser } from "../services/store";
+import {
+  currentRezept,
+  currentUser,
+  messageBroker as mb,
+} from "../services/store";
 import Modal from "../widgets/Modal.svelte";
+import { DateTime } from "luxon";
 export let entity: PatientType;
-let total: number;
-let part: number;
-let page_header: Element;
-let c_header: Element;
-let client: number;
 let actrpd: RpDef;
 let rpdefs: Array<RpDef> = [];
 let trashstyle = "margin-left:20px";
-let mod: Modalities;
 let searchexpr: string = "";
 
 let medication: MEDICATIONDEF = {
@@ -32,14 +39,13 @@ let medication: MEDICATIONDEF = {
   reserve: [],
   rezeptdefs: [],
 };
+/*
 prescriptionManager.fetchCurrent(entity?.id).then((result) => {
   medication = result;
 });
+*/
 onMount(() => {
-  total =
-    (window.innerHeight - page_header.getBoundingClientRect().height) * 0.9;
-  part = total / 3 - 10;
-  client = part - c_header.getBoundingClientRect().height - 20;
+  refresh(entity.id);
 });
 
 function selectRezept(rpd?: RpDef) {
@@ -109,13 +115,11 @@ function dropTrash(event) {
     delete obj.rezeptid;
     obj.dateuntil = prescriptionManager.DateToElexisDate(new Date());
     prescriptionManager.save(obj).then((result) => {
-      /*
-        ea.publish(props.REMOVE_MESSAGE, {
-          obj,
-          origin: mod,
-          source: "trash"
-        });
-        */
+      mb.publish(props.REMOVE_MESSAGE, {
+        obj,
+        origin: mod,
+        source: "trash",
+      });
     });
   }
 }
@@ -181,9 +185,10 @@ async function refresh(patid: UUID) {
 }
 
 /**
-   * User clicked on the printer symbol
-
-  function toPdf() {
+ * User clicked on the printer symbol
+ */
+function toPdf(rezept) {
+  /*
     let table = "<table>";
     for (const item of actrpd.prescriptions) {
       const remark = item.bemerkung ? "<br />" + item.bemerkung : "";
@@ -220,8 +225,8 @@ async function refresh(patid: UUID) {
        bm.save(processed)
       }
     });
-  }
-  */
+    */
+}
 
 function findId(element) {
   if (element.id.startsWith("card_")) {
@@ -231,7 +236,7 @@ function findId(element) {
     return element.parentElement.id.substring(5);
   }
 }
-g;
+
 /**
  * user clicked on the "rezept" button in Fixmedikation or Reservemedikation
  * @param list
@@ -239,167 +244,129 @@ g;
  */
 function addToRp(list: PrescriptionType[], from: string) {
   for (const obj of list) {
-    /*
-      ea.publish(ADD_MESSAGE, {
-        dest: Modalities.RECIPE,
-        from,
-        obj
-      });
-      */
+    mb.publish(props.ADD_MESSAGE, {
+      dest: Modalities.RECIPE,
+      from,
+      obj,
+    });
   }
 }
-/*
-  function makePrescription() {
-    ea.publish(SWITCH_PANELS, { left: "rezept" });
-    ea.publish("rpPrinter", "Hello, World");
-  }
 
+function makePrescription() {
+  /*
+  mb.publish(SWITCH_PANELS, { left: "rezept" });
+  mb.publish("rpPrinter", "Hello, World");
+  */
 }
-*/
 
-/*
-  set item class according to selection Status (needs signal 'selected')
-*/
-class SelectionClassValueConverter {
-  public toView(item: RpDef, selected: RpDef) {
-    if (selected && selected.rezept.id === item.rezept.id) {
-      return "highlight-item";
-    } else {
-      return "compactlist";
-    }
-  }
+function dateToScreen(date: string) {
+  return prescriptionManager.ElexisDateToLocalDate(date);
 }
 </script>
 
 <template>
-  <span class="detailcaption">Medikation</span>
-  <div class="sheet">
-    <div class="header" bind:this="{page_header}">
-      <div class="row">
-        <div class="col">
-          <searchfield t="[searchtext]select.search" result.two-way="searchexpr"
-          ></searchfield>
-        </div>
-        <div class="col">
-          <img
-            class="trash noselect"
-            style="{trashstyle}"
-            src="/trash.svg"
-            on:dragover="{dragTrash}"
-            on:dragleave="{dragTrashLeave}"
-            on:drop="{dropTrash}"
-            alt="Trash" />
-        </div>
+  <Card>
+    <div slot="heading">
+      <div class="flex">
+        <input bind:value="{searchexpr}" />
+        <span
+          class="noselect trash"
+          on:dragover="{dragTrash}"
+          on:dragleave="{dragTrashLeave}"
+          on:drop="{dropTrash}">
+          <Fa icon="{faTrash}" />
+        </span>
       </div>
     </div>
-    <div class="body" style="{`height:${total + 20}px;overflow:hidden`}">
-      <div class="row">
-        <!-- Fixmedikation -->
-        <div class="card col" id="card_fixmedi" style="{`height:${part}px`}">
-          <div class="card-header noselect">
-            <span>Fixmedikation</span>
-            <img
-              class="clickable"
-              src="/medical-report.svg"
-              alt="Zum Rezept"
-              on:click="{() => addToRp(medication.fix, Modalities.FIXMEDI)}"
-              title="zum Rezept" />
-          </div>
-          <div class="card-body" style={`height:${client}px`}>
-            <Medicationlist
-              bind:list={medication.fix}
-              modality={Modalities.FIXMEDI}
-              h="${client}px"></Medicationlist>
-          </div>
+    <div slot="body">
+      <div class="flex">
+        <div class="flex-1">
+          <Card>
+            <div slot="heading">
+              <span>Fixmedikation</span>
+              <Fa icon="{faPrescription}" />
+            </div>
+            <div slot="body">
+              <Medicationlist
+                bind:list="{medication.fix}"
+                modality="{Modalities.FIXMEDI}" />
+            </div>
+          </Card>
         </div>
-        <!-- Reservemedikation -->
-        <div class="card col" id="card_reservemedi" style={`height:${part}px`}>
-          <div class="card-header">
-            <span class="noselect">Reservemedikation</span>
-            <img
-              class="clickable"
-              src="/medical-report.svg"
-              alt="Zum Rezept"
-              on:click={()=>addToRp(medication.reserve,Modalities.RESERVE)}
-              title="zum Rezept" />
-          </div>
-          <div class="card-body">
-            <Medicationlist
-              bind:list={medication.reserve}
-              modality="{Modalities.RESERVE}"
-              h="${client}px"></Medicationlist>
-          </div>
+        <div class="flex-1">
+          <Card>
+            <div slot="heading">
+              <span>Reservemedikation</span>
+              <span><Fa icon="{faPrescription}" /></span>
+            </div>
+            <div slot="body">
+              <Medicationlist
+                bind:list="{medication.reserve}"
+                modality="{Modalities.RESERVE}" />
+            </div>
+          </Card>
         </div>
       </div>
-      <div class="row">
-        <!-- Rezeptliste -->
-        <div class="card col-3">
-          <div class="card-header noselect">
-            <span class="noselect">Rezepte</span>
-            <new-item-button click.delegate="createRezept()"></new-item-button>
-          </div>
-          <div class="card-body">
-            <div style={`overflow:auto;height:${client}px`}>
-              <div
-                bind:class="{rpd | selectionClass:actrpd & signal:'selected'}"
-                repeat.for="rpd of rpdefs"
-                click.delegate="selectRezept(rpd)">
-                <span class="noselect">${rpd.rezept.datum}</span>
+      <div class="flex">
+        <div>
+          <Card>
+            <div slot="heading">
+              <span>Rezepte</span>
+              <span on:click="{() => createRezept()}"
+                ><Fa icon="{faStar}" /></span>
+            </div>
+            <div slot="body">
+              <div class="panel">
+                {#each rpdefs as rpd}
+                  <div
+                    class="cursor-pointer"
+                    on:click="{() => selectRezept(rpd)}">
+                    <span class="noselect"
+                      >{dateToScreen(rpd.rezept.datum)}</span>
+                  </div>
+                {/each}
               </div>
             </div>
-          </div>
+          </Card>
         </div>
-        <!-- Momentan ausgewähltes Rezept -->
-        <div class="card col-9" id="card_rezept">
-          <div class="card-header noselect">
-            <span>Rezept</span>
-            <img
-              class="clickable"
-              src="/printer.svg"
-              alt="print"
-              click.delegate="toPdf(actrezept)"
-              title="Druckvorschau" />
-          </div>
-          <div class="card-body">
-            <medication
-              list.bind="actrpd.prescriptions"
-              modality="${mod.RECIPE}"
-              h="${client - 20}px"></medication>
-            <input
-              type="text"
-              value.bind="actrpd.rezept.rpzusatz"
-              style="width:100%;font-size: smaller"
-              blur.trigger="pm.saveRezept(actrpd.rezept)" />
-          </div>
-        </div>
-      </div>
-      <!-- Komplettliste alle Medikamente des Patienten -->
-      <div class="card" id="card_symptommedi" css="height:${part + 10}px">
-        <div class="card-header" ref="c_header">
-          <span class="noselect">Nicht (mehr) regelmässig</span>
-        </div>
-        <div class="card-body">
-          <medication
-            list.bind="symptommedi"
-            modality="${mod.SYMPTOMATIC}"
-            h="${client}px"></medication>
+        <div class="flex-1">
+          <Card>
+            <div slot="heading">
+              <span>Rezept</span>
+              <span
+                title="Druckvorschau"
+                on:click="{() => toPdf($currentRezept)}"
+                ><Fa icon="{faPrint}" /></span>
+            </div>
+            <div slot="body">
+              {#if actrpd}
+                <Medicationlist
+                  bind:list="{actrpd.prescriptions}"
+                  modality="{Modalities.RECIPE}" />
+                <input
+                  type="text"
+                  bind:value="{actrpd.rezept.rpzusatz}"
+                  style="width:100%;font-size: smaller"
+                  on:blur="{prescriptionManager.saveRezept(actrpd.rezept)}" />
+              {/if}
+            </div>
+          </Card>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- div class="flex flex-row">
-    <div class="m-3 p-2 flex-1">
-      <p>Fixmedikation</p>
-      <Medicationlist bind:list="{medication.fix}" />
+      <!-- Komplettliste alle Medikamente des Patienten -->
+      <div>
+        <Card>
+          <div slot="heading">
+            <span class="noselect">Nicht (mehr) regelmässig</span>
+          </div>
+          <div slot="body">
+            <Medicationlist
+              bind:list="{medication.symptom}"
+              modality="{Modalities.SYMPTOMATIC}" />
+          </div>
+        </Card>
+      </div>
     </div>
-    <div class="m-3 p-2 flex-1">
-      <p>Bedarfsmedikation</p>
-      <Medicationlist bind:list="{medication.reserve}" />
-    </div>
-    <div class="m-3 p-2 flex-1">
-      <p>Alle Medikamente</p>
-      <Medicationlist bind:list="{medication.symptom}" />
-    </div>
-  </div -->
+  </Card>
 </template>
