@@ -271,11 +271,11 @@ function dateToScreen(date: string) {
       <div class="flex">
         <input bind:value="{searchexpr}" />
         <span
-          class="noselect trash"
+          class="text-gray-600 hover:text-green-700 mx-4 my-2"
           on:dragover="{dragTrash}"
           on:dragleave="{dragTrashLeave}"
           on:drop="{dropTrash}">
-          <Fa icon="{faTrash}" />
+          <Fa icon="{faTrash}" size="lg"/>
         </span>
       </div>
     </div>

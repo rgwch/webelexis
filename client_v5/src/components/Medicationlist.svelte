@@ -80,7 +80,7 @@ function addItem(obj: PrescriptionType, fromModality: string) {
         source: modality,
         origin: fromModality,
       });
-      list.push(obj);
+      list=[...list, obj];
     });
   }
 }
