@@ -5,6 +5,7 @@ import { onMount } from "svelte";
 import type { PatientType } from "../models/patient-model";
 import props from "../services/properties";
 import { Modalities } from "../models/prescription-model";
+import {currentActor} from '../services/store'
 import Card from "../widgets/Card.svelte";
 import Fa from "svelte-fa";
 import { _ } from "svelte-i18n";
@@ -65,13 +66,14 @@ function selectRezept(rpd?: RpDef) {
 
 function createRezept() {
   prescriptionManager
-    .createRezept(entity, $currentUser)
+    .createRezept(entity, $currentActor)
     .then((raw: RezeptType) => {
       const rpd: RpDef = {
         prescriptions: [],
         rezept: raw,
       };
-      rpdefs.unshift(rpd);
+      rpdefs=[rpd,...rpdefs]
+      // rpdefs.unshift(rpd);
       selectRezept(rpd);
       return rpd;
     })
@@ -310,10 +312,11 @@ function dateToScreen(date: string) {
       </div>
       <div class="flex">
         <div>
+          <!-- Rezepte -->
           <Card>
             <div slot="heading">
               <span>{$_("medication.prescriptions")}</span>
-              <span on:click="{() => createRezept()}"
+              <span class="text-green-500 mx-3 cursor-pointer" on:click="{() => createRezept()}"
                 ><Fa icon="{faStar}" /></span>
             </div>
             <div slot="body">

@@ -15,7 +15,7 @@ import MarginDecorator from "./MarginDecorator.svelte";
 <Template let:args>
   <MarginDecorator>
     <Collapse {...args}>
-      <div slot="body" class="border-1 w-1/2 bg-blue-200">Hoho</div>    
+      <div slot="body" class="border-1 w-1/2 bg-blue-200">Boo!</div>    
     </Collapse>
   </MarginDecorator>
 </Template>

@@ -2,13 +2,14 @@ import { writable, type Writable } from 'svelte/store'
 import type { PatientType } from '../models/patient-model';
 import type { RezeptType } from '../models/prescription-model'
 import type { KontaktType } from '../models/kontakt-model'
-import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import type { UserType } from '../models/user-model';
 
 
 
 export const currentPatient: Writable<PatientType> = writable()
 export const currentRezept: Writable<RezeptType> = writable()
-export const currentUser: Writable<KontaktType> = writable()
+export const currentActor: Writable<KontaktType> = writable()
+export const currentUser: Writable<UserType> = writable()
 
 
 type msgfunc = (id: string, event: any) => void
