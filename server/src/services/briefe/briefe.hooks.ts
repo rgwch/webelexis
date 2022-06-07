@@ -11,8 +11,7 @@ import { logger } from '../../logger'
 
 const retrieve = async (ctx) => {
   const meta = ctx.result
-  const cfg = ctx.app.get('userconfig')
-  const base = cfg['docbase'] || require('os').homedir()
+  const base = ctx.app.get('docbase') || require('os').homedir()
   if (meta.path) {
     const readpath = path.join(base, meta.path)
     logger.debug('trying to read ' + path.resolve(readpath))

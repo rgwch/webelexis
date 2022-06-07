@@ -10,11 +10,7 @@ import { getService } from '../services/io'
 import { DateTime } from "luxon";
 import type { PatientType } from './patient-model'
 import type { KontaktType } from './kontakt-model'
-
-const ELEXISDATETIME = "yyyyLLddhhmmss"
-const ELEXISDATE = "yyyyLLdd"
-const LOCALDATE = "dd.LL.yyyy"
-
+import defs from '../services/util'
 
 export enum Modalities {
   FIXMEDI = "0",
@@ -137,10 +133,10 @@ export class PrescriptionManager extends ObjectManager {
    */
   public async cloneAs(presc: PrescriptionType, modality: string) {
     const ret = Object.assign({}, presc, { presctype: modality })
-    ret.datefrom = DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATETIME)
-    ret.prescdate = DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATE)
+    ret.datefrom = DateTime.now().minus({ 'minutes': 10 }).toFormat(defs.ELEXISDATETIME)
+    ret.prescdate = DateTime.now().minus({ 'minutes': 10 }).toFormat(defs.ELEXISDATE)
     delete ret.id
-    const created = await super.dataService.create(ret)
+    const created = await this.dataService.create(ret)
     created._Artikel = ret._Artikel
     created._Rezept = ret._Rezept
     return created
@@ -153,7 +149,7 @@ export class PrescriptionManager extends ObjectManager {
     const rp = {
       patientid: patient.id,
       mandantid: mandant.id,
-      datum: DateTime.now().toFormat(ELEXISDATE)
+      datum: DateTime.now().toFormat(defs.ELEXISDATE)
     }
 
     return this.rezepteLoader.create(rp).then(ret => {
@@ -192,7 +188,7 @@ export class PrescriptionManager extends ObjectManager {
    */
   public async setMode(data: string, params?: any): Promise<PrescriptionType> {
     const now = DateTime.now().minus({ 'minutes': 10 })
-    const nowFormatted = now.toFormat(ELEXISDATETIME)
+    const nowFormatted = now.toFormat(defs.ELEXISDATETIME)
     let prescription = await this.fetchScoped(data, params.patient, params.prescriptor)
 
     switch (params.mode) {
@@ -219,19 +215,19 @@ export class PrescriptionManager extends ObjectManager {
       default: prescription.presctype = Modalities.SYMPTOMATIC
     }
     prescription.datefrom = nowFormatted
-    prescription.prescdate = DateTime.now().toFormat(ELEXISDATE) //this.dt.DateToElexisDate(new Date())
+    prescription.prescdate = DateTime.now().toFormat(defs.ELEXISDATE) //this.dt.DateToElexisDate(new Date())
     const updated: PrescriptionType = await this.dataService.update(prescription.id, prescription)
     // console.log(prescriptionpresctype+" -> "+updated.presctype)
     return prescription
   }
 
   public getLabel(presc: PrescriptionType): string {
-    const from = DateTime.fromFormat(presc.datefrom, ELEXISDATE).toFormat(LOCALDATE) // this.dt.ElexisDateTimeToLocalDate(presc.datefrom)
+    const from = defs.ElexisDateToLocalDate(presc.datefrom)
     const label = presc.artikel ? presc.artikel["DSCR"] || "--" : "?"
     let ret = `${label} (${from}`
 
     if (presc.dateuntil && presc.dateuntil.substr(0, 8) !== presc.datefrom.substr(0, 8)) {
-      const until = DateTime.fromFormat(presc.dateuntil, ELEXISDATE).toFormat(LOCALDATE)// this.dt.ElexisDateTimeToLocalDate(presc.dateuntil)
+      const until = defs.ElexisDateTimeToLocalDate(presc.dateuntil)
       ret += " - " + until + ")"
     } else {
       ret += ")"
@@ -258,9 +254,9 @@ export class PrescriptionManager extends ObjectManager {
   public async createFromArticle(patient: PatientType, prescriptor: KontaktType, article: ArticleType): Promise<PrescriptionType> {
     const presc: PrescriptionType = {
       patientid: patient.id,
-      datefrom: DateTime.now().minus({ 'minutes': 10 }).toFormat(ELEXISDATETIME),
+      datefrom: DateTime.now().minus({ 'minutes': 10 }).toFormat(defs.ELEXISDATETIME),
       artikel: "ch.artikelstamm.elexis.common.ArtikelstammItem::" + article.id,
-      prescdate: DateTime.now().toFormat(ELEXISDATE),// this.dt.DateToElexisDate(new Date())
+      prescdate: DateTime.now().toFormat(defs.ELEXISDATE),// this.dt.DateToElexisDate(new Date())
       prescriptor: prescriptor.id
     }
     const created = await this.dataService.create(presc)
@@ -281,13 +277,4 @@ export class PrescriptionManager extends ObjectManager {
     }
     return undefined
   }
-
-  public ElexisDateToLocalDate(elexisdate: string): string {
-    return DateTime.fromFormat(elexisdate, ELEXISDATE).toFormat(LOCALDATE)
-  }
-
-  public DateToElexisDate(date: Date): string {
-    return DateTime.fromJSDate(date).toFormat(ELEXISDATE)
-  }
-
 }

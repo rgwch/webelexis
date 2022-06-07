@@ -6,12 +6,13 @@ import type {
 import { Modalities, PrescriptionManager } from "../models/prescription-model";
 import {
   currentPatient,
-  currentUser,
+  currentActor,
+  currentRezept,
   messageBroker as mb,
 } from "../services/store";
 import props from "../services/properties";
+import defs from '../services/util'
 const pm = new PrescriptionManager();
-
 export let list: Array<PrescriptionType> = [];
 export let modality: string = "";
 export let h = "6em";
@@ -44,10 +45,10 @@ function getLabel(obj: PrescriptionType) {
     }
     if (modality != Modalities.RECIPE) {
       if (o.datefrom) {
-        lbl += " [" + pm.ElexisDateToLocalDate(o.datefrom);
+        lbl += " [" + defs.ElexisDateToLocalDate(o.datefrom);
         if (o.dateuntil) {
           if (o.dateuntil != o.datefrom) {
-            lbl += "-" + pm.ElexisDateToLocalDate(o.dateuntil);
+            lbl += "-" + defs.ElexisDateToLocalDate(o.dateuntil);
           }
         }
         lbl += "]";
@@ -63,14 +64,15 @@ function getLabel(obj: PrescriptionType) {
  */
 function addItem(obj: PrescriptionType, fromModality: string) {
   if (modality == Modalities.RECIPE) {
-    let rezept = undefined; //we.getSelectedItem("rezepte");
+    let rezept = $currentRezept;
     obj._Rezept = rezept;
     obj.rezeptid = rezept.id;
     if (!obj.anzahl) {
       obj.anzahl = "1";
     }
     pm.cloneAs(obj, Modalities.RECIPE).then((result) => {
-      list.push(obj);
+      list = [...list, obj];
+      // list.push(obj);
     });
   } else {
     obj.presctype = modality;
@@ -80,7 +82,7 @@ function addItem(obj: PrescriptionType, fromModality: string) {
         source: modality,
         origin: fromModality,
       });
-      list=[...list, obj];
+      list = [...list, obj];
     });
   }
 }
@@ -133,7 +135,7 @@ function dragDrop(event) {
   const json = event.dataTransfer.getData("webelexis/object");
   if (datatype == "article") {
     const obj: ArticleType = JSON.parse(json);
-    pm.createFromArticle($currentPatient, $currentUser, obj).then((presc) => {
+    pm.createFromArticle($currentPatient, $currentActor, obj).then((presc) => {
       //this.list.push(presc)
       addItem(presc, Modalities.DONTKNOW);
     });
@@ -190,8 +192,7 @@ let dropzone: HTMLElement;
     on:dragover="{dragOver}"
     on:drop="{dragDrop}"
     bind:this="{dropzone}"
-    on:dragleave="{dragLeave}"
-    >
+    on:dragleave="{dragLeave}">
     <div class="compactlist">
       {#if Array.isArray(list)}
         {#each list as fm, index}

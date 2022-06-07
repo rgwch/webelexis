@@ -3,6 +3,10 @@ import io from 'socket.io-client';
 import feathers from '@feathersjs/client';
 import auth from '@feathersjs/authentication-client';
 import type { ServiceMethods, Params, Id, NullableId, Paginated } from "@feathersjs/feathers";
+import type { UserType } from '../models/user-model';
+import type { KontaktType } from '../models/kontakt-model';
+import { UserManager } from '../models/user-model';
+import { currentUser, currentActor } from './store';
 
 const socket = io(cfg.server)
 const app = feathers()
@@ -66,11 +70,12 @@ export interface IService<T> {
   remove(id: NullableId, params?: Params): Promise<T | T[]>;
 }
 
-export type ServiceType = "admin" | "billable" | "billing" | "bills" | "blob" | "diagnose" | "fall" | "invoice" | "konsultation" |
-  "meta-article" | "kontakt" | "patient" | "payments" | "prescriptions" | "rezepte" | "stickers" | "termin" | "user" | "utility"
+export type ServiceType = "admin" | "billable" | "billing" | "bills" | "blob" | "briefe" | "diagnose" | "fall" | "invoice" |
+  "konsultation" | "meta-article" | "kontakt" | "patient" | "payments" | "prescriptions" | "rezepte" | "stickers" | "termin" |
+  "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 
-export const login = async (username?: string, password?: string) => {
+export const login = async (username?: string, password?: string): Promise<UserType> => {
   try {
     let jwt
     if (username && password) {
@@ -81,13 +86,20 @@ export const login = async (username?: string, password?: string) => {
     } else {
       jwt = await app.authenticate()
     }
+    const um = new UserManager()
     const verified = await app["passport"].verifyJWT(jwt?.accessToken)
-    const user = await app.service("user").get(verified.userId)
+    const user = await um.fetch(verified.userId) as UserType
+    currentUser.set(user)
+    const actor = await um.getActiveMandatorFor(user)
+    currentActor.set(actor)
+    return user
   } catch (err) {
     return undefined
   }
 }
 
+
 if (true) {
   login("gerry", "pxgerry")
 }
+

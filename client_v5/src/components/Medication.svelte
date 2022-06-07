@@ -1,14 +1,14 @@
 <script lang="ts">
-import { prescriptionManager } from "../models";
+import { prescriptionManager, briefManager } from "../models";
 import type { UUID } from "../models/elexistype";
 import { onMount } from "svelte";
 import type { PatientType } from "../models/patient-model";
 import props from "../services/properties";
 import { Modalities } from "../models/prescription-model";
-import {currentActor} from '../services/store'
 import Card from "../widgets/Card.svelte";
 import Fa from "svelte-fa";
 import { _ } from "svelte-i18n";
+import defs from "../services/util";
 import {
   faTrash,
   faPrescription,
@@ -24,11 +24,13 @@ import type {
 import Medicationlist from "./Medicationlist.svelte";
 import {
   currentRezept,
-  currentUser,
+  currentActor,
+  currentPatient,
   messageBroker as mb,
 } from "../services/store";
 import Modal from "../widgets/Modal.svelte";
 import { DateTime } from "luxon";
+import type { BriefType } from "../models/briefe-model";
 export let entity: PatientType;
 let actrpd: RpDef;
 let rpdefs: Array<RpDef> = [];
@@ -72,7 +74,7 @@ function createRezept() {
         prescriptions: [],
         rezept: raw,
       };
-      rpdefs=[rpd,...rpdefs]
+      rpdefs = [rpd, ...rpdefs];
       // rpdefs.unshift(rpd);
       selectRezept(rpd);
       return rpd;
@@ -116,7 +118,7 @@ function dropTrash(event) {
   ) {
     obj.presctype = Modalities.SYMPTOMATIC;
     delete obj.rezeptid;
-    obj.dateuntil = prescriptionManager.DateToElexisDate(new Date());
+    obj.dateuntil = defs.DateToElexisDate(new Date());
     prescriptionManager.save(obj).then((result) => {
       mb.publish(props.REMOVE_MESSAGE, {
         obj,
@@ -191,44 +193,42 @@ async function refresh(patid: UUID) {
  * User clicked on the printer symbol
  */
 function toPdf(rezept) {
-  /*
-    let table = "<table>";
-    for (const item of actrpd.prescriptions) {
-      const remark = item.bemerkung ? "<br />" + item.bemerkung : "";
-      const anzahl = item.anzahl || "1";
-      table += `<tr><td>${anzahl}</td><td>${
-        item._Artikel.dscr
-        }${remark}</td><td>${item.dosis || ""}</td></tr>`;
-    }
-    table += "</table>";
-    const fields = [
-      { field: "liste", replace: table },
-      { field: "zusatz", replace: actrpd.rezept.rpzusatz }
-    ];
-    const rp: BriefType = {
-      betreff: "Rezept",
-      datum: dt.DateToElexisDate(new Date()),
-      mimetype: "text/html",
-      patientid: actPatient.id,
-      typ: "Rezept"
-    };
-    bm.generate(rp, "rezept", fields).then((processed: BriefType) => {
-      const win = window.open("", "_new");
-      if (!win) {
-        alert(
-          "Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf"
-        );
-      } else {
-        win.document.write(processed.contents);
-        // Allow freshly opened window to load css and render
-        setTimeout(() => {
-          win.print();
-        }, 50);
+  let table = "<table>";
+  for (const item of actrpd.prescriptions) {
+    const remark = item.bemerkung ? "<br />" + item.bemerkung : "";
+    const anzahl = item.anzahl || "1";
+    table += `<tr><td>${anzahl}</td><td>${
+      item._Artikel.dscr
+    }${remark}</td><td>${item.dosis || ""}</td></tr>`;
+  }
+  table += "</table>";
+  const fields = [
+    { field: "liste", replace: table },
+    { field: "zusatz", replace: actrpd.rezept.rpzusatz },
+  ];
+  const rp: BriefType = {
+    betreff: "Rezept",
+    datum: defs.DateToElexisDate(new Date()),
+    mimetype: "text/html",
+    patientid: $currentPatient.id,
+    typ: "Rezept",
+  };
+  briefManager.generate(rp, "rezept", fields).then((processed: BriefType) => {
+    const win = window.open("", "_new");
+    if (!win) {
+      alert(
+        "Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf"
+      );
+    } else {
+      win.document.write(processed.contents);
+      // Allow freshly opened window to load css and render
+      setTimeout(() => {
+        win.print();
+      }, 50);
 
-       bm.save(processed)
-      }
-    });
-    */
+      briefManager.save(processed);
+    }
+  });
 }
 
 function findId(element) {
@@ -263,7 +263,7 @@ function makePrescription() {
 }
 
 function dateToScreen(date: string) {
-  return prescriptionManager.ElexisDateToLocalDate(date);
+  return defs.ElexisDateToLocalDate(date);
 }
 </script>
 
@@ -277,7 +277,7 @@ function dateToScreen(date: string) {
           on:dragover="{dragTrash}"
           on:dragleave="{dragTrashLeave}"
           on:drop="{dropTrash}">
-          <Fa icon="{faTrash}" size="lg"/>
+          <Fa icon="{faTrash}" size="lg" />
         </span>
       </div>
     </div>
@@ -316,8 +316,9 @@ function dateToScreen(date: string) {
           <Card>
             <div slot="heading">
               <span>{$_("medication.prescriptions")}</span>
-              <span class="text-green-500 mx-3 cursor-pointer" on:click="{() => createRezept()}"
-                ><Fa icon="{faStar}" /></span>
+              <span
+                class="text-green-500 mx-3 cursor-pointer"
+                on:click="{() => createRezept()}"><Fa icon="{faStar}" /></span>
             </div>
             <div slot="body">
               <div class="panel">

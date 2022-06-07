@@ -1,3 +1,4 @@
+import { BriefManager } from './briefe-model';
 import { BillingsManager } from "./billings-model"
 import { CaseManager } from "./case-model"
 import { DiagnoseManager } from "./diagnose-model"
@@ -19,3 +20,4 @@ export const terminManager = new TerminManager()
 export const userManager = new UserManager()
 export const patientManager = new PatientManager()
 export const prescriptionManager = new PrescriptionManager()
+export const briefManager = new BriefManager()
