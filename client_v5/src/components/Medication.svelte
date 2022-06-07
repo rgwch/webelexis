@@ -284,7 +284,7 @@ function dateToScreen(date: string) {
         <div class="flex-1">
           <Card>
             <div slot="heading">
-              <span>{$_("medication.fixmedication")}</span>
+              <span>{$_("medication.fix")}</span>
               <Fa icon="{faPrescription}" />
             </div>
             <div slot="body">

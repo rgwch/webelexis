@@ -4,6 +4,12 @@ import type {
   ArticleType,
 } from "../models/prescription-model";
 import { Modalities, PrescriptionManager } from "../models/prescription-model";
+import {
+  currentPatient,
+  currentUser,
+  messageBroker as mb,
+} from "../services/store";
+import props from "../services/properties";
 const pm = new PrescriptionManager();
 
 export let list: Array<PrescriptionType> = [];
@@ -64,12 +70,16 @@ function addItem(obj: PrescriptionType, fromModality: string) {
       obj.anzahl = "1";
     }
     pm.cloneAs(obj, Modalities.RECIPE).then((result) => {
-      this.list.push(obj);
+      list.push(obj);
     });
   } else {
     obj.presctype = modality;
     pm.save(obj).then((result) => {
-      // this.ea.publish(REMOVE_MESSAGE, { obj, source: this.modality, origin: fromModality })
+      mb.publish(props.REMOVE_MESSAGE, {
+        obj,
+        source: modality,
+        origin: fromModality,
+      });
       list.push(obj);
     });
   }
@@ -80,7 +90,7 @@ function addItem(obj: PrescriptionType, fromModality: string) {
  */
 function checkkey(event) {
   if (event.keyCode == 13) {
-    this.opened = -1;
+    opened = -1;
   }
   return true;
 }
@@ -105,10 +115,10 @@ function expand(idx) {
 function dragOver(event) {
   if (
     event.dataTransfer.types.find((el) => el.startsWith("webelexis")) &&
-    this.list
+    list
   ) {
     event.preventDefault();
-    this.mark(true);
+    mark(true);
   }
   return true;
 }
@@ -118,21 +128,21 @@ function dragOver(event) {
  */
 function dragDrop(event) {
   event.preventDefault();
-  this.mark(false);
+  mark(false);
   const datatype = event.dataTransfer.getData("webelexis/datatype");
   const json = event.dataTransfer.getData("webelexis/object");
   if (datatype == "article") {
     const obj: ArticleType = JSON.parse(json);
-    this.pm.createFromArticle(obj).then((presc) => {
+    pm.createFromArticle($currentPatient, $currentUser, obj).then((presc) => {
       //this.list.push(presc)
-      this.addItem(presc, Modalities.DONTKNOW);
+      addItem(presc, Modalities.DONTKNOW);
     });
   } else if (datatype == "prescriptions") {
     const obj: PrescriptionType = JSON.parse(json);
     const mod = event.dataTransfer.getData("webelexis/modality");
-    if (mod != this.modality) {
+    if (mod != modality) {
       // console.log("drop: " + obj + ", " + mod)
-      this.addItem(obj, mod);
+      addItem(obj, mod);
     }
   }
 }
@@ -142,7 +152,7 @@ function dragDrop(event) {
  * @param event
  */
 function dragLeave(event) {
-  this.mark(false);
+  mark(false);
 }
 
 /**
@@ -150,15 +160,28 @@ function dragLeave(event) {
  * @param event
  */
 function drag(event) {
-  const obj = this.list.find((el) => event.target.id.endsWith(el.id));
+  const obj = list.find((el) => event.target.id.endsWith(el.id));
   event.dataTransfer.setData("text/plain", event.target.id);
   event.dataTransfer.setData("webelexis/object", JSON.stringify(obj));
-  event.dataTransfer.setData("webelexis/modality", this.modality);
+  event.dataTransfer.setData("webelexis/modality", modality);
   event.dataTransfer.setData("webelexis/datatype", "prescriptions");
   return true;
 }
+
+/**
+ * create  visual feedback for possible drop zones when dragging a prescription or an article
+ * @param mode
+ */
+function mark(mode: boolean) {
+  if (mode) {
+    dropzone.style.border = "dashed 2px orange";
+  } else {
+    dropzone.style.border = "none";
+  }
+}
+
 function save(fm) {}
-let dropzone;
+let dropzone: HTMLElement;
 </script>
 
 <template>
@@ -167,7 +190,8 @@ let dropzone;
     on:dragover="{dragOver}"
     on:drop="{dragDrop}"
     bind:this="{dropzone}"
-    on:dragleave="{dragLeave}">
+    on:dragleave="{dragLeave}"
+    >
     <div class="compactlist">
       {#if Array.isArray(list)}
         {#each list as fm, index}
