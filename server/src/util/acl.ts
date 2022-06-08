@@ -61,7 +61,7 @@ export const declareACE = (ace) => {
  * @param {*} usr The user in question
  * @param {*} acename the action requested
  */
-export const hasRight = (usr, acename) => {
+export const hasRight = (usr, acename:string) => {
   // if no usr is given, or they have no roles, it's a guest
   if (!usr) {
     usr = {}
@@ -115,7 +115,7 @@ export const hasRight = (usr, acename) => {
  * @param {*} usr
  * @param {*} ace
  */
-export const needsRight = (usr, ace) => {
+export const needsRight = (usr, ace:string) => {
   if (!hasRight(usr, ace)) {
     logger.warn("%s has insufficient rights for %s", usr, ace)
     throw new Error("insufficient rights")

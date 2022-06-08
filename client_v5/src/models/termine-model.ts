@@ -12,7 +12,10 @@ import { DateTime } from "luxon"
 import { getService } from "../services/io"
 import { KontaktManager } from "./kontakt-model"
 import type { PatientType } from "./patient-model"
+import { currentUser } from "../services/store"
+
 const kontaktManager = new KontaktManager()
+const terminService = getService("termin")
 /**
  * An Elexis "Termin"
  */
@@ -38,44 +41,38 @@ export class Statics {
   public static agendaResources = []
 }
 
+currentUser.subscribe(async user=>{
+  Statics.agendaResources = await terminService.get("resources")
+  Statics.terminTypColors = await terminService.get("typecolors", {
+    query: { user: user.id }
+  })
+  Statics.terminStateColors = await terminService.get("statecolors", {
+    query: { user: user.id }
+  })
+  Statics.terminTypes = await terminService.get("types")
+  Statics.terminStates = await terminService.get("states")
+ 
+})
+
 export class TerminManager {
-  private terminService
 
-  constructor() {
-    this.terminService = getService("termin")
-    this.loadDefaultsFor({ id: "gerry", roles: ["admin"] })
-  }
-
-
-  public async loadDefaultsFor(user: UserType) {
-    Statics.agendaResources = await this.terminService.get("resources")
-    Statics.terminTypColors = await this.terminService.get("typecolors", {
-      query: { user: user.id }
-    })
-    Statics.terminStateColors = await this.terminService.get("statecolors", {
-      query: { user: user.id }
-    })
-    Statics.terminTypes = await this.terminService.get("types")
-    Statics.terminStates = await this.terminService.get("states")
-    return true
-  }
 
   public async save(t: TerminModel) {
     if (t.obj.termintyp !== Statics.terminTypes[0]) {
       if (t.obj.id) {
-        return await this.terminService.update(t.obj.id, t.obj)
+        return await terminService.update(t.obj.id, t.obj)
       } else {
-        return await this.terminService.create(t.obj)
+        return await terminService.create(t.obj)
       }
     }
   }
 
   public async delete(t: TerminModel) {
-    return await this.terminService.remove(t.obj.id)
+    return await terminService.remove(t.obj.id)
   }
 
   public async getNext(t: TerminModel): Promise<TerminModel> {
-    const found = await this.terminService.find({
+    const found = await terminService.find({
       query: {
         Bereich: t.obj.bereich,
         Tag: t.obj.tag
@@ -121,7 +118,7 @@ export class TerminManager {
     const day = DateTime.fromJSDate(date)
     if (resource) {
       try {
-        const found = await this.terminService.find({
+        const found = await terminService.find({
           query: { tag: day.toFormat("yyyyLLdd"), bereich: resource }
         })
         if (found.data && found.data.length > 0) {

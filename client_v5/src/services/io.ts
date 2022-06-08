@@ -96,5 +96,10 @@ export const login = async (username?: string, password?: string): Promise<UserT
 
 }
 
+export const logout = ()=>{
+  currentUser.set(undefined)
+  app.logout()
+}
+
 
 
