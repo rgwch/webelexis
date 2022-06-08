@@ -13,6 +13,7 @@ const app = feathers()
 app.configure(feathers.socketio(socket))
 app.configure(auth({ storage: window.localStorage }))
 
+
 export interface IService<T> {
   /**
       * Retrieve all resources from this service.
@@ -76,30 +77,24 @@ export type ServiceType = "admin" | "billable" | "billing" | "bills" | "blob" | 
 export const getService = (name: ServiceType) => app.service(name)
 
 export const login = async (username?: string, password?: string): Promise<UserType> => {
-  try {
-    let jwt
-    if (username && password) {
-      jwt = await app.authenticate({
-        id: username, password,
-        strategy: "local"
-      })
-    } else {
-      jwt = await app.authenticate()
-    }
-    const um = new UserManager()
-    const verified = await app["passport"].verifyJWT(jwt?.accessToken)
-    const user = await um.fetch(verified.userId) as UserType
-    currentUser.set(user)
-    const actor = await um.getActiveMandatorFor(user)
-    currentActor.set(actor)
-    return user
-  } catch (err) {
-    return undefined
+
+  const um = new UserManager()
+  let jwt
+  if (username && password) {
+    jwt = await app.authenticate({
+      id: username, password,
+      strategy: "local"
+    })
+  } else {
+    jwt = await app.authenticate()
   }
+  const {user} = await app.get('authentication')
+  currentUser.set(user)
+  const actor = await um.getActiveMandatorFor(user)
+  currentActor.set(actor)
+  return user
+
 }
 
 
-if (true) {
-  login("gerry", "pxgerry")
-}
 

@@ -4,14 +4,19 @@ import App from './views/App.svelte'
 import { type PatientType, PatientManager } from './models/patient-model';
 import def from './services/properties'
 import { currentPatient } from './services/store';
+import { login } from './services/io'
 
 // console.log(JSON.stringify(def))
 if (def.production == "false") {
-  const pm = new PatientManager()
-  pm.fetch("f545f4a171b7f3093c6285").then(pat => {
-    currentPatient.set(pat as PatientType)
-  })
 
+  login("gerry", "pxgerry").then(user => {
+    const pm = new PatientManager()
+    pm.fetch("f545f4a171b7f3093c6285").then(pat => {
+      currentPatient.set(pat as PatientType)
+    })
+  }).catch(err => {
+    alert("fake login: " + err)
+  })
 }
 const app = new App({
   target: document.body,
