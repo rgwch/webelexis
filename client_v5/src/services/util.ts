@@ -10,9 +10,12 @@ const LOCALDATE = trl("formatting.date")
 
 export default {
   ELEXISDATETIME, ELEXISDATE, LOCALDATE,
-  ElexisDateToLocalDate: (elexisdate: string) => DateTime.fromFormat(elexisdate, ELEXISDATE).toFormat(LOCALDATE),
-  ElexisDateTimeToLocalDate: (elexisdate: string) => DateTime.fromFormat(elexisdate, ELEXISDATETIME).toFormat(LOCALDATE),
+  ElexisDateToLocalDate: (elexisdate: string): string => {
+    const fmt = elexisdate.length == 8 ? ELEXISDATE : ELEXISDATETIME
+    return DateTime.fromFormat(elexisdate, fmt).toFormat(LOCALDATE)
+  },
   DateToElexisDate: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATE),
+  DateToElexisDateTime: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATETIME),
   DateObjectToLocalDate: (date: Date) => DateTime.fromJSDate(date).toFormat(LOCALDATE)
 
 }

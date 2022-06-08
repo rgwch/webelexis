@@ -106,7 +106,7 @@ export class BriefManager extends ObjectManager {
    * Second, scan for fields of the form [datatype.attribute] and replace them with the currently active
    * instance of the datatype and the named attribute therof.
    * @param template An html template with some fields to replace in the form [fieldname] or [datatype.attribute]
-   * @param brief: BriefType
+   * @param brief: BriefType i.e. metadata of the document
    * @param fields: An Array of {field: fieldname, replace: string}
    * @returns The template with all variable fields replaced
    */

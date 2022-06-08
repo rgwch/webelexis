@@ -79,11 +79,15 @@ app.hooks(appHooks)
 // If in testing mode: Seed databases
 if (app.get('testing')) {
   logger.info('running in testing mode')
-
+  logger.silent=true
   seeder(app).catch((err) => {
     logger.error('reject ' + err)
   })
 } else {
-  logger.info('running in production mode')
+  if (process.env.NODE_ENV == "debug") {
+    logger.info("running in debug mode")
+  } else {
+    logger.info('running in production mode')
+  }
 }
 export default app

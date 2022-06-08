@@ -29,6 +29,7 @@ onMount(() => {
     extensions: [StarterKit, ...extensions],
     content: contents,
     editable,
+    
     onBlur: () => {
       dispatch("changed", editor.getJSON());
     },

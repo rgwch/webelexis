@@ -11,7 +11,7 @@ import winston from 'winston'
 */
 
 export const logger = winston.createLogger({
-  level: 'info',
+  level: (process.env.NODE_ENV==="debug") ? 'info' : 'error',
   silent: false,
   format: winston.format.combine(
     winston.format.colorize(),

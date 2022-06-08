@@ -45,6 +45,7 @@ function getLabel(obj: PrescriptionType) {
     }
     if (modality != Modalities.RECIPE) {
       if (o.datefrom) {
+        console.log(o.datefrom)
         lbl += " [" + defs.ElexisDateToLocalDate(o.datefrom);
         if (o.dateuntil) {
           if (o.dateuntil != o.datefrom) {
@@ -57,6 +58,7 @@ function getLabel(obj: PrescriptionType) {
   }
   return lbl;
 }
+
 /**
  * Add a prescription to our list
  * @param obj the prescription to add
@@ -256,5 +258,6 @@ let dropzone: HTMLElement;
   cursor: pointer;
   color: black;
   display: block;
+  overflow-y: auto;
 }
 </style>

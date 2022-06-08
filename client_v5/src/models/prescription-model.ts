@@ -27,7 +27,7 @@ export enum Modalities {
 export interface RezeptType extends ElexisType {
   patientid: UUID
   mandantid: UUID
-  datum: string // 8
+  datum: string // 8 ELEXISDATE
   rptext: string
   rpzusatz: string
   briefid: UUID
@@ -55,16 +55,16 @@ export interface PrescriptionType extends ElexisType {
   bemerkung?: string
   patientid: UUID
   rezeptid?: UUID
-  _Rezept?: ElexisType
-  datefrom: string  // YYYYMMDDHHmmss
-  dateuntil?: string
+  _Rezept?: RezeptType
+  datefrom: string  // YYYYMMDDHHmmss - ELEXISDATETIME
+  dateuntil?: string // ELEXISDATETIME
   anzahl?: string
   artikel?: UUID
   _Artikel?: ArticleType
   artikelid?: UUID
   presctype?: string
   sortorder?: string
-  prescdate: string // YYYYMMDD
+  prescdate: string // YYYYMMDD - ELEXISDATE
   prescriptor: UUID
 }
 
@@ -227,7 +227,7 @@ export class PrescriptionManager extends ObjectManager {
     let ret = `${label} (${from}`
 
     if (presc.dateuntil && presc.dateuntil.substr(0, 8) !== presc.datefrom.substr(0, 8)) {
-      const until = defs.ElexisDateTimeToLocalDate(presc.dateuntil)
+      const until = defs.ElexisDateToLocalDate(presc.dateuntil)
       ret += " - " + until + ")"
     } else {
       ret += ")"

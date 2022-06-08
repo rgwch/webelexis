@@ -321,7 +321,7 @@ function dateToScreen(date: string) {
                 on:click="{() => createRezept()}"><Fa icon="{faStar}" /></span>
             </div>
             <div slot="body">
-              <div class="panel">
+              <div class="max-h-[8rem] h-[8rem] overflow-y-auto">
                 {#each rpdefs as rpd}
                   <div
                     class="cursor-pointer"

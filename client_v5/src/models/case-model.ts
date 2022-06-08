@@ -76,15 +76,19 @@ export class CaseManager extends ObjectManager {
     return fall._Patient;
   }
   public getLabel(obj: CaseType): string {
-    const beginDate = DateTime.fromISO(obj.datumvon).toLocaleString();
-    let gesetz = obj.gesetz;
-    if (!gesetz) {
-      if (obj.extjson) {
-        gesetz = obj.extjson.billing;
+    if (obj) {
+      const beginDate = obj.datumvon ? DateTime.fromISO(obj.datumvon).toLocaleString() : "?";
+      let gesetz = obj.gesetz;
+      if (!gesetz) {
+        if (obj.extjson) {
+          gesetz = obj.extjson.billing;
+        }
       }
+      return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung
+        }`;
+    }else{
+      return "?"
     }
-    return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung
-      }`;
   }
   public async getUnbilledAmount(obj: CaseType): Promise<Money> {
     const result = await this.encounterService.find({ query: { fallid: obj.id, rechnungsid: 'null' } })

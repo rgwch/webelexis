@@ -12,20 +12,13 @@ const feathers = require('@feathersjs/feathers')
 const configuration = require('@feathersjs/configuration')
 const express = require('@feathersjs/express')
 const socketio = require('@feathersjs/socketio')
+logger.silent=true
+logger.level="error"
 
-import { config as userconf } from './configuration'
 const app = express(feathers())
 
 // Load app configuration
 app.configure(configuration())
-try {
-  app.set(
-    'userconfig',
-    /* require(process.env.WEBELEXIS_SETTINGS) || */ userconf,
-  )
-} catch (err) {
-  app.set('userconfig', {})
-}
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(express.json())
