@@ -98,13 +98,13 @@ export default function (app) {
     }
   })
   app.get('/metadata', (request, response) => {
-    const settings = app.get('userconfig')
+    const testing=app.get("testing") || false;
+    const sitename= app.get("sitename") || "Webelexis Test";
+    const admin= app.get("admin") || "Somebody";
+    const autologin= app.get("autologin") || {};
+    const ip= request.ip;
     response.json({
-      testing: settings.testing || false,
-      sitename: settings.sitename,
-      admin: settings.admin,
-      ip: request.ip,
-      roles,
+      testing,sitename,admin,autologin,ip,roles
     })
   })
 }

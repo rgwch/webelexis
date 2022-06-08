@@ -10,7 +10,8 @@ export default {
 
   },
   REMOVE_MESSAGE: "remove_prescription",
-  ADD_MESSAGE: "add_prescription"
+  ADD_MESSAGE: "add_prescription",
+  metadata:{}
 
 }
 
