@@ -11,6 +11,7 @@ import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { ObjectManager } from './object-manager'
 import type { FlexformConfig } from '../widgets/flexformtypes'
+import defs from '../services/util'
 
 
 /**
@@ -46,7 +47,7 @@ export class PatientManager extends ObjectManager {
     ret += n2 || 'x'
     ret += '_'
     ret += n3
-      ? DateTime.fromFormat(n3, trl('formatting.date')).toFormat('YYYYMMDD')
+      ? defs.ElexisDateToLocalDate(n3)
       : 'x'
     return ret
   }

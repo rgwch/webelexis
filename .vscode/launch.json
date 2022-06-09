@@ -44,7 +44,8 @@
       "outputCapture": "std",
       "cwd": "${workspaceFolder}/server",
       "env": {
-        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
+        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config",
+        "NODE_ENV": "test"
       }
     },
     {
@@ -54,11 +55,12 @@
       "program": "${workspaceFolder}/server/node_modules/jest/bin/jest.js",
       "outputCapture": "std",
       "args": [
-        "src/services/blob/blob.spec.ts"
+        "src/services/briefe/briefe.spec.ts"
       ],
       "cwd": "${workspaceFolder}/server",
       "env": {
-        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
+        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config",
+        "NODE_ENV": "test"
       }
     },
     {
@@ -72,7 +74,8 @@
       ],
       "cwd": "${workspaceFolder}/server",
       "env": {
-        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config"
+        "NODE_CONFIG_DIR": "${workspaceFolder}/server/config",
+        "NODE_ENV": "test"
       }
     },
     {
@@ -84,6 +87,7 @@
       "cwd": "${workspaceFolder}/server/dist",
       "env": {
         "NODE_CONFIG_DIR": "${workspaceFolder}/server/config",
+        "NODE_ENV": "debug",
         "EXTERNAL_PORT": 2019
       }
     }

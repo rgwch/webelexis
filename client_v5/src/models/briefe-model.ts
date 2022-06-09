@@ -9,7 +9,7 @@ import type { KontaktType } from "./kontakt-model";
 import type { ElexisType, UUID } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import type { UserType } from "./user-model";
-import { kontaktManager } from ".";
+import { kontaktManager, patientManager } from ".";
 import { currentUser, currentActor } from "../services/store";
 import { _ } from 'svelte-i18n'
 import defs from '../services/util'
@@ -93,7 +93,8 @@ export class BriefManager extends ObjectManager {
     if (tmpls.data.length > 0) {
       const tmpl: BriefType = await this.dataService.get(tmpls.data[0].id);
       const compiled = await this.replaceFields(tmpl.contents, brief, fields);
-      return Object.assign({}, brief, { contents: compiled })
+      const concern=patientManager.createConcern(brief._Patient)
+      return Object.assign({}, brief, {mimetype: "text/html", path:concern, contents: compiled })
       //return compiled;
     } else {
       throw new Error("Template " + template + " not found");

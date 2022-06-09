@@ -109,6 +109,7 @@ $RECYCLE.BIN/
 
 # Others
 lib/*.jar
+lib/external/.env
 data/
 
 sample_html.pdf
@@ -117,3 +118,4 @@ src/configuration.ts
 config/default.js
 config/dockered.js
 config/debug.js
+
