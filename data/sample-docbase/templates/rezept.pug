@@ -2,6 +2,7 @@ extends ../partials/a5
 
 block doctitle
   span.topleft Rezept
+  span.topright #{datum}
 
 block content
   .leftrow
@@ -16,7 +17,7 @@ block content
     table.header
       tr
         td Tel.:
-        td #{mandator.phone}
+        td= mandator.phone
       tr
         td E-Mail:
         td #{mandator.email}

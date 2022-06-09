@@ -192,7 +192,7 @@ async function refresh(patid: UUID) {
 /**
  * User clicked on the printer symbol
  */
-function toPdf(rezept) {
+async function toPdf(rezept) {
   let table = "<table>";
   for (const item of actrpd.prescriptions) {
     const remark = item.bemerkung ? "<br />" + item.bemerkung : "";
@@ -213,22 +213,13 @@ function toPdf(rezept) {
     patientid: $currentPatient.id,
     typ: "Rezept",
   };
-  briefManager.generate(rp, "rezept", fields).then((processed: BriefType) => {
-    const win = window.open("", "_new");
-    if (!win) {
-      alert(
-        "Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf"
-      );
-    } else {
-      win.document.write(processed.contents);
-      // Allow freshly opened window to load css and render
-      setTimeout(() => {
-        win.print();
-      }, 50);
-
-      briefManager.save(processed);
-    }
-  });
+  try {
+    const processed = await briefManager.generate(rp, "rezept", fields);
+    await briefManager.print(processed.contents);
+    await briefManager.save(processed);
+  } catch (err) {
+    alert(err);
+  }
 }
 
 function findId(element) {
