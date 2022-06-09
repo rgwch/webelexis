@@ -13,6 +13,7 @@ import { kontaktManager, patientManager } from ".";
 import { currentUser, currentActor } from "../services/store";
 import { _ } from 'svelte-i18n'
 import defs from '../services/util'
+import { DateTime } from "luxon";
 
 /**
  * An Elexis "Brief" (which is an outgoing document)
@@ -94,7 +95,8 @@ export class BriefManager extends ObjectManager {
       const tmpl: BriefType = await this.dataService.get(tmpls.data[0].id);
       const compiled = await this.replaceFields(tmpl.contents, brief, fields);
       const concern=patientManager.createConcern(brief._Patient)
-      return Object.assign({}, brief, {mimetype: "text/html", path:concern, contents: compiled })
+      const filename=DateTime.now().toFormat("yyyy-LL-dd")+"_"+brief.typ
+      return Object.assign({}, brief, {mimetype: "text/html", path:concern+"/"+filename+".html", contents: compiled })
       //return compiled;
     } else {
       throw new Error("Template " + template + " not found");
