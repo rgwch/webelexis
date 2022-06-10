@@ -9,9 +9,6 @@ import io from 'socket.io-client';
 import feathers from '@feathersjs/client';
 import auth from '@feathersjs/authentication-client';
 import type { ServiceMethods, Params, Id, NullableId, Paginated } from "@feathersjs/feathers";
-import type { UserType } from '../models/user-model';
-import type { KontaktType } from '../models/kontakt-model';
-import { UserManager } from '../models/user-model';
 
 const socket = io(cfg.server)
 const app = feathers()
@@ -82,7 +79,7 @@ export type ServiceType = "admin" | "billable" | "billing" | "bills" | "blob" | 
 export const getService = (name: ServiceType) => app.service(name)
 
 
-export const authorize = async (username, password): Promise<UserType> => {
+export const authorize = async (username, password): Promise<any> => {
   let jwt
   if (username && password) {
     jwt = await app.authenticate({

@@ -9,11 +9,14 @@ import type { KontaktType } from "./kontakt-model";
 import type { ElexisType, UUID } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import type { UserType } from "./user-model";
-import { kontaktManager, patientManager } from ".";
+import { KontaktManager } from "./kontakt-model";
+import { PatientManager } from "./patient-model";
 import { currentUser, currentActor } from "../services/store";
 import { _ } from 'svelte-i18n'
 import defs from '../services/util'
 import { DateTime } from "luxon";
+const kontaktManager=new KontaktManager()
+const patientManager=new PatientManager()
 
 /**
  * An Elexis "Brief" (which is an outgoing document)
