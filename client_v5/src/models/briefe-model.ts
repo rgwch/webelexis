@@ -95,8 +95,8 @@ export class BriefManager extends ObjectManager {
       const tmpl: BriefType = await this.dataService.get(tmpls.data[0].id);
       const compiled = await this.replaceFields(tmpl.contents, brief, fields);
       const concern=patientManager.createConcern(brief._Patient)
-      const filename=DateTime.now().toFormat("yyyy-LL-dd")+"_"+brief.typ
-      return Object.assign({}, brief, {mimetype: "text/html", path:concern+"/"+filename+".html", contents: compiled })
+      const filename=DateTime.now().toFormat("yyyy-LL-dd-hhmmss")+"_"+brief.typ
+      return Object.assign({}, brief, {mimetype: "text/html", path:"documents/"+concern+"/"+filename+".html", contents: compiled })
       //return compiled;
     } else {
       throw new Error("Template " + template + " not found");

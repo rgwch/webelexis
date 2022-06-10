@@ -40,7 +40,7 @@ export class PatientManager extends ObjectManager {
     const n1 = pat.bezeichnung1
     const n2 = pat.bezeichnung2
     const n3 = pat.geburtsdatum
-    let ret = n1 ? n1.substr(0, Math.min(3, n1.length)) : 'x'
+    let ret = n1 ? n1.substring(0, 1).toLocaleLowerCase() : 'nx'
     ret += '/'
     ret += n1 || 'x'
     ret += '_'
