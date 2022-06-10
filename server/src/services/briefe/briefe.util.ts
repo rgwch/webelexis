@@ -1,6 +1,12 @@
-const fs = require('fs').promises
-const path = require('path')
-const { DateTime } = require('luxon')
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+import * as fs from 'node:fs/promises';
+import path from 'path'
+import { DateTime } from 'luxon'
 import compilePug from '../../util/compile-pug'
 
 import { logger } from '../../logger'
@@ -55,27 +61,29 @@ export const autoImport = app => {
     cfg.docbase = app.get("docbase")
     if (cfg.docbase) {
         const templatesDir = path.resolve(path.join(cfg.docbase, "templates"))
-        fs.readdir(templatesDir, (err, files) => {
-            if (err) {
-                logger.error("could not read template dir %s:%s", templatesDir, err)
-            } else {
-                for (const file of files) {
-                    if (file.endsWith('.pug')) {
-                        compilePug(templatesDir, file, cfg)
-                    }
+
+        fs.readdir(templatesDir).then(files => {
+
+            for (const file of files) {
+                if (file.endsWith('.pug')) {
+                    compilePug(templatesDir, file, cfg)
                 }
-                const templates = []
-                for (const file of files) {
-                    if (file.endsWith(".html")) {
-                        const basename = path.basename(file, ".html")
-                        templates.push(matchTemplate(app.service("briefe"), basename))
-                    }
-                }
-                Promise.all(templates).then(r => {
-                    logger.info(`imported ${r.length} templates`)
-                })
             }
+            const templates = []
+            for (const file of files) {
+                if (file.endsWith(".html")) {
+                    const basename = path.basename(file, ".html")
+                    templates.push(matchTemplate(app.service("briefe"), basename))
+                }
+            }
+            Promise.all(templates).then(r => {
+                logger.info(`imported ${r.length} templates`)
+            })
+        }).catch(err => {
+            logger.error("could not read template dir %s:%s", templatesDir, err)
+
         })
+
     }
 }
 

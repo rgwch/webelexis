@@ -9,7 +9,7 @@ describe("Briefe", () => {
             path: "test/my/path.txt",
             contents: "Blah blah blah"
         },
-        result:{
+        result: {
             path: "test/my/path.txt"
         }
     }
@@ -32,9 +32,9 @@ describe("Briefe", () => {
         expect(res.data).not.toHaveProperty("contents")
     })
 
-    it("retrieves a file",async ()=>{
-        const save=await store(ctx)
-        const load=await retrieve(ctx)
+    it("retrieves a file", async () => {
+        const save = await store(ctx)
+        const load = await retrieve(ctx)
         expect(load).toBeTruthy()
         expect(load.result).toHaveProperty("contents")
         expect(load.result.contents).toEqual("Blah blah blah")
