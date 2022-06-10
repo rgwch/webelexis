@@ -11,15 +11,31 @@ import {
   messageBroker as mb,
 } from "../services/store";
 import props from "../services/properties";
-import defs from '../services/util'
+import defs from "../services/util";
 const pm = new PrescriptionManager();
 export let list: Array<PrescriptionType> = [];
-export let modality: string = "";
+export let modality: string;
 export let h = "6em";
 
 let dosisFocus: boolean = false;
 let numberFocus: boolean = false;
-
+mb.subscribe(props.REMOVE_MESSAGE, (msg) => {
+  if (msg.source != modality && msg.origin == modality) {
+    const presc: PrescriptionType = msg.obj;
+    if (list) {
+      const idx = list.findIndex((el) => el.id == presc.id);
+      if (idx != -1) {
+        list.splice(idx, 1);
+        list=list
+      }
+    }
+  }
+});
+mb.subscribe(props.ADD_MESSAGE, (msg) => {
+  if (modality == msg.dest) {
+    addItem(msg.obj, msg.fromModality);
+  }
+});
 let opened = 0.1;
 /**
  * Create a human readable label for a prescription
@@ -45,7 +61,6 @@ function getLabel(obj: PrescriptionType) {
     }
     if (modality != Modalities.RECIPE) {
       if (o.datefrom) {
-        console.log(o.datefrom)
         lbl += " [" + defs.ElexisDateToLocalDate(o.datefrom);
         if (o.dateuntil) {
           if (o.dateuntil != o.datefrom) {
@@ -138,7 +153,7 @@ function dragDrop(event) {
   if (datatype == "article") {
     const obj: ArticleType = JSON.parse(json);
     pm.createFromArticle($currentPatient, $currentActor, obj).then((presc) => {
-      //this.list.push(presc)
+      //list.push(presc)
       addItem(presc, Modalities.DONTKNOW);
     });
   } else if (datatype == "prescriptions") {

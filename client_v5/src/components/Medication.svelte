@@ -28,8 +28,6 @@ import {
   currentPatient,
   messageBroker as mb,
 } from "../services/store";
-import Modal from "../widgets/Modal.svelte";
-import { DateTime } from "luxon";
 import type { BriefType } from "../models/briefe-model";
 export let entity: PatientType;
 let actrpd: RpDef;
@@ -265,6 +263,7 @@ function dateToScreen(date: string) {
         <input bind:value="{searchexpr}" />
         <span
           class="text-gray-600 hover:text-green-700 mx-4 my-2"
+          on:dragenter="{dragTrashEnter}"
           on:dragover="{dragTrash}"
           on:dragleave="{dragTrashLeave}"
           on:drop="{dropTrash}">
@@ -275,10 +274,14 @@ function dateToScreen(date: string) {
     <div slot="body">
       <div class="flex">
         <div class="flex-1">
+          <!-- Fixmedikation -->
           <Card>
             <div slot="heading">
               <span>{$_("medication.fix")}</span>
-              <Fa icon="{faPrescription}" />
+              <span
+                class="mx-3 px-1 cursor-pointer"
+                on:click="{() => addToRp(medication.fix, Modalities.FIXMEDI)}"
+                ><Fa icon="{faPrescription}" /></span>
             </div>
             <div slot="body">
               <Medicationlist
@@ -288,10 +291,15 @@ function dateToScreen(date: string) {
           </Card>
         </div>
         <div class="flex-1">
+          <!-- Reservemedikation -->
           <Card>
             <div slot="heading">
               <span>{$_("medication.reserve")}</span>
-              <span><Fa icon="{faPrescription}" /></span>
+              <span
+                class="mx-3 px-2 cursor-pointer"
+                on:click="{() => {
+                  addToRp(medication.reserve, Modalities.RESERVE);
+                }}"><Fa icon="{faPrescription}" /></span>
             </div>
             <div slot="body">
               <Medicationlist
@@ -326,6 +334,7 @@ function dateToScreen(date: string) {
           </Card>
         </div>
         <div class="flex-1">
+          <!-- Ausgewähltes Rezept -->
           <Card>
             <div slot="heading">
               <span>{$_("medication.prescription")}</span>

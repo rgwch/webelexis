@@ -12,7 +12,7 @@ export const currentActor: Writable<KontaktType> = writable()
 export const currentUser: Writable<UserType> = writable()
 
 
-type msgfunc = (id: string, event: any) => void
+type msgfunc = (event: any) => void
 
 class MessageBroker {
   private subscribers = new Map<string, Array<msgfunc>>()
@@ -25,7 +25,7 @@ class MessageBroker {
   public publish(messageId: string, event: any) {
     const funcs = this.subscribers.get(messageId) || []
     funcs.forEach(func => {
-      func(messageId, event)
+      func(event)
     });
   }
   public unsubscribe(messageId: string, func: msgfunc) {
