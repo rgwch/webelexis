@@ -1,6 +1,7 @@
 <script lang="ts">
-import { Patient, PatientManager, type PatientType } from "../models/patient-model";
+import { Patient, PatientManager} from "../models/patient-model";
 import type { FlexformConfig } from "../widgets/flexformtypes";
+import type {PatientType} from '../models/patient-model'
 import { _ } from "svelte-i18n";
 import Form from "../widgets/Flexform.svelte";
 export let entity:PatientType;

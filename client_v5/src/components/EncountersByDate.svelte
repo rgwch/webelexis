@@ -1,6 +1,6 @@
 <script lang="ts">
 import { encounterManager } from "../models";
-import { EncounterModel, type EncounterType } from "../models/encounter-model";
+import { EncounterModel} from "../models/encounter-model";
 import EncounterDetail from "./EncounterDetail.svelte";
 import { _ } from "svelte-i18n";
 import { Patient } from "../models/patient-model";
