@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2022 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { EncounterModel } from './../models/encounter-model';
 import { Money } from './../models/money';
 import { DateTime } from 'luxon'

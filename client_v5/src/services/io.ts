@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2022 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import cfg from '../services/properties'
 import io from 'socket.io-client';
 import feathers from '@feathersjs/client';
@@ -6,7 +12,6 @@ import type { ServiceMethods, Params, Id, NullableId, Paginated } from "@feather
 import type { UserType } from '../models/user-model';
 import type { KontaktType } from '../models/kontakt-model';
 import { UserManager } from '../models/user-model';
-import { currentUser, currentActor } from './store';
 
 const socket = io(cfg.server)
 const app = feathers()
@@ -76,9 +81,8 @@ export type ServiceType = "admin" | "billable" | "billing" | "bills" | "blob" | 
   "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 
-export const login = async (username?: string, password?: string): Promise<UserType> => {
 
-  const um = new UserManager()
+export const authorize = async (username, password): Promise<UserType> => {
   let jwt
   if (username && password) {
     jwt = await app.authenticate({
@@ -88,18 +92,10 @@ export const login = async (username?: string, password?: string): Promise<UserT
   } else {
     jwt = await app.authenticate()
   }
-  const {user} = await app.get('authentication')
-  currentUser.set(user)
-  const actor = await um.getActiveMandatorFor(user)
-  currentActor.set(actor)
+  const { user } = await app.get('authentication')
   return user
-
 }
 
-export const logout = ()=>{
-  currentUser.set(undefined)
+export const deAuthorize = () => {
   app.logout()
 }
-
-
-

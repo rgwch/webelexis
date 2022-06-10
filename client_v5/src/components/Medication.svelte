@@ -90,7 +90,7 @@ function createRezept() {
 function dragTrash(event) {
   if (event.dataTransfer.types.find((el) => el === "webelexis/modality")) {
     event.preventDefault();
-    trashstyle = "margin-left:18px;transform: scale(1.5);";
+    trashstyle = "margin-left:18px;transform: scale(1.5);color:red;";
   }
   return true;
 }
@@ -262,7 +262,7 @@ function dateToScreen(date: string) {
       <div class="flex">
         <input bind:value="{searchexpr}" />
         <span
-          class="text-gray-600 hover:text-green-700 mx-4 my-2"
+          style={trashstyle}
           on:dragenter="{dragTrashEnter}"
           on:dragover="{dragTrash}"
           on:dragleave="{dragTrashLeave}"
@@ -279,7 +279,7 @@ function dateToScreen(date: string) {
             <div slot="heading">
               <span>{$_("medication.fix")}</span>
               <span
-                class="mx-3 px-1 cursor-pointer"
+                class="mx-3 px-1 cursor-pointer scale-125 hover:(text-red-600 text-lg)"
                 on:click="{() => addToRp(medication.fix, Modalities.FIXMEDI)}"
                 ><Fa icon="{faPrescription}" /></span>
             </div>

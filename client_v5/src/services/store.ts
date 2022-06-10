@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2022 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import { writable, type Writable } from 'svelte/store'
 import type { PatientType } from '../models/patient-model';
 import type { RezeptType } from '../models/prescription-model'

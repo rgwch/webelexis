@@ -9,7 +9,9 @@ import { ObjectManager } from './object-manager';
 import type { KontaktType } from './kontakt-model';
 import { getService } from '../services/io';
 import LRU from 'lru-cache'
-
+import feathers from '@feathersjs/client';
+import { currentUser, currentActor } from '../services/store';
+import { authorize, deAuthorize } from '../services/io';
 
 
 
@@ -39,7 +41,7 @@ export class UserManager extends ObjectManager {
     super('user')
     this.kontaktService = getService('kontakt')
     this.adminService = getService('admin')
-    this.cache = new LRU({max:100})
+    this.cache = new LRU({ max: 100 })
   }
 
   /**
@@ -125,6 +127,20 @@ export class UserManager extends ObjectManager {
   public async getData(user: UserType, datatype: "KSK|EAN|NIF|Kanton|TarmedSpezialität") {
     const m = await this.getActiveMandatorFor(user)
     return m.extjson[datatype]
+  }
+
+  public async login(username?: string, password?: string): Promise<UserType> {
+    const user = await authorize(username, password)
+    currentUser.set(user)
+    const actor = await this.getActiveMandatorFor(user)
+    currentActor.set(actor)
+    return user
+
+  }
+
+  public logout(): void {
+    currentUser.set(undefined)
+    deAuthorize()
   }
 }
 

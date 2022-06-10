@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2022 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import type { InvoiceType } from './../models/invoice-model'
 import { Invoice, RnState } from '../models/invoice-model'
 import { getService } from './io'
