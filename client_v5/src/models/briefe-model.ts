@@ -74,6 +74,7 @@ export class BriefManager extends ObjectManager {
     }
   }
 
+  
 
   /**
    * Generate a letter (which means: merge a template with a number of field definitions and system constants)
