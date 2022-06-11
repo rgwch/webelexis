@@ -14,6 +14,7 @@ import {
   faPrescription,
   faPrint,
   faStar,
+  faMailForward,
 } from "@fortawesome/free-solid-svg-icons";
 import type {
   PrescriptionType,
@@ -42,7 +43,7 @@ let medication: MEDICATIONDEF = {
   rezeptdefs: [],
 };
 
-$: refresh($currentPatient)
+$: refresh($currentPatient);
 
 function selectRezept(rpd?: RpDef) {
   if (rpd) {
@@ -50,7 +51,6 @@ function selectRezept(rpd?: RpDef) {
     actrpd = rpd;
     currentRezept.set(rpd.rezept);
   }
- 
 }
 
 function createRezept() {
@@ -192,8 +192,8 @@ async function toPdf(rezept) {
   };
   try {
     const processed = await briefManager.generate(rp, "rezept", fields);
-    await briefManager.print(processed.contents);
-    await briefManager.save(processed);
+    await briefManager.print(processed);
+    // await briefManager.save(processed);
   } catch (err) {
     alert(err);
   }
@@ -222,7 +222,6 @@ function addToRp(list: PrescriptionType[], from: string) {
     });
   }
 }
-
 
 function dateToScreen(date: string) {
   return defs.ElexisDateToLocalDate(date);
@@ -315,6 +314,10 @@ function dateToScreen(date: string) {
                 title="Druckvorschau"
                 on:click="{() => toPdf($currentRezept)}"
                 ><Fa icon="{faPrint}" /></span>
+              <span
+                class="text-green-600 mx-3 cursor-pointer"
+                on:click="{() => toPdf($currentRezept)}"
+                ><Fa icon="{faMailForward}" /></span>
             </div>
             <div slot="body">
               {#if actrpd}

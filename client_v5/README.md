@@ -6,7 +6,7 @@ Current work covers creation and handling of bills (conformant to the new swiss 
 
 ## Prepare
 
-For test on copy of actual Elexis database change pm.fetch() and um.fetch() in main.ts to existing patient and username. This will log that user automatically in in development mode and select the given patient automatically.
+For testenvironment on copy of actual Elexis database, create a ../server/config/debug.js and enter there existing user credentials (see debug-sample.js). This will log that user automatically in in development mode and select a patient with lastname "Testperson" automatically.
 
 ## Launch
 

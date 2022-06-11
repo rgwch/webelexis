@@ -12,11 +12,12 @@ import type { UserType } from "./user-model";
 import { KontaktManager } from "./kontakt-model";
 import { PatientManager } from "./patient-model";
 import { currentUser, currentActor } from "../services/store";
+import { jsPDF } from 'jspdf'
 import { _ } from 'svelte-i18n'
 import defs from '../services/util'
 import { DateTime } from "luxon";
-const kontaktManager=new KontaktManager()
-const patientManager=new PatientManager()
+const kontaktManager = new KontaktManager()
+const patientManager = new PatientManager()
 
 /**
  * An Elexis "Brief" (which is an outgoing document)
@@ -59,19 +60,44 @@ export class BriefManager extends ObjectManager {
   /**
    * Print-preview a letter
    */
-  public print(html: string) {
+  public print(doc: BriefType) {
     const win = window.open("", "_new");
     if (!win) {
       alert(
         "Bitte stellen Sie sicher, dass dieses Programm Popups öffnen darf"
       );
     } else {
-      win.document.write(html);
+      win.document.write(doc.contents);
       // Allow freshly opened window to load css and render
       setTimeout(() => {
         win.print();
+        this.toPDF(win.document.documentElement.outerHTML).then(pdf => {
+          doc.mimetype = "application/pdf"
+          doc.path = doc.path + ".pdf"
+          doc.contents = pdf
+          this.save(doc)
+        })
       }, 50);
     }
+  }
+
+  public toPDF(htmlContents): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        const doc = new jsPDF({
+          orientation: "landscape"
+        })
+        doc.html(htmlContents, {
+          callback: function (doc) {
+            const result = doc.output()
+            resolve(result)
+          }
+
+        })
+      } catch (err) {
+        reject(err)
+      }
+    })
   }
 
   /**
@@ -96,10 +122,10 @@ export class BriefManager extends ObjectManager {
     });
     if (tmpls.data.length > 0) {
       const tmpl: BriefType = await this.dataService.get(tmpls.data[0].id);
-      const filename=DateTime.now().toFormat("yyyy-LL-dd-HHmmss")+"_"+brief.typ
-      const compiled = (await this.replaceFields(tmpl.contents, brief, fields)).replace(/<title>.*<\/title>/,"<title>"+filename+"</title>");
-      const concern=patientManager.createConcern(brief._Patient)
-      return Object.assign({}, brief, {mimetype: "text/html", path:"documents/"+concern+"/"+filename+".html", contents: compiled })
+      const filename = DateTime.now().toFormat("yyyy-LL-dd-HHmmss") + "_" + brief.typ
+      const compiled = (await this.replaceFields(tmpl.contents, brief, fields)).replace(/<title>.*<\/title>/, "<title>" + filename + "</title>");
+      const concern = patientManager.createConcern(brief._Patient)
+      return Object.assign({}, brief, { mimetype: "text/html", path: "documents/" + concern + "/" + filename + ".html", contents: compiled })
       //return compiled;
     } else {
       throw new Error("Template " + template + " not found");

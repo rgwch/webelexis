@@ -22,8 +22,11 @@ fetch(def.server + "/metadata").then(async result => {
       const user = await um.login(auto.username, auto.password)
       if (def.production == "false") {
         const pm = new PatientManager()
-        const pat = await pm.fetch("f545f4a171b7f3093c6285")
-        currentPatient.set(pat as PatientType)
+        const pats = await pm.find({ query: { bezeichnung1: "Testperson" } })
+        if (pats.total > 0) {
+          currentPatient.set(pats.data[0] as PatientType)
+        }
+
       }
     }
   } else {

@@ -41,6 +41,7 @@ export default {
   output: {
     sourcemap: true,
     format: 'iife',
+    inlineDynamicImports: true,
     name: 'app',
     file: 'public/build/bundle.js'
   },
@@ -49,9 +50,9 @@ export default {
       preprocess: [
         sveltePreprocess({ sourceMap: !production }),
         // windi({ mode: production ? "production" : "development" }),
-        windi.preprocess({configPath: path.resolve(__dirname,".config/windi.config.js")})
+        windi.preprocess({ configPath: path.resolve(__dirname, ".config/windi.config.js") })
         // windi({}),
-        
+
       ],
       compilerOptions: {
         // enable run-time checks when not in production
