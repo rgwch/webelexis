@@ -125,10 +125,10 @@
     "rperror": "Konnte kein Rezept erstellen"
   },
   "menu": {
-    "emr": "KG",
+    "account": "Konto",
     "agenda": "Agenda",
-    "billing":"Abrechnung",
-    "account": "Konto"
+    "billing": "Abrechnung",
+    "emr": "KG"
   },
   "patient": {
     "detail": "Patient Detail",
@@ -145,8 +145,11 @@
     "diagnoses": "Diagnosen",
     "documents": "Dokumente",
     "encounters": "Konsultationen",
+    "findings": "Befunde",
     "fromdate": "Kons. nach Datum",
+    "incoming": "Eingehend",
     "medicaments": "Medikamente",
+    "outgoing": "Ausgehend",
     "outputs": "Ausgaben",
     "password": "Passwort",
     "personalia": "Personalien",
@@ -158,9 +161,9 @@
   },
   "validation": {
     "invalidDate": "Ungültiges Datum",
-    "onlyNumbers": "Nur Zahlen zulässig",
-    "onlyText": "Nur Text",
     "invalidlogin": "Name oder Passwort ungültig.",
-    "nopatient": "Kein Patient ausgewählt"
+    "nopatient": "Kein Patient ausgewählt",
+    "onlyNumbers": "Nur Zahlen zulässig",
+    "onlyText": "Nur Text"
   }
 }
