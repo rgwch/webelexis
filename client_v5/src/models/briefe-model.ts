@@ -96,7 +96,7 @@ export class BriefManager extends ObjectManager {
     });
     if (tmpls.data.length > 0) {
       const tmpl: BriefType = await this.dataService.get(tmpls.data[0].id);
-      const filename=DateTime.now().toFormat("yyyy-LL-dd-hhmmss")+"_"+brief.typ
+      const filename=DateTime.now().toFormat("yyyy-LL-dd-HHmmss")+"_"+brief.typ
       const compiled = (await this.replaceFields(tmpl.contents, brief, fields)).replace(/<title>.*<\/title>/,"<title>"+filename+"</title>");
       const concern=patientManager.createConcern(brief._Patient)
       return Object.assign({}, brief, {mimetype: "text/html", path:"documents/"+concern+"/"+filename+".html", contents: compiled })

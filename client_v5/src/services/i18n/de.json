@@ -5,6 +5,8 @@
     "deselect": "abwählen...",
     "extend": "Verlängern",
     "go": "start",
+    "login": "Anmelden",
+    "logout": "Abmelden",
     "ok": "Ok",
     "select": "auswählen...",
     "shrink": "Kürzen"
@@ -122,6 +124,12 @@
     "reserve": "Reservemedikation",
     "rperror": "Konnte kein Rezept erstellen"
   },
+  "menu": {
+    "emr": "KG",
+    "agenda": "Agenda",
+    "billing":"Abrechnung",
+    "account": "Konto"
+  },
   "patient": {
     "detail": "Patient Detail",
     "noneselected": "Kein Patient ausgewählt"
@@ -140,15 +148,19 @@
     "fromdate": "Kons. nach Datum",
     "medicaments": "Medikamente",
     "outputs": "Ausgaben",
+    "password": "Passwort",
     "personalia": "Personalien",
     "prescriptions": "Rezepte",
     "progress": "Verlauf",
     "selected": "Auswahl",
-    "unbilled": "Unverrechnete Konsultationen"
+    "unbilled": "Unverrechnete Konsultationen",
+    "username": "Benutzername"
   },
   "validation": {
     "invalidDate": "Ungültiges Datum",
     "onlyNumbers": "Nur Zahlen zulässig",
-    "onlyText": "Nur Text"
+    "onlyText": "Nur Text",
+    "invalidlogin": "Name oder Passwort ungültig.",
+    "nopatient": "Kein Patient ausgewählt"
   }
 }

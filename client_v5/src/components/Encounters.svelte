@@ -4,28 +4,24 @@ import { EncounterManager } from "../models/encounter-model";
 import type { EncounterType } from "../models/encounter-model";
 import type { PatientType } from "../models/patient-model";
 import InfiniteScroll from "svelte-infinite-scroll";
+import {currentPatient} from '../services/store'
 import { onMount } from "svelte";
 const BATCHSIZE=5
 const em = new EncounterManager();
-export let entity: PatientType;
-let current = entity.id;
 let offset = 0;
 let newBatch = [];
 let encounters: Array<EncounterType> = [];
 
-$: {
-  if (current !== entity.id) {
+  currentPatient.subscribe(np=>{
     offset = 0;
     newBatch = [];
     encounters = [];
-    current = entity.id;
     fetchEncounters();
-  }
-}
+  })
 
 async function fetchEncounters() {
-  const result = await em.fetchForPatient(entity?.id, offset, BATCHSIZE);
-  newBatch = result.data.map((e) => {(e._Patient = entity); return e});
+  const result = await em.fetchForPatient($currentPatient?.id, offset, BATCHSIZE);
+  newBatch = result.data.map((e) => {(e._Patient = $currentPatient); return e});
   offset = result.skip + result.data.length;
 }
 
