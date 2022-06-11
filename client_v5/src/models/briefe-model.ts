@@ -12,7 +12,6 @@ import type { UserType } from "./user-model";
 import { KontaktManager } from "./kontakt-model";
 import { PatientManager } from "./patient-model";
 import { currentUser, currentActor } from "../services/store";
-import { jsPDF } from 'jspdf'
 import { _ } from 'svelte-i18n'
 import defs from '../services/util'
 import { DateTime } from "luxon";
@@ -71,34 +70,10 @@ export class BriefManager extends ObjectManager {
       // Allow freshly opened window to load css and render
       setTimeout(() => {
         win.print();
-        this.toPDF(win.document.documentElement.outerHTML).then(pdf => {
-          doc.mimetype = "application/pdf"
-          doc.path = doc.path + ".pdf"
-          doc.contents = pdf
-          this.save(doc)
-        })
       }, 50);
     }
   }
 
-  public toPDF(htmlContents): Promise<string> {
-    return new Promise((resolve, reject) => {
-      try {
-        const doc = new jsPDF({
-          orientation: "landscape"
-        })
-        doc.html(htmlContents, {
-          callback: function (doc) {
-            const result = doc.output()
-            resolve(result)
-          }
-
-        })
-      } catch (err) {
-        reject(err)
-      }
-    })
-  }
 
   /**
    * Generate a letter (which means: merge a template with a number of field definitions and system constants)

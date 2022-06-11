@@ -193,7 +193,7 @@ async function toPdf(rezept) {
   try {
     const processed = await briefManager.generate(rp, "rezept", fields);
     await briefManager.print(processed);
-    // await briefManager.save(processed);
+    await briefManager.save(processed);
   } catch (err) {
     alert(err);
   }
