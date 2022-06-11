@@ -70,7 +70,8 @@ export class Service {
       return Promise.all(data.map(current => this.create(current, params)));
     }
 
-    const endpoint = data.metadata && data.metadata.filename ? "addfile" : "addindex"
+    const endpoint = data.metadata && data.metadata.filepath ? "addfile" : "addindex"
+
     const options = {
       method: "POST",
       body: JSON.stringify(data),

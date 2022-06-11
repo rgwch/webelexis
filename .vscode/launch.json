@@ -55,7 +55,7 @@
       "program": "${workspaceFolder}/server/node_modules/jest/bin/jest.js",
       "outputCapture": "std",
       "args": [
-        "src/services/briefe/briefe.spec.ts"
+        "src/services/lucinda/lucinda.spec.ts"
       ],
       "cwd": "${workspaceFolder}/server",
       "env": {
