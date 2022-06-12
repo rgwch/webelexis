@@ -74,7 +74,7 @@ export class BriefManager extends ObjectManager {
     }
   }
 
-  
+
 
   /**
    * Generate a letter (which means: merge a template with a number of field definitions and system constants)
@@ -101,7 +101,7 @@ export class BriefManager extends ObjectManager {
       const filename = DateTime.now().toFormat("yyyy-LL-dd-HHmmss") + "_" + brief.typ
       const compiled = (await this.replaceFields(tmpl.contents, brief, fields)).replace(/<title>.*<\/title>/, "<title>" + filename + "</title>");
       const concern = patientManager.createConcern(brief._Patient)
-      return Object.assign({}, brief, { mimetype: "text/html", path: "documents/" + concern + "/" + filename + ".html", contents: compiled })
+      return Object.assign({}, brief, { mimetype: "text/html", path: concern + "/" + filename + ".html", contents: compiled })
       //return compiled;
     } else {
       throw new Error("Template " + template + " not found");

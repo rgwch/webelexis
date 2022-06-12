@@ -16,6 +16,7 @@ export interface DocumentType extends ElexisType {
   birthdate: DATE
   loc: string   // location within lucinda's document base
   Lucinda_ImportedAt: string
+  type?: "blob" | "result" | "letter"
 }
 
 export class DocumentManager extends ObjectManager {
