@@ -51,7 +51,8 @@ export const retrieve = async (ctx) => {
     const dox = await db('heap')
       .select('inhalt')
       .where({ id: meta.id, deleted: '0' })
-    meta.contents = dox.length > 0 ? dox.join('') : ''
+    // meta.contents = dox.length > 0 ? dox.join('') : ''
+    meta.contents = dox.length > 0 ? Buffer.from(dox[0].inhalt) : ''
   }
   return ctx
 }

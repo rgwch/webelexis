@@ -2,6 +2,7 @@
 import type { BriefType } from "../models/briefe-model";
 import { briefManager, kontaktManager } from "../models";
 import util from "../services/util";
+import cfg from "../services/properties";
 
 import { currentPatient } from "../services/store";
 import type { KontaktType } from "../models/kontakt-model";
@@ -51,10 +52,10 @@ async function show(brief: BriefType) {
 <template>
   <div class="scrollpanel">
     {#each docs as doc, idx}
-      <p
-        class="py-0 my-0 cursor-pointer hover:text-blue-500"
-        on:click="{() => show(doc)}">
-        {util.ElexisDateToLocalDate(doc.datum)} - {doc.betreff}
+      <p class="py-0 my-0 cursor-pointer hover:text-blue-500">
+        <a href="{cfg.server + '/outgoing/' + doc.id}">
+          {util.ElexisDateToLocalDate(doc.datum)} - {doc.betreff}
+        </a>
         {#await getAdressee(idx) then adr}
           - {adr}
         {/await}

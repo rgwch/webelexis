@@ -25,5 +25,20 @@ export default function (app) {
   // Get our initialized service so that we can register hooks and filters
   const service = app.service('briefe');
   service.hooks(hooks);
+  /**
+   * Create a REST endpoint to fetch individual documents by URL
+   */
+   app.get("/outgoing/:id", async (req, res) => {
+    const doc = await service.get(req.params.id)
+    res.set({
+      "Content-Type": doc.mimetype,
+      "Content-length": doc.contents.length,
+      "Content-disposition": "attachment; filename="+doc.betreff
+    })
+    res.status(200)
+    res.send(doc.contents)
+    res.end()
+  })
+
   autoImport(app)
 };
