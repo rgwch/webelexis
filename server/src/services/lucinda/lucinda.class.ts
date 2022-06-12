@@ -14,10 +14,18 @@ export class Service {
    */
   async find(params) {
     // delete params.deleted
-    //const q = params.query
+    let q = params.query
+    if (typeof (params.query) == 'object') {
+      q = ""
+      for (const attr in params.query) {
+        if (attr !== "deleted") {
+          q += attr + ":" + params.query[attr] + ","
+        }
+      }
+    }
     const options = {
       method: "POST",
-      body: JSON.stringify({query:params.query}),
+      body: JSON.stringify({ query: q }),
       headers: { "Content-Type": "application/json" }
     }
     const res = await fetch(this.options.url + "query", options)
