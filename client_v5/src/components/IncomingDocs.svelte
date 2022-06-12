@@ -21,8 +21,9 @@ async function show(doc) {
   {#each docs as doc}
     <p class="py-0 my-0">
       <a href="{cfg.server + '/lucindadoc/' + doc.id}" target="_blank">
-        {util.DateObjectToLocalDate(new Date(doc.date))} - {doc.title}
+         {doc.title} 
       </a>
+      ({util.DateObjectToLocalDate(new Date(doc.date))})
     </p>
   {/each}
 </template>

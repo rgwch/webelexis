@@ -1,10 +1,12 @@
 <script lang="ts">
 import type { BriefType } from "../models/briefe-model";
-import { briefManager } from "../models";
+import { briefManager, kontaktManager } from "../models";
 import util from "../services/util";
 
 import { currentPatient } from "../services/store";
+import type { KontaktType } from "../models/kontakt-model";
 let docs: Array<BriefType> = [];
+let adressees: Array<string> = [];
 
 currentPatient.subscribe((np) => {
   fetchDocuments();
@@ -14,7 +16,18 @@ async function fetchDocuments() {
   const result = await briefManager.find({
     query: { patientid: $currentPatient?.id, $sort: { datum: "desc" } },
   });
-  docs = result.data as Array<BriefType>;
+  docs = result.data;
+}
+async function getAdressee(idx: number) {
+  if (adressees[idx]) {
+    return adressees[idx];
+  } else {
+    const adressee: KontaktType = (await kontaktManager.fetch(
+      docs[idx].destid
+    )) as KontaktType;
+    adressees[idx] = kontaktManager.getLabel(adressee);
+    return adressees[idx];
+  }
 }
 async function show(brief: BriefType) {
   if (brief.path) {
@@ -37,11 +50,15 @@ async function show(brief: BriefType) {
 
 <template>
   <div class="scrollpanel">
-    {#each docs as doc}
+    {#each docs as doc, idx}
       <p
         class="py-0 my-0 cursor-pointer hover:text-blue-500"
         on:click="{() => show(doc)}">
-        {util.ElexisDateToLocalDate(doc.datum)} - {doc.betreff} - ({doc.mimetype})
+        {util.ElexisDateToLocalDate(doc.datum)} - {doc.betreff}
+        {#await getAdressee(idx) then adr}
+          - {adr}
+        {/await}
+        - ({doc.mimetype})
       </p>
     {/each}
   </div>
