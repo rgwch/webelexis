@@ -14,10 +14,10 @@ export class Service {
    */
   async find(params) {
     // delete params.deleted
-    const q = params.query
+    //const q = params.query
     const options = {
       method: "POST",
-      body: JSON.stringify({ query: q }),
+      body: JSON.stringify({query:params.query}),
       headers: { "Content-Type": "application/json" }
     }
     const res = await fetch(this.options.url + "query", options)
