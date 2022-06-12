@@ -8,7 +8,7 @@ import PatientDetail from "../components/PatientDetail.svelte";
 import Encounters from "../components/Encounters.svelte";
 import Cases from "../components/Cases.svelte";
 import Prescriptions from "../components/Prescriptions.svelte";
-import Documents from './Documents.svelte'
+import Documents from "./Documents.svelte";
 
 let selector = false;
 
@@ -18,9 +18,9 @@ function selected() {
 </script>
 
 <template>
-  <p class="testclass">
+  <!-- p class="testclass">
     Test - should be blue on red if windi.css is configured correctly
-  </p>
+  </p -->
   <p
     class="font-bold text-blue-700 cursor-pointer"
     on:click="{() => (selector = !selector)}">
@@ -55,10 +55,9 @@ function selected() {
       </TabPanel>
       <TabPanel>
         <p>No contents yet</p>
-        
       </TabPanel>
       <TabPanel>
-        <Documents></Documents>
+        <Documents />
       </TabPanel>
     </Tabs>
   {/if}

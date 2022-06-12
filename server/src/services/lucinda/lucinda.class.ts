@@ -25,12 +25,12 @@ export class Service {
     }
     const options = {
       method: "POST",
-      body: JSON.stringify({ query: q }),
+      body: JSON.stringify({ query: q, limit: 100 }),       // TODO: paginate
       headers: { "Content-Type": "application/json" }
     }
     const res = await fetch(this.options.url + "query", options)
     if (res.status == 204) {
-      return ({ total: 0, data: [], skip: 0, limit: 0 })
+      return ({ total: 0, data: [], skip: 0, limit: 100 })
     } else if (res.status == 200) {
       const found = await res.json()
       return { total: found['numFound'], data: found['docs'], skip: found['start'] }
