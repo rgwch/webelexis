@@ -28,12 +28,25 @@ export default function (app) {
   /**
    * Create a REST endpoint to fetch individual documents by URL
    */
-   app.get("/outgoing/:id", async (req, res) => {
+  app.get("/outgoing/:id", async (req, res) => {
     const doc = await service.get(req.params.id)
+    let docname = doc.betreff
+    let mime = doc.mimetype.split(/\//)
+    if (mime.length == 1) {
+      docname += "." + mime[0]
+    } else {
+      if (mime[1].length < 5) {
+        docname += "." + mime[1]
+      } else {
+        if (mime[1].match("opendocument")) {
+          docname += ".doc"
+        }
+      }
+    }
     res.set({
       "Content-Type": doc.mimetype,
       "Content-length": doc.contents.length,
-      "Content-disposition": "attachment; filename="+doc.betreff
+      "Content-disposition": "attachment; filename=" + doc.betreff
     })
     res.status(200)
     res.send(doc.contents)
