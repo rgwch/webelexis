@@ -25,9 +25,12 @@ export const store = async (ctx) => {
   return ctx
 }
 
-export const ensurePath = async (app, filename): Promise<string> => {
+export const ensurePath = async (app, filename:string): Promise<string> => {
   const base = app.get('docbase') || require('os').homedir()
-  let subdir = filename ? filename.substring(0, 1).toLocaleLowerCase() : 'nx'
+  let subdir = "documents/"+ (filename ? filename.substring(0, 1).toLocaleLowerCase() : 'nx')
+  if(filename.startsWith("templates")){
+    subdir="."
+  }
   const fullpath = path.join(base, subdir, filename);
   const dir = path.dirname(fullpath);
   try {

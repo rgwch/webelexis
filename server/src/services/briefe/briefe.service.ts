@@ -8,6 +8,7 @@ const createService = require('feathers-knex');
 import createModel from '../../models/briefe.model'
 import hooks from './briefe.hooks';
 import { autoImport } from './briefe.util';
+import { DateTime } from 'luxon'
 
 export default function (app) {
   const Model = createModel(app);
@@ -29,28 +30,32 @@ export default function (app) {
    * Create a REST endpoint to fetch individual documents by URL
    */
   app.get("/outgoing/:id", async (req, res) => {
-    const doc = await service.get(req.params.id)
-    let docname = doc.betreff
-    let mime = doc.mimetype.split(/\//)
-    if (mime.length == 1) {
-      docname += "." + mime[0]
-    } else {
-      if (mime[1].length < 5) {
-        docname += "." + mime[1]
+    try {
+      const doc = await service.get(req.params.id)
+      let docname = DateTime.fromFormat(doc.datum, "yyyyLLdd").toFormat("yyyy-LL-dd") + "_" + doc.betreff
+      let mime = doc.mimetype.split(/\//)
+      if (mime.length == 1) {
+        docname += "." + mime[0]
       } else {
-        if (mime[1].match("opendocument")) {
-          docname += ".doc"
+        if (mime[1].length < 5) {
+          docname += "." + mime[1]
+        } else {
+          if (mime[1].match("opendocument")) {
+            docname += ".doc"
+          }
         }
       }
+      res.set({
+        "Content-Type": doc.mimetype,
+        "Content-length": doc.contents.length,
+        "Content-disposition": "attachment; filename=" + docname
+      })
+      res.status(200)
+      res.send(doc.contents)
+      res.end()
+    } catch (err) {
+      res.status(500).end()
     }
-    res.set({
-      "Content-Type": doc.mimetype,
-      "Content-length": doc.contents.length,
-      "Content-disposition": "attachment; filename=" + doc.betreff
-    })
-    res.status(200)
-    res.send(doc.contents)
-    res.end()
   })
 
   autoImport(app)
