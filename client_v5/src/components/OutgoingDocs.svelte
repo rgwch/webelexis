@@ -53,7 +53,7 @@ async function show(brief: BriefType) {
   <div class="scrollpanel">
     {#each docs as doc, idx}
       <p class="py-0 my-0 cursor-pointer hover:text-blue-500">
-        <a href="{cfg.server + '/outgoing/' + doc.id}">
+        <a href="{cfg.server + '/outgoing/' + doc.id}" target="_blank">
           {util.ElexisDateToLocalDate(doc.datum)} - {doc.betreff}
         </a>
         {#await getAdressee(idx) then adr}
