@@ -1,5 +1,8 @@
 <script lang="ts">
 import { createEventDispatcher } from "svelte";
+import { slide, fly } from "svelte/transition";
+import { quintOut } from "svelte/easing";
+
 const dispatch = createEventDispatcher();
 /**
  *  The label for the drop down. Leave empty for no label
@@ -70,6 +73,7 @@ let open = false;
       -->
           {#each elements as element}
             <li
+              transition:slide={{duration:200}}
               on:click="{() => {
                 selected = element;
                 open = false;

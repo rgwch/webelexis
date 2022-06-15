@@ -1,4 +1,5 @@
 <script lang="ts">
+import { slide } from "svelte/transition";
 export let open = false;
 export let title = "";
 export let locked = false;
@@ -17,7 +18,9 @@ export let locked = false;
         </slot>
       </div>
       {#if open}
-        <slot name="body" />
+        <div transition:slide>
+          <slot name="body" />
+        </div>
       {/if}
     {/if}
   </div>

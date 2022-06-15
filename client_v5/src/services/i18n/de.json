@@ -1,5 +1,10 @@
 {
   "actions": {
+    "add": "hinzufügen",
+    "selectall": "Alle auswählen",
+    "selectnone": "Auswahl löschen",
+    "graph":"Grafik",
+    "export": "Exportieren",
     "cancel": "Abbruch",
     "delete": "Löschen",
     "deselect": "abwählen...",
