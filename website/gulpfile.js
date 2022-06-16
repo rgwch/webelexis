@@ -12,7 +12,7 @@
   * use 'npx gulp' instead of 'gulp'.
   */
 const gulp = require("gulp")
-const sass = require("gulp-sass")
+const sass = require("gulp-sass")(require('node-sass'))
 const pug = require("gulp-pug")
 const browserSync = require("browser-sync").create()
 const minifyCss = require("gulp-clean-css")
