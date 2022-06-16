@@ -25,7 +25,7 @@ import {DateTime} from 'luxon'
     }>
   }
 
-  let isOpen: boolean = false
+  let isOpen: string = ""
   let definitions
 
   
@@ -46,11 +46,13 @@ import {DateTime} from 'luxon'
   function addItem() {
     this.fm.fetch(this.finding.name, null).then(item => {
       if (item) {
+        /*
         this.dgs.open({ viewModel: AddFinding, model: item }).whenClosed(result => {
           if (!result.wasCancelled) {
             this.fm.saveFinding(result.output)
           }
         })
+        */
       }
     })
   }
@@ -85,7 +87,7 @@ import {DateTime} from 'luxon'
     if (this.finding.measurements.some(m => m['selected'])) {
       for (const m of this.finding.measurements) {
         if (m['selected']) {
-          const ask = this.i18.tr('dlg.reallydelete', { item: moment(m.date).format("DD.MM.YYYY") })
+          const ask = this.i18.tr('dlg.reallydelete', { item: DateTime.fromJSDate(m.date).toFormat("dd.LL.yyyy") })
           if (confirm(ask)) {
             await this.fm.removeFinding(this.finding.id, m.date)
           }
