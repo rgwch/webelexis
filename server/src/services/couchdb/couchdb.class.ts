@@ -84,6 +84,15 @@ export class CouchDB {
     }
     return result
   }
+  async find(params): Promise<any> {
+    const db = params?.query?.database || this.options.defaultDB || "webelexis"
+    delete params.query.database;
+    const result = await this.request("_find", db, "post", { selector: params.query })
+    if (result.error) {
+      throw new Error(result.error)
+    }
+    return { data: result.docs, total: result.docs.length, skip: 0, limit: 100 }
+  }
   /**
    * create a new entry. If object woth the same obj.id exists,throw error.
    * @param obj The object to store

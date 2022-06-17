@@ -20,7 +20,7 @@ export class Blob {
   private ns: string
   private defaultdb
   constructor(private app, private options) {
-    this.couch = app.service("couchdb")
+    this.couch = app.service("nosql")
     this.ns = (this.options.namespace || "webelexis")
     this.defaultdb = { query: { database: this.ns } }
   }

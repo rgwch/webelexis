@@ -28,7 +28,7 @@ describe('Lucinda', () => {
   })
 
 
-  it("stores, retrieves and deletes document metadata", async () => {
+  xit("stores, retrieves and deletes document metadata", async () => {
     const doc = {
       id: "_lucindaspec_",
       contents: "This will not be stored but only indexed",
@@ -51,7 +51,7 @@ describe('Lucinda', () => {
     expect(got).toBeFalsy()
   })
 
-  it("stores, retrieves and deletes document contents", async () => {
+  xit("stores, retrieves and deletes document contents", async () => {
     const doc = {
       payload: Buffer.from("This will be stored and indexed").toString("base64"),
       metadata: {

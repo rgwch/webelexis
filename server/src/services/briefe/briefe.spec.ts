@@ -24,7 +24,7 @@ describe("Briefe", () => {
   })
   it("rebases a path", async () => {
     const rebased = await ensurePath(app, file)
-    expect(rebased).toEqual(base + "/t/" + file)
+    expect(rebased).toEqual(base + "/documents/t/" + file)
   })
 
   it("stores a file", async () => {

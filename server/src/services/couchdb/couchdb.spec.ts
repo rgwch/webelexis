@@ -13,7 +13,7 @@ describe("CouchDB", () => {
   }
 
   beforeAll(() => {
-    service = app.service("couchdb")
+    service = app.service("nosql")
   })
 
   it('registered the service', () => {
@@ -30,6 +30,18 @@ describe("CouchDB", () => {
     expect(deleted.id).toEqual(testdoc.id)
     const delDB = await service.remove("!database!", { query: { database } })
     expect(delDB.ok).toBeTruthy()
+  })
+
+  it("finds documents matching a query", async () => {
+    const result = await service.create(testdoc, { query: { database } })
+    expect(result.id).toEqual(testdoc.id)
+    // expect(async () => { await service.create({ id: "testdb/Test", body: "anything" }) }).rejects.toThrow("Document update conflict")
+    const retrieved = await service.find({ query: { database, type: "testdoc" } })
+    expect(retrieved).toBeTruthy()
+    expect(retrieved.data).toBeTruthy()
+    expect(retrieved.data[0].contents).toEqual(testdoc.contents)
+    const deleted = await service.remove(retrieved.data[0].id, { query: { database } })
+    expect(deleted.id).toEqual(testdoc.id)
   })
 
   it("throws an error on nonexistent get ", async () => {

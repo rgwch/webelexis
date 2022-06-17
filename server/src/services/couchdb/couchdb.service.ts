@@ -10,7 +10,7 @@ import { hooks, activate } from "./couchdb.hooks"
 export default function (app) {
   const options = app.get("couchdb")
   const couch = new CouchDB(app, options)
-  app.use("/couchdb", couch)
-  const service = app.service("couchdb")
+  app.use("/nosql", couch)
+  const service = app.service("nosql")
   service.hooks(hooks)
 }

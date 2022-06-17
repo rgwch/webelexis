@@ -6,22 +6,23 @@
 
 
 import type { ElexisType } from "./elexistype";
-import {ObjectManager} from './object-manager'
-import * as _ from 'lodash'
+import { ObjectManager } from './object-manager'
 import type { UserType } from "./user-model";
 import { currentPatient, currentUser } from "../services/store";
+import defs from '../user/finding-defs'
+const prefix = "findings"
 
 const definitions: any = {}
 
 let patient
 let user
-currentPatient.subscribe(p=>{patient=p})
-currentUser.subscribe(u=>user=u)
-/*
+currentPatient.subscribe(p => { patient = p })
+currentUser.subscribe(u => user = u)
+
 for (const def of defs as FindingDef[]) {
   definitions[def.name] = def
 }
-*/
+
 /**
  * A finding definition is used to define, how to generate and display data for external measurements.
  * All findings to use in the system must be defined in src/user/finding-defs.ts.
@@ -66,11 +67,11 @@ export interface FindingType extends ElexisType {
 /**
  * FindingsManager is used to create, retrieve, change and update findingd
  */
-export class FindingsManager extends ObjectManager{
+export class FindingsManager extends ObjectManager {
 
   constructor() {
-    super('findings')
-  
+    super('nosql')
+
   }
 
   /**
@@ -83,11 +84,11 @@ export class FindingsManager extends ObjectManager{
 
   /**
    * Get Name and title of all defined finding categoeries
-   
+*/
   async getFindingNames() {
     return defs.map(e => [e.name, e.title])
   }
-*/
+
 
   /**
    * Get the findings of a given category for a given patient
@@ -97,7 +98,7 @@ export class FindingsManager extends ObjectManager{
    */
   async getFindings(name: string, patid: string): Promise<FindingsModel> {
     if (patid) {
-      const fm = await this.dataService.find({ query: { name: name, patientid: patid } })
+      const fm = await this.dataService.find({ query: { name: name, patientid: patid, database: prefix } })
       if (fm.data && fm.data.length > 0) {
         return new FindingsModel(fm.data[0])
       }
@@ -117,7 +118,7 @@ export class FindingsManager extends ObjectManager{
       patid = pat ? pat.id : undefined
     }
     if (patid) {
-      const fm = await this.dataService.find({ query: { name: name, patientid: patid } })
+      const fm = await this.dataService.find({ query: { name: name, patientid: patid, database: prefix } })
       if (fm.data && fm.data.length > 0) {
         return new FindingsModel(fm.data[0])
       } else {
@@ -141,7 +142,7 @@ export class FindingsManager extends ObjectManager{
 
   async saveFinding(f: FindingsModel) {
     try {
-      let updated = await this.dataService.update(f.f.id, f.f)
+      let updated = await this.dataService.update(f.f.id, f.f, {query: { database:prefix}})
       return updated
     } catch (err) {
       throw ("server error")
@@ -159,7 +160,7 @@ export class FindingsManager extends ObjectManager{
     let finding = await this.getAll(name, patid)
     try {
       finding.addMeasurement(values)
-      finding.f = await this.dataService.update(finding.f.id, finding.f)
+      finding.f = await this.dataService.update(finding.f.id, finding.f, {query: { database:prefix}})
       return finding
     } catch (err) {
       throw ("server error")
@@ -186,7 +187,7 @@ export class FindingsManager extends ObjectManager{
       const f: FindingType = await this.dataService.get(id)
       const finding = new FindingsModel(f)
       if (finding.removeMeasurement(date)) {
-        let updated = await this.dataService.update(finding.f.id, finding.f)
+        let updated = await this.dataService.update(finding.f.id, finding.f, {query: { database:prefix}})
       }
     } catch (err) {
       throw ("server error")
