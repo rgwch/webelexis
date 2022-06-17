@@ -22,7 +22,8 @@ export default {
   },
   DateToElexisDate: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATE),
   DateToElexisDateTime: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATETIME),
-  DateObjectToLocalDate: (date: Date) => DateTime.fromJSDate(date).toFormat(LOCALDATE)
-
+  DateObjectToLocalDate: (date: Date) => DateTime.fromJSDate(date).toFormat(LOCALDATE),
+  LuxonToLocalDate: (date: DateTime): string => date.toFormat(LOCALDATE),
+  LuxonToElexisDate: (date: DateTime): string => date.toFormat(ELEXISDATE)
 }
 
