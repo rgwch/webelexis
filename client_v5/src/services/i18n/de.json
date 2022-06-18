@@ -140,7 +140,8 @@
     "noneselected": "Kein Patient ausgewählt"
   },
   "prompts": {
-    "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben"
+    "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben",
+    "reallydelete": "Wirklich {item} löschen?"
   },
   "titles": {
     "bills": "Rechnungen",
