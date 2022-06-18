@@ -6,6 +6,7 @@
 
 import { logger } from '../../logger'
 import fetch from 'node-fetch'
+import { v4 as uuid } from 'uuid'
 
 export class CouchDB {
   private url
@@ -105,7 +106,10 @@ export class CouchDB {
     if (!dbs.includes(db)) {
       const ndb = await this.createDatabase(db)
     }
-    const result = await this.request(obj.id, db, "put", obj)
+    if (!obj._id) {
+      obj._id = obj.id || uuid()
+    }
+    const result = await this.request(obj._id, db, "put", obj)
     if (result.error) {
       logger.error(JSON.stringify(result))
       throw new Error(result.reason)

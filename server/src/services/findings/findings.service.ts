@@ -17,5 +17,5 @@ export default function (app) {
 
   // Get our initialized service so that we can register hooks
   const service = app.service('findings')
-  service.hooks(hooks)
+  // service.hooks(hooks)
 }

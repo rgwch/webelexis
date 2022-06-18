@@ -25,13 +25,13 @@ describe('Blob', () => {
 
   it("stores, retrieves and deletes an entry", async () => {
     const id = "testblob"
-    const blob: entity = { id, data: "Something" }
+    const blob: entity = { _id:id, data: "Something" }
     const created = await service.create(blob)
-    expect(id).toEqual(created.id)
+    expect(id).toEqual(created._id)
     const check = await service.get(id)
     expect(check.data).toEqual(blob.data)
 
-    const previous = await service.update(id, { id, data: "other" })
+    const previous = await service.update(id, { _id:id, data: "other" })
     expect(previous.data).toEqual(blob.data)
 
     const updated = await service.get(id)
@@ -44,11 +44,11 @@ describe('Blob', () => {
 
   it("creates an id if none given", async () => {
     const created = await service.create({ data: "A test" })
-    expect(created.id).toBeTruthy()
-    const got = await service.get(created.id)
-    expect(got).toHaveProperty("id")
+    expect(created._id).toBeTruthy()
+    const got = await service.get(created._id)
+    expect(got).toHaveProperty("_id")
     expect(got.data).toEqual("A test")
-    const removed = await service.remove(created.id)
+    const removed = await service.remove(created._id)
     expect(removed.data).toEqual("A test")
 
   })

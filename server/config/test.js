@@ -1,4 +1,7 @@
 module.exports={
 
-    "docbase": "../test/fakedocs"
+    "docbase": "../test/fakedocs",
+    blob:{
+        namespace: "testdb"
+    }
 }

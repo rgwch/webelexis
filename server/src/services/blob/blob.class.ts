@@ -43,15 +43,15 @@ export class Blob {
   }
 
   async create(ob: entity, params?): Promise<entity> {
-    params = Object.assign(this.defaultdb, params)
+    params = Object.assign({},this.defaultdb, params)
     const created = Object.assign({}, ob)
-    if (!created.id) {
-      created.id = uuid()
+    if (!created._id) {
+      created._id = created.id || uuid()
     }
     if (this.options.indexer) {
       const indexer = this.app.service(this.options.indexer)
       if (indexer) {
-        await indexer.create({ id: created.id, contents: created.data, type: "blob" })
+        await indexer.create({ id: created._id, contents: created.data, type: "blob" })
       }
     }
     const transformed = await this.transform(created)
@@ -59,8 +59,8 @@ export class Blob {
     return await this.transform(res)
   }
   async update(id: string, obj: entity, params?): Promise<entity> {
-    params = Object.assign(this.defaultdb, params)
-    params.query = Object.assign(params.query, { upsert: true })
+    params = Object.assign({},this.defaultdb, params)
+    params.query = Object.assign({},params.query, { upsert: true })
     const data = Object.assign({}, obj)
     const prev = await this.couch.update(id, await this.transform(data), params)
     return await this.transform(prev)

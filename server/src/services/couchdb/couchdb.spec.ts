@@ -7,7 +7,7 @@ describe("CouchDB", () => {
   let service
   const database = "testdb"
   const testdoc = {
-    id: "test__",
+    _id: "test__",
     type: "testdoc",
     contents: "something"
   }
@@ -22,26 +22,26 @@ describe("CouchDB", () => {
 
   it("creates, uses and deletes a database", async () => {
     const result = await service.create(testdoc, { query: { database } })
-    expect(result.id).toEqual(testdoc.id)
+    expect(result._id).toEqual(testdoc._id)
     // expect(async () => { await service.create({ id: "testdb/Test", body: "anything" }) }).rejects.toThrow("Document update conflict")
-    const retrieved = await service.get(testdoc.id, { query: { database } })
+    const retrieved = await service.get(testdoc._id, { query: { database } })
     expect(retrieved.contents).toEqual(testdoc.contents)
-    const deleted = await service.remove(testdoc.id, { query: { database } })
-    expect(deleted.id).toEqual(testdoc.id)
+    const deleted = await service.remove(testdoc._id, { query: { database } })
+    expect(deleted._id).toEqual(testdoc._id)
     const delDB = await service.remove("!database!", { query: { database } })
     expect(delDB.ok).toBeTruthy()
   })
 
   it("finds documents matching a query", async () => {
     const result = await service.create(testdoc, { query: { database } })
-    expect(result.id).toEqual(testdoc.id)
+    expect(result._id).toEqual(testdoc._id)
     // expect(async () => { await service.create({ id: "testdb/Test", body: "anything" }) }).rejects.toThrow("Document update conflict")
     const retrieved = await service.find({ query: { database, type: "testdoc" } })
     expect(retrieved).toBeTruthy()
     expect(retrieved.data).toBeTruthy()
     expect(retrieved.data[0].contents).toEqual(testdoc.contents)
-    const deleted = await service.remove(retrieved.data[0].id, { query: { database } })
-    expect(deleted.id).toEqual(testdoc.id)
+    const deleted = await service.remove(retrieved.data[0]._id, { query: { database } })
+    expect(deleted._id).toEqual(testdoc._id)
   })
 
   it("throws an error on nonexistent get ", async () => {

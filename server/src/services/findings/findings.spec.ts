@@ -34,7 +34,7 @@ describe('Findings', () => {
     expect(retrieved).toBeTruthy()
     expect(retrieved.data).toBeTruthy()
     const m=retrieved.data[0]
-    const removed=await service.remove(m.id)
+    const removed=await service.remove(m._id)
     expect(removed.id).toEqual(m.id)
   })
 })
