@@ -5,7 +5,7 @@
  ********************************************/
 
 import { Extension, textInputRule } from '@tiptap/core'
-import macros from './macrodefs'
+import macros from '../user/macrodefs'
 export interface MacrosOptions {
   activate: true
 }

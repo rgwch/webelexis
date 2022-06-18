@@ -6,9 +6,9 @@
 
 import type { FindingsManager } from "../models/findings-model";
 import {DateTime} from 'luxon'
-import { getService } from "./io";
-import { currentPatient, currentCase } from "./store";
-import util from './util'
+import { getService } from "../services/io";
+import { currentPatient, currentCase } from "../services/store";
+import util from '../services/util'
 currentPatient.subscribe(p=>actPat=p)
 currentCase.subscribe(c=>actCase=c)
 let actPat, actCase
