@@ -1,7 +1,7 @@
 {
   "name": "webelexis",
   "description": "A Svelte-powered Elexis client",
-  "version": "3.5.4",
+  "version": "3.5.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/rgwch/webelexis"

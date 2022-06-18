@@ -11,7 +11,6 @@ import type { UserType } from "./user-model";
 import { currentPatient, currentUser } from "../services/store";
 import defs from '../user/finding-defs'
 import util from "../services/util"
-const prefix = "findings"
 
 const definitions: any = {}
 
@@ -73,7 +72,7 @@ export interface FindingType extends ElexisType {
 export class FindingsManager extends ObjectManager {
 
   constructor() {
-    super('nosql')
+    super('findings')
 
   }
 
@@ -102,7 +101,7 @@ export class FindingsManager extends ObjectManager {
    */
   async getFinding(name: string, patid: string, bCreateIfMissing: boolean): Promise<FindingsModel> {
     if (name && patid) {
-      const fm = await this.dataService.find({ query: { name: name, patientid: patid, database: prefix } })
+      const fm = await this.dataService.find({ query: { name: name, patientid: patid} })
       if (fm.data && fm.data.length > 0) {
         return new FindingsModel(fm.data[0])
       } else {
@@ -130,7 +129,7 @@ export class FindingsManager extends ObjectManager {
 
   async saveFinding(f: FindingsModel) {
     try {
-      let updated = await this.dataService.update(f.f.id, f.f, { query: { database: prefix } })
+      let updated = await this.dataService.update(f.f.id, f.f)
       return updated
     } catch (err) {
       throw ("server error")
@@ -148,7 +147,7 @@ export class FindingsManager extends ObjectManager {
     let finding = await this.getFinding(name, patid, true)
     try {
       finding.addMeasurement(values)
-      finding.f = await this.dataService.update(finding.f.id, finding.f, { query: { database: prefix } })
+      finding.f = await this.dataService.update(finding.f.id, finding.f)
       return finding
     } catch (err) {
       throw ("server error")
@@ -182,7 +181,7 @@ export class FindingsManager extends ObjectManager {
       const f: FindingType = await this.dataService.get(id)
       const finding = new FindingsModel(f)
       if (finding.removeMeasurement(datetime)) {
-        let updated = await this.dataService.update(finding.f.id, finding.f, { query: { database: prefix } })
+        let updated = await this.dataService.update(finding.f.id, finding.f)
       }
     } catch (err) {
       throw ("server error")
