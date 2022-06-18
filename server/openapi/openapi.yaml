@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   title: Webelexis Server
-  version: 0.14.0
+  version: 3.7.3
 
 servers:
   - url: http://localhost:3030
@@ -89,14 +89,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: openapi/schemas/event.yaml
+                $ref: '#/components/schemas/event'
         "404":
           description: not found
 
 components:
   schemas:
     event:
-      $ref: openapi/schemas/event.yaml
+      $ref: schemas/event.yaml#/event
+    finding:
+      $ref: schemas/finding.yaml#/finding
 
   responses:
     stringarray:
