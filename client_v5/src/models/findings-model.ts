@@ -56,10 +56,12 @@ export interface FindingDef {
 export interface FindingType extends ElexisType {
   patientid: string,
   name: string,            // e.g. 'physical'
+  title: string,          // translatable title,e.g. "Gewicht"
   measurements: Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
     {
       date: Date,
-      values: Array<string | number>
+      values: Array<string | number>,
+      selected?: boolean
     }
   >
 }
@@ -75,15 +77,14 @@ export class FindingsManager extends ObjectManager {
   }
 
   /**
-   * get the (user provided - see /src/user/finding-defs.ts) and system processed 
-   * (see constructor) finding category definitions
+   * get the (user provided - see /src/user/finding-defs.ts) finding category definitions
    */
   getDefinitions() {
     return definitions
   }
 
   /**
-   * Get Name and title of all defined finding categoeries
+   * Get Name and title of all defined finding categories
 */
   async getFindingNames() {
     return defs.map(e => [e.name, e.title])
@@ -91,50 +92,36 @@ export class FindingsManager extends ObjectManager {
 
 
   /**
-   * Get the findings of a given category for a given patient
-   * @param name category to find
-   * @param patid patient to match
-   * @returns a Promise with a FindingsModel with the requested finding, or undefined if none found
-   */
-  async getFindings(name: string, patid: string): Promise<FindingsModel> {
-    if (patid) {
-      const fm = await this.dataService.find({ query: { name: name, patientid: patid, database: prefix } })
-      if (fm.data && fm.data.length > 0) {
-        return new FindingsModel(fm.data[0])
-      }
-    }
-    return undefined
-  }
-  /**
    * Fetch or create a Finding with a given name for the given selected Patient.
    * If no such Finding is found, create a new one.
    * @param name Name of the Finding to fetch
-   * @param patid: Patient to match or null for the currently selected patient
-   * @returns the existing or newly created FindingModel of the specified type for the specified patient 
+   * @param patid: Patient to match
+   * @param bCreateIfMissing:if true: Cretae that Finding, if it doesn't exist
+   * @returns A promise with the existing or newly created FindingModel of the specified type for the specified patient 
    */
-  async getAll(name: string, patid): Promise<FindingsModel> {
-    if (!patid) {
-      let pat = patient
-      patid = pat ? pat.id : undefined
-    }
-    if (patid) {
+  async getFinding(name: string, patid: string, bCreateIfMissing: boolean): Promise<FindingsModel> {
+    if (name && patid) {
       const fm = await this.dataService.find({ query: { name: name, patientid: patid, database: prefix } })
       if (fm.data && fm.data.length > 0) {
         return new FindingsModel(fm.data[0])
       } else {
-        const type = definitions[name]
-        if (!type) {
-          throw 'no finding definition for ' + name + ' found!'
-        }
-        try {
-          const newFinding = await this.dataService.create({
-            patientid: patid,
-            name: name,
-            measurements: []
-          })
-          return new FindingsModel(newFinding)
-        } catch (err) {
-          throw ("server error")
+        if (bCreateIfMissing) {
+          const type = definitions[name]
+          if (!type) {
+            throw new Error('no finding definition for ' + name + ' found!')
+          }
+          try {
+            const newFinding = await this.dataService.create({
+              patientid: patid,
+              name: name,
+              measurements: []
+            })
+            return new FindingsModel(newFinding)
+          } catch (err) {
+            throw ("server error")
+          }
+        } else {
+          throw new Error("Finding not found " + name)
         }
       }
     }
@@ -142,7 +129,7 @@ export class FindingsManager extends ObjectManager {
 
   async saveFinding(f: FindingsModel) {
     try {
-      let updated = await this.dataService.update(f.f.id, f.f, {query: { database:prefix}})
+      let updated = await this.dataService.update(f.f.id, f.f, { query: { database: prefix } })
       return updated
     } catch (err) {
       throw ("server error")
@@ -157,16 +144,23 @@ export class FindingsManager extends ObjectManager {
    * @returns an updated FindingModel
    */
   async addFinding(name: string, patid: string, values: string[]) {
-    let finding = await this.getAll(name, patid)
+    let finding = await this.getFinding(name, patid, true)
     try {
       finding.addMeasurement(values)
-      finding.f = await this.dataService.update(finding.f.id, finding.f, {query: { database:prefix}})
+      finding.f = await this.dataService.update(finding.f.id, finding.f, { query: { database: prefix } })
       return finding
     } catch (err) {
       throw ("server error")
     }
   }
 
+  /**
+   * Add a measurement from a string as defined in the 'cretae' attribute of the
+   * finding definition
+   * @param name name of the finding category
+   * @param string-formed value to add (e.g. 120/80)
+   * @returns 
+   */
   createFindingFromString(name, value) {
     const actPat = patient
     const actUser: UserType = user
@@ -187,7 +181,7 @@ export class FindingsManager extends ObjectManager {
       const f: FindingType = await this.dataService.get(id)
       const finding = new FindingsModel(f)
       if (finding.removeMeasurement(date)) {
-        let updated = await this.dataService.update(finding.f.id, finding.f, {query: { database:prefix}})
+        let updated = await this.dataService.update(finding.f.id, finding.f, { query: { database: prefix } })
       }
     } catch (err) {
       throw ("server error")
