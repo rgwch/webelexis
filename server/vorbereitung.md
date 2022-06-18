@@ -98,3 +98,25 @@ Kopieren Sie server/config/default.js nach server/config/dockered.js und ändern
 ## 4. Webelexis verwenden
 
 Richten Sie Ihren Browser (vorzugsweise Chrome) auf `http://localhost:3000`
+
+# Tipps
+
+## Wie bekommt man eine existierende Elexis-Datenbank in den elexisdb-Container?
+
+(Diese Kurzanleitung verwendet für Passwörter etc. die Vorgaben, die Sie hoffentlich geändert haben, also bitte anpassen)
+
+* Docker-compose starten (entweder hier in server/lib/external oder in elexis-oob)
+* Einen Elexis-Databenbank-Dump bereitstellen - hier z.B. elexis.sql
+* `docker cp elexis.sql wlx_elexisdb://elexis.sql`
+* `docker exec -it wlx_elexisdb /bin/bash`
+* `mysql -u root -pelexisadmin`
+* `create database elexiscopy;`
+* `grant all on elexiscopy.* to elexisxuser@'%' identified by 'elexis';`
+* `use elexiscopy;`
+* `source /elexis.sql`
+* `exit`
+* `exit`
+* 
+  
+
+  
