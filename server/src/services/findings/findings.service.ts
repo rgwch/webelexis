@@ -1,23 +1,21 @@
-// Initializes the `findings` service on path `/findings`
-const createService = require('feathers-nedb')
-import createModel from '../../models/findings.model'
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import hooks from './findings.hooks'
+import { Finding } from './findings.class'
 
 export default function (app) {
-  const Model = createModel(app)
+  const options = app.get("findings") || {}
   const paginate = app.get('paginate')
 
-  const options = {
-    Model,
-    id: 'id',
-    paginate,
-  }
 
   // Initialize our service with any options it requires
-  app.use('/findings', createService(options))
+  app.use('/findings', new Finding(app, options))
 
   // Get our initialized service so that we can register hooks
   const service = app.service('findings')
-
   service.hooks(hooks)
 }

@@ -10,6 +10,7 @@ import { ObjectManager } from './object-manager'
 import type { UserType } from "./user-model";
 import { currentPatient, currentUser } from "../services/store";
 import defs from '../user/finding-defs'
+import util from "../services/util"
 const prefix = "findings"
 
 const definitions: any = {}
@@ -59,7 +60,7 @@ export interface FindingType extends ElexisType {
   title: string,          // translatable title,e.g. "Gewicht"
   measurements: Array<     // e.g. [{ date: '22.8.2018', values: ['57','178','17.9']}]
     {
-      date: Date,
+      datetime: string,
       values: Array<string | number>,
       selected?: boolean
     }
@@ -176,11 +177,11 @@ export class FindingsManager extends ObjectManager {
    * @param id id of the finding
    * @param date date/time to remove
    */
-  async removeFinding(id: string, date: Date) {
+  async removeFinding(id: string, datetime: string) {
     try {
       const f: FindingType = await this.dataService.get(id)
       const finding = new FindingsModel(f)
-      if (finding.removeMeasurement(date)) {
+      if (finding.removeMeasurement(datetime)) {
         let updated = await this.dataService.update(finding.f.id, finding.f, { query: { database: prefix } })
       }
     } catch (err) {
@@ -208,19 +209,19 @@ export class FindingsModel {
   addMeasurement = (m: Array<string>, mdate: Date = undefined) => {
     const processed = this.def.create ? this.def.create(m) : m
     this.f.measurements.push({
-      date: mdate || new Date(),
+      datetime: util.DateToElexisDateTime(mdate || new Date()),
       values: processed
     })
   }
-  removeMeasurement = (date: Date) => {
-    const candidate = this.f.measurements.findIndex(e => e.date == date)
+  removeMeasurement = (datetime: string) => {
+    const candidate = this.f.measurements.findIndex(e => e.datetime === datetime)
     if (candidate > -1) {
       this.f.measurements.splice(candidate, 1)
       return true
     }
     return false
   }
-  getRowFor(date): Array<String | number> {
-    return this.f.measurements.find(m => m.date == date).values
+  getRowFor(datetime:string): Array<String | number> {
+    return this.f.measurements.find(m => m.datetime === datetime).values
   }
 }
