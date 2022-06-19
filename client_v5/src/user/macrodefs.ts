@@ -9,9 +9,6 @@ import {DateTime} from 'luxon'
 import { getService } from "../services/io";
 import { currentPatient, currentCase } from "../services/store";
 import util from '../services/util'
-currentPatient.subscribe(p=>actPat=p)
-currentCase.subscribe(c=>actCase=c)
-let actPat, actCase
 /**
  * Use this file to declare all text replacements / macros
  * each entry consists of
@@ -106,8 +103,8 @@ export default [
       }
 
       const aufService = getService('auf')
-      const pat = actPat
-      const fall = actCase
+      const pat = undefined // actPat
+      const fall = undefined // actCase
       const dbformat = "yyyyLLdd"
       const today = DateTime.now().toFormat(dbformat)
       const auftemplate = {
