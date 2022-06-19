@@ -6,7 +6,6 @@
  ********************************************/
 
 import type { FindingType } from "../models/findings-model";
-import type { FindingsModel } from "../models/findings-model";
 import Popup from "../widgets/Popup.svelte";
 import Badge from "../widgets/Badge.svelte";
 import Collapse from "../widgets/Collapse.svelte";
@@ -17,18 +16,19 @@ import { _ } from "svelte-i18n";
 import { findingsManager } from "../models";
 import util from "../services/util";
 import { DateTime } from "luxon";
+import { onMount, onDestroy } from "svelte";
 
 /**
  * Display a single Finding type and allow to add, select, delete and display measrurements
  */
-export let finding: FindingsModel;
+export let finding: FindingType;
 let isOpen: boolean = false;
 let doAddMeasurement: boolean = false;
 let values = {};
 let newdate = util.DateToElexisDate(new Date());
 
 function displayLine(row) {
-  const def = finding.def; // definitions[finding.getName()];
+  const def = findingsManager.getDefinitions()[finding.name]; // finding.def; // definitions[finding.getName()];
   if (def && def.compact) {
     return def.compact(row);
   } else if (def.verbose) {
@@ -41,22 +41,18 @@ function displayLine(row) {
 async function enterValues(event) {
   if (event.detail == true) {
     let r = [];
-    for (const el of finding.getElements()) {
+    for (const el of findingsManager.getElements(finding)) {
       r.push(values[el.title]);
     }
-    finding.addMeasurement(r, newdate);
-    try {
-      const updated = await findingsManager.saveFinding(finding);
-    } catch (err) {
-      alert(err);
-    }
+    const fn = await findingsManager.addMeasurement(finding, r, newdate);
+    // finding.measurements = fn.measurements;
   }
 }
 /**
  * Menuoption: select all measurements
  */
 function selectAll() {
-  for (const m of finding.getMeasurements()) {
+  for (const m of finding.measurements) {
     m["selected"] = true;
   }
 }
@@ -64,13 +60,13 @@ function selectAll() {
  * Menuoption: Unselect all measurments
  */
 function deselectAll() {
-  for (const m of finding.getMeasurements()) {
+  for (const m of finding.measurements) {
     m["selected"] = false;
   }
 }
 
 function getDisabled() {
-  if (finding && finding.getMeasurements().some((m) => m["selected"])) {
+  if (finding && finding.measurements.some((m) => m["selected"])) {
     return "";
   } else {
     return "disabled";
@@ -80,15 +76,17 @@ function getDisabled() {
  * Menuoption: Delete selected meaurements (after confirmation)
  */
 async function remove() {
-  if (finding.f.measurements.some((m) => m["selected"])) {
-    for (const m of finding.f.measurements) {
+  if (finding.measurements.some((m) => m["selected"])) {
+    for (const m of finding.measurements) {
       if (m["selected"]) {
         const ask = $_("prompts.reallydelete", {
           values: { item: util.ElexisDateToLocalDate(m.datetime) },
         });
         if (confirm(ask)) {
-          finding.removeMeasurement(m.datetime);
-          await findingsManager.saveFinding(finding);
+          finding = await findingsManager.removeMeasurement(
+            finding,
+            m.datetime
+          );
         }
       }
     }
@@ -99,8 +97,8 @@ async function remove() {
  * create a chart of selected elements. If no element are selected, select all.
  */
 function chart() {
-  if (!finding.f.measurements.some((m) => m["selected"])) {
-    for (const m of finding.f.measurements) {
+  if (!finding.measurements.some((m) => m["selected"])) {
+    for (const m of finding.measurements) {
       m["selected"] = true;
     }
   }
@@ -112,19 +110,8 @@ function chart() {
  * if it's "our" finding, update the list.
  */
 const checkUpdate = (updated) => {
-  //console.log(JSON.stringify(updated))
-  //console.log(JSON.stringify(finding))
-  if (finding && finding.f.id) {
-    if (updated.id === finding.f.id) {
-      finding.f.measurements = updated.measurements;
-    }
-  } else {
-    if (finding && finding.f.name) {
-      if (finding.f.name == updated.name) {
-        updated.title = finding.getTitle();
-        finding = updated;
-      }
-    }
+  if (updated.id === finding.id) {
+    finding.measurements = updated.measurements;
   }
 };
 
@@ -152,13 +139,20 @@ function menuselect(event) {
       break;
   }
 }
+
+onMount(() => {
+  findingsManager.subscribe("updated", checkUpdate);
+});
+onDestroy(() => {
+  findingsManager.unsubscribe("updated", checkUpdate);
+});
 </script>
 
 <template>
   <Collapse bind:open="{isOpen}">
     <div slot="header" class="flex">
-      <span>{finding.getTitle()}</span>
-      <Badge text="{finding.getMeasurements().length.toString()}" />
+      <span>{findingsManager.getTitle(finding)}</span>
+      <Badge text="{finding.measurements.length.toString()}" />
       {#if isOpen}
         <span>
           <Popup items="{menuItems}" on:selected="{menuselect}" />
@@ -167,11 +161,11 @@ function menuselect(event) {
     </div>
 
     <div slot="body">
-      <ul>
-        {#each finding.getMeasurements() as m}
-          <li class="list-group-item">
+      <ul class="list-none">
+        {#each finding.measurements as m}
+          <li>
             <input type="checkbox" bind:checked="{m.selected}" />
-            <span style="font-size:smaller;font-weight:bolder"
+            <span class="text-sm font-semibold"
               >{util.ElexisDateToLocalDate(m.datetime)}</span>
             {displayLine(m.values)}
           </li>
@@ -181,14 +175,14 @@ function menuselect(event) {
   </Collapse>
   {#if doAddMeasurement}
     <Modal
-      title="{finding.getTitle()}"
+      title="{findingsManager.getTitle(finding)}"
       dismiss="{() => {
         doAddMeasurement = false;
       }}"
       on:closed="{enterValues}">
       <div slot="body">
-        <DateInput dateString="{newdate}" />
-        {#each finding.getElements() as el}
+        <DateInput bind:dateString="{newdate}" />
+        {#each findingsManager.getElements(finding) as el}
           {#if el.manual == true}
             <LineInput
               bind:value="{values[el.title]}"

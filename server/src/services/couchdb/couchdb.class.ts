@@ -121,10 +121,10 @@ export class CouchDB {
   /**
    * Update existing object. If no object with the given ID exists:
    * create new entry, if params.query.upsert is true, throw not_found otherwise.
-   * 
+   *
    * @param id id of the object to update
    * @param data the object
-   * @param params,wuery.database, params params.query.upsert, 
+   * @param params,wuery.database, params params.query.upsert,
    * @returns the updated or newly created object
    */
   async update(id, data, params?) {
@@ -136,7 +136,8 @@ export class CouchDB {
         logger.error("CouchDB update: " + JSON.stringify(result))
         throw new Error(result.reason)
       } else {
-        return obj
+        data.rev = result.rev
+        return data
       }
     } catch (err) {
       if (err.message === "not_found") {

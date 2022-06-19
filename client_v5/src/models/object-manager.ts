@@ -18,6 +18,13 @@ export class ObjectManager {
     this.dataService = getService(service);
   }
 
+  public subscribe(msg: "created" | "updated" | "patched" | "removed", func: (obj) => void) {
+    this.dataService.on(msg, func)
+  }
+
+  public unsubscribe(msg: "created" | "updated" | "patched" | "removed", func: (obj) => void) {
+    this.dataService.off(msg, func)
+  }
   /**
    * Create or update (if exists) an object
    * Removes all client side helper attributes (starting with _)

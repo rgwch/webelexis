@@ -46,7 +46,7 @@ export default [
       }
       return ret
     },
-    compact: (row): string => `BD: ${row[0]}/${row[1]}`
+    compact: (row): string => `BD: ${row[0]}/${row[1]}` + (row[2] ? ", P:" + row[2] : "")
   }, {
     name: "metabolic",
     title: "Stoffwechsel",

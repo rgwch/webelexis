@@ -7,17 +7,10 @@
 
 import type { ElexisType } from "./elexistype";
 import { ObjectManager } from './object-manager'
-import type { UserType } from "./user-model";
-import { currentPatient, currentUser } from "../services/store";
 import defs from '../user/finding-defs'
 import util from "../services/util"
 
 const definitions: any = {}
-
-let patient
-let user
-currentPatient.subscribe(p => { patient = p })
-currentUser.subscribe(u => user = u)
 
 for (const def of defs as FindingDef[]) {
   definitions[def.name] = def
@@ -84,6 +77,10 @@ export class FindingsManager extends ObjectManager {
     return definitions
   }
 
+  getDefinition(f: FindingType) {
+    return definitions[f.name]
+  }
+
   /**
    * Get Name and title of all defined finding categories
 */
@@ -100,11 +97,11 @@ export class FindingsManager extends ObjectManager {
    * @param bCreateIfMissing:if true: Cretae that Finding, if it doesn't exist
    * @returns A promise with the existing or newly created FindingModel of the specified type for the specified patient
    */
-  async getFinding(name: string, patid: string, bCreateIfMissing: boolean): Promise<FindingsModel> {
+  async getFinding(name: string, patid: string, bCreateIfMissing: boolean): Promise<FindingType> {
     if (name && patid) {
       const fm = await this.dataService.find({ query: { name: name, patientid: patid } })
       if (fm.data && fm.data.length > 0) {
-        return new FindingsModel(fm.data[0])
+        return fm.data[0]
       } else {
         if (bCreateIfMissing) {
           const type = definitions[name]
@@ -117,7 +114,7 @@ export class FindingsManager extends ObjectManager {
               name: name,
               measurements: []
             })
-            return new FindingsModel(newFinding)
+            return newFinding
           } catch (err) {
             throw ("server error " + err)
           }
@@ -128,9 +125,9 @@ export class FindingsManager extends ObjectManager {
     }
   }
 
-  async saveFinding(f: FindingsModel) {
+  async saveFinding(f: FindingType): Promise<FindingType> {
     try {
-      let updated = await this.dataService.update(f.f.id, f.f)
+      let updated = await this.dataService.update(f.id, f)
       return updated
     } catch (err) {
       throw ("server error " + err)
@@ -138,22 +135,27 @@ export class FindingsManager extends ObjectManager {
   }
 
   /**
-   * Add measurements to a finding
+   * Add measurements to a finding and save the modification to the database
    * @param name name of the finding
    * @param patid patient to match
    * @param values an arra with strings or numbers
    * @returns an updated FindingModel
    */
-  async addMeasurement(name: string, patid: string, values: string[]) {
-    let finding = await this.getFinding(name, patid, true)
+  async addMeasurement(f: FindingType, values: string[], mdate: string): Promise<FindingType> {
+    const def = this.getDefinition(f)
+    const processed = def.create ? def.create(values) : values
+    f.measurements.push({
+      datetime: util.normalize(mdate, util.ELEXISDATETIME),
+      values: processed
+    })
     try {
-      finding.addMeasurement(values)
-      finding.f = await this.dataService.update(finding.f.id, finding.f)
-      return finding
+      const updated = await this.dataService.update(f.id, f)
+      return updated
     } catch (err) {
       throw ("server error " + err)
     }
   }
+
 
   /**
    * Add a measurement from a string as defined in the 'cretae' attribute of the
@@ -162,66 +164,46 @@ export class FindingsManager extends ObjectManager {
    * @param string-formed value to add (e.g. 120/80)
    * @returns
    */
-  createMeasurementFromString(name, value) {
-    const actPat = patient
-    const actUser: UserType = user
+  async createMeasurementFromString(patientid, name, value): Promise<FindingType> {
     const item = definitions[name]
     const processed = item.create(value)
-    this.addMeasurement(name, actPat.id, processed).then(added => {
-
-    })
-    return processed;
+    const f = await this.getFinding(name, patientid, true)
+    const added = await this.addMeasurement(f, processed, util.DateToElexisDateTime(new Date()))
+    return added;
   }
   /**
-   * remove a measrument from a finding
+   * remove a measrument from a finding and save the modification to the database
    * @param id id of the finding
    * @param date date/time to remove
    */
-  async removeMeasurement(id: string, datetime: string) {
-    try {
-      const f: FindingType = await this.dataService.get(id)
-      const finding = new FindingsModel(f)
-      if (finding.removeMeasurement(datetime)) {
-        let updated = await this.dataService.update(finding.f.id, finding.f)
+  async removeMeasurement(f: FindingType, datetime: string): Promise<FindingType> {
+    const candidate = f.measurements.findIndex(e => e.datetime === datetime)
+    if (candidate > -1) {
+      f.measurements.splice(candidate, 1)
+      try {
+        let updated = await this.dataService.update(f.id, f)
+        return updated
+      } catch (err) {
+        throw ("server error " + err)
       }
-    } catch (err) {
-      throw ("server error " + err)
+    } else {
+      return f
     }
+  }
+
+  getName = (f: FindingType) => f.name
+  getTitle = (f: FindingType) => {
+    const def = this.getDefinition(f)
+    return def?.title
+  }
+  getElements = (f: FindingType) => {
+    const def = this.getDefinition(f)
+    return def?.elements
+  }
+
+  getRowFor(f: FindingType, datetime: string): Array<String | number> {
+    return f.measurements.find(m => m.datetime === datetime).values
   }
 }
 
-/**
- * FindingsModel is a wrapper around a FindingDef/FindingType to allow some operations
- * Note: FindingModel will neither fetch nor save its contents to the DataService. It
- * only manipulates in-clientside-memory.
- */
-export class FindingsModel {
-  f: FindingType
-  def: FindingDef
-  constructor(obj: FindingType) {
-    this.f = obj
-    this.def = definitions[this.f.name]
-  }
-  getName = () => this.f.name
-  getTitle = () => this.def.title
-  getElements = () => this.def.elements
-  getMeasurements = () => this.f.measurements
-  addMeasurement = (m: Array<string>, mdate: string = undefined) => {
-    const processed = this.def.create ? this.def.create(m) : m
-    this.f.measurements.push({
-      datetime: util.normalize(mdate, util.ELEXISDATETIME),
-      values: processed
-    })
-  }
-  removeMeasurement = (datetime: string) => {
-    const candidate = this.f.measurements.findIndex(e => e.datetime === datetime)
-    if (candidate > -1) {
-      this.f.measurements.splice(candidate, 1)
-      return true
-    }
-    return false
-  }
-  getRowFor(datetime: string): Array<String | number> {
-    return this.f.measurements.find(m => m.datetime === datetime).values
-  }
-}
+

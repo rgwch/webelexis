@@ -15,7 +15,7 @@ export default {
     find: [],
     get: [],
     create: [],
-    update: [ensureID],
+    update: [],
     patch: [],
     remove: []
   },
@@ -35,7 +35,7 @@ export default {
     find: [],
     get: [],
     create: [],
-    update: [ensureID],
+    update: [],
     patch: [],
     remove: []
   }

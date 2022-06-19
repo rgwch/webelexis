@@ -1,3 +1,4 @@
+import { logger } from './../../logger';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2022 by G. Weirich         *
@@ -20,7 +21,10 @@ export class Finding {
     this.nosql = app.service("nosql")
     this.database = this.options.namespace || "findings"
     this.defaultdb = { query: { database: this.database } }
-    this.nosql.create({ _id: "created:" + new Date().toString() }, this.defaultdb)
+    this.nosql.create({ _id: "created__", at: new Date().toString() }, this.defaultdb).catch(err => {
+      logger.info("ensureExists finding database ok " + err)
+    })
+
   }
 
   async get(id, params?): Promise<entity> {
@@ -37,7 +41,8 @@ export class Finding {
   }
   async update(id: string, obj: entity, params?): Promise<entity> {
     params.query = Object.assign({}, this.defaultdb.query, params.query)
-    return this.nosql.update(id, obj, params)
+    const updated = await this.nosql.update(id, obj, params)
+    return updated
   }
   async patch(id: string, obj: Partial<entity>, params?): Promise<entity> {
     params.query = Object.assign({}, this.defaultdb.query, params.query)
