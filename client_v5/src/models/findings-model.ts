@@ -100,8 +100,9 @@ export class FindingsManager extends ObjectManager {
   async getFinding(name: string, patid: string, bCreateIfMissing: boolean): Promise<FindingType> {
     if (name && patid) {
       const fm = await this.dataService.find({ query: { name: name, patientid: patid } })
+      let result:FindingType
       if (fm.data && fm.data.length > 0) {
-        return fm.data[0]
+        result= fm.data[0]
       } else {
         if (bCreateIfMissing) {
           const type = definitions[name]
@@ -109,19 +110,22 @@ export class FindingsManager extends ObjectManager {
             throw new Error('no finding definition for ' + name + ' found!')
           }
           try {
-            const newFinding = await this.dataService.create({
+            result = await this.dataService.create({
               patientid: patid,
               name: name,
               measurements: []
             })
-            return newFinding
           } catch (err) {
-            throw ("server error " + err)
+            throw new Error("server error " + err)
           }
         } else {
           throw new Error("Finding not found " + name)
         }
       }
+      result.measurements.sort((a,b)=>{return a.datetime.localeCompare(b.datetime)})
+      return result
+    }else{
+      throw new Error("Bad parameters for getFinding")
     }
   }
 
@@ -148,6 +152,7 @@ export class FindingsManager extends ObjectManager {
       datetime: util.normalize(mdate, util.ELEXISDATETIME),
       values: processed
     })
+    f.measurements.sort((a,b)=>{return a.datetime.localeCompare(b.datetime)})
     try {
       const updated = await this.dataService.update(f.id, f)
       return updated

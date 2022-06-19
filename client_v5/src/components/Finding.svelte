@@ -45,6 +45,9 @@ async function enterValues(event) {
       r.push(values[el.title]);
     }
     const fn = await findingsManager.addMeasurement(finding, r, newdate);
+    values={}
+    newdate = util.DateToElexisDate(new Date());
+    // finding=fn
     // finding.measurements = fn.measurements;
   }
 }
@@ -110,7 +113,7 @@ function chart() {
  * if it's "our" finding, update the list.
  */
 const checkUpdate = (updated) => {
-  if (updated.id === finding.id) {
+  if (updated?.id === finding.id) {
     finding.measurements = updated.measurements;
   }
 };
