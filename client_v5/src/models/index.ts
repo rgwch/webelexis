@@ -10,6 +10,7 @@ import { PatientManager } from "./patient-model"
 import { UserManager } from './user-model'
 import { PrescriptionManager } from "./prescription-model"
 import { DocumentManager } from './document-model'
+import { FindingsManager } from './findings-model';
 
 export const caseManager = new CaseManager()
 export const billingsManager = new BillingsManager()
@@ -23,3 +24,4 @@ export const patientManager = new PatientManager()
 export const prescriptionManager = new PrescriptionManager()
 export const briefManager = new BriefManager()
 export const documentManager = new DocumentManager()
+export const findingsManager = new FindingsManager()
