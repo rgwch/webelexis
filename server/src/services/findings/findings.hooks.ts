@@ -1,13 +1,21 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const treatDeleted = require('../../hooks/treat-deleted');
+import { v4 as uuid } from 'uuid'
+
+const ensureID = ctx => {
+  if (!ctx.id) {
+    ctx.id = uuid();
+  }
+  return ctx
+}
 
 export default {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],
-    update: [],
+    update: [ensureID],
     patch: [],
     remove: []
   },
@@ -27,7 +35,7 @@ export default {
     find: [],
     get: [],
     create: [],
-    update: [],
+    update: [ensureID],
     patch: [],
     remove: []
   }

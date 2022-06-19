@@ -18,7 +18,7 @@ export let locked = false;
         </slot>
       </div>
       {#if open}
-        <div transition:slide>
+        <div transition:slide="{{ duration: 100 }}">
           <slot name="body" />
         </div>
       {/if}

@@ -9,6 +9,7 @@ import Encounters from "../components/Encounters.svelte";
 import Cases from "../components/Cases.svelte";
 import Prescriptions from "../components/Prescriptions.svelte";
 import Documents from "./Documents.svelte";
+import Findings from "../components/Findings.svelte";
 
 let selector = false;
 
@@ -54,7 +55,7 @@ function selected() {
         <Prescriptions />
       </TabPanel>
       <TabPanel>
-        <p>No contents yet</p>
+        <Findings />
       </TabPanel>
       <TabPanel>
         <Documents />

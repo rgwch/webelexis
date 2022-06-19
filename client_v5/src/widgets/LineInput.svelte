@@ -4,6 +4,7 @@ import Fa from "svelte-fa";
 const dispatch = createEventDispatcher();
 export let value: string = "";
 export let label: string = "";
+export let placeholder: string = "";
 export let disabled: boolean = false;
 export let buttonIcon = undefined;
 export let buttonText: string = undefined;
@@ -39,6 +40,7 @@ function key(event) {
       <input
         autofocus
         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
+        placeholder="{placeholder}"
         bind:value
         on:blur="{changed}"
         on:keypress="{key}"

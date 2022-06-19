@@ -19,6 +19,7 @@ import auf from './auf/auf.service'
 import createpdf from './createpdf/createpdf.service'
 import macros from './macros/macros.service'
 import labresults from './labresults/labresults.service'
+import couchdb from './couchdb/couchdb.service'
 import findings from './findings/findings.service'
 import stickers from './stickers/stickers.service'
 import billing from './billing/billing.service'
@@ -32,7 +33,6 @@ import briefe from './briefe/briefe.service'
 import { ACE, declareACE } from '../util/acl'
 import utility from './utility/utility-service'
 import blob from './blob/blob.service'
-import couchdb from './couchdb/couchdb.service'
 import schedule from './schedule/schedule.service'
 import stickynotes from './stickynotes/stickynotes.service'
 import bills from './bills/bills.service'
@@ -73,7 +73,6 @@ export default (app) => {
   app.configure(createpdf)
   app.configure(macros)
   app.configure(labresults)
-  app.configure(findings)
   app.configure(stickers)
   generateACLs('stickers')
   app.configure(billing)
@@ -93,4 +92,5 @@ export default (app) => {
   app.configure(utility)
   app.configure(couchdb)
   app.configure(blob)
+  app.configure(findings)
 }

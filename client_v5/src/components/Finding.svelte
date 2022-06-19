@@ -6,21 +6,29 @@
  ********************************************/
 
 import type { FindingType } from "../models/findings-model";
-import { FindingsManager, FindingsModel } from "../models/findings-model";
+import type { FindingsModel } from "../models/findings-model";
 import Popup from "../widgets/Popup.svelte";
+import Badge from "../widgets/Badge.svelte";
 import Collapse from "../widgets/Collapse.svelte";
+import Modal from "../widgets/Modal.svelte";
+import LineInput from "../widgets/LineInput.svelte";
+import DateInput from "../widgets/DateInput.svelte";
 import { _ } from "svelte-i18n";
+import { findingsManager } from "../models";
+import util from "../services/util";
 import { DateTime } from "luxon";
 
 /**
  * Display a single Finding type and allow to add, select, delete and display measrurements
  */
-export let finding: FindingType;
-let isOpen: string = "";
-let definitions;
+export let finding: FindingsModel;
+let isOpen: boolean = false;
+let doAddMeasurement: boolean = false;
+let values = {};
+let newdate = util.DateToElexisDate(new Date());
 
 function displayLine(row) {
-  const def = this.definitions[this.finding.name];
+  const def = finding.def; // definitions[finding.getName()];
   if (def && def.compact) {
     return def.compact(row);
   } else if (def.verbose) {
@@ -30,27 +38,25 @@ function displayLine(row) {
   }
 }
 
-/**
- * Menuoption: Add Measurement
- */
-function addItem() {
-  this.fm.fetch(this.finding.name, null).then((item) => {
-    if (item) {
-      /*
-        this.dgs.open({ viewModel: AddFinding, model: item }).whenClosed(result => {
-          if (!result.wasCancelled) {
-            this.fm.saveFinding(result.output)
-          }
-        })
-        */
+async function enterValues(event) {
+  if (event.detail == true) {
+    let r = [];
+    for (const el of finding.getElements()) {
+      r.push(values[el.title]);
     }
-  });
+    finding.addMeasurement(r, newdate);
+    try {
+      const updated = await findingsManager.saveFinding(finding);
+    } catch (err) {
+      alert(err);
+    }
+  }
 }
 /**
  * Menuoption: select all measurements
  */
 function selectAll() {
-  for (const m of this.finding.measurements) {
+  for (const m of finding.getMeasurements()) {
     m["selected"] = true;
   }
 }
@@ -58,13 +64,13 @@ function selectAll() {
  * Menuoption: Unselect all measurments
  */
 function deselectAll() {
-  for (const m of this.finding.measurements) {
+  for (const m of finding.getMeasurements()) {
     m["selected"] = false;
   }
 }
 
 function getDisabled() {
-  if (this.finding && this.finding.measurements.some((m) => m["selected"])) {
+  if (finding && finding.getMeasurements().some((m) => m["selected"])) {
     return "";
   } else {
     return "disabled";
@@ -74,14 +80,15 @@ function getDisabled() {
  * Menuoption: Delete selected meaurements (after confirmation)
  */
 async function remove() {
-  if (this.finding.measurements.some((m) => m["selected"])) {
-    for (const m of this.finding.measurements) {
+  if (finding.f.measurements.some((m) => m["selected"])) {
+    for (const m of finding.f.measurements) {
       if (m["selected"]) {
         const ask = $_("prompts.reallydelete", {
-          values: { item: DateTime.fromJSDate(m.date).toFormat("dd.LL.yyyy") },
+          values: { item: util.ElexisDateToLocalDate(m.datetime) },
         });
         if (confirm(ask)) {
-          await this.fm.removeFinding(this.finding.id, m.date);
+          finding.removeMeasurement(m.datetime);
+          await findingsManager.saveFinding(finding);
         }
       }
     }
@@ -92,35 +99,30 @@ async function remove() {
  * create a chart of selected elements. If no element are selected, select all.
  */
 function chart() {
-  if (!this.finding.measurements.some((m) => m["selected"])) {
-    for (const m of this.finding.measurements) {
+  if (!finding.f.measurements.some((m) => m["selected"])) {
+    for (const m of finding.f.measurements) {
       m["selected"] = true;
     }
   }
-  // this.dgs.open({ viewModel: DisplayChart, model: this.finding })
+  // dgs.open({ viewModel: DisplayChart, model: finding })
 }
-/**
- * Open and close display of measurements of a category
- */
-function toggle() {
-  this.isOpen = !this.isOpen;
-}
+
 /**
  * React on update of finding-objects (Message from the service):
  * if it's "our" finding, update the list.
  */
 const checkUpdate = (updated) => {
   //console.log(JSON.stringify(updated))
-  //console.log(JSON.stringify(this.finding))
-  if (this.finding && this.finding.id) {
-    if (updated.id === this.finding.id) {
-      this.finding.measurements = updated.measurements;
+  //console.log(JSON.stringify(finding))
+  if (finding && finding.f.id) {
+    if (updated.id === finding.f.id) {
+      finding.f.measurements = updated.measurements;
     }
   } else {
-    if (this.finding && this.finding.name) {
-      if (this.finding.name == updated.name) {
-        updated.title = this.finding.title;
-        this.finding = updated;
+    if (finding && finding.f.name) {
+      if (finding.f.name == updated.name) {
+        updated.title = finding.getTitle();
+        finding = updated;
       }
     }
   }
@@ -130,30 +132,71 @@ const menuItems = [
   $_("actions.add"),
   $_("actions.selectall"),
   $_("actions.selectnone"),
-  $_("actions.graph"),
-  $_("actions.export"),
+  // $_("actions.graph"),
+  // $_("actions.export"),
   $_("actions.delete"),
 ];
+function menuselect(event) {
+  switch (event.detail) {
+    case $_("actions.add"):
+      doAddMeasurement = true;
+      break;
+    case $_("actions.selectall"):
+      selectAll();
+      break;
+    case $_("actions.selectnone"):
+      deselectAll();
+      break;
+    case $_("actions.delete"):
+      remove();
+      break;
+  }
+}
 </script>
 
 <template>
-  <Collapse>
+  <Collapse bind:open="{isOpen}">
     <div slot="header" class="flex">
-      <span>{finding.title}</span>
-      <span class="badge">{finding.measurements.length}</span>
-      <Popup items={menuItems}></Popup>
+      <span>{finding.getTitle()}</span>
+      <Badge text="{finding.getMeasurements().length.toString()}" />
+      {#if isOpen}
+        <span>
+          <Popup items="{menuItems}" on:selected="{menuselect}" />
+        </span>
+      {/if}
     </div>
+
     <div slot="body">
       <ul>
-      {#each finding.measurements as m}
-      <li class="list-group-item">
-        <input type="checkbox" bind:checked="{m.selected}" />
-        <span style="font-size:smaller;font-weight:bolder">{m.date}</span>
-        {displayLine(m.values)}
-      </li>
-  
-      {/each}
-    </ul>
+        {#each finding.getMeasurements() as m}
+          <li class="list-group-item">
+            <input type="checkbox" bind:checked="{m.selected}" />
+            <span style="font-size:smaller;font-weight:bolder"
+              >{util.ElexisDateToLocalDate(m.datetime)}</span>
+            {displayLine(m.values)}
+          </li>
+        {/each}
+      </ul>
     </div>
   </Collapse>
+  {#if doAddMeasurement}
+    <Modal
+      title="{finding.getTitle()}"
+      dismiss="{() => {
+        doAddMeasurement = false;
+      }}"
+      on:closed="{enterValues}">
+      <div slot="body">
+        <DateInput dateString="{newdate}" />
+        {#each finding.getElements() as el}
+          {#if el.manual == true}
+            <LineInput
+              bind:value="{values[el.title]}"
+              label="{el.title}"
+              placeholder="{el.unit}" />
+          {/if}
+        {/each}
+      </div>
+    </Modal>
+  {/if}
 </template>

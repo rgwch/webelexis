@@ -24,6 +24,13 @@ export default {
   DateToElexisDateTime: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATETIME),
   DateObjectToLocalDate: (date: Date) => DateTime.fromJSDate(date).toFormat(LOCALDATE),
   LuxonToLocalDate: (date: DateTime): string => date.toFormat(LOCALDATE),
-  LuxonToElexisDate: (date: DateTime): string => date.toFormat(ELEXISDATE)
+  LuxonToElexisDate: (date: DateTime): string => date.toFormat(ELEXISDATE),
+  normalize(date: string, model: string) {
+    if (date.length < model.length) {
+      return date.padEnd(model.length, "0")
+    } else if (date.length > model.length) {
+      return date.substring(0, model.length)
+    }
+  }
 }
 
