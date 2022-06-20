@@ -35,7 +35,5 @@ data/sample-docbase/templates/*.html
 data/sample-docbase/*.pdf
 data/sample-docbase/documents
 
-package-lock.json
-client/aurelia_project/environments/brumm.ts
 server/test/ocrtested.pdf
 
