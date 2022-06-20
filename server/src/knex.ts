@@ -39,6 +39,7 @@ export default function (app) {
       if (result && result.length > 0) {
         logger.info("Found Webelexis Version %s", result[0].wert)
         if (result[0].wert < "3.0.6") {
+          // Database - webelexis version too old, normalize
           return normalize(app).then(() => {
             return db('config').where("param", "webelexis").update("wert", "3.0.6").then(res => {
               logger.info(res)
@@ -48,6 +49,7 @@ export default function (app) {
           })
         }
       } else {
+        // No database-webelexis version found at all. Normalize and modify.
         return normalize(app).then(() => {
           return db("config")
             .insert({ param: "webelexis", wert: "3.0.6" })
@@ -84,7 +86,7 @@ export default function (app) {
         All other errors are treated as fatal connection failures.
       */
       if (err.code != "ER_NO_SUCH_TABLE") {
-        logger.error("Can't connect do database: %s ", err)
+        logger.error("\n\n*** ABORT: Can't connect do elexis database: %s ***\n\n", err)
         process.exit(42)
       }
     })

@@ -1,3 +1,12 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2016-2022 by G. Weirich    *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
+/**
+ * Normalize database, i.e. convert all table names and field names to lowercase.
+ */
 import { logger } from "./logger"
 
 export default async app => {

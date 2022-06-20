@@ -22,7 +22,13 @@ export class Finding {
     this.database = this.options.namespace || "findings"
     this.defaultdb = { query: { database: this.database } }
     this.nosql.create({ _id: "created__", at: new Date().toString() }, this.defaultdb).catch(err => {
-      logger.info("ensureExists finding database ok " + err)
+      console.log(err)
+      const m=err.message
+      if (m !== "conflict") {
+      logger.error("Connection problem with CouchDB:" + err)
+      } else {
+        logger.info("ensureExists finding database ok " + err)
+      }
     })
 
   }

@@ -51,7 +51,8 @@ export class CouchDB {
     if (result.ok) {
       return await result.json()
     } else {
-      throw new Error("CouchDB List databases: " + JSON.stringify(result))
+      const explain=await result.json()
+      throw new Error("CouchDB List databases: " + JSON.stringify(result)+", "+JSON.stringify(explain));
     }
 
   }
@@ -111,8 +112,8 @@ export class CouchDB {
     }
     const result = await this.request(obj._id, db, "put", obj)
     if (result.error) {
-      logger.error(JSON.stringify(result))
-      throw new Error(result.reason)
+      logger.error(result.error)
+      throw new Error(result)
     } else {
       return obj
     }
