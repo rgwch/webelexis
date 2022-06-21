@@ -14,6 +14,14 @@ export class CouchDB {
     this.url = `http://${options.username}:${options.password}@${options.host}:${options.port}`
   }
 
+  async setup(app, path) {
+    logger.debug("Couchdb setup at path "+path)
+    const connect = await this.checkInstance()
+    if (!connect) {
+      process.exit(41)
+    }
+
+  }
   private async request(addr: string, database: string, method: "get" | "put" | "post" | "delete" = "get", body?: any): Promise<any> {
     const headers = {
       "Content-type": "application/json"
@@ -33,6 +41,10 @@ export class CouchDB {
     try {
       const data = await fetch(this.url + "/")
       if (data) {
+        if (data.status === 401) {
+          logger.error("Not authorized for CouchDB, Please check username/password")
+          return false;
+        }
         logger.info("Connected with CouchDB " + data.version)
         logger.info("Databases: " + JSON.stringify(this.listDatabases()))
         return true
@@ -41,7 +53,7 @@ export class CouchDB {
         return false;
       }
     } catch (err) {
-      logger.error("CouchDB: " + err)
+      logger.error("Could not connect with CouchDB: " + err)
       return false
     }
   }
@@ -51,8 +63,8 @@ export class CouchDB {
     if (result.ok) {
       return await result.json()
     } else {
-      const explain=await result.json()
-      throw new Error("CouchDB List databases: " + JSON.stringify(result)+", "+JSON.stringify(explain));
+      const explain = await result.json()
+      throw new Error("CouchDB List databases: " + JSON.stringify(result) + ", " + JSON.stringify(explain));
     }
 
   }
@@ -112,8 +124,8 @@ export class CouchDB {
     }
     const result = await this.request(obj._id, db, "put", obj)
     if (result.error) {
-      logger.error(result.error)
-      throw new Error(result)
+      logger.warn(result.error)
+      throw new Error(result.error)
     } else {
       return obj
     }

@@ -14,10 +14,12 @@ export default function (app) {
   app.use("/nosql", couch)
   const service = app.service("nosql")
   service.hooks(hooks)
+  /*
   couch.checkInstance().then(result=>{
     logger.info("Connection to CouchDB successful")
   }).catch(err=>{
     logger.error("\n*** FATAL: Could not connect to couch database. Aborting ***\n "+err)
     process.exit(43)
   })
+  */
 }
