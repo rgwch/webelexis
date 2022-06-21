@@ -144,12 +144,13 @@ export class CouchDB {
     const db = params?.query?.database || this.options.defaultDB || "webelexis"
     try {
       const obj = await this.get(id, params)
+      data._rev=obj._rev
       const result = await this.request(id + "?rev=" + obj._rev, db, "put", data)
       if (result.error) {
         logger.error("CouchDB update: " + JSON.stringify(result))
         throw new Error(result.reason)
       } else {
-        data.rev = result.rev
+        data._rev = result.rev
         return data
       }
     } catch (err) {
