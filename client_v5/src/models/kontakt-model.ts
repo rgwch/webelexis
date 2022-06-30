@@ -16,7 +16,7 @@ export interface KontaktType extends ElexisType {
   bezeichnung1: string;
   bezeichnung2?: string;
   bezeichnung3?: string;
-  geburtsdatum?: string;
+  geburtsdatum?: string;  
   istperson?: string;
   istanwender?: string;
   istmandant?: string;

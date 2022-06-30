@@ -17,6 +17,7 @@ export class Service {
           .where({ patientid: pat, visible: '1', 'rs.deleted': '0' })
           .orderBy('datum', 'desc')
           .select([
+            'rs.id',
             'rs.datum',
             'rs.Zeit',
             'li.kuerzel',

@@ -25,6 +25,15 @@ export default {
   DateObjectToLocalDate: (date: Date) => DateTime.fromJSDate(date).toFormat(LOCALDATE),
   LuxonToLocalDate: (date: DateTime): string => date.toFormat(LOCALDATE),
   LuxonToElexisDate: (date: DateTime): string => date.toFormat(ELEXISDATE),
+  ElexisDateToLuxon: (elexisdate: string): DateTime => {
+    if (elexisdate.length == ELEXISDATETIME.length) {
+      return DateTime.fromFormat(elexisdate, ELEXISDATETIME)
+    } else if (elexisdate.length == ELEXISDATE.length) {
+      return DateTime.fromFormat(elexisdate, ELEXISDATE)
+    } else {
+      throw new Error("Bad input for ElexisDateToLuxon")
+    }
+  },
   normalize(date: string, model: string) {
     if (date.length < model.length) {
       return date.padEnd(model.length, "0")
