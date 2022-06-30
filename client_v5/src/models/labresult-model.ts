@@ -2,11 +2,13 @@ import type { ElexisType, UUID, DATE } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { DateTime } from "luxon";
 import util from '../services/util'
+import { faHouseMedicalCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 export interface LabresultType extends ElexisType {
   id: UUID
   datum: DATE
-  zeit: string  // HHMMSS
+  zeit: string  // HHMMSS or null
   kuerzel: string
+  titel: string,
   resultat: string
   reference: string
   unit: string
@@ -14,6 +16,14 @@ export interface LabresultType extends ElexisType {
   prio: string
 }
 
+export type LABRESULTS = {
+  dates: Array<string>
+  items: {
+    [group: string]: {
+      [key: string]: Array<LabresultType>
+    }
+  }
+}
 export class LabresultManager extends ObjectManager {
   constructor() {
     super("labresults")
@@ -37,15 +47,43 @@ export class LabresultManager extends ObjectManager {
     return ret;
   }
 
-  public fetchForPatient(id:UUID, offset: number=0, maxItems: number=0){
-    if (id) {
-      const query = { patientId: id, $skip: offset }
-      if (maxItems) {
-        query["$limit"] = maxItems
+  private mixIn(x: LABRESULTS, fetched: query_result) {
+    const data = fetched.data as Array<LabresultType>
+    for (const val of data) {
+      const dt = val.datum + (val.zeit ? val.zeit : "")
+      if (x.dates.indexOf(dt) == -1) {
+        x.dates.push(dt)
       }
-      return this.dataService.find({ query })
+      let group = x.items[val.gruppe] || {}
+      let it: Array<LabresultType> = group[val.titel] || []
+      it.push(val)
+      it.sort((a, b) => {
+        let comp = a.datum.localeCompare(b.datum)
+        if (comp == 0) {
+          if (a.zeit && b.zeit) {
+            comp = a.zeit.localeCompare(b.zeit)
+          }
+        }
+        return comp
+      })
+      group[val.titel] = it
+      x.items[val.gruppe] = group
+    }
+    x.dates.sort((a, b) => a.localeCompare(b))
+  }
+  public async fetchForPatient(id: UUID): Promise<LABRESULTS> {
+    if (id) {
+      const ret = { dates: [], items: {} }
+      const query = { patientId: id, $limit: 100, $skip: 0 }
+      let result;
+      do {
+        result = await this.dataService.find({ query })
+        this.mixIn(ret, result)
+        query.$skip = result.skip + result.data.length
+      } while (result.data.length > 0)
+      return ret
     } else {
-      return Promise.resolve({ total: 0, data: [], limit: 50, skip: 0 })
+      return Promise.resolve({ dates: [], items: {} })
     }
   }
 }

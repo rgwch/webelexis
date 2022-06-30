@@ -10,6 +10,7 @@ import Cases from "../components/Cases.svelte";
 import Prescriptions from "../components/Prescriptions.svelte";
 import Documents from "./Documents.svelte";
 import Findings from "../components/Findings.svelte";
+import Labresults from '../components/Labresults.svelte'
 
 let selector = false;
 
@@ -38,6 +39,7 @@ function selected() {
         <Tab>{$_("titles.cases")}</Tab>
         <Tab>{$_("titles.medicaments")}</Tab>
         <Tab>{$_("titles.findings")}</Tab>
+        <Tab>{$_("titles.labresults")}</Tab>
         <Tab>{$_("titles.documents")}</Tab>
       </TabList>
 
@@ -56,6 +58,9 @@ function selected() {
       </TabPanel>
       <TabPanel>
         <Findings />
+      </TabPanel>
+      <TabPanel>
+        <Labresults />
       </TabPanel>
       <TabPanel>
         <Documents />

@@ -12,7 +12,7 @@ export default function (app) {
   const options = {
     name: "labresults",
     Model,
-    paginate
+    // paginate
   };
 
   // Initialize our service with any options it requires

@@ -44,6 +44,8 @@ export default function (app) {
         table.string('id', 40).primary().unique().notNullable()
         table.bigint("lastupdate")
         table.string('deleted', 1)
+        table.string('kuerzel',80)
+        table.string('titel',80)
         table.string('laborid', 40)
         table.string('refmann')
         table.string('reffrauortx')
@@ -56,7 +58,7 @@ export default function (app) {
         table.string('loinccode', 128)
         table.string('visible', 1)
         table.string('digits', 16)
-        table.string('formula')
+        table.string('formula',255)
       })
         .then(() => logger.info(`Created ${itemsTable} table`))
         .catch(e => logger.error(`Error creating ${itemsTable} table`, e.message));

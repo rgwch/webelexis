@@ -26,6 +26,8 @@ export class Service {
             'rs.reffemale',
             'li.refmann',
             'li.reffrauortx',
+            'li.titel',
+            'li.kuerzel',
             'li.einheit',
             'rs.unit',
             'gruppe',
@@ -48,7 +50,7 @@ export class Service {
         }
         const found = await Promise.all([
           this.kService.get(pat, { query: { $select: ['geschlecht'] } }),
-          query,
+          query 
         ])
         const s = found[0].geschlecht.toLowerCase()
         const raw = found[1].map((r) => {
