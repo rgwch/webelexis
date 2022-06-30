@@ -17,6 +17,9 @@ labresultManager.fetchForPatient($currentPatient?.id).then((result) => {
       <div slot="body">
         {#each Object.keys(labresults.items[group]) as item}
           <p class="text-blue-600">{item}</p>
+          {#each labresults.items[group][item] as val}
+            <p>{labresultManager.getLabel(val)} </p>
+          {/each}
         {/each}
       </div>
     </Collapse>
