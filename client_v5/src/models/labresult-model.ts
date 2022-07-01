@@ -2,7 +2,6 @@ import type { ElexisType, UUID, DATE } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { DateTime } from "luxon";
 import util from '../services/util'
-import { faHouseMedicalCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 export interface LabresultType extends ElexisType {
   id: UUID
   datum: DATE
