@@ -28,7 +28,7 @@ export class LabresultManager extends ObjectManager {
     super("labresults")
   }
 
-  public getLabel(obj: LabresultType) {
+  public getTimeLabel(obj: LabresultType): string {
     let dt = util.ElexisDateToLuxon(obj.datum);
     if (obj.zeit && obj.zeit.length > 1) {
       const hr = obj.zeit.substring(0, 2)
@@ -42,7 +42,13 @@ export class LabresultManager extends ObjectManager {
         }
       }
     }
-    let ret = util.LuxonToLocalDate(dt) + ": " + obj.kuerzel + ": " + obj.resultat + " (" + obj.reference + ")"
+    return util.LuxonToLocalDate(dt)
+  }
+  public shortLabel(obj: LabresultType) {
+    return this.getTimeLabel(obj) + ": " + obj.resultat+" "+obj.unit
+  }
+  public getLabel(obj: LabresultType) {
+    let ret = this.getTimeLabel(obj) + ": " + obj.kuerzel + ": " + obj.resultat + " (" + obj.reference + ")"
     return ret;
   }
 
@@ -54,16 +60,18 @@ export class LabresultManager extends ObjectManager {
     } else if (r.startsWith(">")) {
       return (val <= parseFloat(r.substring(1)))
     } else {
-      const rr=r.split(/-/)
-      if(rr.length==2){
-        const lower=parseFloat(rr[0].trim())
-        const upper=parseFloat(rr[1].trim())
-        return val<lower || val>upper
-      }else{
+      const rr = r.split(/-/)
+      if (rr.length == 2) {
+        const lower = parseFloat(rr[0].trim())
+        const upper = parseFloat(rr[1].trim())
+        return val < lower || val > upper
+      } else {
         return false
       }
     }
   }
+
+
 
   private mixIn(x: LABRESULTS, fetched: query_result) {
     const data = fetched.data as Array<LabresultType>

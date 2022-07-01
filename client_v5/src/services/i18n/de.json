@@ -122,8 +122,8 @@
     "until": "bis"
   },
   "lab": {
-    "normrange": "Referenzbereich {lower} - {upper}",
-    "resultsbetween": "Werte zwischen {lower} und {upper} {unit}"
+    "normrange": "Referenz: {ref}",
+    "resultsbetween": "davor zwischen {lower} und {upper}"
   },
   "medication": {
     "fix": "Fixmedikation",
