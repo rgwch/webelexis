@@ -51,9 +51,12 @@ onMount(() => {
           >{$_("lab.normrange", { values: { ref: items[0].reference } })}</span>
       </div>
       <div slot="body">
-        {#each items as val}
-          <p>{labresultManager.shortLabel(val)}</p>
-        {/each}
+        <div class="flex flex-wrap">
+          {#each items as val}
+            <div class="p-1 m-1 border-2 bg-blue-100">{@html labresultManager.shortLabel(val).replace(/\s/g,"&nbsp;")}
+            </div>
+          {/each}
+        </div>
       </div>
     </Collapse>
   {/if}
