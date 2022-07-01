@@ -1,3 +1,8 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2022 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
 import type { ElexisType, UUID, DATE } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { DateTime } from "luxon";
@@ -28,6 +33,12 @@ export class LabresultManager extends ObjectManager {
     super("labresults")
   }
 
+  /**
+   * create a Date/Time string from the datum and zeit fields of a
+   * labresult. Handle the case of zeit being null correctly. 
+   * @param obj 
+   * @returns Human readable form of the result's date and time.
+   */
   public getTimeLabel(obj: LabresultType): string {
     let dt = util.ElexisDateToLuxon(obj.datum);
     if (obj.zeit && obj.zeit.length > 1) {
@@ -44,14 +55,30 @@ export class LabresultManager extends ObjectManager {
     }
     return util.LuxonToLocalDate(dt)
   }
+  /**
+   * label with only date, result and unit
+   * @param obj 
+   * @returns 
+   */
   public shortLabel(obj: LabresultType) {
     return this.getTimeLabel(obj) + ": " + obj.resultat+" "+obj.unit
   }
+  /**
+   * Full label 
+   * @param obj 
+   * @returns 
+   */
   public getLabel(obj: LabresultType) {
     let ret = this.getTimeLabel(obj) + ": " + obj.kuerzel + ": " + obj.resultat + " (" + obj.reference + ")"
     return ret;
   }
 
+  /**
+   * Check if a result's value is pathologic in terms being out of the reference range.
+   * @param obj 
+   * @returns true if this result is pathologic, false if within norm range, or if result could
+   * not be matched with norm range. 
+   */
   public isPathologic(obj: LabresultType): boolean {
     const r = obj.reference.trim()
     const val = parseFloat(obj.resultat)
@@ -97,6 +124,11 @@ export class LabresultManager extends ObjectManager {
     }
     x.dates.sort((a, b) => a.localeCompare(b))
   }
+  /**
+   * Fetch all Lab results for a given patients 
+   * @param id 
+   * @returns 
+   */
   public async fetchForPatient(id: UUID): Promise<LABRESULTS> {
     if (id) {
       const ret = { dates: [], items: {} }

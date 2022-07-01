@@ -31,9 +31,8 @@ describe('Blob', () => {
     const check = await service.get(id)
     expect(check.data).toEqual(blob.data)
 
-    const previous = await service.update(id, { _id:id, data: "other" })
-    expect(previous.data).toEqual(blob.data)
-
+    await service.update(id, { _id:id, data: "other" })
+    
     const updated = await service.get(id)
     expect(updated.data).toEqual("other")
     const removed = await service.remove(id)
