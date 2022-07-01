@@ -1,14 +1,19 @@
 {
   "actions": {
+    "add": "hinzufügen",
     "cancel": "cancel",
     "delete": "delete",
     "deselect": "deselect...",
+    "export": "Exportieren",
     "extend": "extend",
     "go": "start",
+    "graph": "Grafik",
     "login": "Anmelden",
     "logout": "Abmelden",
     "ok": "Ok",
     "select": "select...",
+    "selectall": "Alle auswählen",
+    "selectnone": "Auswahl löschen",
     "shrink": "shorten"
   },
   "address": {
@@ -116,6 +121,10 @@
     "loading": "loading...",
     "until": "bis"
   },
+  "lab": {
+    "normrange": "Referenzbereich {lower} - {upper}",
+    "resultsbetween": "Werte zwischen {lower} und {upper} {unit}"
+  },
   "medication": {
     "fix": "Fixmedikation",
     "other": "Nicht (mehr) Regelmässig",
@@ -135,7 +144,8 @@
     "noneselected": "Click here to select patient"
   },
   "prompts": {
-    "patsearch": "Enter part of the lastname, firstname, or birthdate"
+    "patsearch": "Enter part of the lastname, firstname, or birthdate",
+    "reallydelete": "Wirklich {item} löschen?"
   },
   "titles": {
     "bills": "Bills",
@@ -148,6 +158,7 @@
     "findings": "Befunde",
     "fromdate": "Kons. nach Datum",
     "incoming": "Eingehend",
+    "labresults": "Laborwerte",
     "medicaments": "Medication",
     "outgoing": "Ausgehend",
     "outputs": "Outputs",

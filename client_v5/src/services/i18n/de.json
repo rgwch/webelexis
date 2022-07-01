@@ -1,19 +1,19 @@
 {
   "actions": {
     "add": "hinzufügen",
-    "selectall": "Alle auswählen",
-    "selectnone": "Auswahl löschen",
-    "graph":"Grafik",
-    "export": "Exportieren",
     "cancel": "Abbruch",
     "delete": "Löschen",
     "deselect": "abwählen...",
+    "export": "Exportieren",
     "extend": "Verlängern",
     "go": "start",
+    "graph": "Grafik",
     "login": "Anmelden",
     "logout": "Abmelden",
     "ok": "Ok",
     "select": "auswählen...",
+    "selectall": "Alle auswählen",
+    "selectnone": "Auswahl löschen",
     "shrink": "Kürzen"
   },
   "address": {
@@ -120,6 +120,10 @@
     "from": "von",
     "loading": "lese...",
     "until": "bis"
+  },
+  "lab": {
+    "normrange": "Referenzbereich {lower} - {upper}",
+    "resultsbetween": "Werte zwischen {lower} und {upper} {unit}"
   },
   "medication": {
     "fix": "Fixmedikation",

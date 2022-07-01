@@ -46,6 +46,25 @@ export class LabresultManager extends ObjectManager {
     return ret;
   }
 
+  public isPathologic(obj: LabresultType): boolean {
+    const r = obj.reference.trim()
+    const val = parseFloat(obj.resultat)
+    if (r.startsWith("<")) {
+      return (val >= parseFloat(r.substring(1)))
+    } else if (r.startsWith(">")) {
+      return (val <= parseFloat(r.substring(1)))
+    } else {
+      const rr=r.split(/-/)
+      if(rr.length==2){
+        const lower=parseFloat(rr[0].trim())
+        const upper=parseFloat(rr[1].trim())
+        return val<lower || val>upper
+      }else{
+        return false
+      }
+    }
+  }
+
   private mixIn(x: LABRESULTS, fetched: query_result) {
     const data = fetched.data as Array<LabresultType>
     for (const val of data) {
@@ -63,7 +82,7 @@ export class LabresultManager extends ObjectManager {
             comp = a.zeit.localeCompare(b.zeit)
           }
         }
-        return comp
+        return -comp
       })
       group[val.titel] = it
       x.items[val.gruppe] = group
