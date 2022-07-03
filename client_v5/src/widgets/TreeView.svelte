@@ -77,7 +77,9 @@ function dragover(event) {
             e.props.open = !e.props.open;
           }}"
           class="cursor-pointer">
-          <Fa icon="{e.props.open ? faCaretDown : faCaretRight}" /></span>
+          <Fa
+            icon="{e.props.open ? faCaretDown : faCaretRight}"
+            class="inline" /></span>
         <span class="mx-2 my-0" on:click="{() => dispatch('selected', e)}">
           {labelProvider(e)}</span>
         {#if e.props.open}

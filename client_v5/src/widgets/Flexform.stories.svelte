@@ -3,6 +3,7 @@ import { faAllergies } from "@fortawesome/free-solid-svg-icons";
 import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
 import { _ } from "svelte-i18n";
 import Flexform from "./Flexform.svelte";
+import MarginDecorator from "./MarginDecorator.svelte";
 
 const dummy = {
   title: () => "Testform",
@@ -26,13 +27,23 @@ const dummy = {
 };
 </script>
 
+<div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500">
+  <h1 class="font-bold text-lg">Flexform</h1>
+  <p class="mb-5">
+    A Component for display and edit complex structures from a
+    Flexform-definition
+  </p>
+</div>
+
 <Meta
   title="Widgets/Flexform"
   component="{Flexform}"
   argTypes="{{ onSave: { action: 'save' }, onLock: { action: 'lock' } }}" />
 
 <Template let:args>
-  <Flexform {...args} on:lock="{args.onLock}" on:save="{args.onSave}" />
+  <MarginDecorator>
+    <Flexform {...args} on:lock="{args.onLock}" on:save="{args.onSave}" />
+  </MarginDecorator>
 </Template>
 
 <Story
