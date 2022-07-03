@@ -25,9 +25,10 @@ export class Finding {
       const m = err.message
       if (m !== "conflict") {
         logger.error("Connection problem with CouchDB:" + err)
-        
+
       } else {
-        logger.info("Findings: ensureExists database ok (" + err.message+").")
+        logger.warn("the previous warning can be ignored safely. (from: findings.class.ts)")
+        logger.info("Findings: ensureExists database ok.")
       }
     })
 

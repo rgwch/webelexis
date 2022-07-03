@@ -14,15 +14,57 @@ module.exports = {
   "host": "localhost",
   "port": 3030,
   "client3": "../../client_v3/dist/",
-  "client4": "../../client_v4/dist/",
   "client5": "../../client_v5/dist",
   "paginate": {
     "default": 50,
     "max": 500
   },
 
-  "lucinda": {
-    "url": "http://localhost:9997/lucinda/3.0/"
+  /* connection to the Elexis database */
+  elexisdb: {
+    client: "mysql2",
+    connection: {
+      host: "localhost",
+      database: "elexiscopy",
+      user: "elexisuser",
+      password: "elexis",
+      port: 3312
+    }
+  },
+  /* or:
+  elexisdb: {
+    "client": "pg",
+    "connection": {
+      "host": "localhost",
+      "database": "webelexis",
+      "user": "praxis",
+      "password": "topsecret"
+    }
+  },
+  elexisdb: {
+    "client": "sqlite3",
+    "connection": {
+      "filename": "../../data/webelexis.db"
+    }
+  },
+  */
+
+  /**
+   * Lucinda instance to use as document store
+   */
+  lucinda: {
+    url: "http://localhost:9997/lucinda/3.0/"
+  },
+  /**
+   * Lucinda needs also solr and tika, and a file store
+   */
+  solr: {
+    host: "http://localhost:8983/solr",
+    core: "elexisdata",
+    idfield: "id",
+    tika: "http://localhost:9998",
+    filestore: "solr-docs",
+    watch: true
   },
   /**
    * prefix and encryption settings for the blob store
@@ -32,36 +74,29 @@ module.exports = {
     namespace: "webelexis",
     // Must remain the same for all documents of this webelexis instance
     salt: "thisShouldBeAppSpec",
-    // Password to encrypt blobs. If salt or pwd is not given: Don't encrypt blobs. 
+    // Password to encrypt blobs. If salt or pwd is not given: Don't encrypt blobs.
     pwd: "PleaseChangeThis",
     // indexer to look up documents. Useful especially, if encrypted
     indexer: "lucinda",
   },
   /**
-   * Access configuration for CouchDB. 
+   * Access configuration for CouchDB.
    */
-  couchdb:{
+  couchdb: {
     // if no db given in a request: Use defaultDB
     defaultDB: "webelexis",
     // Credential as defined in CouchDB
     username: "couchadmin",
-    password:"pleasechangethis",
+    password: "pleasechangethis",
     host: "localhost",
     port: 5984
 
   },
-  solr: {
-    host: "http://localhost:8983/solr",
-    core: "elexisdata",
-    idfield: "id",
-    tika: "http://localhost:9998",
-    filestore: "solr-docs",
-    watch: true
-  },
+
   authentication: {
     entity: "user",
     service: "user",
-    secret: "KrVv/aWQFHPK2EVB45OkE6jlS0U=",
+    secret: "useSomethingInstanceSpecificHere",
     authStrategies: [
       "jwt",
       "local"
@@ -70,7 +105,7 @@ module.exports = {
       header: {
         typ: "access"
       },
-      audience: "https://yourdomain.com",
+      audience: "https://webelexis.ch",
       issuer: "feathers",
       algorithm: "HS256",
       expiresIn: "1d"
@@ -112,34 +147,7 @@ module.exports = {
   /* The place to store templates and documents */
   docbase: "../../data/sample-docbase",
 
-  /* connection to the database */
-  elexisdb: {
-    client: "mysql2",
-    connection: {
-      host: "localhost",
-      database: "elexiscopy",
-      user: "elexisuser",
-      password: "elexis",
-      port: 3312
-    }
-  },
-  /* or:
-  elexisdb: {
-    "client": "pg",
-    "connection": {
-      "host": "localhost",
-      "database": "webelexis",
-      "user": "praxis",
-      "password": "topsecret"
-    }
-  },
-  elexisdb: {
-    "client": "sqlite3",
-    "connection": {
-      "filename": "../../data/webelexis.db"
-    }
-  },
-  */
+
   /* We need an SMTP host to send mails for lost password retrieval */
   smtp: {
     host: "some.smpt.host",

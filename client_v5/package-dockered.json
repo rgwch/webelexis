@@ -1,7 +1,7 @@
 {
   "name": "webelexis",
   "description": "A Svelte-powered Elexis client",
-  "version": "3.5.4",
+  "version": "3.5.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/rgwch/webelexis"
@@ -44,6 +44,7 @@
     "rollup-plugin-terser": "^7.0.0",
     "sirv-cli": "^2.0.1",
     "socket.io-client": "^2.4.0",
+    "sparklines": "^1.3.0",
     "svelte": "^3.48.0",
     "svelte-fa": "^2.4.0",
     "svelte-i18n": "^3.3.13",

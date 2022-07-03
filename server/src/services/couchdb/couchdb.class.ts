@@ -15,7 +15,7 @@ export class CouchDB {
   }
 
   async setup(app, path) {
-    logger.debug("Couchdb setup at path "+path)
+    logger.debug("Couchdb setup at path " + path)
     const connect = await this.checkInstance()
     if (!connect) {
       process.exit(41)
@@ -45,7 +45,7 @@ export class CouchDB {
           logger.error("Not authorized for CouchDB, Please check username/password")
           return false;
         }
-        logger.info("Connected with CouchDB " + data.version)
+        logger.info("Connected with CouchDB " + (await data.json()).version)
         logger.info("Databases: " + JSON.stringify(this.listDatabases()))
         return true
       } else {
@@ -144,7 +144,7 @@ export class CouchDB {
     const db = params?.query?.database || this.options.defaultDB || "webelexis"
     try {
       const obj = await this.get(id, params)
-      data._rev=obj._rev
+      data._rev = obj._rev
       const result = await this.request(id + "?rev=" + obj._rev, db, "put", data)
       if (result.error) {
         logger.error("CouchDB update: " + JSON.stringify(result))

@@ -7,7 +7,7 @@
 import { logger } from './logger'
 
 /**
- * In testing-mode, Seeder creates data to initialize the NeDB-databases.
+ * In testing-mode, Seeder creates data to initialize the findings-database.
  * In the Elexis-Database a Patient with a TitelSuffix field of "unittest" must
  * exist, otherwise seeder will throw an error.
  */
@@ -15,7 +15,7 @@ import { logger } from './logger'
 export default async function (app) {
   // Find patient with TitelSuffix 'unittest' and exit if not found
   const pats = app.service('patient')
-  const roles=app.get("roles")
+  const roles = app.get("roles")
 
   const testpat = await pats.find({ query: { titelsuffix: "unittest" } })
   if (!testpat || !testpat.data || testpat.data.length < 1) {
@@ -79,29 +79,11 @@ export default async function (app) {
     try {
       // await userService.remove(e.id)
       await userService.create(e)
-      logger.info("dummy user created: "+e.id)
+      logger.info("dummy user created: " + e.id)
     } catch (err) {
-//      logger.error("could not create user: %s", err)
+      //      logger.error("could not create user: %s", err)
     }
   }
-
-  const macroService = app.service('macros')
-
-  macroService.create({
-    name: "dummies",
-    creator: "humblebumple",
-    allowed: ["user"],
-    macros: {
-      kons: "*S:*\n*O:*\n*B:*\n*P:*",
-      gw: "Gewicht"
-    },
-    dummy: true
-  }).then(m => {
-    logger.info("created dummy macros")
-  }).catch(err => {
-    // logger.error("could not create dummy macro " + err)
-  })
-
 
   const findings = app.service('findings')
   findings.create({
