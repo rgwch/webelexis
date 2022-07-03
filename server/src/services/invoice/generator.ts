@@ -14,164 +14,171 @@ import { Mailer } from '../../util/mailer'
 import { logger } from '../../logger'
 const mm2pt = util.mm2pt
 import conf from 'config'
-const billing = conf.get("billing")
+const billing = Object.assign({}, conf.get("billing"))
+billing.creditor = Object.assign({}, billing.creditor)
 
 export function outputInvoice(bill): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    const data = createData(bill)
-    const filename = path.join(billing.output || '.', bill.rnnummer + '.pdf')
-    const pdf = new qrbill.PDF(
-      data, filename,
-      {
-        autoGenerate: false,
-        size: 'A4',
-      }, () => {
-        if (bill.toMail) {
-          const smtp = conf.get("smtp")
-          const mailer = new Mailer(smtp, "praxis@weirich.ch")
-          mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename }).then(result => {
-            resolve(true)
-          }).catch(err => {
-            logger.error("OutputInvoice: error with mailer " + err)
-            reject(err)
-          })
-        } else if (bill.output) {
-          print(filename, billing.printer).then(fin => {
-            resolve(true)
+    try {
+      const data = createData(bill)
+      const filename = path.join(billing.output || '.', bill.rnnummer + '.pdf')
+      billing.creditor.name = "Test"
+      const pdf = new qrbill.PDF(
+        data, filename,
+        {
+          autoGenerate: false,
+          size: 'A4',
+        }, () => {
+          if (bill.toMail) {
+            const smtp = conf.get("smtp")
+            const mailer = new Mailer(smtp, "praxis@weirich.ch")
+            mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename }).then(result => {
+              resolve(true)
+            }).catch(err => {
+              logger.error("OutputInvoice: error with mailer " + err)
+              reject(err)
+            })
+          } else if (bill.output) {
+            print(filename, billing.printer).then(fin => {
+              resolve(true)
 
-          }).catch(err => {
-            logger.error("InvoiceOutput: Error with lp " + err)
-            reject(err)
-          })
-        } else {
-          resolve(true)
+            }).catch(err => {
+              logger.error("InvoiceOutput: Error with lp " + err)
+              reject(err)
+            })
+          } else {
+            resolve(true)
+          }
         }
+      )
+
+      // Block Absender links oben
+      pdf.fontSize(12)
+      pdf.fillColor('black')
+      pdf.font('Helvetica')
+      let sender = ""
+      const mandators = conf.get("mandators")
+      if (mandators?.default) {
+        const abs = mandators.default
+        pdf.text(
+          `${abs.name}\n${abs.subtitle}\n${abs.street}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`,
+          mm2pt(20),
+          mm2pt(35),
+          {
+            width: mm2pt(100),
+            height: mm2pt(50),
+            align: 'left',
+          },
+        )
+        sender = `${abs.name}, ${abs.street}, ${abs.place}`
+      } else {
+        const abs = data.creditor
+        pdf.text(
+          `${abs.name.replace(/\|/g, "\n")}\n${abs.address.replace(/\|/g, "\n")}\n${abs.zip} ${abs.city}`,
+          mm2pt(20),
+          mm2pt(35),
+          {
+            width: mm2pt(100),
+            height: mm2pt(50),
+            align: 'left',
+          },
+        )
+        sender = `${abs.name}, ${abs.address}, ${abs.zip} ${abs.city}`
       }
-    )
-
-    // Block Absender links oben
-    pdf.fontSize(12)
-    pdf.fillColor('black')
-    pdf.font('Helvetica')
-    let sender = ""
-    const mandators = conf.get("mandators")
-    if (mandators?.default) {
-      const abs = mandators.default
+      // Ort und Datum
+      const date = new Date()
+      const c = data.creditor
+      pdf.fontSize(11)
+      pdf.font('Helvetica')
       pdf.text(
-        `${abs.name}\n${abs.subtitle}\n${abs.street}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`,
+        `${c.city}, ${date.getDate()}.${(date.getMonth() + 1)}.${date.getFullYear()}`,
         mm2pt(20),
         mm2pt(35),
         {
-          width: mm2pt(100),
+          width: mm2pt(170),
+          align: 'right',
+        },
+      )
+
+      // Adressat und Absenderzeile
+      pdf.fontSize(8)
+      pdf.text(sender, mm2pt(130), mm2pt(52))
+      pdf.fontSize(12)
+      pdf.font('Helvetica')
+      const d = data.debtor
+      pdf.text(
+        `${d.name}\n${d.address}\n${d.zip} ${d.city}`,
+        mm2pt(130),
+        mm2pt(60),
+        {
+          width: mm2pt(70),
           height: mm2pt(50),
           align: 'left',
         },
       )
-      sender = `${abs.name}, ${abs.street}, ${abs.place}`
-    } else {
-      const abs = data.creditor
-      pdf.text(
-        `${abs.name.replace(/\|/g, "\n")}\n${abs.address.replace(/\|/g, "\n")}\n${abs.zip} ${abs.city}`,
-        mm2pt(20),
-        mm2pt(35),
-        {
-          width: mm2pt(100),
-          height: mm2pt(50),
+
+      // Rechnungsdetails
+      pdf.rect(mm2pt(20), mm2pt(112.5), mm2pt(75), mm2pt(16))
+        .lineWidth(1)
+        .fillOpacity(0.5)
+        .fillAndStroke("gray", "#555")
+
+      let heading;
+      let invoiceText
+      switch (parseInt(bill.rnstatus)) {
+        case 4:
+        case 5:
+          heading = billing.invoiceHeading;
+          invoiceText = billing.invoiceText
+          break;
+        case 6:
+        case 7:
+          heading = billing.reminder1Heading;
+          invoiceText = billing.reminder1Text;
+          break;
+        case 8:
+        case 9:
+          heading = billing.reminder2Heading;
+          invoiceText = billing.reminder2Text;
+          break;
+        default:
+          heading = billing.reminder3Heading
+          invoiceText = billing.reminder3Text;
+      }
+
+      pdf.fontSize(14)
+        .font('Helvetica-Bold')
+        .fillColor("black")
+        .opacity(1)
+        .text(`${heading} ${bill.rnnummer}`, mm2pt(20), mm2pt(100), {
+          width: mm2pt(170),
           align: 'left',
-        },
-      )
-      sender = `${abs.name}, ${abs.address}, ${abs.zip} ${abs.city}`
-    }
-    // Ort und Datum
-    const date = new Date()
-    const c = data.creditor
-    pdf.fontSize(11)
-    pdf.font('Helvetica')
-    pdf.text(
-      `${c.city}, ${date.getDate()}.${(date.getMonth() + 1)}.${date.getFullYear()}`,
-      mm2pt(20),
-      mm2pt(35),
-      {
-        width: mm2pt(170),
-        align: 'right',
-      },
-    )
+        })
 
-    // Adressat und Absenderzeile
-    pdf.fontSize(8)
-    pdf.text(sender, mm2pt(130), mm2pt(52))
-    pdf.fontSize(12)
-    pdf.font('Helvetica')
-    const d = data.debtor
-    pdf.text(
-      `${d.name}\n${d.address}\n${d.zip} ${d.city}`,
-      mm2pt(130),
-      mm2pt(60),
-      {
-        width: mm2pt(70),
-        height: mm2pt(50),
-        align: 'left',
-      },
-    )
-
-    // Rechnungsdetails
-    pdf.rect(mm2pt(20), mm2pt(112.5), mm2pt(75), mm2pt(16))
-      .lineWidth(1)
-      .fillOpacity(0.5)
-      .fillAndStroke("gray", "#555")
-
-    let heading;
-    let invoiceText
-    switch (parseInt(bill.rnstatus)) {
-      case 4:
-      case 5:
-        heading = billing.invoiceHeading;
-        invoiceText = billing.invoiceText
-        break;
-      case 6:
-      case 7:
-        heading = billing.reminder1Heading;
-        invoiceText = billing.reminder1Text;
-        break;
-      case 8:
-      case 9:
-        heading = billing.reminder2Heading;
-        invoiceText = billing.reminder2Text;
-        break;
-      default:
-        heading = billing.reminder3Heading
-        invoiceText = billing.reminder3Text;
-    }
-
-    pdf.fontSize(14)
-      .font('Helvetica-Bold')
-      .fillColor("black")
-      .opacity(1)
-      .text(`${heading} ${bill.rnnummer}`, mm2pt(20), mm2pt(100), {
-        width: mm2pt(170),
-        align: 'left',
+      pdf.fontSize(11)
+      pdf.font("Courier")
+      pdf.text(`Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(billing.datetime)}\n`
+        + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(billing.datetime)}`,
+        mm2pt(22), mm2pt(115), {
+        width: mm2pt(120),
+        align: "left"
       })
 
-    pdf.fontSize(11)
-    pdf.font("Courier")
-    pdf.text(`Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(billing.datetime)}\n`
-      + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(billing.datetime)}`,
-      mm2pt(22), mm2pt(115), {
-      width: mm2pt(120),
-      align: "left"
-    })
-
-    // Freitext
-    pdf.fontSize(12)
-    pdf.font("Times-Roman")
-    pdf.text(invoiceText, mm2pt(20), mm2pt(135), {
-      width: mm2pt(180),
-      align: "left"
-    })
+      // Freitext
+      pdf.fontSize(12)
+      pdf.font("Times-Roman")
+      pdf.text(invoiceText, mm2pt(20), mm2pt(135), {
+        width: mm2pt(180),
+        align: "left"
+      })
 
 
-    pdf.addQRBill()
-    pdf.end()
+      pdf.addQRBill()
+      pdf.end()
+    } catch (error) {
+      logger.error(error)
+      reject(error)
+    }
   })
 }
 export function paymentSlip(bill) {
@@ -186,6 +193,7 @@ export function paymentSlip(bill) {
         },
       )
     } catch (err) {
+      logger.error(err)
       reject(err)
     }
   })
