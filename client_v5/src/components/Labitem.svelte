@@ -37,7 +37,7 @@ onMount(() => {
         <span class="bg-blue-100" bind:this="{spark}"></span>
         <span> {items[0].titel}</span>
         <span class:text-red-500="{labresultManager.isPathologic(items[0])}">
-          {labresultManager.shortLabel(items[0])}
+          {@html labresultManager.shortLabel(items[0])}
         </span>
         <span>
           ({$_("lab.resultsbetween", {
@@ -53,7 +53,8 @@ onMount(() => {
       <div slot="body">
         <div class="flex flex-wrap">
           {#each items as val}
-            <div class="p-1 m-1 border-2 bg-blue-100">{@html labresultManager.shortLabel(val).replace(/\s/g,"&nbsp;")}
+            <div class="p-1 m-1 border-2 bg-blue-100">
+              {@html labresultManager.shortLabel(val)}
             </div>
           {/each}
         </div>

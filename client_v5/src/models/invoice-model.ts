@@ -182,7 +182,7 @@ export class Invoice {
 
       const result: InvoiceType = await Invoice.billService.patch(this.bill.id, { rnstatus: level, statusdatum: DateTime.now().toFormat("yyyyLLdd") }) as InvoiceType
       if (result && (result.rnstatus == level)) {
-        this.bill=result
+        this.bill = result
         this.addTrace(Invoice.TRACE_STATECHANGE, result.rnstatus)
         return true
       } else {
@@ -206,17 +206,16 @@ export class Invoice {
       const ret = await printer.create(this.bill)
       if (ret) {
         switch (this.bill.rnstatus) {
-          case RnState.OPEN: this.bill.rnstatus = RnState.OPEN_AND_PRINTED; break;
-          case RnState.DEMAND_NOTE: this.bill.rnstatus = RnState.DEMAND_NOTE_PRINTED; break;
-          case RnState.DEMAND_NOTE_2: this.bill.rnstatus = RnState.DEMAND_NOTE_2_PRINTED; break;
-          case RnState.DEMAND_NOTE_3: this.bill.rnstatus = RnState.DEMAND_NOTE_3_PRINTED; break;
-          default: 
-            console.log("State not automatically modifiyble "+this.bill.rnstatus)
+          case RnState.OPEN: await this.setInvoiceState(RnState.OPEN_AND_PRINTED); break;
+          case RnState.DEMAND_NOTE: await this.setInvoiceState(RnState.DEMAND_NOTE_PRINTED); break;
+          case RnState.DEMAND_NOTE_2: await this.setInvoiceState(RnState.DEMAND_NOTE_2_PRINTED); break;
+          case RnState.DEMAND_NOTE_3: await this.setInvoiceState(RnState.DEMAND_NOTE_3_PRINTED); break;
+          default:
+            console.log("State not automatically modifiyble " + this.bill.rnstatus)
         }
         this.bill.statusdatum = DateTime.now().toFormat("yyyyLLdd");
         const modified = await Invoice.billService.update(this.bill.id, this.bill)
         await this.addTrace(Invoice.TRACE_OUTPUT, `${Invoice.DESCRIPTION}: ${this.getInvoiceState()}`);
-        
         return true
       }
       return false;
@@ -235,8 +234,8 @@ export class Invoice {
   }
 
   public async addTrace(name: string, message: string): Promise<void> {
-    if(!this.bill.extjson){
-      this.bill.extjson={}
+    if (!this.bill.extjson) {
+      this.bill.extjson = {}
     }
     if (!this.bill.extjson[name]) {
       this.bill.extjson[name] = []
@@ -250,8 +249,8 @@ export class Invoice {
   }
 
   public getTrace(name: string): Array<string> {
-      const trace = this.bill.extjson ? this.bill.extjson[name] : []
-      return trace || []
+    const trace = this.bill.extjson ? this.bill.extjson[name] : []
+    return trace || []
   }
   public async delete() {
     const transactions = await this.getTransactions()

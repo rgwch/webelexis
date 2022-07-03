@@ -7,6 +7,7 @@ import type { ElexisType, UUID, DATE } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { DateTime } from "luxon";
 import util from '../services/util'
+import { text } from "svelte/internal";
 export interface LabresultType extends ElexisType {
   id: UUID
   datum: DATE
@@ -35,8 +36,8 @@ export class LabresultManager extends ObjectManager {
 
   /**
    * create a Date/Time string from the datum and zeit fields of a
-   * labresult. Handle the case of zeit being null correctly. 
-   * @param obj 
+   * labresult. Handle the case of zeit being null correctly.
+   * @param obj
    * @returns Human readable form of the result's date and time.
    */
   public getTimeLabel(obj: LabresultType): string {
@@ -57,16 +58,18 @@ export class LabresultManager extends ObjectManager {
   }
   /**
    * label with only date, result and unit
-   * @param obj 
-   * @returns 
+   * @param obj
+   * @returns
    */
+
   public shortLabel(obj: LabresultType) {
-    return this.getTimeLabel(obj) + ": " + obj.resultat+" "+obj.unit
+    const stil = this.isPathologic(obj) ? "color: red" : "color: green"
+    return `<small>${this.getTimeLabel(obj)}</small>:&nbsp;&nbsp;<span style="${stil}">${obj.resultat}</span>&nbsp;<small>${obj.unit}</small>`
   }
   /**
-   * Full label 
-   * @param obj 
-   * @returns 
+   * Full label
+   * @param obj
+   * @returns
    */
   public getLabel(obj: LabresultType) {
     let ret = this.getTimeLabel(obj) + ": " + obj.kuerzel + ": " + obj.resultat + " (" + obj.reference + ")"
@@ -75,9 +78,9 @@ export class LabresultManager extends ObjectManager {
 
   /**
    * Check if a result's value is pathologic in terms being out of the reference range.
-   * @param obj 
+   * @param obj
    * @returns true if this result is pathologic, false if within norm range, or if result could
-   * not be matched with norm range. 
+   * not be matched with norm range.
    */
   public isPathologic(obj: LabresultType): boolean {
     const r = obj.reference.trim()
@@ -125,9 +128,9 @@ export class LabresultManager extends ObjectManager {
     x.dates.sort((a, b) => a.localeCompare(b))
   }
   /**
-   * Fetch all Lab results for a given patients 
-   * @param id 
-   * @returns 
+   * Fetch all Lab results for a given patients
+   * @param id
+   * @returns
    */
   public async fetchForPatient(id: UUID): Promise<LABRESULTS> {
     if (id) {
