@@ -4,6 +4,8 @@ import { TerminManager, TerminModel } from "../models/termine-model";
 import type { TerminType } from "../models/termine-model";
 import Appointment from "../components/Appointment.svelte";
 import NewAppointment from "../components/Newappointment.svelte";
+import { currentPatient } from "../services/store";
+import { navigate } from "svelte-navigator";
 import { _ } from "svelte-i18n";
 const tm = new TerminManager();
 
@@ -45,6 +47,13 @@ function remove(event) {
     list = tm.buildAppointmentList(list.filter((t) => !t.isFree()));
   }
 }
+function pselect(event) {
+  const termin: TerminModel = event.detail;
+  termin.getKontakt().then((pat) => {
+    currentPatient.set(pat);
+    navigate("emr");
+  });
+}
 </script>
 
 <template>
@@ -60,6 +69,7 @@ function remove(event) {
             {:else}
               <Appointment
                 termin="{termin}"
+                on:pselect="{pselect}"
                 on:extend="{extend}"
                 on:shrink="{shrink}"
                 on:delete="{remove}" />

@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
+import { navigate } from "svelte-navigator";
 import { _ } from "svelte-i18n";
 import { currentPatient } from "../services/store";
 import { Patient } from "../models/patient-model";
@@ -10,12 +11,13 @@ import Cases from "../components/Cases.svelte";
 import Prescriptions from "../components/Prescriptions.svelte";
 import Documents from "./Documents.svelte";
 import Findings from "../components/Findings.svelte";
-import Labresults from '../components/Labresults.svelte'
+import Labresults from "../components/Labresults.svelte";
 
 let selector = false;
 
 function selected() {
   selector = false;
+  navigate("emr");
 }
 </script>
 

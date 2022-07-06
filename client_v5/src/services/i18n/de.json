@@ -14,7 +14,8 @@
     "select": "auswählen...",
     "selectall": "Alle auswählen",
     "selectnone": "Auswahl löschen",
-    "shrink": "Kürzen"
+    "shrink": "Kürzen",
+    "topatient": "Zu Patient"
   },
   "address": {
     "place": "Ort",

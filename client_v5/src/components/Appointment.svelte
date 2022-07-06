@@ -42,9 +42,14 @@ function save() {
         </div>
         <div class="flex-grow px-2">
           <textarea
-            class="w-full h-full"
+            class="w-full h-20"
             bind:value="{termin.obj.grund}"
             on:blur="{save}"></textarea>
+          <button
+            class="roundbutton"
+            on:click="{() => {
+              dispatch('pselect', termin);
+            }}">{$_("actions.topatient")}</button>
         </div>
         <div class="flex-grow max-w-1/4">
           <Dropdown
