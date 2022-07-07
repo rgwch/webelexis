@@ -22,7 +22,6 @@ export function outputInvoice(bill): Promise<boolean> {
     try {
       const data = createData(bill)
       const filename = path.join(billing.output || '.', bill.rnnummer + '.pdf')
-      billing.creditor.name = "Test"
       const pdf = new qrbill.PDF(
         data, filename,
         {
@@ -146,6 +145,8 @@ export function outputInvoice(bill): Promise<boolean> {
           invoiceText = billing.reminder3Text;
       }
 
+      const patient=bill._Fall._Patient
+      
       pdf.fontSize(14)
         .font('Helvetica-Bold')
         .fillColor("black")
