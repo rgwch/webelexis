@@ -38,6 +38,8 @@ function sort(col: string) {
     let result = 0;
     if (col === "betrag") {
       result = parseFloat(a[col]) - parseFloat(b[col]);
+    } else if (col === "caselaw") {
+      result = a._Fall.gesetz.localeCompare(b._Fall.gesetz);
     } else {
       result = a[col].localeCompare(b[col]);
     }
@@ -55,24 +57,22 @@ function sort(col: string) {
             type="checkbox"
             on:click="{checkall}"
             bind:checked="{allchecked}" /></th>
-        <th
-          class="px-5 mx-5 hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('rnnummer')}">{$_("billing.invoicenumber")}</th>
-        <th
-          class="hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('rndatum')}"
+        <th class="tableheader" on:click="{() => sort('rnnummer')}"
+          >{$_("billing.invoicenumber")}</th>
+
+        <th class="tableheader" on:click="{() => sort('rndatum')}"
           >{$_("billing.invoicedate")}
         </th>
-        <th
-          class="hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('rnstatus')}"
+        <th class="tableheader" on:click="{() => sort('caselaw')}">
+          {$_("billing.law")}
+        </th>
+        <th class="tableheader" on:click="{() => sort('rnstatus')}"
           >{$_("billing.invoicestate")}
         </th>
+        <th class="tableheader" on:click="{() => sort('statusdatum')}"
+          >{$_("billing.statedate")}</th>
         <th
-          class="hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('statusdatum')}">{$_("billing.statedate")}</th>
-        <th
-          class="hover:text-blue-600 underline cursor-pointer"
+          class="tableheader"
           on:click="{() => {
             sort('betrag');
           }}">{$_("billing.amount")}</th>
@@ -99,6 +99,9 @@ function sort(col: string) {
                 >{DateTime.fromISO(bill.rndatum).toFormat(
                   $_("formatting.date")
                 )}</td>
+              <td class="text-center">
+                {bill._Fall?.gesetz}
+              </td>
               <td class="text-center"
                 >{$_("billing." + InvoiceState[bill.rnstatus])}</td>
               <td class="text-center"
@@ -127,5 +130,11 @@ function sort(col: string) {
       </div>
     </Modal>
   {/if}
-  <BillActions bind:selection="{bills}" />
+  <BillActions bind:selection="{bills}" on:success on:failure />
 </template>
+
+<style>
+.tableheader {
+  @apply "mx-1 cursor-pointer hover:(text-blue-600 underline) ";
+}
+</style>

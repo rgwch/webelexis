@@ -55,6 +55,7 @@
     "invoicedate": "Rechnungsdatum",
     "invoicenumber": "Rechungsnummer",
     "invoicestate": "Rechnungsstatus",
+    "law": "Gesetz",
     "patient": "Patient",
     "statedate": "Statusdatum"
   },

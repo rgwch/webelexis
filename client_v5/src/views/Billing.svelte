@@ -78,7 +78,11 @@ function patfilter(bill): boolean {
         </select>
         <input type="text" bind:value="{name}" />
         <button on:click="{reload}">Filter</button>
-        <Bills bills="{bills}" filter="{patfilter}" busy="{busy}" />
+        <Bills
+          bills="{bills}"
+          filter="{patfilter}"
+          busy="{busy}"
+          on:success="{reload}" />
       </div>
     </TabPanel>
   </Tabs>

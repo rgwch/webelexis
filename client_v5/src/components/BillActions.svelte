@@ -2,6 +2,12 @@
 import type { InvoiceType } from "../models/invoice-model";
 import { Invoice, RnState } from "../models/invoice-model";
 import { _ } from "svelte-i18n";
+import { createEventDispatcher } from "svelte";
+import Fa from "svelte-fa";
+import { faAngleUp, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+
+const dispatch = createEventDispatcher();
+
 export let selection: Array<InvoiceType> = [];
 async function output(withPrint: boolean) {
   let err: boolean = false;
@@ -18,8 +24,10 @@ async function output(withPrint: boolean) {
   }
   if (err) {
     alert("Es gab Fehler");
+    dispatch("failure");
+  } else {
+    dispatch("success");
   }
-  // alert("ok");
 }
 async function demandlevel(up: boolean = true) {
   for (const sel of selection) {
@@ -43,8 +51,10 @@ async function demandlevel(up: boolean = true) {
         }
         const res = await bill.setInvoiceState(newstate);
         // alert("OK: " + JSON.stringify(res));
+        dispatch("success");
       } catch (err) {
         alert("Error: " + err);
+        dispatch("failure");
       }
     }
   }
@@ -53,23 +63,17 @@ async function demandlevel(up: boolean = true) {
 
 <template>
   <div class="flex justify-left py-8">
-    <button
-      class="roundbutton"
-      on:click="{() => output(false)}">
+    <button class="roundbutton" on:click="{() => output(false)}">
       {$_("billing.actions.output")}
     </button>
-    <button
-      class="roundbutton"
-      on:click="{() => output(true)}">
+    <button class="roundbutton" on:click="{() => output(true)}">
       {$_("billing.actions.print")}
     </button>
-    <button
-      class="roundbutton"
-      on:click="{() => demandlevel(true)}">
-      {$_("billing.actions.demand_level")} &uarr;
+    <button class="roundbutton" on:click="{() => demandlevel(true)}">
+      {$_("billing.actions.demand_level")}&nbsp;
+      <Fa icon="{faArrowUp}" />
     </button>
-    <button
-      class="roundbutton">
+    <button class="roundbutton">
       {$_("billing.actions.storno")}
     </button>
   </div>
