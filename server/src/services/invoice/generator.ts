@@ -105,8 +105,9 @@ export function outputInvoice(bill): Promise<boolean> {
       pdf.fontSize(12)
       pdf.font('Helvetica')
       const d = data.debtor
+      const addr=bill._Fall._Garant || bill._Fall._Patient
       pdf.text(
-        `${d.name}\n${d.address}\n${d.zip} ${d.city}`,
+        addr.anschrift,
         mm2pt(130),
         mm2pt(60),
         {
@@ -117,7 +118,7 @@ export function outputInvoice(bill): Promise<boolean> {
       )
 
       // Rechnungsdetails
-      pdf.rect(mm2pt(20), mm2pt(112.5), mm2pt(75), mm2pt(16))
+      pdf.rect(mm2pt(20), mm2pt(112.5), mm2pt(85), mm2pt(20))
         .lineWidth(1)
         .fillOpacity(0.5)
         .fillAndStroke("gray", "#555")
@@ -145,8 +146,8 @@ export function outputInvoice(bill): Promise<boolean> {
           invoiceText = billing.reminder3Text;
       }
 
-      const patient=bill._Fall._Patient
-      
+      const patient = bill._Fall._Patient
+
       pdf.fontSize(14)
         .font('Helvetica-Bold')
         .fillColor("black")
@@ -158,7 +159,8 @@ export function outputInvoice(bill): Promise<boolean> {
 
       pdf.fontSize(11)
       pdf.font("Courier")
-      pdf.text(`Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(billing.datetime)}\n`
+      pdf.text(`${patient.bezeichnung2} ${patient.bezeichnung1}, ${DateTime.fromISO(patient.geburtsdatum).toFormat(billing.datetime)}\n`
+        + `Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(billing.datetime)}\n`
         + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(billing.datetime)}`,
         mm2pt(22), mm2pt(115), {
         width: mm2pt(120),
@@ -168,7 +170,7 @@ export function outputInvoice(bill): Promise<boolean> {
       // Freitext
       pdf.fontSize(12)
       pdf.font("Times-Roman")
-      pdf.text(invoiceText, mm2pt(20), mm2pt(135), {
+      pdf.text(invoiceText, mm2pt(20), mm2pt(140), {
         width: mm2pt(180),
         align: "left"
       })
@@ -201,17 +203,19 @@ export function paymentSlip(bill) {
 }
 
 function createData(bill) {
-  const patient = bill._Fall._Patient
+  // const patient = bill._Fall._Patient
+  const garant = bill._Fall._Garant || bill._Fall._Patient
+
   const data = {
     currency: 'CHF' as Currency,
     amount: amount(bill.betrag),
     reference: reference(bill),
     creditor: billing.creditor,
     debtor: {
-      name: patient.bezeichnung2 + ' ' + patient.bezeichnung1,
-      address: patient.strasse,
-      zip: parseInt(patient.plz),
-      city: patient.ort,
+      name: garant.bezeichnung2 + ' ' + garant.bezeichnung1,
+      address: garant.strasse,
+      zip: parseInt(garant.plz),
+      city: garant.ort,
       country: 'CH',
     },
   }
