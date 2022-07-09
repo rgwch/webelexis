@@ -17,6 +17,7 @@
           bezeichnung1: "Testperson",
           bezeichnung2: "Armeswesen",
         },
+        gesetz: "illegal"
       },
     },
     {
@@ -33,6 +34,7 @@
           bezeichnung1: "Testarossa",
           bezeichnung2: "Ferrari",
         },
+        gesetz: "whatever"
       },
     },
   ];

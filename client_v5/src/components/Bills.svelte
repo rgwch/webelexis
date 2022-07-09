@@ -100,7 +100,7 @@ function sort(col: string) {
                   $_("formatting.date")
                 )}</td>
               <td class="text-center">
-                {bill._Fall?.gesetz}
+                {bill._Fall.gesetz}
               </td>
               <td class="text-center"
                 >{$_("billing." + InvoiceState[bill.rnstatus])}</td>
