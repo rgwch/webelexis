@@ -83,7 +83,7 @@ export class LabresultManager extends ObjectManager {
    * not be matched with norm range.
    */
   public isPathologic(obj: LabresultType): boolean {
-    const r = obj.reference.trim()
+    const r = obj.reference?.trim() || ""
     const val = parseFloat(obj.resultat)
     if (r.startsWith("<")) {
       return (val >= parseFloat(r.substring(1)))

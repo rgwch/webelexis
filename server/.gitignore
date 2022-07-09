@@ -118,4 +118,5 @@ src/configuration.ts
 config/default.js
 config/dockered.js
 config/debug.js
+config/praxis.js
 
