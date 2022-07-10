@@ -103,6 +103,11 @@ export class LabresultManager extends ObjectManager {
 
 
 
+  /**
+   * grouped result
+   * @param x
+   * @param fetched
+  */
   private mixIn(x: LABRESULTS, fetched: query_result) {
     const data = fetched.data as Array<LabresultType>
     for (const val of data) {
@@ -125,8 +130,10 @@ export class LabresultManager extends ObjectManager {
       group[val.titel] = it
       x.items[val.gruppe] = group
     }
-    x.dates.sort((a, b) => a.localeCompare(b))
+    x.dates.sort((a, b) => b.localeCompare(a))
   }
+
+
   /**
    * Fetch all Lab results for a given patients
    * @param id
