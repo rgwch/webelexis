@@ -63,7 +63,7 @@ function labRow(items: Array<LabresultType>) {
         <thead>
           <th>Parameter</th>
           {#each labresults.dates as date}
-            <th>{utils.ElexisDateToLocalDate(date)}</th>
+            <th class="px-2">{utils.ElexisDateToLocalDate(date)}</th>
           {/each}
         </thead>
         <tbody>

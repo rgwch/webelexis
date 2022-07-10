@@ -309,15 +309,15 @@ function dateToScreen(date: string) {
           <!-- Ausgewähltes Rezept -->
           <Card>
             <div slot="heading">
-              <span>{$_("medication.prescription")}</span>
+              <span class="pr-2">{$_("medication.prescription")}</span>
+              <span class="px-2>"
+                >{$currentRezept
+                  ? dateToScreen($currentRezept.datum)
+                  : ""}</span>
               <span
                 title="Druckvorschau"
                 on:click="{() => toPdf($currentRezept)}"
                 ><Fa icon="{faPrint}" /></span>
-              <span
-                class="text-green-600 mx-3 cursor-pointer"
-                on:click="{() => toPdf($currentRezept)}"
-                ><Fa icon="{faMailForward}" /></span>
             </div>
             <div slot="body">
               {#if actrpd}
