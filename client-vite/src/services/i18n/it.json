@@ -1,0 +1,180 @@
+{
+  "actions": {
+    "add": "hinzufügen",
+    "cancel": "Abbruch",
+    "delete": "Löschen",
+    "deselect": "abwählen...",
+    "export": "Exportieren",
+    "extend": "Verlängern",
+    "go": "start",
+    "graph": "Grafik",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "ok": "Ok",
+    "select": "auswählen...",
+    "selectall": "Alle auswählen",
+    "selectnone": "Auswahl löschen",
+    "shrink": "Kürzen"
+  },
+  "address": {
+    "place": "Ort",
+    "street": "Strasse",
+    "zip": "plz"
+  },
+  "appointment": {
+    "duration": "Dauer",
+    "enter": "Eintragen",
+    "enternew": "Neuen Termin eintragen",
+    "time": "Zeit"
+  },
+  "billing": {
+    "CANCELLED": "annulato",
+    "DEMAND_NOTE": "avvertimento",
+    "DEMAND_NOTE_2": "secondo promemoria",
+    "DEMAND_NOTE_2_PRINTED": "Zweite Mahnung gedruckt",
+    "DEMAND_NOTE_3": "Terzo promemoria",
+    "DEMAND_NOTE_3_PRINTED": "Terzo promemoria stampato",
+    "DEMAND_NOTE_PRINTED": "avvertimento stampato",
+    "EXCESSIVE_PAYMENT": "pagato troppo",
+    "IN_EXECUTION": "in operazione",
+    "OPEN": "non pagata",
+    "OPEN_AND_PRINTED": "stampato",
+    "PAID": "pagata",
+    "PARTIAL_LOSS": "perdita parziale",
+    "PARTIAL_PAYMENT": "parzialmente pagato",
+    "TOTAL_LOSS": "perdita totale",
+    "actions": {
+      "create": "Rechnungen erstellen",
+      "demand_level": "Mahnstufe",
+      "output": "Ausgeben",
+      "print": "Drucken",
+      "storno": "Stornieren"
+    },
+    "amount": "quantità",
+    "invoicedate": "data della fattura",
+    "invoicenumber": "numero di fattura",
+    "invoicestate": "stato della fattura",
+    "patient": "paziente",
+    "statedate": "data dello stato"
+  },
+  "cal": {
+    "apr": "Aprile",
+    "aug": "Agosto",
+    "dec": "Dicembre",
+    "feb": "Febbraio",
+    "fr": "Ven",
+    "fri": "Venerdi",
+    "jan": "Gennaio",
+    "jul": "Luglio",
+    "jun": "Giugno",
+    "mai": "Maggio",
+    "mar": "Marzo",
+    "mo": "Lun",
+    "mon": "Lunedi",
+    "nov": "Novembre",
+    "oct": "Ottobre",
+    "sa": "Sab",
+    "sat": "Sabato",
+    "sep": "Settembre",
+    "su": "Dom",
+    "sun": "Domenica",
+    "th": "Gio",
+    "thu": "Giovedi",
+    "tu": "Mar",
+    "tue": "Martedi",
+    "we": "Mer",
+    "wed": "Mercoledi"
+  },
+  "case": {
+    "begindate": "Anfangsdatum",
+    "description": "Bezeichnung",
+    "detail": "Fall Detail",
+    "enddate": "Enddatum",
+    "reason": "Grund"
+  },
+  "contact": {
+    "birthdate": "Geburtsdatum",
+    "email": "E-Mail",
+    "firstname": "Vorname",
+    "gender": "Geschlecht",
+    "lastname": "Name",
+    "mobile": "Mobil",
+    "phone1": "Telefon 1",
+    "phone2": "Telefon 2",
+    "remark": "Bemerkung"
+  },
+  "demotest": "no lo so",
+  "encounter": {
+    "billed": "Verrechnet",
+    "date": "Datum",
+    "detail": "Konsultation Detail"
+  },
+  "formatting": {
+    "date": "DD.MM.YYYY",
+    "dateTime": "dd.LL.yyyy HH:mm",
+    "dbdate": "yyyyLLdd",
+    "longDateTime": "ccc, dd.LL.yyyy HH:mm",
+    "longdate": "ccc, dd.LL.yyyy"
+  },
+  "general": {
+    "from": "von",
+    "loading": "lese...",
+    "until": "bis"
+  },
+  "lab": {
+    "normrange": "Referenzbereich {lower} - {upper}",
+    "resultsbetween": "Werte zwischen {lower} und {upper} {unit}"
+  },
+  "medication": {
+    "fix": "Fixmedikation",
+    "other": "Nicht (mehr) Regelmässig",
+    "prescription": "Rezept",
+    "prescriptions": "Rezepte",
+    "reserve": "Reservemedikation",
+    "rperror": "Konnte kein Rezept erstellen"
+  },
+  "menu": {
+    "account": "Konto",
+    "agenda": "Agenda",
+    "billing": "Abrechnung",
+    "emr": "KG"
+  },
+  "patient": {
+    "detail": "Patient Detail",
+    "noneselected": "Kein Patient ausgewählt"
+  },
+  "prompts": {
+    "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben",
+    "reallydelete": "Wirklich {item} löschen?"
+  },
+  "titles": {
+    "bills": "Rechnungen",
+    "cases": "Fälle",
+    "certificates": "Zeugnisse",
+    "detail": "Detail",
+    "diagnoses": "Diagnosen",
+    "documents": "Dokumente",
+    "encounters": "Konsultationen",
+    "findings": "Befunde",
+    "fromdate": "Kons. nach Datum",
+    "incoming": "Eingehend",
+    "labresults": "Laborwerte",
+    "medicaments": "Medikamente",
+    "outgoing": "Ausgehend",
+    "outputs": "Ausgaben",
+    "password": "Passwort",
+    "personalia": "Personalien",
+    "prescriptions": "Rezepte",
+    "progress": "Verlauf",
+    "selected": "Auswahl",
+    "unbilled": "Unverrechnete Konsultationen",
+    "username": "Benutzername"
+  },
+  "validation": {
+    "invalidDate": "Ungültiges Datum",
+    "invalidlogin": "Name oder Passwort ungültig.",
+    "nopatient": "Kein Patient ausgewählt",
+    "onlyNumbers": "Nur Zahlen zulässig",
+    "onlyText": "Nur Text"
+  }
+}
