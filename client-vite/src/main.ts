@@ -4,6 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+ import 'virtual:windi.css'
 // we need this to inialialize svelte-i18n
 import './services/i18n/i18n'
 import App from './views/App.svelte'
