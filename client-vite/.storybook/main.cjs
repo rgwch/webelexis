@@ -1,5 +1,8 @@
+const path = require('path')
+const preprocess = require('svelte-preprocess')
+const WindiCSS = require("vite-plugin-windicss").default;
 
-module.exports={
+module.exports = {
   "stories": [
     "../src/**/*.stories.mdx",
     "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)"
@@ -14,6 +17,21 @@ module.exports={
     "builder": "@storybook/builder-vite"
   },
   "features": {
-    "storyStoreV7": false 
+    "storyStoreV7": false
+  },
+  svelteOptions: {
+    preprocess: preprocess({
+      typescript: true,
+      sourceMap: true
+    })
+  },
+  async viteFinal(config, { configType }) {
+    config.plugins = config.plugins ?? [];
+    config.plugins.push(
+      WindiCSS({
+        config: path.join(__dirname, "..", "windi.config.ts")
+      })
+    )
+    return config
   }
 }

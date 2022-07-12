@@ -5,6 +5,7 @@
  ********************************************/
 
 import { DateTime } from 'luxon'
+import './i18n/i18n'
 import { _ } from 'svelte-i18n'
 
 let trl;
