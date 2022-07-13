@@ -22,5 +22,9 @@ export default defineConfig({
         to: new Date().toString()
       }
     ],
-  }),]
+  }),],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+  },
 });
