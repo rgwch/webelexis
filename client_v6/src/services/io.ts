@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import cfg from '../services/properties'
+import cfg from './properties'
 import io from 'socket.io-client/dist/socket.io';
 import feathers from '@feathersjs/client';
 import auth from '@feathersjs/authentication-client';

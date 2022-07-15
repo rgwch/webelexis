@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import type { InvoiceType } from './../models/invoice-model'
+import type { InvoiceType } from '../models/invoice-model'
 import { Invoice, RnState } from '../models/invoice-model'
 import { getService } from './io'
 import { EncounterModel } from '../models/encounter-model'

@@ -19,7 +19,7 @@ import { Money } from './money'
 import type { FlexformConfig } from '../widgets/flexformtypes'
 import type { Service } from '@feathersjs/feathers'
 import type { InvoiceType } from './invoice-model'
-import { caseManager } from '../models'
+import { caseManager } from '.'
 
 let trl
 const un = _.subscribe((res) => {

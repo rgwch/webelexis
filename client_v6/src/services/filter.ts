@@ -4,8 +4,8 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import { EncounterModel } from './../models/encounter-model';
-import { Money } from './../models/money';
+import { EncounterModel } from '../models/encounter-model';
+import { Money } from '../models/money';
 import { DateTime } from 'luxon'
 import { getService } from './io';
 import type { Tree } from '../models/tree'
