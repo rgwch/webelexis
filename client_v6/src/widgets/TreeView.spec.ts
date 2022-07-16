@@ -2,6 +2,7 @@ import { render, fireEvent } from '@testing-library/svelte'
 import { Tree } from '../models/tree'
 import "../services/i18n/i18n"
 import { _ } from 'svelte-i18n'
+import { vi, describe, it, expect } from 'vitest'
 
 import TreeView from './TreeView.svelte'
 

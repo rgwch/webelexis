@@ -1,3 +1,4 @@
+import { vi, describe, it, expect } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import "../services/i18n/i18n";

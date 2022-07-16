@@ -3,6 +3,7 @@ import "../services/i18n/i18n"
 import { _ } from 'svelte-i18n'
 
 import Flexform from './Flexform.svelte'
+import { vi, describe, it, expect, beforeAll, afterAll } from 'vitest'
 
 describe('Flexform', () => {
   let trl

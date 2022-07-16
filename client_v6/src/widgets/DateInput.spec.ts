@@ -1,5 +1,5 @@
 import { render, getByLabelText, fireEvent } from '@testing-library/svelte'
-import { vi } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 
 import "../services/i18n/i18n";
 
