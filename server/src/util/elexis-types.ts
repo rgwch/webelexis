@@ -23,7 +23,7 @@ import { logger } from '../logger'
 import crypto from 'crypto'
 
 const JACKSON_VERSION = "2.13.2"
-const TOOLBOX_VERSION = "4.2.11"
+const TOOLBOX_VERSION = "4.3.0"
 
 
 /* generate dependencies with
