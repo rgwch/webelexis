@@ -3,7 +3,6 @@
  * Copyright (c) 2022 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
-
 import qrbill from 'swissqrbill'
 const util = qrbill.utils // require('swissqrbill/utils')
 import path from 'path'
@@ -17,6 +16,21 @@ import conf from 'config'
 const billing = Object.assign({}, conf.get("billing"))
 billing.creditor = Object.assign({}, billing.creditor)
 
+function setSender(pdf, sender: string) {
+  pdf.fontSize(12)
+  pdf.fillColor('black')
+  pdf.font('Helvetica')
+  pdf.text(
+    sender,
+    mm2pt(20),
+    mm2pt(35),
+    {
+      width: mm2pt(100),
+      height: mm2pt(50),
+      align: 'left',
+    },
+  )
+}
 export function outputInvoice(bill): Promise<boolean> {
   return new Promise((resolve, reject) => {
     try {
@@ -52,45 +66,35 @@ export function outputInvoice(bill): Promise<boolean> {
       )
 
       // Block Absender links oben
-      pdf.fontSize(12)
-      pdf.fillColor('black')
-      pdf.font('Helvetica')
+      let biller = bill._Mandant
       let sender = ""
-      const mandators = conf.get("mandators")
-      if (mandators?.default) {
-        const abs = mandators.default
-        pdf.text(
-          `${abs.name}\n${abs.subtitle}\n${abs.street}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`,
-          mm2pt(20),
-          mm2pt(35),
-          {
-            width: mm2pt(100),
-            height: mm2pt(50),
-            align: 'left',
-          },
-        )
-        sender = `${abs.name}, ${abs.street}, ${abs.place}`
+      let city = ""
+
+      // Rechnungssteller (1) Mandant aus bill, (2) Mandant aus mandators.default, (3) aus data.creditor (=billing.creditor)
+      if (biller) {
+        setSender(pdf, biller.anschrift.replace(/\r\n/g, "\n").replace(/\n\n+/g, "\n"))
+        sender = `${biller.bezeichnung2} ${biller.bezeichnung1}, ${biller.strasse}, ${biller.plz} ${biller.ort}`
+        city = biller.ort
       } else {
-        const abs = data.creditor
-        pdf.text(
-          `${abs.name.replace(/\|/g, "\n")}\n${abs.address.replace(/\|/g, "\n")}\n${abs.zip} ${abs.city}`,
-          mm2pt(20),
-          mm2pt(35),
-          {
-            width: mm2pt(100),
-            height: mm2pt(50),
-            align: 'left',
-          },
-        )
-        sender = `${abs.name}, ${abs.address}, ${abs.zip} ${abs.city}`
+        const mandators = conf.get("mandators")
+        if (mandators?.default) {
+          const abs = mandators.default
+          setSender(pdf, `${abs.name}\n${abs.subtitle}\n${abs.street}\n${abs.place}\n\nTel: ${abs.phone}\nMail: ${abs.email}`)
+          sender = `${abs.name}, ${abs.street}, ${abs.place}`
+          city = abs.place
+        } else {
+          const abs = data.creditor
+          setSender(pdf, `${abs.name.replace(/\|/g, "\n")}\n${abs.address.replace(/\|/g, "\n")}\n${abs.zip} ${abs.city}`)
+          sender = `${abs.name}, ${abs.address}, ${abs.zip} ${abs.city}`
+          city = abs.city
+        }
       }
       // Ort und Datum
       const date = new Date()
-      const c = data.creditor
       pdf.fontSize(11)
       pdf.font('Helvetica')
       pdf.text(
-        `${c.city}, ${date.getDate()}.${(date.getMonth() + 1)}.${date.getFullYear()}`,
+        `${city}, ${date.getDate()}.${(date.getMonth() + 1)}.${date.getFullYear()}`,
         mm2pt(20),
         mm2pt(35),
         {
@@ -105,7 +109,7 @@ export function outputInvoice(bill): Promise<boolean> {
       pdf.fontSize(12)
       pdf.font('Helvetica')
       const d = data.debtor
-      const addr=bill._Fall._Garant || bill._Fall._Patient
+      const addr = bill._Fall._Garant || bill._Fall._Patient
       pdf.text(
         addr.anschrift,
         mm2pt(130),
@@ -160,8 +164,8 @@ export function outputInvoice(bill): Promise<boolean> {
       pdf.fontSize(11)
       pdf.font("Courier")
       pdf.text(`${patient.bezeichnung2} ${patient.bezeichnung1}, ${DateTime.fromISO(patient.geburtsdatum).toFormat(billing.datetime)}\n`
-        + `Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(billing.datetime)}\nBehandlungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(billing.datetime)}\n`
-        + `Behandlungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(billing.datetime)}`,
+        + `Rechnungsdatum:   ${DateTime.fromISO(bill.rndatum).toFormat(billing.datetime)}\nLeistungen von: ${DateTime.fromISO(bill.rndatumvon).toFormat(billing.datetime)}\n`
+        + `Leistungen bis: ${DateTime.fromISO(bill.rndatumbis).toFormat(billing.datetime)}`,
         mm2pt(22), mm2pt(115), {
         width: mm2pt(120),
         align: "left"
@@ -205,12 +209,22 @@ export function paymentSlip(bill) {
 function createData(bill) {
   // const patient = bill._Fall._Patient
   const garant = bill._Fall._Garant || bill._Fall._Patient
-
+  let creditor = billing.creditor
+  if (bill._Mandant) {
+    creditor = {
+      name: bill._Mandant.bezeichnung2 + " " + bill._Mandant.bezeichnung1,
+      address: bill._Mandant.strasse,
+      zip: parseInt(bill._Mandant.plz),
+      city: bill._Mandant.ort,
+      country: "CH",
+      account: bill._Mandant.extjson["ch.elexis.ungrad/rbills/iban"]
+    }
+  }
   const data = {
     currency: 'CHF' as Currency,
     amount: amount(bill.betrag),
     reference: reference(bill),
-    creditor: billing.creditor,
+    creditor,
     debtor: {
       name: garant.bezeichnung2 + ' ' + garant.bezeichnung1,
       address: garant.strasse,
