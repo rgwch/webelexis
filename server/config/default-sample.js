@@ -236,7 +236,11 @@ module.exports = {
     reminder2Heading: "Zweite Mahnung für Rn. Nr.",
     reminder2Text: "Bitte zahlen Sie innert 10 Tagen",
     reminder3Heading: "Dritte Mahnung für Rn. Nr.",
-    reminder3Text: "Umgehende Zahlung"
+    reminder3Text: "Umgehende Zahlung",
+    "Privat-Rechnung": {
+      invoiceHeading: "Rechnung Nr. #",
+      invoiceText: "Details siehe Folgeseite. Bitte um Überweisung innert 30 Tagen."
+    }
 
   },
   /**

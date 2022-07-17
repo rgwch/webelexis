@@ -132,22 +132,22 @@ export function outputInvoice(bill): Promise<boolean> {
       switch (parseInt(bill.rnstatus)) {
         case 4:
         case 5:
-          heading = billing.invoiceHeading;
-          invoiceText = billing.invoiceText
+          heading = billing[bill._Fall?.gesetz]?.invoiceHeading || billing.invoiceHeading;
+          invoiceText = billing[bill._Fall?.gesetz]?.invoiceText || billing.invoiceText
           break;
         case 6:
         case 7:
-          heading = billing.reminder1Heading;
-          invoiceText = billing.reminder1Text;
+          heading = billing[bill._Fall?.gesetz]?.reminder1Heading || billing.reminder1Heading;
+          invoiceText = billing[bill._Fall?.gesetz]?.reminder1Text || billing.reminder1Text;
           break;
         case 8:
         case 9:
-          heading = billing.reminder2Heading;
-          invoiceText = billing.reminder2Text;
+          heading = billing[bill._Fall?.gesetz]?.reminder2Heading || billing.reminder2Heading;
+          invoiceText = billing[bill._Fall?.gesetz]?.reminder2Text || billing.reminder2Text;
           break;
         default:
-          heading = billing.reminder3Heading
-          invoiceText = billing.reminder3Text;
+          heading = billing[bill._Fall?.gesetz]?.reminder3Heading || billing.reminder3Heading
+          invoiceText = billing[bill._Fall?.gesetz]?.reminder3Text || billing.reminder3Text;
       }
 
       const patient = bill._Fall._Patient
@@ -240,15 +240,32 @@ function amount(asstring) {
   return ret / 100.0
 }
 
-function reference(bill) {
+/**
+ *
+ * @param bill create a reference line
+ * @returns
+ */
+function reference(bill): string {
+  let refline = "";
   const pnr = bill._Fall._Patient.patientnr
   const rnnr = bill.rnnummer
-  const prefix = new Date().toISOString().substring(0, 10).replace(/\-/g, '')
-  const refline = (prefix + '0000' + pnr.padStart(5, '0') + rnnr.padStart(5, '0')).padEnd(26, '0')
+  if (bill._Mandant.extjson.TarmedESRParticipantNumber) {
+    const esr = bill._Mandant.extjson.TarmedESRIdentity || ""
+    const space = 26 - esr.length - 12
+    refline = esr.padEnd(space, "0") + pnr.padStart(6, "0") + rnnr.padStart(6, "0")
+  } else {
+    const prefix = new Date().toISOString().substring(0, 10).replace(/\-/g, '')
+    refline = (prefix + '0000' + pnr.padStart(5, '0') + rnnr.padStart(5, '0')).padEnd(26, '0')
+  }
   return luhn(refline)
 }
 
-function luhn(num) {
+/**
+ * Append a Modulo-10 (Luhn) Checksum to a line of numbers
+ * @param num a string consisting of numbers
+ * @returns the same string with added checksum
+ */
+function luhn(num: string): string {
   let row = 0
   let nr = num.replace(/[^0-9]/g, '')
   for (let i = 0; i < nr.length; i++) {
