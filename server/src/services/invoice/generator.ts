@@ -217,7 +217,7 @@ function createData(bill) {
       zip: parseInt(bill._Mandant.plz),
       city: bill._Mandant.ort,
       country: "CH",
-      account: bill._Mandant.extjson["ch.elexis.ungrad/rbills/iban"]
+      account: bill._Mandant.extjson["ch.elexis.ungrad/rbills/iban"] || billing.creditor.account
     }
   }
   const data = {
