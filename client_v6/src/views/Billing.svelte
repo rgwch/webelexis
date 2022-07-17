@@ -26,7 +26,7 @@
     bills = result.data;
     busy = false;
     return result.data.sort((a, b) => {
-      return a.rnnummer.localeCompare(b.rnnummer);
+      return b.rnnummer.localeCompare(a.rnnummer);
     });
   }
   let states: Array<string> = [];
