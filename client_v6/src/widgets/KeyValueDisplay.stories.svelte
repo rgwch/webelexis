@@ -8,6 +8,13 @@
     one: "Eins",
     two: "Zwei",
     three: "Drei",
+    four: "Vier",
+    five: "Fünf",
+    six: "Sechs",
+    seven: "Sieben",
+    eight: "Acht",
+    nine: "Neun",
+    ten: "Zehn",
   };
 </script>
 

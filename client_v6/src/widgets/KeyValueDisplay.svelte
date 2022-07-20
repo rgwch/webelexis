@@ -4,7 +4,11 @@
 </script>
 
 <template>
-  {#each Object.keys(obj) as key}
-    <LineInput label={key} value={obj[key]} />
-  {/each}
+  <div class="scrollpanel">
+    {#each Object.keys(obj) as key}
+      {#if typeof obj[key] === "string"}
+        <LineInput label={key} value={obj[key]} on:textChanged />
+      {/if}
+    {/each}
+  </div>
 </template>
