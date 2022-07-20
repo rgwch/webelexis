@@ -41,5 +41,6 @@
   name="standard"
   args={{
     obj: dummy,
+    keys: ["twelve","twenty"]
   }}
 />

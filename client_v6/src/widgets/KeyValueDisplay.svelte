@@ -1,14 +1,27 @@
 <script lang="ts">
-  import LineInput from "./LineInput.svelte";
+  import {createEventDispatcher} from 'svelte'
+  const dispatch = createEventDispatcher()
   export let obj = {};
+  export let keys=[]
+  
+  for(const key of keys){
+    if(!obj[key]){
+      obj[key]=""
+    }
+  }
 </script>
 
 <template>
-  <div class="scrollpanel">
+  <div class="scrollpanel w-full">
+    <table>
     {#each Object.keys(obj) as key}
       {#if typeof obj[key] === "string"}
-        <LineInput label={key} value={obj[key]} on:textChanged />
+        <tr>
+          <td>{key}</td>
+          <td><input type="text" value={obj[key]} on:blur="{()=>{dispatch("textChanged")}}"/></td>
+        </tr>
       {/if}
     {/each}
+  </table>
   </div>
 </template>

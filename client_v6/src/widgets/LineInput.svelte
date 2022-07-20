@@ -68,6 +68,28 @@
       {/if}
     </div>
   {:else if label}
-    label
+    <div class="flex flex-row">
+      <label for={id} class="text-sm font-bold text-gray-700 pr-2">{label}</label>
+      <span class="mx-1">:</span>
+      <input
+        class="pl-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
+        {placeholder}
+        bind:value
+        on:blur={changed}
+        on:keypress={key}
+        {id}
+        {disabled}
+      />
+    </div>
+  {:else}
+    <input
+      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
+      {placeholder}
+      bind:value
+      on:blur={changed}
+      on:keypress={key}
+      {id}
+      {disabled}
+    />
   {/if}
 </template>
