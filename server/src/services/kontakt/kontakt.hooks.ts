@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import  treatDeleted from '../../hooks/treat-deleted'
+import treatDeleted from '../../hooks/treat-deleted'
 import handleExtInfo from '../../hooks/handle-extinfo'
 
 /**
@@ -69,7 +69,7 @@ export default {
     find: [doQuery(), doSort],
     get: [],
     create: [],
-    update: [],
+    update: [handleExtInfo()],
     patch: [],
     remove: []
   },

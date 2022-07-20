@@ -4,7 +4,12 @@
   import LineInput from "../widgets/LineInput.svelte";
   import KeyValueDisplay from "../widgets/KeyValueDisplay.svelte";
   import { onDestroy } from "svelte";
+  import type { KontaktType } from "src/models/kontakt-model";
   export let entity: UserType;
+  let mandant: KontaktType;
+  userManager.getActiveMandatorFor(entity).then((mnd) => {
+    mandant = mnd;
+  });
   if (!entity._Kontakt) {
     userManager.getElexisKontakt(entity);
   }
@@ -13,7 +18,8 @@
     "TarmedESRParticipantNumber",
     "TarmedDiagnoseSystem",
     "TarmedErbringungsOrt",
-    "ch.elexis.ungrad/rbills/bank	",
+    "ch.elexis.ungrad/qrbills/bank",
+    "ch.elexis.ungrad/qrbills/iban",
     "TarmedSpezialität",
     "TarmedESRPlus",
     "Rolle",
@@ -24,14 +30,13 @@
     "Kanton",
     "ch.elexis.data.tarmed.mandant.type",
     "TarmedKanton",
-    "ch.elexis.ungrad/rbills/iban",
   ];
   function setDirty() {
     dirty = true;
   }
   onDestroy(() => {
     if (dirty) {
-      kontaktManager.save(entity._Kontakt);
+      kontaktManager.save(mandant);
     }
   });
 </script>
@@ -56,9 +61,10 @@
       label="firstname"
     />
   </div>
-  <KeyValueDisplay
-    obj={entity._Kontakt?.extjson}
-    {keys}
-    on:textChanged={setDirty}
-  />
+  {#if mandant}
+    <p>Mandant: {kontaktManager.getLabel(mandant)}</p>
+    {#if mandant.extjson}
+      <KeyValueDisplay obj={mandant.extjson} {keys} on:textChanged={setDirty} />
+    {/if}
+  {/if}
 </template>

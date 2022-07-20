@@ -1,3 +1,4 @@
+import { id } from './../../../client_v3/src/fhir/model/fhir';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
@@ -108,7 +109,7 @@ export class UserManager extends ObjectManager {
     if (k.extjson && k.extjson.Mandant) {
       const m0 = k.extjson.Mandant.split(",")[0]
       const ml = await this.kontaktService.find({ query: { bezeichnung3: m0 } })
-      user._Mandator = ml.data[0]
+      user._Mandator = await this.kontaktService.get(ml.data[0].id)
     } else {
       user._Mandator = user._Kontakt
     }
