@@ -1,30 +1,29 @@
 <script>
-import { faAllergies } from "@fortawesome/free-solid-svg-icons";
-import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
-import { _ } from "svelte-i18n";
-import Flexform from "./Flexform.svelte";
-import MarginDecorator from "./MarginDecorator.svelte";
+  import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
+  import { _ } from "svelte-i18n";
+  import Flexform from "./Flexform.svelte";
+  import MarginDecorator from "./MarginDecorator.svelte";
 
-const dummy = {
-  title: () => "Testform",
-  attributes: [
-    {
-      attribute: "textfield",
-      label: $_("demotest"),
-      datatype: "string",
-    },
-    {
-      attribute: "date",
-      datatype: "date",
-      label: "Date",
-    },
-    {
-      attribute: "number",
-      datatype: "number",
-      label: "Number field",
-    },
-  ],
-};
+  const dummy = {
+    title: () => "Testform",
+    attributes: [
+      {
+        attribute: "textfield",
+        label: $_("demotest"),
+        datatype: "string",
+      },
+      {
+        attribute: "date",
+        datatype: "date",
+        label: "Date",
+      },
+      {
+        attribute: "number",
+        datatype: "number",
+        label: "Number field",
+      },
+    ],
+  };
 </script>
 
 <div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500">
@@ -37,23 +36,25 @@ const dummy = {
 
 <Meta
   title="Widgets/Flexform"
-  component="{Flexform}"
-  argTypes="{{ onSave: { action: 'save' }, onLock: { action: 'lock' } }}" />
+  component={Flexform}
+  argTypes={{ onSave: { action: "save" }, onLock: { action: "lock" } }}
+/>
 
 <Template let:args>
   <MarginDecorator>
-    <Flexform {...args} on:lock="{args.onLock}" on:save="{args.onSave}" />
+    <Flexform {...args} on:lock={args.onLock} on:save={args.onSave} />
   </MarginDecorator>
 </Template>
 
 <Story
   name="Lockable"
-  args="{{
+  args={{
     ff_cfg: dummy,
     entity: {
-      textfield: 'Test',
-      date: '20220402',
+      textfield: "Test",
+      date: "20220402",
       number: 42,
     },
     lockable: true,
-  }}" />
+  }}
+/>
