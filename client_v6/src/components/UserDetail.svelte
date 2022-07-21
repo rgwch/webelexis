@@ -36,6 +36,14 @@
   }
   onDestroy(() => {
     if (dirty) {
+      for (const k of mandant.extjson.keys()) {
+        if (
+          typeof mandant.extjson[k] == "string" &&
+          mandant.extjson[k].trim().length == 0
+        ) {
+          delete mandant.extjson[k];
+        }
+      }
       kontaktManager.save(mandant);
     }
   });
