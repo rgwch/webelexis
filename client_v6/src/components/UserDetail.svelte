@@ -36,7 +36,7 @@
   }
   onDestroy(() => {
     if (dirty) {
-      for (const k of mandant.extjson.keys()) {
+      for (const k of Object.keys(mandant.extjson)) {
         if (
           typeof mandant.extjson[k] == "string" &&
           mandant.extjson[k].trim().length == 0

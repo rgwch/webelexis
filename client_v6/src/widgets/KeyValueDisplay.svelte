@@ -33,7 +33,7 @@
             <td
               ><input
                 type="text"
-                value={obj[key]}
+                bind:value={obj[key]}
                 on:blur={() => {
                   checkChange(key);
                 }}
