@@ -242,7 +242,7 @@ function amount(asstring) {
 
 /**
  *
- * @param bill create a reference line
+ * @param bill create a reference line (26 chars plus modulo-10)
  * @returns
  */
 function reference(bill): string {
@@ -251,8 +251,9 @@ function reference(bill): string {
   const rnnr = bill.rnnummer
   if (bill._Mandant.extjson.TarmedESRParticipantNumber) {
     const esr = bill._Mandant.extjson.TarmedESRIdentity || ""
-    const space = 26 - esr.length - 12
-    refline = esr.padEnd(space, "0") + pnr.padStart(6, "0") + rnnr.padStart(6, "0")
+    const id=pnr+"0"+rnnr
+    const space = 26 - id.length
+    refline = esr.padEnd(space, "0") + id
   } else {
     const prefix = new Date().toISOString().substring(0, 10).replace(/\-/g, '')
     refline = (prefix + '0000' + pnr.padStart(5, '0') + rnnr.padStart(5, '0')).padEnd(26, '0')
