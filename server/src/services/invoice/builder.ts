@@ -1,9 +1,14 @@
+interface billed{
+    date: string,
+    text: string,
+    count: number,
+    amount: number,
+    total: number
+}
+
 export class InvoiceBuilder{
 
-    constructor(private app){
+    createDetail(temolate:string,billings:Array<billed>){
         
-    }
-    forPatient(id:string){
-
     }
 }

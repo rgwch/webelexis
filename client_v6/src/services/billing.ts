@@ -9,13 +9,21 @@ import { Invoice, RnState } from '../models/invoice-model'
 import { getService } from './io'
 import { EncounterModel } from '../models/encounter-model'
 import type { EncounterType } from '../models/encounter-model'
-import type { ITreeListener } from "../models/tree";
+import type { ITreeListener } from '../models/tree'
+import type { BriefType } from '../models/briefe-model'
 import { Tree } from '../models/tree'
 import { KontaktManager } from '../models/kontakt-model'
 import type { CaseType } from '../models/case-model'
 import { DateTime } from 'luxon'
 import { Money } from '../models/money'
-import { encounterManager, billingsManager, caseManager, diagnoseManager } from '../models'
+import defs from '../services/util'
+import {
+  encounterManager,
+  billingsManager,
+  caseManager,
+  diagnoseManager,
+  briefManager,
+} from '../models'
 import type { DiagnoseType } from '../models/diagnose-model'
 
 export type konsdef = {
@@ -33,6 +41,14 @@ export type konsdef = {
   Konsultation?: any
 }
 
+type billingline = {
+  date: string
+  count: number
+  code: string
+  text: string
+  amount: string
+}
+
 export class Billing {
   /**
    * fetch a Tree of all unbilled encounters. One Node per patient, one case-node per case, containing all encounters for that case.
@@ -41,28 +57,36 @@ export class Billing {
   async getBillables(listener?: ITreeListener): Promise<Tree<konsdef>> {
     const konsService = getService('konsultation')
     const patService = getService('patient')
-    const unbilled: Array<konsdef> = await konsService.find({ query: { id: 'unbilled' } })
+    const unbilled: Array<konsdef> = await konsService.find({
+      query: { id: 'unbilled' },
+    })
     const ret = new Tree<konsdef>(null, null)
     for (let p of unbilled) {
-      const patNode = ret.insert(p, (a, b) =>
-        a.patientid.localeCompare(b.patientid), listener
+      const patNode = ret.insert(
+        p,
+        (a, b) => a.patientid.localeCompare(b.patientid),
+        listener,
       )
       patNode.props.open = false
-      patNode.props.type = "p"
+      patNode.props.type = 'p'
       for (let q of unbilled) {
         if (q.patientid === patNode.payload.patientid) {
-          const caseNode = patNode.insert(q, (a, b) =>
-            a.fallid.localeCompare(b.fallid), listener
+          const caseNode = patNode.insert(
+            q,
+            (a, b) => a.fallid.localeCompare(b.fallid),
+            listener,
           )
           caseNode.props.open = false
-          caseNode.props.type = "c"
+          caseNode.props.type = 'c'
           for (let l of unbilled) {
             if (l.fallid === caseNode.payload.fallid) {
-              const encNode = caseNode.insert(l, (a, b) =>
-                a.konsid.localeCompare(b.konsid), listener
+              const encNode = caseNode.insert(
+                l,
+                (a, b) => a.konsid.localeCompare(b.konsid),
+                listener,
               )
               encNode.props.open = false
-              encNode.props.type = "e"
+              encNode.props.type = 'e'
             }
           }
         }
@@ -77,6 +101,7 @@ export class Billing {
     const billsService = getService('bills')
     const konsen = fall.getChildren()
     const rechnung: Partial<InvoiceType> = {}
+    const detail: Array<billingline> = []
     let f: CaseType
     let diagnosen: Array<DiagnoseType> = []
     let startDate: DateTime = DateTime.fromISO('2200-12-31')
@@ -85,7 +110,9 @@ export class Billing {
     let konsultationen: Array<EncounterModel> = []
     for (const k of konsen) {
       try {
-        const enc = (await encounterManager.fetch(k.payload.konsid)) as EncounterType
+        const enc = (await encounterManager.fetch(
+          k.payload.konsid,
+        )) as EncounterType
         const kons = new EncounterModel(enc)
         konsultationen.push(kons)
         const mandator = await kons.getMandator()
@@ -110,9 +137,11 @@ export class Billing {
           const cas = fall
           caseManager.setBillingDate(cas, null)
           if (diagnosen.length === 0) {
-            diagnosen = diagnosen.concat(await diagnoseManager.findForKons(enc.id))
+            diagnosen = diagnosen.concat(
+              await diagnoseManager.findForKons(enc.id),
+            )
           }
-          const konsdat = kons.getDateTime()
+          const konsdat:DateTime = kons.getDateTime()
           if (konsdat < startDate) {
             startDate = konsdat
           }
@@ -122,6 +151,14 @@ export class Billing {
           const l = await kons.getBillings()
           for (const billing of l) {
             const amountCents = billingsManager.getAmount(billing)
+            const lineValue = new Money(amountCents)
+            detail.push({
+              date: defs.DateObjectToLocalDate(konsdat.toJSDate()),
+              count: parseInt(billing.zahl),
+              code: billing.code,
+              text: billing.leistg_txt,
+              amount: lineValue.getFormatted(),
+            })
             billAmount = billAmount.addCents(amountCents)
           }
         }
@@ -130,7 +167,7 @@ export class Billing {
       }
     }
     if (errors.length > 0) {
-      alert("errors :" + JSON.stringify(errors))
+      alert('errors :' + JSON.stringify(errors))
     } else {
       try {
         rechnung.betrag = billAmount.getCentsAsString()
@@ -143,6 +180,7 @@ export class Billing {
           k.setInvoice(finalized.id)
         }
         const invoice = new Invoice(finalized)
+        await this.createDetail(rechnung._Fall, detail)
         await invoice.setInvoiceState(RnState.OPEN)
         return finalized
       } catch (error) {
@@ -150,5 +188,33 @@ export class Billing {
         throw error
       }
     }
+  }
+  public async createDetail(fall: CaseType, lines: Array<billingline>) {
+    let table = '<table>'
+    for (const line of lines) {
+      table +=
+        '<tr><td>' +
+        line.date +
+        '</td><td>' +
+        line.count +
+        '</td><td>' +
+        line.code +
+        '</td><td>' +
+        line.text +
+        '</td><td>' +
+        line.amount +
+        '</td></tr>'
+    }
+    table += '</table>'
+    const fields = [{ field: 'lines', replace: table }]
+    const rn: BriefType = {
+      betreff: 'Rechnung',
+      datum: defs.DateToElexisDate(new Date()),
+      mimetype: 'text/html',
+      patientid: fall.patientid,
+      typ: 'Rechnung',
+    }
+    const processed = await briefManager.generate(rn, 'rechnungsdetail', fields)
+    await briefManager.save(processed)
   }
 }

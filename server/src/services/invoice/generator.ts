@@ -3,6 +3,11 @@
  * Copyright (c) 2022 by G. Weirich         *
  * License and Terms see LICENSE            *
  ********************************************/
+
+/***
+ * QR Invoice creation
+ * @see: https://www.paymentstandards.ch/de/home.html
+ */
 import qrbill from 'swissqrbill'
 const util = qrbill.utils // require('swissqrbill/utils')
 import path from 'path'

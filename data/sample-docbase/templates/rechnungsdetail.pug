@@ -1,0 +1,95 @@
+doctype html
+html(lang="de")
+  head
+    meta(charset="utf-8")
+    style.
+      @page{
+        size: a4 portrait;
+        margin-top: 5m;
+        margin-left:5mm;
+        margin-bottom:2mm;
+      }
+      /* the outermost div */
+      #container {
+        position: absolute;
+        font-size: 10pt;
+        left:0;
+        top:0;
+        width: 210mm;
+        height: 297mm;
+      }
+      /* The heading swith sender informations and practice logo*/
+      #header {
+        color: green;
+        text-align: center;
+        padding-bottom: 0;
+        padding-top: 0;
+      }
+
+      h1 {
+        font-size: 12pt;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      /* Make tables more compact */
+      table,
+      tr,
+      td {
+        padding-bottom: 0;
+        padding-top: 0;
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+
+      #datum {
+        position: absolute;
+        right: 20mm;
+        top: 24mm;
+      }
+
+      #absender {
+        position: absolute;
+        left: 10mm;
+        top: 24mm;
+        margin-right: 20px;
+      }
+
+      /* Modify the position to match your envelopes */
+      #addressfield {
+        position: absolute;
+        right: 20mm;
+        top: 45mm;
+        background-color: light-gray;
+      }
+
+      /* The Text for the Bill */
+      #maintext {
+        position: absolute;
+        left: 10mm;
+        top: 100mm;
+      }
+
+      /* Test purposes: Print the page and measure, if the rectagle ist exactly 10x10 cm */
+      .rectangle{
+        position:absolute;
+        left:20mm;
+        top:20mm;
+        width:100mm;
+        height:100mm;
+        border-style:solid;
+        border-width:1px;
+        }
+
+
+  body
+    .container
+      .header
+        h1 Praxis [Mandant.Titel] [Mandant.Vorname] [Mandant.Name]
+        span [Mandant.Strasse] [Mandant.Plz] [Mandant.Ort]
+        hr
+
+      .datum [Mandant.Ort] [Datum.heute]
+      .absender [Mandant.Titel] [Mandant.Vorname] [Mandant.Name]
+      #addressfield [Adressat.Anschrift]
+      #maintext  [lines]

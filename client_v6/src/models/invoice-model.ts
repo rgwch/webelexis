@@ -75,6 +75,9 @@ export const RnState = {
   CANCELLED: "18"
 }
 
+/**
+ * Create a standard invoice
+ */
 export class Invoice {
   private paymentService: IService<PaymentType> = getService("payments")
   private static billService: IService<InvoiceType> = getService("bills")
@@ -259,5 +262,6 @@ export class Invoice {
     }
     await Invoice.billService.remove(this.bill.id)
   }
+ 
 }
 
