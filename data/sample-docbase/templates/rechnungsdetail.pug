@@ -84,12 +84,12 @@ html(lang="de")
 
   body
     .container
-      .header
-        h1 Praxis [Mandant.Titel] [Mandant.Vorname] [Mandant.Name]
-        span [Mandant.Strasse] [Mandant.Plz] [Mandant.Ort]
+      #header
+        h1 [heading]
+        span [sender]
         hr
 
-      .datum [Mandant.Ort] [Datum.heute]
-      .absender [Mandant.Titel] [Mandant.Vorname] [Mandant.Name]
-      #addressfield [Adressat.Anschrift]
+      #datum [Mandant.Ort], den [Datum.heute]
+      #absender [sender]
+      #addressfield [address]
       #maintext  [lines]

@@ -1,3 +1,5 @@
+import { replaceCodePlugin } from 'vite-plugin-replace';
+import { kontaktManager } from './../models/index';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
@@ -155,9 +157,9 @@ export class Billing {
             detail.push({
               date: defs.DateObjectToLocalDate(konsdat.toJSDate()),
               count: parseInt(billing.zahl),
-              code: billing.code,
+              code: billing.code || billing.leistg_code || "",
               text: billing.leistg_txt,
-              amount: lineValue.getFormatted(),
+              amount: lineValue.getFormatted(2),
             })
             billAmount = billAmount.addCents(amountCents)
           }
@@ -180,7 +182,7 @@ export class Billing {
           k.setInvoice(finalized.id)
         }
         const invoice = new Invoice(finalized)
-        await this.createDetail(rechnung._Fall, detail)
+        await this.createDetail(rechnung as InvoiceType, detail)
         await invoice.setInvoiceState(RnState.OPEN)
         return finalized
       } catch (error) {
@@ -189,7 +191,7 @@ export class Billing {
       }
     }
   }
-  public async createDetail(fall: CaseType, lines: Array<billingline>) {
+  public async createDetail(invoice: InvoiceType, lines: Array<billingline>) {
     let table = '<table>'
     for (const line of lines) {
       table +=
@@ -206,12 +208,18 @@ export class Billing {
         '</td></tr>'
     }
     table += '</table>'
-    const fields = [{ field: 'lines', replace: table }]
+    const fields = [{ field: 'lines', replace: table },{
+      field: 'heading', replace: kontaktManager.getLabel(invoice._Mandant)
+    },{
+      field: 'sender', replace: invoice._Mandant.strasse+" " +invoice._Mandant.ort
+    },{
+      field: 'address', replace: kontaktManager.getAddress(invoice._Fall._Patient) 
+    }]
     const rn: BriefType = {
       betreff: 'Rechnung',
       datum: defs.DateToElexisDate(new Date()),
       mimetype: 'text/html',
-      patientid: fall.patientid,
+      patientid: invoice._Fall.patientid,
       typ: 'Rechnung',
     }
     const processed = await briefManager.generate(rn, 'rechnungsdetail', fields)

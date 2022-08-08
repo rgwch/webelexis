@@ -53,6 +53,12 @@ export class KontaktManager extends ObjectManager {
     }
     return ret;
   };
+  public getAddress(obj:KontaktType, oneLine:boolean=false){
+    let ret=obj.bezeichnung1+" "+obj.bezeichnung2+"\n"+
+    obj.strasse+"\n"+
+    obj.plz+" "+obj.ort
+    return oneLine ? ret.replace(/\n/g," ") : ret
+  }
 }
 
 

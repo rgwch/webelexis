@@ -49,7 +49,7 @@ export function outputInvoice(bill): Promise<boolean> {
         }, () => {
           if (bill.toMail) {
             const smtp = conf.get("smtp")
-            const mailer = new Mailer(smtp, "praxis@weirich.ch")
+            const mailer = new Mailer(smtp, conf.get("admin"))
             mailer.send(bill.toMail, "Ihre Arztrechnung", "Im Anhang Ihre Arztrechnung", { filename: "Rechnung.pdf", path: filename }).then(result => {
               resolve(true)
             }).catch(err => {
