@@ -213,7 +213,7 @@ export class Billing {
     },{
       field: 'sender', replace: invoice._Mandant.strasse+" " +invoice._Mandant.ort
     },{
-      field: 'address', replace: kontaktManager.getAddress(invoice._Fall._Patient) 
+      field: 'address', replace: kontaktManager.getAddress(invoice._Fall._Patient,"html")
     }]
     const rn: BriefType = {
       betreff: 'Rechnung',

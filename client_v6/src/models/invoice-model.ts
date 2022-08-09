@@ -95,6 +95,11 @@ export class Invoice {
     _.subscribe(t => this.trl = t)
   }
 
+  /**
+   * Find an invoice by number
+   * @param nr 
+   * @returns 
+   */
   public static async getFromNumber(nr: string): Promise<Invoice> {
     const result = (await this.billService.find({ query: { rnnummer: nr } })) as Paginated<InvoiceType>
     if (result.total > 0) {
@@ -105,7 +110,7 @@ export class Invoice {
   }
 
   /**
-   * get all transactions on this bill (positive and negative)
+   * get all transactions on this invoice (positive and negative)
    * @returns
    */
   public async getTransactions(): Promise<Array<PaymentType>> {
@@ -113,7 +118,7 @@ export class Invoice {
     return result.data
   }
   /**
-   * get all payments (i.e. positive transactions) on this bill)
+   * get all payments (i.e. positive transactions) on this invoice)
    */
   public async getPayments(): Promise<Array<PaymentType>> {
     return (await this.getPayments()).filter(n => parseInt(n.betrag) > 0)
@@ -150,7 +155,7 @@ export class Invoice {
   }
 
   /**
-   * Find unpaid amoount of thos invoice
+   * Find unpaid amoount of this invoice
    * @returns The unpaid amount as Money instance
    */
   public async getRemaining(): Promise<Money> {
@@ -180,6 +185,11 @@ export class Invoice {
       return "unknown"
     }
   }
+  /**
+   * Change invoice state
+   * @param level 
+   * @returns 
+   */
   public async setInvoiceState(level: string): Promise<boolean> {
     try {
 
@@ -198,7 +208,7 @@ export class Invoice {
     }
   }
   /**
-   * output a bill
+   * output an invoice
    * @param toPrinter if true: send to printer, otherwise only export to directory
    * @returns true on success
    */
@@ -214,7 +224,7 @@ export class Invoice {
           case RnState.DEMAND_NOTE_2: await this.setInvoiceState(RnState.DEMAND_NOTE_2_PRINTED); break;
           case RnState.DEMAND_NOTE_3: await this.setInvoiceState(RnState.DEMAND_NOTE_3_PRINTED); break;
           default:
-            console.log("State not automatically modifiyble " + this.bill.rnstatus)
+            console.log("State not automatically modifiyable " + this.bill.rnstatus)
         }
         this.bill.statusdatum = DateTime.now().toFormat("yyyyLLdd");
         const modified = await Invoice.billService.update(this.bill.id, this.bill)
@@ -227,15 +237,33 @@ export class Invoice {
       return false;
     }
   }
+  /**
+   * get total amount for this invoice
+   * @returns 
+   */
   public getAmount = () => new Money(this.bill.betrag)
+  /**
+   * Get remark of this invoice
+   * @returns 
+   
   public getRemark(): string {
     return this.bill.extjson.Bemerkung
   }
+  */
+  /**
+   * add a remark on this invoice
+   * @param rem 
+   */
   public async setRemark(rem): Promise<void> {
     const patched = await Invoice.utilService.patch("setField", this.bill.extinfo, { query: { field: Invoice.TRACE_REMARKS, entry: rem } })
     this.bill.extinfo = patched
   }
 
+  /**
+   * Add a trace message on this bill
+   * @param name type of the trace
+   * @param message contents of the message
+   */
   public async addTrace(name: string, message: string): Promise<void> {
     if (!this.bill.extjson) {
       this.bill.extjson = {}
@@ -250,11 +278,16 @@ export class Invoice {
     this.bill.extinfo = patched
     Invoice.billService.patch(this.bill.id, { extinfo: patched })
   }
-
+  /*
   public getTrace(name: string): Array<string> {
     const trace = this.bill.extjson ? this.bill.extjson[name] : []
     return trace || []
   }
+  */
+
+  /**
+   * Delete this invoice and all linked transactions
+   */
   public async delete() {
     const transactions = await this.getTransactions()
     for (const tx of transactions) {

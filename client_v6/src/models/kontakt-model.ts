@@ -4,7 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
-import type { ElexisType, UUID } from "./elexistype";
+import type { ElexisType, UUID } from './elexistype'
 import { ObjectManager } from './object-manager'
 import { DateTime } from 'luxon'
 
@@ -12,53 +12,72 @@ import { DateTime } from 'luxon'
  * An Elexis "Kontakt"
  */
 export interface KontaktType extends ElexisType {
-  id: UUID;
-  bezeichnung1: string;
-  bezeichnung2?: string;
-  bezeichnung3?: string;
-  geburtsdatum?: string;  
-  istperson?: string;
-  istanwender?: string;
-  istmandant?: string;
-  istorganisation?: string;
-  geschlecht?: "m" | "f" | "w" | "?";
-  strasse?: string;
-  plz?: string;
-  ort?: string;
-  telefon1?: string;
-  telefon2?: string;
+  id: UUID
+  bezeichnung1: string
+  bezeichnung2?: string
+  bezeichnung3?: string
+  geburtsdatum?: string
+  istperson?: string
+  istanwender?: string
+  istmandant?: string
+  istorganisation?: string
+  geschlecht?: 'm' | 'f' | 'w' | '?'
+  strasse?: string
+  plz?: string
+  ort?: string
+  anschrift?: string
+  telefon1?: string
+  telefon2?: string
   titel?: string
   titelsuffix?: string
-  natelnr?: string;
-  email?: string;
-  bemerkung?: string;
+  natelnr?: string
+  email?: string
+  bemerkung?: string
   extjson?: any
 }
 
 export class KontaktManager extends ObjectManager {
   constructor() {
-    super("kontakt")
+    super('kontakt')
   }
-  public getLabel = (obj:KontaktType) => {
-    let d = obj.geburtsdatum || "";
+  public getLabel = (obj: KontaktType) => {
+    let d = obj.geburtsdatum || ''
     if (d.length === 8) {
-      d = DateTime.fromFormat(d, 'yyyyLLdd').toFormat("dd.LL.yyyy")
+      d = DateTime.fromFormat(d, 'yyyyLLdd').toFormat('dd.LL.yyyy')
     }
-    let ret = obj.bezeichnung1 + " " + (obj.bezeichnung2 || "");
+    let ret = obj.bezeichnung1 + ' ' + (obj.bezeichnung2 || '')
     if (obj.geschlecht) {
-      ret += `(${obj.geschlecht})`;
+      ret += `(${obj.geschlecht})`
     }
     if (d) {
-      ret += ", " + d;
+      ret += ', ' + d
     }
-    return ret;
-  };
-  public getAddress(obj:KontaktType, oneLine:boolean=false){
-    let ret=obj.bezeichnung1+" "+obj.bezeichnung2+"\n"+
-    obj.strasse+"\n"+
-    obj.plz+" "+obj.ort
-    return oneLine ? ret.replace(/\n/g," ") : ret
+    return ret
+  }
+  public getAddress(
+    obj: KontaktType,
+    mode: 'plain' | 'html' | 'singleLine' = 'plain',
+  ) {
+    let ret = obj.anschrift
+    if (!ret.length) {
+      ret =
+        (obj.bezeichnung1 || '') +
+        ' ' +
+        (obj.bezeichnung2 || '') +
+        '\n' +
+        (obj.strasse || '') +
+        '\n' +
+        (obj.plz ? obj.plz + ' ' : '') +
+        ' ' +
+        (obj.ort || '')
+    }
+    if (mode === 'plain') {
+      return ret
+    } else if (mode === 'html') {
+      return ret.replace(/\n/g, '<br />')
+    } else {
+      return ret.replace(/\n/g, ', ')
+    }
+    return ret
   }
 }
-
-
