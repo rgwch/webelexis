@@ -278,12 +278,12 @@ export class Invoice {
     this.bill.extinfo = patched
     Invoice.billService.patch(this.bill.id, { extinfo: patched })
   }
-  /*
+  
   public getTrace(name: string): Array<string> {
     const trace = this.bill.extjson ? this.bill.extjson[name] : []
     return trace || []
   }
-  */
+
 
   /**
    * Delete this invoice and all linked transactions
