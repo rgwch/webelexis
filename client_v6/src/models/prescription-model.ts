@@ -6,7 +6,7 @@
  ********************************************/
 import type { ElexisType, UUID } from "./elexistype"
 import { ObjectManager } from './object-manager';
-import { getService } from '../services/io'
+import { getService, IService } from '../services/io'
 import { DateTime } from "luxon";
 import type { PatientType } from './patient-model'
 import type { KontaktType } from './kontakt-model'
@@ -76,15 +76,21 @@ export type MEDICATIONDEF = {
 }
 export class PrescriptionManager extends ObjectManager {
   // private prescriptionLoader
-  private artikelLoader
+  private metaLoader
   private rezepteLoader
+  private articleLoader
 
   constructor() {
     super("prescriptions")
-    this.artikelLoader = getService('meta-article')
+    this.metaLoader = getService('meta-article')
     this.rezepteLoader = getService('rezepte')
+    this.articleLoader = getService('article')
   }
 
+  public async findArticle(term: string): Promise<Array<ArticleType>> {
+    const found = await this.articleLoader.find({ query: { dscr: term } })
+    return found.data
+  }
   /**
    * Fetch medication of current patient
    * @param patientid
@@ -175,7 +181,7 @@ export class PrescriptionManager extends ObjectManager {
     if (datatype == "prescription") {
       prescription = await this.dataService.get(dataid)
     } else if (datatype == "article") {
-      const article = await this.artikelLoader.get(dataid)
+      const article = await this.metaLoader.get(dataid)
       prescription = await this.createFromArticle(patient, prescriptor, article)
     }
     return prescription

@@ -73,9 +73,9 @@ export interface IService<T> {
   remove(id: NullableId, params?: Params): Promise<T | T[]>;
 }
 
-export type ServiceType = "admin" | "auf" | "billable" | "billing" | "bills" | "blob" | "briefe" | "diagnose" | "fall" | "findings" |
-  "invoice" | "konsultation" | "kontakt" | "labresults" | "lucinda" | "meta-article" | "nosql" | "patient" | "payments" | "prescriptions" | "rezepte" |
-  "stickers" | "termin" | "user" | "utility"
+export type ServiceType = "admin" | "article" | "auf" | "billable" | "billing" | "bills" | "blob" | "briefe" | "diagnose" | "fall" |
+  "findings" | "invoice" | "konsultation" | "kontakt" | "labresults" | "lucinda" | "meta-article" | "nosql" | "patient" |
+  "payments" | "prescriptions" | "rezepte" | "stickers" | "termin" | "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 
 

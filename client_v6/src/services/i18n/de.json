@@ -146,6 +146,7 @@
     "noneselected": "Kein Patient ausgewählt"
   },
   "prompts": {
+    "articlesearch":"Artikel wählen",
     "patsearch": "Teil des Namens oder Vornamens oder Geburtsdatum eingeben",
     "reallydelete": "Wirklich {item} löschen?"
   },
