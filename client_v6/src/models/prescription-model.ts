@@ -88,7 +88,7 @@ export class PrescriptionManager extends ObjectManager {
   }
 
   public async findArticle(term: string): Promise<Array<ArticleType>> {
-    const found = await this.articleLoader.find({ query: { dscr: term } })
+    const found = await this.articleLoader.find({ query: { dscr: {$like: `%${term}%`} } })
     return found.data
   }
   /**
