@@ -4,12 +4,20 @@
   import { _ } from "svelte-i18n";
   import { prescriptionManager } from "../models";
   import type { ArticleType } from "src/models/prescription-model";
+import { listen } from "svelte/internal";
   let searchTerm = "";
   async function doSearch() {
     found = await prescriptionManager.findArticle(searchTerm);
   }
   let found: Array<ArticleType> = [];
   function select(a: ArticleType) {}
+  function drag(event){
+    const obj=found.find(el=>event.target.id==el.dscr);
+    event.dataTransfer.setData("text/plain",obj.id)
+    event.dataTransfer.setData("webelexis/datatype","article")
+    event.dataTransfer.setData("webelexis/object",JSON.stringify(obj))
+    return true
+  }
 </script>
 
 <template>
@@ -25,7 +33,9 @@
     {#each found as entry}
       <p
         class="my-0 cursor-pointer hover:text-blue-400"
-        on:click={() => select(entry)}
+        draggable="true"
+        on:dragstart={drag}
+        id={entry.dscr}
       >
         {entry.dscr}
       </p>

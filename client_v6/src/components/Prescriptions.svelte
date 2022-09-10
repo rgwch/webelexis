@@ -16,6 +16,7 @@
     faPrint,
     faStar,
     faMailForward,
+    faPlusCircle,
   } from "@fortawesome/free-solid-svg-icons";
   import type {
     PrescriptionType,
@@ -71,6 +72,8 @@
         alert($_("medication.rperror"));
       });
   }
+
+  let showArticleSelector = false;
 
   /**
    * Something is dragged to the trash symbol
@@ -231,10 +234,12 @@
 
 <template>
   <div class="flex">
-    <div class="basis-1/3">
-      <ArticleSelector></ArticleSelector>
-    </div>
-    <div class="basis-2/3">
+    {#if showArticleSelector}
+      <div class="basis-1/3">
+        <ArticleSelector />
+      </div>
+    {/if}
+    <div class="flex-1">
       <Card>
         <div slot="heading">
           <div class="flex">
@@ -247,6 +252,13 @@
               on:drop={dropTrash}
             >
               <Fa icon={faTrash} size="lg" />
+            </span>
+            <span class="ml-3 text-blue-600"
+              on:click={() => {
+                showArticleSelector = !showArticleSelector;
+              }}
+            >
+              <Fa icon={faPlusCircle} size="lg" />
             </span>
           </div>
         </div>
