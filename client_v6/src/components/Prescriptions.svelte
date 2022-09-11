@@ -253,7 +253,8 @@
             >
               <Fa icon={faTrash} size="lg" />
             </span>
-            <span class="ml-3 text-blue-600"
+            <span
+              class="ml-3 text-blue-600"
               on:click={() => {
                 showArticleSelector = !showArticleSelector;
               }}
@@ -268,12 +269,15 @@
               <!-- Fixmedikation -->
               <Card>
                 <div slot="heading">
-                  <span>{$_("medication.fix")}</span>
-                  <span
-                    class="mx-3 px-1 cursor-pointer scale-125 hover:(text-red-600 text-lg)"
-                    on:click={() => addToRp(medication.fix, Modalities.FIXMEDI)}
-                    ><Fa icon={faPrescription} /></span
-                  >
+                  <div class="flex">
+                    <span>{$_("medication.fix")}</span>
+                    <span
+                      class="mx-3 px-1 cursor-pointer scale-125 hover:(text-red-600 text-lg)"
+                      on:click={() =>
+                        addToRp(medication.fix, Modalities.FIXMEDI)}
+                      ><Fa icon={faPrescription} /></span
+                    >
+                  </div>
                 </div>
                 <div slot="body">
                   <Medicationlist
@@ -287,13 +291,15 @@
               <!-- Reservemedikation -->
               <Card>
                 <div slot="heading">
-                  <span>{$_("medication.reserve")}</span>
-                  <span
-                    class="mx-3 px-1 cursor-pointer scale-125 hover:(text-red-600 text-lg)"
-                    on:click={() => {
-                      addToRp(medication.reserve, Modalities.RESERVE);
-                    }}><Fa icon={faPrescription} /></span
-                  >
+                  <div class="flex">
+                    <span>{$_("medication.reserve")}</span>
+                    <span
+                      class="mx-3 px-1 cursor-pointer scale-125 hover:(text-red-600 text-lg)"
+                      on:click={() => {
+                        addToRp(medication.reserve, Modalities.RESERVE);
+                      }}><Fa icon={faPrescription} /></span
+                    >
+                  </div>
                 </div>
                 <div slot="body">
                   <Medicationlist
@@ -309,14 +315,16 @@
               <!-- Rezepte -->
               <Card>
                 <div slot="heading">
-                  <span>{$_("medication.prescriptions")}</span>
-                  <span
-                    class="text-green-600 mx-3 cursor-pointer"
-                    on:click={() => createRezept()}><Fa icon={faStar} /></span
-                  >
+                  <div class="flex">
+                    <span>{$_("medication.prescriptions")}</span>
+                    <span
+                      class="text-green-600 mx-3 mt-1 cursor-pointer"
+                      on:click={() => createRezept()}><Fa icon={faStar} /></span
+                    >
+                  </div>
                 </div>
                 <div slot="body">
-                  <div class="max-h-[8rem] h-[8rem] overflow-y-auto">
+                  <div class="max-h-[8rem] h-[8rem] overflow-y-auto pr-2">
                     {#each rpdefs as rpd}
                       <div
                         class="cursor-pointer"
@@ -335,17 +343,20 @@
               <!-- Ausgewähltes Rezept -->
               <Card>
                 <div slot="heading">
-                  <span class="pr-2">{$_("medication.prescription")}</span>
-                  <span class="px-2>"
-                    >{$currentRezept
-                      ? dateToScreen($currentRezept.datum)
-                      : ""}</span
-                  >
-                  <span
-                    title="Druckvorschau"
-                    on:click={() => toPdf($currentRezept)}
-                    ><Fa icon={faPrint} /></span
-                  >
+                  <div class="flex">
+                    <span class="pr-2">{$_("medication.prescription")}</span>
+                    <span class="px-2>"
+                      >{$currentRezept
+                        ? dateToScreen($currentRezept.datum)
+                        : ""}</span
+                    >
+                    <span
+                    class="ml-3 mt-1"
+                      title="Druckvorschau"
+                      on:click={() => toPdf($currentRezept)}
+                      ><Fa icon={faPrint} /></span
+                    >
+                  </div>
                 </div>
                 <div slot="body">
                   {#if actrpd}
