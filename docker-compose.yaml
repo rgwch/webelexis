@@ -1,4 +1,4 @@
-version: "3"
+version: "3.3"
 
 services:
   webelexis:
@@ -12,6 +12,30 @@ services:
       - external_webelexis_net
     volumes:
       - ./server/config:/home/node/webelexis/server/config
+
+  traefik:
+    image: traefik:v2.8
+    container_name: wlx_proxy
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  whoami:
+    image: traefik/whoami
+    container-name: simple-service
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.whoami.rule=Host(`hodor.lan`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
 networks:
   external_webelexis_net:
     external: true
