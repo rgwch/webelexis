@@ -37,3 +37,4 @@ data/sample-docbase/documents
 
 server/test/ocrtested.pdf
 
+.env

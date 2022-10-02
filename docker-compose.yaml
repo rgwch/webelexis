@@ -5,13 +5,14 @@ services:
     build: .
     container_name: wlx_webelexis
     hostname: webelexis
-    ports:
-      - 3030:3030
-      - 4040:4040
     networks:
       - external_webelexis_net
     volumes:
       - ./server/config:/home/node/webelexis/server/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.webelexis.rule=Host(`termine.hodor.lan`)
+      - traefik.http.services.service1.loadbalancer.server.port=4040
 
   traefik:
     image: traefik:v2.8
@@ -30,11 +31,11 @@ services:
 
   whoami:
     image: traefik/whoami
-    container-name: simple-service
+    container_name: simple-service
     labels:
       - traefik.enable=true
-      - "traefik.http.routers.whoami.rule=Host(`hodor.lan`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.eins.rule=Host(`hodor.lan`)"
+      - "traefik.http.routers.eins.entrypoints=web"
 
 networks:
   external_webelexis_net:
