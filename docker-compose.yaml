@@ -9,16 +9,20 @@ services:
       - external_webelexis_net
     volumes:
       - ./server/config:/home/node/webelexis/server/config
+    ports:
+      - 3030:3030
+      - 4040:4040
     labels:
       - traefik.enable=true
-      - traefik.http.routers.webelexis.rule=Host(`termine.hodor.lan`)
+      - traefik.http.routers.zwei.rule=Host(`termine.hodor.lan`)
+      - traefik.http.routers.zwei.entrypoints=web
       - traefik.http.services.service1.loadbalancer.server.port=4040
 
   traefik:
     image: traefik:v2.8
     container_name: wlx_proxy
     command:
-      #- "--log.level=DEBUG"
+      - --log.level=DEBUG
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -28,14 +32,6 @@ services:
       - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  whoami:
-    image: traefik/whoami
-    container_name: simple-service
-    labels:
-      - traefik.enable=true
-      - "traefik.http.routers.eins.rule=Host(`hodor.lan`)"
-      - "traefik.http.routers.eins.entrypoints=web"
 
 networks:
   external_webelexis_net:
