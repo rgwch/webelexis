@@ -14,7 +14,7 @@ const socket = io(cfg.server)
 const app = feathers()
 app.configure(feathers.socketio(socket))
 app.configure(auth({ storage: window.localStorage }))
-
+console.log("Webelexis clent production mode: " + cfg.production)
 
 export interface IService<T> {
   /**
