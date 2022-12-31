@@ -37,6 +37,9 @@ export class Service {
     const dayDefaults = await appntService.get('daydefaults')
     const appntStates = await appntService.get("states")
     const spec = dayDefaults[resource]
+    if(!spec){
+      throw new Error("Resource unknown "+resource)
+    }
     const day = DateTime.fromFormat(date, 'yyyyLLdd').weekday
     const daystr = ['Mo', 'Di', "Mi", "Do", "Fr", "Sa", "So"][day - 1]
     const unavail = spec[daystr].map(slot => {
