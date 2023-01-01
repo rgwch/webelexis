@@ -7,6 +7,7 @@
 import { DateTime } from 'luxon'
 import { ElexisUtils } from '../../util/elexis-types'
 import { Gapfinder } from './gapfinder'
+import mailmaker from './mailmaker'
 const elexis = new ElexisUtils()
 const gapf = new Gapfinder()
 
@@ -37,8 +38,8 @@ export class Service {
     const dayDefaults = await appntService.get('daydefaults')
     const appntStates = await appntService.get("states")
     const spec = dayDefaults[resource]
-    if(!spec){
-      throw new Error("Resource unknown "+resource)
+    if (!spec) {
+      throw new Error("Resource unknown " + resource)
     }
     const day = DateTime.fromFormat(date, 'yyyyLLdd').weekday
     const daystr = ['Mo', 'Di', "Mi", "Do", "Fr", "Sa", "So"][day - 1]
@@ -128,9 +129,8 @@ export class Service {
     termin.grund = data.grund
     const inserted = await appntService.create(termin)
 
-    const cfg = this.options.app.get('userconfig')
-    if (cfg.schedule.confirm && data.sendmail) {
-      require('./mailmaker')(cfg, data)
+    if (this.defaults?.confirm && data.sendmail) {
+      mailmaker(this.options.app, data)
     }
 
     return inserted;
