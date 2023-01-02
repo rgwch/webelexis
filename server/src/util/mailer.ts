@@ -27,12 +27,12 @@ export class Mailer {
     this.sender = sender
 
     this.smtp = {
-      host: config.host,
-      port: config.port,
+      host: this.config.host,
+      port: this.config.port,
       secure: true,
       auth: {
-        user: config.user || process.env.SMTPUSER,
-        pass: config.pwd || process.env.SMTPPASSWORD,
+        user: this.config.user || process.env.SMTPUSER,
+        pass: this.config.pwd || process.env.SMTPPASSWORD,
       },
     }
     this.transporter = nodemailer.createTransport(this.smtp)
