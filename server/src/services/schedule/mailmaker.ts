@@ -5,7 +5,7 @@
  ********************************************/
 
 import { DateTime } from 'luxon'
-const ical = require('ical-generator')
+import ical from 'ical-generator'
 import { Mailer } from '../../util/mailer'
 
 /**
@@ -25,7 +25,7 @@ export default function (app, data) {
     const atidx = sched.sitemail.indexOf('@')
     const domain = sched.sitemail.substr(atidx + 1)
     const cal = ical({ domain, name: "Arzttermin" })
-    cal.method('publish').prodId({
+    cal.method('PUBLISH').prodId({
         company: sched.sitename,
         product: "Terminvereinbarung",
         language: "DE"
@@ -33,8 +33,10 @@ export default function (app, data) {
         start: tstart.toJSDate(),
         end: tstart.plus({ minutes: 20 }).toJSDate(),
         description: "Arzttermin " + sched.sitename,
+        summary: "Bestätigung",
         location: sched.siteaddr,
         timezone: "Europe/Zurich"
     })
-    mailer.send(data.email, "Terminbestätigung " + sched.sitename, body, cal.toString())
+
+    mailer.send(data.email, "Terminbestätigung " + sched.sitename, body, null,cal.toString())
 }

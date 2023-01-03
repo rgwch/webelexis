@@ -42,7 +42,7 @@ export class Mailer {
     subject: string,
     contents: string,
     attachment?: Attachment,
-    ical?,
+    ical?: string
   ): Promise<any> {
     const message = {
       from: this.sender,
@@ -60,7 +60,12 @@ export class Mailer {
     if (attachment) {
       message['attachments'] = [attachment]
     }
-    const result = await this.transporter.sendMail(message)
-    return result
+    try {
+      const result = await this.transporter.sendMail(message)
+      return result
+    } catch (err) {
+      console.log(err)
+      return { error: err }
+    }
   }
 }
