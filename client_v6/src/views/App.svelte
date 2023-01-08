@@ -23,7 +23,7 @@
         </nav>
         <div>
           {#if $currentUser}
-            <Route path="/" component={Emr} />
+            <Route path="/" component={Agenda} />
           {:else}
             <Route path="/" component={Account} />
           {/if}
