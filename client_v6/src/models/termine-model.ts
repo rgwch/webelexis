@@ -41,7 +41,7 @@ export class Statics {
   public static agendaResources = []
 }
 
-currentUser.subscribe(async user=>{
+currentUser.subscribe(async user => {
   Statics.agendaResources = await terminService.get("resources")
   Statics.terminTypColors = await terminService.get("typecolors", {
     query: { user: user.id }
@@ -51,7 +51,7 @@ currentUser.subscribe(async user=>{
   })
   Statics.terminTypes = await terminService.get("types")
   Statics.terminStates = await terminService.get("states")
- 
+
 })
 
 export class TerminManager {
@@ -206,6 +206,9 @@ export class TerminModel {
   public setPatient(pat: PatientType) {
     this.obj.patid = pat.id
   }
+  public setFreetext(text: string) {
+    this.obj.patid = text
+  }
   public setStatus(status: string): boolean {
     this.obj.terminstatus = status
     return true
@@ -218,8 +221,8 @@ export class TerminModel {
     this.obj.beginn = (60 * st.hour + st.minute).toString()
   }
 
-  public setDescription(text:string){
-    this.obj.grund=text
+  public setDescription(text: string) {
+    this.obj.grund = text
   }
   public setEndTime(et: DateTime) {
     const minutes = et.diff(this.getStartTime(), 'minutes')

@@ -86,6 +86,7 @@ export default (app) => {
   app.configure(schedule)
   app.configure(stickynotes)
   app.configure(bills)
+  generateACLs("bills")
   app.configure(invoice)
   app.configure(payments)
   app.configure(diagnose)

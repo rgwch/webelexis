@@ -78,7 +78,7 @@ function sort(col: string) {
           }}">{$_("billing.amount")}</th>
         <th
           class="hover:text-blue-600 underline cursor-pointer"
-          on:click="{() => sort('_Patname')}">{$_("billing.patient")}</th>
+          on:click="{() => sort('_Patname')}">{$_("patient.patient")}</th>
       </thead>
       <tbody>
         {#if busy}
