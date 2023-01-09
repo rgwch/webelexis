@@ -24,16 +24,20 @@ block content
       .card-body
         form.form(action="/termin/set" method="post")
           .form-row
-            .col-3
-              each slot in slots
-                .form-check
-                  input.form-check-input(type="radio" name="appnts" value=slot.appnt id=slot.id)
-                  label.form-check-label(for=slot style="margin-top:3px;") #{slot.human}
-            .col-9
-              p Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Über die Verwendung der Daten orientiert Sie die <a href="/datenschutz">Datenschutz-Seite</a>
+            if slots.length
+              .col-3
+                each slot in slots
+                  .form-check
+                    input.form-check-input(type="radio" name="appnts" value=slot.appnt id=slot.id)
+                    label.form-check-label(for=slot style="margin-top:3px;") #{slot.human}
+              .col-9
+                p Bitte wählen Sie den gewünschten Termin und geben Sie unten Ihre Daten ein. Über die Verwendung der Daten orientiert Sie die <a href="/datenschutz">Datenschutz-Seite</a>
+            else
+              .col 
+                p An diesem Tag sind leider keine Termine frei. Bitte wählen Sie mit den Pfeiltasten oben ein anderes Datum.
           .form-row.my-4
             .col
-              input.form-control(type="email" name="email" id="email" placeholder="E-Mail Adresse")
+              input.form-control(type="email" name="email" id="email" value=email placeholder="E-Mail Adresse")
             .col
               input.form-control(type="text" name="bdate" id="bdate" placeholder="Geburtsdatum (tt.mm.jjjj)")
           .form-row.my-4
