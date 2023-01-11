@@ -12,7 +12,7 @@ module.exports = {
   /* if testing is true, webelexis will create some testusers on startup and allow to login without a password. */
   "testing": false,
   "host": "localhost",
-  "port": 3030,
+  "port": process.env.WEBELEXIS_SERVER || 3030,
   "client3": "../../client_v3/dist/",
   "client5": "../../client_v5/dist",
   "paginate": {
