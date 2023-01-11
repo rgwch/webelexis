@@ -6,12 +6,13 @@
  ********************************************/
 
 let production = "isproduction"
+let server= import.meta.env.WEBELEXIS_SERVER || 3030
 export default {
   version: "WEBELEXIS_VERSION",
   build: "WEBELEXIS_BUILDDATE",
   production,
 
-  server: production == "true" ? "/" : "http://localhost:3030",
+  server: production == "true" ? "/" : `http://localhost:${server}`,
   mandator: "gerry",
   volatile: {
 
