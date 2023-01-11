@@ -9,7 +9,7 @@
     "@feathersjs/feathers": "^4.5.15",
     "@feathersjs/socketio-client": "^4.5.15",
     "cookie-parser": "~1.4.3",
-    "debug": "~2.6.9",
+    "debug": "~3.1.0",
     "dotenv": "^16.0.3",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
