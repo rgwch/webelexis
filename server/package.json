@@ -94,7 +94,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.16.8",
-    "@feathersjs/cli": "^4.7.0",
+    "@feathersjs/cli": "^4.8.0",
     "@types/jest": "^27.4.0",
     "@types/luxon": "^3.2.0",
     "eslint": "^8.7.0",
