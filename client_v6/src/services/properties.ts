@@ -6,7 +6,7 @@
  ********************************************/
 
 let production = "isproduction"
-let server= import.meta.env.WEBELEXIS_SERVER || 3030
+let server= import.meta.env.VITE_WEBELEXIS_SERVER || 3030
 export default {
   version: "WEBELEXIS_VERSION",
   build: "WEBELEXIS_BUILDDATE",

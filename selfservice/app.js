@@ -4,6 +4,7 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+require('dotenv').config({path: "../.env"})
 const io = require('socket.io-client')
 const feathers = require('@feathersjs/feathers')
 const socketio = require('@feathersjs/socketio-client')
@@ -17,7 +18,7 @@ const terminRouter = require("./routes/schedule")
 
 const app = express();
 const port = process.env.WEBELEXIS_SERVER || 3030
-
+console.log("connecting to webelexis at "+port)
 const socket = io(`http://localhost:${port}`)
 // const socket=io("http://192.168.0.1:2020")
 const client = feathers()

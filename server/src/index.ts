@@ -7,6 +7,8 @@
 /**
  * 'npm start' will execute this script
  */
+import * as dotenv from 'dotenv'
+dotenv.config({path: "../.env", debug: true})
 import app from './app';
 const port = app.get('port');
 const server = app.listen(port);
