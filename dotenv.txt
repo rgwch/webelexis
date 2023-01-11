@@ -1,0 +1,5 @@
+create an .env file in root dir with:
+WEBELEXIS_SERVER=3030
+VITE_WEBELEXIS_SERVER=3030
+
+to define Server port (Default is 3030)
