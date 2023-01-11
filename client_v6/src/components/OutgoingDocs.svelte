@@ -58,11 +58,11 @@
           target="_blank"
         >
           {util.ElexisDateToLocalDate(doc.datum)} - {doc.betreff}
+          {#await getAdressee(idx) then adr}
+            - {adr}
+          {/await}
+          - ({doc.mimetype})
         </a>
-        {#await getAdressee(idx) then adr}
-          - {adr}
-        {/await}
-        - ({doc.mimetype})
       </p>
     {/each}
   </div>
