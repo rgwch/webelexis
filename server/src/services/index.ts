@@ -39,6 +39,7 @@ import bills from './bills/bills.service'
 import invoice from './invoice/invoice.service'
 import payments from './payments/payments.service'
 import diagnose from './diagnose/diagnose.service'
+import directory from './directory/directory.service'
 
 const generateACLs = (servicename) => {
   const a = []
@@ -94,4 +95,5 @@ export default (app) => {
   app.configure(couchdb)
   app.configure(blob)
   app.configure(findings)
+  app.configure(directory)
 }
