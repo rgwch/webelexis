@@ -45,11 +45,14 @@ function save() {
             class="w-full h-20"
             bind:value="{termin.obj.grund}"
             on:blur="{save}"></textarea>
+           <span> 
           <button
             class="roundbutton"
             on:click="{() => {
               dispatch('pselect', termin);
             }}">{$_("actions.topatient")}</button>
+            <span class="text-right text-sm float-right">({termin.obj.erstelltvon})</span>
+           </span>
         </div>
         <div class="flex-grow max-w-1/4">
           <Dropdown

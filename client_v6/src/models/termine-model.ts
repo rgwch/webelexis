@@ -16,6 +16,7 @@ import { currentUser } from "../services/store"
 
 const kontaktManager = new KontaktManager()
 const terminService = getService("termin")
+let actUser:UserType;
 /**
  * An Elexis "Termin"
  */
@@ -51,7 +52,7 @@ currentUser.subscribe(async user => {
   })
   Statics.terminTypes = await terminService.get("types")
   Statics.terminStates = await terminService.get("states")
-
+  actUser=user
 })
 
 export class TerminManager {
@@ -62,6 +63,7 @@ export class TerminManager {
       if (t.obj.id) {
         return await terminService.update(t.obj.id, t.obj)
       } else {
+        t.obj.erstelltvon=actUser.id
         return await terminService.create(t.obj)
       }
     }
