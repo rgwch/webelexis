@@ -51,7 +51,7 @@ function save() {
             on:click="{() => {
               dispatch('pselect', termin);
             }}">{$_("actions.topatient")}</button>
-            <span class="text-right text-sm float-right">({termin.obj.erstelltvon})</span>
+            <span class="text-right text-sm float-right">({termin.obj.erstelltvon}, {termin.getCreationTime().toLocaleString()})</span>
            </span>
         </div>
         <div class="flex-grow max-w-1/4">

@@ -16,7 +16,7 @@ import { currentUser } from "../services/store"
 
 const kontaktManager = new KontaktManager()
 const terminService = getService("termin")
-let actUser:UserType;
+let actUser: UserType;
 /**
  * An Elexis "Termin"
  */
@@ -31,7 +31,8 @@ export interface TerminType extends ElexisType {
   termintyp: string
   terminstatus: string
   kontakt?: KontaktType
-  erstelltvon: string
+  erstelltvon?: string
+  angelegt?: string
 }
 
 export class Statics {
@@ -52,7 +53,7 @@ currentUser.subscribe(async user => {
   })
   Statics.terminTypes = await terminService.get("types")
   Statics.terminStates = await terminService.get("states")
-  actUser=user
+  actUser = user
 })
 
 export class TerminManager {
@@ -63,7 +64,9 @@ export class TerminManager {
       if (t.obj.id) {
         return await terminService.update(t.obj.id, t.obj)
       } else {
-        t.obj.erstelltvon=actUser.id
+        t.obj.erstelltvon = actUser.id
+        const d=Math.round(new Date().getTime()/60000)
+        t.obj.angelegt=d.toString()
         return await terminService.create(t.obj)
       }
     }
@@ -195,6 +198,15 @@ export class TerminModel {
   public getDuration = (): number => parseInt(this.obj.dauer, 10)
   public getEndMinutes = (): number => this.getBeginMinutes() + this.getDuration()
 
+  public getCreationTime(): Date {
+    const ct = this.obj.angelegt
+    if (ct) {
+      const ms = parseInt(ct) * 60000
+      return new Date(ms)
+    } else {
+      return new Date()
+    }
+  }
   public getDate(): Date {
     const dt = DateTime.fromFormat(this.obj.tag, "yyyyLLdd")
     return dt.toJSDate()
