@@ -82,7 +82,7 @@ export const autoImport = app => {
         }
       }
       Promise.all(templates).then(r => {
-        logger.info(`imported ${r.length} templates`)
+        logger.info(`imported ${r.length} templates from ${templatesDir}`)
       })
     }).catch(err => {
       logger.error("could not read template dir %s:%s", templatesDir, err)

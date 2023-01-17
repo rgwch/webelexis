@@ -88,7 +88,7 @@
       "env": {
         "NODE_CONFIG_DIR": "${workspaceFolder}/server/config",
         "NODE_ENV": "debug",
-        "EXTERNAL_PORT": 2019
+        "WEBELEXIS_SERVER": "2019"
       }
     }
   ]
