@@ -34,14 +34,19 @@ const doQuery = function (options = {}) { // eslint-disable-line no-unused-vars
         let dat = expr.substr(6, 4) + expr.substr(3, 2) + expr.substr(0, 2)
         context.params.query.Geburtsdatum = dat
       } else {
-        if (!expr.endsWith("%")) {
-          expr = expr + "%"
+        const terms = expr.split(/[,\s]/).map(t => t.endsWith("%") ? t : t + "%")
+        if (terms.length == 2) {
+          context.params.query.$or = [
+            { "bezeichnung1": { $like: terms[0] }, "bezeichnung2": { $like: terms[1] } },
+            { "bezeichnung1": { $like: terms[1] }, "bezeichnung2": { $like: terms[0] } },
+          ]
+        } else {
+          context.params.query.$or = [
+            { "bezeichnung1": { $like: terms[0] } },
+            { "bezeichnung2": { $like: terms[0] } },
+            { "bezeichnung3": { $like: terms[0] } }
+          ]
         }
-        context.params.query.$or = [
-          { "bezeichnung1": { $like: expr } },
-          { "bezeichnung2": { $like: expr } },
-          { "bezeichnung3": { $like: expr } }
-        ]
       }
       delete context.params.query.$find
     }
