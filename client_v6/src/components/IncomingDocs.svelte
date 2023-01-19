@@ -6,10 +6,19 @@
   import util from "../services/util";
 
   let docs: Array<DocumentType> = [];
+  let datePattern = /([0-9]{2,2})\.([0-9]{2,2})\.([0-9]{4,4})/;
 
+  function normalize(document) {
+    let t: string = document.title.toLocaleLowerCase();
+    const hit = datePattern.exec(t);
+    if (hit) {
+      t = hit[3] + hit[2] + hit[1] + t.substring(10);
+    }
+    return t;
+  }
   currentPatient.subscribe(async (p) => {
     const result = await documentManager.getForPatient(p);
-    docs = result;
+    docs = result.sort((d, e) => normalize(e).localeCompare(normalize(d)));
   });
   async function show(doc) {
     const contents = await documentManager.fetch(doc.id);
