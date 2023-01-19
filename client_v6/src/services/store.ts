@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2022 by G. Weirich    *
+ * Copyright (c) 2016-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -18,6 +18,10 @@ export const currentRezept: Writable<RezeptType> = writable()
 export const currentActor: Writable<KontaktType> = writable()
 export const currentUser: Writable<UserType> = writable()
 export const currentCase:Writable<CaseType> = writable()
+
+export const agendaResource=writable<string>()
+export const agendaDate=writable<Date>()
+export const agendaResources=writable<Array<string>>()
 
 type msgfunc = (event: any) => void
 

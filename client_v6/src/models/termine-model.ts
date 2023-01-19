@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2022 by G. Weirich    *
+ * Copyright (c) 2016-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -12,7 +12,7 @@ import { DateTime } from "luxon"
 import { getService } from "../services/io"
 import { KontaktManager } from "./kontakt-model"
 import type { PatientType } from "./patient-model"
-import { currentUser } from "../services/store"
+import { currentUser, agendaResources, agendaResource } from "../services/store"
 
 const kontaktManager = new KontaktManager()
 const terminService = getService("termin")
@@ -40,20 +40,24 @@ export class Statics {
   public static terminStates = []
   public static terminTypColors = {}
   public static terminStateColors = {}
-  public static agendaResources = []
 }
 
 currentUser.subscribe(async user => {
-  Statics.agendaResources = await terminService.get("resources")
-  Statics.terminTypColors = await terminService.get("typecolors", {
-    query: { user: user.id }
-  })
-  Statics.terminStateColors = await terminService.get("statecolors", {
-    query: { user: user.id }
-  })
-  Statics.terminTypes = await terminService.get("types")
-  Statics.terminStates = await terminService.get("states")
   actUser = user
+  if (user && user.id) {
+    terminService.get("resources").then(res => {
+      agendaResources.set(res)
+      agendaResource.set(res[0])
+    })
+    Statics.terminTypColors = await terminService.get("typecolors", {
+      query: { user: user.id }
+    })
+    Statics.terminStateColors = await terminService.get("statecolors", {
+      query: { user: user.id }
+    })
+    Statics.terminTypes = await terminService.get("types")
+    Statics.terminStates = await terminService.get("states")
+  }
 })
 
 export class TerminManager {
@@ -65,8 +69,8 @@ export class TerminManager {
         return await terminService.update(t.obj.id, t.obj)
       } else {
         t.obj.erstelltvon = actUser.id
-        const d=Math.round(new Date().getTime()/60000)
-        t.obj.angelegt=d.toString()
+        const d = Math.round(new Date().getTime() / 60000)
+        t.obj.angelegt = d.toString()
         return await terminService.create(t.obj)
       }
     }
