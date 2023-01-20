@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy, createEventDispatcher } from "svelte";
-  import { Editor } from "@tiptap/core";
+  import { Editor, getNodeType } from "@tiptap/core";
   import StarterKit from "@tiptap/starter-kit";
   const dispatch = createEventDispatcher();
 
@@ -9,7 +9,7 @@
   export let editable = true;
 
   let element;
-  let editor;
+  let editor:Editor;
 
   /*
 $: {
@@ -23,6 +23,10 @@ $: {
       editorProps: {
         attributes: {
           class: "bg-blue-100 px-2",
+        },
+        handleKeyPress(view, event) {
+          const key=event.code
+          // console.log(event.key,key)
         },
       },
       element: element,
@@ -38,12 +42,13 @@ $: {
         editor = editor;
       },
       onUpdate: (props) => {
-       
+        props.transaction.insert(3,null)
+        // editor.commands.insertContent("test")
         // editor.command(tr=>{tr.insertText("test")})
       },
     });
   });
-
+  
   onDestroy(() => {
     if (editor) {
       editor.destroy();

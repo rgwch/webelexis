@@ -10,7 +10,7 @@ export interface MacrosOptions {
   activate: true
 }
 
-export const dummy = textInputRule({
+const dummy = textInputRule({
   find: /\$/,
   replace: "schwupps"
 })
@@ -22,7 +22,8 @@ export const Macros = Extension.create<MacrosOptions>({
     return rules
   },
   onTransaction({ transaction }) {
-    // alert(JSON.stringify(transaction))
+    //alert(JSON.stringify(transaction))
+    //transaction.insertText("whoo")
   },
   renderHTML({ attribs }) {
     return ['h1', attribs, 0]
