@@ -80,7 +80,7 @@ export default [
       <b>P:</b>&nbsp`;
     }
   },
-  {  /* AUF */
+  {  /* AUF (z,B, auf-2+3*/
     match: /auf([\+\-][0-9]+)(\+[0-9]+)?/,
     func: (days: RegExpExecArray, word: string) => {
       const first: string = days[1]
