@@ -18,8 +18,12 @@ const LOCALDATE = trl("formatting.date")
 export default {
   ELEXISDATETIME, ELEXISDATE, LOCALDATE,
   ElexisDateToLocalDate: (elexisdate: string): string => {
-    const fmt = elexisdate.length == 8 ? ELEXISDATE : ELEXISDATETIME
-    return DateTime.fromFormat(elexisdate, fmt).toFormat(LOCALDATE)
+    if (elexisdate) {
+      const fmt = elexisdate.length == 8 ? ELEXISDATE : ELEXISDATETIME
+      return DateTime.fromFormat(elexisdate, fmt).toFormat(LOCALDATE)
+    }
+    console.log("empty date in util.ElexisDateToLocalDate")
+    return "01.01.1900"
   },
   DateToElexisDate: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATE),
   DateToElexisDateTime: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATETIME),

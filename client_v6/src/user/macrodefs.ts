@@ -8,11 +8,16 @@ import { findingsManager } from "../models"
 import { DateTime } from 'luxon'
 import { getService } from "../services/io";
 import type { PatientType } from '../models/patient-model';
+import type { CaseType } from '../models/case-model'
 import { currentPatient, currentCase } from "../services/store";
 import util from '../services/util'
 let actPat: PatientType
 currentPatient.subscribe(p => {
   actPat = p
+})
+let actCase: CaseType
+currentCase.subscribe(c => {
+  actCase = c
 })
 /**
  * Use this file to declare all text replacements / macros
@@ -31,12 +36,12 @@ export default [
       const first = parseInt(isbdmi[1], 10);
       const second = parseInt(isbdmi[2], 10);
       if (first > second) {
-        const data = findingsManager.createMeasurementFromString(actPat.id, "cardial", word)
-        return `BD: ${data[0]}/${data[1]}`;
+        findingsManager.createMeasurementFromString(actPat.id, "cardial", word)
+        return `BD: ${first}/${second}`;
       } else {
         const bmi = Math.round(first / Math.pow(second / 100, 2));
-        const data = findingsManager.createMeasurementFromString(actPat.id, "physical", word)
-        return `Gewicht: ${data[0]}Kg, Grösse: ${data[1]}cm, BMI: ${data[2]}`;
+        findingsManager.createMeasurementFromString(actPat.id, "physical", word)
+        return `Gewicht: ${first}Kg, Grösse: ${second}cm, BMI: ${bmi}`;
       }
     }
   },
@@ -45,14 +50,15 @@ export default [
     func: (inr: RegExpExecArray, word: string) => {
       const userdefs = findingsManager.getDefinitions();
       if (inr && userdefs.coagulation) {
-        const data = findingsManager.createMeasurementFromString(actPat.id, "coagulation", word)
+        const vals = userdefs.coagulation.create(word)
+        findingsManager.createMeasurementFromString(actPat.id, "coagulation", word)
         if (userdefs.coagulation.verbose) {
-          return userdefs.coagulation.verbose(data);
+          return userdefs.coagulation.verbose(vals);
         }
         if (userdefs.coagulation.compact) {
-          return userdefs.coagulation.compact(data);
+          return userdefs.coagulation.compact(vals);
         }
-        return data;
+        return word;
       }
     }
   },
@@ -83,18 +89,18 @@ export default [
       const firstLen = parseInt(first.substring(1), 10)
       let from = DateTime.now()
       if (firstPrefix === "-") {
-        from.minus({ days: firstLen })
+        from = from.minus({ days: firstLen })
       } else {
-        from.plus({ days: firstLen })
+        from = from.plus({ days: firstLen })
       }
       let until = DateTime.now()
       if (second) {
         const secPrefix = second.substring(0, 1)
         const secLen = parseInt(second.substring(1), 10)
         if (secPrefix === "-") {
-          until.minus({ days: secLen })
+          until = until.minus({ days: secLen })
         } else {
-          until.plus({ days: secLen })
+          until = until.plus({ days: secLen })
         }
       } else {
         until = DateTime.fromJSDate(from.toJSDate())
@@ -102,17 +108,16 @@ export default [
       }
 
       const aufService = getService('auf')
-      const pat = undefined // actPat
       const fall = undefined // actCase
       const dbformat = "yyyyLLdd"
       const today = DateTime.now().toFormat(dbformat)
       const auftemplate = {
-        patientid: pat.id,
+        patientid: actPat.id,
         fallid: (fall ? fall.id : undefined),
         prozent: "100",
         datumvon: from.toFormat(dbformat),
         datumbis: until.toFormat(dbformat),
-        grund: (fall ? fall.grund : undefined),
+        grund: (actCase ? actCase.grund : undefined),
         aufzusatz: "",
         briefid: undefined,
         datumauz: today

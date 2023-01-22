@@ -161,10 +161,11 @@ export class FindingsManager extends ObjectManager {
     }
     const def = this.getDefinition(f)
     const processed = def.create ? def.create(values) : values
-    f.measurements.push({
+    const newval = {
       datetime: util.normalize(mdate, util.ELEXISDATETIME),
       values: processed
-    })
+    }
+    f.measurements.push(newval)
     f.measurements.sort((a, b) => {
       if (!a.datetime) {
         return 1;
@@ -192,7 +193,7 @@ export class FindingsManager extends ObjectManager {
    */
   async createMeasurementFromString(patientid, name, value): Promise<FindingType> {
     const item = definitions[name]
-    const processed = item.create(value)
+    const processed: Array<string> = item.create(value)
     const f = await this.getFinding(name, patientid, true)
     const added = await this.addMeasurement(f, processed, util.DateToElexisDateTime(new Date()))
     return added;
