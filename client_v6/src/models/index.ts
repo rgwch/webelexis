@@ -1,6 +1,7 @@
 import { BriefManager } from './briefe-model';
 import { BillingsManager } from "./billings-model"
 import { CaseManager } from "./case-model"
+export const caseManager = new CaseManager()
 import { DiagnoseManager } from "./diagnose-model"
 import { EncounterManager } from "./encounter-model"
 import { KontaktManager } from "./kontakt-model"
@@ -12,8 +13,8 @@ import { PrescriptionManager } from "./prescription-model"
 import { DocumentManager } from './document-model'
 import { FindingsManager } from './findings-model';
 import { LabresultManager } from './labresult-model';
+import { AUFManager } from './auf-model';
 
-export const caseManager = new CaseManager()
 export const billingsManager = new BillingsManager()
 export const kontaktManager = new KontaktManager()
 export const encounterManager = new EncounterManager()
@@ -27,3 +28,4 @@ export const briefManager = new BriefManager()
 export const documentManager = new DocumentManager()
 export const findingsManager = new FindingsManager()
 export const labresultManager = new LabresultManager()
+export const aufManager = new AUFManager()

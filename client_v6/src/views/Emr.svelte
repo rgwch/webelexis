@@ -1,25 +1,25 @@
 <script lang="ts">
-import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
-import { navigate } from "svelte-navigator";
-import { _ } from "svelte-i18n";
-import { currentPatient } from "../services/store";
-import { Patient } from "../models/patient-model";
-import PatientSelector from "../components/PatientSelector.svelte";
-import PatientDetail from "../components/PatientDetail.svelte";
-import Encounters from "../components/Encounters.svelte";
-import Cases from "../components/Cases.svelte";
-import Prescriptions from "../components/Prescriptions.svelte";
-import Documents from "./Documents.svelte";
-import Findings from "../components/Findings.svelte";
-import Labresults from "../components/Labresults.svelte";
+  import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
+  import { navigate } from "svelte-navigator";
+  import { _ } from "svelte-i18n";
+  import { currentPatient } from "../services/store";
+  import { Patient } from "../models/patient-model";
+  import PatientSelector from "../components/PatientSelector.svelte";
+  import PatientDetail from "../components/PatientDetail.svelte";
+  import Encounters from "../components/Encounters.svelte";
+  import Cases from "../components/Cases.svelte";
+  import Prescriptions from "../components/Prescriptions.svelte";
+  import Documents from "./Documents.svelte";
+  import Findings from "../components/Findings.svelte";
+  import Labresults from "../components/Labresults.svelte";
+  import AUF from "../components/AUF.svelte";
 
+  let selector = false;
 
-let selector = false;
-
-function selected() {
-  selector = false;
-  navigate("emr");
-}
+  function selected() {
+    selector = false;
+    navigate("emr");
+  }
 </script>
 
 <template>
@@ -28,11 +28,12 @@ function selected() {
   </p -->
   <p
     class="font-bold text-blue-700 cursor-pointer"
-    on:click="{() => (selector = !selector)}">
+    on:click={() => (selector = !selector)}
+  >
     {@html Patient.getLabel($currentPatient)}
   </p>
   {#if selector}
-    <PatientSelector on:selected="{selected}" />
+    <PatientSelector on:selected={selected} />
   {/if}
   {#if $currentPatient}
     <Tabs>
@@ -43,11 +44,12 @@ function selected() {
         <Tab>{$_("titles.medicaments")}</Tab>
         <Tab>{$_("titles.findings")}</Tab>
         <Tab>{$_("titles.labresults")}</Tab>
+        <Tab>{$_("titles.auf")}</Tab>
         <Tab>{$_("titles.documents")}</Tab>
       </TabList>
 
       <TabPanel>
-        <PatientDetail entity="{$currentPatient}" showTitle="{false}" />
+        <PatientDetail entity={$currentPatient} showTitle={false} />
       </TabPanel>
 
       <TabPanel>
@@ -64,6 +66,9 @@ function selected() {
       </TabPanel>
       <TabPanel>
         <Labresults />
+      </TabPanel>
+      <TabPanel>
+        <AUF />
       </TabPanel>
       <TabPanel>
         <Documents />

@@ -10,6 +10,7 @@ import type { RezeptType } from '../models/prescription-model'
 import type { KontaktType } from '../models/kontakt-model'
 import type { UserType } from '../models/user-model';
 import type { CaseType } from '../models/case-model';
+import { ObjectManager } from '../models/object-manager';
 
 
 
@@ -17,11 +18,25 @@ export const currentPatient: Writable<PatientType> = writable()
 export const currentRezept: Writable<RezeptType> = writable()
 export const currentActor: Writable<KontaktType> = writable()
 export const currentUser: Writable<UserType> = writable()
-export const currentCase:Writable<CaseType> = writable()
+export const currentCase: Writable<CaseType> = writable()
 
-export const agendaResource=writable<string>()
-export const agendaDate=writable<Date>()
-export const agendaResources=writable<Array<string>>()
+export const agendaResource = writable<string>()
+export const agendaDate = writable<Date>()
+export const agendaResources = writable<Array<string>>()
+
+const cm = new ObjectManager("fall")
+
+currentPatient.subscribe(async p => {
+  if (p) {
+    const cases: Array<CaseType> = (await cm.fetchForPatient(p.id)) as Array<CaseType>
+    for (const fall of cases) {
+      if (!fall.datumbis) {
+        currentCase.set(fall)
+        break;
+      }
+    }
+  }
+})
 
 type msgfunc = (event: any) => void
 

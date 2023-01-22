@@ -77,6 +77,19 @@ export class ObjectManager {
     return ret
   }
 
+  /**
+   * Fetch all items for a given patient
+   * @param id UUID of the patient
+   */
+  public async fetchForPatient(id: UUID): Promise<Array<ElexisType>> {
+    const result = await this.dataService.find({ query: { patientid: id } });
+    if (result && result.data) {
+      return result.data;
+    } else {
+      return []
+    }
+  }
+
   public async find(query: any): Promise<QueryResult> {
 
     return this.dataService.find(query)

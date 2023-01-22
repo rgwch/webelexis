@@ -152,6 +152,7 @@
     "reallydelete": "Wirklich {item} löschen?"
   },
   "titles": {
+    "auf": "AUF",
     "bills": "Rechnungen",
     "cases": "Fälle",
     "certificates": "Zeugnisse",
