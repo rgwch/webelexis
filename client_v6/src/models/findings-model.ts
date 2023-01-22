@@ -100,9 +100,9 @@ export class FindingsManager extends ObjectManager {
   async getFinding(name: string, patid: string, bCreateIfMissing: boolean): Promise<FindingType> {
     if (name && patid) {
       const fm = await this.dataService.find({ query: { name: name, patientid: patid } })
-      let result:FindingType
+      let result: FindingType
       if (fm.data && fm.data.length > 0) {
-        result= fm.data[0]
+        result = fm.data[0]
       } else {
         if (bCreateIfMissing) {
           const type = definitions[name]
@@ -122,9 +122,19 @@ export class FindingsManager extends ObjectManager {
           throw new Error("Finding not found " + name)
         }
       }
-      result.measurements.sort((a,b)=>{return a.datetime.localeCompare(b.datetime)})
+
+      result.measurements.sort((a, b) => {
+        if (!a.datetime) {
+          return 1;
+        }
+        if (!b.datetime) {
+          return -1
+        }
+        return a.datetime.localeCompare(b.datetime)
+      }
+      )
       return result
-    }else{
+    } else {
       throw new Error("Bad parameters for getFinding")
     }
   }
@@ -146,13 +156,24 @@ export class FindingsManager extends ObjectManager {
    * @returns an updated FindingModel
    */
   async addMeasurement(f: FindingType, values: string[], mdate: string): Promise<FindingType> {
+    if (!mdate) {
+      mdate = util.DateToElexisDate(new Date());
+    }
     const def = this.getDefinition(f)
     const processed = def.create ? def.create(values) : values
     f.measurements.push({
       datetime: util.normalize(mdate, util.ELEXISDATETIME),
       values: processed
     })
-    f.measurements.sort((a,b)=>{return a.datetime.localeCompare(b.datetime)})
+    f.measurements.sort((a, b) => {
+      if (!a.datetime) {
+        return 1;
+      }
+      if (!b.datetime) {
+        return -1
+      }
+      return a.datetime.localeCompare(b.datetime)
+    })
     try {
       const updated = await this.dataService.update(f.id, f)
       return updated
