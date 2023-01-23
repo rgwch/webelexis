@@ -21,9 +21,10 @@ export default {
     if (elexisdate) {
       const fmt = elexisdate.length == 8 ? ELEXISDATE : ELEXISDATETIME
       return DateTime.fromFormat(elexisdate, fmt).toFormat(LOCALDATE)
+    } else {
+      console.log("empty date in util.ElexisDateToLocalDate")
+      return "01.01.1900"
     }
-    console.log("empty date in util.ElexisDateToLocalDate")
-    return "01.01.1900"
   },
   DateToElexisDate: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATE),
   DateToElexisDateTime: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATETIME),
@@ -39,7 +40,7 @@ export default {
       throw new Error("Bad input for ElexisDateToLuxon")
     }
   },
-  normalize(date: string, model: string) {
+  normalizeLength(date: string, model: string) {
     if (date.length < model.length) {
       return date.padEnd(model.length, "0")
     } else if (date.length > model.length) {

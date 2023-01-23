@@ -3,7 +3,7 @@ import { logger as log } from '../logger'
 
 export default cnt => {
   return new Promise(async (resolve, reject) => {
-    log.debug("sending file to ocr")
+    // log.debug("sending file to ocr")
     const response = await fetch('http://localhost:9997', {
       method: 'post',
       headers: {

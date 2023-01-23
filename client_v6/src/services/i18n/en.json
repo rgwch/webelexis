@@ -2,6 +2,7 @@
   "actions": {
     "add": "hinzufügen",
     "cancel": "cancel",
+    "close": "Schliessen",
     "delete": "delete",
     "deselect": "deselect...",
     "export": "Exportieren",
@@ -14,7 +15,8 @@
     "select": "select...",
     "selectall": "Alle auswählen",
     "selectnone": "Auswahl löschen",
-    "shrink": "shorten"
+    "shrink": "shorten",
+    "topatient": "Zu Patient"
   },
   "address": {
     "place": "place",
@@ -25,6 +27,7 @@
     "duration": "duration",
     "enter": "accept",
     "enternew": "Add a new appointment",
+    "freetext": "oder Freitext",
     "time": "time"
   },
   "billing": {
@@ -54,7 +57,7 @@
     "invoicedate": "invoice date",
     "invoicenumber": "invoice number",
     "invoicestate": "invoice state",
-    "patient": "patient",
+    "law": "Gesetz",
     "statedate": "date of state"
   },
   "cal": {
@@ -87,6 +90,8 @@
   },
   "case": {
     "begindate": "Begin date",
+    "createEncounter": "Neue Konsultation",
+    "createNew": "Neu...",
     "description": "Description",
     "detail": "Case detail",
     "enddate": "End date",
@@ -141,13 +146,16 @@
   },
   "patient": {
     "detail": "Patient detail",
-    "noneselected": "Click here to select patient"
+    "noneselected": "Click here to select patient",
+    "patient": "Patient"
   },
   "prompts": {
+    "articlesearch": "Artikel wählen",
     "patsearch": "Enter part of the lastname, firstname, or birthdate",
     "reallydelete": "Wirklich {item} löschen?"
   },
   "titles": {
+    "auf": "AUF",
     "bills": "Bills",
     "cases": "Cases",
     "certificates": "Certificates",

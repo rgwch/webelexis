@@ -3,18 +3,18 @@ import { logger } from './logger'
 export default (app) => {
   if (typeof app.channel !== 'function') {
     // If no real-time functionality has been configured just return
-    logger.debug('no channel')
+    // logger.debug('no channel')
     return
   }
 
   app.on('connection', (connection) => {
     // On a new real-time connection, add it to the anonymous channel
     app.channel('anonymous').join(connection)
-    logger.debug('connection ' + JSON.stringify(connection))
+    // logger.debug('connection ' + JSON.stringify(connection))
   })
 
   app.on('login', (authResult, { connection }) => {
-    logger.debug('user logged in, opened channel')
+    // logger.debug('user logged in, opened channel')
     // connection can be undefined if there is no
     // real-time connection, e.g. when logging in via REST
     if (connection) {

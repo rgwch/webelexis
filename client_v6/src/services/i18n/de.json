@@ -2,6 +2,7 @@
   "actions": {
     "add": "hinzufügen",
     "cancel": "Abbruch",
+    "close": "Schliessen",
     "delete": "Löschen",
     "deselect": "abwählen...",
     "export": "Exportieren",
@@ -26,8 +27,8 @@
     "duration": "Dauer",
     "enter": "Eintragen",
     "enternew": "Neuen Termin eintragen",
-    "time": "Zeit",
-    "freetext": "oder Freitext"
+    "freetext": "oder Freitext",
+    "time": "Zeit"
   },
   "billing": {
     "CANCELLED": "Storniert",
@@ -89,6 +90,8 @@
   },
   "case": {
     "begindate": "Anfangsdatum",
+    "createEncounter": "Neue Konsultation",
+    "createNew": "Neu...",
     "description": "Bezeichnung",
     "detail": "Fall Detail",
     "enddate": "Enddatum",
@@ -142,9 +145,9 @@
     "emr": "KG"
   },
   "patient": {
-    "patient": "Patient",
     "detail": "Patient Detail",
-    "noneselected": "Kein Patient ausgewählt"
+    "noneselected": "Kein Patient ausgewählt",
+    "patient": "Patient"
   },
   "prompts": {
     "articlesearch": "Artikel wählen",

@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2022 by G. Weirich    *
+ * Copyright (c) 2016-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -155,14 +155,15 @@ export class FindingsManager extends ObjectManager {
    * @param values an arra with strings or numbers
    * @returns an updated FindingModel
    */
-  async addMeasurement(f: FindingType, values: string[], mdate: string): Promise<FindingType> {
+  async addMeasurement(findingName: string, patientid: string, values: string | Array<string>, mdate?: string): Promise<FindingType> {
     if (!mdate) {
       mdate = util.DateToElexisDate(new Date());
     }
+    const f = await this.getFinding(findingName, patientid, true)
     const def = this.getDefinition(f)
     const processed = def.create ? def.create(values) : values
     const newval = {
-      datetime: util.normalize(mdate, util.ELEXISDATETIME),
+      datetime: util.normalizeLength(mdate, util.ELEXISDATETIME),
       values: processed
     }
     f.measurements.push(newval)
@@ -190,14 +191,18 @@ export class FindingsManager extends ObjectManager {
    * @param name name of the finding category
    * @param string-formed value to add (e.g. 120/80)
    * @returns
-   */
-  async createMeasurementFromString(patientid, name, value): Promise<FindingType> {
+  
+  async createMeasurementFromString(patientid:string, name:string, value:string | Array<string>, measurementDate:string): Promise<FindingType> {
     const item = definitions[name]
     const processed: Array<string> = item.create(value)
     const f = await this.getFinding(name, patientid, true)
-    const added = await this.addMeasurement(f, processed, util.DateToElexisDateTime(new Date()))
+    if(!measurementDate){
+      measurementDate=util.DateToElexisDate(new Date())
+    }
+    const added = await this.addMeasurement(f, processed, measurementDate)
     return added;
   }
+  */
   /**
    * remove a measrument from a finding and save the modification to the database
    * @param id id of the finding

@@ -2,6 +2,7 @@
 import type { PatientType } from "../models/patient-model";
 import type { CaseType } from "../models/case-model";
 import { CaseManager } from "../models/case-model";
+import CaseActions from './CaseActions.svelte'
 import { currentPatient } from "../services/store";
 import Dropdown from "../widgets/Dropdown.svelte";
 import CaseDetail from "./CaseDetail.svelte";
@@ -38,6 +39,7 @@ function select(event) {
       selected="{selected}"
       on:changed="{select}" />
     <CaseDetail entity="{current}" />
+    <CaseActions />
   {:else}
     <p>{$_("validation.nopatient")}</p>
   {/if}

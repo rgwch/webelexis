@@ -25,7 +25,7 @@ const flatiron = fi([{
 const current = ctx => {
   if (ctx.params.query && ctx.params.query.current) {
     const now = DateTime.local().toFormat('yyyyLLddHHmmss')
-    logger.debug(`finding medication for ${ctx.params.query.current} before ${now}`)
+    // logger.debug(`finding medication for ${ctx.params.query.current} before ${now}`)
     ctx.params.query.patientid = ctx.params.query.current
     delete ctx.params.query.current
     // ctx.params.query.DateFrom = { $lte: now }

@@ -36,11 +36,11 @@ export default [
       const first = parseInt(isbdmi[1], 10);
       const second = parseInt(isbdmi[2], 10);
       if (first > second) {
-        findingsManager.createMeasurementFromString(actPat.id, "cardial", word)
+        findingsManager.addMeasurement("cardial", actPat.id, word)
         return `BD: ${first}/${second}`;
       } else {
         const bmi = Math.round(first / Math.pow(second / 100, 2));
-        findingsManager.createMeasurementFromString(actPat.id, "physical", word)
+        findingsManager.addMeasurement("physical", actPat.id, word)
         return `Gewicht: ${first}Kg, Grösse: ${second}cm, BMI: ${bmi}`;
       }
     }
@@ -51,7 +51,7 @@ export default [
       const userdefs = findingsManager.getDefinitions();
       if (inr && userdefs.coagulation) {
         const vals = userdefs.coagulation.create(word)
-        findingsManager.createMeasurementFromString(actPat.id, "coagulation", word)
+        findingsManager.addMeasurement("coagulation", actPat.id, word)
         if (userdefs.coagulation.verbose) {
           return userdefs.coagulation.verbose(vals);
         }

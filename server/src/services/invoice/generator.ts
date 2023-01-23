@@ -200,7 +200,7 @@ export function paymentSlip(bill) {
         createData(bill),
         path.join(billing.output || '.', bill.rnnummer + '.pdf'),
         () => {
-          logger.debug('ok')
+          // logger.debug('ok')
           resolve(true)
         },
       )

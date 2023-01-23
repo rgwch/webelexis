@@ -116,7 +116,7 @@ const checkLimits = async context => {
       }
       try {
         const inserted = await context.service.create(appnt)
-        logger.debug("inserted " + inserted)
+        // logger.debug("inserted " + inserted)
       } catch (err) {
         logger.error("agntermine inser error" + err)
       }
