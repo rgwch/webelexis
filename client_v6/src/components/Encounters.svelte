@@ -4,7 +4,7 @@
   import type { EncounterType } from "../models/encounter-model";
   import type { PatientType } from "../models/patient-model";
   import InfiniteScroll from "svelte-infinite-scroll";
-  import { currentPatient } from "../services/store";
+  import { currentPatient, currentCase } from "../services/store";
   import { onMount } from "svelte";
   const BATCHSIZE = 11;
   const em = new EncounterManager();
@@ -32,7 +32,12 @@
     offset = result.skip + result.data.length;
   }
 
-  $: encounters = [...encounters, ...newBatch];
+  $: {
+    encounters = [...encounters, ...newBatch];
+    em.getCase(encounters[0]).then((c) => {
+      currentCase.set(c);
+    });
+  }
 
   onMount(() => {
     offset = 0;

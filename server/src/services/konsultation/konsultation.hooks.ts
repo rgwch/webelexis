@@ -120,7 +120,7 @@ const readSingleKonsText = async ctx => {
  */
 const updateKonsText = async (context) => {
   try {
-    const html = context.data.eintrag.html
+    const html = context.data.eintrag?.html
     if (html) {
       const samdas = Samdas.fromHtml(html)
       if (samdas) {

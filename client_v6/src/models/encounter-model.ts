@@ -27,9 +27,9 @@ const un = _.subscribe((res) => {
 })
 
 export type EncounterEntry = {
-  remark?: string
-  html?: string
-  timestamp?: string
+  remark: string // Editor of last modification
+  html?: string // HTML Version of the entrytext
+  timestamp: string // Date of last modification
   json?: any
 }
 /**
@@ -42,11 +42,7 @@ export interface EncounterType extends ElexisType {
   fallid: UUID // UUIDv4 (36) or ElexisID (25)
   rechnungsid?: UUID // UUIDv4 (36) or ElexisID (25)
   leistungen?: string // usually null
-  eintrag: {
-    remark: string // Editor of last modification
-    html?: string // HTML Version of the entrytext
-    timestamp: string // Date of last modification
-  }
+  eintrag: EncounterEntry
   _Patient?: PatientType
   _Fall?: CaseType
   _Mandator?: KontaktType
@@ -73,16 +69,9 @@ export class EncounterManager extends ObjectManager {
       enc.zeit.substring(0, 2) + ':' + enc.zeit.substring(2, 4)
     )
   }
-  public fetchForPatient(id: UUID, offset: number = 0, maxItems?: number): Promise<query_result> {
-    if (id) {
-      const query = { patientId: id, $skip: offset }
-      if (maxItems) {
-        query["$limit"] = maxItems
-      }
-      return this.dataService.find({ query })
-    } else {
-      return Promise.resolve({ total: 0, data: [], limit: 50, skip: 0 })
-    }
+ 
+  public getCase(enc: EncounterType): Promise<CaseType>{
+    return new EncounterModel(enc).getCase()
   }
 
   public async fetchForTimes(dateFrom: string, dateUntil: string, mandant: UUID): Promise<Array<EncounterType>> {

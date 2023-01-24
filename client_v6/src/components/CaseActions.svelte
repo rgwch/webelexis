@@ -1,13 +1,12 @@
 <script lang="ts">
   import type { CaseType } from "../models/case-model";
   import { caseManager as cm } from "../models";
+  import { currentCase } from "../services/store";
   import { _ } from "svelte-i18n";
 
-  export let current: CaseType = undefined;
-
   function createEncounter() {
-    if (current) {
-      cm.createEncounterFor(current);
+    if ($currentCase) {
+      cm.createEncounterFor($currentCase);
     }
   }
 </script>

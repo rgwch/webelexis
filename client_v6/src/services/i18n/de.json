@@ -91,7 +91,7 @@
   "case": {
     "begindate": "Anfangsdatum",
     "createEncounter": "Neue Konsultation",
-    "createNew": "Neu...",
+    "createNew": "Neuer Fall",
     "description": "Bezeichnung",
     "detail": "Fall Detail",
     "enddate": "Enddatum",

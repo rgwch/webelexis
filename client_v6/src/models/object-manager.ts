@@ -80,13 +80,25 @@ export class ObjectManager {
   /**
    * Fetch all items for a given patient
    * @param id UUID of the patient
-   */
+   
   public async fetchForPatient(id: UUID): Promise<Array<ElexisType>> {
     const result = await this.dataService.find({ query: { patientid: id } });
     if (result && result.data) {
       return result.data;
     } else {
       return []
+    }
+  }
+  */
+  public fetchForPatient(id: UUID, offset: number = 0, maxItems?: number): Promise<query_result> {
+    if (id) {
+      const query = { patientId: id, $skip: offset }
+      if (maxItems) {
+        query["$limit"] = maxItems
+      }
+      return this.dataService.find({ query })
+    } else {
+      return Promise.resolve({ total: 0, data: [], limit: 50, skip: 0 })
     }
   }
 

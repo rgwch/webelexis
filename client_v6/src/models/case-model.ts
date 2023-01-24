@@ -121,7 +121,11 @@ export class CaseManager extends ObjectManager {
       fallid: c.id,
       rechnungsid: null,
       leistungen: null,
-      eintrag: null
+      eintrag: {
+        remark: actUser.id,
+        timestamp: now,
+        html:"<p>-</p>"
+      }
     }
     const entered = await this.encounterService.create(enc)
     return entered
