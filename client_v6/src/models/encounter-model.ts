@@ -37,7 +37,7 @@ export type EncounterEntry = {
  */
 export interface EncounterType extends ElexisType {
   datum: string // YYYYMMDD
-  zeit: string // HH:mm:ss
+  zeit: string // HHmmss
   mandantid: UUID // UUIDv4 (36) or ElexisID (25)
   fallid: UUID // UUIDv4 (36) or ElexisID (25)
   rechnungsid?: UUID // UUIDv4 (36) or ElexisID (25)

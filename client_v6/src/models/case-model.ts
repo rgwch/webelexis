@@ -9,15 +9,19 @@ import { EncounterModel } from './encounter-model';
 import { ObjectManager } from "./object-manager";
 import { getService } from "../services/io";
 import { Money } from './money';
-
+import util from '../services/util'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
+import { userManager as um } from '.'
+import type {UserType} from './user-model'
 import type { PatientType } from './patient-model';
 import type { FlexformConfig } from "../widgets/flexformtypes";
 import type { EncounterType } from "./encounter-model";
-import { empty } from "svelte/internal";
+import { currentUser } from "../services/store";
 let trl
 const unregister = _.subscribe((res) => (trl = res))
+let actUser:UserType
+currentUser.subscribe(u=>{actUser=u})
 /**
  * An Elexis "Fall"
  */
@@ -86,7 +90,7 @@ export class CaseManager extends ObjectManager {
       }
       return `${gesetz || "KVG?"}/${obj.grund}: ${beginDate} - ${obj.bezeichnung
         }`;
-    }else{
+    } else {
       return "?"
     }
   }
@@ -108,6 +112,20 @@ export class CaseManager extends ObjectManager {
     return result.data
   }
 
+  public async createEncounterFor(c: CaseType): Promise<EncounterType> {
+    const now = util.DateToElexisDateTime(new Date())
+    const enc: EncounterType = {
+      datum: now.substring(0, 8),
+      zeit: now.substring(8),
+      mandantid: (await um.getActiveMandatorFor(actUser)).id,
+      fallid: c.id,
+      rechnungsid: null,
+      leistungen: null,
+      eintrag: null
+    }
+    const entered = await this.encounterService.create(enc)
+    return entered
+  }
   public getBillingDate(obj: CaseType): Date {
     if (obj.betriebsnummer) {
       const dt = DateTime.fromISO(obj.betriebsnummer)
