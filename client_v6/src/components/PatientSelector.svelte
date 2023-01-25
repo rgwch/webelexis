@@ -1,11 +1,12 @@
 <script lang="ts">
   import { PatientManager, Patient } from "../models/patient-model";
   import type { PatientType } from "../models/patient-model";
+  import {encounterManager} from '../models'
   import Fa from "svelte-fa";
   import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
   import { _ } from "svelte-i18n";
   import { createEventDispatcher } from "svelte";
-  import { currentPatient } from "../services/store";
+  import { currentPatient,currentEncounter, currentCase } from "../services/store";
   import LineInput from "../widgets/LineInput.svelte";
   const dispatch = createEventDispatcher();
 
@@ -16,8 +17,21 @@
     const result = await pm.find({ query: { $find: searchTerm } });
     found = result.data;
   }
-  function select(entry) {
+  async function select(entry:PatientType) {
     currentPatient.set(entry);
+    let enc;
+    if(entry.extjson?.LetzteBehandlung){
+      enc=encounterManager.fetch(entry.extjson.LetzteBehandlung)
+    }else{
+      const encs:query_result=await encounterManager.fetchForPatient(entry.id)
+      if(encs.total>0){
+        enc=encs.data[0]
+      }
+    }
+    if(enc){
+      currentEncounter.set(enc)
+      currentCase.set(await encounterManager.getCase(enc))
+    }
     dispatch("selected", entry);
   }
 </script>

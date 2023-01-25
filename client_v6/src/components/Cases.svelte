@@ -6,49 +6,36 @@
   import { currentPatient, currentCase } from "../services/store";
   import Dropdown from "../widgets/Dropdown.svelte";
   import CaseDetail from "./CaseDetail.svelte";
+  import {faLock} from '@fortawesome/free-solid-svg-icons'
   import { _ } from "svelte-i18n";
   const cm = new CaseManager();
   let caselist: Array<CaseType> = [];
   let caselabels = ["--- Lade Fälle --- "];
-  let selected = "";
+  let selected: CaseType = undefined;
 
   cm.loadCasesFor($currentPatient?.id).then((cases) => {
-    const cl = [];
-    cases.sort((a, b) => {
-      if ($currentCase && $currentCase.id === a.id) {
-        return -1;
-      }
-      if (!a.datumbis) {
-        if (!b.datumbis) {
-          return a.bezeichnung.localeCompare(b.bezeichnung);
-        }
-        return -1;
-      } else if (!b.datumbis) {
-        return 1;
-      } else {
-        return a.bezeichnung.localeCompare(b.bezeichnung);
-      }
-    });
     caselist = cases;
-    for (const fall of cases) {
-      cl.push(cm.getLabel(fall));
-    }
-    caselabels = cl;
-    selected = caselabels[0];
+    caselabels = cases.map((fall) => cm.getLabel(fall));
+    selected = caselist[0];
     $currentCase = caselist[0];
   });
   function select(event) {
-    const idx = caselabels.findIndex((el) => el === event.detail);
-    if (idx !== -1) {
-      $currentCase = caselist[idx];
-      console.log("selected " + event.detail);
+    $currentCase = event.detail;
+    // console.log("selected " + event.detail);
+  }
+  function render(el: CaseType) {
+    const lbl = cm.getLabel(el);
+    if (cm.isClosed(el)) {
+      return `<svg width="32" height="32"><path d="${faLock.icon[4]}" /></svg>`
+    } else {
+      return lbl;
     }
   }
 </script>
 
 <template>
   {#if $currentPatient}
-    <Dropdown elements={caselabels} {selected} on:changed={select} />
+    <Dropdown elements={caselist} {selected} {render} on:changed={select} />
     <CaseDetail />
     <CaseActions />
   {:else}

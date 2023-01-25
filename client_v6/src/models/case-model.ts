@@ -13,15 +13,17 @@ import util from '../services/util'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { userManager as um } from '.'
-import type {UserType} from './user-model'
+import type { UserType } from './user-model'
 import type { PatientType } from './patient-model';
 import type { FlexformConfig } from "../widgets/flexformtypes";
 import type { EncounterType } from "./encounter-model";
-import { currentUser } from "../services/store";
+import { currentUser, currentCase } from "../services/store";
 let trl
 const unregister = _.subscribe((res) => (trl = res))
-let actUser:UserType
-currentUser.subscribe(u=>{actUser=u})
+let actUser: UserType
+let actCase: CaseType
+currentUser.subscribe(u => { actUser = u })
+currentCase.subscribe(c => { actCase = c })
 /**
  * An Elexis "Fall"
  */
@@ -57,6 +59,22 @@ export class CaseManager extends ObjectManager {
   public async loadCasesFor(id: UUID): Promise<Array<CaseType>> {
     const result = await this.dataService.find({ query: { patientid: id } });
     if (result && result.data) {
+      result.data.sort((a, b) => {
+        if (actCase && actCase.id === id) {
+          return -1;
+        }
+        if (!a.datumbis) {
+          if (!b.datumbis) {
+            return a.bezeichnung.localeCompare(b.bezeichnung);
+          }
+          return -1;
+        } else if (!b.datumbis) {
+          return 1;
+        } else {
+          return a.bezeichnung.localeCompare(b.bezeichnung);
+        }
+      });
+
       return result.data;
     } else {
       return []
@@ -124,7 +142,7 @@ export class CaseManager extends ObjectManager {
       eintrag: {
         remark: actUser.id,
         timestamp: now,
-        html:"<p>-</p>"
+        html: "<p>-</p>"
       }
     }
     const entered = await this.encounterService.create(enc)
@@ -157,6 +175,10 @@ export class CaseManager extends ObjectManager {
     } else {
       delete obj.betriebsnummer
     }
+  }
+
+  public isClosed(fall:CaseType): boolean{
+    return !!fall?.datumbis
   }
 }
 

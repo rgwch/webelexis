@@ -11,13 +11,20 @@ export let label: string = "";
 /**
  * The items to display in the dropdown
  */
-export let elements: Array<string> = [];
+export let elements: Array<any> = [];
 /**
  * the currently selected item
  */
-export let selected = "";
+export let selected = undefined;
+
+/**
+ * Render function
+ * @param item
+ */
+export let render= (item)=>item
 
 let open = false;
+
 </script>
 
 <template>
@@ -34,7 +41,7 @@ let open = false;
         }}"
         type="button"
         class="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        <span class="block truncate">{selected}</span>
+        <span class="block truncate">{@html render(selected)}</span>
         <span
           class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <!-- Heroicon name: solid/selector -->
@@ -71,7 +78,7 @@ let open = false;
 
         Highlighted: "text-white bg-indigo-600", Not Highlighted: "text-gray-900"
       -->
-          {#each elements as element}
+          {#each elements as element, idx}
             <li
               transition:slide={{duration:200}}
               on:click="{() => {
@@ -83,7 +90,7 @@ let open = false;
               role="option">
               <span
                 class="block truncate"
-                class:font-semibold="{selected == element}">{element}</span>
+                class:font-semibold="{selected == element}">{@html render(element)}</span>
 
               <!--
           Checkmark, only display for selected option.
