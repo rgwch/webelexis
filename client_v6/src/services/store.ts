@@ -10,6 +10,7 @@ import type { RezeptType } from '../models/prescription-model'
 import type { KontaktType } from '../models/kontakt-model'
 import type { UserType } from '../models/user-model';
 import type { CaseType } from '../models/case-model';
+import { EncounterModel, type EncounterType } from '../models/encounter-model';
 import { ObjectManager } from '../models/object-manager';
 
 
@@ -19,21 +20,23 @@ export const currentRezept: Writable<RezeptType> = writable()
 export const currentActor: Writable<KontaktType> = writable()
 export const currentUser: Writable<UserType> = writable()
 export const currentCase: Writable<CaseType> = writable()
+export const currentEncounter: Writable<EncounterType> = writable()
 
 export const agendaResource = writable<string>()
 export const agendaDate = writable<Date>()
 export const agendaResources = writable<Array<string>>()
 
 const cm = new ObjectManager("fall")
+const em = new ObjectManager("konsultation")
 
 currentPatient.subscribe(async p => {
   if (p) {
-    const cases: Array<CaseType> = (await cm.fetchForPatient(p.id)) as Array<CaseType>
-    for (const fall of cases) {
-      if (!fall.datumbis) {
-        currentCase.set(fall)
-        break;
-      }
+    const encs: query_result = await em.fetchForPatient(p.id)
+    if (encs.total > 0) {
+      const enc: EncounterModel = new EncounterModel(encs[0])
+      const c = await enc.getCase()
+      currentEncounter.set(encs[0])
+      currentCase.set(c)
     }
   }
 })
