@@ -2,13 +2,14 @@
 import { encounterManager } from "../models";
 import { EncounterModel} from "../models/encounter-model";
 import EncounterDetail from "./EncounterDetail.svelte";
+import {DateTime} from 'luxon'
 import { _ } from "svelte-i18n";
 import { Patient } from "../models/patient-model";
 import Collapse from "../widgets/Collapse.svelte";
 import DateInput from "../widgets/DateInput.svelte";
 import { Money } from "../models/money";
-export let fromDate: string = "20220429"; // string = DateTime.now().toFormat("yyyyLLdd");
-export let untilDate: string = "20220430"; // DateTime.now().toFormat("yyyyLLdd");
+export let fromDate: string = DateTime.now().toFormat("yyyyLLdd");
+export let untilDate: string = DateTime.now().toFormat("yyyyLLdd");
 let list: Array<EncounterModel> = [];
 let patients=new Set<string>()
 let konsen=0
