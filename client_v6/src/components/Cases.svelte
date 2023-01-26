@@ -6,7 +6,7 @@
   import { currentPatient, currentCase } from "../services/store";
   import Dropdown from "../widgets/Dropdown.svelte";
   import CaseDetail from "./CaseDetail.svelte";
-  import {faLock} from '@fortawesome/free-solid-svg-icons'
+  import { faLock } from "@fortawesome/free-solid-svg-icons";
   import { _ } from "svelte-i18n";
   const cm = new CaseManager();
   let caselist: Array<CaseType> = [];
@@ -25,8 +25,9 @@
   }
   function render(el: CaseType) {
     const lbl = cm.getLabel(el);
+   
     if (cm.isClosed(el)) {
-      return `<svg width="32" height="32"><path d="${faLock.icon[4]}" /></svg>`
+      return `<div class="flex flex-row"><img src="/lock-24.png" alt="locked" /><span class="text-gray-500">${lbl}</span></div>`;
     } else {
       return lbl;
     }
