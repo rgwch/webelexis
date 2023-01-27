@@ -8,7 +8,7 @@ import MarginDecorator from "./MarginDecorator.svelte";
 <Meta title="Widgets/Card" component="{Card}" />
 
 <div class="bg-gray-100 m-8 p-4 rounded-md border border-blue-500 w-1/2">
-  <h1 class="font-bold text-lg">Calendar</h1>
+  <h1 class="font-bold text-lg">Card</h1>
   <p class="mb-5">The Card is a component with header and body.</p>
 </div>
 
