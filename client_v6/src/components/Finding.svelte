@@ -5,7 +5,7 @@
    * License and Terms see LICENSE            *
    ********************************************/
 
-  import type { FindingType } from "../models/findings-model";
+  import type { FindingType, FindingElement } from "../models/findings-model";
   import Popup from "../widgets/Popup.svelte";
   import Badge from "../widgets/Badge.svelte";
   import Collapse from "../widgets/Collapse.svelte";
@@ -18,6 +18,7 @@
   import { DateTime } from "luxon";
   import { onMount, onDestroy } from "svelte";
   import Chart,{ChartType, type ChartDefinition} from '../widgets/Chart.svelte'
+  import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
   /**
    * Display a single Finding type and allow to add, select, delete and display measrurements
@@ -113,11 +114,25 @@
         m["selected"] = true;
       }
     }
+    const fdef=findingsManager.getDefinition(finding)
+    const data=[]
+    for(let i=0;i<fdef.elements.length;i++){
+      const el=fdef.elements[i]
+      if(el.chart !== "none"){
+      data.push({
+        title: el.title,
+        color: el.color,
+        axe: el.chart ?? "left",
+        values: finding.measurements.map(m=>{
+          if(m.selected){
+            return m.values[i]
+          }
+        })
+      })
+      }
+    }
     chartdef={
-      data: [{
-        title: "test",
-        values:[finding.measurements.filter(el=>el.selected)]
-      }]
+      data
     }
     doShowChart = true;
     // dgs.open({ viewModel: DisplayChart, model: finding })
@@ -224,7 +239,7 @@
         doShowChart = false;
       }}
     >
-      <div slot="body">
+      <div slot="body" class="w-auto">
         <Chart definition={chartdef} type={ChartType.DOT} />
       </div>
     </Modal>

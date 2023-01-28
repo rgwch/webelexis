@@ -69,8 +69,8 @@ export class EncounterManager extends ObjectManager {
       enc.zeit.substring(0, 2) + ':' + enc.zeit.substring(2, 4)
     )
   }
- 
-  public getCase(enc: EncounterType): Promise<CaseType>{
+
+  public getCase(enc: EncounterType): Promise<CaseType> {
     return new EncounterModel(enc).getCase()
   }
 
@@ -239,7 +239,7 @@ export class EncounterModel {
 
 
   public async getKonsText(): Promise<EncounterEntry> {
-    let result: EncounterEntry = { html: "<p>Kein Eintrag</p>" };
+    let result: EncounterEntry = { html: "<p>Kein Eintrag</p>", remark: "auto", timestamp: null };
     if (this.enc.eintrag) {
       if (this.enc.eintrag.html) {
         result = this.enc.eintrag

@@ -7,7 +7,7 @@
 
 import type { ElexisType } from "./elexistype";
 import { ObjectManager } from './object-manager'
-import defs from '../user/finding-defs'
+import { definitions as defs } from '../user/finding-defs'
 import util from "../services/util"
 
 const definitions: any = {}
@@ -16,6 +16,14 @@ for (const def of defs as FindingDef[]) {
   definitions[def.name] = def
 }
 
+export type FindingElement = {
+  title: string,     // e.g. "systolisch"
+  unit?: string,     // e.g. "mmHg"
+  manual?: boolean,  // show in manual input box?
+  chart?: "none" | "left" | "right"   // display in chart?
+  color?: string,    // html-colordef
+  range?: [number, number]  // acceptable range
+}
 /**
  * A finding definition is used to define, how to generate and display data for external measurements.
  * All findings to use in the system must be defined in src/user/finding-defs.ts.
@@ -26,16 +34,9 @@ export interface FindingDef {
   // a translatable title, e.g. "Kreislauf"
   title: string
   // list of elements, e.g. ["systolic:mmHg","diastolic:mmHg","Pulse:1/min"]
-  elements: Array<{
-    title: string,     // e.g. "systolisch"
-    unit?: string,     // e.g. "mmHg"
-    manual?: boolean,  // show in manual input box?
-    chart?: "none" | "left" | "right"   // display in chart?
-    color?: string,    // html-colordef
-    range?: [number, number]  // acceptable range
-  }>
+  elements: Array<FindingElement>
   // a function to create a new entry from a string
-  create?: (value: string | string[]) => string[]
+  create?: (value: string | string[]) => Array<string | number>
   // a function to display an entry in verbose form
   verbose?: (row: Array<string | number>) => string
   // a function to display an entry in compact form
@@ -77,7 +78,7 @@ export class FindingsManager extends ObjectManager {
     return definitions
   }
 
-  getDefinition(f: FindingType) {
+  getDefinition(f: FindingType): FindingDef {
     return definitions[f.name]
   }
 
@@ -191,7 +192,7 @@ export class FindingsManager extends ObjectManager {
    * @param name name of the finding category
    * @param string-formed value to add (e.g. 120/80)
    * @returns
-  
+
   async createMeasurementFromString(patientid:string, name:string, value:string | Array<string>, measurementDate:string): Promise<FindingType> {
     const item = definitions[name]
     const processed: Array<string> = item.create(value)

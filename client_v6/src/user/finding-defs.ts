@@ -1,14 +1,15 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018-2022 by G. Weirich    *
+ * Copyright (c) 2018-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
-
+import type { FindingDef, FindingElement } from '../models/findings-model'
 /**
  * Use this file to declare all "finding" or "measurement" types you intend to use
  * Entries must be 'FindingDef' types as defined in models/findings-model
  */
-export default [
+
+export const definitions: Array<FindingDef> = [
   {
     name: "physical",
     title: "Gewicht",
@@ -54,8 +55,10 @@ export default [
       { title: "BZ", unit: " mmol/l", manual: true, chart: "left" },
       { title: "HbA1c", unit: "%", manual: true, chart: "right" }
     ],
-    create: val => val,
-    verbose: (row) => row
+    create: val => {
+      return Array.isArray(val) ? val : val.split(/[\/,]/)
+    },
+    verbose: (row) => `BZ:${row[0]}, HbA1c:${row[1]}`
   }, {
     name: "coagulation",
     title: "Gerinnung",
@@ -72,14 +75,14 @@ export default [
     verbose: (row): string => {
       return `Q: ${row[0]}%/INR: ${row[1]}`
     },
-    compact: (r): string => `${r[0]}%:${r[1]}`
   }, {
     name: "radiology",
     title: "Röntgen",
     elements: [
       { title: "Aufnahme", unit: "text", manual: true, chart: "none" },
       { title: "Befund", unit: "text", manual: true, chart: "none" }],
-    create: val => val,
-    verbose: row => `${row[0]}:\n${row[1]}`
+    create: val => Array.isArray(val) ? val : [val],
+    verbose: row => `${row[0]}:\n${row[1]}`,
+    compact: row => `${row[0]}:\n${row[1]}`
   }
 ]

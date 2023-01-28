@@ -32,7 +32,7 @@
           </div>
         </div>
         <hr />
-        <div class="my-5 w-full">
+        <div class="my-5 w-auto">
           <slot name="body" />
         </div>
         <hr />

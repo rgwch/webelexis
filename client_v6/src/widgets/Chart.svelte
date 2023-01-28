@@ -156,7 +156,7 @@
   }
   onMount(() => {
     resize();
-    window.addEventListener("resize", resize);
+    frame.addEventListener("resize", resize);
   });
 </script>
 
