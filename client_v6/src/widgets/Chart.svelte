@@ -16,6 +16,12 @@
       values: Array<any[]>; // [x,y]
     }>;
   }
+
+  export enum ChartType {
+    LINE,
+    DOT,
+    BAR,
+  }
 </script>
 
 <script lang="ts">
@@ -26,8 +32,9 @@
   import { axisLeft, axisBottom, axisRight } from "d3-axis";
   import { extent } from "d3-array";
   import { onMount } from "svelte";
-  import { watchResize } from "svelte-watch-resize";
+
   export let definition: ChartDefinition;
+  export let type: ChartType = ChartType.LINE;
   let x_values = [],
     yl_values = [],
     yr_values = [];
@@ -55,23 +62,24 @@
   let scaleYL: scaleLinear;
   let scaleYR: scaleLinear;
   let scaleX: scaleTime;
-  let sizes;
-  const margin = { left: 30, right: 10, top: 10, bottom: 40 };
+  let sizes = { left: 0, top: 0, right: 400, bottom: 300 };
+
+  const margin = { left: 30, right: 30, top: 10, bottom: 40 };
   let frame: Element;
 
   function resize() {
     select(frame).html(null);
     sizes = frame.getBoundingClientRect();
-    const yranges = [sizes.height - margin.bottom - margin.top, margin.top];
+    const yranges = [sizes.bottom - margin.bottom - margin.top, margin.top];
     if (yr_values.length > 0) {
-      margin.right = 30;
+      margin.right += 30;
     }
-    scaleX = scaleTime()
-      .domain(x_domain)
-      .range([margin.left, sizes.width - margin.left])
-      .clamp(true);
 
     scaleYL = scaleLinear().domain(yl_domain).range(yranges).clamp(true);
+    scaleX = scaleTime()
+      .domain(x_domain)
+      .range([margin.left, sizes.right - margin.left - margin.right])
+      .clamp(true);
 
     scaleYR = scaleLinear()
       .domain(definition.domain_yr || extent(yr_values, (d) => d[1]))
@@ -93,7 +101,7 @@
       .append("g")
       .attr(
         "transform",
-        `translate(0,${sizes.height - margin.top - margin.bottom})`
+        `translate(0,${sizes.bottom - margin.top - margin.bottom})`
       )
       .call(x_axis)
       .selectAll("text") // rotate labels by 35° so they don't interfere
@@ -106,43 +114,54 @@
       const right_axis = axisRight(scaleYR);
       svg
         .append("g")
-        .attr("transform", `translate(${sizes.width - margin.right},0)`)
+        .attr("transform", `translate(${sizes.right - margin.right},0)`)
         .call(right_axis);
     }
     for (const chart of definition.data) {
       const layer = svg.append("g");
-      drawLayer(chart, layer);
+      drawLayer(chart, layer, type);
     }
   }
 
-  function drawLayer(chart, canvas) {
-    canvas
-      .selectAll("circle")
-      .data(chart.values)
-      .enter()
-      .append("circle")
-      .attr("cx", (d) => {
-        return scaleX(new Date(d[0]));
-      })
-      .attr("cy", (d) => {
-        let dy = chart.axe == "right" ? scaleYR(d[1]) : scaleYL(d[1]);
-        return dy;
-      })
-      .attr("r", "5px")
-      .attr("fill", chart.color);
+  function drawLayer(chart, canvas, type: ChartType) {
+    switch (type) {
+      case ChartType.DOT:
+        canvas
+          .selectAll("circle")
+          .data(chart.values)
+          .enter()
+          .append("circle")
+          .attr("cx", (d) => {
+            return scaleX(new Date(d[0]));
+          })
+          .attr("cy", (d) => {
+            let dy = chart.axe == "right" ? scaleYR(d[1]) : scaleYL(d[1]);
+            return dy;
+          })
+          .attr("r", "5px")
+          .attr("fill", chart.color);
+        break;
+      case ChartType.LINE:
+        canvas
+          .append("path")
+          .datum(chart.values)
+          .attr(
+            "d",
+            line()
+              .x((d) => scaleX(new Date(d[0])))
+              .y((d) => scaleYL(d[1]))
+          )
+          .attr("stroke", chart.color);
+    }
   }
   onMount(() => {
     resize();
+    window.addEventListener("resize", resize);
   });
 </script>
 
 <template>
   <h1>{definition.data[0].title}</h1>
   <p>{sizes?.left}-{sizes?.right},{sizes?.top}-{sizes?.bottom}.</p>
-  <div
-    bind:this={frame}
-    id="frame"
-    class="w-full h-400px bg-gray-100"
-    use:watchResize={resize}
-  />
+  <div bind:this={frame} id="frame" class="bg-gray-300 h-auto" />
 </template>

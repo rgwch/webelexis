@@ -1,7 +1,7 @@
 <script>
   import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
   import "../services/i18n/i18n";
-  import Chart from "./Chart.svelte";
+  import Chart, { ChartType } from "./Chart.svelte";
   import MarginDecorator from "./MarginDecorator.svelte";
   const def = {
     data: [
@@ -10,9 +10,9 @@
         values: [
           ["2020-12-30", 2],
           ["2021-04-01", 4],
-          ["2021-05-02", 6],
-          ["2021-08-12", 8],
-          ["2022-01-12", 7],
+          ["2021-05-02", 7],
+          ["2021-08-12", 5],
+          ["2022-01-12", 4],
         ],
       },
     ],
@@ -32,4 +32,5 @@
   </MarginDecorator>
 </Template>
 
-<Story name="Line" args={{ definition: def }} />
+<Story name="Line" args={{ definition: def, type: ChartType.LINE }} />
+<Story name="Dots" args={{ definition: def, type: ChartType.DOT }} />
