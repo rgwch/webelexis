@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   /**
    * universal chart display. Create a ChartDefinition  and bind this to the Graph Component.
-   * Note: X-coordimates should be dates. If domains are not given, they are calculated from the data.
+   * Note: X-coordinates should be dates. If domains are not given, they are calculated from the data.
    * data-values: Each datapoint is a 2-element array with x and y coordinates
    */
   export interface ChartDefinition {
@@ -62,6 +62,8 @@
   const yr_domain =
     definition.domain_yr || expand(extent(yr_values, (d) => d[1]));
 
+  let labelLeft: string;
+  let labelRight: string;
   let scaleYL: scaleLinear;
   let scaleYR: scaleLinear;
   let scaleX: scaleTime;
@@ -92,6 +94,8 @@
     if (frame) {
       sizes = frame.getBoundingClientRect();
       select(frame).html(null);
+      labelLeft = "";
+      labelRight = "";
       const yranges = [sizes.height - margin.bottom - margin.top, margin.top];
 
       scaleYL = scaleLinear().domain(yl_domain).range(yranges).clamp(true);
@@ -170,6 +174,13 @@
           )
           .attr("stroke", chart.color);
     }
+    if (chart.title) {
+      if (chart.axe == "right") {
+        labelRight += `<span style=color:${chart.color}>${chart.title}</span>`;
+      } else {
+        labelLeft += `<span style=color:${chart.color}>${chart.title}</span>`;
+      }
+    }
   }
   onMount(() => {
     resize();
@@ -178,11 +189,16 @@
 </script>
 
 <template>
-  <h1>{definition.data[0].title}</h1>
+  <!-- h1>{definition.data[0].title}</h1>
   <p>
     {Math.round(sizes.left)}-{Math.round(sizes?.width)},{Math.round(
       sizes?.top
     )}-{Math.round(sizes?.height)}.
-  </p>
+  </p -->
+  <div class="flex flex-row">
+    {@html labelLeft}
+    <span class="flex-1" />
+    {@html labelRight}
+  </div>
   <div bind:this={frame} class="bg-gray-300 h-min-200px h-400px w-full" />
 </template>

@@ -138,8 +138,8 @@ export class LabresultManager extends ObjectManager {
    * Fetch all Lab results for a given patients
    * @param id
    * @returns
-   */
-  public async fetchForPatient(id: UUID): Promise<LABRESULTS> {
+*/
+  public async fetchAllForPatient(id: UUID): Promise<LABRESULTS> {
     if (id) {
       const ret = { dates: [], items: {} }
       const query = { patientId: id, $limit: 100, $skip: 0 }

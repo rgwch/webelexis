@@ -1,52 +1,51 @@
 <script lang="ts">
-import { getService } from "../services/io";
-import { labresultManager } from "../models";
-import type { LabresultType } from "../models/labresult-model";
-import { currentPatient } from "../services/store";
-import type { LABRESULTS } from "../models/labresult-model";
-import Collapse from "../widgets/Collapse.svelte";
-import Labitem from "./Labitem.svelte";
-import utils from "../services/util";
-let labresults: LABRESULTS = { dates: [], items: {} };
-let groups: Array<string> = [];
-let display = "groups";
-labresultManager.fetchForPatient($currentPatient?.id).then((result) => {
-  labresults = result;
-  groups = Object.keys(result.items).sort((a, b) => a.localeCompare(b));
-});
-function labRow(items: Array<LabresultType>) {
-  let ret = "";
-  for (const d of labresults.dates) {
-    const res = items.find((it) => it.datum === d);
-    if (res) {
-      ret += "<td>" + res.resultat + "</td>";
-    } else {
-      ret += "<td></td>";
+  import { getService } from "../services/io";
+  import { labresultManager } from "../models";
+  import type { LabresultType } from "../models/labresult-model";
+  import { currentPatient } from "../services/store";
+  import type { LABRESULTS } from "../models/labresult-model";
+  import Collapse from "../widgets/Collapse.svelte";
+  import Labitem from "./Labitem.svelte";
+  import utils from "../services/util";
+  let labresults: LABRESULTS = { dates: [], items: {} };
+  let groups: Array<string> = [];
+  let display = "groups";
+  labresultManager.fetchAllForPatient($currentPatient?.id).then((result) => {
+    labresults = result;
+    groups = Object.keys(result.items).sort((a, b) => a.localeCompare(b));
+  });
+  function labRow(items: Array<LabresultType>) {
+    let ret = "";
+    for (const d of labresults.dates) {
+      const res = items.find((it) => it.datum === d);
+      if (res) {
+        ret += "<td>" + res.resultat + "</td>";
+      } else {
+        ret += "<td></td>";
+      }
     }
+    return ret;
   }
-  return ret;
-}
 </script>
 
 <template>
-  <label
-    ><input type="radio" bind:group="{display}" value="{'list'}" />Liste</label>
-  <label
-    ><input
-      type="radio"
-      bind:group="{display}"
-      value="{'groups'}" />gruppiert</label>
+  <label><input type="radio" bind:group={display} value={"list"} />Liste</label>
   <label
     ><input
       type="radio"
-      bind:group="{display}"
-      value="{'time'}" />Zeitleiste</label>
+      bind:group={display}
+      value={"groups"}
+    />gruppiert</label
+  >
+  <label
+    ><input type="radio" bind:group={display} value={"time"} />Zeitleiste</label
+  >
   {#if display === "groups"}
     {#each groups as group}
-      <Collapse title="{group}">
+      <Collapse title={group}>
         <div slot="body">
           {#each Object.keys(labresults.items[group]).sort((a, b) => parseFloat(labresults.items[group][a][0].prio) - parseFloat(labresults.items[group][b][0].prio)) as item}
-            <Labitem items="{labresults.items[group][item]}" />
+            <Labitem items={labresults.items[group][item]} />
           {/each}
         </div>
       </Collapse>
@@ -54,7 +53,7 @@ function labRow(items: Array<LabresultType>) {
   {:else if display === "list"}
     {#each groups as group}
       {#each Object.keys(labresults.items[group]).sort((a, b) => parseFloat(labresults.items[group][a][0].prio) - parseFloat(labresults.items[group][b][0].prio)) as item}
-        <Labitem items="{labresults.items[group][item]}" />
+        <Labitem items={labresults.items[group][item]} />
       {/each}
     {/each}
   {:else}
@@ -73,7 +72,8 @@ function labRow(items: Array<LabresultType>) {
                 <td class="small"
                   >{labresults.items[group][item][0].titel}&nbsp;
                   {labresults.items[group][item][0].unit}&nbsp;({labresults
-                    .items[group][item][0].reference})</td>
+                    .items[group][item][0].reference})</td
+                >
                 {@html labRow(labresults.items[group][item])}
                 <!-- Labitem items="{labresults.items[group][item]}" / -->
               </tr>
@@ -86,15 +86,15 @@ function labRow(items: Array<LabresultType>) {
 </template>
 
 <style>
-tr:nth-child(even) {
-  background-color: lightgrey;
-}
-tr:hover {
-  background-color: darkgrey;
-}
-.small {
-  font-size: smaller;
-  font-weight: bolder;
-  width: 40em;
-}
+  tr:nth-child(even) {
+    background-color: lightgrey;
+  }
+  tr:hover {
+    background-color: darkgrey;
+  }
+  .small {
+    font-size: smaller;
+    font-weight: bolder;
+    width: 40em;
+  }
 </style>

@@ -34,9 +34,11 @@
 
   $: {
     encounters = [...encounters, ...newBatch];
-    em.getCase(encounters[0]).then((c) => {
-      currentCase.set(c);
-    });
+    if (encounters && encounters.length > 0) {
+      em.getCase(encounters[0]).then((c) => {
+        currentCase.set(c);
+      });
+    }
   }
 
   onMount(() => {

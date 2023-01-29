@@ -5,15 +5,17 @@
   let aufList: Array<AUFType> = [];
 
   aufManager.fetchForPatient($currentPatient.id).then((result) => {
-    aufList = (result as Array<AUFType>).sort((a,b)=>{
-      if(!a.datumauz){
-        return 1;
-      }
-      if(!b.datumauz){
-        return -1
-      }
-      return b.datumauz.localeCompare(a.datumauz)
-    });
+    if (result.total && result.data) {
+      aufList = (result.data as Array<AUFType>).sort((a, b) => {
+        if (!a.datumauz) {
+          return 1;
+        }
+        if (!b.datumauz) {
+          return -1;
+        }
+        return b.datumauz.localeCompare(a.datumauz);
+      });
+    }
   });
 </script>
 

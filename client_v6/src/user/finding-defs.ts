@@ -16,7 +16,7 @@ export const definitions: Array<FindingDef> = [
     elements: [
       { title: "Gewicht", unit: "Kg", manual: true, chart: "left", color: "blue" },
       { title: "Grösse", unit: "cm", manual: true, chart: "none" },
-      { title: "bmi", chart: "right", color: "red", range: [15, 40] }
+      { title: "BMI", unit: "Kg/m2", chart: "right", color: "red", range: [15, 40] }
     ],
     create: (val: string | string[]) => {
       const [weight, height] = Array.isArray(val) ? val : val.split("/")
@@ -32,7 +32,7 @@ export const definitions: Array<FindingDef> = [
     name: "cardial",
     title: "Kreislauf",
     elements: [
-      { title: "systolisch", unit: "mmHg", manual: true, color: "blue", chart: "left", range: [80, 200] },
+      { title: "systolisch", unit: "mmHg", manual: true, color: "blue", chart: "left", range: [40, 200] },
       { title: "Diastolisch", unit: "mmHg", manual: true, color: "green", chart: "left" },
       { title: "Puls", unit: "1/min", manual: true, chart: "right", color: "red", range: [40, 180] }
     ],
@@ -63,8 +63,8 @@ export const definitions: Array<FindingDef> = [
     name: "coagulation",
     title: "Gerinnung",
     elements: [
-      { title: "Quick", unit: "%", manual: true, chart: "left" },
-      { title: "INR", manual: true, chart: "right" }],
+      { title: "Quick", unit: "%", manual: true, chart: "left", color: "blue", range: [0, 110] },
+      { title: "INR", manual: true, chart: "right", color: "red" }],
     create: val => {
       let [q, inr] = Array.isArray(val) ? val : val.split(/[\/,]/)
       if (q.endsWith("%")) {

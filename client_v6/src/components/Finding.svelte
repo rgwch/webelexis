@@ -119,8 +119,13 @@
     for(let i=0;i<fdef.elements.length;i++){
       const el=fdef.elements[i]
       if(el.chart !== "none"){
+        let title=el.title
+        if(el.unit){
+          title+=" ("+el.unit+")"
+        }
+
         data.push({
-          title: el.title,
+          title,
           color: el.color,
           axe: el.chart ?? "left",
           values: finding.measurements.map(m=>{
