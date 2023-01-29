@@ -1,11 +1,10 @@
 <script lang="ts">
-  import DatePicker from "./DatePicker.svelte";
   import { DateTime } from "luxon";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
   /**
-   * Predefined value. Should be a Javascript-Date compliant formatted string
+   * Predefined value. Should be yyyyLLdd
    */
   export let dateString: string = "19810309";
   //let current: Date = DateTime.fromISO(dateString).toJSDate();
@@ -51,12 +50,6 @@ A label and a DatePicker
       on:change={changed}
       {disabled}
     />
-    <!-- DatePicker
-      current="{current}"
-      on:select="{changed}"
-      id="{id}"
-      disabled="{disabled}"
-    / -->
   </div>
 </template>
 
