@@ -33,7 +33,13 @@
   import { extent } from "d3-array";
   import { onMount } from "svelte";
 
+  /**
+   * The Definition of the Chart.
+   */
   export let definition: ChartDefinition;
+  /**
+   * Type of Chart to draw. Dots only or Dots connected with a line
+   */
   export let type: ChartType = ChartType.LINE;
   let x_values = [],
     yl_values = [],
@@ -146,6 +152,18 @@
 
   function drawLayer(chart, canvas, type: ChartType) {
     switch (type) {
+      case ChartType.LINE:
+        canvas
+          .append("path")
+          .datum(chart.values)
+          .attr(
+            "d",
+            line()
+              .x((d) => scaleX(new Date(d[0])))
+              .y((d) => (chart.axe == "right" ? scaleYR(d[1]) : scaleYL(d[1])))
+          )
+          .attr("stroke", chart.color);
+
       case ChartType.DOT:
         canvas
           .selectAll("circle")
@@ -162,17 +180,6 @@
           .attr("r", "5px")
           .attr("fill", chart.color);
         break;
-      case ChartType.LINE:
-        canvas
-          .append("path")
-          .datum(chart.values)
-          .attr(
-            "d",
-            line()
-              .x((d) => scaleX(new Date(d[0])))
-              .y((d) => (chart.axe == "right" ? scaleYR(d[1]) : scaleYL(d[1])))
-          )
-          .attr("stroke", chart.color);
     }
     if (chart.title) {
       if (chart.axe == "right") {

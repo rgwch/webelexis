@@ -1,3 +1,9 @@
+/********************************************
+ * This file is part of Webelexis           *
+ * Copyright (c) 2023 by G. Weirich         *
+ * License and Terms see LICENSE            *
+ ********************************************/
+
 import type { ElexisType, DATE, DATETIME, UUID } from "./elexistype";
 import util from '../services/util'
 import { ObjectManager } from './object-manager'

@@ -18,7 +18,6 @@
   import { DateTime } from "luxon";
   import { onMount, onDestroy } from "svelte";
   import Chart,{ChartType, type ChartDefinition} from '../widgets/Chart.svelte'
-  import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
   /**
    * Display a single Finding type and allow to add, select, delete and display measrurements

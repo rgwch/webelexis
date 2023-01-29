@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2022 by G. Weirich         *
+ * Copyright (c) 2022-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 import type { ElexisType, UUID, DATE } from "./elexistype";
