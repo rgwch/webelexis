@@ -26,6 +26,10 @@ export default {
       return "01.01.1900"
     }
   },
+  ElexisDateToISODate: (elexisdate: string): string => {
+    const fmt = elexisdate.length == 8 ? ELEXISDATE : ELEXISDATETIME
+    return DateTime.fromFormat(elexisdate, fmt).toISO()
+  },
   DateToElexisDate: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATE),
   DateToElexisDateTime: (date: Date) => DateTime.fromJSDate(date).toFormat(ELEXISDATETIME),
   DateObjectToLocalDate: (date: Date) => DateTime.fromJSDate(date).toFormat(LOCALDATE),

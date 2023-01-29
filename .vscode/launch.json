@@ -32,9 +32,10 @@
     {
       "type": "chrome",
       "request": "launch",
+      "runtimeExecutable": "chromium-browser",
       "name": "Launch Chrome",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/client_v5/src"
+      "webRoot": "${workspaceFolder}/client_v6/src"
     },
     {
       "type": "node",

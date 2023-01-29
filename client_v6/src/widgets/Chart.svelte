@@ -58,19 +58,27 @@
   const x_domain =
     definition.domain_x ?? extent(x_values, (d) => new Date(d[0]));
   const yl_domain = definition.domain_yl || extent(yl_values, (d) => d[1]);
+  const yr_domain = definition.domain_yr || extent(yr_values, (d) => d[1]);
 
   let scaleYL: scaleLinear;
   let scaleYR: scaleLinear;
   let scaleX: scaleTime;
-  let sizes = { left: 0, top: 0, right: 400, bottom: 300 };
+  let sizes = {
+    left: 0,
+    top: 0,
+    right: 400,
+    bottom: 300,
+    width: 400,
+    height: 300,
+  };
 
   const margin = { left: 30, right: 30, top: 10, bottom: 40 };
   let frame: Element;
 
   function resize() {
-    select(frame).html(null);
     sizes = frame.getBoundingClientRect();
-    const yranges = [sizes.bottom - margin.bottom - margin.top, margin.top];
+    select(frame).html(null);
+    const yranges = [sizes.height - margin.bottom - margin.top, margin.top];
     if (yr_values.length > 0) {
       margin.right += 30;
     }
@@ -78,21 +86,18 @@
     scaleYL = scaleLinear().domain(yl_domain).range(yranges).clamp(true);
     scaleX = scaleTime()
       .domain(x_domain)
-      .range([margin.left, sizes.right - margin.left - margin.right])
+      .range([margin.left, sizes.width - margin.left - margin.right])
       .clamp(true);
 
-    scaleYR = scaleLinear()
-      .domain(definition.domain_yr || extent(yr_values, (d) => d[1]))
-      .range(yranges)
-      .clamp(true);
+    scaleYR = scaleLinear().domain(yr_domain).range(yranges).clamp(true);
 
     // create chart axes
     const left_axis = axisLeft(scaleYL);
     const x_axis = axisBottom(scaleX).tickFormat(dateFormat);
     const svg = select(frame)
       .append("svg")
-      .attr("width", sizes.right)
-      .attr("height", sizes.bottom)
+      .attr("width", sizes.width)
+      .attr("height", sizes.height)
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(left_axis);
@@ -156,12 +161,12 @@
   }
   onMount(() => {
     resize();
-    frame.addEventListener("resize", resize);
+    window.addEventListener("resize", resize);
   });
 </script>
 
 <template>
   <h1>{definition.data[0].title}</h1>
-  <p>{sizes?.left}-{sizes?.right},{sizes?.top}-{sizes?.bottom}.</p>
-  <div bind:this={frame} id="frame" class="bg-gray-300 h-auto" />
+  <p>{Math.round(sizes.left)}-{Math.round(sizes?.width)},{Math.round(sizes?.top)}-{Math.round(sizes?.height)}.</p>
+  <div bind:this={frame} class="bg-gray-300 h-min-200px w-full" />
 </template>

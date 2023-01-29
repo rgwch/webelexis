@@ -49,7 +49,7 @@
         r.push(values[el.title]);
       }
       const fn = await findingsManager.addMeasurement(
-        finding.title,
+        finding.name,
         finding.patientid,
         r,
         newdate
@@ -109,10 +109,8 @@
    * create a chart of selected elements. If no element are selected, select all.
    */
   function chart() {
-    if (!finding.measurements.some((m) => m["selected"])) {
-      for (const m of finding.measurements) {
-        m["selected"] = true;
-      }
+   if (!finding.measurements.some((m) => m["selected"])) {
+      selectAll();
     }
     const fdef=findingsManager.getDefinition(finding)
     const data=[]
@@ -125,7 +123,7 @@
         axe: el.chart ?? "left",
         values: finding.measurements.map(m=>{
           if(m.selected){
-            return m.values[i]
+            return [util.ElexisDateToISODate(m.datetime),m.values[i]]
           }
         })
       })
@@ -239,8 +237,8 @@
         doShowChart = false;
       }}
     >
-      <div slot="body" class="w-auto">
-        <Chart definition={chartdef} type={ChartType.DOT} />
+      <div slot="body" class="min-h-400px">
+        <Chart definition={chartdef} type={ChartType.LINE} />
       </div>
     </Modal>
   {/if}

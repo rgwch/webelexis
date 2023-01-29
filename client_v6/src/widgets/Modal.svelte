@@ -32,8 +32,8 @@
           </div>
         </div>
         <hr />
-        <div class="my-5 w-auto">
-          <slot name="body" />
+        <div class="my-5 w-full h-full overflow-auto">
+          <slot name="body"/>
         </div>
         <hr />
         <div class="ml-auto">
