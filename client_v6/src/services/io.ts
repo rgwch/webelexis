@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2022 by G. Weirich    *
+ * Copyright (c) 2016-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -14,7 +14,7 @@ const socket = io(cfg.server)
 const app = feathers()
 app.configure(feathers.socketio(socket))
 app.configure(auth({ storage: window.localStorage }))
-console.log("Webelexis clent production mode: " + cfg.production)
+console.log("Webelexis client V6 production mode: " + cfg.production)
 
 export interface IService<T> {
   /**
@@ -74,7 +74,7 @@ export interface IService<T> {
 }
 
 export type ServiceType = "admin" | "article" | "auf" | "billable" | "billing" | "bills" | "blob" | "briefe" | "diagnose" | "fall" |
-  "findings" | "invoice" | "konsultation" | "kontakt" | "labresults" | "lucinda" | "meta-article" | "nosql" | "patient" |
+  "findings" | "invoice" | "konsultation" | "kontakt" | "labresults" | "leistungsblock" | "lucinda" | "meta-article" | "nosql" | "patient" |
   "payments" | "prescriptions" | "rezepte" | "stickers" | "termin" | "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 

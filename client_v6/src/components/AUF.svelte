@@ -35,8 +35,11 @@
   {#if $currentPatient}
     <ul>
       {#each aufList as auf}
-        <li class="cursor-pointer" on:click={() => detail(auf)}>
-          {aufManager.getLabel(auf)}
+        <li>
+          <input type="checkbox" bind:checked={auf.selected}>
+          <span class="cursor-pointer" on:click={() => detail(auf)}>
+            {aufManager.getLabel(auf)}
+          </span>
         </li>
       {/each}
     </ul>
