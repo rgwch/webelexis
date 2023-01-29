@@ -16,7 +16,7 @@ export const definitions: Array<FindingDef> = [
     elements: [
       { title: "Gewicht", unit: "Kg", manual: true, chart: "left", color: "blue" },
       { title: "Grösse", unit: "cm", manual: true, chart: "none" },
-      { title: "bmi", chart: "right", color: "red" }
+      { title: "bmi", chart: "right", color: "red", range: [15, 40] }
     ],
     create: (val: string | string[]) => {
       const [weight, height] = Array.isArray(val) ? val : val.split("/")
@@ -32,9 +32,9 @@ export const definitions: Array<FindingDef> = [
     name: "cardial",
     title: "Kreislauf",
     elements: [
-      { title: "systolisch", unit: "mmHg", manual: true, chart: "left" },
-      { title: "Diastolisch", unit: "mmHg", manual: true, chart: "left" },
-      { title: "Puls", unit: "1/min", manual: true, chart: "right" }
+      { title: "systolisch", unit: "mmHg", manual: true, color: "blue", chart: "left", range: [80, 200] },
+      { title: "Diastolisch", unit: "mmHg", manual: true, color: "green", chart: "left" },
+      { title: "Puls", unit: "1/min", manual: true, chart: "right", color: "red", range: [40, 180] }
     ],
     create: val => {
       const [syst, diast, pulse = 0] = Array.isArray(val) ? val : val.split("/")

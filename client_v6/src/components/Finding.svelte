@@ -114,23 +114,48 @@
     }
     const fdef=findingsManager.getDefinition(finding)
     const data=[]
+    const yl=[]
+    const yr=[]
     for(let i=0;i<fdef.elements.length;i++){
       const el=fdef.elements[i]
       if(el.chart !== "none"){
-      data.push({
-        title: el.title,
-        color: el.color,
-        axe: el.chart ?? "left",
-        values: finding.measurements.map(m=>{
-          if(m.selected){
-            return [util.ElexisDateToISODate(m.datetime),m.values[i]]
-          }
+        data.push({
+          title: el.title,
+          color: el.color,
+          axe: el.chart ?? "left",
+          values: finding.measurements.map(m=>{
+            if(m.selected){
+              return [util.ElexisDateToISODate(m.datetime),m.values[i]]
+            }
+          })
         })
-      })
+        if(el.range && Array.isArray(el.range) && el.range.length>0){
+          if(el.chart=="right"){
+            if(yr.length==2){
+              yr[0]=Math.min(yr[0],el.range[0])
+              yr[1]=Math.max(yr[1],el.range[1])
+            }else{
+              yr.push(el.range[0],el.range[1])
+            }
+          }else{
+            if(yl.length==2){
+              yl[0]=Math.min(yl[0],el.range[0])
+              yl[1]=Math.max(yl[1],el.range[1])
+            }else{
+              yl.push(el.range[0],el.range[1])
+            }
+          }
+        }
       }
     }
     chartdef={
       data
+    }
+    if(yl.length==2){
+      chartdef.domain_yl=yl
+    }
+    if(yr.length==2){
+      chartdef.domain_yr=yr
     }
     doShowChart = true;
     // dgs.open({ viewModel: DisplayChart, model: finding })
@@ -237,7 +262,7 @@
         doShowChart = false;
       }}
     >
-      <div slot="body" class="min-h-400px">
+      <div slot="body">
         <Chart definition={chartdef} type={ChartType.LINE} />
       </div>
     </Modal>

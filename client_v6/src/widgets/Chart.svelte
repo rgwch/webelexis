@@ -57,8 +57,10 @@
   const dateFormat = timeFormat("%d.%m.%Y");
   const x_domain =
     definition.domain_x ?? extent(x_values, (d) => new Date(d[0]));
-  const yl_domain = definition.domain_yl || extent(yl_values, (d) => d[1]);
-  const yr_domain = definition.domain_yr || extent(yr_values, (d) => d[1]);
+  const yl_domain =
+    definition.domain_yl || expand(extent(yl_values, (d) => d[1]));
+  const yr_domain =
+    definition.domain_yr || expand(extent(yr_values, (d) => d[1]));
 
   let scaleYL: scaleLinear;
   let scaleYR: scaleLinear;
@@ -71,60 +73,70 @@
     width: 400,
     height: 300,
   };
-
   const margin = { left: 30, right: 30, top: 10, bottom: 40 };
+
+  if (yr_values.length > 0) {
+    margin.right += 30;
+  }
+
   let frame: Element;
-
-  function resize() {
-    sizes = frame.getBoundingClientRect();
-    select(frame).html(null);
-    const yranges = [sizes.height - margin.bottom - margin.top, margin.top];
-    if (yr_values.length > 0) {
-      margin.right += 30;
+  function expand(range) {
+    const n1 = parseInt(range[0]);
+    const n2 = parseInt(range[1]);
+    if (isNaN(n1) || isNaN(n2)) {
+      return range;
     }
+    return [n1 - n1 / 5, n2 + n2 / 5];
+  }
+  function resize() {
+    if (frame) {
+      sizes = frame.getBoundingClientRect();
+      select(frame).html(null);
+      const yranges = [sizes.height - margin.bottom - margin.top, margin.top];
 
-    scaleYL = scaleLinear().domain(yl_domain).range(yranges).clamp(true);
-    scaleX = scaleTime()
-      .domain(x_domain)
-      .range([margin.left, sizes.width - margin.left - margin.right])
-      .clamp(true);
+      scaleYL = scaleLinear().domain(yl_domain).range(yranges).clamp(true);
+      scaleX = scaleTime()
+        .domain(x_domain)
+        .range([margin.left, sizes.width - margin.left - margin.right])
+        .clamp(true);
 
-    scaleYR = scaleLinear().domain(yr_domain).range(yranges).clamp(true);
+      scaleYR = scaleLinear().domain(yr_domain).range(yranges).clamp(true);
 
-    // create chart axes
-    const left_axis = axisLeft(scaleYL);
-    const x_axis = axisBottom(scaleX).tickFormat(dateFormat);
-    const svg = select(frame)
-      .append("svg")
-      .attr("width", sizes.width)
-      .attr("height", sizes.height)
-      .append("g")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(left_axis);
+      // create chart axes
+      const left_axis = axisLeft(scaleYL);
+      const x_axis = axisBottom(scaleX).tickFormat(dateFormat);
+      const svg = select(frame)
+        .append("svg")
+        .attr("width", sizes.width)
+        .attr("height", sizes.height)
+        .append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(left_axis);
 
-    svg
-      .append("g")
-      .attr(
-        "transform",
-        `translate(0,${sizes.bottom - margin.top - margin.bottom})`
-      )
-      .call(x_axis)
-      .selectAll("text") // rotate labels by 35° so they don't interfere
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-35)");
-    // create right Y axe only, if data for two axes are present.
-    if (yr_values.length > 0) {
-      const right_axis = axisRight(scaleYR);
       svg
         .append("g")
-        .attr("transform", `translate(${sizes.right - margin.right},0)`)
-        .call(right_axis);
-    }
-    for (const chart of definition.data) {
-      const layer = svg.append("g");
-      drawLayer(chart, layer, type);
+        .attr(
+          "transform",
+          `translate(0,${sizes.height - margin.top - margin.bottom})`
+        )
+        .call(x_axis)
+        .selectAll("text") // rotate labels by 35° so they don't interfere
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-35)");
+      // create right Y axe only, if data for two axes are present.
+      if (yr_values.length > 0) {
+        const right_axis = axisRight(scaleYR);
+        svg
+          .append("g")
+          .attr("transform", `translate(${sizes.width - margin.right},0)`)
+          .call(right_axis);
+      }
+      for (const chart of definition.data) {
+        const layer = svg.append("g");
+        drawLayer(chart, layer, type);
+      }
     }
   }
 
@@ -154,7 +166,7 @@
             "d",
             line()
               .x((d) => scaleX(new Date(d[0])))
-              .y((d) => scaleYL(d[1]))
+              .y((d) => (chart.axe == "right" ? scaleYR(d[1]) : scaleYL(d[1])))
           )
           .attr("stroke", chart.color);
     }
@@ -167,6 +179,10 @@
 
 <template>
   <h1>{definition.data[0].title}</h1>
-  <p>{Math.round(sizes.left)}-{Math.round(sizes?.width)},{Math.round(sizes?.top)}-{Math.round(sizes?.height)}.</p>
-  <div bind:this={frame} class="bg-gray-300 h-min-200px w-full" />
+  <p>
+    {Math.round(sizes.left)}-{Math.round(sizes?.width)},{Math.round(
+      sizes?.top
+    )}-{Math.round(sizes?.height)}.
+  </p>
+  <div bind:this={frame} class="bg-gray-300 h-min-200px h-400px w-full" />
 </template>
