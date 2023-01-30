@@ -15,6 +15,7 @@
   export let validate: (ins) => boolean = (ins) => true;
   export let errmsg = "Error";
   export let orientation = "vertical";
+  export let width="100%"
 
   let error = false;
   function changed() {
@@ -40,7 +41,7 @@
       {/if}
       <div class="relative flex items-stretch flex-grow focus-within:z-10">
         <input
-          class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
+          style={width} class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-200"
           {placeholder}
           bind:value
           on:blur={changed}

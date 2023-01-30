@@ -124,7 +124,7 @@
   },
   "general": {
     "from": "von",
-    "loading": "lese...",
+    "loading": "...Moment... lese Daten...",
     "until": "bis"
   },
   "lab": {

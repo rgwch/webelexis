@@ -1,16 +1,20 @@
 <script lang="ts">
-  import type { AUFType } from "src/models/auf-model";
+  import type { AUFType } from "../models/auf-model";
+  import type { BriefType } from "../models/briefe-model";
   import { currentPatient } from "../services/store";
-  import { aufManager } from "../models";
-  import Modal from "../widgets/Modal.svelte";
+  import { aufManager, briefManager } from "../models";
   import { _ } from "svelte-i18n";
   import DateInput from "../widgets/DateInput.svelte";
+  import Collapse from "../widgets/Collapse.svelte";
+  import Card from "../widgets/Card.svelte";
   import util from "../services/util";
   import LineInput from "../widgets/LineInput.svelte";
+  import Fa from "svelte-fa";
+  import { faPrint } from "@fortawesome/free-solid-svg-icons";
 
   let aufList: Array<AUFType> = [];
-  let showDetail: boolean = false;
-  let current: AUFType;
+  let selected: Array<boolean> = [];
+  let open: Array<boolean> = [];
 
   aufManager.fetchForPatient($currentPatient.id).then((result) => {
     if (result.total && result.data) {
@@ -25,49 +29,90 @@
       });
     }
   });
-  function detail(auf) {
-    current = auf;
-    showDetail = true;
+  /**
+   * User clicked on the printer symbol
+   */
+  async function toPdf(auf: AUFType) {
+    let table = "<table>";
+    const fields = [
+      { field: "auf.grund", replace: auf.grund },
+      { field: "auf.datumvon", replace: util.ElexisDateToLocalDate(auf.datumvon) },
+      { field: "auf.datumbis", replace: util.ElexisDateToLocalDate(auf.datumbis) },
+      { field: "auf.prozent", replace: auf.prozent },
+      { field: "auf.aufzusatz", replace: auf.aufzusatz },
+    ];
+    const rp: BriefType = {
+      betreff: "AUF-Zeugnis",
+      datum: util.DateToElexisDate(new Date()),
+      mimetype: "text/html",
+      patientid: $currentPatient.id,
+      typ: "AUF-Zeugnis",
+    };
+    try {
+      const processed = await briefManager.generate(rp, "auf-zeugnis", fields);
+      await briefManager.print(processed);
+      await briefManager.save(processed);
+    } catch (err) {
+      alert(err);
+    }
+  }
+  function save(auz) {
+    aufManager.save(auz);
   }
 </script>
 
 <template>
   {#if $currentPatient}
     <ul>
-      {#each aufList as auf}
+      {#each aufList as auf, idx}
         <li>
-          <input type="checkbox" bind:checked={auf.selected}>
-          <span class="cursor-pointer" on:click={() => detail(auf)}>
-            {aufManager.getLabel(auf)}
-          </span>
+          <div class="flex flex-row">
+            <input type="checkbox" bind:checked={selected[idx]} class="mr-4" />
+            <Collapse title={aufManager.getLabel(auf)} bind:open={open[idx]}>
+              <div
+                slot="body"
+                class="border border-blue-600 border-solid p-3 my-3 "
+              >
+                <p>Erstellt am: {util.ElexisDateToLocalDate(auf.datumauz)}</p>
+                <div class="flex flex-row justify-between py-4 px-2 ">
+                  <DateInput
+                    bind:dateString={auf.datumvon}
+                    label="von"
+                    on:dateChanged={() => save(auf)}
+                  />
+                  <DateInput
+                    bind:dateString={auf.datumbis}
+                    label="bis"
+                    on:dateChanged={() => save(auf)}
+                  />
+                  <span class="flex-shrink w-12">
+                    <LineInput
+                      width="20px"
+                      bind:value={auf.prozent}
+                      label="Prozent"
+                    />
+                  </span>
+                </div>
+                <div class="flex flex-row px-2 pb-4">
+                  <LineInput bind:value={auf.grund} label="Grund" />
+                  <LineInput
+                    bind:value={auf.aufzusatz}
+                    label="Bemerkung"
+                    on:textChanged={() => {
+                      save(auf);
+                    }}
+                  />
+                </div>
+                <div>
+                  <button type="submit" on:click={() => toPdf(auf)}
+                    ><Fa icon={faPrint} /></button
+                  >
+                </div>
+              </div>
+            </Collapse>
+          </div>
         </li>
       {/each}
     </ul>
-  {/if}
-  {#if showDetail}
-    <Modal
-      title={$_("titles.auflong")}
-      on:closed={() => {
-        showDetail = false;
-      }}
-    >
-      <div slot="body">
-        <div class="flex flex-row">
-          <DateInput
-            dateString={util.ElexisDateToISODate(current.datumvon)}
-            label="von"
-          />
-          <DateInput
-            dateString={util.ElexisDateToISODate(current.datumbis)}
-            label="bis"
-          />
-          <LineInput bind:value={current.prozent} label="Prozent" />
-        </div>
-        <div class="flex flex-row">
-          <LineInput bind:value={current.grund} label="Grund" />
-          <LineInput bind:value={current.aufzusatz} label="Bemerkung" />
-        </div>
-      </div>
-    </Modal>
   {/if}
 </template>

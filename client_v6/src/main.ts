@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2022 by G. Weirich         *
+ * Copyright (c) 2022.2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -14,7 +14,8 @@ import { currentPatient } from './services/store';
 import { userManager as um } from './models'
 
 /*
-If we are in debug mode, the server will send credentials, so we can auto-login */
+If we are in debug mode, the server will send credentials, so we can auto-login and preload our "Testperson" fake-patient
+*/
 fetch(def.server + "/metadata").then(async result => {
   if (result.ok) {
     def.metadata = await result.json()

@@ -9,15 +9,17 @@ const comparator = (a, b) => {
 };
 
 const dummy = new Tree<string>(null, null);
-const n1 = new Tree<string>(dummy, "eins");
-const n2 = new Tree<string>(dummy, "zwei");
-n1.setPayload("eins");
-n2.setPayload("zwei");
+// const n1 = new Tree<string>(dummy, "eins");
+//const n2 = new Tree<string>(dummy, "zwei");
+// n1.setPayload("eins");
+// n2.setPayload("zwei");
+
+/*
 const ch1 = n1.insert("ch1", comparator);
 ch1.setPayload("child of eins");
 const gch1 = ch1.insert("gch1", comparator);
 gch1.setPayload("grandchild of eins");
-
+*/
 const trees = dummy.getChildren();
 </script>
 

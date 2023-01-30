@@ -1,3 +1,7 @@
+<!-- 
+  EMR Component with subcomponents for all EMR-related stuff.
+  We load the subcomponents lazily with {await} to split up the app in smaller chunks
+-->
 <script lang="ts">
   import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
   import { navigate } from "svelte-navigator";
@@ -6,12 +10,7 @@
   import { Patient } from "../models/patient-model";
   import PatientSelector from "../components/PatientSelector.svelte";
   import PatientDetail from "../components/PatientDetail.svelte";
-  import Encounters from "../components/Encounters.svelte";
-  import Cases from "../components/Cases.svelte";
-  import Prescriptions from "../components/Prescriptions.svelte";
-  import Documents from "./Documents.svelte";
-  import Findings from "../components/Findings.svelte";
-  import Labresults from "../components/Labresults.svelte";
+
   import AUF from "../components/AUF.svelte";
 
   let selector = false;
@@ -23,9 +22,6 @@
 </script>
 
 <template>
-  <!-- p class="testclass">
-    Test - should be blue on red if windi.css is configured correctly
-  </p -->
   <p
     class="font-bold text-blue-700 cursor-pointer"
     on:click={() => (selector = !selector)}
@@ -53,25 +49,45 @@
       </TabPanel>
 
       <TabPanel>
-        <Encounters />
+        {#await import("../components/Encounters.svelte")}
+          <p>{$_("general.loading")}</p>
+        {:then Encounters}
+          <Encounters.default />
+        {/await}
       </TabPanel>
       <TabPanel>
-        <Cases />
+        {#await import("../components/Cases.svelte") then Cases}
+          <Cases.default />
+        {/await}
       </TabPanel>
       <TabPanel>
-        <Prescriptions />
+        {#await import("../components/Prescriptions.svelte")}
+          <p>{$_("general.loading")}</p>
+        {:then Prescriptions}
+          <Prescriptions.default />
+        {/await}
       </TabPanel>
       <TabPanel>
-        <Findings />
+        {#await import("../components/Findings.svelte") then Findings}
+          <Findings.default />
+        {/await}
       </TabPanel>
       <TabPanel>
-        <Labresults />
+        {#await import("../components/Labresults.svelte")}
+          <p>{$_("general.loading")}</p>
+        {:then Labresults}
+          <Labresults.default />
+        {/await}
       </TabPanel>
       <TabPanel>
         <AUF />
       </TabPanel>
       <TabPanel>
-        <Documents />
+        {#await import("./Documents.svelte")}
+          <p>{$_("general.loading")}</p>
+        {:then Documents}
+          <Documents.default />
+        {/await}
       </TabPanel>
     </Tabs>
   {/if}
