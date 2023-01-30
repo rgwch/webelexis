@@ -48,7 +48,7 @@
     ];
     const rp: BriefType = {
       betreff: "AUF-Zeugnis",
-      datum: util.DateToElexisDate(new Date()),
+      datum: auf.datumauz,
       mimetype: "text/html",
       patientid: $currentPatient.id,
       typ: "AUF-Zeugnis",
