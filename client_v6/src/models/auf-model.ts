@@ -26,10 +26,10 @@ export class AUFManager extends ObjectManager {
   }
 
   public getLabel = (obj: AUFType) => {
-    let ret = util.ElexisDateToLocalDate(obj.datumauz) + ":" +
-      util.ElexisDateToLocalDate(obj.datumvon) + "-" +
-      util.ElexisDateToLocalDate(obj.datumbis) + ": " +
-      obj.prozent + "% (" + obj.grund + ")"
+    let ret = `[${util.ElexisDateToLocalDate(obj.datumauz)}]: 
+      ${util.ElexisDateToLocalDate(obj.datumvon)} - 
+      ${util.ElexisDateToLocalDate(obj.datumbis)}: 
+      ${obj.prozent}% (${obj.grund})`
     return ret
   }
 }
