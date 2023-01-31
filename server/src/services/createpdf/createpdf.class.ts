@@ -1,4 +1,4 @@
-import { createPDF } from './run-puppeteer'
+import { createPDF } from '../../util/pdf-util'
 
 export class Service {
   constructor(private options = {}) { }
@@ -19,7 +19,7 @@ export class Service {
     if (Array.isArray(data)) {
       return Promise.all(data.map((current) => this.create(current, params)))
     }
-    await createPDF(data.html, "./", "A5")
+    await createPDF(data.html, data.output, "A5")
   }
 
   async update(id, data, params) {

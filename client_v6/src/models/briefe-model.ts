@@ -15,6 +15,7 @@ import { currentUser, currentActor } from "../services/store";
 import { _ } from 'svelte-i18n'
 import defs from '../services/util'
 import { DateTime } from "luxon";
+
 const kontaktManager = new KontaktManager()
 const patientManager = new PatientManager()
 
@@ -60,6 +61,7 @@ export class BriefManager extends ObjectManager {
    * Print-preview a letter
    */
   public print(doc: BriefType) {
+
     const win = window.open("", "_new");
     if (!win) {
       alert(
@@ -98,7 +100,7 @@ export class BriefManager extends ObjectManager {
     });
     if (tmpls.data.length > 0) {
       const tmpl: BriefType = await this.dataService.get(tmpls.data[0].id);
-      const filename = DateTime.now().toFormat("yyyy-LL-dd-HHmmss") + "_" + brief.typ
+      const filename = DateTime.now().toFormat("yyyy-LL-dd-HHmm") + "_" + brief.typ
       const compiled = (await this.replaceFields(tmpl.contents, brief, fields)).replace(/<title>.*<\/title>/, "<title>" + filename + "</title>");
       const concern = patientManager.createConcern(brief._Patient)
       return Object.assign({}, brief, { mimetype: "text/html", path: concern + "/" + filename + ".html", contents: compiled })

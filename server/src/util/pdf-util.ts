@@ -1,3 +1,13 @@
+import puppeteer, { PaperFormat } from 'puppeteer';
+
+export const createPDF = async (html: string, outputPath: string, format: PaperFormat) => {
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
+  await page.setContent(html)
+  await page.pdf({ format, displayHeaderFooter: false, path: outputPath })
+}
+
+
 function merge(template, doc) {
   const fieldmatcher = /\[\w+\.\w+\]/ig
 
@@ -21,7 +31,3 @@ function merge(template, doc) {
   return compiled
 }
 
-export default {
-  merge: merge,
-  toPDF: merge
-}

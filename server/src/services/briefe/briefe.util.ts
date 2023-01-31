@@ -7,6 +7,7 @@
 import * as fs from 'node:fs/promises';
 import path from 'path'
 import { DateTime } from 'luxon'
+import { createPDF } from '../../util/pdf-util';
 import compilePug from '../../util/compile-pug'
 
 import { logger } from '../../logger'
@@ -26,6 +27,7 @@ export const store = async (ctx) => {
       encoding: 'utf-8',
       mode: 0o600,
     })
+    createPDF(contents, storepath + ".pdf", "A5")
   }
   return ctx
 }
@@ -36,11 +38,11 @@ export const store = async (ctx) => {
  * @param filename - pathname relative to the configured docbase 
  * @returns the full absolute system path (inclucing docbase) of the file.
  */
-export const ensurePath = async (app, filename:string): Promise<string> => {
+export const ensurePath = async (app, filename: string): Promise<string> => {
   const base = app.get('docbase') || require('os').homedir()
-  let subdir = "documents/"+ (filename ? filename.substring(0, 1).toLocaleLowerCase() : 'nx')
-  if(filename.startsWith("templates")){
-    subdir="."
+  let subdir = "documents/" + (filename ? filename.substring(0, 1).toLocaleLowerCase() : 'nx')
+  if (filename.startsWith("templates")) {
+    subdir = "."
   }
   const fullpath = path.join(base, subdir, filename);
   const dir = path.dirname(fullpath);

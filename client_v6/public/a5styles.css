@@ -19,6 +19,7 @@ body {
 .heading {
   /* Stil für Seitenkopf */
   -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
   font-style: oblique;
   font-size: 18px;
   font-weight: bolder;
