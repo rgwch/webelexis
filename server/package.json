@@ -1,7 +1,7 @@
 {
   "name": "webelexis-server",
   "description": "A service oriented server for elexis",
-  "version": "3.7.8",
+  "version": "3.7.9",
   "homepage": "http://www.webelexis.ch",
   "license": "MIT",
   "repository": "https://github.com/rgwch/webelexis",
@@ -101,6 +101,7 @@
     "eslint": "^8.7.0",
     "jest": "^27.4.7",
     "jshint": "^2.13.3",
+    "puppeteer": "^19.6.2",
     "ts-jest": "^27.1.3",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"

@@ -11,6 +11,11 @@ import compilePug from '../../util/compile-pug'
 
 import { logger } from '../../logger'
 
+/**
+ * store ctx.data.contents in a file in ctx.data.path (relative to docbase)
+ * @param ctx feathers hook context
+ * @returns 
+ */
 export const store = async (ctx) => {
   const storepath = await ensurePath(ctx.app, ctx.data.path)
   const contents = ctx.data.contents
@@ -25,6 +30,12 @@ export const store = async (ctx) => {
   return ctx
 }
 
+/**
+ * ensure that the path to store the file exists. If not, try to create directory including all in path 
+ * @param app 
+ * @param filename - pathname relative to the configured docbase 
+ * @returns the full absolute system path (inclucing docbase) of the file.
+ */
 export const ensurePath = async (app, filename:string): Promise<string> => {
   const base = app.get('docbase') || require('os').homedir()
   let subdir = "documents/"+ (filename ? filename.substring(0, 1).toLocaleLowerCase() : 'nx')
@@ -42,6 +53,11 @@ export const ensurePath = async (app, filename:string): Promise<string> => {
   return fullpath
 }
 
+/**
+ * load the file named in ctx.result.path (relative do docbase)
+ * @param ctx feathers hook context
+ * @returns 
+ */
 export const retrieve = async (ctx) => {
   const meta = ctx.result
   if (meta.path) {
@@ -60,6 +76,10 @@ export const retrieve = async (ctx) => {
   return ctx
 }
 
+/**
+ * Called un system launch: Import templates in docbase/templates  
+ * @param app 
+ */
 export const autoImport = app => {
   const cfg = app.get("mandators")
   cfg.mandator = cfg.default

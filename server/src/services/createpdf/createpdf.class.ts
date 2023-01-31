@@ -1,7 +1,7 @@
-const puppeteer = require('pdf-puppeteer')
+import { createPDF } from './run-puppeteer'
 
 export class Service {
-  constructor(private options = {}) {}
+  constructor(private options = {}) { }
 
   async find(params) {
     return []
@@ -15,15 +15,11 @@ export class Service {
   }
 
   /** Generate a PDF from a HTML */
-  create(data, params) {
+  async create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map((current) => this.create(current, params)))
     }
-    return new Promise((resolve, reject) => {
-      puppeteer(data.html, (pdf) => {
-        resolve(pdf)
-      })
-    })
+    await createPDF(data.html, "./", "A5")
   }
 
   async update(id, data, params) {
