@@ -1,6 +1,6 @@
 FROM node:16-alpine
 LABEL maintainer="weirich@webelexis.ch"
-LABEL version="3.7.5"
+LABEL version="3.7.9"
 EXPOSE 3030
 EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
@@ -34,7 +34,7 @@ ADD --chown=1000:1000 https://search.maven.org/remotecontent?filepath=com/faster
   /home/node/webelexis/server/lib/jackson-databind-${JACKSON_VER}.jar
 
 RUN cd webelexis/server \
-  && mv package-dockered.json package.json \
+  # && mv package-dockered.json package.json \
   && npm install \
   && npm i java \
   && npx tsc \
