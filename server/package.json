@@ -33,7 +33,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@feathersjs/authentication": "^4.5.15",
+    "@feathersjs/authentication": "^4.5.16",
     "@feathersjs/authentication-local": "^4.5.15",
     "@feathersjs/authentication-oauth": "^4.5.15",
     "@feathersjs/configuration": "^4.5.12",
