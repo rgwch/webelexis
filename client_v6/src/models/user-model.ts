@@ -132,9 +132,11 @@ export class UserManager extends ObjectManager {
 
   public async login(username?: string, password?: string): Promise<UserType> {
     const user = await authorize(username, password)
-    currentUser.set(user)
-    const actor = await this.getActiveMandatorFor(user)
-    currentActor.set(actor)
+    if (user) {
+      currentUser.set(user)
+      const actor = await this.getActiveMandatorFor(user)
+      currentActor.set(actor)
+    }
     return user
 
   }

@@ -89,10 +89,14 @@ export const authorize = async (username, password): Promise<any> => {
       })
     } else {
       jwt = await app.authenticate()
+      
     }
     const { user } = await app.get('authentication')
     return user
   } catch (err) {
+    if(err.name==="NotAuthenticated"){
+      return undefined;
+    }
     alert(err)
     return undefined
   }

@@ -13,7 +13,7 @@
     try {
       const user = await um.login(username, password);
       if (user) {
-        navigate("/");
+         navigate("/");
       } else {
         invalid = true;
       }
@@ -28,11 +28,16 @@
     window.removeEventListener("keypress", handleKeydown);
   });
   function handleKeydown(event) {
-    if(event.code=="Enter"){
-      login()
+    if (event.code == "Enter") {
+      login();
     }
-    return true
+    return true;
   }
+  um.login().then((user) => {
+    if (user) {
+      navigate("/");
+    }
+  });
 </script>
 
 <template>
