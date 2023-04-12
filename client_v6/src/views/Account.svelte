@@ -13,7 +13,7 @@
     try {
       const user = await um.login(username, password);
       if (user) {
-         navigate("/");
+        navigate("/");
       } else {
         invalid = true;
       }
@@ -33,11 +33,13 @@
     }
     return true;
   }
-  um.login().then((user) => {
-    if (user) {
-      navigate("/");
-    }
-  });
+  if (!$currentUser) {
+    um.login().then((user) => {
+      if (user) {
+        navigate("/");
+      }
+    });
+  }
 </script>
 
 <template>
