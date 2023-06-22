@@ -4,6 +4,7 @@
   import Billing from "./Billing.svelte";
   import Emr from "./Emr.svelte";
   import Account from "./Account.svelte";
+  import Article from "./Articles.svelte"
   import { currentUser } from "../services/store";
   import { _ } from "svelte-i18n";
   import { userManager } from "../models";
@@ -35,6 +36,9 @@
                     >{$_("menu.billing")}</Link
                   >
                 {/if}
+                <Link class="text-blue-800 w-16 text-center" to="article">
+                  {$_("menu.article")}</Link
+                >
               {/if}
               <span class="flex-1">&nbsp;</span>
               <Link to="account" class="ml-8 right-auto text-blue-800"
@@ -53,6 +57,7 @@
           <Route path="billing" component={Billing} />
           <Route path="emr" component={Emr} />
           <Route path="account" component={Account} />
+          <Route path="article" component={Article} />
         </div>
       </Router>
     </div>
