@@ -1,9 +1,21 @@
+<script lang="ts" context="module">
+  export type scanResult={
+    debugData:any,
+    format:{
+      format: number,
+      formatName:string
+    },
+    text: string
+  }
+</script>
 <script lang="ts">
   import { Html5QrcodeScanner } from "html5-qrcode";
-  import { onMount } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
+  const dispatch=createEventDispatcher();
   function onScanSuccess(decodedText, decodedResult) {
     // handle the scanned code as you like, for example:
     console.log(`Code matched = ${decodedText}`, decodedResult);
+    dispatch("scanned",decodedResult.result)
   }
 
   function onScanFailure(error) {
@@ -12,6 +24,7 @@
     console.warn(`Code scan error = ${error}`);
   }
   let scanner;
+
 
   onMount(() => {
     scanner = new Html5QrcodeScanner(

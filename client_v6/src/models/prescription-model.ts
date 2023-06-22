@@ -45,7 +45,9 @@ export interface RpDef {
  * An Elexis "Artikel"
  */
 export interface ArticleType extends ElexisType {
-  dscr: string
+  dscr: string,
+  gtin: string,   // EAN
+  phar: string    // Pharamcode
 }
 /**
  * An Elexis "Prescription"
@@ -88,8 +90,16 @@ export class PrescriptionManager extends ObjectManager {
   }
 
   public async findArticle(term: string): Promise<Array<ArticleType>> {
-    const found = await this.articleLoader.find({ query: { dscr: {$like: `%${term}%`} } })
+    const found = await this.articleLoader.find({ query: { dscr: { $like: `%${term}%` } } })
     return found.data
+  }
+  public async getByEAN(ean: string): Promise<ArticleType> {
+    const found = await this.articleLoader.find({ query: { gtin: ean } })
+    if (found.total > 0) {
+      return found.data[0]
+    } else {
+      return undefined
+    }
   }
   /**
    * Fetch medication of current patient
