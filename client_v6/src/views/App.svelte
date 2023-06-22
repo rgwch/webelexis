@@ -31,14 +31,14 @@
                 <Link class="text-blue-800 w-16 text-center" to="emr"
                   >{$_("menu.emr")}</Link
                 >
+                <Link class="text-blue-800 w-16 text-center" to="article">
+                  {$_("menu.article")}</Link
+                >
                 {#if showBilling}
                   <Link class="text-blue-800 w-16 text-center" to="billing"
                     >{$_("menu.billing")}</Link
                   >
                 {/if}
-                <Link class="text-blue-800 w-16 text-center" to="article">
-                  {$_("menu.article")}</Link
-                >
               {/if}
               <span class="flex-1">&nbsp;</span>
               <Link to="account" class="ml-8 right-auto text-blue-800"
