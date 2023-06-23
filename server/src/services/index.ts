@@ -40,6 +40,7 @@ import invoice from './invoice/invoice.service'
 import payments from './payments/payments.service'
 import diagnose from './diagnose/diagnose.service'
 import directory from './directory/directory.service'
+import stock_entry from './stock_entry/stock_entry.service'
 
 const generateACLs = (servicename) => {
   const a = []
@@ -96,4 +97,5 @@ export default (app) => {
   app.configure(blob)
   app.configure(findings)
   app.configure(directory)
+  app.configure(stock_entry)
 }
