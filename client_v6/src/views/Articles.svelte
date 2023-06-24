@@ -1,8 +1,10 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import Barcode, { scanResult } from "../components/Barcode.svelte";
+  import StockDisplay from "../components/StockDisplay.svelte";
   import { prescriptionManager } from "../models";
   const title = +"rticle";
+  let scanner = false;
   async function findByEAN(ean: string) {
     const result = await prescriptionManager.getByEAN(ean);
     return result;
@@ -23,6 +25,11 @@
 
 <template>
   <div class="flex">
-    <Barcode on:scanned={scanned} />
+    <div>
+      <StockDisplay />
+    </div>
+    {#if scanner}
+      <div><Barcode on:scanned={scanned} /></div>
+    {/if}
   </div>
 </template>

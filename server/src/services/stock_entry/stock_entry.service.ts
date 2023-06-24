@@ -13,7 +13,7 @@ export default function (app) {
   const paginate = app.get('paginate')
 
   const options = {
-    name: 'kontakt',
+    name: 'stock_entry',
     Model,
     paginate,
   }

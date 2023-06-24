@@ -75,7 +75,7 @@ export interface IService<T> {
 
 export type ServiceType = "admin" | "article" | "auf" | "billable" | "billing" | "bills" | "blob" | "briefe" | "diagnose" | "fall" |
   "findings" | "invoice" | "konsultation" | "kontakt" | "labresults" | "leistungsblock" | "lucinda" | "meta-article" | "nosql" | "patient" |
-  "payments" | "prescriptions" | "rezepte" | "stickers" | "stock_entry" | "termin" | "user" | "utility"
+  "payments" | "prescriptions" | "rezepte" | "stickers" | "stock" | "termin" | "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 
 
@@ -89,12 +89,12 @@ export const authorize = async (username, password): Promise<any> => {
       })
     } else {
       jwt = await app.authenticate()
-      
+
     }
     const { user } = await app.get('authentication')
     return user
   } catch (err) {
-    if(err.name==="NotAuthenticated"){
+    if (err.name === "NotAuthenticated") {
       return undefined;
     }
     alert(err)
