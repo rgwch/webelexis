@@ -137,7 +137,14 @@
     "prescription": "Rezept",
     "prescriptions": "Rezepte",
     "reserve": "Reservemedikation",
-    "rperror": "Konnte kein Rezept erstellen"
+    "rperror": "Konnte kein Rezept erstellen",
+    "stock": "Lager",
+    "max": "Maximum",
+    "min": "Minimum",
+    "current": "Aktuell an Lager",
+    "article": "Artikel",
+    "exfactory": "Einkauf",
+    "retail": "Verkauf"
   },
   "menu": {
     "account": "Konto",

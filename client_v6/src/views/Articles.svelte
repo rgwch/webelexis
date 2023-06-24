@@ -3,6 +3,8 @@
   import Barcode, { scanResult } from "../components/Barcode.svelte";
   import StockDisplay from "../components/StockDisplay.svelte";
   import { prescriptionManager } from "../models";
+  import StockItem from "../components/StockItem.svelte";
+  import type { StockEntryType } from "../models/stock-model";
   const title = +"rticle";
   let scanner = false;
   async function findByEAN(ean: string) {
@@ -21,13 +23,22 @@
       });
     }
   }
+  let current: StockEntryType = undefined;
 </script>
 
 <template>
   <div class="flex">
     <div>
-      <StockDisplay />
+      <StockDisplay
+        on:select={(event) => {
+          current = event.detail;
+        }}
+      />
     </div>
+    <div>
+      <StockItem entity={current} />
+    </div>
+
     {#if scanner}
       <div><Barcode on:scanned={scanned} /></div>
     {/if}

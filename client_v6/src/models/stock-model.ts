@@ -4,10 +4,12 @@
  * License and Terms see LICENSE            *
  ********************************************/
 
+import type { FlexformConfig } from "src/widgets/flexformtypes";
 import { getService } from "../services/io";
 import type { ElexisType } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import type { ArticleType } from "./prescription-model";
+import { _ } from 'svelte-i18n'
 
 export interface StockEntryType extends ElexisType {
   min: number
@@ -18,6 +20,9 @@ export interface StockEntryType extends ElexisType {
   _Article?: ArticleType
   _Title?: string
 }
+
+let trl
+const unregister = _.subscribe((res) => (trl = res))
 
 export class StockManager extends ObjectManager {
   private articleLoader;
@@ -116,4 +121,38 @@ export class StockManager extends ObjectManager {
     return item._Article
   }
 
+  public static getDefinition(): FlexformConfig {
+    return {
+      title: () => '',
+      compact: true,
+      attributes: [
+        {
+          attribute: 'max',
+          label: trl('medication.max'),
+          datatype: 'number',
+          sizehint: 4
+        }, {
+          attribute: 'min',
+          label: trl('medication.min'),
+          datatype: 'number',
+          sizehint: 4
+        }, {
+          attribute: 'current',
+          label: trl('medication.current'),
+          datatype: 'number',
+          sizehint: 4
+        }, {
+          attribute: '_Title',
+          label: trl('medication.article'),
+          datatype: 'string',
+          sizehint: 20
+        }, {
+          attribute: '_Article.pexf',
+          label: trl('medication.exfactory'),
+          datatype: 'string',
+          sizehint: 5
+        }
+      ]
+    }
+  }
 }

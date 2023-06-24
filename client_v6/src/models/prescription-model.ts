@@ -47,7 +47,10 @@ export interface RpDef {
 export interface ArticleType extends ElexisType {
   dscr: string,
   gtin: string,   // EAN
-  phar: string    // Pharamcode
+  phar: string    // Pharmacode
+  pexf: string    // Ex factory price
+  ppub: string    // retail price
+  pkg_size: string
 }
 /**
  * An Elexis "Prescription"
