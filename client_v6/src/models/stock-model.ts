@@ -107,7 +107,7 @@ export class StockManager extends ObjectManager {
   async getArticle(item: StockEntryType): Promise<ArticleType> {
     if (!item._Article) {
       try {
-        item._Article = this.articleLoader.get(item.article_id)
+        item._Article = await this.articleLoader.get(item.article_id)
       } catch (err) {
         console.log(err)
         return null;
