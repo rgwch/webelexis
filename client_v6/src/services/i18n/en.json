@@ -12,6 +12,7 @@
     "login": "Anmelden",
     "logout": "Abmelden",
     "ok": "Ok",
+    "reopen": "öffnen",
     "select": "select...",
     "selectall": "Alle auswählen",
     "selectnone": "Auswahl löschen",
@@ -131,16 +132,25 @@
     "resultsbetween": "Werte zwischen {lower} und {upper} {unit}"
   },
   "medication": {
+    "article": "Artikel",
+    "current": "Aktuell an Lager",
+    "exfactory": "Einkauf",
     "fix": "Fixmedikation",
+    "max": "Maximum",
+    "min": "Minimum",
     "other": "Nicht (mehr) Regelmässig",
+    "packsize": "Packungsgrösse",
     "prescription": "Rezept",
     "prescriptions": "Rezepte",
     "reserve": "Reservemedikation",
-    "rperror": "Konnte kein Rezept erstellen"
+    "retail": "Verkauf",
+    "rperror": "Konnte kein Rezept erstellen",
+    "stock": "Lager"
   },
   "menu": {
     "account": "Konto",
     "agenda": "Agenda",
+    "article": "Artikel",
     "billing": "Abrechnung",
     "emr": "KG"
   },
@@ -156,6 +166,7 @@
   },
   "titles": {
     "auf": "AUF",
+    "auflong": "Arbeitsunfähigkeit",
     "bills": "Bills",
     "cases": "Cases",
     "certificates": "Certificates",
