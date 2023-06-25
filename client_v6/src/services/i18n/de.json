@@ -144,7 +144,8 @@
     "current": "Aktuell an Lager",
     "article": "Artikel",
     "exfactory": "Einkauf",
-    "retail": "Verkauf"
+    "retail": "Verkauf",
+    "packsize": "Packungsgrösse"
   },
   "menu": {
     "account": "Konto",

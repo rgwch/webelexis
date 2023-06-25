@@ -12,7 +12,7 @@ export interface FlexformConfig {
     | "text"
     | "number"
     | "readonly"
-    | { toForm: (x: any) => string; toData: (obj: any, x: string) => any }
+    | { toForm: (obj: any, attr: string) => string; toData: (obj: any, attr: string, value: string) => any }
     | FlexformListRenderer;
     // type of the data. Either "string" or an object containing a function to
     // render the data and a function to store the data.
@@ -47,54 +47,49 @@ export class unlockableValueConverter {
  * convert values from the model to the view and vice versa
  */
 export class FlexFormValueConverter {
-  toView(value, attr) {
-    if (value && attr) {
+  toView(entity, attr): string {
+    if (entity && attr) {
       if (attr.datatype == undefined) {
-        return value;
+        return attr;
       }
       if (typeof attr.datatype == "string") {
         switch (attr.datatype) {
           case "text":
           case "string":
-            return value;
+            return entity[attr.attribute];
           case "number":
-            return value.toString();
+            return entity[attr.attribute].toString();
           case "date":
-            return DateTime.fromISO(value).toLocaleString();
+            return DateTime.fromISO(entity[attr.attribute]).toLocaleString();
         }
       } else {
         const func = attr.datatype.toForm;
         if (func) {
-          return func(value);
+          return func(entity, attr);
         } else {
-          return value;
+          return attr;
         }
       }
     } else {
       return "";
     }
   }
-  fromView(value, attr) {
-    if (value && attr) {
-      if (attr.datatype == undefined) {
-        return value;
-      }
+  fromView(entity, attr, value) {
+    if (entity && attr) {
       if (typeof attr.datatype == "string") {
         switch (attr.datatype) {
-          case "text":
-          case "string":
-            return value;
           case "number":
-            return parseFloat(value);
+            value = parseFloat(value);
+            break;
           case "date":
-            return DateTime.fromFormat(value, "DD");
+            value = DateTime.fromFormat(value, "DD");
+            break;
         }
+        entity[attr.attribute] = value;
       } else {
         const func = attr.datatype.toData;
         if (func) {
-          return func(value);
-        } else {
-          return value;
+          func(entity, attr, value);
         }
       }
     }

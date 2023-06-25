@@ -154,6 +154,21 @@ export class StockManager extends ObjectManager {
             toData: (entity, val) => { entity._Article.pexf = val }
           },
           sizehint: 5
+        }, {
+          attribute: '_Article.ppub',
+          label: trl('medication.retail'),
+          datatype: {
+            toForm: (entity, attr) => entity?._Article?.ppub,
+            toData: (entity, attr, val) => { entity._Article.ppub = val }
+          }
+        }, {
+          attribute: '_Article.pkg_size',
+          label: trl('medication.packsize'),
+          datatype: {
+            toForm: (entity, attr) => entity?._Article?.pkg_size,
+            toData: (entity, attr, val) => { entity._Article.pkg_size = val }
+          }
+
         }
       ]
     }
