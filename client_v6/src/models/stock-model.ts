@@ -149,7 +149,10 @@ export class StockManager extends ObjectManager {
         }, {
           attribute: '_Article.pexf',
           label: trl('medication.exfactory'),
-          datatype: 'string',
+          datatype: {
+            toForm: (entity) => entity?._Article?.pexf,
+            toData: (entity, val) => { entity._Article.pexf = val }
+          },
           sizehint: 5
         }
       ]

@@ -12,7 +12,7 @@ export interface FlexformConfig {
     | "text"
     | "number"
     | "readonly"
-    | { toForm: (x: any) => string; toData: (x: string) => any }
+    | { toForm: (x: any) => string; toData: (obj: any, x: string) => any }
     | FlexformListRenderer;
     // type of the data. Either "string" or an object containing a function to
     // render the data and a function to store the data.
