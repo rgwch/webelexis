@@ -132,26 +132,26 @@
     "resultsbetween": "davor zwischen {lower} und {upper}"
   },
   "medication": {
+    "article": "Artikel",
+    "current": "Aktuell an Lager",
+    "exfactory": "Einkauf",
     "fix": "Fixmedikation",
+    "max": "Maximum",
+    "min": "Minimum",
     "other": "Nicht (mehr) Regelmässig",
     "prescription": "Rezept",
     "prescriptions": "Rezepte",
     "reserve": "Reservemedikation",
+    "retail": "Verkauf",
     "rperror": "Konnte kein Rezept erstellen",
-    "stock": "Lager",
-    "max": "Maximum",
-    "min": "Minimum",
-    "current": "Aktuell an Lager",
-    "article": "Artikel",
-    "exfactory": "Einkauf",
-    "retail": "Verkauf"
+    "stock": "Lager"
   },
   "menu": {
     "account": "Konto",
     "agenda": "Agenda",
+    "article": "Artikel",
     "billing": "Abrechnung",
-    "emr": "KG",
-    "article": "Artikel"
+    "emr": "KG"
   },
   "patient": {
     "detail": "Patient Detail",
