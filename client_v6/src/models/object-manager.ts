@@ -80,7 +80,7 @@ export class ObjectManager {
   /**
    * Fetch all items for a given patient
    * @param id UUID of the patient
-   
+
   public async fetchForPatient(id: UUID): Promise<Array<ElexisType>> {
     const result = await this.dataService.find({ query: { patientid: id } });
     if (result && result.data) {
@@ -111,7 +111,7 @@ export class ObjectManager {
    * @param el
    * @returns the deleted object
    */
-  public async remove(el: ElexisType) {
+  public async remove(el: ElexisType): Promise<ElexisType> {
     return await this.dataService.remove(el.id)
   }
 }

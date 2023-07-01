@@ -17,6 +17,7 @@ export interface StockEntryType extends ElexisType {
   current: number
   fractionUnits: number
   article_id: string
+  article_type: string
   _Article?: ArticleType
   _Title?: string
 }
@@ -79,6 +80,7 @@ export class StockManager extends ObjectManager {
     } else {
       const ret: StockEntryType = {
         article_id: article.id,
+        article_type: "ch.artikelstamm.elexis.common.ArtikelstammItem",
         current: 0,
         max: 1,
         min: 1,

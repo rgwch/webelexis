@@ -145,7 +145,10 @@
     "reserve": "Reservemedikation",
     "retail": "Verkauf",
     "rperror": "Konnte kein Rezept erstellen",
-    "stock": "Lager"
+    "stock": "Lager",
+    "instock": "Einbuchen",
+    "outstock": "Ausbuchen",
+    "remove": "Entfernen"
   },
   "menu": {
     "account": "Konto",
