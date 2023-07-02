@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development vite",
+    "dev": "NODE_ENV=development vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",

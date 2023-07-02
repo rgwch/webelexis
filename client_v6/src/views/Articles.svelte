@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import Barcode, { scanResult } from "../components/Barcode.svelte";
+  import Barcode, { scanResult } from "../components/Barcode2.svelte";
   import StockDisplay from "../components/StockDisplay.svelte";
   import { prescriptionManager } from "../models";
   import StockItem from "../components/StockItem.svelte";
