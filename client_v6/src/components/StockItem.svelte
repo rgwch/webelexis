@@ -8,6 +8,9 @@
   const sm=new StockManager();
   function count(num){
     entity.current+=num
+    sm.save(entity).then(()=>{
+      console.log(entity.current)
+    })
   }
   function del(){
     if(confirm($_("prompts.reallydelete",{values: {item: entity._Title}}))){

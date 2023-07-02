@@ -14,29 +14,32 @@
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   function onScanSuccess(decodedText, decodedResult) {
-    // handle the scanned code as you like, for example:
-    console.log(`Code matched = ${decodedText}`, decodedResult);
-    dispatch("scanned", decodedResult.result);
+    if(decodedResult.result.formatName=="EAN_13"){
+      console.log(`Code matched = ${decodedText}`, decodedResult);
+      const ean=decodedResult.result.text
+      // scanner.clear().then(()=>{
+        dispatch("scanned", ean);
+      //})
+    }
   }
 
   function onScanFailure(error) {
     // handle scan failure, usually better to ignore and keep scanning.
     // for example:
-    console.warn(`Code scan error = ${error}`);
+    // console.warn(`Code scan error = ${error}`);
   }
   let scanner;
 
   onMount(() => {
     scanner = new Html5QrcodeScanner(
       "reader",
-      { fps: 10, qrbox: { width: 250, height: 250 } },
+      { fps: 10, qrbox: { width: 250, height: 100 } },
       /* verbose= */ false
     );
   });
 </script>
 
 <template>
-  <h2>Barcode</h2>
   <p on:click={() => scanner.render(onScanSuccess, onScanFailure)}>Scan!</p>
-  <div id="reader" style="width:600px" />
+  <div id="reader" style="width:300px;height:150px;" />
 </template>
