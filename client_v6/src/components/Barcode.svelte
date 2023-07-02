@@ -14,8 +14,9 @@
   import { onMount, onDestroy, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   let camera;
-  let feedback=false;
-  let ready=true
+  let cameras=[];
+  let feedback: string = undefined;
+  let ready = true;
   let scanner: Html5Qrcode;
   const config = {
     fps: 10,
@@ -27,15 +28,15 @@
   function onScanSuccess(decodedText, decodedResult) {
     // console.log("success:  "+decodedText)
     if (ready && decodedResult.result.format.formatName == "EAN_13") {
-      ready=false;
+      ready = false;
       //console.log(`Code matched = ${decodedText}`, decodedResult);
       const ean = decodedResult.result.text;
       dispatch("scanned", ean);
-      feedback=true;
-      setTimeout(()=>{
-        feedback=false;
-        ready=true
-      },1000)
+      feedback = ean;
+      setTimeout(() => {
+        feedback = undefined;
+        ready = true;
+      }, 1000);
     }
   }
 
@@ -45,6 +46,12 @@
     // console.log(`Code scan error = ${error}`);
   }
 
+  async function createScanner() {
+    if (scanner && scanner.isScanning) {
+      await scanner.stop();
+    }
+    scanner.start(camera, config, onScanSuccess, onScanFailure);
+  }
   onMount(async () => {
     /*
     scanner = new Html5QrcodeScanner(
@@ -54,16 +61,20 @@
     );
     */
     try {
-      const devices = await Html5Qrcode.getCameras();
-      if (devices && devices.length) {
-        camera = devices[0].id;
-        scanner = new Html5Qrcode("reader", false);
-        scanner.start(camera, config, onScanSuccess, onScanFailure);
+      scanner = new Html5Qrcode("reader", false);
+      cameras = await Html5Qrcode.getCameras();
+      if (cameras && cameras.length) {
+        camera = cameras[0].id;
+        await createScanner();
       }
     } catch (err) {
       console.log("Error setting up camera " + err);
     }
   });
+  async function changeCam(cid){
+    camera=cid
+    await createScanner();
+  }
   onDestroy(() => {
     scanner.stop().catch((err) => {
       console.log("Error shutting down camera");
@@ -72,9 +83,14 @@
 </script>
 
 <template>
+  <div>
+    {#each cameras as cam}
+      <p class="cam.id==camera:text-blue-300" on:click={()=>changeCam(cam.id)}>{cam.label}</p>
+    {/each}
+  </div>
   <div id="reader" style="width:300px;height:250px;" />
   <hr />
   {#if feedback}
-  <p style="text-align:center;color:blue;font-size:20px">Ok!</p>
+    <p style="text-align:center;color:blue;font-size:20px">{feedback}</p>
   {/if}
 </template>
