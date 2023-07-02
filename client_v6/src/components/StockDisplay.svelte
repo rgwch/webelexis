@@ -9,7 +9,7 @@
   let dropzone: HTMLElement;
 
   function load() {
-    stockmgr.find({ query: { $limit: 100 } }).then((result) => {
+    stockmgr.find({ query: { $limit: 300 } }).then((result) => {
       Promise.all(result.data.map((i) => stockmgr.getTitle(i))).then(
         (texted) => {
           stockobjects = result.data

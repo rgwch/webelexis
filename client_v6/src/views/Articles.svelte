@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import Barcode, { scanResult } from "../components/Barcode2.svelte";
+  import Barcode, { scanResult } from "../components/Barcode.svelte";
   import StockDisplay from "../components/StockDisplay.svelte";
   import { prescriptionManager } from "../models";
   import StockItem from "../components/StockItem.svelte";
@@ -19,7 +19,7 @@
       findByEAN(result /*"7680555130082"*/).then((article) => {
         if (article) {
           scanner=false
-          console.log(JSON.stringify(article));
+          // console.log(JSON.stringify(article));
           sm.addArticle(article)
         } else {
           console.log("Kein Artikel gefunden mit EAN: " + result);

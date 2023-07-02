@@ -10,36 +10,59 @@
 </script>
 
 <script lang="ts">
-  import { Html5QrcodeScanner } from "html5-qrcode";
-  import { onMount, createEventDispatcher } from "svelte";
+  import { Html5Qrcode } from "html5-qrcode";
+  import { onMount, onDestroy, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
+  let camera;
+  let scanner: Html5Qrcode;
+  const config = {
+    fps: 10,
+    qrbox: {
+      width: 250,
+      height: 250,
+    },
+  };
   function onScanSuccess(decodedText, decodedResult) {
-    if(decodedResult.result.formatName=="EAN_13"){
-      console.log(`Code matched = ${decodedText}`, decodedResult);
-      const ean=decodedResult.result.text
-      // scanner.clear().then(()=>{
-        dispatch("scanned", ean);
-      //})
+    // console.log("success:  "+decodedText)
+    if (decodedResult.result.format.formatName == "EAN_13") {
+      //console.log(`Code matched = ${decodedText}`, decodedResult);
+      const ean = decodedResult.result.text;
+      dispatch("scanned", ean);
     }
   }
 
   function onScanFailure(error) {
     // handle scan failure, usually better to ignore and keep scanning.
     // for example:
-    // console.warn(`Code scan error = ${error}`);
+    // console.log(`Code scan error = ${error}`);
   }
-  let scanner;
 
-  onMount(() => {
+  onMount(async () => {
+    /*
     scanner = new Html5QrcodeScanner(
       "reader",
       { fps: 10, qrbox: { width: 250, height: 100 } },
-      /* verbose= */ false
+      false
     );
+    */
+    try {
+      const devices = await Html5Qrcode.getCameras();
+      if (devices && devices.length) {
+        camera = devices[0].id;
+        scanner = new Html5Qrcode("reader", false);
+        scanner.start(camera, config, onScanSuccess, onScanFailure);
+      }
+    } catch (err) {
+      console.log("Error setting up camera " + err);
+    }
+  });
+  onDestroy(() => {
+    scanner.stop().catch((err) => {
+      console.log("Error shutting down camera");
+    });
   });
 </script>
 
 <template>
-  <p on:click={() => scanner.render(onScanSuccess, onScanFailure)}>Scan!</p>
   <div id="reader" style="width:300px;height:150px;" />
 </template>
