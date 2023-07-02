@@ -14,6 +14,8 @@
   import { onMount, onDestroy, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   let camera;
+  let feedback=false;
+  let ready=true
   let scanner: Html5Qrcode;
   const config = {
     fps: 10,
@@ -24,10 +26,16 @@
   };
   function onScanSuccess(decodedText, decodedResult) {
     // console.log("success:  "+decodedText)
-    if (decodedResult.result.format.formatName == "EAN_13") {
+    if (ready && decodedResult.result.format.formatName == "EAN_13") {
+      ready=false;
       //console.log(`Code matched = ${decodedText}`, decodedResult);
       const ean = decodedResult.result.text;
       dispatch("scanned", ean);
+      feedback=true;
+      setTimeout(()=>{
+        feedback=false;
+        ready=true
+      },1000)
     }
   }
 
@@ -64,5 +72,9 @@
 </script>
 
 <template>
-  <div id="reader" style="width:300px;height:150px;" />
+  <div id="reader" style="width:300px;height:250px;" />
+  <hr />
+  {#if feedback}
+  <p style="text-align:center;color:blue;font-size:20px">Ok!</p>
+  {/if}
 </template>

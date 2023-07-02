@@ -64,6 +64,7 @@ export class StockManager extends ObjectManager {
   async addArticle(article: ArticleType): Promise<StockEntryType> {
     const item = await this.getItem(article);
     item.current = item.current + 1;
+    await this.save(item);
     return item
   }
 

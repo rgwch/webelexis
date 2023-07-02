@@ -18,7 +18,7 @@
     console.log("scanned: "+result)
       findByEAN(result /*"7680555130082"*/).then((article) => {
         if (article) {
-          scanner=false
+          // scanner=false
           // console.log(JSON.stringify(article));
           sm.addArticle(article)
         } else {
