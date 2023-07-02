@@ -30,16 +30,22 @@
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex flex-col md:flex-row">
     <Card>
       <div slot="heading">Alle Artikel</div>
-      <div class="overflow-auto max-h-[80vh] max-w-full" slot="body">
+      <div
+        class="overflow-auto max-h-[40vh] md:max-h-[80vh] max-w-full"
+        slot="body"
+      >
         <ArticleSelector />
       </div>
     </Card>
     <Card>
       <div slot="heading"><b>Lagerartikel</b></div>
-      <div class="overflow-auto max-h-[80vh] max-w-full" slot="body">
+      <div
+        class="overflow-auto max-h-[40vh] md:max-h-[80vh] max-w-full"
+        slot="body"
+      >
         <StockDisplay
           on:select={(event) => {
             current = event.detail;
@@ -47,7 +53,7 @@
         />
       </div>
     </Card>
-    <div>
+    <div class="overflow-auto max-h-[40vh] md:max-h-[80vh] max-w-full">
       <button
         class="mt-4 roundbutton"
         on:click={() => {

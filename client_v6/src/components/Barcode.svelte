@@ -14,7 +14,7 @@
   import { onMount, onDestroy, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   let camera;
-  let cameras=[];
+  let cameras = [];
   let feedback: string = undefined;
   let ready = true;
   let scanner: Html5Qrcode;
@@ -71,22 +71,33 @@
       console.log("Error setting up camera " + err);
     }
   });
-  async function changeCam(cid){
-    camera=cid
+  async function changeCam(cid) {
+    camera = cid;
     await createScanner();
   }
   onDestroy(() => {
-    scanner.stop().catch((err) => {
-      console.log("Error shutting down camera");
-    });
+    if (scanner && scanner.isScanning) {
+      scanner.stop().catch((err) => {
+        console.log("Error shutting down camera " + err);
+      });
+    }
   });
 </script>
 
 <template>
   <div>
-    {#each cameras as cam}
-      <p class="cam.id==camera:text-blue-300" on:click={()=>changeCam(cam.id)}>{cam.label}</p>
-    {/each}
+    {#if cameras && cameras.length > 0}
+      {#each cameras as cam}
+        <p
+          class="cam.id==camera:text-blue-300"
+          on:click={() => changeCam(cam.id)}
+        >
+          {cam.label}
+        </p>
+      {/each}
+    {:else}
+      <p>Keine Kamera gefunden</p>
+    {/if}
   </div>
   <div id="reader" style="width:300px;height:250px;" />
   <hr />
