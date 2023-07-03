@@ -62,7 +62,7 @@
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex flex-col md:flex-row">
     <div>
       <DatePicker
         on:select={(event) => {
