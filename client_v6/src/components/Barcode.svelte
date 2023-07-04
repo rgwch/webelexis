@@ -21,8 +21,8 @@
   const config = {
     fps: 10,
     qrbox: {
-      width: 250,
-      height: 250,
+      width: 320,
+      height: 240,
     },
   };
   function onScanSuccess(decodedText, decodedResult) {
@@ -99,7 +99,7 @@
       <p>Keine Kamera gefunden</p>
     {/if}
   </div>
-  <div id="reader" style="width:300px;height:250px;" />
+  <div id="reader" style="width:320px;height:240px;" />
   <hr />
   {#if feedback}
     <p style="text-align:center;color:blue;font-size:20px">{feedback}</p>
