@@ -1,7 +1,7 @@
 {
   "name": "webelexis-server",
   "description": "A service oriented server for elexis",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "homepage": "http://www.webelexis.ch",
   "license": "MIT",
   "repository": "https://github.com/rgwch/webelexis",
@@ -27,6 +27,7 @@
   "scripts": {
     "start": "tsc && NODE_ENV=debug node dist/",
     "dev": "tsc && NODE_ENV=debug node dist/",
+    "ssl": "tsc && NODE_ENV=debug NODE_MODE=SSL node dist",
     "prod": "tsc && NODE_ENV=production node dist/",
     "dockered": "tsc && NODE_ENV=dockered node dist/",
     "test": "jest",
