@@ -34,7 +34,7 @@
     <Card>
       <div slot="heading">Alle Artikel</div>
       <div
-        class="overflow-auto max-h-[40vh] md:max-h-[80vh] max-w-full"
+        class="overflow-auto max-h-[20vh] md:max-h-[80vh] max-w-full"
         slot="body"
       >
         <ArticleSelector />
@@ -43,7 +43,7 @@
     <Card>
       <div slot="heading"><b>Lagerartikel</b></div>
       <div
-        class="overflow-auto max-h-[40vh] md:max-h-[80vh] max-w-full"
+        class="overflow-auto max-h-[20vh] md:max-h-[80vh] max-w-full"
         slot="body"
       >
         <StockDisplay
@@ -53,7 +53,7 @@
         />
       </div>
     </Card>
-    <div class="overflow-auto max-h-[40vh] md:max-h-[80vh] max-w-full">
+    <div class="overflow-auto max-h-[60vh] md:max-h-[80vh] max-w-full">
       <button
         class="mt-4 roundbutton"
         on:click={() => {

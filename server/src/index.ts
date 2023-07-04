@@ -25,11 +25,11 @@ if (ssl) {
       cert: fs.readFileSync("certificate.pem")
     },
     app
-  ).listen(3443)
+  ).listen(port)
   process.on('unhandledRejection', (reason, p) =>
     logger.error('Unhandled Rejection at: Promise ', p, reason)
   );
-  app.setup(ssl)
+  app.setup(server)
 } else {
   server = app.listen(port);
 }
