@@ -4,7 +4,8 @@
   import Billing from "./Billing.svelte";
   import Emr from "./Emr.svelte";
   import Account from "./Account.svelte";
-  import Article from "./Articles.svelte"
+  import Article from "./Articles.svelte";
+  import Video from "./Video.svelte";
   import { currentUser } from "../services/store";
   import { _ } from "svelte-i18n";
   import { userManager } from "../models";
@@ -34,6 +35,9 @@
                 <Link class="text-blue-800 w-16 text-center" to="article">
                   {$_("menu.article")}</Link
                 >
+                <Link class="text-blue-800 w-16 text-center" to="photo">
+                  Photo
+                </Link>
                 {#if showBilling}
                   <Link class="text-blue-800 w-16 text-center" to="billing"
                     >{$_("menu.billing")}</Link
@@ -58,6 +62,7 @@
           <Route path="emr" component={Emr} />
           <Route path="account" component={Account} />
           <Route path="article" component={Article} />
+          <Route path="photo" component={Video} />
         </div>
       </Router>
     </div>
