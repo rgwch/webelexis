@@ -1,16 +1,18 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
-  let hasCameraApi = false;
-  let hasAccess = false;
+  import Dropdown from "../widgets/Dropdown.svelte";
+  let cameras = [];
+  let camera = undefined;
+  let mediaStream;
   let elemVideo;
   let elemCanvas;
 
-  onMount(() => {
+  onMount(async () => {
     if (
       "mediaDevices" in navigator &&
       "getUserMedia" in navigator.mediaDevices
     ) {
-      hasCameraApi = true;
+      /*
       navigator.mediaDevices
         .getUserMedia({
           video: {
@@ -20,7 +22,9 @@
         .then((mediaStream) => {
           hasAccess = true;
           elemVideo.srcObject = mediaStream;
-        });
+        });*/
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      cameras = devices.filter((device) => device.kind === "videoinput");
     }
   });
   function photo() {
@@ -32,17 +36,41 @@
     const image_data = elemCanvas.toDataURL("image/jpeg");
     console.log(image_data);
   }
+  async function changed(event) {
+    /*
+    if (mediaStream) {
+      const tracks=mediaStream.getTracks()
+      tracks.array.forEach(track => {
+        track.stop();
+      });
+      mediaStream=null
+
+    }
+    */
+    elemVideo.srcObject = null;
+    const secam = event.detail;
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "environment",
+        deviceId: {
+          exact: event.detail.deviceId,
+        },
+      },
+    });
+    elemVideo.srcObject = mediaStream;
+    elemVideo.play();
+  }
 </script>
 
 <template>
-  {#if hasAccess}
-    <p>access granted</p>
-  {:else}
-    <p>No camera found</p>
-  {/if}
-  <video bind:this={elemVideo} autoplay width="640"
-    ><track kind="captions" /></video
-  >
+  <Dropdown
+    elements={cameras}
+    selected={camera}
+    label="Kamera wählen"
+    render={(def) => def?.label || "keine Kamera"}
+    on:changed={changed}
+  />
+  <video bind:this={elemVideo} width="640"><track kind="captions" /></video>
   <canvas bind:this={elemCanvas} width="640" />
   <button on:click={photo}>Click</button>
 </template>
