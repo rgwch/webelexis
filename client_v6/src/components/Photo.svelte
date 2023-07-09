@@ -38,7 +38,8 @@
       .drawImage(elemVideo, 0, 0, elemCanvas.width, elemCanvas.height);
     imageData = elemCanvas.toDataURL("image/jpeg");
     fileName =
-      DateTime.fromJSDate(new Date()).toFormat("yyyy-LL-dd") + "_photo.jpg";
+      DateTime.fromJSDate(new Date()).toFormat("yyyy-LL-dd_HHmm") +
+      "_photo.jpg";
     fileDialog = true;
   }
   async function save() {

@@ -39,8 +39,11 @@ services:
     restart: always
 
   solr:
-    image: solr:9.0.0
+    image: solr:8.11.2
     container_name: wlx_solr
+    environment:
+      - SOLR_OPTS=-Xms512m
+      - name=value
     volumes:
       - ${SOLR_DATA:-solrdata}:/var/solr
     ports:
