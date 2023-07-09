@@ -14,9 +14,11 @@ export interface DocumentType extends ElexisType {
   lastname: string
   firstname: string
   birthdate: DATE
-  loc: string   // location within lucinda's document base
-  Lucinda_ImportedAt: string
-  type?: "blob" | "result" | "letter"
+  loc?: string   // location within lucinda's document base
+  Lucinda_ImportedAt?: string
+  type?: "blob" | "result" | "letter",
+  payload?: any
+  filename?: string
 }
 
 export class DocumentManager extends ObjectManager {
@@ -29,6 +31,23 @@ export class DocumentManager extends ObjectManager {
     const concern = pm.createConcern(pat)
     const result: QueryResult = await this.dataService.find({ query: { concern } })
     return result.data
+  }
+
+  public async createForPatient(pat: PatientType, title: string, data: any, contentType: string = "Application/octet-stream"): Promise<ElexisType> {
+    const doc: DocumentType = {
+      "Content-Type": [contentType],
+      "Last-Modified": new Date().toISOString(),
+      payload: data,
+      filename: title,
+      title,
+      date: new Date().toISOString(),
+      concern: pm.createConcern(pat),
+      lastname: pat.bezeichnung1,
+      firstname: pat.bezeichnung2,
+      birthdate: pat.geburtsdatum
+    }
+    const result = await this.save(doc)
+    return result;
   }
 
 }

@@ -31,7 +31,7 @@ export class ObjectManager {
    * bevore transmitting the object to the server.
    * @param el
    */
-  public async save(el: ElexisType) {
+  public async save(el: ElexisType): Promise<ElexisType> {
     for (const attr in el) {
       if (el.hasOwnProperty(attr)) {
         if (attr.startsWith("_")) {

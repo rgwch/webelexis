@@ -39,7 +39,7 @@ services:
     restart: always
 
   solr:
-    image: solr:8.11.2
+    image: solr:9.0.0
     container_name: wlx_solr
     volumes:
       - ${SOLR_DATA:-solrdata}:/var/solr
@@ -65,7 +65,7 @@ services:
     depends_on:
       - solr
       - tika
-    image: rgwch/lucinda-server:3.0.12
+    image: rgwch/lucinda-server:3.2.1
     container_name: wlx_lucinda
     environment:
       - LUCINDA_SIMPLEWEB=${LUCINDA_SIMPLEWEB:-enabled}

@@ -71,18 +71,20 @@ export class Service {
    *  any_attribute: "any value" - arbitrary user defined metadata
    * }
    * @param {*} params
-   * @returns: a result with statusCode (201 for ok), a status with "ok" and the _id.
+   * @returns: a result with statusCode (201/202 for ok), a status with "ok" and the _id.
    */
   async create(data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current, params)));
     }
 
-    const endpoint = data.metadata && data.metadata.filepath ? "addfile" : "addindex"
-
+    const endpoint = data && data.filename ? "addfile" : "addindex"
+    const payload = data.payload
+    delete data.payload
+    data.filepath = data.concern + "/" + data.filename
     const options = {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ metadata: data, payload }),
       headers: { "Content-Type": "application/json" }
     }
     const result = await fetch(this.options["url"] + endpoint, options)
