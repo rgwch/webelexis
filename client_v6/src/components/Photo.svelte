@@ -37,23 +37,22 @@
     console.log(image_data);
   }
   async function changed(event) {
-    /*
     if (mediaStream) {
-      const tracks=mediaStream.getTracks()
-      tracks.array.forEach(track => {
-        track.stop();
-      });
-      mediaStream=null
-
+      const tracks = mediaStream.getTracks();
+      for (let i = 0; i < tracks.length; i++) {
+        if (tracks[i].readyState === "live") {
+          tracks[i].stop();
+        }
+      }
+      mediaStream = null;
     }
-    */
+
     elemVideo.srcObject = null;
     const secam = event.detail;
     mediaStream = await navigator.mediaDevices.getUserMedia({
       video: {
-        facingMode: "environment",
         deviceId: {
-          exact: event.detail.deviceId,
+          exact: secam.deviceId,
         },
       },
     });
