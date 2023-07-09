@@ -6,7 +6,7 @@
    ********************************************/
 
   import type { FindingType, FindingElement } from "../models/findings-model";
-  import Popup from "../widgets/Popup.svelte";
+  import Popup, {type MenuDef} from "../widgets/Popup.svelte";
   import Badge from "../widgets/Badge.svelte";
   import Collapse from "../widgets/Collapse.svelte";
   import Modal from "../widgets/Modal.svelte";
@@ -175,13 +175,20 @@
     }
   };
 
-  const menuItems = [
-    $_("actions.add"),
-    $_("actions.selectall"),
-    $_("actions.selectnone"),
-    $_("actions.graph"),
+  const menuItems:Array<MenuDef> = [
+    {
+    name: $_("actions.add"),
+    },{
+    name: $_("actions.selectall")
+    },{
+    name: $_("actions.selectnone")
+    },{
+    name: $_("actions.graph")
+    },
     // $_("actions.export"),
-    $_("actions.delete"),
+    {
+    name: $_("actions.delete")
+    },
   ];
   function menuselect(event) {
     switch (event.detail) {
@@ -218,7 +225,7 @@
       <Badge text={finding.measurements.length.toString()} />
       {#if isOpen}
         <span>
-          <Popup items={menuItems} on:selected={menuselect} />
+          <Popup items={menuItems} on:menuselect={menuselect} />
         </span>
       {/if}
     </div>

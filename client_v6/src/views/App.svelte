@@ -9,6 +9,34 @@
   import { currentUser } from "../services/store";
   import { _ } from "svelte-i18n";
   import { userManager } from "../models";
+  import Menu from "../widgets/Menu.svelte";
+  import type { MenuDef } from "../widgets/Popup.svelte";
+  const menuDef: Array<MenuDef> = [
+    {
+      name: "agenda",
+      label: $_("menu.agenda"),
+    },
+    {
+      name: "emr",
+      label: $_("menu.emr"),
+    },
+    {
+      name: "article",
+      label: $_("menu.article"),
+    },
+    {
+      name: "photo",
+      label: "Photo",
+    },
+    {
+      name: "billing",
+      label: $_("menu.billing"),
+    },
+    {
+      name: "account",
+      label: "Konto",
+    },
+  ];
   let showBilling = false;
   $: label = $currentUser?.id || $_("actions.login");
   $: {
@@ -16,45 +44,22 @@
       showBilling = r;
     });
   }
+  function selected(event) {
+    navigate(event.detail);
+  }
 </script>
 
 <template>
   <main>
     <div class="w-full md(container mx-auto px-2)">
       <Router>
-        <nav class="bg-gray-200">
-          <div class="px-2 sm:px-6 lg:px-8">
-            <div class="relative flex h-8 flex-nowrap">
-              {#if $currentUser}
-                <Link class="text-blue-800 w-16 text-center" to="agenda"
-                  >{$_("menu.agenda")}</Link
-                >
-                <Link class="text-blue-800 w-16 text-center" to="emr"
-                  >{$_("menu.emr")}</Link
-                >
-                <Link class="text-blue-800 w-16 text-center" to="article">
-                  {$_("menu.article")}</Link
-                >
-                <Link class="text-blue-800 w-16 text-center" to="photo">
-                  Photo
-                </Link>
-                {#if showBilling}
-                  <Link class="text-blue-800 w-16 text-center" to="billing"
-                    >{$_("menu.billing")}</Link
-                  >
-                {/if}
-              {/if}
-              <span class="flex-1">&nbsp;</span>
-              <Link to="account" class="right-auto text-blue-800">{label}</Link>
-            </div>
-          </div>
-        </nav>
-        <div>
-          {#if $currentUser}
-            <Route path="/" component={Agenda} />
-          {:else}
-            <Route path="/" component={Account} />
-          {/if}
+        <Menu menudef={menuDef} on:menuselect={selected} />
+        {#if $currentUser}
+          <Route path="/" component={Agenda} />
+        {:else}
+          <Route path="/" component={Account} />
+        {/if}
+        <div class="mt-10">
           <Route path="agenda" component={Agenda} />
           <Route path="billing" component={Billing} />
           <Route path="emr" component={Emr} />
