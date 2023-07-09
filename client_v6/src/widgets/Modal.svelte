@@ -24,7 +24,7 @@
   <div
     class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-600 bg-opacity-80 z-50"
   >
-    <div class="bg-white rounded-lg w-1/2">
+    <div class="bg-white rounded-lg w-full md:w-1/2">
       <div class="flex flex-col p-4">
         <div class="flex items-center w-full">
           <div class="text-gray-800 font-medium text-lg capitalize">

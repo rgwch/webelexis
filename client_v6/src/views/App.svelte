@@ -20,7 +20,7 @@
 
 <template>
   <main>
-    <div class="md:container md:mx-auto px-2">
+    <div class="w-full md(container mx-auto px-2)">
       <Router>
         <nav class="bg-gray-200">
           <div class="px-2 sm:px-6 lg:px-8">
@@ -45,9 +45,7 @@
                 {/if}
               {/if}
               <span class="flex-1">&nbsp;</span>
-              <Link to="account" class="ml-8 right-auto text-blue-800"
-                >{label}</Link
-              >
+              <Link to="account" class="right-auto text-blue-800">{label}</Link>
             </div>
           </div>
         </nav>

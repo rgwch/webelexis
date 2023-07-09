@@ -18,8 +18,8 @@
   }
 
   let mediaStream;
-  let elemVideo;
-  let elemCanvas;
+  let elemVideo: HTMLVideoElement;
+  let elemCanvas: HTMLCanvasElement;
   let imageData;
   let fileName;
 
@@ -51,16 +51,17 @@
   function photo() {
     console.log(elemVideo.height, elemVideo.videoHeight);
     elemCanvas.height = elemVideo.videoHeight;
-    elemCanvas.width = elemVideo.viedoWidth;
-    elemCanvas
-      .getContext("2d")
-      .drawImage(elemVideo, 0, 0, elemCanvas.width, elemCanvas.height);
+    elemCanvas.width = elemVideo.videoWidth;
+    const context = elemCanvas.getContext("2d");
+    context.drawImage(elemVideo, 0, 0, elemCanvas.width, elemCanvas.height);
     imageData = elemCanvas.toDataURL("image/jpeg");
     fileName =
       DateTime.fromJSDate(new Date()).toFormat("yyyy-LL-dd_HHmm") +
       "_photo.jpg";
     fileDialog = true;
     localStorage.setItem(defaultDevice, JSON.stringify(camera));
+    context.fillStyle = "#FFF";
+    context.fillRect(0, 0, elemCanvas.width, elemCanvas.height);
   }
   async function save() {
     await documentManager.createForPatient(
@@ -89,22 +90,26 @@
     elemVideo.srcObject = null;
     if (event) {
       const secam = event.detail;
-      mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          deviceId: {
-            exact: secam.deviceId,
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            deviceId: {
+              exact: secam.deviceId,
+            },
           },
-        },
-      });
-      camera = secam;
-      elemVideo.srcObject = mediaStream;
-      elemVideo.play();
+        });
+        camera = secam;
+        elemVideo.srcObject = mediaStream;
+        elemVideo.play();
+      } catch (err) {
+        alert(err);
+      }
     }
   }
 </script>
 
 <template>
-  <div class="container">
+  <div>
     {#if fileDialog}
       <Modal
         title="Dateiname"
@@ -128,7 +133,7 @@
       on:changed={changed}
     />
     <button class="roundbutton" on:click={photo}>Foto speichern</button>
-    <video bind:this={elemVideo} width="640"><track kind="captions" /></video>
+    <video bind:this={elemVideo} width="320"><track kind="captions" /></video>
     <canvas bind:this={elemCanvas} width="640" />
   </div>
 </template>
