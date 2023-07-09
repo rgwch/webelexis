@@ -81,7 +81,8 @@ export class Service {
     const endpoint = data && data.filename ? "addfile" : "addindex"
     const payload = data.payload
     delete data.payload
-    data.filepath = data.concern + "/" + data.filename
+    const subdir = (data.concern as string).substring(0, 1).toLocaleLowerCase()
+    data.filepath = subdir + "/" + data.concern + "/" + data.filename
     const options = {
       method: "POST",
       body: JSON.stringify({ metadata: data, payload }),
