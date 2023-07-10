@@ -22,12 +22,20 @@ export interface StickerType extends ElexisType {
 export class StickerManager {
   private stickerService
   private allStickers = {}
-  public stickers_loaded=false;
+  public stickers_loaded = false;
+  private static theInstance: StickerManager
 
-  constructor() {
+  public static getInstance(): StickerManager {
+    if (!StickerManager.theInstance) {
+      StickerManager.theInstance = new StickerManager()
+    }
+    return StickerManager.theInstance
+  }
+
+  private constructor() {
     this.stickerService = getService("stickers")
-    this.loadStickers().then(()=>{
-      this.stickers_loaded=true
+    this.loadStickers().then(() => {
+      this.stickers_loaded = true
     })
   }
 

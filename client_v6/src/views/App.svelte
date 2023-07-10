@@ -70,7 +70,7 @@
       <Router>
         <Menu {menuDef} on:menuselect={selected} />
         {#if $currentUser}
-          <div class="mt-10 p-2">
+          <div class="mt-10 m-2">
             <Route path="/" component={Agenda} />
             <Route path="agenda" component={Agenda} />
             <Route path="billing" component={Billing} />

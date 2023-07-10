@@ -3,22 +3,28 @@
   We load the subcomponents lazily with {await} to split up the app in smaller chunks
 -->
 <script lang="ts">
+  import {onMount} from 'svelte'
   import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
   import { navigate } from "svelte-navigator";
   import { _ } from "svelte-i18n";
   import { currentPatient } from "../services/store";
   import { Patient } from "../models/patient-model";
+  import {StickerManager} from '../models/stickers-model'
   import PatientSelector from "../components/PatientSelector.svelte";
   import PatientDetail from "../components/PatientDetail.svelte";
 
   import AUF from "../components/AUF.svelte";
-
+  const stm=new StickerManager()
   let selector = false;
 
   function selected() {
     selector = false;
     navigate("emr");
   }
+  onMount(async ()=>{
+    const stickers=await stm.loadStickers()
+    console.log(JSON.stringify(stickers))
+  })
 </script>
 
 <template>
