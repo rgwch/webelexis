@@ -2,7 +2,6 @@
   import EncounterDetail from "./EncounterDetail.svelte";
   import { EncounterManager } from "../models/encounter-model";
   import type { EncounterType } from "../models/encounter-model";
-  import type { PatientType } from "../models/patient-model";
   import InfiniteScroll from "svelte-infinite-scroll";
   import { currentPatient, currentCase } from "../services/store";
   import { onMount } from "svelte";

@@ -1,23 +1,21 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018-2022 by G. Weirich    *
+ * Copyright (c) 2018-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
-import type { PatientType } from "./patient-model";
 import type { KontaktType } from "./kontakt-model";
 import type { ElexisType, UUID } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import type { UserType } from "./user-model";
 import { KontaktManager } from "./kontakt-model";
-import { PatientManager } from "./patient-model";
+import { patientManager, type PatientType } from "./patient-model";
 import { currentUser, currentActor } from "../services/store";
 import { _ } from 'svelte-i18n'
 import defs from '../services/util'
 import { DateTime } from "luxon";
 
 const kontaktManager = new KontaktManager()
-const patientManager = new PatientManager()
 
 /**
  * An Elexis "Brief" (which is an outgoing document)

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { PatientType } from "../models/patient-model";
   import type { CaseType } from "../models/case-model";
   import { CaseManager } from "../models/case-model";
   import CaseActions from "./CaseActions.svelte";

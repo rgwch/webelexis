@@ -5,8 +5,8 @@
   import { _ } from "svelte-i18n";
   import Slider from "@bulatdashiev/svelte-slider";
   import PatientSelector from "./PatientSelector.svelte";
-  import { currentPatient } from "../services/store";
-  import { Patient } from "../models/patient-model";
+  import { currentPatient, agendaResources } from "../services/store";
+  import { patientManager } from "../models/patient-model";
   import { Statics } from "../models/termine-model";
   import { terminManager } from "../models";
   import { createEventDispatcher } from "svelte";
@@ -73,7 +73,7 @@
         >
           <span
             >{$_("patient.patient")}
-            {@html Patient.getLabel($currentPatient)}</span
+            {@html patientManager.getLabel($currentPatient)}</span
           >
         </span>
         <span> -- {$_("appointment.freetext")}: </span>
@@ -94,7 +94,7 @@
             />
             <Dropdown
               bind:selected={termin.obj.bereich}
-              elements={Statics.agendaResources}
+              elements={$agendaResources}
             />
           </div>
           <textarea class="flex-1" bind:value={reason} />

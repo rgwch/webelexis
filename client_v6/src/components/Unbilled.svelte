@@ -10,7 +10,7 @@ import { CaseManager} from "../models/case-model";
 import type { CaseType } from "../models/case-model";
 import { EncounterManager } from "../models/encounter-model";
 import type { EncounterType } from "../models/encounter-model";
-import { Patient, PatientManager } from "../models/patient-model";
+import { patientManager as pm, type PatientType} from "../models/patient-model";
 import PatientDetail from "./PatientDetail.svelte";
 import FallDetail from "./FallDetail.svelte";
 import EncounterDetail from "./EncounterDetail.svelte";
@@ -20,7 +20,6 @@ import { _ } from "svelte-i18n";
 
 const cm = new CaseManager();
 const em = new EncounterManager();
-const pm = new PatientManager();
 let patients: Array<Tree<konsdef>> = [];
 
 let tSelected: Array<Tree<konsdef>> = [];
@@ -82,7 +81,7 @@ async function detailDisplay(node: Tree<konsdef>) {
       throw new Error("bad konsdef");
   }
 }
-async function getPatient(t: Tree<konsdef>): Promise<Patient> {
+async function getPatient(t: Tree<konsdef>): Promise<PatientType> {
   if (!t.payload.Patient) {
     t.payload.Patient = await pm.fetch(t.payload.patientid);
   }

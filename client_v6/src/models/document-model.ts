@@ -1,10 +1,8 @@
 import { ObjectManager } from './object-manager';
 import type { ElexisType, DATE } from './elexistype';
 import { currentUser } from '../services/store'
-import type { PatientType } from './patient-model';
-import { PatientManager } from './patient-model';
+import { patientManager as pm, type PatientType } from './patient-model';
 import type { QueryResult } from './query-result';
-const pm = new PatientManager()
 export interface DocumentType extends ElexisType {
   "Content-Type": Array<string>
   "Last-Modified": string // ISO-Date

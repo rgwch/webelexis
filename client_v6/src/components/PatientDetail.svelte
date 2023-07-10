@@ -1,18 +1,16 @@
 <script lang="ts">
-  import { Patient, PatientManager } from "../models/patient-model";
+  import { patientManager, type PatientType } from "../models/patient-model";
   import type { FlexformConfig } from "../widgets/flexformtypes";
-  import type { PatientType } from "../models/patient-model";
   import { _ } from "svelte-i18n";
   import Form from "../widgets/Flexform.svelte";
   import KeyValueDisplay from "../widgets/KeyValueDisplay.svelte";
   export let entity: PatientType;
   export let showTitle = true;
-  const form: FlexformConfig = Patient.getDefinition();
-  const pm = new PatientManager();
+  const form: FlexformConfig = patientManager.getDefinition();
   form.compact = false;
   form.title = showTitle ? $_("patient.detail") : "";
   async function save() {
-    await pm.save(entity);
+    await patientManager.save(entity);
   }
 </script>
 

@@ -8,7 +8,7 @@
 // we need this to inialialize svelte-i18n
 import './services/i18n/i18n'
 import App from './views/App.svelte'
-import { type PatientType, PatientManager } from './models/patient-model';
+import { type PatientType, patientManager as pm} from './models/patient-model';
 import def from './services/properties'
 import { currentPatient } from './services/store';
 import { userManager as um } from './models'
@@ -23,7 +23,6 @@ fetch(def.server + "/metadata").then(async result => {
     if (auto && auto.username) {
       const user = await um.login(auto.username, auto.password)
       if (def.production == "false") {
-        const pm = new PatientManager()
         const pats = await pm.find({ query: { bezeichnung1: "Testperson" } })
         if (pats.total > 0) {
           currentPatient.set(pats.data[0] as PatientType)

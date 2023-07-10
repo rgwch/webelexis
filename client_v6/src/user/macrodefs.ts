@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2018-2022 by G. Weirich    *
+ * Copyright (c) 2018-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 

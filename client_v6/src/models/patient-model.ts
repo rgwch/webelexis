@@ -6,12 +6,13 @@
 
 //import { FlexformConfig, FlexformListRenderer } from "../components/flexform";
 import type { KontaktType } from './kontakt-model'
-import { StickerManager } from './stickers-model'
+import { StickerManager, type StickerType } from './stickers-model'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { ObjectManager } from './object-manager'
 import type { FlexformConfig } from '../widgets/flexformtypes'
 import defs from '../services/util'
+const sm: StickerManager = new StickerManager()
 
 
 /**
@@ -25,6 +26,7 @@ let trl
 const unregister = _.subscribe((res) => (trl = res))
 
 export class PatientManager extends ObjectManager {
+
   constructor() {
     super("patient")
   }
@@ -49,12 +51,7 @@ export class PatientManager extends ObjectManager {
       : 'x'
     return ret
   }
-}
-
-export class Patient {
-  public static sm: StickerManager = new StickerManager()
-
-  public static getLabel(obj: PatientType): string {
+  public getLabel(obj: PatientType): string {
     if (!obj) {
       return trl('patient.noneselected')
     }
@@ -74,8 +71,12 @@ export class Patient {
     if (obj.patientnr) {
       ret += ' [' + obj.patientnr + ']'
     }
-    const sticker = Patient.sm.getFirstSticker(obj.stickers)
+    return ret;
+  }
+  public async getStickersImage(obj: PatientType): Promise<string> {
+    const sticker: StickerType = await sm.getFirstSticker(obj.stickers)
     let style = 'color:black;'
+    let ret = "";
     if (sticker) {
       style = `color:#${sticker.foreground || 'black'};background-color:#${sticker.background || 'white'
         };`
@@ -85,7 +86,7 @@ export class Patient {
 
     if (obj.stickers) {
       for (const name of obj.stickers) {
-        const imgdata = Patient.sm.getImage(name)
+        const imgdata = await sm.getImage(name)
         if (imgdata) {
           images += `<img src="data:image/png;base64,${imgdata}"
           alt="${name}" style="height:1em;width:1em;padding-left:2px;"
@@ -97,13 +98,12 @@ export class Patient {
       final += images
     }
 
-    return "<div>"+final+"</div>"
+    return final
   }
-
   /**
-   * create a field definition for detail display in FlexForm or in a new item dialog.
-   */
-  public static getDefinition(): FlexformConfig {
+  * create a field definition for detail display in FlexForm or in a new item dialog.
+  */
+  public getDefinition(): FlexformConfig {
     return {
       title: () => '', // ()=>Patient.getTitle(),
       compact: true,
@@ -112,7 +112,7 @@ export class Patient {
           attribute: 'bezeichnung1',
           label: trl('contact.lastname'),
           datatype: 'string',
-          validation: Patient.char80,
+          validation: this.char80,
           validationMessage: trl('validation.onlyText'),
           sizehint: 4,
         },
@@ -120,7 +120,7 @@ export class Patient {
           attribute: 'bezeichnung2',
           label: trl('contact.firstname'),
           datatype: 'string',
-          validation: Patient.char80,
+          validation: this.char80,
           validationMessage: trl('validation.onlyText'),
           sizehint: 4,
         },
@@ -128,7 +128,7 @@ export class Patient {
           attribute: 'geburtsdatum',
           label: trl('contact.birthdate'),
           datatype: "date",
-          validation: Patient.checkdate,
+          validation: this.checkdate,
           validationMessage: trl('validation.invalidDate'),
           sizehint: 2,
         },
@@ -200,16 +200,13 @@ export class Patient {
       ],
     }
   }
-
-  public static loadContactOptions(obj: PatientType) { }
-
   /**
-   * Verify that val is a string of 2 to 80 chars length, containing
-   * only "normal" characters.
-   * @param val
-   * @param obj
-   */
-  public static char80(val, obj) {
+    * Verify that val is a string of 2 to 80 chars length, containing
+    * only "normal" characters.
+    * @param val
+    * @param obj
+    */
+  public char80(val, obj) {
     if (typeof val == 'string') {
       if (/^[^;\.+"\*%=§<>|,]{2,80}$/i.test(val)) {
         return true
@@ -223,7 +220,7 @@ export class Patient {
    * @param val
    * @param obj
    */
-  public static checkdate(val, obj) {
+  public checkdate(val, obj) {
     const m = DateTime.fromISO(val)
     if (m.isValid) {
       if (m < DateTime.local()) {
@@ -236,7 +233,7 @@ export class Patient {
    * convert a database-style date to a local-style date
    * @param val
    */
-  public static dateModelToView(val) {
+  public dateModelToView(val) {
     const m = DateTime.fromFormat(val, 'YYYYMMDD')
     const format = trl('formatting.date')
     const ret = m.toFormat(format)
@@ -247,9 +244,13 @@ export class Patient {
    * convert a local-style date to a database-style date
    * @param val
    */
-  public static viewToDateModel(val) {
+  public viewToDateModel(val) {
     const m = DateTime.fromFormat(val, 'D.M.YYYY')
     const ret = m.toFormat(trl("formatting.dbdate"))
     return ret
   }
+
 }
+
+
+export const patientManager=new PatientManager()

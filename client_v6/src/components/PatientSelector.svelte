@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { PatientManager, Patient } from "../models/patient-model";
-  import type { PatientType } from "../models/patient-model";
+  import { patientManager as pm, type PatientType} from "../models/patient-model";
   import {encounterManager} from '../models'
   import Fa from "svelte-fa";
   import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +9,6 @@
   import LineInput from "../widgets/LineInput.svelte";
   const dispatch = createEventDispatcher();
 
-  const pm = new PatientManager();
   let found: Array<PatientType> = [];
   let searchTerm = "";
   async function doSearch() {
@@ -52,7 +50,7 @@
           class="my-0 cursor-pointer hover:text-blue-400"
           on:click={() => select(entry)}
         >
-          {@html Patient.getLabel(entry)}
+          {@html pm.getLabel(entry)}
         </p>
       {/each}
     </div>

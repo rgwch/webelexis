@@ -8,7 +8,7 @@
   import { navigate } from "svelte-navigator";
   import { _ } from "svelte-i18n";
   import { currentPatient } from "../services/store";
-  import { Patient } from "../models/patient-model";
+  import { patientManager } from "../models/patient-model";
   import {StickerManager} from '../models/stickers-model'
   import PatientSelector from "../components/PatientSelector.svelte";
   import PatientDetail from "../components/PatientDetail.svelte";
@@ -21,10 +21,7 @@
     selector = false;
     navigate("emr");
   }
-  onMount(async ()=>{
-    const stickers=await stm.loadStickers()
-    console.log(JSON.stringify(stickers))
-  })
+  
 </script>
 
 <template>
@@ -32,7 +29,7 @@
     class="font-bold text-blue-700 cursor-pointer"
     on:click={() => (selector = !selector)}
   >
-    {@html Patient.getLabel($currentPatient)}
+    {@html patientManager.getLabel($currentPatient)}
   </p>
   {#if selector}
     <PatientSelector on:selected={selected} />
