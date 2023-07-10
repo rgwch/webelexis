@@ -11,7 +11,19 @@
   import { userManager } from "../models";
   import Menu from "../widgets/Menu.svelte";
   import type { MenuDef } from "../widgets/Popup.svelte";
-  const menuDef: Array<MenuDef> = [
+  
+  let showBilling = false;
+  $: label = $currentUser?.id ?? $_("actions.login");
+  $: {
+    userManager.hasACE($currentUser, "bills").then((r) => {
+      showBilling = r;
+      //menuDef=menuDef
+    });
+  }
+  function selected(event) {
+    navigate(event.detail);
+  }
+  let menuDef: Array<MenuDef> = [
     {
       name: "agenda",
       label: $_("menu.agenda"),
@@ -31,29 +43,20 @@
     {
       name: "billing",
       label: $_("menu.billing"),
+      visible: ()=>showBilling
     },
     {
       name: "account",
-      label: "Konto",
+      label: label,
     },
   ];
-  let showBilling = false;
-  $: label = $currentUser?.id || $_("actions.login");
-  $: {
-    userManager.hasACE($currentUser, "bills").then((r) => {
-      showBilling = r;
-    });
-  }
-  function selected(event) {
-    navigate(event.detail);
-  }
 </script>
 
 <template>
   <main>
     <div class="w-full md(container mx-auto px-2)">
       <Router>
-        <Menu menudef={menuDef} on:menuselect={selected} />
+        <Menu {menuDef} on:menuselect={selected} />
         {#if $currentUser}
           <Route path="/" component={Agenda} />
         {:else}

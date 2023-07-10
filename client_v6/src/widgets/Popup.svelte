@@ -2,6 +2,7 @@
   export type MenuDef = {
     name: string | Array<MenuDef>;
     label?: string;
+    visible?: (item:string)=>boolean
   };
 </script>
 
