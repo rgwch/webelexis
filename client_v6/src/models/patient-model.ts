@@ -97,7 +97,7 @@ export class Patient {
       final += images
     }
 
-    return final
+    return "<div>"+final+"</div>"
   }
 
   /**

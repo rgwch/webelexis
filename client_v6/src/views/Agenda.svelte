@@ -4,7 +4,7 @@
   import type { TerminType } from "../models/termine-model";
   import Appointment from "../components/Appointment.svelte";
   import NewAppointment from "../components/Newappointment.svelte";
-  import { currentPatient } from "../services/store";
+  import { currentPatient, currentUser } from "../services/store";
   import { navigate } from "svelte-navigator";
   import { _ } from "svelte-i18n";
   import Dropdown from "../widgets/Dropdown.svelte";
@@ -62,6 +62,7 @@
 </script>
 
 <template>
+  {#if $currentUser}
   <div class="flex flex-col md:flex-row">
     <div>
       <DatePicker
@@ -102,4 +103,7 @@
       </ul>
     </div>
   </div>
+  {:else}
+  <p>Sie sind nicht angemeldet</p>
+  {/if}
 </template>

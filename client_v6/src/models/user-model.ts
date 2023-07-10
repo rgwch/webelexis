@@ -142,7 +142,7 @@ export class UserManager extends ObjectManager {
   }
 
   public logout(): void {
-    currentUser.set(undefined)
+    currentUser.set(null)
     deAuthorize()
   }
 }
