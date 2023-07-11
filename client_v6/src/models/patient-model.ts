@@ -51,6 +51,51 @@ export class PatientManager extends ObjectManager {
       : 'x'
     return ret
   }
+  public async getDecoratedLabel(obj: PatientType): Promise<string>{
+    if (!obj) {
+      return trl('patient.noneselected')
+    }
+    let ret = obj.bezeichnung1 + ' ' + obj.bezeichnung2
+    if (obj.geschlecht) {
+      ret += ` (${obj.geschlecht})`
+    }
+    if (obj.geburtsdatum) {
+      const bd = DateTime.fromFormat(obj.geburtsdatum, 'yyyyLLdd')
+      const now = DateTime.local()
+      const years = now.diff(bd, 'years')
+      ret += `, ${DateTime.fromISO(obj.geburtsdatum).toFormat(
+        trl('formatting.date'),
+      )}`
+      ret += ` (${Math.floor(years.as("years"))})`
+    }
+    if (obj.patientnr) {
+      ret += ' [' + obj.patientnr + ']'
+    }
+    const sticker = await sm.getFirstSticker(obj.stickers)
+    let style = 'color:black;'
+    if (sticker) {
+      style = `color:#${sticker.foreground || 'black'};background-color:#${sticker.background || 'white'
+        };`
+    }
+    let final = `<span style="${style}">${ret}</span>`
+    let images = ''
+
+    if (obj.stickers) {
+      for (const name of obj.stickers) {
+        const imgdata = await sm.getImage(name)
+        if (imgdata) {
+          images += `<img src="data:image/png;base64,${imgdata}"
+          alt="${name}" style="height:1em;width:1em;padding-left:3px;"
+         data-toggle="tooltip" title="${name}">`
+        }
+      }
+    }
+    if (images) {
+      final += images
+    }
+
+    return `<div class="flex flex-row pr-3">${final}</div>`
+  }
   public getLabel(obj: PatientType): string {
     if (!obj) {
       return trl('patient.noneselected')

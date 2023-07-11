@@ -3,25 +3,24 @@
   We load the subcomponents lazily with {await} to split up the app in smaller chunks
 -->
 <script lang="ts">
-  import {onMount} from 'svelte'
+  import { onMount } from "svelte";
   import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
   import { navigate } from "svelte-navigator";
   import { _ } from "svelte-i18n";
   import { currentPatient } from "../services/store";
   import { patientManager } from "../models/patient-model";
-  import {StickerManager} from '../models/stickers-model'
+  import { StickerManager } from "../models/stickers-model";
   import PatientSelector from "../components/PatientSelector.svelte";
   import PatientDetail from "../components/PatientDetail.svelte";
 
   import AUF from "../components/AUF.svelte";
-  const stm=new StickerManager()
+  const stm = new StickerManager();
   let selector = false;
 
   function selected() {
     selector = false;
     navigate("emr");
   }
-  
 </script>
 
 <template>
@@ -29,7 +28,11 @@
     class="font-bold text-blue-700 cursor-pointer"
     on:click={() => (selector = !selector)}
   >
-    {@html patientManager.getLabel($currentPatient)}
+    {#await patientManager.getDecoratedLabel($currentPatient)}
+      {@html patientManager.getLabel($currentPatient)}
+    {:then patlabel}
+      {@html patlabel}
+    {/await}
   </p>
   {#if selector}
     <PatientSelector on:selected={selected} />

@@ -50,7 +50,11 @@
           class="my-0 cursor-pointer hover:text-blue-400"
           on:click={() => select(entry)}
         >
-          {@html pm.getLabel(entry)}
+          {#await pm.getDecoratedLabel(entry)}
+            {@html pm.getLabel(entry)}
+          {:then patlabel}
+            {@html patlabel}
+          {/await}
         </p>
       {/each}
     </div>
