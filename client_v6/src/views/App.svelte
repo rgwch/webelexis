@@ -6,6 +6,7 @@
   import Account from "./Account.svelte";
   import Article from "./Articles.svelte";
   import Video from "./Video.svelte";
+  import NewPatient from "./NewPatient.svelte"
   import { currentUser } from "../services/store";
   import { _ } from "svelte-i18n";
   import { userManager } from "../models";
@@ -80,7 +81,7 @@
             <Route path="account" component={Account} />   
           </div>  
         {:else}
-          <Route path="/" component={Account} />
+          <Route path="/" component={NewPatient} />
           <Route path="account" component={Account} />   
         {/if}
       </Router>
