@@ -11,17 +11,26 @@
         attribute: "textfield",
         label: $_("demotest"),
         datatype: "string",
+        sizehint:2
       },
       {
         attribute: "date",
         datatype: "date",
         label: "Date",
+      
       },
       {
         attribute: "number",
         datatype: "number",
         label: "Number field",
+        sizehint:4
       },
+      {
+        attribute:"long",
+        datatype: "string",
+        label: "Text",
+        sizehint:4
+      }
     ],
   };
 </script>
@@ -54,6 +63,7 @@
       textfield: "Test",
       date: "20220402",
       number: 42,
+      long: "a quite long string"
     },
     lockable: true,
   }}
