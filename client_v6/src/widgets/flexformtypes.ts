@@ -21,7 +21,7 @@ export interface FlexformConfig {
     validationMessage?: string;
     // a message to display, if validation failed.
     sizehint?: number;
-    // Either a number 1-12 for the number of columns (1/12 to 12/12) or a string with css class(es).
+    // A number 1-9 for the number of columns (1/9 to 9/9).
     hasErrors?: boolean;
     errmsg?: string;
   }>;

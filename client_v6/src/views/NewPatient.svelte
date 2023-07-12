@@ -1,6 +1,56 @@
 <script lang="ts">
   import Card from "../widgets/Card.svelte";
-  let p = 5;
+  import FlexForm from "../widgets/Flexform.svelte";
+  import type {FlexformConfig} from '../widgets/flexformtypes'
+ 
+  const patdef:FlexformConfig={
+    title: "Personaldaten",
+    compact: false,
+    attributes: [
+      {
+        attribute: "firstname",
+        label: "Vorname",
+        datatype: "string",
+        sizehint: 3
+      },{
+        attribute: "lastname",
+        label: "Nachname",
+        datatype: "string",
+        sizehint: 4
+      },{
+        attribute: "birthdate",
+        label: "Geburtsdatum",
+        datatype: "date",
+        sizehint: 2
+      },{
+        attribute: "street",
+        label: "Strasse",
+        datatype: "string",
+        sizehint: 9
+      },{
+        attribute: "zip",
+        label: "Plz",
+        datatype: "string",
+        sizehint: 2
+      },{
+        attribute: "place",
+        label: "Ort",
+        datatype: "string",
+        sizehint: 7
+      },{
+        attribute: "phone",
+        label: "Telefon",
+        datatype: "string",
+        sizehint: 3
+      },{
+        attribute: "mail",
+        label: "E-Mail",
+        datatype: "string",
+        sizehint: 6
+      }
+    ]
+  }
+  let entity
 </script>
 
 <template>
@@ -12,8 +62,9 @@
       Bitte füllen Sie das untenstehende Formular aus, wenn bisher noch nicht
       geschehen.
     </p>
+  <FlexForm {entity} ff_cfg={patdef}></FlexForm>
 
-    <form>
+    <!--form>
       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-9">
         <div class="sm:col-span-1">
           <label
@@ -151,7 +202,7 @@
           </div>
         </div>
       </div>
-    </form>
+    </form -->
     <p class="pt-5">Ich bestätige mit meiner Unterschrift, dass ich mit der Bearbeitung meiner Daten, den Zugriffen auf die Daten
         durch die Ärztin oder den Arzt sowie der Weitergabe der Daten an Dritte gemäss Patienteninformation auf der
         folgenden Seite einverstanden bin.
