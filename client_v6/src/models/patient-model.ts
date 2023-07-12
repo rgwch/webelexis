@@ -187,19 +187,19 @@ export class PatientManager extends ObjectManager {
           attribute: 'strasse',
           label: trl('address.street'),
           datatype: 'string',
-          sizehint: 12,
+          sizehint: 9,
         },
         {
           attribute: 'plz',
           label: trl('address.zip'),
           datatype: 'string',
-          sizehint: 3,
+          sizehint: 2,
         },
         {
           attribute: 'ort',
           label: trl('address.place'),
           datatype: 'string',
-          sizehint: 9,
+          sizehint: 7,
         } /*{
           attribute: "contactPoints",
           label: i18.tr("contact.contactpoints"),
@@ -228,19 +228,19 @@ export class PatientManager extends ObjectManager {
           attribute: 'email',
           label: trl('contact.email'),
           datatype: 'string',
-          sizehint: 6,
+          sizehint: 4,
         },
         {
           attribute: 'bemerkung',
           label: trl('contact.remark'),
           datatype: 'text',
-          sizehint: 12,
+          sizehint: 9,
         },
         {
           attribute: 'id',
           label: "id",
           datatype: 'readonly',
-          sizehint: 12
+          sizehint: 9
         }
       ],
     }
