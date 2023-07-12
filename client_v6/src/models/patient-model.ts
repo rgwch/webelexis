@@ -159,7 +159,7 @@ export class PatientManager extends ObjectManager {
           datatype: 'string',
           validation: this.char80,
           validationMessage: trl('validation.onlyText'),
-          sizehint: 4,
+          css:"col-span-3",
         },
         {
           attribute: 'bezeichnung2',
@@ -167,7 +167,7 @@ export class PatientManager extends ObjectManager {
           datatype: 'string',
           validation: this.char80,
           validationMessage: trl('validation.onlyText'),
-          sizehint: 4,
+          css:"col-span-4",
         },
         {
           attribute: 'geburtsdatum',
@@ -175,31 +175,31 @@ export class PatientManager extends ObjectManager {
           datatype: "date",
           validation: this.checkdate,
           validationMessage: trl('validation.invalidDate'),
-          sizehint: 2,
+          css:"col-span-1",
         },
         {
           attribute: 'geschlecht',
           label: trl('contact.gender'),
           datatype: 'string',
-          sizehint: 2,
+          css:"col-span-1",
         },
         {
           attribute: 'strasse',
           label: trl('address.street'),
           datatype: 'string',
-          sizehint: 9,
+          css:"col-span-9",
         },
         {
           attribute: 'plz',
           label: trl('address.zip'),
           datatype: 'string',
-          sizehint: 2,
+          css:"col-span-2",
         },
         {
           attribute: 'ort',
           label: trl('address.place'),
           datatype: 'string',
-          sizehint: 7,
+          css:"col-span-7",
         } /*{
           attribute: "contactPoints",
           label: i18.tr("contact.contactpoints"),
@@ -210,37 +210,37 @@ export class PatientManager extends ObjectManager {
           attribute: 'telefon1',
           label: trl('contact.phone1'),
           datatype: 'string',
-          sizehint: 4,
+          css:"col-span-2",
         },
         {
           attribute: 'telefon2',
           label: trl('contact.phone2'),
           datatype: 'string',
-          sizehint: 4,
+          css:"col-span-2",
         },
         {
           attribute: 'natelnr',
           label: trl('contact.mobile'),
           datatype: 'string',
-          sizehint: 4,
+          css:"col-span-2",
         },
         {
           attribute: 'email',
           label: trl('contact.email'),
           datatype: 'string',
-          sizehint: 4,
+          css:"col-span-3",
         },
         {
           attribute: 'bemerkung',
           label: trl('contact.remark'),
           datatype: 'text',
-          sizehint: 9,
+          css:"col-span-9",
         },
         {
           attribute: 'id',
           label: "id",
           datatype: 'readonly',
-          sizehint: 9
+          css:"col-span-9"
         }
       ],
     }

@@ -14,52 +14,46 @@
         attribute: "firstname",
         label: "Vorname",
         datatype: "string",
-        sizehint:4,
+        css:"col-span-4",
       } ,{
         attribute: "lastname",
         label: "Nachname",
         datatype: "string",
-        sizehint:4
+        css:"col-span-4"
       },{
         attribute: "birthdate",
         label: "Geburtsdatum",
         datatype: "date",
-        sizehint:1
+        css:"col-span-1"
       },{
         attribute: "street",
         label: "Strasse",
         datatype: "string",
-        sizehint:7
+        css:"col-span-9"
       },{
-        attribute:"dummy",
-        label: "",
-        datatype:"string",
-        sizehint:2
-        
-      }/*,{
         attribute: "zip",
         label: "Plz",
         datatype: "string",
-        sizehint:2
+        css:"col-span-2"
       },{
         attribute: "place",
         label: "Ort",
         datatype: "string",
-        sizehint:7
+        css:"col-span-7"
       },{
         attribute: "phone",
         label: "Telefon",
         datatype: "string",
-        sizehint:3
+        css:"col-span-4"
       },{
         attribute: "mail",
         label: "E-Mail",
         datatype: "string",
-        sizehint:6
-      } */
+        css:"col-span-5"
+      } 
     ]
   }
-  let entity={}
+  let entity={birthdate:"1960-01-01"}
 </script>
 
 <template>

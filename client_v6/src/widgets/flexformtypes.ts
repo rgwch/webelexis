@@ -20,8 +20,8 @@ export interface FlexformConfig {
     // validation if given: A function that returns false, if the entry is invalid.
     validationMessage?: string;
     // a message to display, if validation failed.
-    sizehint?: number;
-    // A number 1-9 for the number of columns (1/9 to 9/9).
+    css?: string;
+    // class/es to apply to the field. i.e. "col-span-4 bg-blue" 
     hasErrors?: boolean;
     errmsg?: string;
   }>;
