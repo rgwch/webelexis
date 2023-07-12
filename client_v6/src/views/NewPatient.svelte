@@ -1,5 +1,7 @@
 <script lang="ts">
   import Card from "../widgets/Card.svelte";
+  import LineInput from "../widgets/LineInput.svelte"
+  import Radiobuttons from "../widgets/Radiobuttons.svelte";
   let p = 5;
 </script>
 
@@ -21,6 +23,7 @@
             class="block text-sm font-medium leading-6 text-gray-900"
             >Geschlecht</label
           >
+          <Radiobuttons options={["m","w","d"]} value="w"></Radiobuttons> 
           <div class="mt-2">
             <select
               id="gender"
@@ -134,6 +137,9 @@
           </div>
         </div>
 
+        <div class="sm:col-span-3">
+            <LineInput label="Telefon"></LineInput>
+        </div>
         <div class="sm:col-span-2">
           <label
             for="region"
