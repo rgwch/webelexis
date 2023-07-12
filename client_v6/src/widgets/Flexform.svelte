@@ -102,9 +102,9 @@ $: {
   {/if}
   {#if entity}
     <form>
-      <div class="grid grid-cols-1 gap-x-4 gap-y-2 h-full grid-rows-4 sm:grid-cols-9">
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-9">
         {#each ff_cfg.attributes as attr}
-          <div class="sm:col-span-{attr.sizehint??9}">
+          <div class="sm:col-span-{attr.sizehint ?? 9}">
             {#if attr.datatype == "readonly"}
               <span>{attr.label}: {entity[attr.attribute]}</span>
             {:else}

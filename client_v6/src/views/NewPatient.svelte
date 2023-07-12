@@ -7,53 +7,59 @@
   import type {FlexformConfig} from '../widgets/flexformtypes'
  
   const patdef:FlexformConfig={
-    title: "Personaldaten",
-    compact: false,
+    title: ()=>"Personaldaten",
+    compact: true,
     attributes: [
       {
         attribute: "firstname",
         label: "Vorname",
         datatype: "string",
-        sizehint: 3
-      },{
+        sizehint:4,
+      } ,{
         attribute: "lastname",
         label: "Nachname",
         datatype: "string",
-        sizehint: 4
+        sizehint:4
       },{
         attribute: "birthdate",
         label: "Geburtsdatum",
         datatype: "date",
-        sizehint: 2
+        sizehint:1
       },{
         attribute: "street",
         label: "Strasse",
         datatype: "string",
-        sizehint: 9
+        sizehint:7
       },{
+        attribute:"dummy",
+        label: "",
+        datatype:"string",
+        sizehint:2
+        
+      }/*,{
         attribute: "zip",
         label: "Plz",
         datatype: "string",
-        sizehint: 2
+        sizehint:2
       },{
         attribute: "place",
         label: "Ort",
         datatype: "string",
-        sizehint: 7
+        sizehint:7
       },{
         attribute: "phone",
         label: "Telefon",
         datatype: "string",
-        sizehint: 3
+        sizehint:3
       },{
         attribute: "mail",
         label: "E-Mail",
         datatype: "string",
-        sizehint: 6
-      }
+        sizehint:6
+      } */
     ]
   }
-  let entity
+  let entity={}
 </script>
 
 <template>
