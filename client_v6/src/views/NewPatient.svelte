@@ -7,7 +7,7 @@
   import type { FlexformConfig } from "../widgets/flexformtypes";
 
   const patdef: FlexformConfig = {
-    title: () => "Personaldaten",
+    title: () => "",
     compact: true,
     attributes: [
       {
