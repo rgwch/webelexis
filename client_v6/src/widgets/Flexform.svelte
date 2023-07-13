@@ -13,9 +13,7 @@
     faUndo,
   } from "@fortawesome/free-solid-svg-icons";
   import LineInput from "./LineInput.svelte";
-  import TextInput from "./TextInput.svelte";
-  import DateInput from "./DateInput.svelte";
-
+  
   export let ff_cfg: FlexformConfig;
   export let entity: any;
   export let lockable: boolean = false;
@@ -104,9 +102,17 @@ $: {
     <form>
       <div class="grid grid-cols-1 gap-2 md:grid-cols-9">
         {#each ff_cfg.attributes as attr}
-          <div class="{attr.css}">
+          <div class={attr.css}>
             {#if attr.datatype == "readonly"}
               <span>{attr.label}: {entity[attr.attribute]}</span>
+            {:else if attr.datatype == "boolean"}
+              <div class="flex flex-row">
+                <input
+                  type="checkbox"
+                  value={valueConverter.toView(entity, attr)}
+                />
+                <span>{attr.label}</span>
+              </div>
             {:else}
               <LineInput
                 value={valueConverter.toView(entity, attr)}

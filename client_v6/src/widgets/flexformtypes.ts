@@ -57,11 +57,13 @@ export class FlexFormValueConverter {
         switch (attr.datatype) {
           case "text":
           case "string":
+          case "boolean":
             return entity[attr.attribute];
           case "number":
             return entity[attr.attribute].toString();
           case "date":
             return DateTime.fromISO(entity[attr.attribute]).toLocaleString();
+
         }
       } else {
         const func = attr.datatype.toForm;
