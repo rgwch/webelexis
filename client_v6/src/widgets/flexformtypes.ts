@@ -11,6 +11,7 @@ export interface FlexformConfig {
     | "string"
     | "text"
     | "number"
+    | "boolean"
     | "readonly"
     | { toForm: (obj: any, attr: string) => string; toData: (obj: any, attr: string, value: string) => any }
     | FlexformListRenderer;

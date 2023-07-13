@@ -102,7 +102,7 @@ $: {
   {/if}
   {#if entity}
     <form>
-      <div class="grid grid-cols-1 gap-2 sm:grid-cols-9">
+      <div class="grid grid-cols-1 gap-2 md:grid-cols-9">
         {#each ff_cfg.attributes as attr}
           <div class="{attr.css}">
             {#if attr.datatype == "readonly"}
