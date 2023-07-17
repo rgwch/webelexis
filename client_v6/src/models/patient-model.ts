@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2022 by G. Weirich    *
+ * Copyright (c) 2016-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -10,7 +10,7 @@ import { StickerManager, type StickerType } from './stickers-model'
 import { DateTime } from 'luxon'
 import { _ } from 'svelte-i18n'
 import { ObjectManager } from './object-manager'
-import type { FlexformConfig } from '../widgets/flexformtypes'
+import type { FlexformConfig } from '../widgets/Flexform.svelte'
 import defs from '../services/util'
 const sm: StickerManager = new StickerManager()
 

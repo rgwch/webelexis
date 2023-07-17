@@ -79,7 +79,8 @@ export class Service {
       data.patientnr = await this.nextPatientNr()
     }
     const kontakt = this.options["app"].service("kontakt")
-    return kontakt.update(id, data, params)
+    const ret=await kontakt.update(id, data, params)
+    return ret;
   }
 
   async patch(id, data, params) {

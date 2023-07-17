@@ -145,12 +145,19 @@ $: {
             value = parseFloat(value);
             break;
           case "date":
-            value = DateTime.fromFormat(value, "DD.LL.yy");
+            if (typeof value == "string") {
+              value = DateTime.fromFormat(value, "dd.LL.yyyy").toFormat(
+                "yyyyLLdd"
+              );
+            } else {
+              value = DateTime.fromJSDate(value).toFormat("yyyyLLdd");
+            }
             break;
         }
         previous = entity[attr.attribute];
         entity[attr.attribute] = value;
         dispatch("changed", { attr, previous, value });
+        save();
       } else {
         const func = attr.datatype.toData;
         if (func) {
