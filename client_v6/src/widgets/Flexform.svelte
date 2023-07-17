@@ -1,6 +1,44 @@
+<script lang="ts" context="module">
+  export interface FlexformListRenderer {
+    fetchElements: (obj) => Array<any>;
+    toString: (line) => string;
+  }
+
+  export interface FlexformConfig {
+    title: string | (() => string); // Title for the Form
+    compact?: boolean; // If true: Don't display labels for input fields.
+    attributes: Array<{
+      // Attributes to display in the form
+      attribute: string; // Name of the attribue as defined in the datastore backend
+      label?: string; // Display-Name for the attribute
+      datatype?:
+        | "date"
+        | "string"
+        | "text"
+        | "number"
+        | "boolean"
+        | "readonly"
+        | {
+            toForm: (obj: any, attr: string) => string;
+            toData: (obj: any, attr: string, value: string) => any;
+          }
+        | FlexformListRenderer;
+      // type of the data. Either "string" or an object containing a function to
+      // render the data and a function to store the data.
+      validation?: (value, entity) => boolean;
+      // validation if given: A function that returns false, if the entry is invalid.
+      validationMessage?: string;
+      // a message to display, if validation failed.
+      css?: string;
+      // class/es to apply to the field. i.e. "col-span-4 bg-blue"
+      hasErrors?: boolean;
+      errmsg?: string;
+    }>;
+  }
+</script>
+
 <script lang="ts">
-  import type { FlexformConfig } from "./flexformtypes";
-  import { FlexFormValueConverter } from "./flexformtypes";
+  import { DateTime } from "luxon";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
@@ -13,11 +51,10 @@
     faUndo,
   } from "@fortawesome/free-solid-svg-icons";
   import LineInput from "./LineInput.svelte";
-  
+
   export let ff_cfg: FlexformConfig;
   export let entity: any;
   export let lockable: boolean = false;
-  const valueConverter = new FlexFormValueConverter();
 
   let isLocked: boolean = lockable;
   let isDirty: boolean = false;
@@ -71,6 +108,57 @@ $: {
   function changed(field, value) {
     isDirty = true;
   }
+  function toView(entity, attr): string {
+    if (entity && attr) {
+      if (attr.datatype == undefined) {
+        return attr;
+      }
+      if (typeof attr.datatype == "string") {
+        switch (attr.datatype) {
+          case "text":
+          case "string":
+          case "boolean":
+            return entity[attr.attribute];
+          case "number":
+            return entity[attr.attribute].toString();
+          case "date":
+            return DateTime.fromISO(entity[attr.attribute]).toLocaleString();
+        }
+      } else {
+        const func = attr.datatype.toForm;
+        if (func) {
+          return func(entity, attr);
+        } else {
+          return attr;
+        }
+      }
+    } else {
+      return "";
+    }
+  }
+  function fromView(entity, attr, value) {
+    if (entity && attr) {
+      let previous;
+      if (typeof attr.datatype == "string") {
+        switch (attr.datatype) {
+          case "number":
+            value = parseFloat(value);
+            break;
+          case "date":
+            value = DateTime.fromFormat(value, "DD.LL.yy");
+            break;
+        }
+        previous = entity[attr.attribute];
+        entity[attr.attribute] = value;
+        dispatch("changed", { attr, previous, value });
+      } else {
+        const func = attr.datatype.toData;
+        if (func) {
+          func(entity, attr, value);
+        }
+      }
+    }
+  }
 </script>
 
 <template>
@@ -109,18 +197,22 @@ $: {
               <div class="flex flex-row">
                 <input
                   type="checkbox"
-                  value={valueConverter.toView(entity, attr)}
+                  value={toView(entity, attr)}
+                  on:select={(event) => {
+                    console.log(JSON.stringify(event));
+                    fromView(entity, attr, event);
+                  }}
                 />
                 <span>{attr.label}</span>
               </div>
             {:else}
               <LineInput
-                value={valueConverter.toView(entity, attr)}
+                value={toView(entity, attr)}
                 label={attr.label}
                 disabled={isLocked}
                 on:textChanged={(event) => {
                   console.log(JSON.stringify(event));
-                  valueConverter.fromView(entity, attr, event.detail);
+                  fromView(entity, attr, event.detail);
                 }}
               />
             {/if}

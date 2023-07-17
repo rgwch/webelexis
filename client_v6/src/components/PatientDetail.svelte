@@ -1,8 +1,7 @@
 <script lang="ts">
   import { patientManager, type PatientType } from "../models/patient-model";
-  import type { FlexformConfig } from "../widgets/flexformtypes";
   import { _ } from "svelte-i18n";
-  import Form from "../widgets/Flexform.svelte";
+  import Form, {type FlexformConfig} from "../widgets/Flexform.svelte";
   import KeyValueDisplay from "../widgets/KeyValueDisplay.svelte";
   export let entity: PatientType;
   export let showTitle = true;

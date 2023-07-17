@@ -3,9 +3,8 @@
   import LineInput from "../widgets/LineInput.svelte";
   import Radiobuttons from "../widgets/Radiobuttons.svelte";
   let p = 5;
-  import FlexForm from "../widgets/Flexform.svelte";
-  import type { FlexformConfig } from "../widgets/flexformtypes";
-
+  import FlexForm, { type FlexformConfig } from "../widgets/Flexform.svelte";
+ 
   const patdef: FlexformConfig = {
     title: () => "",
     compact: true,
