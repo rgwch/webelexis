@@ -23,12 +23,12 @@ export interface LeistungsblockType extends ElexisType {
 }
 
 
-export class LeistungsblockManager extends ObjectManager{
+export class LeistungsblockManager extends ObjectManager {
   private bm;
 
   constructor() {
     super('leistungsblock')
-    this.bm=new BillingsManager()
+    this.bm = new BillingsManager()
   }
 
   public async findBlock(name: string, userid?: UUID) {
@@ -60,7 +60,7 @@ export class LeistungsblockManager extends ObjectManager{
     return result
   }
 
-  public async getElements(lb: LeistungsblockType) {
+  public async getElements(lb: LeistungsblockType): Promise<Array<BillingType>> {
     const elemente = lb.billables || lb.elements
     const elems = await Promise.all(elemente.map(el => {
       return this.bm.getBillable(el.system + "!" + el.code)
