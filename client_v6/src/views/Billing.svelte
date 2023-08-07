@@ -7,6 +7,7 @@
   import { InvoiceState } from "../models/invoice-model";
   import type { InvoiceType } from "../models/invoice-model";
   import { _ } from "svelte-i18n";
+  import BillingSelector from "../components/BillingSelector.svelte";
 
   const fetchsize = 80;
   let bills: Array<InvoiceType> = [];
@@ -59,6 +60,7 @@
       <Tab>{$_("titles.fromdate")}</Tab>
       <Tab>{$_("titles.unbilled")}</Tab>
       <Tab>{$_("titles.bills")}</Tab>
+      <Tab>{$_("titles.positions")}</Tab>
     </TabList>
 
     <TabPanel>
@@ -79,6 +81,9 @@
         <button on:click={reload}>Filter</button>
         <Bills {bills} filter={patfilter} {busy} on:success={reload} />
       </div>
+    </TabPanel>
+    <TabPanel>
+      <BillingSelector />
     </TabPanel>
   </Tabs>
 </template>
