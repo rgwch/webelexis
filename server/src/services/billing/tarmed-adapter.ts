@@ -5,7 +5,7 @@
  ********************************************/
 
 const tarmed_class = "ch.elexis.data.TarmedLeistung"
-const ElexisUtils = require('../../util/elexis-types')
+import { ElexisUtils } from '../../util/elexis-types'
 const util = new ElexisUtils()
 
 /**

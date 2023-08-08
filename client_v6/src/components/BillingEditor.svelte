@@ -1,11 +1,69 @@
 <script lang="ts">
-  import type { EncounterModel } from "../models/encounter-model";
+  import { billingsManager, type BillingType } from "../models/billings-model";
+  import type { EncounterType } from "../models/encounter-model";
+  import {currentEncounter} from '../services/store'
+  import BillingSelector from "./BillingSelector.svelte";
+  import {leistungsblockManager as lbm} from '../models/leistungsblock-model'
+  import {billingsManager as bm} from '../models/billings-model'
+  let dragging=false
+  let billings: Array<BillingType> = [];
+  $: billingsManager.getBillings($currentEncounter?.id).then(result=>{
+    billings=result
+  })
+  function dragover(event){
+    event.preventDefault()
+    dragging=true
+    return true;
+  }
+  function dragleave(event){
+    dragging=false
+    return true;
+  }
+  function dragdrop(event){
+    event.preventDefault()
+    const data = event.dataTransfer.getData("text");
+    if (data.startsWith("block")) {
+      lbm
+        .applyBlock(data.substring("block!".length), this.kons, this.billings)
+        .then(block => {
+          this.loadBillings();
+        });
+    } else {
+      bm.getBillable(data).then(billable => {
+        bm
+          .createBilling(billable, $currentEncounter, 1, billings)
+          .then(async billing => {
+            console.log(JSON.stringify(billing))
+            //await loadBillings();
+          })
+          .catch(err => {
+            alert("could not create Billing " + err);
+          });
+      });
+    }
+    dragging=false;
+    return true;
 
-  export let enc: EncounterModel;
+  }
 </script>
 
 <template>
-  <div class="flex flex-row">
-    <p />
+  <div class="flex flex-col">
+    <div class="overflow-auto h-60">
+      <BillingSelector />
+    </div>
+    <div
+      class="border-blue-300 border-2 p-1 mt-4 min-h-20 overflow-auto"
+      class:dragging={"bg-red-100"}
+      on:dragover={dragover}
+      on:dragleave={dragleave}
+      on:drop={dragdrop}
+    >
+      {#each billings as item}
+        <p>
+          {item.leistg_txt}
+        </p>
+      {/each}
+    </div>
   </div>
 </template>

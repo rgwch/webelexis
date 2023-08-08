@@ -4,6 +4,7 @@
   import { billingsManager as bm, type Billable } from "../models/billings-model";
   import { getService } from "../services/io";
   import Collapse from "../widgets/Collapse.svelte";
+  import { isNodeEmpty } from "@tiptap/core";
 
   const blockManager = new LeistungsblockManager();
   let blocks = [];
@@ -19,6 +20,9 @@
       }
     }
   }
+  function drag(event){
+    event.dataTransfer.setData("text",event.target.id)
+  }
 </script>
 
 <template>
@@ -30,7 +34,14 @@
     >
       <div slot="body">
         {#each block.billables as item}
-          <p>{item.code} {item.text}</p>
+          <p
+            draggable="true"
+            on:dragstart={drag}
+            id={item.system + "!" + item.code}
+          >
+            {item.code}
+            {item.text}
+          </p>
         {/each}
       </div>
     </Collapse>

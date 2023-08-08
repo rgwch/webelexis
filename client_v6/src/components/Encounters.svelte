@@ -3,13 +3,19 @@
   import { EncounterManager } from "../models/encounter-model";
   import type { EncounterType } from "../models/encounter-model";
   import InfiniteScroll from "svelte-infinite-scroll";
-  import { currentPatient, currentCase } from "../services/store";
+  import {
+    currentPatient,
+    currentCase,
+    currentEncounter,
+  } from "../services/store";
   import { onMount } from "svelte";
+  import BillingEditor from "./BillingEditor.svelte";
   const BATCHSIZE = 11;
   const em = new EncounterManager();
   let offset = 0;
   let newBatch = [];
   let encounters: Array<EncounterType> = [];
+  let showBillings = true;
 
   currentPatient.subscribe((np) => {
     offset = 0;
@@ -47,14 +53,33 @@
 </script>
 
 <template>
-  <div class="scrollpanel">
-    {#each encounters as encounter}
-      <EncounterDetail entity={encounter} />
-    {/each}
-    <InfiniteScroll
-      hasMore={newBatch.length > 0}
-      threshold={10}
-      on:loadMore={() => fetchEncounters()}
-    />
+  <div class="flex">
+    {#if showBillings}
+      <div class="basis-1/3 h-100vg">
+        <BillingEditor />
+      </div>
+    {/if}
+    <div class="scrollpanel">
+      {#each encounters as encounter}
+        <div
+          on:click={() => {
+            console.log("changed");
+            currentEncounter.set(encounter);
+          }}
+        >
+          <EncounterDetail
+            entity={encounter}
+            on:billings={() => {
+              showBillings = !showBillings;
+            }}
+          />
+        </div>
+      {/each}
+      <InfiniteScroll
+        hasMore={newBatch.length > 0}
+        threshold={10}
+        on:loadMore={() => fetchEncounters()}
+      />
+    </div>
   </div>
 </template>

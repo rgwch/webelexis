@@ -40,10 +40,14 @@ export class BillingsManager {
    * @param kons
    */
   public async getBillings(kons_id: string): Promise<BillingType[]> {
-    const ret = await this.billingService.find({
-      query: { behandlung: kons_id },
-    })
-    return ret.data
+    if (kons_id) {
+      const ret = await this.billingService.find({
+        query: { behandlung: kons_id },
+      })
+      return ret?.data || []
+    } else {
+      return []
+    }
   }
   /**
    * get a billable from a code. Note: The code must have the form:

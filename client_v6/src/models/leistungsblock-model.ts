@@ -97,3 +97,5 @@ export class LeistungsblockModel {
     return billables
   }
 }
+
+export const leistungsblockManager = new LeistungsblockManager()
