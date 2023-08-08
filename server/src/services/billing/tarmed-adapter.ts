@@ -23,7 +23,7 @@ export const createBilling = async (tm, app) => {
     tl = parseFloat(limits.TP_TL)
     al = parseFloat(limits.TP_AL)
     const lstgimes = parseFloat(limits.LSTGIMES_MIN)
-    const vbnd = parseFloat(limits.VBND_MIN)
+    const vbnd = parseFloat(limits.VBNB_MIN)
     const befund = parseFloat(limits.BEFUND_MIN)
     const wechsel = parseFloat(limits.WECHSEL_MIN)
     minutes = lstgimes + vbnd + befund + wechsel

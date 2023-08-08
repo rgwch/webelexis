@@ -59,7 +59,7 @@
         <BillingEditor />
       </div>
     {/if}
-    <div class="scrollpanel">
+    <div class="flex-1">
       {#each encounters as encounter}
         <div
           on:click={() => {
