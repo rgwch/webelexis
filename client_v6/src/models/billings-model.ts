@@ -19,9 +19,11 @@ export interface BillingType extends ElexisType {
 
 export interface Billable {
   uid: string
-  codestystem: string
+  code: string
+  codesystem: string
   encounter: UUID
   count: number
+  text: string
 }
 export class BillingsManager {
   private billingService
@@ -185,4 +187,4 @@ export class BillingsManager {
   }
 }
 
-export const billingsManager=new BillingsManager();
+export const billingsManager = new BillingsManager();

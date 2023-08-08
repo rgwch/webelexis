@@ -13,6 +13,7 @@ const scopes = {
   "ch.artikelstamm.elexis.common.ArtikelstammItem": "artikelstamm_ch",
   "ch.elexis.medikamente.bag.data.BAGMedi": "artikel",
   "ch.elexis.artikel_ch.data.Medikament": "artikel",
+  "ch.elexis.artikel_ch.data.Medical": "artikel",
   "ch.elexis.data.Artikel": "artikel"
 }
 /**

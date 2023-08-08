@@ -1,21 +1,19 @@
 <script lang="ts">
   import LineInput from "../widgets/LineInput.svelte";
   import { LeistungsblockManager } from "../models/leistungsblock-model";
-  import { billingsManager as bm, type BillingType } from "../models/billings-model";
+  import { billingsManager as bm, type Billable } from "../models/billings-model";
   import { getService } from "../services/io";
   import Collapse from "../widgets/Collapse.svelte";
 
   const blockManager = new LeistungsblockManager();
-  let billables:Array<BillingType> = [];
   let blocks = [];
   blockManager.find({}).then((result) => {
     blocks = result.data;
   });
-  async function show(name: string) {
+  async function show(name: string,detail) {
     for (let block of blocks) {
       if (block.name == name) {
-        block.opened = true;
-        billables = await blockManager.getElements(block);
+        block.opened = detail;
       } else {
         block.opened = false;
       }
@@ -28,11 +26,11 @@
     <Collapse
       title={block.name}
       bind:open={block.opened}
-      on:open={() => show(block.name)}
+      on:open={(event) => show(block.name, event.detail)}
     >
       <div slot="body">
-        {#each billables as item}
-          <p>{bm.getLabel(item)}</p>
+        {#each block.billables as item}
+          <p>{item.code} {item.text}</p>
         {/each}
       </div>
     </Collapse>

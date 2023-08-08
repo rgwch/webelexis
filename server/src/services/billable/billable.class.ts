@@ -1,11 +1,14 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2022 by G. Weirich    *
+ * Copyright (c) 2016-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 import { logger } from '../../logger'
 const tarmed_type = "ch.elexis.data.TarmedLeistung"
 const article_type = "ch.artikelstamm.elexis.common.ArtikelstammItem"
+const medication_type = "ch.elexis.artikel_ch.data.Medikament"
+const medical_type = "ch.elexis.artikel_ch.data.Medical"
+const bagmedi_type = "ch.elexis.medikamente.bag.data.BAGMedi"
 
 export class Service {
   constructor(private options = {}) {
@@ -110,6 +113,9 @@ export class Service {
     let service
     let ptyp
     switch (codesystem) {
+      case medication_type:
+      case medical_type:
+      case bagmedi_type:
       case article_type:
       case 'article':
         service = this.options["app"].service('article')
@@ -147,6 +153,7 @@ export class Service {
             billable.uid = billable.id
             billable.codesystem = tarmed_type;
             billable.count = 1;
+            billable.text = billable.tx255;
             return billable
           } else {
             throw (err)
