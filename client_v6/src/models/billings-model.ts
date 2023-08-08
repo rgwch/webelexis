@@ -185,4 +185,4 @@ export class BillingsManager {
   }
 }
 
-
+export const billingsManager=new BillingsManager();

@@ -1,8 +1,8 @@
 <!-- A Simple Tab Panel -->
 <script lang="ts" context="module">
   type tabdef = {
-    name: string; // Title to show
-    content: any; // Component to display
+    name: string;     // Title to show
+    content: any;     // Component to display
     display: boolean; // False: Don't display
   };
 </script>

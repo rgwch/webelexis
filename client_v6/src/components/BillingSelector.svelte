@@ -1,13 +1,11 @@
 <script lang="ts">
   import LineInput from "../widgets/LineInput.svelte";
   import { LeistungsblockManager } from "../models/leistungsblock-model";
-  import { BillingsManager, type BillingType } from "../models/billings-model";
+  import { billingsManager as bm, type BillingType } from "../models/billings-model";
   import { getService } from "../services/io";
   import Collapse from "../widgets/Collapse.svelte";
 
-  const billableService = getService("billable");
   const blockManager = new LeistungsblockManager();
-  const bm = new BillingsManager();
   let billables:Array<BillingType> = [];
   let blocks = [];
   blockManager.find({}).then((result) => {
@@ -34,7 +32,7 @@
     >
       <div slot="body">
         {#each billables as item}
-          <p>{item.code} {item.tx255}</p>
+          <p>{bm.getLabel(item)}</p>
         {/each}
       </div>
     </Collapse>
