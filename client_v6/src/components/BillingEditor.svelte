@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { billingsManager, type BillingType } from "../models/billings-model";
   import type { EncounterType } from "../models/encounter-model";
   import {currentEncounter} from '../services/store'
   import BillingSelector from "./BillingSelector.svelte";
   import {leistungsblockManager as lbm} from '../models/leistungsblock-model'
-  import {billingsManager as bm} from '../models/billings-model'
+  import {billingsManager as bm, type BillingType} from '../models/billings-model'
   let dragging=false
   let billings: Array<BillingType> = [];
-  $: billingsManager.getBillings($currentEncounter?.id).then(result=>{
+  $: bm.getBillings($currentEncounter?.id).then(result=>{
     billings=result
   })
   function dragover(event){
@@ -33,8 +32,7 @@
         bm
           .createBilling(billable, $currentEncounter, 1, billings)
           .then(async billing => {
-            console.log(JSON.stringify(billing))
-            //await loadBillings();
+            billings=billings
           })
           .catch(err => {
             alert("could not create Billing " + err);
@@ -60,7 +58,9 @@
       on:drop={dragdrop}
     >
       {#each billings as item}
-        <p>
+        <p class="text-sm">
+          {item.zahl}&nbsp;
+          {bm.getCode(item)}&nbsp;
           {item.leistg_txt}
         </p>
       {/each}
