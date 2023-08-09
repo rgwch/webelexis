@@ -35,8 +35,7 @@ export const createBilling = async (tm, app) => {
     zahl: tm.count.toString(),
     vk_tp: Math.round(100 * (tl + al)).toString(),
     scale: "100",
-    scale2: "100",
-    minutes
+    scale2: "100"
   }
   return billing
 }

@@ -61,6 +61,10 @@ const check = ctx => {
     logger.debug(ctx.data)
   }
 }
+
+const errHandler=async ctx=>{
+  console.log(JSON.stringify(ctx))
+}
 export default {
   before: {
     all: [authenticate('jwt')],
@@ -83,7 +87,7 @@ export default {
   },
 
   error: {
-    all: [],
+    all: [errHandler],
     find: [],
     get: [],
     create: [],
