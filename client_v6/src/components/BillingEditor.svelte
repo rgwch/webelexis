@@ -4,8 +4,11 @@
   import BillingSelector from "./BillingSelector.svelte";
   import {leistungsblockManager as lbm} from '../models/leistungsblock-model'
   import {billingsManager as bm, type BillingType} from '../models/billings-model'
+  import Fa from "svelte-fa";
+  import { faPlusSquare, faMinusSquare,faTimesSquare } from "@fortawesome/free-solid-svg-icons";
   let dragging=false
   let billings: Array<BillingType> = [];
+  let selectedBilling=undefined;
   $: bm.getBillings($currentEncounter?.id).then(result=>{
     billings=result
   })
@@ -25,7 +28,7 @@
       lbm
         .applyBlock(data.substring("block!".length), this.kons, this.billings)
         .then(block => {
-          this.loadBillings();
+          billings=billings
         });
     } else {
       bm.getBillable(data).then(billable => {
@@ -43,6 +46,24 @@
     return true;
 
   }
+  function increase(){
+    if(selectedBilling){
+      selectedBilling.zahl++
+      billings=billings
+    }
+  }
+  function decrease(){
+    if(selectedBilling){
+      selectedBilling--
+      if(selectedBilling<=0){
+        remove();
+      }
+      billings=billings
+    }
+  }
+  function remove(){
+
+  }
 </script>
 
 <template>
@@ -58,11 +79,26 @@
       on:drop={dragdrop}
     >
       <div>
-        <button>+</button><button>X</button><button>-</button>
+        <button class="edit" on:click={increase}
+          ><Fa icon={faPlusSquare} /></button
+        >
+        <button class="edit" on:click={remove}
+          ><Fa icon={faTimesSquare} /></button
+        >
+        <button class="edit" on:click={decrease}
+          ><Fa icon={faMinusSquare} /></button
+        >
       </div>
       <div>
         {#each billings as item}
-          <p class="text-sm">
+          <p
+            class="text-sm {selectedBilling == item
+              ? 'text-blue-800'
+              : 'text-black-900'} cursor-pointer"
+            on:click={() => {
+              selectedBilling = item;
+            }}
+          >
             {item.zahl}&nbsp;
             {bm.getCode(item)}&nbsp;
             {item.leistg_txt}
@@ -72,3 +108,10 @@
     </div>
   </div>
 </template>
+
+<style>
+  .edit {
+    margin: 2px;
+    padding-left: 2px;
+  }
+</style>

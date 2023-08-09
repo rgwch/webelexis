@@ -125,12 +125,12 @@
                 >
                   <div
                     slot="body"
-                    class="border border-blue-600 border-solid p-3 my-3 "
+                    class="border border-blue-600 border-solid p-3 my-3"
                   >
                     <p>
                       Erstellt am: {util.ElexisDateToLocalDate(auf.datumauz)}
                     </p>
-                    <div class="flex flex-row justify-between py-4 px-2 ">
+                    <div class="flex flex-row justify-between py-4 px-2">
                       <DateInput
                         bind:dateString={auf.datumvon}
                         label="von"
