@@ -57,13 +57,18 @@
       on:dragleave={dragleave}
       on:drop={dragdrop}
     >
-      {#each billings as item}
-        <p class="text-sm">
-          {item.zahl}&nbsp;
-          {bm.getCode(item)}&nbsp;
-          {item.leistg_txt}
-        </p>
-      {/each}
+      <div>
+        <button>+</button><button>X</button><button>-</button>
+      </div>
+      <div>
+        {#each billings as item}
+          <p class="text-sm">
+            {item.zahl}&nbsp;
+            {bm.getCode(item)}&nbsp;
+            {item.leistg_txt}
+          </p>
+        {/each}
+      </div>
     </div>
   </div>
 </template>
