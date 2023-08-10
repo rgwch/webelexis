@@ -130,6 +130,15 @@ export class BillingsManager {
     )
   }
 
+  public async decreaseCount(item: BillingType) {
+    this.decrease(item)
+    return await this.billingService.update(
+      item.id,
+      item
+    )
+  }
+  
+
   /**
    * Remove a Billing from an encounter
    * @param billing
@@ -175,6 +184,10 @@ export class BillingsManager {
       num = 1
     }
     obj.zahl = (this.getCount(obj) + num).toString()
+  }
+  public decrease(obj:BillingType, num:number=1) {
+    const res=this.getCount(obj)-num
+    obj.zahl=Math.max(0,res).toString()
   }
   public compare = (first: BillingType, second: BillingType) => {
     const firstCode = this.getCode(first)

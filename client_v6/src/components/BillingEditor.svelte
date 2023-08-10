@@ -46,23 +46,27 @@
     return true;
 
   }
-  function increase(){
+  async function increase(){
     if(selectedBilling){
-      selectedBilling.zahl++
+      await bm.increaseCount(selectedBilling)
       billings=billings
     }
   }
-  function decrease(){
+  async function decrease(){
     if(selectedBilling){
-      selectedBilling--
-      if(selectedBilling<=0){
+      await bm.decreaseCount(selectedBilling)
+      if(parseInt(selectedBilling.zahl)==0){
         remove();
       }
       billings=billings
     }
   }
-  function remove(){
-
+  async function remove(){
+    if(selectedBilling){
+      await bm.removeBilling(selectedBilling)
+      selectedBilling=undefined
+      billings=billings
+    }
   }
 </script>
 
@@ -80,13 +84,13 @@
     >
       <div>
         <button class="edit" on:click={increase}
-          ><Fa icon={faPlusSquare} /></button
+          ><Fa class="text-blue-500" icon={faPlusSquare} /></button
         >
         <button class="edit" on:click={remove}
-          ><Fa icon={faTimesSquare} /></button
+          ><Fa class="text-blue-500" icon={faTimesSquare} /></button
         >
         <button class="edit" on:click={decrease}
-          ><Fa icon={faMinusSquare} /></button
+          ><Fa class="text-blue-500" icon={faMinusSquare} /></button
         >
       </div>
       <div>
