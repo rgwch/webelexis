@@ -9,7 +9,7 @@
   const blockManager = new LeistungsblockManager();
   let blocks = [];
   blockManager.find({}).then((result) => {
-    blocks = result.data;
+    blocks = result.data.sort((a,b)=>{return a.name.localeCompare(b.name)});
   });
   async function show(name: string,detail) {
     for (let block of blocks) {
@@ -33,7 +33,7 @@
       on:open={(event) => show(block.name, event.detail)}
     >
       <div slot="body">
-        {#each block.billables as item}
+        {#each block.billables || [] as item}
           <p
             draggable="true"
             on:dragstart={drag}
