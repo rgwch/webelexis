@@ -183,7 +183,7 @@ export class ElexisUtils {
    * @returns a binary containing the ExtInfo ready to write into the database
    */
   writeExtInfo(obj): Uint8Array {
-    if (obj && obj != {}) {
+    if (obj) {
       const str = JSON.stringify(obj)
       const u8 = java.callStaticMethodSync("ch.rgw.tools.ExtInfo", "flattenFromJson", str)
       return Buffer.from(u8)

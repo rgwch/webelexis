@@ -33,7 +33,7 @@ export default {
   before: {
     all: [],
     find: [],
-    get: [fromScopedId],
+    get: [],
     create: [],
     update: [],
     patch: [],
