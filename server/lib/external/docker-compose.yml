@@ -11,7 +11,12 @@ volumes:
 services:
   elexisdb:
     image: mariadb:10.3
-    command: --lower-case-table-names=1 --max-allowed-packet=128M --wait-timeout=3600
+    command: 
+      --lower-case-table-names=1 
+      --max-allowed-packet=256M 
+      --wait-timeout=3600 
+      --innodb-buffer-pool-size=1G
+      --max-user-connections=1000
     container_name: wlx_elexisdb
     hostname: elexisdb.local
     environment:
