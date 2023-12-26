@@ -41,6 +41,7 @@ import payments from './payments/payments.service'
 import diagnose from './diagnose/diagnose.service'
 import directory from './directory/directory.service'
 import stock_entry from './stock_entry/stock_entry.service'
+import kassenbuch from './cash/cash.service'
 
 const generateACLs = (servicename) => {
   const a = []
@@ -98,4 +99,5 @@ export default (app) => {
   app.configure(findings)
   app.configure(directory)
   app.configure(stock_entry)
+  app.configure(kassenbuch)
 }
