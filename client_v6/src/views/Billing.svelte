@@ -3,6 +3,7 @@
   import EncountersByDate from "../components/EncountersByDate.svelte";
   import Bills from "../components/Bills.svelte";
   import Unbilled from "../components/Unbilled.svelte";
+  import Cash from "../components/Cash.svelte";
   import { getService } from "../services/io";
   import { InvoiceState } from "../models/invoice-model";
   import type { InvoiceType } from "../models/invoice-model";
@@ -61,6 +62,7 @@
       <Tab>{$_("titles.unbilled")}</Tab>
       <Tab>{$_("titles.bills")}</Tab>
       <Tab>{$_("titles.positions")}</Tab>
+      <Tab>{$_("titles.cash")}</Tab>
     </TabList>
 
     <TabPanel>
