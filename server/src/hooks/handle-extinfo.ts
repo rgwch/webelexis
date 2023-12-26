@@ -55,7 +55,7 @@ export default function (options = defaultOptions) {
     } else if (context.method == "create" || context.method == "update" || context.method == "patch") {
       const items = getItems(context)
       for (const obj of items) {
-        if (obj.extjson && obj.extjson != {}) {
+        if (obj.extjson) {
           obj[options.extinfo] = Buffer.from(util.writeExtInfo(obj.extjson))
         }
         delete obj.extjson

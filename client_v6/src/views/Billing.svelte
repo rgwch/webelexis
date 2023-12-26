@@ -87,5 +87,8 @@
     <TabPanel>
       <BillingSelector />
     </TabPanel>
+    <TabPanel>
+      <Cash />
+    </TabPanel>
   </Tabs>
 </template>

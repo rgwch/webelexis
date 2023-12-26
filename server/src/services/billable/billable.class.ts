@@ -10,6 +10,13 @@ const medication_type = "ch.elexis.artikel_ch.data.Medikament"
 const medical_type = "ch.elexis.artikel_ch.data.Medical"
 const bagmedi_type = "ch.elexis.medikamente.bag.data.BAGMedi"
 
+const typemap = {
+  "tarmed": "ch.elexis.data.TarmedLeistung",
+  "medikamente": "ch.elexis.artikel_ch.data.Medikament",
+  "medicals": "ch.elexis.artikel_ch.data.Medical",
+  "artikel": "ch.elexis.artikel_ch.data.Medikament",
+  "medikament": "ch.elexis.medikamente.bag.data.BAGMedi"
+}
 export class Service {
   constructor(private options = {}) {
   }
@@ -109,9 +116,12 @@ export class Service {
   }
 
   decodeService(code) {
-    const [codesystem, uid] = code.split("!")
+    let [codesystem, uid] = code.split("!")
     let service
     let ptyp
+    if (typemap[codesystem]) {
+      codesystem = typemap[codesystem]
+    }
     switch (codesystem) {
       case medication_type:
       case medical_type:
@@ -139,8 +149,9 @@ export class Service {
    * @param {*} params
    */
   async get(id, params) {
-    const [service, uid, type] = this.decodeService(id)
+    let type, service, uid
     try {
+      [service, uid, type] = this.decodeService(id)
       const billable = await service.get(uid, params)
       billable.codesystem = type
       return billable
@@ -160,6 +171,9 @@ export class Service {
           }
 
         }
+      } else {
+
+        console.log("unknown billable " + id)
       }
     }
   }
