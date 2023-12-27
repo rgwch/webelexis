@@ -13,16 +13,16 @@ export default (app) => {
     const paginate = app.get('paginate');
 
     const options = {
-        name: 'behandlungen',
+        name: 'ch_elexis_kassenbuch',
         Model,
         paginate
     };
 
     // Initialize our service with any options it requires
-    app.use('/konsultation', createService(options));
+    app.use('/kassenbuch', createService(options));
 
     // Get our initialized service so that we can register hooks and filters
-    const service = app.service('konsultation');
+    const service = app.service('kassenbuch');
 
     service.hooks(hooks);
 };

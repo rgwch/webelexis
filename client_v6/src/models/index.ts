@@ -13,6 +13,7 @@ import { DocumentManager } from './document-model'
 import { FindingsManager } from './findings-model';
 import { LabresultManager } from './labresult-model';
 import { AUFManager } from './auf-model';
+import { CashManager } from './cash.model';
 
 export const billingsManager = new BillingsManager()
 export const kontaktManager = new KontaktManager()
@@ -27,3 +28,4 @@ export const documentManager = new DocumentManager()
 export const findingsManager = new FindingsManager()
 export const labresultManager = new LabresultManager()
 export const aufManager = new AUFManager()
+export const cashManager = new CashManager()

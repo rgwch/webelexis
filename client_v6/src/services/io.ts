@@ -74,7 +74,7 @@ export interface IService<T> {
 }
 
 export type ServiceType = "admin" | "article" | "auf" | "billable" | "billing" | "bills" | "blob" | "briefe" | "diagnose" | "fall" |
-  "findings" | "invoice" | "konsultation" | "kontakt" | "labresults" | "leistungsblock" | "lucinda" | "meta-article" | "nosql" | "patient" |
+  "findings" | "invoice" | "kassenbuch" | "konsultation" | "kontakt" | "labresults" | "leistungsblock" | "lucinda" | "meta-article" | "nosql" | "patient" |
   "payments" | "prescriptions" | "rezepte" | "stickers" | "stock" | "termin" | "user" | "utility"
 export const getService = (name: ServiceType) => app.service(name)
 

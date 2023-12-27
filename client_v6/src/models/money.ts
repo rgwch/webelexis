@@ -16,6 +16,9 @@ export class Money {
    * @param initialCents either a double in cents or a string with . or ,
    */
   constructor(initialCents: number | string) {
+    if(!initialCents){
+      initialCents=0
+    }
     if (typeof initialCents === 'number') {
       this.cents = Math.round(initialCents * 100) / 100
     } else {
@@ -23,9 +26,15 @@ export class Money {
     }
   }
   number2string(n: number) {
+    if(!n){
+      n=0
+    }
     return Math.round(n * 100).toString()
   }
   string2number(s: string): number {
+    if(!s){
+      s="0"
+    }
     let parts = s.split('.')
     if (parts.length == 1) {
       parts = s.split(',')
