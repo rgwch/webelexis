@@ -2,8 +2,10 @@ import type { ElexisType } from "./elexistype";
 import { ObjectManager } from "./object-manager";
 import { DateTime } from 'luxon'
 import { Money } from "./money"
+import type Cash from "src/components/Cash.svelte";
 
 export interface CashType extends ElexisType {
+  nr: string
   date: string
   amount: string
   total: string
@@ -21,7 +23,7 @@ export class CashManager extends ObjectManager {
     const until = DateTime.fromJSDate(date).set({ month: 12, day: 31 }).toFormat("yyyyLLdd")
     const query = {
       $and: [{ date: { $gte: from } }, { date: { $lte: until } }],
-      $sort: { date: 1 }
+      $sort: { nr: -1 }
     }
     const ret = (await super.fetchAll(query)) as Array<CashType>
     return ret
@@ -34,6 +36,10 @@ export class CashManager extends ObjectManager {
   }
   public date(e: CashType): string {
     return DateTime.fromFormat(e.date, "yyyyLLdd").toLocaleString()
+  }
+  public setDate(date: Date | string, e: CashType): void {
+    if (typeof date === "string") date = DateTime.fromISO(date).toJSDate()
+    e.date = DateTime.fromJSDate(date).toFormat("yyyyLLdd")
   }
 }
 
