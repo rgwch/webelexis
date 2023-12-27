@@ -2,6 +2,7 @@
   import type { CashType } from "../models/cash.model";
   import { cashManager as cm } from "../models";
   import { Money } from "../models/money";
+  import { _ } from "svelte-i18n";
   export let current = new Date();
   let entries: Array<CashType> = [];
   let categories: Array<string> = [];
@@ -15,36 +16,38 @@
       .filter((v, i, a) => a.indexOf(v) === i);
   }
   async function add() {
-    let total = new Money(entries[0].total)
-      .add(new Money(template.amount))
-      .getCentsAsString();
-    const entry: CashType = {
-      nr: template.nr,
-      date: template.date,
-      category: template.category,
-      entry: template.entry,
-      amount: template.amount,
-      total,
-    };
-    cm.setDate(template.date, entry);
-    await cm.save(entry);
-    await reload(new Date(template.date));
+    const diff = new Money(template.amount);
+    if (!diff.isNeglectable) {
+      let total = new Money(entries[0].total).add(diff).getCentsAsString();
+      const entry: CashType = {
+        nr: template.nr,
+        date: template.date,
+        category: template.category,
+        entry: template.entry,
+        amount: template.amount,
+        total,
+      };
+      cm.setDate(template.date, entry);
+      await cm.save(entry);
+      await reload(new Date(template.date));
+    }
   }
   async function subtract() {
-    let total = new Money(entries[0].total)
-      .subtract(new Money(template.amount))
-      .getCentsAsString();
-    const entry: CashType = {
-      nr: template.nr,
-      date: template.date,
-      category: template.category,
-      entry: template.entry,
-      amount: template.amount,
-      total,
-    };
-    cm.setDate(template.date, entry);
-    await cm.save(entry);
-    await reload(new Date(template.date));
+    const diff = new Money(template.amount);
+    if (!diff.isNeglectable) {
+      let total = new Money(entries[0].total).subtract(diff).getCentsAsString();
+      const entry: CashType = {
+        nr: template.nr,
+        date: template.date,
+        category: template.category,
+        entry: template.entry,
+        amount: template.amount,
+        total,
+      };
+      cm.setDate(template.date, entry);
+      await cm.save(entry);
+      await reload(new Date(template.date));
+    }
   }
   const template: CashType = {
     nr: "0",
@@ -59,12 +62,12 @@
 <div>
   <table>
     <thead>
-      <th>Nr</th>
-      <th>Datum</th>
-      <th>Kategorie</th>
-      <th>Eintrag</th>
-      <th>Betrag</th>
-      <th>Total</th>
+      <th>{$_("billing.number")}</th>
+      <th>{$_("encounter.date")}</th>
+      <th>{$_("billing.category")}</th>
+      <th>{$_("billing.entry")}</th>
+      <th>{$_("billing.amount")}</th>
+      <th>{$_("billing.total")}</th>
     </thead>
     <tr>
       <td>{template.nr}</td>

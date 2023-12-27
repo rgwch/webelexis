@@ -50,16 +50,20 @@
     "actions": {
       "create": "Rechnungen erstellen",
       "demand_level": "Mahnstufe",
-      "output": "Ausgeben",
-      "print": "Drucken",
-      "storno": "Stornieren"
+      "output": "Produire",
+      "print": "imprimer",
+      "storno": "Annuler"
     },
     "amount": "montant",
+    "category": "catégorie",
+    "entry": "entrée",
     "invoicedate": "date de facture",
     "invoicenumber": "numéro de facture",
     "invoicestate": "état de facture",
-    "law": "Gesetz",
-    "statedate": "date d'état"
+    "law": "Loi",
+    "number": "N°",
+    "statedate": "date d'état",
+    "total": "Total"
   },
   "cal": {
     "apr": "Avril",
@@ -90,29 +94,29 @@
     "wed": "Mercredi"
   },
   "case": {
-    "begindate": "Anfangsdatum",
-    "createEncounter": "Neue Konsultation",
-    "createNew": "Neu...",
-    "description": "Bezeichnung",
-    "detail": "Fall Detail",
-    "enddate": "Enddatum",
-    "reason": "Grund"
+    "begindate": "date de début",
+    "createEncounter": "Nouvelle consultation",
+    "createNew": "Nouveau...",
+    "description": "Désignation",
+    "detail": "Détail du cas",
+    "enddate": "Date de fin",
+    "reason": "Raison"
   },
   "contact": {
-    "birthdate": "Geburtsdatum",
+    "birthdate": "Date de naissance",
     "email": "E-Mail",
-    "firstname": "Vorname",
-    "gender": "Geschlecht",
-    "lastname": "Name",
+    "firstname": "Prénom",
+    "gender": "Genre",
+    "lastname": "Nom",
     "mobile": "Mobil",
     "phone1": "Telefon 1",
     "phone2": "Telefon 2",
-    "remark": "Bemerkung"
+    "remark": "Remarque"
   },
   "demotest": "truc de démonstration",
   "encounter": {
-    "billed": "Verrechnet",
-    "date": "Datum",
+    "billed": "Facturé",
+    "date": "Date",
     "detail": "Konsultation Detail"
   },
   "formatting": {
@@ -123,9 +127,9 @@
     "longdate": "ccc, dd.LL.yyyy"
   },
   "general": {
-    "from": "von",
+    "from": "de",
     "loading": "lese...",
-    "until": "bis"
+    "until": "jusqu'à"
   },
   "lab": {
     "normrange": "Referenzbereich {lower} - {upper}",
@@ -136,12 +140,15 @@
     "current": "Aktuell an Lager",
     "exfactory": "Einkauf",
     "fix": "Fixmedikation",
+    "instock": "Einbuchen",
     "max": "Maximum",
     "min": "Minimum",
     "other": "Nicht (mehr) Regelmässig",
+    "outstock": "Ausbuchen",
     "packsize": "Packungsgrösse",
     "prescription": "Rezept",
     "prescriptions": "Rezepte",
+    "remove": "Entfernen",
     "reserve": "Reservemedikation",
     "retail": "Verkauf",
     "rperror": "Konnte kein Rezept erstellen",
@@ -169,6 +176,7 @@
     "auflong": "Arbeitsunfähigkeit",
     "bills": "Rechnungen",
     "cases": "Fälle",
+    "cash": "Kassenbuch",
     "certificates": "Zeugnisse",
     "detail": "Detail",
     "diagnoses": "Diagnosen",

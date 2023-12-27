@@ -55,11 +55,15 @@
       "storno": "Stornieren"
     },
     "amount": "Betrag",
+    "category": "Kategorie",
+    "entry": "Eintrag",
     "invoicedate": "Rechnungsdatum",
     "invoicenumber": "Rechungsnummer",
     "invoicestate": "Rechnungsstatus",
     "law": "Gesetz",
-    "statedate": "Statusdatum"
+    "number": "Nr",
+    "statedate": "Statusdatum",
+    "total": "Total"
   },
   "cal": {
     "apr": "April",
@@ -136,19 +140,19 @@
     "current": "Aktuell an Lager",
     "exfactory": "Einkauf",
     "fix": "Fixmedikation",
+    "instock": "Einbuchen",
     "max": "Maximum",
     "min": "Minimum",
     "other": "Nicht (mehr) Regelmässig",
+    "outstock": "Ausbuchen",
     "packsize": "Packungsgrösse",
     "prescription": "Rezept",
     "prescriptions": "Rezepte",
+    "remove": "Entfernen",
     "reserve": "Reservemedikation",
     "retail": "Verkauf",
     "rperror": "Konnte kein Rezept erstellen",
-    "stock": "Lager",
-    "instock": "Einbuchen",
-    "outstock": "Ausbuchen",
-    "remove": "Entfernen"
+    "stock": "Lager"
   },
   "menu": {
     "account": "Konto",

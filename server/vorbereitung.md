@@ -36,7 +36,7 @@ Damit der Server im Entwicklungs/Testmodus laufen kann, muss in der Elexis-Daten
 
 ### Externe Dienste installieren
 
-Webelexis arbeitet mit verschiedenen Diensten zusammen, speziell natrlich einem Elexis-Server, dazu aber auch Lucinda, Solr, Tika und CouchDB . Am Einfachsten können Sie alle Abhängigkeiten installieren und starten, wenn Sie Docker installieren, und in server/lib/external den Befehl `docker-compose up &` eingeben. Die benötigten Server werden dann automatisch heruntergeladen und gestartet.
+Webelexis arbeitet mit verschiedenen Diensten zusammen, speziell natrlich einem Elexis-Server, dazu aber auch Lucinda, Solr, Tika und CouchDB . Am Einfachsten können Sie alle Abhängigkeiten installieren und starten, wenn Sie Docker installieren, und in server/lib/external den Befehl `docker-compose up &` eingeben. Die benötigten Server werden dann automatisch heruntergeladen und gestartet. Wenn Sie sie das erste Mal starten, müssen Sie zunächst mit einem Browser auf http://localhost:5987/_utils gehen, sich dort mit dem on docker-compose genannten Passwort anmelden und einen single node oder cluster initialisieren.
 
 
 ### Nodejs installieren
