@@ -9,7 +9,11 @@
   reload(current);
   async function reload(year: Date) {
     entries = await cm.fetchForYear(year);
+    template.date = new Date().toISOString().slice(0, 10);
     template.nr = (parseInt(entries[0].nr) + 1).toString();
+    template.entry = "";
+    template.category = "";
+    template.amount = "0.00";
     /* filter all distinct categories*/
     categories = entries
       .map((e) => e.category)
@@ -17,7 +21,7 @@
   }
   async function add() {
     const diff = new Money(template.amount);
-    if (!diff.isNeglectable) {
+    if (!diff.isNeglectable()) {
       let total = new Money(entries[0].total).add(diff).getCentsAsString();
       const entry: CashType = {
         nr: template.nr,
@@ -34,7 +38,7 @@
   }
   async function subtract() {
     const diff = new Money(template.amount);
-    if (!diff.isNeglectable) {
+    if (!diff.isNeglectable()) {
       let total = new Money(entries[0].total).subtract(diff).getCentsAsString();
       const entry: CashType = {
         nr: template.nr,
@@ -57,6 +61,9 @@
     amount: "0.00",
     total: "0.00",
   };
+  function pad(item: string) {
+    return "0".repeat(8 - item.length);
+  }
 </script>
 
 <div>
@@ -90,9 +97,12 @@
       <tr>
         <td>{e.nr}</td>
         <td>{cm.date(e)}</td>
-        <td>{e.category}</td>
-        <td>{e.entry}</td>
-        <td>{cm.amount(e)}</td>
+        <td>{e.category ?? " "}</td>
+        <td>{e.entry ?? " "}</td>
+        <td
+          ><span style="visibility: hidden">{pad(cm.amount(e))}</span
+          >{cm.amount(e)}</td
+        >
         <td>{cm.total(e)}</td>
       </tr>
     {/each}
@@ -100,9 +110,18 @@
 </div>
 
 <style>
+  th {
+    text-align: left;
+  }
   td {
-    padding-right: 10px;
+    padding-right: 5px;
     margin-right: 4px;
+  }
+  td:nth-child(5) {
+    font-family: "Courier New", Courier, monospace;
+  }
+  tr:nth-child(odd) {
+    background-color: #f2f2f2;
   }
   button {
     margin: 0 2px;
