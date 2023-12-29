@@ -17,6 +17,7 @@ services:
       --wait-timeout=3600 
       --innodb-buffer-pool-size=1G
       --max-user-connections=1000
+      --innodb_flush_log_at_trx_commit=2
     container_name: wlx_elexisdb
     hostname: elexisdb.local
     environment:

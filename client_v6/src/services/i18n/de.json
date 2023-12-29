@@ -55,8 +55,8 @@
       "storno": "Stornieren"
     },
     "amount": "Betrag",
+    "cash": "Kassenbuch",
     "category": "Kategorie",
-    "cash": "Kassenbuch",  
     "check": "Kontrolle",
     "entry": "Eintrag",
     "exact": "Abgezählter Betrag",
