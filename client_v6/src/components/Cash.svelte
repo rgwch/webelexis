@@ -6,8 +6,8 @@
   export let current = new Date();
   let entries: Array<CashType> = [];
   let categories: Array<string> = [];
-  let extra=false;
-  let check=""
+  let extra = false;
+  let check = "";
   reload(current);
   async function reload(year: Date) {
     entries = await cm.fetchForYear(year);
@@ -16,7 +16,7 @@
     template.entry = "";
     template.category = "";
     template.amount = "0.00";
-    check=new Money(entries[0].total).getFormatted();
+    check = new Money(entries[0].total).getFormatted();
     /* filter all distinct categories*/
     categories = entries
       .map((e) => e.category)
@@ -64,8 +64,24 @@
     amount: "0.00",
     total: "0.00",
   };
-  function doCheck(){
-
+  async function doCheck() {
+    const diff = new Money(check).subtract(new Money(entries[0].total));
+    let dscr = $_("billing.excess");
+    if (diff.isNegative()) {
+      dscr = $_("billing.shortage");
+    } else if (diff.isNeglectable()) {
+      dscr = $_("billing.correct");
+    }
+    const entry: CashType = {
+      nr: template.nr + " " + $_("billing.check"),
+      date: template.date,
+      category: "",
+      entry: dscr,
+      amount: diff.getFormatted(),
+      total: check,
+    };
+    cm.setDate(template.date, entry), await cm.save(entry);
+    await reload(new Date(template.date));
   }
   function pad(item: string) {
     return "0".repeat(8 - item.length);
@@ -73,12 +89,19 @@
 </script>
 
 <div>
-  <div class="flex flex-row"><h2>{$_("billing.cash")}</h2><button on:click={()=>{extra=!extra}}>...</button></div>
+  <div class="flex flex-row">
+    <h2>{$_("billing.cash")}</h2>
+    <button
+      on:click={() => {
+        extra = !extra;
+      }}>...</button
+    >
+  </div>
   {#if extra}
     <div class="flex flex-row">
-      <span>{$_('billing.exact')}:&nbsp;</span>
-      <input type="text" bind:value={check}>
-      <button on:click={doCheck}>{$_('billing.check')}</button>
+      <span>{$_("billing.exact")}:&nbsp;</span>
+      <input type="text" bind:value={check} />
+      <button on:click={doCheck}>{$_("billing.check")}</button>
     </div>
   {/if}
   <table>
