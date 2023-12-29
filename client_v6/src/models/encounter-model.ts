@@ -226,10 +226,14 @@ export class EncounterModel {
   */
   public getDateTime(): DateTime {
     const dat = DateTime.fromFormat(this.enc.datum, 'yyyyLLdd')
-    const hrs = parseInt(this.enc.zeit.substring(0, 2))
-    const mins = parseInt(this.enc.zeit.substring(2))
-    dat.plus({ hours: hrs, minutes: mins })
-    return dat
+    const hrs = parseInt(this.enc.zeit?.substring(0, 2) || "0")
+    const mins = parseInt(this.enc.zeit?.substring(2) || "0")
+    if (dat && dat.isValid) {
+      dat.plus({ hours: hrs, minutes: mins })
+      return dat
+    } else {
+      return DateTime.local()
+    }
   }
 
   public async setInvoice(invoiceId: string) {

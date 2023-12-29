@@ -6,6 +6,8 @@
   export let current = new Date();
   let entries: Array<CashType> = [];
   let categories: Array<string> = [];
+  let extra=false;
+  let check=""
   reload(current);
   async function reload(year: Date) {
     entries = await cm.fetchForYear(year);
@@ -14,6 +16,7 @@
     template.entry = "";
     template.category = "";
     template.amount = "0.00";
+    check=new Money(entries[0].total).getFormatted();
     /* filter all distinct categories*/
     categories = entries
       .map((e) => e.category)
@@ -61,12 +64,23 @@
     amount: "0.00",
     total: "0.00",
   };
+  function doCheck(){
+
+  }
   function pad(item: string) {
     return "0".repeat(8 - item.length);
   }
 </script>
 
 <div>
+  <div class="flex flex-row"><h2>{$_("billing.cash")}</h2><button on:click={()=>{extra=!extra}}>...</button></div>
+  {#if extra}
+    <div class="flex flex-row">
+      <span>{$_('billing.exact')}:&nbsp;</span>
+      <input type="text" bind:value={check}>
+      <button on:click={doCheck}>{$_('billing.check')}</button>
+    </div>
+  {/if}
   <table>
     <thead>
       <th>{$_("billing.number")}</th>
@@ -124,11 +138,15 @@
     background-color: #f2f2f2;
   }
   button {
-    margin: 0 2px;
-    padding: 2px 6px;
-    width: 2rem;
-    border-radius: 2px;
+    margin-left: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+    min-width: 2rem;
+    border-radius: 4px;
     border: 1px solid #ccc;
-    background-color: aqua;
+    background-color: lightblue;
+  }
+  button:hover {
+    background-color: lightgreen;
   }
 </style>
