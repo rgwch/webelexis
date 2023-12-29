@@ -83,6 +83,19 @@
     cm.setDate(template.date, entry), await cm.save(entry);
     await reload(new Date(template.date));
   }
+  async function do_export() {
+    const data = await cm.fetchForYear(current);
+    const csv = data.map((row) => Object.values(row).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "cash.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   function pad(item: string) {
     return "0".repeat(8 - item.length);
   }
@@ -102,6 +115,9 @@
       <span>{$_("billing.exact")}:&nbsp;</span>
       <input type="text" bind:value={check} />
       <button on:click={doCheck}>{$_("billing.check")}</button>
+    </div>
+    <div>
+      <button on:click={do_export}>{$_("billing.summary")}</button>
     </div>
   {/if}
   <table>
