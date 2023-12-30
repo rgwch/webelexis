@@ -3,24 +3,40 @@
   import { cashManager as cm } from "../models";
   import { Money } from "../models/money";
   import { _ } from "svelte-i18n";
+  import Fa from "svelte-fa";
+  import {
+    faCaretLeft,
+    faCaretRight,
+  } from "@fortawesome/free-solid-svg-icons";
+
   export let current = new Date();
   let entries: Array<CashType> = [];
   let categories: Array<string> = [];
   let extra = false;
   let check = "";
-  reload(current);
-  async function reload(year: Date) {
-    entries = await cm.fetchForYear(year);
+  let year=current.getFullYear();
+  reload();
+  async function reload() {
+    entries = await cm.fetchForYear(current);
     template.date = new Date().toISOString().slice(0, 10);
     template.nr = (parseInt(entries[0].nr) + 1).toString();
     template.entry = "";
     template.category = "";
     template.amount = "0.00";
     check = new Money(entries[0].total).getFormatted();
+    year=current.getFullYear();
     /* filter all distinct categories*/
     categories = entries
       .map((e) => e.category)
       .filter((v, i, a) => a.indexOf(v) === i);
+  }
+  async function nextYear() {
+    current.setFullYear(current.getFullYear() + 1);
+    await reload();
+  }
+  async function prevYear() {
+    current.setFullYear(current.getFullYear() - 1);
+    await reload();
   }
   async function add() {
     const diff = new Money(template.amount);
@@ -36,7 +52,7 @@
       };
       cm.setDate(template.date, entry);
       await cm.save(entry);
-      await reload(new Date(template.date));
+      await reload();
     }
   }
   async function subtract() {
@@ -53,7 +69,7 @@
       };
       cm.setDate(template.date, entry);
       await cm.save(entry);
-      await reload(new Date(template.date));
+      await reload();
     }
   }
   const template: CashType = {
@@ -81,12 +97,28 @@
       total: check,
     };
     cm.setDate(template.date, entry), await cm.save(entry);
-    await reload(new Date(template.date));
+    await reload();
   }
   async function do_export() {
     const data = await cm.fetchForYear(current);
-    const csv = data.map((row) => Object.values(row).join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    // const csv = data.map((row) => Object.values(row).join(",")).join("\n");
+    const cats = new Map<string, number>();
+    const csv = data
+      .map((row) => {
+        cats[row.category] =
+          parseInt(cats[row.category] ?? "0") + parseInt(row.amount);
+        return `"${row.category}","${row.entry}","${row.amount}","${row.total}"`;
+      })
+      .join("\n");
+    const summary =
+      `,"${$_("billing.summary")}:",,\n\n` +
+      Object.keys(cats)
+        .map((key) => `"${key}","${new Money(cats[key]).getFormatted()}",,`)
+        .join("\n");
+    console.log(JSON.stringify(summary));
+    const blob = new Blob([csv + "\n\n\n" + summary], {
+      type: "text/csv;charset=utf-8;",
+    });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
@@ -104,6 +136,11 @@
 <div>
   <div class="flex flex-row">
     <h2>{$_("billing.cash")}</h2>
+    <button on:click={prevYear}
+      ><Fa icon={faCaretLeft} translateX={0.5} /></button
+    >
+    <span class="mx-2 px-2">{year}</span>
+    <button on:click={nextYear}><Fa icon={faCaretRight} translateX={0.5}/></button>
     <button
       on:click={() => {
         extra = !extra;
@@ -113,11 +150,11 @@
   {#if extra}
     <div class="flex flex-row">
       <span>{$_("billing.exact")}:&nbsp;</span>
-      <input type="text" bind:value={check} />
+      <input type="text" bind:value={check} width="8"/>
       <button on:click={doCheck}>{$_("billing.check")}</button>
     </div>
     <div>
-      <button on:click={do_export}>{$_("billing.summary")}</button>
+      <button on:click={do_export}>{$_("actions.export")}</button>
     </div>
   {/if}
   <table>
@@ -183,9 +220,8 @@
     min-width: 2rem;
     border-radius: 4px;
     border: 1px solid #ccc;
-    background-color: lightblue;
   }
   button:hover {
-    background-color: lightgreen;
+    background-color: blue;
   }
 </style>

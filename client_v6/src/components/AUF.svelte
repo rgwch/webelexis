@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AUFManager, AUFType } from "../models/auf-model";
+  import type { AUFType } from "../models/auf-model";
   import type { BriefType } from "../models/briefe-model";
   import { currentPatient } from "../services/store";
   import { aufManager, briefManager } from "../models";
