@@ -1,7 +1,7 @@
 5
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2022 by G. Weirich         *
+ * Copyright (c) 2022-2023 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -16,8 +16,8 @@ export class Money {
    * @param initialCents either a double in cents or a string with . or ,
    */
   constructor(initialCents: number | string) {
-    if(!initialCents){
-      initialCents=0
+    if (!initialCents) {
+      initialCents = 0
     }
     if (typeof initialCents === 'number') {
       this.cents = Math.round(initialCents * 100) / 100
@@ -26,14 +26,14 @@ export class Money {
     }
   }
   number2string(n: number) {
-    if(!n){
-      n=0
+    if (!n) {
+      n = 0
     }
     return Math.round(n * 100).toString()
   }
   string2number(s: string): number {
-    if(!s){
-      s="0"
+    if (!s) {
+      s = "0"
     }
     let parts = s.split('.')
     if (parts.length == 1) {
@@ -60,10 +60,13 @@ export class Money {
    * @returns
    */
   public getFormatted(n: number = 0): string {
-    const s = this.cents.toString()
+    const sign = this.cents < 0 ? "-" : ""
+    const cents=Math.abs(this.cents)
+    const s = cents.toString()
     const f = s.substring(0, s.length - 2) || '0'
     const c = s.substring(s.length - 2).padStart(2, '0')
-    return (f + '.' + c).padStart(n, '0')
+    const abs = (f + '.' + c).padStart(n, '0')
+    return sign + abs
   }
   /**
    * Round the amount to the nearest 5cent

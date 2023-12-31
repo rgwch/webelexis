@@ -82,6 +82,7 @@
   };
   async function doCheck() {
     const diff = new Money(check).subtract(new Money(entries[0].total));
+    console.log(diff)
     let dscr = $_("billing.excess");
     if (diff.isNegative()) {
       dscr = $_("billing.shortage");
