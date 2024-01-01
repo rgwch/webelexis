@@ -1,5 +1,5 @@
 import { replaceCodePlugin } from 'vite-plugin-replace';
-import { kontaktManager } from './../models/index';
+import { kontaktManager } from '../models/index';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
@@ -18,7 +18,7 @@ import { KontaktManager } from '../models/kontakt-model'
 import type { CaseType } from '../models/case-model'
 import { DateTime } from 'luxon'
 import { Money } from '../models/money'
-import defs from '../services/util'
+import defs from './util'
 import {
   encounterManager,
   billingsManager,
@@ -143,7 +143,7 @@ export class Billing {
               await diagnoseManager.findForKons(enc.id),
             )
           }
-          const konsdat:DateTime = kons.getDateTime()
+          const konsdat: DateTime = kons.getDateTime()
           if (konsdat < startDate) {
             startDate = konsdat
           }
@@ -208,12 +208,12 @@ export class Billing {
         '</td></tr>'
     }
     table += '</table>'
-    const fields = [{ field: 'lines', replace: table },{
+    const fields = [{ field: 'lines', replace: table }, {
       field: 'heading', replace: kontaktManager.getLabel(invoice._Mandant)
-    },{
-      field: 'sender', replace: invoice._Mandant.strasse+" " +invoice._Mandant.ort
-    },{
-      field: 'address', replace: kontaktManager.getAddress(invoice._Fall._Patient,"html")
+    }, {
+      field: 'sender', replace: invoice._Mandant.strasse + " " + invoice._Mandant.ort
+    }, {
+      field: 'address', replace: kontaktManager.getAddress(invoice._Fall._Patient, "html")
     }]
     const rn: BriefType = {
       betreff: 'Rechnung',

@@ -1,4 +1,4 @@
-import { id } from './../../../client_v3/src/fhir/model/fhir';
+import { id } from '../../../client_v3/src/fhir/model/fhir';
 /********************************************
  * This file is part of Webelexis           *
  * Copyright (c) 2016-2022 by G. Weirich    *
