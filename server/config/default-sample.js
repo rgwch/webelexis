@@ -8,13 +8,11 @@
  */
 module.exports = {
   configname: "default",
-  version: "3.7.0",
+  version: "3.9.0",
   /* if testing is true, webelexis will create some testusers on startup and allow to login without a password. */
   "testing": false,
   "host": "localhost",
   "port": process.env.WEBELEXIS_SERVER || 3030,
-  "client3": "../../client_v3/dist/",
-  "client5": "../../client_v5/dist",
   "paginate": {
     "default": 50,
     "max": 500
