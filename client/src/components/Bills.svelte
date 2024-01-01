@@ -49,7 +49,7 @@
 </script>
 
 <template>
-  <div class="overflow-auto max-h-[80vh] max-w-full">
+  <div style="max-height:80vh; overflow-y:auto;">
     <table>
       <thead>
         <th
@@ -59,32 +59,20 @@
             bind:checked={allchecked}
           /></th
         >
-        <th class="tableheader" on:click={() => sort("rnnummer")}
-          >{$_("billing.invoicenumber")}</th
-        >
+        <th on:click={() => sort("rnnummer")}>{$_("billing.invoicenumber")}</th>
 
-        <th class="tableheader" on:click={() => sort("rndatum")}
-          >{$_("billing.invoicedate")}
-        </th>
-        <th class="tableheader" on:click={() => sort("caselaw")}>
+        <th on:click={() => sort("rndatum")}>{$_("billing.invoicedate")} </th>
+        <th on:click={() => sort("caselaw")}>
           {$_("billing.law")}
         </th>
-        <th class="tableheader" on:click={() => sort("rnstatus")}
-          >{$_("billing.invoicestate")}
-        </th>
-        <th class="tableheader" on:click={() => sort("statusdatum")}
-          >{$_("billing.statedate")}</th
-        >
+        <th on:click={() => sort("rnstatus")}>{$_("billing.invoicestate")} </th>
+        <th on:click={() => sort("statusdatum")}>{$_("billing.statedate")}</th>
         <th
-          class="tableheader"
           on:click={() => {
             sort("betrag");
           }}>{$_("billing.amount")}</th
         >
-        <th
-          class="hover:text-blue-600 underline cursor-pointer"
-          on:click={() => sort("_Patname")}>{$_("patient.patient")}</th
-        >
+        <th on:click={() => sort("_Patname")}>{$_("patient.patient")}</th>
       </thead>
       <tbody>
         {#if busy}
@@ -105,7 +93,7 @@
               >
               <td class="text-center"
                 >{DateTime.fromISO(bill.rndatum).toFormat(
-                  $_("formatting.date")
+                  $_("formatting.date"),
                 )}</td
               >
               <td class="text-center">
@@ -116,7 +104,7 @@
               >
               <td class="text-center"
                 >{DateTime.fromISO(bill.statusdatum).toFormat(
-                  $_("formatting.date")
+                  $_("formatting.date"),
                 )}</td
               >
               <td class="text-right">{new Money(bill.betrag).getFormatted()}</td
@@ -146,7 +134,36 @@
 </template>
 
 <style>
-  .tableheader {
-    @apply "mx-1 cursor-pointer hover:(text-blue-600 underline) ";
+  table {
+    border-collapse: collapse;
+    text-align: center;
+    max-height: 80vh;
+  }
+  tbody {
+    overflow-x: auto;
+  }
+  tbody tr {
+    height: 20px;
+  }
+  th {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  thead th {
+    height: 40px;
+  }
+  tr {
+    cursor: pointer;
+  }
+
+  tr:nth-child(even) {
+    background-color: lightgray;
+  }
+  tr:hover {
+    background-color: lightblue;
+  }
+  thead {
+    background-color: black;
+    color: white;
   }
 </style>
