@@ -1,8 +1,0 @@
-template
-  require(from="../../services/date-format")
-  .card
-    .card-header
-      h3.h3 ${finding.title}
-    .card-body  
-      ul
-        li(repeat.for="m of finding.measurements") ${m.date | dateFormat:"date"} ${displayLine(m.values)}
