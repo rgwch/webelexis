@@ -4,17 +4,14 @@
   import { Money } from "../models/money";
   import { _ } from "svelte-i18n";
   import Fa from "svelte-fa";
-  import {
-    faCaretLeft,
-    faCaretRight,
-  } from "@fortawesome/free-solid-svg-icons";
+  import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
   export let current = new Date();
   let entries: Array<CashType> = [];
   let categories: Array<string> = [];
   let extra = false;
   let check = "";
-  let year=current.getFullYear();
+  let year = current.getFullYear();
   reload();
   async function reload() {
     entries = await cm.fetchForYear(current);
@@ -24,7 +21,7 @@
     template.category = "";
     template.amount = "0.00";
     check = new Money(entries[0].total).getFormatted();
-    year=current.getFullYear();
+    year = current.getFullYear();
     /* filter all distinct categories*/
     categories = entries
       .map((e) => e.category)
@@ -82,7 +79,7 @@
   };
   async function doCheck() {
     const diff = new Money(check).subtract(new Money(entries[0].total));
-    console.log(diff)
+    console.log(diff);
     let dscr = $_("billing.excess");
     if (diff.isNegative()) {
       dscr = $_("billing.shortage");
@@ -116,7 +113,7 @@
       Object.keys(cats)
         .map((key) => `"${key}","${new Money(cats[key]).getFormatted()}",,`)
         .join("\n");
-    console.log(JSON.stringify(summary));
+    // console.log(JSON.stringify(summary));
     const blob = new Blob([csv + "\n\n\n" + summary], {
       type: "text/csv;charset=utf-8;",
     });
@@ -141,7 +138,9 @@
       ><Fa icon={faCaretLeft} translateX={0.5} /></button
     >
     <span class="mx-2 px-2">{year}</span>
-    <button on:click={nextYear}><Fa icon={faCaretRight} translateX={0.5}/></button>
+    <button on:click={nextYear}
+      ><Fa icon={faCaretRight} translateX={0.5} /></button
+    >
     <button
       on:click={() => {
         extra = !extra;
@@ -151,7 +150,7 @@
   {#if extra}
     <div class="flex flex-row">
       <span>{$_("billing.exact")}:&nbsp;</span>
-      <input type="text" bind:value={check} width="8"/>
+      <input type="text" bind:value={check} width="8" />
       <button on:click={doCheck}>{$_("billing.check")}</button>
     </div>
     <div>
