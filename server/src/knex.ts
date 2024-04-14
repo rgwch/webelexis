@@ -16,7 +16,7 @@ import fs from "fs"
 const path = require("path")
 const normalize = require('./normalize_db')
 
-export default function (app) {
+export default async function (app): Promise<boolean> {
   const elexisdb = app.get("elexisdb")
 
   const connection = {
@@ -32,10 +32,30 @@ export default function (app) {
     connection,
     pool: { max: 50 }
   })
+  try {
+    const check = await db.raw("select 1+1 as result")
+    if (check) {
+      logger.info("Connected to database")
+      configure(app, db)
+      app.set("knexClient", db)
+      return true
+    } else {
+      return false
+    }
+  } catch (err) {
+    console.log("Can't connect to database: %s", err)
+    process.exit(42)
+    return false;
+  }
+
+}
+
+function configure(app, db) {
   db("config")
     .select("wert")
     .where("param", "webelexis")
     .then(async result => {
+      logger.warn("Checking Webelexis Version")
       if (result && result.length > 0) {
         logger.info("Found Webelexis Version %s", result[0].wert)
         if (result[0].wert < "3.0.6") {
@@ -85,10 +105,12 @@ export default function (app) {
         that case, we're running from scratch. So ER_NO_SUCH_TABLE is not a fatal error.
         All other errors are treated as fatal connection failures.
       */
+      logger.warn(err)
       if (err.code != "ER_NO_SUCH_TABLE") {
         logger.error("\n\n*** ABORT: Can't connect do elexis database: %s ***\n\n", err)
         process.exit(42)
+      } else {
+        console.log(err)
       }
     })
-  app.set("knexClient", db)
 }

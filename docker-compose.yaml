@@ -35,4 +35,4 @@ services:
 
 networks:
   external_webelexis_net:
-    external: true
+    driver: bridge

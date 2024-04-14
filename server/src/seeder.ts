@@ -16,23 +16,27 @@ export default async function (app) {
   // Find patient with TitelSuffix 'unittest' and exit if not found
   const pats = app.service('patient')
   const roles = app.get("roles")
+  let pat
+  try {
+    const testpat = await pats.find({ query: { titelsuffix: "unittest" } })
 
-  const testpat = await pats.find({ query: { titelsuffix: "unittest" } })
-  if (!testpat || !testpat.data || testpat.data.length < 1) {
-    logger.error("No Patient with TitelSuffix 'unittest' found. See src/seeder.js")
-    const candidates = await pats.find({ query: { bezeichnung1: { $like: "test%" } } });
-    if (candidates && candidates.data.length > 0) {
-      const tp = candidates.data[0]
-      tp.titelsuffix = "unittest"
-      const okay = await pats.update(tp.id, tp)
-      logger.info(`chose ${okay.bezeichnung1} ${okay.bezeichnung2} as unittest`)
-    } else {
-      throw new Error("No Patient with TitelSuffix 'unittest' and none with Name like 'test%' found. See src/seeder.js")
+    if (!testpat || !testpat.data || testpat.data.length < 1) {
+      logger.error("No Patient with TitelSuffix 'unittest' found. See src/seeder.js")
+      const candidates = await pats.find({ query: { bezeichnung1: { $like: "test%" } } });
+      if (candidates && candidates.data.length > 0) {
+        const tp = candidates.data[0]
+        tp.titelsuffix = "unittest"
+        const okay = await pats.update(tp.id, tp)
+        logger.info(`chose ${okay.bezeichnung1} ${okay.bezeichnung2} as unittest`)
+      } else {
+        throw new Error("No Patient with TitelSuffix 'unittest' and none with Name like 'test%' found. See src/seeder.js")
+      }
     }
+    pat = testpat.data[0]
+    logger.info("found patient 'unittest'")
+  } catch (err) {
+    logger.error("No database connection")
   }
-  const pat = testpat.data[0]
-  logger.info("found patient 'unittest'")
-
   // find or create basic document template
   /*
   const templates = app.service('templates')
