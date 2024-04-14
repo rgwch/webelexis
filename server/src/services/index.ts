@@ -55,7 +55,7 @@ const generateACLs = (servicename) => {
   declareACE([a1, a2, a3, a4, a5, a6, a7])
 }
 
-export default (app) => {
+export default async (app) => {
   app.configure(elexisConfig)
   generateACLs('elexis-config')
   app.configure(admin)
@@ -65,7 +65,7 @@ export default (app) => {
   generateACLs('kontakt')
   app.configure(patient)
   generateACLs('patient')
-  app.configure(agntermine)
+  await app.configure(agntermine)
   generateACLs('termin')
   app.configure(fall)
   app.configure(konsultation)

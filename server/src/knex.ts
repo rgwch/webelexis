@@ -13,7 +13,6 @@
 import knex from "knex"
 import { logger } from "./logger"
 import fs from "fs"
-const path = require("path")
 const normalize = require('./normalize_db')
 
 export default async function (app): Promise<boolean> {
@@ -32,85 +31,64 @@ export default async function (app): Promise<boolean> {
     connection,
     pool: { max: 50 }
   })
-  try {
-    const check = await db.raw("select 1+1 as result")
-    if (check) {
-      logger.info("Connected to database")
-      configure(app, db)
-      app.set("knexClient", db)
-      return true
-    } else {
-      return false
-    }
-  } catch (err) {
-    console.log("Can't connect to database: %s", err)
-    process.exit(42)
-    return false;
+
+  const check = await db.raw("select 1+1 as result")
+  if (check) {
+    logger.info("Connected to database")
+    configure(app, db)
+    app.set("knexClient", db)
+    return true
+  } else {
+    throw new Error("can't read from database")
   }
+
 
 }
 
-function configure(app, db) {
-  db("config")
-    .select("wert")
-    .where("param", "webelexis")
-    .then(async result => {
-      logger.warn("Checking Webelexis Version")
-      if (result && result.length > 0) {
-        logger.info("Found Webelexis Version %s", result[0].wert)
-        if (result[0].wert < "3.0.6") {
-          // Database - webelexis version too old, normalize
-          return normalize(app).then(() => {
-            return db('config').where("param", "webelexis").update("wert", "3.0.6").then(res => {
-              logger.info(res)
-            })
-          }).catch(err => {
-            logger.error("Fehler beim DB update " + err)
-          })
-        }
+async function configure(app, db) {
+  logger.warn("Checking Webelexis Version")
+  try {
+    const result = db("config").select("wert").where("param", "webelexis")
+    if (result && result.length > 0) {
+      logger.info("Found Webelexis Version %s", result[0].wert)
+      if (result[0].wert < "3.0.6") {
+        // Database - webelexis version too old, normalize
+        logger.warn("Database version too old. Normalizing")
+        await normalize(app)
+        const res = await db('config').where("param", "webelexis").update("wert", "3.0.6")
+        logger.info(res)
       } else {
         // No database-webelexis version found at all. Normalize and modify.
-        return normalize(app).then(() => {
-          return db("config")
-            .insert({ param: "webelexis", wert: "3.0.6" })
-        }).then(() => {
-          logger.warn("webelexis config entry not found")
-          const script = fs.readFileSync("./modify_elexis.sql", "utf-8")
-          const statements = script.split(";")
-          const execs = []
-          for (const stm of statements) {
-            execs.push(
-              db.raw(stm.replace(/[\n\r]/, "")).catch(err => {
-                logger.warn("statement failed: %s", err)
-              })
-            )
+        await normalize(app)
+        await db("config").insert({ param: "webelexis", wert: "3.0.6" })
+        logger.warn("webelexis config entry not found")
+        const script = fs.readFileSync("./modify_elexis.sql", "utf-8")
+        const statements = script.split(";")
+        const execs = []
+        for (const stm of statements) {
+          try {
+            await db.raw(stm.replace(/[\n\r]/, ""))
+          } catch (err) {
+            logger.warn("statement failed: %s", err)
           }
-          return Promise.all(execs).then(res => {
-            const version = app.get("version")
-            return db("config")
-              .insert({ param: "webelexis", wert: version })
-              .then(r => {
-                logger.info("script finished")
-              })
-          })
-        }).catch(err => {
-          logger.error("could not update version %s", err)
-        })
-
+        }
+        const version = app.get("version")
+        await db("config").insert({ param: "webelexis", wert: version })
+        logger.info("script finished")
       }
-    })
-    .catch(err => {
-      /*
-        Probably we get an error because the table "config" doesn not exist at all - in
-        that case, we're running from scratch. So ER_NO_SUCH_TABLE is not a fatal error.
-        All other errors are treated as fatal connection failures.
-      */
-      logger.warn(err)
-      if (err.code != "ER_NO_SUCH_TABLE") {
-        logger.error("\n\n*** ABORT: Can't connect do elexis database: %s ***\n\n", err)
-        process.exit(42)
-      } else {
-        console.log(err)
-      }
-    })
+    }
+  } catch (err) {
+    /*
+      Probably we get an error because the table "config" doesn not exist at all - in
+      that case, we're running from scratch. So ER_NO_SUCH_TABLE is not a fatal error.
+      All other errors are treated as fatal connection failures.
+    */
+    logger.warn(err)
+    if (err.code != "ER_NO_SUCH_TABLE") {
+      logger.error("\n\n*** ABORT: Can't connect do elexis database: %s ***\n\n", err)
+      process.exit(42)
+    } else {
+      console.log(err)
+    }
+  }
 }

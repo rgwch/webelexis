@@ -58,7 +58,12 @@ export async function configure(): Promise<boolean> {
     // Set up Plugins and providers
     app.configure(express.rest())
     app.configure(socketio())
-    await app.configure(knex)
+    try {
+      await app.configure(knex)
+    } catch (err) {
+      logger.error(err)
+      return false
+    }
 
     // Configure other middleware (see `middleware/index.js`)
     app.configure(middleware)
@@ -66,7 +71,7 @@ export async function configure(): Promise<boolean> {
     app.configure(admin)
 
     // Set up our services (see `services/index.js`)
-    app.configure(services)
+    await app.configure(services)
 
     // Set up event channels (see channels.js)
     app.configure(channels)
@@ -82,10 +87,7 @@ export async function configure(): Promise<boolean> {
     if (app.get('testing')) {
       logger.info('running in testing mode')
       logger.silent = true
-      seeder(app).catch((err) => {
-        console.log(err)
-        logger.error('reject ' + err)
-      })
+      await seeder(app)
     } else {
       if (process.env.NODE_ENV == "debug") {
         logger.info("running in debug mode")
