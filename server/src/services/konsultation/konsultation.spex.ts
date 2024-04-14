@@ -1,9 +1,11 @@
-import { app } from '../../app'
+import { configure } from '../../launcher'
 
 describe("encounters", () => {
   let service;
+  let app;
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    app = await configure()
     service = app.service('konsultation')
   })
   afterAll(() => {

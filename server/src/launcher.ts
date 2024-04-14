@@ -27,9 +27,11 @@ import appHooks from './app.hooks'
 import channels from './channels'
 import admin from './admin'
 import seeder from './seeder'
-export const app = express(feathers())
-export async function configure(): Promise<boolean> {
+
+
+export async function configure(): Promise<any> {
   try {
+    const app = express(feathers())
     app.set('views', path.join(__dirname, '../views'))
     app.set('view engine', 'pug')
 
@@ -58,12 +60,9 @@ export async function configure(): Promise<boolean> {
     // Set up Plugins and providers
     app.configure(express.rest())
     app.configure(socketio())
-    try {
-      await app.configure(knex)
-    } catch (err) {
-      logger.error(err)
-      return false
-    }
+
+    const knexClient = await knex(app)
+    app.set("knexClient", knexClient)
 
     // Configure other middleware (see `middleware/index.js`)
     app.configure(middleware)

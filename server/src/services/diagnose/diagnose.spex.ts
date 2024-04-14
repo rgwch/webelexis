@@ -1,7 +1,7 @@
-import { app } from '../../app'
+import { configure } from '../../launcher'
 
 describe('diagnose', () => {
-  let service
+  let service, app
 
   function delay() {
     return new Promise((resolve, reject) => {
@@ -12,6 +12,7 @@ describe('diagnose', () => {
   }
 
   beforeAll(async () => {
+    app = await configure()
     service = app.service('diagnose')
     await delay()
   })

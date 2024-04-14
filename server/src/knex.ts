@@ -15,7 +15,7 @@ import { logger } from "./logger"
 import fs from "fs"
 const normalize = require('./normalize_db')
 
-export default async function (app): Promise<boolean> {
+export default async function (app): Promise<any> {
   const elexisdb = app.get("elexisdb")
 
   const connection = {
@@ -35,9 +35,8 @@ export default async function (app): Promise<boolean> {
   const check = await db.raw("select 1+1 as result")
   if (check) {
     logger.info("Connected to database")
-    configure(app, db)
-    app.set("knexClient", db)
-    return true
+    await configure(app, db)
+    return db
   } else {
     throw new Error("can't read from database")
   }
@@ -48,7 +47,7 @@ export default async function (app): Promise<boolean> {
 async function configure(app, db) {
   logger.warn("Checking Webelexis Version")
   try {
-    const result = db("config").select("wert").where("param", "webelexis")
+    const result = await db("config").select("wert").where("param", "webelexis")
     if (result && result.length > 0) {
       logger.info("Found Webelexis Version %s", result[0].wert)
       if (result[0].wert < "3.0.6") {

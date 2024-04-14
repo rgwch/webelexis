@@ -9,13 +9,13 @@
  */
 import * as dotenv from 'dotenv'
 dotenv.config({ path: "../.env", debug: true })
-import { app, configure } from './app';
+import { configure } from './launcher';
 import https from 'https'
 import { logger } from './logger'
 import fs from 'fs'
 
-configure().then(ok => {
-  if (ok) {
+configure().then(app => {
+  if (app) {
     const port = app.get('port');
     const ssl = process.env.NODE_MODE === "SSL"
 
@@ -43,4 +43,6 @@ configure().then(ok => {
   } else {
     logger.error("Error configuring app")
   }
+}).catch(err => {
+  logger.error(err)
 })
