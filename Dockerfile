@@ -37,7 +37,6 @@ RUN cd webelexis/server \
   # && mv package-dockered.json package.json \
   && npm install \
   && npm i java \
-  && mv config/elexisoob.js config/dockered.js \
   && npx tsc \
   && npm --omit=dev prune \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \

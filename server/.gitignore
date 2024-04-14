@@ -116,7 +116,6 @@ sample_html.pdf
 dist
 src/configuration.ts
 config/default.js
-config/dockered.js
 config/production.js
 config/debug.js
 config/praxis.js
