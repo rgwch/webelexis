@@ -54,7 +54,7 @@ export async function configure(): Promise<any> {
     app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')))
 
     // Host the public folder
-    app.use('/', express.static(path.join(__dirname, '../../client_v6/dist')))
+    app.use('/', express.static(path.join(__dirname, '../../client/dist')))
     app.use('/static', express.static(path.join(__dirname, '../public')))
 
     // Set up Plugins and providers
@@ -94,9 +94,9 @@ export async function configure(): Promise<any> {
         logger.info('running in production mode')
       }
     }
-    return true
+    return app
   } catch (err) {
     logger.error(err)
-    return false
+    return undefined
   }
 }
