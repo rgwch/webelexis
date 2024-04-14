@@ -141,7 +141,7 @@ const updateKonsText = async (context) => {
         )
         context.data.eintrag = Buffer.from(vrUpdated)
       } else {
-        logger.warning('converting html to samdas ' + html)
+        logger.warn('converting html to samdas ' + html)
       }
     }
     return context
@@ -171,7 +171,7 @@ const createKonsText = async (context) => {
         )
         kons.eintrag = Buffer.from(vrUpdated)
       } else {
-        logger.warning('converting html to samdas ' + html)
+        logger.warn('converting html to samdas ' + html)
       }
     }
     return context

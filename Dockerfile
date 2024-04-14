@@ -1,6 +1,6 @@
 FROM node:18-alpine
 LABEL maintainer="weirich@webelexis.ch"
-LABEL version="3.8.0"
+LABEL version="3.9.0"
 EXPOSE 3030
 EXPOSE 4040
 ENV TIMEZONE=Europe/Zurich
@@ -15,8 +15,8 @@ RUN apk add --no-cache openjdk8 nano \
   && npm i -g pm2 \
   && npm i -g node-gyp \
   && git clone https://github.com/rgwch/webelexis \
-  && cd webelexis/client_v6 \
-  && mv package-dockered.json package.json \
+  && cd webelexis/client \
+  # && mv package-dockered.json package.json \
   && npm install \
   && npm run build \
   && npm --omit=dev prune \
