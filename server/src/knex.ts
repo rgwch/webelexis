@@ -35,6 +35,7 @@ export default async function (app): Promise<any> {
   const check = await db.raw("select 1+1 as result")
   if (check) {
     logger.info("Connected to database")
+    app.set("knexClient", db)
     await configure(app, db)
     return db
   } else {
@@ -56,26 +57,27 @@ async function configure(app, db) {
         await normalize(app)
         const res = await db('config').where("param", "webelexis").update("wert", "3.0.6")
         logger.info(res)
-      } else {
-        // No database-webelexis version found at all. Normalize and modify.
-        await normalize(app)
-        await db("config").insert({ param: "webelexis", wert: "3.0.6" })
-        logger.warn("webelexis config entry not found")
-        const script = fs.readFileSync("./modify_elexis.sql", "utf-8")
-        const statements = script.split(";")
-        const execs = []
-        for (const stm of statements) {
-          try {
-            await db.raw(stm.replace(/[\n\r]/, ""))
-          } catch (err) {
-            logger.warn("statement failed: %s", err)
-          }
-        }
-        const version = app.get("version")
-        await db("config").insert({ param: "webelexis", wert: version })
-        logger.info("script finished")
       }
+    } else {
+      // No database-webelexis version found at all. Normalize and modify.
+      await normalize(app)
+      await db("config").insert({ param: "webelexis", wert: "3.0.6" })
+      logger.warn("webelexis config entry not found")
+      const script = fs.readFileSync("./modify_elexis.sql", "utf-8")
+      const statements = script.split(";")
+      const execs = []
+      for (const stm of statements) {
+        try {
+          await db.raw(stm.replace(/[\n\r]/, ""))
+        } catch (err) {
+          logger.warn("statement failed: %s", err)
+        }
+      }
+      const version = app.get("version")
+      await db("config").insert({ param: "webelexis", wert: version })
+      logger.info("script finished")
     }
+
   } catch (err) {
     /*
       Probably we get an error because the table "config" doesn not exist at all - in
