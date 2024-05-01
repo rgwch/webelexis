@@ -1,6 +1,6 @@
 /********************************************
  * This file is part of Webelexis           *
- * Copyright (c) 2016-2022 by G. Weirich    *
+ * Copyright (c) 2016-2024 by G. Weirich    *
  * License and Terms see LICENSE            *
  ********************************************/
 
@@ -13,7 +13,7 @@
 import knex from "knex"
 import { logger } from "./logger"
 import fs from "fs"
-const normalize = require('./normalize_db')
+import normalize from "./normalize_db"
 
 export default async function (app): Promise<any> {
   const elexisdb = app.get("elexisdb")

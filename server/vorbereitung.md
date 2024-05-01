@@ -2,11 +2,19 @@
 
 ## 1. Vor der Installation
 
+
 ### Java JDK >=8 installieren
 
 Da manche Elexis-Datentypen (ExtInfo, VersionedResource) sehr Java-spezifisch sind, ist eine Bearbeitung mit anderen Sprachen schwierig und fehlerbehaftet. Wir binden deswegen einen Java-Interpreter ein, der unter Nodejs läuft und nutzen ein Java-Tool, um diese Datentypen zu lesen und zu schreiben.
 
 Daher muss auf dem Server Java (und zwar das JDK) 8.x installiert sein. Ob Oracle oder OpenJDK ist egal.
+
+### Build tools installieren
+
+Folgende packages müssen auf dem Server vorhanden sein (ist bei Standard-Ubuntu-Server bereits der Fall)
+
+* build-essential
+* python3 python3-pip
 
 ### Datenbank anpassen
 
